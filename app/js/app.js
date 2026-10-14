@@ -177,6 +177,14 @@ $("#edad").addEventListener("change", () => { estado.edad = parseInt($("#edad").
 $("#caidas").addEventListener("change", () => { estado.caidas = $("#caidas").checked; guardar(); render(); });
 
 $$(".tabs button").forEach((b) => b.addEventListener("click", () => { estado.tab = b.dataset.tab; render(); }));
+// barra inferior (móvil): lleva al informe o, estando en él, de vuelta a la medicación
+let enInforme = false;
+const desplazar = (el) => el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+$("#btn-ir-informe").addEventListener("click", () => desplazar(enInforme ? $("aside") : $("#informe")));
+new IntersectionObserver(([e]) => {
+  enInforme = e.isIntersecting;
+  $("#btn-ir-informe").firstChild.textContent = enInforme ? "Editar la medicación " : "Ver el informe ";
+}, { rootMargin: "-40% 0px -55% 0px" }).observe($("#informe"));
 
 $("#btn-copiar").addEventListener("click", async () => {
   const res = evaluar(datos, estado.meds, { edad: estado.edad, caidas: estado.caidas });
@@ -214,15 +222,28 @@ function render() {
   });
   $("#sin-meds").hidden = res.items.length > 0;
   $("#informe").hidden = res.items.length === 0;
-  if (!res.items.length) return;
+  if (!res.items.length) { $("#barra-inferior").hidden = true; return; }
 
   // resumen
   $("#resumen").innerHTML = ["alerta", "precaucion", "info"]
     .map((n) => `<div class="tile tile-${n}"><span class="num">${res.resumen[n]}</span><span>${etiqueta(n)}</span></div>`).join("") +
     `<div class="tile tile-ddi"><span class="num">${res.interacciones.length}</span><span>Interacciones</span></div>`;
 
-  // tabs
-  $$(".tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === estado.tab));
+  // tabs con recuento de avisos (precaución + atención)
+  const cuenta = (amb) => {
+    let a = 0, p = 0;
+    for (const g of res.ambitos[amb]) for (const r of g.reglas) { if (r.nivel === "alerta") a++; else if (r.nivel === "precaucion") p++; }
+    if (amb === "general") for (const c of res.combinadas) { if (c.regla.nivel === "alerta") a++; else if (c.regla.nivel === "precaucion") p++; }
+    return { a, p };
+  };
+  $$(".tabs button").forEach((b) => {
+    b.setAttribute("aria-selected", b.dataset.tab === estado.tab);
+    const c = b.querySelector(".cnt");
+    if (b.dataset.tab === "interacciones") { const n = res.interacciones.filter((x) => x.nivel !== "menor").length; c.textContent = n || ""; c.className = "cnt" + (res.interacciones.some((x) => x.nivel === "mayor") ? " c-alerta" : n ? " c-precaucion" : ""); }
+    else { const { a, p } = cuenta(b.dataset.tab); c.textContent = a + p || ""; c.className = "cnt" + (a ? " c-alerta" : p ? " c-precaucion" : ""); }
+  });
+  $("#barra-inferior").hidden = false;
+  $("#barra-contador").innerHTML = `<span style="background:var(--alerta)">${res.resumen.alerta}</span><span style="background:var(--precaucion)">${res.resumen.precaucion}</span>`;
   const cont = $("#contenido-tab");
   cont.innerHTML = "";
 
@@ -233,7 +254,7 @@ function render() {
       for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
         sec.insertAdjacentHTML("beforeend", `
           <article class="regla nivel-${c.regla.nivel}">
-            <header><span class="nivel">${etiqueta(c.regla.nivel)}</span><h4>${c.regla.titulo}</h4></header>
+            <header><h4>${c.regla.titulo}</h4><span class="nivel">${etiqueta(c.regla.nivel)}</span></header>
             <p>${c.texto}</p>
             <footer>${c.implicados.map((it) => `<span class="chip">${it.principio.nombre}</span>`).join("")}</footer>
           </article>`);
@@ -262,16 +283,21 @@ function renderAmbito(cont, grupos, titulo, amb) {
     const it = g.item;
     const max = g.reglas.reduce((m, r) => (ORDEN_NIVEL[r.nivel] > ORDEN_NIVEL[m] ? r.nivel : m), "info");
     const dosis = it.dosisTotal != null ? `${it.dosisTotal} ${it.unidad}${it.esDiaria ? "/día" : ""}` : "";
+    const abierta = ORDEN_NIVEL[max] >= 2 || orden.length <= 3;
     sec.insertAdjacentHTML("beforeend", `
-      <article class="farmaco nivel-${max}">
-        <header>
-          <div><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ' · <b>dosis alta</b>' : ""}</small></div>
+      <details class="farmaco nivel-${max}"${abierta ? " open" : ""}>
+        <summary>
+          <span class="barra"></span>
+          <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ' · <b>dosis alta</b>' : ""}</small></span>
           <span class="nivel">${etiqueta(max)}</span>
-        </header>
-        ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
-        <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
-        ${it.clase.fuentes?.length ? `<footer>Fuentes: ${it.clase.fuentes.join(" · ")}</footer>` : ""}
-      </article>`);
+          <span class="flecha" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="cuerpo">
+          ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
+          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
+          ${it.clase.fuentes?.length ? `<p class="fuentes">Fuentes: ${it.clase.fuentes.join(" · ")}</p>` : ""}
+        </div>
+      </details>`);
   }
   cont.append(sec);
 }
@@ -284,7 +310,7 @@ function renderInteracciones(cont, res) {
     for (const x of res.interacciones) {
       sec.insertAdjacentHTML("beforeend", `
         <article class="ddi ddi-${x.nivel}">
-          <header><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4></header>
+          <header><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span></header>
           <p>${x.efecto}</p>
           ${x.accion ? `<p class="accion"><b>Qué hacer:</b> ${x.accion}</p>` : ""}
           <footer>${x.fuente === "curada" ? "Revisión clínica propia" : x.fuente === "ddinter" ? "DDInter 2.0" : "Duplicidad detectada"}</footer>
