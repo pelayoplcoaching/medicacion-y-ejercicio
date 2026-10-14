@@ -1,6 +1,6 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js";
-import { extraerMedicacion, textoDePdf } from "./parser.js";
-import { pdfMedico, pdfPaciente } from "./informes.js";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610141837";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610141837";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610141837";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];

@@ -1,5 +1,5 @@
 /* Generación de resúmenes en PDF (jsPDF cargado como global desde CDN). */
-import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js";
+import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610141837";
 
 const AUTOR = "By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
