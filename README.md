@@ -27,6 +27,10 @@ scripts/
   nombres_es_en.json ← mapa id ↔ nombre inglés para cruzar con DDInter
 ```
 
+## Dominio y despliegue
+
+Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, carpeta `app/`). Dominio personalizado: `medicacionyejercicio.fuerzabasadaenevidencia.com` (registro CNAME en IONOS → `pelayoplcoaching.github.io`; configurado en Settings → Pages → Custom domain). Metaetiquetas SEO / Open Graph / Twitter y `manifest.webmanifest` (instalable como app) en `app/index.html`; imagen para redes en `app/assets/og.png`.
+
 ## Ejecutar en local
 
 ```bash
