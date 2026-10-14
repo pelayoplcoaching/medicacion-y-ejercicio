@@ -52,14 +52,16 @@
 
       <div class="acciones">
         <button type="button" class="btn-sec" id="btn-pegar">Pegar una lista</button>
+        <button type="button" class="btn-sec" id="btn-pdf">Subir un PDF</button>
+        <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
         <button type="button" class="btn-sec" id="btn-ejemplo">Ver un ejemplo</button>
         <button type="button" class="btn-sec" id="btn-vaciar">Vaciar</button>
       </div>
       <div id="pegar-wrap" hidden style="margin-top:10px">
         <textarea id="pegar" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
         <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
-        <small id="pegar-aviso"></small>
-      </div>
+        </div>
+      <small id="pegar-aviso" class="aviso-import"></small>
 
       <div id="ejemplo-banner" class="banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
       <ul id="lista-meds"></ul>
@@ -83,11 +85,23 @@
     <div id="contenido-tab"></div>
     <div id="perfil"></div>
     <textarea id="informe-texto" hidden readonly></textarea>
+    <div class="descargas">
+      <h3>Llévese este informe</h3>
+      <div class="acciones">
+        <button type="button" class="btn" id="btn-pdf-medico">Resumen para su médico (PDF)</button>
+        <button type="button" class="btn" id="btn-pdf-paciente">Resumen para usted (PDF)</button>
+      </div>
+      <small>El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
+      <small id="pdf-aviso"></small>
+    </div>
     <p class="pie" id="aviso"></p>
     <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</p>
   </section>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

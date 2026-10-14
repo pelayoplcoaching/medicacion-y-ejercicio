@@ -7,10 +7,13 @@ ROOT = Path(__file__).resolve().parent.parent
 app = ROOT / "app"
 html = (app / "index.html").read_text(encoding="utf-8")
 css = (app / "css/style.css").read_text(encoding="utf-8")
-engine = (app / "js/engine.js").read_text(encoding="utf-8")
-appjs = (app / "js/app.js").read_text(encoding="utf-8")
-engine = re.sub(r"^export (const|function) ", r"\1 ", engine, flags=re.M)
-appjs = re.sub(r"^import .*?;\n", "", appjs, flags=re.M)
+mods = []
+for f in ["js/engine.js", "js/parser.js", "js/informes.js", "js/app.js"]:
+    js = (app / f).read_text(encoding="utf-8")
+    js = re.sub(r"^export (async function|const|function) ", r"\1 ", js, flags=re.M)
+    js = re.sub(r"^import .*?;\n", "", js, flags=re.M)
+    mods.append(js)
+engine = "\n".join(mods[:-1]); appjs = mods[-1]
 # quedarnos con el contenido de <head> útil y el <body>
 head = re.search(r"<head>(.*?)</head>", html, re.S).group(1)
 head = re.sub(r"<meta charset[^>]*>|<meta name=\"viewport\"[^>]*>|<link rel=\"stylesheet\" href=\"css/style.css\">", "", head)

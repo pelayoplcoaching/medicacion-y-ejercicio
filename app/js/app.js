@@ -1,4 +1,6 @@
 import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js";
+import { extraerMedicacion, textoDePdf } from "./parser.js";
+import { pdfMedico, pdfPaciente } from "./informes.js";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -107,34 +109,63 @@ $("#form-med").addEventListener("submit", (ev) => {
 /* ---------- pegar lista ---------- */
 $("#btn-pegar").addEventListener("click", () => { $("#pegar-wrap").hidden = !$("#pegar-wrap").hidden; });
 $("#btn-importar").addEventListener("click", () => {
-  const lineas = $("#pegar").value.split(/\n|;/).map((l) => l.trim()).filter(Boolean);
-  const nuevos = [], noReconocidos = [];
-  for (const l of lineas) {
-    const m = l.match(/^([a-záéíóúñ\/\s\-\.]+?)\s*(\d+[\.,]?\d*)?\s*(mg|mcg|µg|ui|g)?\b.*?(?:(\d)\s*[-\/]\s*(\d)\s*[-\/]\s*(\d)|(\d+)\s*(?:veces|x|tomas)|c\/?(\d+)\s*h)?/i);
-    const nombre = (m?.[1] || l).trim();
-    const res = buscar(indice, nombre, 1);
-    if (!res.length) { noReconocidos.push(l); continue; }
-    let dosis = m?.[2] ? parseFloat(m[2].replace(",", ".")) : null;
-    const u = (m?.[3] || "").toLowerCase();
-    if (u === "g") dosis = dosis * 1000;
-    const ref = indice.porId.get(res[0].pid);
-    const unidad = ref.principio.unidad || "mg";
-    if ((u === "mcg" || u === "µg") && unidad === "mg") dosis = dosis / 1000;
-    let tomas = 1;
-    if (m?.[4] != null) tomas = [m[4], m[5], m[6]].map(Number).filter((x) => x > 0).length || 1;
-    else if (m?.[7]) tomas = parseInt(m[7], 10);
-    else if (m?.[8]) tomas = Math.max(1, Math.round(24 / parseInt(m[8], 10)));
-    nuevos.push({ pid: res[0].pid, dosis, tomas, unidad, dosisDesde: res[0].dosis ?? null });
-  }
-  if (nuevos.length) {
-    if (estado.ejemplo) { estado.meds = []; estado.ejemplo = false; }
-    for (const n of nuevos) { if (n.dosis == null && n.dosisDesde != null) n.dosis = n.dosisDesde; delete n.dosisDesde; estado.meds.push(n); }
-  }
-  $("#pegar-aviso").textContent = noReconocidos.length ? `No reconocidos: ${noReconocidos.join(", ")}` : "";
+  const n = incorporarTexto($("#pegar").value);
   $("#pegar").value = "";
-  if (!noReconocidos.length) $("#pegar-wrap").hidden = true;
-  guardar(); render();
+  if (n.reconocidos) $("#pegar-wrap").hidden = true;
 });
+
+/** Reconoce fármacos en un texto y los añade a la lista. Devuelve contadores. */
+function incorporarTexto(texto, origen = "la lista") {
+  const { reconocidos, noReconocidos } = extraerMedicacion(texto, indice);
+  if (reconocidos.length) {
+    if (estado.ejemplo) { estado.meds = []; estado.ejemplo = false; }
+    const ya = new Set(estado.meds.map((m) => m.pid));
+    for (const r of reconocidos) if (!ya.has(r.pid)) estado.meds.push({ pid: r.pid, dosis: r.dosis, tomas: r.tomas, unidad: r.unidad });
+  }
+  const partes = [];
+  if (reconocidos.length) partes.push(`Reconocidos ${reconocidos.length} medicamentos de ${origen}; revise las dosis en la lista.`);
+  else partes.push(`No se ha reconocido ningún medicamento en ${origen}.`);
+  if (noReconocidos.length) partes.push(`Sin reconocer: ${noReconocidos.slice(0, 6).join(" · ")}${noReconocidos.length > 6 ? " …" : ""}.`);
+  $("#pegar-aviso").textContent = partes.join(" ");
+  guardar(); render();
+  return { reconocidos: reconocidos.length, noReconocidos: noReconocidos.length };
+}
+
+/* ---------- PDF de medicación ---------- */
+$("#btn-pdf").addEventListener("click", () => $("#pdf-input").click());
+$("#pdf-input").addEventListener("change", async () => {
+  const f = $("#pdf-input").files[0];
+  if (!f) return;
+  $("#pegar-aviso").textContent = "Leyendo el PDF en su dispositivo…";
+  try {
+    const texto = await textoDePdf(f);
+    if (!texto.trim()) { $("#pegar-aviso").textContent = "El PDF no contiene texto legible (puede ser una imagen escaneada). Pegue la lista a mano o use un PDF con texto."; return; }
+    incorporarTexto(texto, `«${f.name}»`);
+  } catch (e) {
+    $("#pegar-aviso").textContent = "No se ha podido leer el PDF: " + (e.message || e);
+  }
+  $("#pdf-input").value = "";
+});
+
+/* ---------- Resúmenes en PDF ---------- */
+async function descargarPdf(tipo) {
+  const btn = tipo === "medico" ? $("#btn-pdf-medico") : $("#btn-pdf-paciente");
+  const original = btn.textContent;
+  btn.disabled = true; btn.textContent = "Generando…";
+  try {
+    if (!window.jspdf) throw new Error("el generador de PDF no se ha cargado");
+    const res = evaluar(datos, estado.meds, { edad: estado.edad, caidas: estado.caidas });
+    const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, estado);
+    doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
+    btn.textContent = "PDF generado";
+  } catch (e) {
+    btn.textContent = "No disponible aquí";
+    $("#pdf-aviso").textContent = "No se ha podido generar el PDF (" + (e.message || e) + "). En la versión web pública la descarga funciona con normalidad.";
+  }
+  setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
+}
+$("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
+$("#btn-pdf-paciente").addEventListener("click", () => descargarPdf("paciente"));
 
 $("#btn-ejemplo").addEventListener("click", () => {
   Object.assign(estado, structuredClone(EJEMPLO), { ejemplo: true });

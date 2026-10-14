@@ -147,3 +147,10 @@ article ul li em { color: var(--muted); font-size: .85em; }
 #informe-texto { margin-top: 10px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; min-height: 180px; }
 .cabecera-informe { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 @media (prefers-reduced-motion: no-preference) { article { transition: border-color .2s; } }
+
+.aviso-import { display: block; margin-top: 8px; }
+.descargas { margin-top: 24px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--accent-soft); display: grid; gap: 8px; }
+.descargas h3 { margin: 0; color: var(--accent); }
+.descargas .acciones { margin-top: 0; }
+.descargas small { display: block; max-width: 72ch; }
+.btn:disabled { opacity: .6; cursor: wait; }
