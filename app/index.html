@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Medicación y Ejercicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <img src="assets/logo.png" alt="Fuerza Basada en Evidencia" class="logo" width="88" height="88">
+  <div class="titulo">
+    <h1>Medicación y Ejercicio</h1>
+    <p class="autor">By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.</p>
+    <p>Introduzca su medicación habitual con la dosis y obtenga qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre sus fármacos.</p>
+  </div>
+  <small id="kb-version"></small>
+</header>
+
+<main class="contenedor">
+  <aside>
+    <div class="panel">
+      <h2>Datos básicos</h2>
+      <div class="fila" style="margin-top:10px">
+        <label>Edad <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años"></label>
+        <label class="check"><input type="checkbox" id="caidas"> Alguna caída en el último año</label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Medicación habitual</h2>
+      <form id="form-med" autocomplete="off">
+        <div class="buscador" style="margin-top:10px">
+          <label for="buscar" class="sr-only" hidden>Buscar medicamento</label>
+          <input id="buscar" type="search" placeholder="Nombre comercial o principio activo (p. ej. Emconcor, bisoprolol)" aria-controls="sugerencias" aria-autocomplete="list">
+          <ul id="sugerencias" role="listbox" hidden></ul>
+        </div>
+        <div id="dosis-wrap" hidden>
+          <div class="fila">
+            <label>Dosis por toma <input type="number" id="dosis" step="any" min="0" inputmode="decimal"></label>
+            <span class="unidad" id="unidad">mg</span>
+            <label id="tomas-wrap">Tomas al día <input type="number" id="tomas" min="1" max="6" value="1" inputmode="numeric"></label>
+            <button class="btn" type="submit">Añadir</button>
+          </div>
+          <small>Si no conoce la dosis, puede añadirlo sin ella: perderá solo las indicaciones que dependen de la dosis.</small>
+        </div>
+      </form>
+
+      <div class="acciones">
+        <button type="button" class="btn-sec" id="btn-pegar">Pegar una lista</button>
+        <button type="button" class="btn-sec" id="btn-ejemplo">Ver un ejemplo</button>
+        <button type="button" class="btn-sec" id="btn-vaciar">Vaciar</button>
+      </div>
+      <div id="pegar-wrap" hidden style="margin-top:10px">
+        <textarea id="pegar" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
+        <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
+        <small id="pegar-aviso"></small>
+      </div>
+
+      <div id="ejemplo-banner" class="banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
+      <ul id="lista-meds"></ul>
+      <p id="sin-meds" class="vacio" hidden>Todavía no hay medicamentos en la lista.</p>
+    </div>
+  </aside>
+
+  <section id="informe" hidden>
+    <div class="cabecera-informe">
+      <h2>Qué tener en cuenta</h2>
+      <button type="button" class="btn-sec" id="btn-copiar">Copiar informe</button>
+    </div>
+    <div id="resumen"></div>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="general">Antes de empezar</button>
+      <button type="button" role="tab" data-tab="aerobico">Aeróbico</button>
+      <button type="button" role="tab" data-tab="fuerza">Fuerza</button>
+      <button type="button" role="tab" data-tab="equilibrio">Equilibrio</button>
+      <button type="button" role="tab" data-tab="interacciones">Interacciones</button>
+    </div>
+    <div id="contenido-tab"></div>
+    <div id="perfil"></div>
+    <textarea id="informe-texto" hidden readonly></textarea>
+    <p class="pie" id="aviso"></p>
+    <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</p>
+  </section>
+</main>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1311 @@
+{
+  "version": "0.1.0",
+  "fecha": "2026-10-14",
+  "autor": "Dr. Pelayo Fernández Cidón (borrador v0 generado con Claude; pendiente de revisión clínica)",
+  "aviso": "Esta herramienta ofrece información general orientativa para preparar una conversación con su médico o profesional del ejercicio. No sustituye una valoración individual ni modifica ningún tratamiento. Ante dudas, síntomas durante el ejercicio o cambios de medicación, consulte con su médico.",
+
+  "niveles": {
+    "info": {"etiqueta": "Para saber", "color": "verde"},
+    "precaucion": {"etiqueta": "Precaución", "color": "ambar"},
+    "alerta": {"etiqueta": "Atención", "color": "rojo"}
+  },
+
+  "senales": {
+    "hipotension": "Puede bajar la tensión arterial (mareo, sobre todo al incorporarse o al terminar el ejercicio)",
+    "bradicardia": "Frena la frecuencia cardíaca",
+    "fc_no_valida": "La frecuencia cardíaca no sirve para medir la intensidad del ejercicio",
+    "hipoglucemia": "Puede provocar bajadas de azúcar",
+    "enmascara_hipoglucemia": "Puede ocultar los síntomas de una bajada de azúcar",
+    "deshidratacion": "Favorece la deshidratación o la pérdida de sales",
+    "hiperpotasemia": "Puede subir el potasio en sangre",
+    "hiponatremia": "Puede bajar el sodio en sangre",
+    "renal": "Riesgo para el riñón si hay deshidratación",
+    "sedacion": "Produce somnolencia o enlentece los reflejos",
+    "anticolinergico": "Efecto anticolinérgico (sequedad, menos sudoración, confusión en mayores)",
+    "caidas": "Aumenta el riesgo de caídas",
+    "sangrado": "Aumenta el riesgo de sangrado o hematomas",
+    "miopatia": "Puede dañar el músculo (dolor muscular, debilidad)",
+    "tendon": "Debilita los tendones",
+    "qt": "Puede alargar el intervalo QT (riesgo de arritmia)",
+    "calor": "Dificulta la regulación de la temperatura corporal",
+    "taquicardia": "Puede acelerar el corazón o provocar temblor",
+    "perdida_muscular": "Favorece la pérdida de masa muscular",
+    "hueso": "Debilita el hueso",
+    "ieca_ara": "Bloquea el sistema renina-angiotensina",
+    "diuretico": "Diurético",
+    "aine": "Antiinflamatorio no esteroideo",
+    "estatina": "Estatina",
+    "fibrato": "Fibrato",
+    "corticoide": "Corticoide",
+    "serotoninergico": "Efecto serotoninérgico"
+  },
+
+  "clases": [
+    {
+      "id": "betabloqueantes",
+      "nombre": "Betabloqueantes",
+      "atc": ["C07"],
+      "resumen": "Frenan el corazón y bajan la tensión. Son seguros para hacer ejercicio, pero cambian cómo responde el cuerpo: el pulso sube menos de lo normal, así que no sirve para medir la intensidad.",
+      "senales": ["bradicardia", "fc_no_valida", "hipotension", "enmascara_hipoglucemia", "calor"],
+      "principios": [
+        {"id": "bisoprolol", "nombre": "Bisoprolol", "marcas": ["Emconcor", "Euradal"], "umbral_mg": {"alta": 10}},
+        {"id": "atenolol", "nombre": "Atenolol", "marcas": ["Tenormin", "Blokium"], "umbral_mg": {"alta": 50}},
+        {"id": "carvedilol", "nombre": "Carvedilol", "marcas": ["Coropres"], "umbral_mg": {"alta": 25}},
+        {"id": "nebivolol", "nombre": "Nebivolol", "marcas": ["Lobivon"], "umbral_mg": {"alta": 5}},
+        {"id": "metoprolol", "nombre": "Metoprolol", "marcas": ["Beloken", "Lopresor"], "umbral_mg": {"alta": 100}},
+        {"id": "propranolol", "nombre": "Propranolol", "marcas": ["Sumial"], "umbral_mg": {"alta": 80}, "nota": "No cardioselectivo: puede empeorar el asma y limita más la capacidad de esfuerzo."}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Con este fármaco el pulso sube entre 20 y 30 latidos menos de lo esperado. No use fórmulas de frecuencia cardíaca máxima ni las zonas de pulso del reloj: guíese por la sensación de esfuerzo (escala de Borg: debe poder hablar con frases cortas) o por la prueba del habla."},
+        {"nivel": "info", "texto": "Si además tiene diabetes y usa insulina o sulfonilureas: el betabloqueante puede ocultar los síntomas de una bajada de azúcar (palpitaciones, temblor). La sudoración se mantiene; ante sudor frío o confusión durante el ejercicio, mida la glucosa."},
+        {"nivel": "info", "texto": "El cuerpo disipa peor el calor. Evite las horas de más calor, hidrátese y reduzca la intensidad en ambientes calurosos."}
+      ],
+      "aerobico": [
+        {"nivel": "info", "texto": "El ejercicio aeróbico está indicado y mejora el pronóstico cardiovascular. Es normal que la capacidad de esfuerzo sea algo menor y que se fatigue antes, sobre todo las primeras semanas o tras una subida de dosis."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "Con dosis altas la limitación del pulso es mayor: progrese más despacio y vigile mareos al terminar. Termine siempre con 5–10 minutos de enfriamiento progresivo, sin parar en seco."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "El entrenamiento de fuerza es seguro y recomendable. Respire de forma continua durante cada repetición (no haga apnea ni Valsalva), que es lo que dispara la tensión y favorece el mareo al soltar."},
+        {"nivel": "info", "texto": "Elija cargas que le permitan 8–15 repeticiones sin llegar al fallo. Suba la carga poco a poco."}
+      ],
+      "equilibrio": [
+        {"nivel": "precaucion", "texto": "Puede notar mareo al levantarse rápido o al cambiar de posición, sobre todo al empezar el tratamiento o tras subir la dosis. Haga las transiciones (tumbado → sentado → de pie) despacio y con apoyo cerca."}
+      ],
+      "fuentes": ["ACSM Guidelines for Exercise Testing and Prescription, 11ª ed., Apéndice A", "ACE: How common medications may affect your clients' exercise programs"]
+    },
+
+    {
+      "id": "ieca_ara2",
+      "nombre": "IECA y ARA-II (enalapril, losartán…)",
+      "atc": ["C09A", "C09C"],
+      "resumen": "Bajan la tensión relajando los vasos. No frenan el pulso y combinan muy bien con el ejercicio. Lo que hay que vigilar es la bajada de tensión después de entrenar.",
+      "senales": ["hipotension", "hiperpotasemia", "renal", "ieca_ara"],
+      "principios": [
+        {"id": "enalapril", "nombre": "Enalapril", "marcas": ["Renitec", "Acetensil"], "umbral_mg": {"alta": 20}},
+        {"id": "ramipril", "nombre": "Ramipril", "marcas": ["Acovil", "Carasel"], "umbral_mg": {"alta": 5}},
+        {"id": "lisinopril", "nombre": "Lisinopril", "marcas": ["Zestril", "Prinivil"], "umbral_mg": {"alta": 20}},
+        {"id": "perindopril", "nombre": "Perindopril", "marcas": ["Coversyl"], "umbral_mg": {"alta": 5}},
+        {"id": "losartan", "nombre": "Losartán", "marcas": ["Cozaar"], "umbral_mg": {"alta": 50}},
+        {"id": "valsartan", "nombre": "Valsartán", "marcas": ["Diován", "Vals"], "umbral_mg": {"alta": 160}},
+        {"id": "candesartan", "nombre": "Candesartán", "marcas": ["Atacand", "Parapres"], "umbral_mg": {"alta": 16}},
+        {"id": "olmesartan", "nombre": "Olmesartán", "marcas": ["Olmetec", "Openvas"], "umbral_mg": {"alta": 20}},
+        {"id": "telmisartan", "nombre": "Telmisartán", "marcas": ["Micardis", "Pritor"], "umbral_mg": {"alta": 40}},
+        {"id": "irbesartan", "nombre": "Irbesartán", "marcas": ["Aprovel", "Karvea"], "umbral_mg": {"alta": 150}},
+        {"id": "sacubitrilo_valsartan", "nombre": "Sacubitrilo/valsartán", "marcas": ["Entresto"], "umbral_mg": {"alta": 194}, "nota": "Efecto hipotensor más marcado; indicado en insuficiencia cardíaca, donde el ejercicio supervisado es parte del tratamiento."}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "El ejercicio potencia el efecto de este fármaco: tras una sesión la tensión puede quedar 10–20 mmHg más baja durante varias horas. Es un efecto beneficioso, pero conviene conocerlo."},
+        {"nivel": "precaucion", "texto": "No tome antiinflamatorios (ibuprofeno, naproxeno, diclofenaco) de forma rutinaria para las agujetas: combinados con este fármaco y con deshidratación pueden dañar el riñón."},
+        {"nivel": "info", "texto": "No use suplementos de potasio ni 'sales sin sodio' (ricas en potasio) sin consultarlo: este fármaco ya retiene potasio."}
+      ],
+      "aerobico": [
+        {"nivel": "info", "texto": "Sin limitación: el pulso responde con normalidad y puede usarlo para medir la intensidad."},
+        {"nivel": "precaucion", "texto": "Termine con un enfriamiento de 5–10 minutos caminando. Parar de golpe tras un esfuerzo intenso puede provocar mareo o desmayo por la bajada de tensión."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "Seguro y recomendable. Evite contener la respiración durante el esfuerzo y levántese despacio tras ejercicios en el suelo o en banco."}
+      ],
+      "equilibrio": [
+        {"nivel": "info", "texto": "Si nota mareo al incorporarse, haga los cambios de posición despacio. Es más frecuente al inicio del tratamiento o si está deshidratado."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "A dosis altas el mareo postural es más probable: entrene con hidratación adecuada y evite las duchas muy calientes justo después."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed.", "ACE: post-exercise hypotension y IECA"]
+    },
+
+    {
+      "id": "diureticos_asa",
+      "nombre": "Diuréticos del asa (furosemida, torasemida)",
+      "atc": ["C03C"],
+      "resumen": "Eliminan líquido y sales con fuerza. Lo importante para el ejercicio es la hidratación, el potasio y planificar la hora de la sesión respecto a la toma.",
+      "senales": ["hipotension", "deshidratacion", "renal", "diuretico", "calor"],
+      "principios": [
+        {"id": "furosemida", "nombre": "Furosemida", "marcas": ["Seguril"], "umbral_mg": {"alta": 80}},
+        {"id": "torasemida", "nombre": "Torasemida", "marcas": ["Sutril", "Dilutol"], "umbral_mg": {"alta": 20}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "El efecto máximo es en las 2–4 horas siguientes a la toma: evite entrenar en esa ventana (necesidad de orinar, bajada de tensión). Lo habitual es tomarlo por la mañana y entrenar a media mañana o por la tarde."},
+        {"nivel": "precaucion", "texto": "Beba antes, durante y después del ejercicio. La pérdida de potasio y magnesio favorece calambres y, en casos extremos, arritmias. Si tiene calambres frecuentes, debilidad o palpitaciones, coméntelo con su médico (puede necesitar un análisis)."},
+        {"nivel": "info", "texto": "Si su médico le ha pedido que se pese a diario (insuficiencia cardíaca), hágalo siempre antes del ejercicio, no después."}
+      ],
+      "aerobico": [
+        {"nivel": "precaucion", "texto": "Reduzca la intensidad con calor o humedad. La deshidratación aparece antes y el pulso puede subir más de lo normal para el mismo esfuerzo."},
+        {"nivel": "alerta", "si": {"dosis": "alta"}, "texto": "Con dosis altas el riesgo de deshidratación e hipotensión es mayor: empiece con sesiones cortas, en ambiente fresco y con agua a mano. Consulte antes de hacer ejercicio intenso o de larga duración."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "Sin limitación específica. Mantenga la respiración continua y levántese despacio del suelo."}
+      ],
+      "equilibrio": [
+        {"nivel": "precaucion", "texto": "Riesgo de mareo al incorporarse por bajada de tensión y de volumen. Cambios de posición lentos; en mayores, trabaje el equilibrio con un apoyo cerca."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed.", "ACE"]
+    },
+
+    {
+      "id": "tiazidas",
+      "nombre": "Diuréticos tiazídicos (hidroclorotiazida, clortalidona, indapamida)",
+      "atc": ["C03A", "C03B"],
+      "resumen": "Diuréticos suaves usados para la tensión. Efectos parecidos a los del asa pero más leves; vigile el sodio en mayores y la exposición al sol.",
+      "senales": ["hipotension", "deshidratacion", "hiponatremia", "diuretico"],
+      "principios": [
+        {"id": "hidroclorotiazida", "nombre": "Hidroclorotiazida", "marcas": ["Esidrex", "Hidrosaluretil"], "umbral_mg": {"alta": 25}},
+        {"id": "clortalidona", "nombre": "Clortalidona", "marcas": ["Higrotona"], "umbral_mg": {"alta": 25}},
+        {"id": "indapamida", "nombre": "Indapamida", "marcas": ["Tertensif"], "umbral_mg": {"alta": 2.5}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Hidrátese bien, sobre todo con calor. Si además toma un antidepresivo (ISRS) y tiene más de 65 años, el riesgo de sodio bajo aumenta: ante confusión, náuseas o debilidad inusual tras el ejercicio, consulte."},
+        {"nivel": "info", "texto": "Aumenta la sensibilidad al sol: protección solar si entrena al aire libre."}
+      ],
+      "aerobico": [
+        {"nivel": "info", "texto": "Sin limitación. Con calor, baje la intensidad y beba con regularidad."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "Sin limitación específica."}
+      ],
+      "equilibrio": [
+        {"nivel": "info", "texto": "Posible mareo postural leve. Cambios de posición lentos."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "ahorradores_potasio",
+      "nombre": "Diuréticos ahorradores de potasio (espironolactona, eplerenona)",
+      "atc": ["C03D"],
+      "resumen": "Diuréticos que retienen potasio. Usados en insuficiencia cardíaca y tensión resistente. El ejercicio está indicado; lo que hay que evitar es añadir más potasio.",
+      "senales": ["hipotension", "hiperpotasemia", "diuretico"],
+      "principios": [
+        {"id": "espironolactona", "nombre": "Espironolactona", "marcas": ["Aldactone"], "umbral_mg": {"alta": 50}},
+        {"id": "eplerenona", "nombre": "Eplerenona", "marcas": ["Inspra"], "umbral_mg": {"alta": 50}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "No use bebidas deportivas o suplementos ricos en potasio ni 'sal sin sodio' sin consultarlo. Combinado con IECA/ARA-II o antiinflamatorios, el potasio puede subir demasiado (debilidad, palpitaciones)."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. Hidratación normal."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "equilibrio": [{"nivel": "info", "texto": "Posible mareo postural leve; cambios de posición lentos."}],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "calcioantagonistas_dhp",
+      "nombre": "Calcioantagonistas dihidropiridínicos (amlodipino, nifedipino…)",
+      "atc": ["C08CA"],
+      "resumen": "Bajan la tensión dilatando las arterias. No frenan el pulso. Lo principal: bajada de tensión al terminar e hinchazón de tobillos que no es por el ejercicio.",
+      "senales": ["hipotension", "calor"],
+      "principios": [
+        {"id": "amlodipino", "nombre": "Amlodipino", "marcas": ["Norvas", "Astudal"], "umbral_mg": {"alta": 10}},
+        {"id": "nifedipino", "nombre": "Nifedipino", "marcas": ["Adalat"], "umbral_mg": {"alta": 60}},
+        {"id": "lercanidipino", "nombre": "Lercanidipino", "marcas": ["Lerzam", "Zanidip"], "umbral_mg": {"alta": 20}},
+        {"id": "manidipino", "nombre": "Manidipino", "marcas": ["Artedil"], "umbral_mg": {"alta": 20}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "La hinchazón de tobillos es un efecto frecuente del fármaco, no una lesión ni un signo de que el ejercicio vaya mal. Caminar y el trabajo de pantorrilla la mejoran."},
+        {"nivel": "info", "texto": "El pulso responde con normalidad; puede usarlo para medir la intensidad (nifedipino puede acelerarlo algo en reposo)."}
+      ],
+      "aerobico": [
+        {"nivel": "precaucion", "texto": "Enfriamiento progresivo de 5–10 minutos: la dilatación de los vasos sumada a la del ejercicio favorece el mareo si para de golpe. Evite la sauna o la ducha muy caliente inmediatamente después."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "Sin limitación. Respiración continua; incorpórese despacio."}
+      ],
+      "equilibrio": [
+        {"nivel": "info", "texto": "Posible mareo al incorporarse, sobre todo al inicio o con calor. Transiciones lentas."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "calcioantagonistas_no_dhp",
+      "nombre": "Verapamilo y diltiazem",
+      "atc": ["C08D"],
+      "resumen": "Calcioantagonistas que, además de bajar la tensión, frenan el corazón como los betabloqueantes. El pulso no sirve para medir la intensidad.",
+      "senales": ["bradicardia", "fc_no_valida", "hipotension"],
+      "principios": [
+        {"id": "verapamilo", "nombre": "Verapamilo", "marcas": ["Manidon"], "umbral_mg": {"alta": 240}},
+        {"id": "diltiazem", "nombre": "Diltiazem", "marcas": ["Masdil", "Dinisor"], "umbral_mg": {"alta": 240}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Frena el pulso tanto en reposo como en esfuerzo: use la sensación de esfuerzo o la prueba del habla, no las zonas de frecuencia cardíaca."},
+        {"nivel": "info", "texto": "Si además toma un betabloqueante, el frenado es doble: consulte con su médico antes de ejercicio intenso."}
+      ],
+      "aerobico": [
+        {"nivel": "info", "texto": "Indicado. Capacidad de esfuerzo algo reducida; progrese despacio y termine con enfriamiento."}
+      ],
+      "fuerza": [{"nivel": "info", "texto": "Seguro. Respiración continua, sin apneas."}],
+      "equilibrio": [{"nivel": "info", "texto": "Posible mareo postural; cambios de posición lentos."}],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "nitratos",
+      "nombre": "Nitratos (nitroglicerina, mononitrato de isosorbida)",
+      "atc": ["C01DA"],
+      "resumen": "Dilatan los vasos para prevenir o aliviar la angina. Bajan la tensión y pueden dar dolor de cabeza. El ejercicio con angina conocida debe estar pautado por su cardiólogo.",
+      "senales": ["hipotension", "taquicardia"],
+      "principios": [
+        {"id": "mononitrato_isosorbida", "nombre": "Mononitrato de isosorbida", "marcas": ["Uniket", "Cardionil"], "umbral_mg": {"alta": 60}},
+        {"id": "nitroglicerina", "nombre": "Nitroglicerina", "marcas": ["Cafinitrina", "Trinispray", "Nitradisc", "Minitran"], "umbral_mg": {"alta": 10}, "nota": "Parche o spray sublingual."}
+      ],
+      "general": [
+        {"nivel": "alerta", "texto": "Si tiene nitroglicerina de rescate, llévela siempre al entrenar. Si aparece dolor o presión en el pecho durante el ejercicio: pare, siéntese, tome la nitroglicerina según le indicaron; si no cede en 5 minutos o reaparece, llame al 112."},
+        {"nivel": "info", "texto": "Si su cardiólogo le indicó nitroglicerina preventiva antes del esfuerzo, tómela 5–10 minutos antes de empezar, sentado."},
+        {"nivel": "alerta", "texto": "Nunca combine nitratos con fármacos para la disfunción eréctil (sildenafilo, tadalafilo): la bajada de tensión puede ser grave."}
+      ],
+      "aerobico": [
+        {"nivel": "precaucion", "texto": "Ejercicio de intensidad ligera a moderada, con calentamiento largo (10 minutos) y enfriamiento progresivo. Evite esfuerzos máximos o bruscos salvo indicación expresa."}
+      ],
+      "fuerza": [
+        {"nivel": "precaucion", "texto": "Cargas ligeras-moderadas, muchas repeticiones, sin apnea. El esfuerzo isométrico mantenido (empujar o sostener peso sin moverse) sube mucho la tensión: evítelo."}
+      ],
+      "equilibrio": [
+        {"nivel": "precaucion", "texto": "Mareo postural frecuente, sobre todo con el parche o tras la toma. Transiciones lentas y con apoyo."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed.", "AHA: Angina and physical activity"]
+    },
+
+    {
+      "id": "digoxina",
+      "nombre": "Digoxina",
+      "atc": ["C01AA05"],
+      "resumen": "Frena el corazón en la fibrilación auricular y ayuda en la insuficiencia cardíaca. Tiene un margen estrecho: deshidratación y potasio bajo aumentan su toxicidad.",
+      "senales": ["bradicardia", "fc_no_valida"],
+      "principios": [
+        {"id": "digoxina", "nombre": "Digoxina", "marcas": ["Lanacordin"], "umbral_mg": {"alta": 0.25}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Si además toma diuréticos, la deshidratación y la pérdida de potasio pueden hacer tóxica la digoxina. Náuseas, pérdida de apetito, visión amarillenta o pulso muy lento o irregular tras el ejercicio son motivo de consulta urgente."},
+        {"nivel": "info", "texto": "Si tiene fibrilación auricular, el pulso es irregular y poco fiable para medir la intensidad: use la sensación de esfuerzo."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado a intensidad ligera-moderada, con buena hidratación. El reloj puede dar lecturas erróneas de pulso en fibrilación auricular."}],
+      "fuerza": [{"nivel": "info", "texto": "Seguro con cargas moderadas y respiración continua."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica; cambios de posición lentos si toma otros fármacos para la tensión."}],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "amiodarona",
+      "nombre": "Amiodarona",
+      "atc": ["C01BD01"],
+      "resumen": "Antiarrítmico de larga duración. Frena el pulso, sensibiliza mucho la piel al sol y puede afectar al tiroides y al pulmón.",
+      "senales": ["bradicardia", "fc_no_valida", "qt"],
+      "principios": [
+        {"id": "amiodarona", "nombre": "Amiodarona", "marcas": ["Trangorex"], "umbral_mg": {"alta": 400}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Fotosensibilidad intensa: protección solar alta, ropa y gorra si entrena al aire libre, incluso en días nublados."},
+        {"nivel": "info", "texto": "Si nota una pérdida de capacidad de esfuerzo progresiva con falta de aire o tos seca, coméntelo: puede deberse al fármaco (pulmón o tiroides), no a falta de forma."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado. El pulso sube menos; use la sensación de esfuerzo."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "equilibrio": [{"nivel": "info", "texto": "Posible inestabilidad o temblor leve; entrene con apoyo cerca."}],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "alfabloqueantes",
+      "nombre": "Alfabloqueantes (doxazosina, tamsulosina…)",
+      "atc": ["C02CA", "G04CA"],
+      "resumen": "Relajan los vasos (doxazosina, para la tensión) o la próstata (tamsulosina). Su efecto más relevante para el ejercicio es el mareo al incorporarse.",
+      "senales": ["hipotension", "caidas"],
+      "principios": [
+        {"id": "doxazosina", "nombre": "Doxazosina", "marcas": ["Carduran", "Doxatensa"], "umbral_mg": {"alta": 4}},
+        {"id": "tamsulosina", "nombre": "Tamsulosina", "marcas": ["Omnic", "Urolosin"], "umbral_mg": {"alta": 0.4}},
+        {"id": "silodosina", "nombre": "Silodosina", "marcas": ["Urorec", "Silodyx"], "umbral_mg": {"alta": 8}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Mareo al ponerse de pie, sobre todo las primeras semanas, tras subir la dosis y al terminar de entrenar. Levántese despacio, siéntese antes si nota que se va la vista."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. Enfriamiento progresivo de 5–10 minutos y evitar paradas bruscas."}],
+      "fuerza": [{"nivel": "info", "texto": "Seguro. Especial cuidado al levantarse tras ejercicios tumbado (press, abdominales)."}],
+      "equilibrio": [
+        {"nivel": "precaucion", "texto": "Riesgo de caída por mareo postural. Trabaje el equilibrio junto a una pared o silla, y evite ejercicios con los ojos cerrados o giros rápidos al inicio."},
+        {"nivel": "alerta", "si": {"dosis": "alta", "edad_min": 65}, "texto": "Dosis alta en mayor de 65 años: el riesgo de caída por hipotensión es relevante. Coméntelo con su médico y entrene el equilibrio siempre con apoyo."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed.", "Criterios STOPP/START"]
+    },
+
+    {
+      "id": "ivabradina",
+      "nombre": "Ivabradina",
+      "atc": ["C01EB17"],
+      "resumen": "Frena el pulso sin bajar la tensión. Como con los betabloqueantes, el pulso no sirve para medir la intensidad.",
+      "senales": ["bradicardia", "fc_no_valida"],
+      "principios": [
+        {"id": "ivabradina", "nombre": "Ivabradina", "marcas": ["Procoralan", "Corlentor"], "umbral_mg": {"alta": 15}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "El pulso sube poco con el esfuerzo. Use la escala de esfuerzo percibido o la prueba del habla."},
+        {"nivel": "info", "texto": "Puede ver destellos luminosos (fosfenos) con cambios bruscos de luz: tenga cuidado al entrenar al aire libre en zonas con tráfico o al anochecer."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado. Capacidad de esfuerzo conservada en general."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "anticoagulantes",
+      "nombre": "Anticoagulantes (Sintrom, apixabán, rivaroxabán…)",
+      "atc": ["B01AA", "B01AE", "B01AF"],
+      "resumen": "Evitan trombos pero facilitan sangrar y hacerse hematomas. El ejercicio está indicado; lo que cambia es evitar golpes y caídas, y precisamente por eso el trabajo de equilibrio es muy importante.",
+      "senales": ["sangrado", "caidas"],
+      "principios": [
+        {"id": "acenocumarol", "nombre": "Acenocumarol", "marcas": ["Sintrom"], "nota": "Requiere controles de INR. Cambios bruscos de dieta o de actividad pueden alterar el INR."},
+        {"id": "warfarina", "nombre": "Warfarina", "marcas": ["Aldocumar"]},
+        {"id": "apixaban", "nombre": "Apixabán", "marcas": ["Eliquis"]},
+        {"id": "rivaroxaban", "nombre": "Rivaroxabán", "marcas": ["Xarelto"]},
+        {"id": "edoxaban", "nombre": "Edoxabán", "marcas": ["Lixiana"]},
+        {"id": "dabigatran", "nombre": "Dabigatrán", "marcas": ["Pradaxa"]},
+        {"id": "enoxaparina", "nombre": "Enoxaparina", "marcas": ["Clexane"], "nota": "Inyección subcutánea; hematomas en zona de punción frecuentes."}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Evite deportes de contacto o con riesgo de golpes fuertes (boxeo, rugby, fútbol competitivo, artes marciales con contacto) y actividades con riesgo de caída a velocidad (bici de montaña técnica, esquí fuera de pista, patinaje)."},
+        {"nivel": "alerta", "texto": "Si sufre un golpe en la cabeza, aunque parezca leve, o aparecen hematomas grandes sin golpe, sangre en orina o heces negras, acuda a urgencias."},
+        {"nivel": "info", "texto": "No tome antiinflamatorios (ibuprofeno, naproxeno) ni aspirina para el dolor muscular sin consultarlo: multiplican el riesgo de sangrado. El paracetamol es la opción segura."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Caminar, bici estática, elíptica, natación o correr en superficie regular son seguros. Prefiera entornos sin riesgo de caída o choque."}],
+      "fuerza": [
+        {"nivel": "info", "texto": "El entrenamiento de fuerza es seguro y recomendable. Cargas moderadas con buena técnica; evite ejercicios donde la barra o la mancuerna puedan golpearle (prefiera máquinas o mancuernas ligeras al inicio)."},
+        {"nivel": "info", "texto": "Los pequeños hematomas en zonas de presión (muslos, antebrazos) son habituales y no obligan a parar."}
+      ],
+      "equilibrio": [
+        {"nivel": "alerta", "texto": "El entrenamiento de equilibrio es especialmente importante con anticoagulantes: una caída puede tener consecuencias graves. Hágalo 2–3 veces por semana, siempre con un apoyo al alcance (pared, silla, barandilla), sobre superficie no resbaladiza."}
+      ],
+      "fuentes": ["ACSM GETP 11ª ed.", "Guía ESC fibrilación auricular 2024"]
+    },
+
+    {
+      "id": "antiagregantes",
+      "nombre": "Antiagregantes (aspirina a dosis baja, clopidogrel, ticagrelor…)",
+      "atc": ["B01AC"],
+      "resumen": "Evitan que las plaquetas formen trombos. Aumentan algo el sangrado, mucho más si se combinan dos. Ejercicio indicado, con las mismas precauciones de golpes que los anticoagulantes pero menos estrictas.",
+      "senales": ["sangrado"],
+      "principios": [
+        {"id": "aas", "nombre": "Ácido acetilsalicílico (dosis baja)", "marcas": ["Adiro", "Tromalyt", "Aspirina Protect"], "umbral_mg": {"alta": 300}},
+        {"id": "clopidogrel", "nombre": "Clopidogrel", "marcas": ["Plavix", "Iscover"], "umbral_mg": {"alta": 150}},
+        {"id": "ticagrelor", "nombre": "Ticagrelor", "marcas": ["Brilique"], "umbral_mg": {"alta": 180}, "nota": "Puede dar sensación de falta de aire sin causa pulmonar."},
+        {"id": "prasugrel", "nombre": "Prasugrel", "marcas": ["Efient"], "umbral_mg": {"alta": 10}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Hematomas más fáciles y sangrados que tardan más en parar. Evite deportes de contacto intenso. Ante golpe en la cabeza o sangrado que no cede, acuda a urgencias."},
+        {"nivel": "info", "texto": "Evite añadir antiinflamatorios (ibuprofeno, naproxeno) para el dolor muscular: paracetamol como primera opción."},
+        {"nivel": "info", "si": {"principio": "ticagrelor"}, "texto": "Ticagrelor puede producir sensación de falta de aire en reposo o con esfuerzos leves que no se debe al pulmón ni al corazón. Si aparece, coméntelo, pero no suele obligar a parar el ejercicio."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. Si lo toma tras un infarto o un stent, siga el programa de rehabilitación cardíaca que le hayan pautado."}],
+      "fuerza": [{"nivel": "info", "texto": "Seguro y recomendable."}],
+      "equilibrio": [{"nivel": "info", "texto": "Trabajo de equilibrio recomendable para reducir el riesgo de caídas."}],
+      "fuentes": ["ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "estatinas",
+      "nombre": "Estatinas (atorvastatina, simvastatina, rosuvastatina…)",
+      "atc": ["C10AA"],
+      "resumen": "Bajan el colesterol. Su efecto secundario más conocido es el dolor muscular, que puede aumentar con ejercicio nuevo o muy intenso. No es motivo para no entrenar, sino para progresar con cabeza.",
+      "senales": ["miopatia", "estatina"],
+      "principios": [
+        {"id": "atorvastatina", "nombre": "Atorvastatina", "marcas": ["Cardyl", "Zarator", "Prevencor"], "umbral_mg": {"alta": 40}},
+        {"id": "simvastatina", "nombre": "Simvastatina", "marcas": ["Zocor", "Pantok"], "umbral_mg": {"alta": 40}},
+        {"id": "rosuvastatina", "nombre": "Rosuvastatina", "marcas": ["Crestor"], "umbral_mg": {"alta": 20}},
+        {"id": "pravastatina", "nombre": "Pravastatina", "marcas": ["Lipemol", "Prareduct"], "umbral_mg": {"alta": 40}},
+        {"id": "pitavastatina", "nombre": "Pitavastatina", "marcas": ["Livazo", "Alipza"], "umbral_mg": {"alta": 4}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Las agujetas normales aparecen a las 24–48 h, afectan al músculo trabajado y desaparecen en 2–4 días. Si el dolor es simétrico, afecta a músculos que no ha entrenado (hombros, caderas), hay debilidad real o la orina se oscurece, consulte: puede ser efecto de la estatina."},
+        {"nivel": "info", "texto": "Combinar con fibratos (gemfibrozilo sobre todo), colchicina o algunos antibióticos aumenta el riesgo de daño muscular. Compruebe la lista de interacciones."}
+      ],
+      "aerobico": [
+        {"nivel": "info", "texto": "Indicado y beneficioso. Las estatinas no reducen la mejora de la forma física con el entrenamiento de forma relevante."}
+      ],
+      "fuerza": [
+        {"nivel": "precaucion", "texto": "Introduzca el trabajo de fuerza de forma progresiva: las primeras 2–3 semanas con cargas ligeras y pocas series, evitando el fallo muscular y el trabajo excéntrico intenso (bajadas lentas con mucho peso, cuesta abajo, pliometría). Luego progrese con normalidad."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "A dosis altas el riesgo de molestias musculares es mayor: progresión aún más gradual y atención a dolores que no encajan con el ejercicio realizado."}
+      ],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["Statin-associated muscle symptoms: EAS consensus (Stroes 2015)", "ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "fibratos",
+      "nombre": "Fibratos (fenofibrato, gemfibrozilo)",
+      "atc": ["C10AB"],
+      "resumen": "Bajan los triglicéridos. Riesgo de daño muscular, especialmente combinados con estatinas.",
+      "senales": ["miopatia", "fibrato"],
+      "principios": [
+        {"id": "fenofibrato", "nombre": "Fenofibrato", "marcas": ["Secalip", "Lipanthyl"], "umbral_mg": {"alta": 200}},
+        {"id": "gemfibrozilo", "nombre": "Gemfibrozilo", "marcas": ["Lopid"], "umbral_mg": {"alta": 1200}, "nota": "Combinación con estatinas desaconsejada."}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Dolor muscular generalizado, debilidad u orina oscura tras el ejercicio son motivo de consulta, sobre todo si también toma estatina."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "precaucion", "texto": "Progresión gradual, evitando el trabajo excéntrico intenso las primeras semanas."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "insulina",
+      "nombre": "Insulina",
+      "atc": ["A10A"],
+      "resumen": "El ejercicio baja el azúcar por sí mismo y, con insulina, el riesgo de hipoglucemia es real durante la sesión y hasta 24 horas después (incluida la noche). Con un plan sencillo se entrena con total seguridad.",
+      "senales": ["hipoglucemia"],
+      "principios": [
+        {"id": "insulina_basal", "nombre": "Insulina basal (glargina, detemir, degludec, NPH)", "marcas": ["Lantus", "Toujeo", "Abasaglar", "Levemir", "Tresiba", "Insulatard", "Humulina NPH"], "unidad": "UI"},
+        {"id": "insulina_rapida", "nombre": "Insulina rápida (aspart, lispro, glulisina, regular)", "marcas": ["Novorapid", "Fiasp", "Humalog", "Lyumjev", "Apidra", "Actrapid", "Humulina Regular"], "unidad": "UI"},
+        {"id": "insulina_mezcla", "nombre": "Insulina premezclada", "marcas": ["Novomix", "Humalog Mix", "Mixtard", "Humulina 30/70"], "unidad": "UI"}
+      ],
+      "general": [
+        {"nivel": "alerta", "texto": "Mida la glucosa antes de entrenar. Si está por debajo de 90 mg/dL, tome 15–30 g de hidratos (zumo, 3–4 galletas, plátano) y espere. Si está por encima de 250 mg/dL con cetonas o se encuentra mal, no entrene y consulte."},
+        {"nivel": "alerta", "texto": "Lleve siempre azúcar de acción rápida (sobres de azúcar, glucosa, zumo) y, si entrena solo, avise a alguien o lleve identificación de que usa insulina."},
+        {"nivel": "precaucion", "texto": "Si va a entrenar en las 2 horas siguientes a una comida, hable con su médico o educadora sobre reducir la insulina rápida de esa comida (habitualmente un 25–50 % según la intensidad). No ajuste dosis por su cuenta sin un plan acordado."},
+        {"nivel": "info", "texto": "No se inyecte en la zona que va a ejercitar (muslo antes de correr o de pierna): la insulina se absorbe más rápido y el riesgo de bajada aumenta. Use el abdomen."},
+        {"nivel": "precaucion", "texto": "La hipoglucemia puede aparecer varias horas después, incluso de madrugada, sobre todo tras sesiones largas o intensas. Mida la glucosa antes de acostarse los días que entrene y tome un pequeño tentempié si está por debajo de 120 mg/dL."}
+      ],
+      "aerobico": [
+        {"nivel": "precaucion", "texto": "El ejercicio aeróbico continuo (caminar rápido, bici, nadar) es el que más baja la glucosa. Empiece con sesiones de 20–30 minutos y vaya ampliando. Lleve hidratos si va a superar los 45–60 minutos."},
+        {"nivel": "info", "texto": "El ejercicio muy intenso y corto (sprints, HIIT) puede subir temporalmente la glucosa; no corrija con insulina sin conocer su patrón."}
+      ],
+      "fuerza": [
+        {"nivel": "info", "texto": "El entrenamiento de fuerza baja menos la glucosa de forma aguda y mejora la sensibilidad a la insulina a largo plazo. Hacer la fuerza antes del aeróbico en la misma sesión reduce el riesgo de hipoglucemia."}
+      ],
+      "equilibrio": [
+        {"nivel": "info", "texto": "Si tiene pérdida de sensibilidad en los pies (neuropatía), el trabajo de equilibrio es especialmente útil. Revise los pies tras cada sesión y use calzado adecuado."}
+      ],
+      "fuentes": ["ADA Standards of Care 2026 — Physical activity", "Riddell et al. Lancet Diabetes Endocrinol 2017 (consenso ejercicio en DM1)"]
+    },
+
+    {
+      "id": "sulfonilureas",
+      "nombre": "Sulfonilureas (gliclazida, glimepirida, glibenclamida)",
+      "atc": ["A10BB"],
+      "resumen": "Hacen que el páncreas libere insulina independientemente del azúcar que haya. Con ejercicio pueden provocar hipoglucemia, más cuanto mayor sea la dosis y más larga la sesión.",
+      "senales": ["hipoglucemia"],
+      "principios": [
+        {"id": "gliclazida", "nombre": "Gliclazida", "marcas": ["Diamicron", "Unidiamicron"], "umbral_mg": {"alta": 90}, "nota": "Liberación modificada 30–120 mg; umbral de dosis alta 90 mg (LM)."},
+        {"id": "glimepirida", "nombre": "Glimepirida", "marcas": ["Amaryl", "Roname"], "umbral_mg": {"alta": 4}},
+        {"id": "glibenclamida", "nombre": "Glibenclamida", "marcas": ["Daonil", "Euglucon"], "umbral_mg": {"alta": 5}, "nota": "La de mayor riesgo de hipoglucemia; desaconsejada en mayores."}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Lleve siempre hidratos de absorción rápida (azúcar, zumo). Síntomas de bajada: sudor frío, temblor, hambre repentina, confusión. Si aparecen, pare y tome 15 g de azúcar."},
+        {"nivel": "precaucion", "texto": "No entrene en ayunas ni se salte la comida posterior a la toma."},
+        {"nivel": "alerta", "si": {"dosis": "alta"}, "texto": "Dosis alta: mida la glucosa antes de sesiones largas o intensas y coméntelo con su médico; a veces conviene reducir la dosis los días de ejercicio."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Empiece con sesiones de 20–30 minutos y aumente poco a poco. Si va a superar los 45 minutos, tome un pequeño tentempié antes."}],
+      "fuerza": [{"nivel": "info", "texto": "Menor riesgo de bajada que el aeróbico. Recomendable."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["ADA Standards of Care 2026"]
+    },
+
+    {
+      "id": "metformina",
+      "nombre": "Metformina",
+      "atc": ["A10BA02"],
+      "resumen": "El antidiabético más usado. Por sí sola no provoca hipoglucemias y el ejercicio es seguro. Hay que evitar la deshidratación importante.",
+      "senales": ["renal"],
+      "principios": [
+        {"id": "metformina", "nombre": "Metformina", "marcas": ["Dianben"], "umbral_mg": {"alta": 2000}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Sola no produce bajadas de azúcar. Si la combina con insulina o sulfonilureas, siga las precauciones de esas."},
+        {"nivel": "info", "texto": "Beba lo suficiente: con deshidratación intensa (ejercicio muy largo con calor, vómitos, diarrea) o infecciones, la metformina puede acumularse. En esas situaciones consulte si debe suspenderla temporalmente."},
+        {"nivel": "info", "texto": "Molestias digestivas: tomarla con las comidas y no justo antes de entrenar las reduce."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. Algunos estudios sugieren que la metformina atenúa parte de la mejora de la forma aeróbica con el entrenamiento; el beneficio conjunto sigue siendo claramente positivo."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación. Muy recomendable para la sensibilidad a la insulina."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["ADA Standards of Care 2026", "Konopka et al. Aging Cell 2019 (metformina y adaptación aeróbica)"]
+    },
+
+    {
+      "id": "isglt2",
+      "nombre": "Inhibidores de SGLT2 (empagliflozina, dapagliflozina…)",
+      "atc": ["A10BK"],
+      "resumen": "Eliminan azúcar por la orina. Tienen efecto diurético suave y, en situaciones de ayuno prolongado o dieta muy baja en hidratos, pueden producir cetoacidosis con glucosa normal.",
+      "senales": ["deshidratacion", "hipotension"],
+      "principios": [
+        {"id": "empagliflozina", "nombre": "Empagliflozina", "marcas": ["Jardiance"], "umbral_mg": {"alta": 25}},
+        {"id": "dapagliflozina", "nombre": "Dapagliflozina", "marcas": ["Forxiga"], "umbral_mg": {"alta": 10}},
+        {"id": "canagliflozina", "nombre": "Canagliflozina", "marcas": ["Invokana"], "umbral_mg": {"alta": 300}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Hidrátese antes y después de entrenar: el fármaco hace orinar más y favorece el mareo al incorporarse, sobre todo si toma diuréticos o hace calor."},
+        {"nivel": "alerta", "texto": "No combine este fármaco con dietas muy bajas en hidratos o ayunos prolongados y ejercicio intenso: puede aparecer cetoacidosis con glucosa normal. Náuseas, vómitos, dolor abdominal o respiración acelerada tras el ejercicio obligan a consultar."},
+        {"nivel": "info", "texto": "Mayor riesgo de infecciones genitales y urinarias: higiene y cambio de ropa tras sudar."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado; especialmente beneficioso en insuficiencia cardíaca. Agua a mano en sesiones largas."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Posible mareo postural; transiciones lentas."}],
+      "fuentes": ["ADA Standards of Care 2026", "Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "aglp1",
+      "nombre": "Agonistas GLP-1 (semaglutida, liraglutida, dulaglutida, tirzepatida)",
+      "atc": ["A10BJ", "A10BX"],
+      "resumen": "Reducen el apetito y bajan peso. Con ellos, el entrenamiento de fuerza y comer suficiente proteína son clave para que el peso perdido sea grasa y no músculo.",
+      "senales": ["perdida_muscular"],
+      "principios": [
+        {"id": "semaglutida", "nombre": "Semaglutida", "marcas": ["Ozempic", "Wegovy", "Rybelsus"], "unidad": "mg/semana"},
+        {"id": "liraglutida", "nombre": "Liraglutida", "marcas": ["Victoza", "Saxenda"], "unidad": "mg/día"},
+        {"id": "dulaglutida", "nombre": "Dulaglutida", "marcas": ["Trulicity"], "unidad": "mg/semana"},
+        {"id": "tirzepatida", "nombre": "Tirzepatida", "marcas": ["Mounjaro"], "unidad": "mg/semana"}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Entre un cuarto y un tercio del peso que se pierde con estos fármacos puede ser músculo si no se entrena fuerza ni se come proteína suficiente. Priorice 2–3 sesiones de fuerza semanales y reparta la proteína en las comidas (orientativo: 1,2–1,6 g por kilo y día; consulte si tiene enfermedad renal)."},
+        {"nivel": "info", "texto": "Las náuseas y la digestión lenta son frecuentes al subir la dosis. Evite entrenar con el estómago lleno y empiece las sesiones con intensidad suave los días siguientes a la inyección."},
+        {"nivel": "info", "texto": "Por sí solos no provocan hipoglucemias; si los combina con insulina o sulfonilureas, siga las precauciones de esas."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado. Si tiene poco apetito, asegúrese de haber comido algo en las 2–3 horas previas a sesiones largas."}],
+      "fuerza": [{"nivel": "alerta", "texto": "El entrenamiento de fuerza es la parte más importante del plan mientras toma este fármaco: protege la masa muscular y el hueso durante la pérdida de peso. Mínimo 2 sesiones semanales de cuerpo completo con cargas progresivas."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["Wilding et al. NEJM 2021 (STEP 1, composición corporal)", "ADA Standards of Care 2026"]
+    },
+
+    {
+      "id": "pioglitazona",
+      "nombre": "Pioglitazona",
+      "atc": ["A10BG03"],
+      "resumen": "Mejora la sensibilidad a la insulina. Retiene líquido y aumenta el riesgo de fracturas, sobre todo en mujeres.",
+      "senales": ["hueso"],
+      "principios": [
+        {"id": "pioglitazona", "nombre": "Pioglitazona", "marcas": ["Actos", "Glustin"], "umbral_mg": {"alta": 30}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Hinchazón de tobillos y aumento de peso por líquido son efectos del fármaco. Si aparece falta de aire con esfuerzos que antes toleraba, consulte."},
+        {"nivel": "info", "texto": "Aumenta el riesgo de fracturas: el ejercicio de fuerza y con impacto moderado (caminar rápido, subir escaleras) protege el hueso."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Recomendable, con especial énfasis en piernas y espalda para proteger el hueso."}],
+      "equilibrio": [{"nivel": "info", "texto": "Recomendable para prevenir caídas y fracturas."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "levotiroxina",
+      "nombre": "Levotiroxina",
+      "atc": ["H03AA01"],
+      "resumen": "Hormona tiroidea de sustitución. Bien ajustada no interfiere con el ejercicio; mal ajustada cambia el pulso, la tolerancia al calor y la fuerza.",
+      "senales": [],
+      "principios": [
+        {"id": "levotiroxina", "nombre": "Levotiroxina", "marcas": ["Eutirox", "Levothroid"], "unidad": "mcg", "umbral_mg": {"alta": 0.15}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Tómela en ayunas, 30–60 minutos antes del desayuno. Puede entrenar en ese intervalo sin problema."},
+        {"nivel": "info", "texto": "Si nota palpitaciones, temblor, intolerancia al calor o fatiga y debilidad muscular inusuales, puede que la dosis necesite ajuste: coméntelo con su médico antes de forzar el entrenamiento."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación con la dosis bien ajustada."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "corticoides",
+      "nombre": "Corticoides orales (prednisona, metilprednisolona, dexametasona…)",
+      "atc": ["H02AB"],
+      "resumen": "Antiinflamatorios potentes que, en tratamientos prolongados, debilitan el músculo, el hueso y los tendones y suben el azúcar y la tensión. El entrenamiento de fuerza es el mejor antídoto, con progresión cuidadosa.",
+      "senales": ["perdida_muscular", "hueso", "tendon", "corticoide"],
+      "principios": [
+        {"id": "prednisona", "nombre": "Prednisona", "marcas": ["Dacortin", "Prednisona Alonga"], "umbral_mg": {"alta": 7.5}},
+        {"id": "prednisolona", "nombre": "Prednisolona", "marcas": ["Estilsona"], "umbral_mg": {"alta": 7.5}},
+        {"id": "metilprednisolona", "nombre": "Metilprednisolona", "marcas": ["Urbason"], "umbral_mg": {"alta": 6}},
+        {"id": "dexametasona", "nombre": "Dexametasona", "marcas": ["Fortecortin"], "umbral_mg": {"alta": 1}},
+        {"id": "deflazacort", "nombre": "Deflazacort", "marcas": ["Zamene", "Dezacor"], "umbral_mg": {"alta": 9}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Tratamientos de más de 3 meses producen pérdida de músculo (sobre todo muslos y hombros), fragilidad ósea y de tendones, y pueden subir la glucosa y la tensión. El ejercicio de fuerza regular contrarresta gran parte de estos efectos."},
+        {"nivel": "info", "texto": "Si tiene diabetes, la glucosa sube sobre todo por la tarde tras la toma matutina: entrenar a esa hora ayuda a controlarla."},
+        {"nivel": "info", "texto": "Mayor riesgo de infecciones y de que las heridas tarden en curar: cuide los pies y la piel."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado, de intensidad moderada. Caminar rápido o subir escaleras protege también el hueso."}],
+      "fuerza": [
+        {"nivel": "alerta", "si": {"dosis": "alta"}, "texto": "A esta dosis el músculo y los tendones son más frágiles: el entrenamiento de fuerza es muy recomendable, pero con cargas moderadas, progresión lenta (subidas de carga cada 2–3 semanas, no cada sesión) y sin ejercicios explosivos ni saltos. Si aparece dolor en un tendón (Aquiles, hombro, rodilla), reduzca y consulte."},
+        {"nivel": "info", "texto": "Prioridad: piernas (sentadilla, levantarse de la silla, subir escalones), glúteos y espalda. 2–3 sesiones semanales."}
+      ],
+      "equilibrio": [{"nivel": "precaucion", "texto": "Riesgo de fractura si se cae: trabaje el equilibrio con apoyo y evite superficies resbaladizas."}],
+      "fuentes": ["ACSM GETP 11ª ed.", "Guía ACR osteoporosis por glucocorticoides 2022"]
+    },
+
+    {
+      "id": "benzodiacepinas",
+      "nombre": "Benzodiacepinas (lorazepam, diazepam, alprazolam…)",
+      "atc": ["N05BA", "N05CD"],
+      "resumen": "Ansiolíticos e hipnóticos que producen somnolencia, enlentecen los reflejos y, en mayores, multiplican el riesgo de caídas. El ejercicio ayuda a reducir la necesidad de estos fármacos; lo importante es cuándo y cómo.",
+      "senales": ["sedacion", "caidas"],
+      "principios": [
+        {"id": "lorazepam", "nombre": "Lorazepam", "marcas": ["Orfidal", "Idalprem"], "umbral_mg": {"alta": 2}},
+        {"id": "diazepam", "nombre": "Diazepam", "marcas": ["Valium"], "umbral_mg": {"alta": 10}},
+        {"id": "alprazolam", "nombre": "Alprazolam", "marcas": ["Trankimazin"], "umbral_mg": {"alta": 1}},
+        {"id": "clonazepam", "nombre": "Clonazepam", "marcas": ["Rivotril"], "umbral_mg": {"alta": 1}},
+        {"id": "lormetazepam", "nombre": "Lormetazepam", "marcas": ["Noctamid", "Loramet"], "umbral_mg": {"alta": 1}},
+        {"id": "bromazepam", "nombre": "Bromazepam", "marcas": ["Lexatin"], "umbral_mg": {"alta": 3}},
+        {"id": "clorazepato", "nombre": "Clorazepato", "marcas": ["Tranxilium"], "umbral_mg": {"alta": 15}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "No entrene en las 2–3 horas siguientes a una toma ni a primera hora si toma una dosis nocturna de acción larga (diazepam, clorazepato): la somnolencia residual aumenta el riesgo de caídas y lesiones."},
+        {"nivel": "info", "texto": "El ejercicio regular, sobre todo aeróbico y a media tarde, mejora el sueño y la ansiedad y puede facilitar reducir estos fármacos con su médico. Evite el ejercicio intenso en las 2 horas previas a acostarse."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado. Evite actividades con riesgo de caída (bici en tráfico, senderos técnicos) si nota somnolencia."}],
+      "fuerza": [{"nivel": "info", "texto": "Seguro. Prefiera máquinas o peso corporal si hay somnolencia o inestabilidad."}],
+      "equilibrio": [
+        {"nivel": "precaucion", "texto": "Entrene el equilibrio con apoyo cerca y nunca justo después de la toma."},
+        {"nivel": "alerta", "si": {"edad_min": 65}, "texto": "En mayores de 65 años las benzodiacepinas duplican el riesgo de caída y fractura de cadera. El entrenamiento de equilibrio y fuerza de piernas es prioritario, siempre con apoyo, y conviene hablar con su médico sobre la posibilidad de reducir o retirar el fármaco."}
+      ],
+      "fuentes": ["Criterios Beers 2023 / STOPP-START v3", "Woolcott et al. Arch Intern Med 2009"]
+    },
+
+    {
+      "id": "hipnoticos_z",
+      "nombre": "Hipnóticos Z (zolpidem, zopiclona)",
+      "atc": ["N05CF"],
+      "resumen": "Inductores del sueño. Pueden dejar somnolencia por la mañana, sobre todo en mujeres y mayores, con riesgo de caídas en sesiones tempranas.",
+      "senales": ["sedacion", "caidas"],
+      "principios": [
+        {"id": "zolpidem", "nombre": "Zolpidem", "marcas": ["Stilnox", "Dalparan"], "umbral_mg": {"alta": 10}},
+        {"id": "zopiclona", "nombre": "Zopiclona", "marcas": ["Limovan", "Datolan"], "umbral_mg": {"alta": 7.5}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Si nota somnolencia al despertar, no entrene a primera hora ni conduzca al gimnasio. Deje al menos 7–8 horas entre la toma y el ejercicio."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación una vez pasado el efecto. El ejercicio regular mejora el sueño."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "precaucion", "si": {"edad_min": 65}, "texto": "Mayor riesgo de caída nocturna y matutina. Equilibrio con apoyo; luz nocturna en casa."}],
+      "fuentes": ["Criterios Beers 2023"]
+    },
+
+    {
+      "id": "isrs_isrsn",
+      "nombre": "Antidepresivos ISRS e ISRSN (sertralina, escitalopram, venlafaxina, duloxetina…)",
+      "atc": ["N06AB", "N06AX"],
+      "resumen": "Antidepresivos de uso muy extendido, compatibles con el ejercicio, que además es parte del tratamiento. Vigilar el sodio en mayores, el sangrado si hay anticoagulantes, y la tensión con venlafaxina.",
+      "senales": ["hiponatremia", "sangrado", "serotoninergico"],
+      "principios": [
+        {"id": "sertralina", "nombre": "Sertralina", "marcas": ["Besitran", "Aremis"], "umbral_mg": {"alta": 100}},
+        {"id": "escitalopram", "nombre": "Escitalopram", "marcas": ["Cipralex", "Esertia"], "umbral_mg": {"alta": 15}},
+        {"id": "citalopram", "nombre": "Citalopram", "marcas": ["Prisdal", "Seropram"], "umbral_mg": {"alta": 20}, "senales_extra": ["qt"]},
+        {"id": "fluoxetina", "nombre": "Fluoxetina", "marcas": ["Prozac", "Adofen"], "umbral_mg": {"alta": 40}},
+        {"id": "paroxetina", "nombre": "Paroxetina", "marcas": ["Seroxat", "Frosinor"], "umbral_mg": {"alta": 30}, "senales_extra": ["anticolinergico"]},
+        {"id": "venlafaxina", "nombre": "Venlafaxina", "marcas": ["Vandral", "Dobupal"], "umbral_mg": {"alta": 150}, "nota": "Puede subir la tensión arterial a dosis altas."},
+        {"id": "desvenlafaxina", "nombre": "Desvenlafaxina", "marcas": ["Pristiq"], "umbral_mg": {"alta": 100}},
+        {"id": "duloxetina", "nombre": "Duloxetina", "marcas": ["Cymbalta", "Xeristar"], "umbral_mg": {"alta": 60}},
+        {"id": "vortioxetina", "nombre": "Vortioxetina", "marcas": ["Brintellix"], "umbral_mg": {"alta": 15}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "El ejercicio regular tiene un efecto antidepresivo demostrado y potencia el tratamiento. Las primeras semanas pueden dar náuseas, mareo o sudoración: empiece con intensidad suave."},
+        {"nivel": "precaucion", "si": {"edad_min": 65}, "texto": "En mayores, sobre todo si toman diuréticos, estos fármacos pueden bajar el sodio. Beba según la sed (no en exceso) y consulte si aparece confusión, náuseas o debilidad tras el ejercicio."},
+        {"nivel": "info", "texto": "Aumentan ligeramente el riesgo de sangrado; evite antiinflamatorios para el dolor muscular si además toma anticoagulantes o antiagregantes."},
+        {"nivel": "precaucion", "si": {"principio": "venlafaxina", "dosis": "alta"}, "texto": "Venlafaxina a dosis alta puede subir la tensión arterial: controle la tensión en casa de forma periódica y evite el esfuerzo isométrico mantenido."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado y recomendable; el efecto sobre el ánimo es mayor con sesiones regulares de 30–45 minutos."}],
+      "fuerza": [{"nivel": "info", "texto": "Indicado. La fuerza también mejora los síntomas depresivos."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica. Posible mareo al inicio del tratamiento."}],
+      "fuentes": ["Criterios Beers 2023", "Heissel et al. BJSM 2023 (ejercicio y depresión)"]
+    },
+
+    {
+      "id": "triciclicos",
+      "nombre": "Antidepresivos tricíclicos (amitriptilina, nortriptilina…)",
+      "atc": ["N06AA"],
+      "resumen": "Antidepresivos antiguos, hoy usados sobre todo para dolor crónico y migraña. Producen somnolencia, sequedad, mareo al incorporarse y aceleran el pulso; en mayores, riesgo de caídas.",
+      "senales": ["sedacion", "anticolinergico", "hipotension", "caidas", "qt", "calor", "taquicardia"],
+      "principios": [
+        {"id": "amitriptilina", "nombre": "Amitriptilina", "marcas": ["Tryptizol", "Deprelio"], "umbral_mg": {"alta": 50}},
+        {"id": "nortriptilina", "nombre": "Nortriptilina", "marcas": ["Norfenazin"], "umbral_mg": {"alta": 50}},
+        {"id": "clomipramina", "nombre": "Clomipramina", "marcas": ["Anafranil"], "umbral_mg": {"alta": 75}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Mareo al ponerse de pie, boca seca, menos sudoración (peor tolerancia al calor) y pulso más rápido en reposo. Entrene en ambiente fresco e hidrátese; el pulso puede sobreestimar el esfuerzo real."},
+        {"nivel": "info", "texto": "Suele tomarse por la noche: deje pasar al menos 8–10 horas antes de entrenar si nota somnolencia."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Intensidad guiada por sensación de esfuerzo, no por pulso. Evite calor intenso."}],
+      "fuerza": [{"nivel": "info", "texto": "Seguro. Incorpórese despacio tras ejercicios en el suelo."}],
+      "equilibrio": [{"nivel": "precaucion", "texto": "Riesgo de caída por mareo postural y somnolencia; entrene con apoyo."}],
+      "fuentes": ["Criterios Beers 2023", "ACSM GETP 11ª ed."]
+    },
+
+    {
+      "id": "otros_antidepresivos",
+      "nombre": "Mirtazapina y trazodona",
+      "atc": ["N06AX11", "N06AX05"],
+      "resumen": "Antidepresivos sedantes, a menudo usados para dormir. Somnolencia matutina y, con trazodona, mareo al incorporarse.",
+      "senales": ["sedacion", "hipotension", "caidas"],
+      "principios": [
+        {"id": "mirtazapina", "nombre": "Mirtazapina", "marcas": ["Rexer"], "umbral_mg": {"alta": 30}},
+        {"id": "trazodona", "nombre": "Trazodona", "marcas": ["Deprax"], "umbral_mg": {"alta": 150}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Si nota somnolencia al despertar, no entrene a primera hora. Mirtazapina aumenta el apetito y el peso: el ejercicio de fuerza y aeróbico lo contrarresta."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado, preferiblemente a media mañana o tarde."}],
+      "fuerza": [{"nivel": "info", "texto": "Indicado."}],
+      "equilibrio": [{"nivel": "precaucion", "si": {"edad_min": 65}, "texto": "Mareo postural (trazodona) y somnolencia: equilibrio con apoyo."}],
+      "fuentes": ["Criterios Beers 2023"]
+    },
+
+    {
+      "id": "antipsicoticos",
+      "nombre": "Antipsicóticos (quetiapina, olanzapina, risperidona, aripiprazol…)",
+      "atc": ["N05A"],
+      "resumen": "Usados en psicosis, trastorno bipolar y, a dosis bajas, para dormir o agitación. Sedación, mareo postural, aumento de peso y, sobre todo, dificultad para regular la temperatura corporal.",
+      "senales": ["sedacion", "hipotension", "calor", "qt", "caidas", "anticolinergico"],
+      "principios": [
+        {"id": "quetiapina", "nombre": "Quetiapina", "marcas": ["Seroquel"], "umbral_mg": {"alta": 300}},
+        {"id": "olanzapina", "nombre": "Olanzapina", "marcas": ["Zyprexa"], "umbral_mg": {"alta": 10}},
+        {"id": "risperidona", "nombre": "Risperidona", "marcas": ["Risperdal"], "umbral_mg": {"alta": 2}},
+        {"id": "aripiprazol", "nombre": "Aripiprazol", "marcas": ["Abilify"], "umbral_mg": {"alta": 15}},
+        {"id": "haloperidol", "nombre": "Haloperidol", "marcas": ["Haloperidol Esteve"], "umbral_mg": {"alta": 5}},
+        {"id": "paliperidona", "nombre": "Paliperidona", "marcas": ["Invega", "Xeplion", "Trevicta"], "umbral_mg": {"alta": 6}}
+      ],
+      "general": [
+        {"nivel": "alerta", "texto": "Estos fármacos dificultan sudar y regular la temperatura: hay riesgo de golpe de calor con ejercicio en ambiente caluroso. Entrene en horas frescas, con agua y ropa ligera, y pare ante mareo, náuseas o confusión."},
+        {"nivel": "precaucion", "texto": "Mareo al incorporarse y somnolencia, sobre todo tras la toma. Entrene alejado de la toma y levántese despacio."},
+        {"nivel": "info", "texto": "El aumento de peso y el riesgo metabólico (azúcar, colesterol) son efectos frecuentes: el ejercicio regular, fuerza incluida, es parte esencial del tratamiento."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Indicado a intensidad moderada, en ambiente fresco. Use la sensación de esfuerzo; el pulso puede estar acelerado en reposo."}],
+      "fuerza": [{"nivel": "info", "texto": "Muy recomendable para contrarrestar el aumento de peso y la pérdida de forma."}],
+      "equilibrio": [{"nivel": "precaucion", "texto": "Posible rigidez, temblor o inestabilidad por el fármaco: trabaje el equilibrio con apoyo y comuníquelo si empeora."}],
+      "fuentes": ["ACSM GETP 11ª ed.", "Criterios Beers 2023"]
+    },
+
+    {
+      "id": "antiepilepticos",
+      "nombre": "Antiepilépticos y neuromoduladores (levetiracetam, pregabalina, gabapentina, carbamazepina…)",
+      "atc": ["N03A"],
+      "resumen": "Usados para epilepsia, dolor neuropático o ansiedad. Los efectos relevantes son mareo, inestabilidad y somnolencia, más marcados con pregabalina y gabapentina.",
+      "senales": ["sedacion", "caidas"],
+      "principios": [
+        {"id": "levetiracetam", "nombre": "Levetiracetam", "marcas": ["Keppra"], "umbral_mg": {"alta": 2000}},
+        {"id": "pregabalina", "nombre": "Pregabalina", "marcas": ["Lyrica"], "umbral_mg": {"alta": 300}},
+        {"id": "gabapentina", "nombre": "Gabapentina", "marcas": ["Neurontin"], "umbral_mg": {"alta": 1800}},
+        {"id": "carbamazepina", "nombre": "Carbamazepina", "marcas": ["Tegretol"], "umbral_mg": {"alta": 800}, "senales_extra": ["hiponatremia"]},
+        {"id": "oxcarbazepina", "nombre": "Oxcarbazepina", "marcas": ["Trileptal"], "umbral_mg": {"alta": 1200}, "senales_extra": ["hiponatremia"]},
+        {"id": "valproato", "nombre": "Ácido valproico", "marcas": ["Depakine"], "umbral_mg": {"alta": 1500}},
+        {"id": "lamotrigina", "nombre": "Lamotrigina", "marcas": ["Lamictal", "Crisomet"], "umbral_mg": {"alta": 200}},
+        {"id": "topiramato", "nombre": "Topiramato", "marcas": ["Topamax"], "umbral_mg": {"alta": 200}, "nota": "Reduce la sudoración y favorece cálculos renales: hidratación y cuidado con el calor.", "senales_extra": ["calor"]}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Si tiene epilepsia: el ejercicio regular reduce la frecuencia de crisis en muchas personas. Evite factores desencadenantes (falta de sueño, deshidratación, saltarse tomas) y no haga natación ni actividades en altura sin compañía."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "A esta dosis el mareo, la inestabilidad y la somnolencia son más frecuentes: entrene alejado de la toma y evite actividades con riesgo de caída hasta conocer su tolerancia."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado. Hidrátese bien; con topiramato, especial cuidado con el calor."}],
+      "fuerza": [{"nivel": "info", "texto": "Indicado."}],
+      "equilibrio": [{"nivel": "precaucion", "texto": "Pregabalina, gabapentina y carbamazepina pueden producir inestabilidad: trabaje el equilibrio con apoyo, sobre todo al subir la dosis."}],
+      "fuentes": ["Pimentel et al. Epilepsy Behav 2015 (ejercicio en epilepsia)", "Fichas técnicas AEMPS"]
+    },
+
+    {
+      "id": "levodopa",
+      "nombre": "Levodopa y antiparkinsonianos",
+      "atc": ["N04BA", "N04BC"],
+      "resumen": "Tratamiento del Parkinson. El ejercicio es parte central del tratamiento; la clave es programar las sesiones en el periodo de mejor respuesta al fármaco (ON).",
+      "senales": ["hipotension", "caidas", "sedacion"],
+      "principios": [
+        {"id": "levodopa", "nombre": "Levodopa (con carbidopa o benserazida)", "marcas": ["Sinemet", "Madopar", "Stalevo", "Duodopa"], "umbral_mg": {"alta": 600}},
+        {"id": "pramipexol", "nombre": "Pramipexol", "marcas": ["Mirapexin"], "umbral_mg": {"alta": 1.5}},
+        {"id": "ropinirol", "nombre": "Ropinirol", "marcas": ["Requip"], "umbral_mg": {"alta": 8}},
+        {"id": "rasagilina", "nombre": "Rasagilina", "marcas": ["Azilect"], "umbral_mg": {"alta": 1}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Entrene 45–90 minutos después de la toma de levodopa, en el periodo ON, cuando la movilidad es mejor. Evite entrenar justo antes de la siguiente toma."},
+        {"nivel": "precaucion", "texto": "Mareo al incorporarse frecuente (del fármaco y de la propia enfermedad). Transiciones lentas, hidratación y, si hace falta, medias de compresión."},
+        {"nivel": "info", "texto": "Las comidas ricas en proteína reducen la absorción de la levodopa: si toma un batido de proteína tras entrenar, sepárelo de la toma."},
+        {"nivel": "info", "si": {"principio": "pramipexol"}, "texto": "Pramipexol y ropinirol pueden producir somnolencia súbita: evite entrenar solo en lugares con riesgo."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Muy recomendable (caminar rápido, bici, cinta): mejora la movilidad y posiblemente la progresión de la enfermedad. Intensidad moderada-alta si está en ON y tolera."}],
+      "fuerza": [{"nivel": "info", "texto": "Indicado, con énfasis en piernas, extensores de espalda y ejercicios de gran amplitud de movimiento."}],
+      "equilibrio": [{"nivel": "alerta", "texto": "Prioritario: el riesgo de caída es alto. Trabajo de equilibrio y marcha (pasos largos, giros, doble tarea) 3 veces por semana, con apoyo o supervisión. Tai chi y boxeo sin contacto tienen buena evidencia."}],
+      "fuentes": ["Guía MDS/ Parkinson's Foundation exercise recommendations 2023", "Schenkman et al. JAMA Neurol 2018 (SPARX)"]
+    },
+
+    {
+      "id": "opioides",
+      "nombre": "Opioides (tramadol, codeína, morfina, oxicodona, fentanilo, tapentadol)",
+      "atc": ["N02A"],
+      "resumen": "Analgésicos potentes que producen somnolencia, estreñimiento y, a largo plazo, pérdida de masa muscular y ósea. El ejercicio es parte del tratamiento del dolor crónico y ayuda a reducir la dosis.",
+      "senales": ["sedacion", "caidas", "perdida_muscular", "hueso", "calor"],
+      "principios": [
+        {"id": "tramadol", "nombre": "Tramadol", "marcas": ["Adolonta", "Zaldiar (con paracetamol)"], "umbral_mg": {"alta": 200}, "senales_extra": ["serotoninergico"]},
+        {"id": "codeina", "nombre": "Codeína", "marcas": ["Codeisan", "Termalgin codeína"], "umbral_mg": {"alta": 120}},
+        {"id": "morfina", "nombre": "Morfina", "marcas": ["MST Continus", "Sevredol", "Oramorph"], "umbral_mg": {"alta": 60}},
+        {"id": "oxicodona", "nombre": "Oxicodona", "marcas": ["OxyContin", "Targin (con naloxona)"], "umbral_mg": {"alta": 40}},
+        {"id": "fentanilo", "nombre": "Fentanilo (parche)", "marcas": ["Durogesic", "Matrifen", "Fentanilo parche"], "unidad": "mcg/h", "umbral_mg": {"alta": 0.025}},
+        {"id": "tapentadol", "nombre": "Tapentadol", "marcas": ["Palexia"], "umbral_mg": {"alta": 200}},
+        {"id": "buprenorfina", "nombre": "Buprenorfina (parche)", "marcas": ["Transtec", "Feliben"], "unidad": "mcg/h", "umbral_mg": {"alta": 0.035}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Somnolencia y reflejos lentos, sobre todo al inicio o al subir la dosis: evite actividades con riesgo de caída y no entrene en la hora siguiente a una toma de liberación rápida."},
+        {"nivel": "info", "texto": "El opioide puede ocultar un dolor de lesión durante el ejercicio: si un dolor nuevo aparece durante el entrenamiento, no lo fuerce aunque 'se aguante'."},
+        {"nivel": "info", "si": {"principio": "fentanilo"}, "texto": "Parche: el calor (sauna, ducha muy caliente, manta eléctrica, fiebre o ejercicio intenso con mucho calor) aumenta la absorción del fármaco y puede causar sobredosis. Entrene en ambiente fresco y no aplique calor sobre el parche."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "Dosis alta: el uso prolongado reduce la testosterona y favorece la pérdida de músculo y hueso. El entrenamiento de fuerza es especialmente importante; coméntelo con su médico para un plan de ejercicio supervisado y revisar la dosis."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado y recomendable para el dolor crónico; empiece con caminatas cortas y aumente de forma gradual."}],
+      "fuerza": [{"nivel": "info", "texto": "Muy recomendable: mejora el dolor y protege músculo y hueso. Cargas moderadas, técnica cuidada."}],
+      "equilibrio": [{"nivel": "precaucion", "texto": "Riesgo de caída por somnolencia y mareo; entrene el equilibrio con apoyo."}],
+      "fuentes": ["Criterios Beers 2023", "CDC Opioid Guideline 2022"]
+    },
+
+    {
+      "id": "broncodilatadores",
+      "nombre": "Inhaladores broncodilatadores (salbutamol, LABA, LAMA)",
+      "atc": ["R03A", "R03B"],
+      "resumen": "Abren los bronquios en asma y EPOC. El ejercicio está muy indicado; el salbutamol antes del esfuerzo previene el broncoespasmo inducido por ejercicio.",
+      "senales": ["taquicardia"],
+      "principios": [
+        {"id": "salbutamol", "nombre": "Salbutamol", "marcas": ["Ventolin", "Salbutamol Aldo-Unión"], "unidad": "inhalaciones/día", "umbral_mg": {"alta": 8}},
+        {"id": "terbutalina", "nombre": "Terbutalina", "marcas": ["Terbasmin"], "unidad": "inhalaciones/día"},
+        {"id": "laba_ics", "nombre": "LABA + corticoide inhalado (salmeterol, formoterol, vilanterol + budesonida/fluticasona…)", "marcas": ["Symbicort", "Seretide", "Relvar", "Foster", "Flutiform"], "unidad": "inhalaciones/día"},
+        {"id": "lama", "nombre": "Anticolinérgico inhalado (tiotropio, glicopirronio, umeclidinio, aclidinio)", "marcas": ["Spiriva", "Seebri", "Incruse", "Eklira", "Trimbow", "Trelegy"], "unidad": "inhalaciones/día"}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Si le han pautado salbutamol antes del ejercicio, úselo 10–15 minutos antes de empezar. Lleve siempre el inhalador de rescate al entrenar."},
+        {"nivel": "info", "texto": "El salbutamol puede acelerar el pulso y dar temblor durante 1–2 horas: no lo interprete como falta de forma."},
+        {"nivel": "info", "texto": "Un calentamiento largo y progresivo (10–15 minutos) reduce el broncoespasmo por ejercicio. Evite el aire muy frío y seco o use una braga sobre la boca."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Muy recomendable en asma y EPOC. Use la escala de disnea (debe poder hablar frases cortas). Si necesita el rescate más de 2 veces por semana para entrenar, su tratamiento de base debe revisarse."}],
+      "fuerza": [{"nivel": "info", "texto": "Muy recomendable, especialmente en EPOC (piernas y musculatura respiratoria)."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación específica."}],
+      "fuentes": ["GINA 2025", "GOLD 2025"]
+    },
+
+    {
+      "id": "aines",
+      "nombre": "Antiinflamatorios (ibuprofeno, naproxeno, diclofenaco, dexketoprofeno…)",
+      "atc": ["M01A"],
+      "resumen": "Alivian dolor e inflamación, pero con ejercicio y deshidratación aumentan el riesgo de daño renal, suben la tensión y favorecen el sangrado digestivo. No deben usarse 'por si acaso' antes de entrenar.",
+      "senales": ["renal", "sangrado", "aine", "hiperpotasemia"],
+      "principios": [
+        {"id": "ibuprofeno", "nombre": "Ibuprofeno", "marcas": ["Espidifen", "Neobrufen", "Dalsy"], "umbral_mg": {"alta": 1200}},
+        {"id": "naproxeno", "nombre": "Naproxeno", "marcas": ["Naprosyn", "Antalgin"], "umbral_mg": {"alta": 1000}},
+        {"id": "diclofenaco", "nombre": "Diclofenaco", "marcas": ["Voltaren"], "umbral_mg": {"alta": 100}},
+        {"id": "dexketoprofeno", "nombre": "Dexketoprofeno", "marcas": ["Enantyum"], "umbral_mg": {"alta": 50}},
+        {"id": "celecoxib", "nombre": "Celecoxib", "marcas": ["Celebrex"], "umbral_mg": {"alta": 200}},
+        {"id": "etoricoxib", "nombre": "Etoricoxib", "marcas": ["Arcoxia"], "umbral_mg": {"alta": 60}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "No tome antiinflamatorios antes de entrenar para prevenir dolor: no previenen las agujetas, pueden frenar la adaptación muscular y, con sudoración, dañan el riñón."},
+        {"nivel": "alerta", "texto": "Si además toma un IECA/ARA-II y un diurético, la combinación con antiinflamatorio y deshidratación es de alto riesgo renal ('triple whammy'). Use paracetamol como primera opción para el dolor."},
+        {"nivel": "info", "texto": "Para dolor tras el ejercicio: hielo, descanso relativo y paracetamol; antiinflamatorio solo si es necesario, el menor tiempo posible y con el estómago lleno."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación en uso puntual. En uso crónico, hidratación cuidadosa y control de tensión."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación. El uso continuado puede atenuar la ganancia de músculo en mayores."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Lipman et al. Emerg Med J 2017 (AINE y daño renal en ejercicio)", "Lundberg et al. 2018"]
+    },
+
+    {
+      "id": "paracetamol",
+      "nombre": "Paracetamol",
+      "atc": ["N02BE01"],
+      "resumen": "Analgésico seguro para el ejercicio. El único límite es la dosis diaria total.",
+      "senales": [],
+      "principios": [
+        {"id": "paracetamol", "nombre": "Paracetamol", "marcas": ["Gelocatil", "Efferalgan", "Termalgin", "Apiretal"], "umbral_mg": {"alta": 3000}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Es la opción más segura para el dolor en personas que toman anticoagulantes o medicación para la tensión."},
+        {"nivel": "precaucion", "si": {"dosis": "alta"}, "texto": "No supere 3 g al día de forma continuada (menos si pesa poco, bebe alcohol o tiene enfermedad hepática). Recuerde que muchos preparados 'para el resfriado' también lo contienen."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "ibp",
+      "nombre": "Inhibidores de la bomba de protones (omeprazol, pantoprazol…)",
+      "atc": ["A02BC"],
+      "resumen": "Protectores gástricos. No interfieren con el ejercicio; en uso prolongado pueden bajar el magnesio (calambres) y debilitar el hueso.",
+      "senales": ["hueso"],
+      "principios": [
+        {"id": "omeprazol", "nombre": "Omeprazol", "marcas": ["Losec", "Ulceral"], "umbral_mg": {"alta": 40}},
+        {"id": "pantoprazol", "nombre": "Pantoprazol", "marcas": ["Pantecta", "Anagastra"], "umbral_mg": {"alta": 40}},
+        {"id": "esomeprazol", "nombre": "Esomeprazol", "marcas": ["Nexium", "Axiago"], "umbral_mg": {"alta": 40}},
+        {"id": "lansoprazol", "nombre": "Lansoprazol", "marcas": ["Opiren"], "umbral_mg": {"alta": 30}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Si lleva más de un año tomándolo y tiene calambres frecuentes, fatiga o palpitaciones, pida que le midan el magnesio."},
+        {"nivel": "info", "texto": "El uso prolongado se asocia a algo más de riesgo de fractura: el ejercicio de fuerza e impacto moderado protege el hueso."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación; recomendable para el hueso."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS", "FDA Drug Safety Communication (hipomagnesemia por IBP)"]
+    },
+
+    {
+      "id": "bifosfonatos",
+      "nombre": "Bifosfonatos (alendronato, risedronato, ácido zoledrónico) y denosumab",
+      "atc": ["M05BA", "M05BX04"],
+      "resumen": "Tratamiento de la osteoporosis. El ejercicio con carga e impacto moderado es parte del tratamiento y complementa al fármaco.",
+      "senales": ["hueso"],
+      "principios": [
+        {"id": "alendronato", "nombre": "Alendronato", "marcas": ["Fosamax", "Fosavance"], "umbral_mg": {"alta": 70}, "unidad": "mg/semana"},
+        {"id": "risedronato", "nombre": "Risedronato", "marcas": ["Actonel", "Acrel"], "unidad": "mg/semana"},
+        {"id": "zoledronico", "nombre": "Ácido zoledrónico", "marcas": ["Aclasta"], "unidad": "mg/año"},
+        {"id": "denosumab", "nombre": "Denosumab", "marcas": ["Prolia"], "unidad": "mg/6 meses"}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Tras tomar el comprimido (en ayunas, con un vaso de agua), permanezca erguido 30 minutos: puede caminar o hacer ejercicio de pie, pero no tumbarse ni hacer abdominales."},
+        {"nivel": "info", "texto": "Si tiene osteoporosis, evite flexiones de columna con carga (abdominales clásicos, tocar los pies con peso) y giros bruscos del tronco; priorice extensores de espalda, piernas y ejercicios con impacto moderado (caminar rápido, escaleras, pequeños saltos si su médico lo autoriza)."},
+        {"nivel": "precaucion", "texto": "Un dolor sordo y persistente en el muslo o la ingle sin golpe es motivo de consulta (fractura atípica, rara pero relevante en tratamientos largos)."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Caminar rápido, baile, escaleras: el impacto moderado estimula el hueso. Natación y bici son seguras pero no lo fortalecen."}],
+      "fuerza": [{"nivel": "info", "texto": "Prioritario: 2–3 sesiones semanales con cargas progresivas, especialmente cadera, columna (extensión) y piernas."}],
+      "equilibrio": [{"nivel": "alerta", "texto": "Prevenir caídas es tan importante como el fármaco: trabajo de equilibrio 2–3 veces por semana, con apoyo si es necesario."}],
+      "fuentes": ["Guía SEIOMM 2022", "Beck et al. J Sci Med Sport 2017 (Exercise and Sports Science Australia osteoporosis)"]
+    },
+
+    {
+      "id": "antihistaminicos_sedantes",
+      "nombre": "Antihistamínicos sedantes (hidroxizina, dexclorfeniramina, difenhidramina)",
+      "atc": ["R06AD", "R06AB", "N05BB01"],
+      "resumen": "Antihistamínicos antiguos, también usados para dormir o la ansiedad. Somnolencia, sequedad y menos sudoración: cuidado con el calor y las caídas.",
+      "senales": ["sedacion", "anticolinergico", "calor", "caidas"],
+      "principios": [
+        {"id": "hidroxizina", "nombre": "Hidroxizina", "marcas": ["Atarax"], "umbral_mg": {"alta": 50}, "senales_extra": ["qt"]},
+        {"id": "dexclorfeniramina", "nombre": "Dexclorfeniramina", "marcas": ["Polaramine"], "umbral_mg": {"alta": 6}},
+        {"id": "difenhidramina", "nombre": "Difenhidramina", "marcas": ["Benadryl", "Soñodor"], "umbral_mg": {"alta": 50}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "No entrene en las 4–6 horas siguientes a la toma. Reducen la sudoración: evite el calor. Para alergias con ejercicio, los antihistamínicos modernos (cetirizina, loratadina, bilastina) no dan sueño."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Evite el ejercicio con calor mientras dure el efecto."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación pasado el efecto."}],
+      "equilibrio": [{"nivel": "precaucion", "si": {"edad_min": 65}, "texto": "Riesgo de caída y confusión en mayores: desaconsejados como hipnótico. Coméntelo con su médico."}],
+      "fuentes": ["Criterios Beers 2023"]
+    },
+
+    {
+      "id": "anticolinergicos_urinarios",
+      "nombre": "Anticolinérgicos para la vejiga (oxibutinina, solifenacina, tolterodina)",
+      "atc": ["G04BD"],
+      "resumen": "Reducen la urgencia urinaria. Disminuyen la sudoración y dan sequedad; en mayores, confusión. Mirabegrón es la alternativa sin estos efectos.",
+      "senales": ["anticolinergico", "calor"],
+      "principios": [
+        {"id": "oxibutinina", "nombre": "Oxibutinina", "marcas": ["Ditropan"], "umbral_mg": {"alta": 10}},
+        {"id": "solifenacina", "nombre": "Solifenacina", "marcas": ["Vesicare"], "umbral_mg": {"alta": 10}},
+        {"id": "tolterodina", "nombre": "Tolterodina", "marcas": ["Detrusitol", "Urotrol"], "umbral_mg": {"alta": 4}},
+        {"id": "fesoterodina", "nombre": "Fesoterodina", "marcas": ["Toviaz"], "umbral_mg": {"alta": 8}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Sudará menos: con calor el riesgo de sobrecalentamiento aumenta. Entrene en horas frescas, con agua a mano, y pare si nota calor excesivo, piel seca y caliente o mareo."},
+        {"nivel": "info", "texto": "El entrenamiento del suelo pélvico y perder peso mejoran la urgencia urinaria y pueden reducir la necesidad del fármaco."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Evite ambientes muy calurosos. Intensidad moderada."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación. Incluya suelo pélvico."}],
+      "equilibrio": [{"nivel": "info", "si": {"edad_min": 65}, "texto": "Posible confusión o mareo en mayores; entrene con apoyo."}],
+      "fuentes": ["Criterios Beers 2023"]
+    },
+
+    {
+      "id": "fluoroquinolonas",
+      "nombre": "Fluoroquinolonas (ciprofloxacino, levofloxacino, moxifloxacino)",
+      "atc": ["J01MA"],
+      "resumen": "Antibióticos que debilitan los tendones, con riesgo de rotura (sobre todo del Aquiles), mayor en mayores de 60 años y con corticoides. Hay que reducir el impacto durante el tratamiento y el mes siguiente.",
+      "senales": ["tendon", "qt"],
+      "principios": [
+        {"id": "ciprofloxacino", "nombre": "Ciprofloxacino", "marcas": ["Baycip"], "umbral_mg": {"alta": 1000}},
+        {"id": "levofloxacino", "nombre": "Levofloxacino", "marcas": ["Tavanic"], "umbral_mg": {"alta": 500}},
+        {"id": "moxifloxacino", "nombre": "Moxifloxacino", "marcas": ["Octegra", "Proflox"], "umbral_mg": {"alta": 400}}
+      ],
+      "general": [
+        {"nivel": "alerta", "texto": "Durante el tratamiento y hasta 4 semanas después, evite saltos, carrera intensa, cambios de dirección bruscos y cargas máximas. Si aparece dolor en el talón, la pantorrilla, el hombro o el codo, pare y consulte: puede ser el inicio de una tendinopatía."},
+        {"nivel": "alerta", "si": {"edad_min": 60}, "texto": "Mayor de 60 años: el riesgo de rotura tendinosa es claramente mayor, y más si toma corticoides. Limítese a caminar, bici suave o natación mientras dure el tratamiento y el mes siguiente."},
+        {"nivel": "info", "texto": "Evite el sol intenso (fotosensibilidad) y mantenga buena hidratación."}
+      ],
+      "aerobico": [{"nivel": "precaucion", "texto": "Solo actividades sin impacto (caminar, bici, nadar) a intensidad moderada."}],
+      "fuerza": [{"nivel": "precaucion", "texto": "Cargas ligeras, sin trabajo explosivo ni excéntrico intenso. Retome la progresión normal un mes después de terminar."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación (sin saltos)."}],
+      "fuentes": ["AEMPS nota informativa 2018 (fluoroquinolonas)", "FDA Boxed Warning"]
+    },
+
+    {
+      "id": "colchicina",
+      "nombre": "Colchicina",
+      "atc": ["M04AC01"],
+      "resumen": "Para la gota y la pericarditis. Puede dañar el músculo, sobre todo combinada con estatinas o con insuficiencia renal.",
+      "senales": ["miopatia"],
+      "principios": [
+        {"id": "colchicina", "nombre": "Colchicina", "marcas": ["Colchicine Seid", "Colchimax"], "umbral_mg": {"alta": 1}}
+      ],
+      "general": [
+        {"nivel": "precaucion", "texto": "Dolor o debilidad muscular generalizados, sobre todo si toma estatina, son motivo de consulta."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. En crisis de gota, reposo de la articulación afectada."}],
+      "fuerza": [{"nivel": "info", "texto": "Progresión gradual si toma también estatina."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "alopurinol",
+      "nombre": "Alopurinol y febuxostat",
+      "atc": ["M04AA"],
+      "resumen": "Bajan el ácido úrico. No interfieren con el ejercicio.",
+      "senales": [],
+      "principios": [
+        {"id": "alopurinol", "nombre": "Alopurinol", "marcas": ["Zyloric"], "umbral_mg": {"alta": 300}},
+        {"id": "febuxostat", "nombre": "Febuxostat", "marcas": ["Adenuric"], "umbral_mg": {"alta": 80}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Beba agua suficiente: la deshidratación sube el ácido úrico y puede desencadenar un ataque de gota. El ejercicio muy intenso y prolongado también lo sube de forma transitoria."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "ezetimiba_otros_lipidos",
+      "nombre": "Ezetimiba, inhibidores de PCSK9 y omega-3",
+      "atc": ["C10AX"],
+      "resumen": "Otros hipolipemiantes. Sin efectos relevantes sobre el ejercicio.",
+      "senales": [],
+      "principios": [
+        {"id": "ezetimiba", "nombre": "Ezetimiba", "marcas": ["Ezetrol"], "umbral_mg": {"alta": 10}},
+        {"id": "evolocumab", "nombre": "Evolocumab / alirocumab / inclisirán", "marcas": ["Repatha", "Praluent", "Leqvio"]},
+        {"id": "omega3", "nombre": "Omega-3 (icosapento de etilo)", "marcas": ["Vazkepa", "Omacor"]}
+      ],
+      "general": [{"nivel": "info", "texto": "Sin precauciones específicas para el ejercicio."}],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "idpp4",
+      "nombre": "Inhibidores de DPP-4 (sitagliptina, linagliptina, vildagliptina)",
+      "atc": ["A10BH"],
+      "resumen": "Antidiabéticos sin riesgo de hipoglucemia por sí solos y sin efectos sobre el ejercicio.",
+      "senales": [],
+      "principios": [
+        {"id": "sitagliptina", "nombre": "Sitagliptina", "marcas": ["Januvia", "Xelevia"], "umbral_mg": {"alta": 100}},
+        {"id": "linagliptina", "nombre": "Linagliptina", "marcas": ["Trajenta"], "umbral_mg": {"alta": 5}},
+        {"id": "vildagliptina", "nombre": "Vildagliptina", "marcas": ["Galvus"], "umbral_mg": {"alta": 100}}
+      ],
+      "general": [{"nivel": "info", "texto": "Solo producen hipoglucemia si se combinan con insulina o sulfonilureas."}],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["ADA Standards of Care 2026"]
+    },
+
+    {
+      "id": "metotrexato",
+      "nombre": "Metotrexato",
+      "atc": ["L04AX03", "L01BA01"],
+      "resumen": "Inmunosupresor semanal para artritis y psoriasis. Fatiga el día siguiente a la toma; el ejercicio es seguro y recomendable el resto de la semana.",
+      "senales": [],
+      "principios": [
+        {"id": "metotrexato", "nombre": "Metotrexato", "marcas": ["Metoject", "Nordimet", "Bertanel"], "unidad": "mg/semana", "umbral_mg": {"alta": 20}}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "Muchas personas notan cansancio o náuseas en las 24–48 h tras la dosis semanal: programe las sesiones más exigentes lejos de ese día."},
+        {"nivel": "info", "texto": "Hidratación adecuada y evitar el alcohol protegen el hígado y el riñón. Protección solar (fotosensibilidad)."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Indicado; mejora la fatiga de la enfermedad inflamatoria."}],
+      "fuerza": [{"nivel": "info", "texto": "Indicado; en artritis, respete las articulaciones inflamadas y trabaje con amplitud sin dolor."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS", "EULAR 2018 (actividad física en enfermedades reumáticas)"]
+    },
+
+    {
+      "id": "pde5",
+      "nombre": "Inhibidores de PDE5 (sildenafilo, tadalafilo)",
+      "atc": ["G04BE"],
+      "resumen": "Para la disfunción eréctil y, a diario a dosis baja, para la próstata. Bajan algo la tensión; su única interacción peligrosa es con los nitratos.",
+      "senales": ["hipotension"],
+      "principios": [
+        {"id": "sildenafilo", "nombre": "Sildenafilo", "marcas": ["Viagra"], "umbral_mg": {"alta": 100}},
+        {"id": "tadalafilo", "nombre": "Tadalafilo", "marcas": ["Cialis"], "umbral_mg": {"alta": 20}}
+      ],
+      "general": [
+        {"nivel": "alerta", "texto": "Nunca lo combine con nitratos (nitroglicerina, mononitrato de isosorbida) ni con 'poppers': la bajada de tensión puede ser grave. Si tiene angina de esfuerzo, consulte antes de usarlo."},
+        {"nivel": "info", "texto": "El ejercicio regular, sobre todo aeróbico, mejora la función eréctil por sí mismo."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación. Posible mareo o dolor de cabeza en las horas siguientes a la toma."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": ["Ficha técnica AEMPS"]
+    },
+
+    {
+      "id": "hierro_vitd",
+      "nombre": "Suplementos de hierro, vitamina D y calcio",
+      "atc": ["B03A", "A11CC", "A12A"],
+      "resumen": "Suplementos sin efectos relevantes sobre el ejercicio.",
+      "senales": [],
+      "principios": [
+        {"id": "hierro_oral", "nombre": "Hierro oral", "marcas": ["Tardyferon", "Ferro Sanol", "Fisiogen Ferro"]},
+        {"id": "vitamina_d", "nombre": "Vitamina D (colecalciferol, calcifediol)", "marcas": ["Hidroferol", "Deltius", "Divisun"]},
+        {"id": "calcio_vitd", "nombre": "Calcio + vitamina D", "marcas": ["Natecal D", "Ideos", "Mastical D"]}
+      ],
+      "general": [
+        {"nivel": "info", "texto": "El hierro oral puede dar molestias digestivas: no lo tome justo antes de entrenar. Si está en tratamiento por anemia, la capacidad de esfuerzo mejorará a medida que se corrija."}
+      ],
+      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
+      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
+      "fuentes": []
+    }
+  ],
+
+  "reglas_combinadas": [
+    {
+      "id": "hipotension_multiple",
+      "si": {"senal": "hipotension", "min": 2},
+      "nivel": "alerta",
+      "titulo": "Varios fármacos que bajan la tensión",
+      "texto": "Toma {n} fármacos que bajan la tensión arterial. El efecto se suma al del propio ejercicio: el riesgo de mareo o desmayo al terminar o al incorporarse es mayor. Enfriamiento de 10 minutos obligatorio, hidratación, cambios de posición lentos y nada de duchas muy calientes justo después. Si le han pedido controlar la tensión en casa, anótela también tras entrenar.",
+      "ambitos": ["aerobico", "equilibrio"]
+    },
+    {
+      "id": "hipotension_triple",
+      "si": {"senal": "hipotension", "min": 3},
+      "nivel": "alerta",
+      "titulo": "Tres o más fármacos hipotensores",
+      "texto": "Con {n} fármacos hipotensores, conviene que su médico sepa que va a empezar un programa de ejercicio: a menudo es posible reducir alguna dosis a medida que la tensión mejora con el entrenamiento.",
+      "ambitos": ["general"]
+    },
+    {
+      "id": "sedantes_multiples",
+      "si": {"senal": "sedacion", "min": 2},
+      "nivel": "alerta",
+      "titulo": "Varios fármacos sedantes",
+      "texto": "Toma {n} fármacos que producen somnolencia o enlentecen los reflejos. Combinados, el riesgo de caídas y lesiones se multiplica. Entrene alejado de las tomas, evite actividades con riesgo de caída y hable con su médico sobre si todos siguen siendo necesarios.",
+      "ambitos": ["equilibrio", "general"]
+    },
+    {
+      "id": "caidas_mayor",
+      "si": {"senal": "caidas", "min": 2, "edad_min": 65},
+      "nivel": "alerta",
+      "titulo": "Riesgo de caídas elevado",
+      "texto": "Tiene {n} fármacos que aumentan el riesgo de caídas y más de 65 años. El entrenamiento de equilibrio y fuerza de piernas es la intervención más eficaz para prevenirlas, pero debe hacerse con apoyo y, al principio, supervisado. Lleve esta lista a su médico: una revisión de la medicación es parte de la prevención de caídas.",
+      "ambitos": ["equilibrio"]
+    },
+    {
+      "id": "bb_hipoglucemia",
+      "si": {"todas": ["enmascara_hipoglucemia", "hipoglucemia"]},
+      "nivel": "alerta",
+      "titulo": "Betabloqueante + fármaco que baja el azúcar",
+      "texto": "El betabloqueante oculta los avisos típicos de una bajada de azúcar (palpitaciones, temblor, nerviosismo). La sudoración se conserva. Mida la glucosa antes y después de entrenar, lleve azúcar y no se fíe solo de las sensaciones.",
+      "ambitos": ["aerobico", "general"]
+    },
+    {
+      "id": "triple_whammy",
+      "si": {"todas": ["ieca_ara", "diuretico", "aine"]},
+      "nivel": "alerta",
+      "titulo": "IECA/ARA-II + diurético + antiinflamatorio",
+      "texto": "Esta combinación ('triple whammy') puede provocar insuficiencia renal aguda, y el ejercicio con sudoración es el detonante típico. Suspenda el antiinflamatorio si es de uso ocasional y sustitúyalo por paracetamol; si es crónico, consulte con su médico cuanto antes.",
+      "ambitos": ["general"]
+    },
+    {
+      "id": "renal_deshidratacion",
+      "si": {"todas": ["renal", "deshidratacion"]},
+      "nivel": "precaucion",
+      "titulo": "Riñón y deshidratación",
+      "texto": "Toma fármacos que favorecen la deshidratación junto a otros que pueden afectar al riñón si se deshidrata. Hidratación antes, durante y después; evite entrenar con calor intenso y pese la ropa o contrólese el peso antes y después de sesiones largas para estimar la pérdida de líquido.",
+      "ambitos": ["aerobico"]
+    },
+    {
+      "id": "hiperpotasemia",
+      "si": {"senal": "hiperpotasemia", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que suben el potasio",
+      "texto": "Toma {n} fármacos que retienen potasio. Evite suplementos de potasio, bebidas isotónicas 'altas en potasio' y sal de régimen. Debilidad muscular inusual o palpitaciones tras el ejercicio son motivo de consulta.",
+      "ambitos": ["general"]
+    },
+    {
+      "id": "sangrado_multiple",
+      "si": {"senal": "sangrado", "min": 2},
+      "nivel": "alerta",
+      "titulo": "Varios fármacos que aumentan el sangrado",
+      "texto": "Toma {n} fármacos que aumentan el riesgo de sangrado. Evite deportes de contacto y actividades con riesgo de caída a velocidad; use paracetamol (no antiinflamatorios) para el dolor; ante golpe en la cabeza acuda a urgencias aunque se encuentre bien.",
+      "ambitos": ["general", "equilibrio"]
+    },
+    {
+      "id": "qt_multiple",
+      "si": {"senal": "qt", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que alargan el QT",
+      "texto": "Toma {n} fármacos que pueden alargar el intervalo QT. La pérdida de potasio y magnesio con la sudoración intensa o los diuréticos aumenta el riesgo de arritmia. Hidrátese con electrolitos en sesiones largas y consulte si nota palpitaciones, mareo súbito o desmayo durante el ejercicio.",
+      "ambitos": ["aerobico"]
+    },
+    {
+      "id": "estatina_fibrato",
+      "si": {"todas": ["estatina", "fibrato"]},
+      "nivel": "alerta",
+      "titulo": "Estatina + fibrato",
+      "texto": "La combinación multiplica el riesgo de daño muscular (rabdomiólisis), y el ejercicio intenso no habitual es un desencadenante. Progrese muy gradualmente en fuerza, evite el trabajo excéntrico intenso y consulte de inmediato ante dolor muscular generalizado u orina oscura. Si el fibrato es gemfibrozilo, la combinación está desaconsejada: coméntelo con su médico.",
+      "ambitos": ["fuerza", "general"]
+    },
+    {
+      "id": "miopatia_multiple",
+      "si": {"senal": "miopatia", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos con riesgo muscular",
+      "texto": "Toma {n} fármacos que pueden dañar el músculo. Progresión de la fuerza más lenta de lo habitual y atención a dolores musculares que no correspondan al ejercicio realizado.",
+      "ambitos": ["fuerza"]
+    },
+    {
+      "id": "corticoide_quinolona",
+      "si": {"todas": ["corticoide", "tendon"], "senal": "tendon", "min": 2},
+      "nivel": "alerta",
+      "titulo": "Corticoide + fluoroquinolona",
+      "texto": "Combinación con el mayor riesgo de rotura tendinosa. Durante el antibiótico y el mes siguiente: solo caminar, bici suave o nadar; nada de saltos, carrera ni cargas altas.",
+      "ambitos": ["fuerza", "aerobico"]
+    },
+    {
+      "id": "anticolinergico_multiple",
+      "si": {"senal": "anticolinergico", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Carga anticolinérgica",
+      "texto": "Toma {n} fármacos con efecto anticolinérgico (sequedad, menos sudoración, estreñimiento y, en mayores, confusión y caídas). Cuidado con el calor y revisión de la medicación con su médico, sobre todo si tiene más de 65 años.",
+      "ambitos": ["general"]
+    },
+    {
+      "id": "calor_multiple",
+      "si": {"senal": "calor", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que dificultan regular la temperatura",
+      "texto": "Toma {n} fármacos que dificultan disipar el calor. Evite entrenar entre las 12 y las 18 h en verano, prefiera interiores climatizados o primera hora, y pare ante mareo, dolor de cabeza, náuseas o piel caliente y seca.",
+      "ambitos": ["aerobico"]
+    },
+    {
+      "id": "hiponatremia_multiple",
+      "si": {"senal": "hiponatremia", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que bajan el sodio",
+      "texto": "Toma {n} fármacos que pueden bajar el sodio, y el ejercicio prolongado bebiendo mucha agua sin sales lo agrava. Beba según la sed, no por encima, y en sesiones de más de una hora use bebidas con electrolitos. Confusión, náuseas o cefalea tras el ejercicio: consulte.",
+      "ambitos": ["aerobico"]
+    },
+    {
+      "id": "bradicardia_multiple",
+      "si": {"senal": "bradicardia", "min": 2},
+      "nivel": "alerta",
+      "titulo": "Varios fármacos que frenan el corazón",
+      "texto": "Toma {n} fármacos que frenan el pulso. El efecto se suma: si nota mareo, fatiga desproporcionada o el pulso en reposo está por debajo de 50, consulte antes de aumentar la intensidad. Guíese siempre por la sensación de esfuerzo.",
+      "ambitos": ["aerobico"]
+    },
+    {
+      "id": "serotoninergico_multiple",
+      "si": {"senal": "serotoninergico", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos serotoninérgicos",
+      "texto": "Toma {n} fármacos con efecto serotoninérgico (p. ej. antidepresivo + tramadol). Agitación, sudoración intensa, temblor, fiebre o rigidez tras el ejercicio pueden ser signos de síndrome serotoninérgico: consulte.",
+      "ambitos": ["general"]
+    },
+    {
+      "id": "perdida_muscular_multiple",
+      "si": {"senal": "perdida_muscular", "min": 2},
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que favorecen perder músculo",
+      "texto": "Toma {n} fármacos que favorecen la pérdida de masa muscular. El entrenamiento de fuerza (2–3 sesiones semanales) y una ingesta suficiente de proteína son prioritarios.",
+      "ambitos": ["fuerza"]
+    }
+  ]
+}
