@@ -1,6 +1,6 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610141857";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610141857";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610141857";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610142040";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610142040";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610142040";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -131,20 +131,40 @@ function incorporarTexto(texto, origen = "la lista") {
   return { reconocidos: reconocidos.length, noReconocidos: noReconocidos.length };
 }
 
-/* ---------- PDF de medicación ---------- */
+/* ---------- PDF o foto de la medicación ---------- */
 $("#btn-pdf").addEventListener("click", () => $("#pdf-input").click());
+$("#btn-foto").addEventListener("click", () => $("#foto-input").click());
+const progreso = (t) => { $("#pegar-aviso").textContent = t; };
+
 $("#pdf-input").addEventListener("change", async () => {
   const f = $("#pdf-input").files[0];
   if (!f) return;
-  $("#pegar-aviso").textContent = "Leyendo el PDF en su dispositivo…";
+  progreso("Leyendo el PDF en su dispositivo…");
   try {
-    const texto = await textoDePdf(f);
-    if (!texto.trim()) { $("#pegar-aviso").textContent = "El PDF no contiene texto legible (puede ser una imagen escaneada). Pegue la lista a mano o use un PDF con texto."; return; }
+    let texto = await textoDePdf(f);
+    if (texto.trim().length < 20) {
+      progreso("El PDF no tiene texto: es un escaneo. Reconociendo con OCR (puede tardar un minuto la primera vez)…");
+      texto = await textoDePdfEscaneado(f, progreso);
+    }
     incorporarTexto(texto, `«${f.name}»`);
   } catch (e) {
-    $("#pegar-aviso").textContent = "No se ha podido leer el PDF: " + (e.message || e);
+    progreso("No se ha podido leer el PDF: " + (e.message || e) + ". Puede pegar la lista a mano.");
   }
   $("#pdf-input").value = "";
+});
+
+$("#foto-input").addEventListener("change", async () => {
+  const f = $("#foto-input").files[0];
+  if (!f) return;
+  progreso("Preparando la imagen… (se procesa en su dispositivo; la primera vez descarga el modelo de lectura)");
+  try {
+    const texto = await textoDeImagen(f, progreso);
+    if (texto.trim().length < 10) { progreso("No se ha podido leer texto en la foto. Pruebe con más luz, la hoja plana y el texto nítido."); return; }
+    incorporarTexto(texto, "la foto");
+  } catch (e) {
+    progreso("No se ha podido leer la foto: " + (e.message || e) + ". Puede pegar la lista a mano.");
+  }
+  $("#foto-input").value = "";
 });
 
 /* ---------- Resúmenes en PDF ---------- */

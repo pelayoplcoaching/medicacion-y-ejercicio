@@ -67,7 +67,7 @@ Un principio puede añadir `senales_extra` (p. ej. citalopram → `qt`).
 
 ## Funciones
 
-- Búsqueda por marca o principio activo, lista pegada en texto o **PDF de medicación** (leído en el navegador con pdf.js; nada se envía a ningún servidor).
+- Búsqueda por marca o principio activo, lista pegada en texto o **PDF de medicación** (pdf.js) o **foto de la hoja de medicación** (OCR con Tesseract.js en español, también para PDF escaneados). Todo se procesa en el navegador; nada se envía a ningún servidor. El modelo de OCR (~2 MB) se descarga la primera vez.
 - Informe en pantalla por ámbito (antes de empezar, aeróbico, fuerza, equilibrio, interacciones).
 - **Dos PDF descargables** (jsPDF): resumen clínico para el médico y resumen en lenguaje sencillo para el paciente.
 
@@ -76,5 +76,4 @@ Un principio puede añadir `senales_extra` (p. ej. citalopram → `qt`).
 - Todos los textos de `kb.json` y `ddi_curated.json` son un borrador generado para revisión; en particular los **umbrales de dosis** (`umbral_mg.alta`) se fijaron de forma orientativa en la mitad superior del rango habitual.
 - Faltan clases: antibióticos distintos de quinolonas, antirretrovirales, quimioterapia oral, inmunosupresores (tacrolimus, ciclosporina), anticonceptivos/THS, antimigrañosos (triptanes), antiarrítmicos clase I, nuevos anticoagulantes en situaciones especiales, suplementos deportivos.
 - DDInter solo aporta nivel (mayor/moderada/menor); mecanismo y recomendación hay que añadirlos a mano en `ddi_curated.json` para los pares que se quieran explicar.
-- Lector de PDF: solo PDF con texto (receta electrónica, informes); los escaneados necesitarían OCR (tesseract.js), pendiente.
 - Variables de contexto que todavía no se piden: función renal, insuficiencia cardíaca, neuropatía, fragilidad (Vivifrail).
