@@ -57,14 +57,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151112">
+<link rel="stylesheet" href="css/style.css?v=202610151126">
 </head>
 <body class="cargando">
 
 <header class="cabecera">
   <img src="assets/logo-app.png" alt="Pauta Activa" class="logo" width="76" height="76">
   <div class="titulo">
-    <h1><span data-i18n="meta.titulo">Pauta Activa</span> <span class="badge-alfa" data-i18n="cab.alfa" data-i18n-title="cab.alfa.title" title="Versión en pruebas">alfa</span></h1>
+    <h1><span data-i18n="meta.titulo">Pauta Activa</span> <span class="badge-pro solo-pro" data-i18n="modo.badge">Profesional</span> <span class="badge-alfa" data-i18n="cab.alfa" data-i18n-title="cab.alfa.title" title="Versión en pruebas">alfa</span></h1>
     <p class="subtitulo" data-i18n="meta.subtitulo">Medicación y Ejercicio</p>
     <p class="autor" data-i18n="cab.autor" data-i18n-html>By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.</p>
   </div>
@@ -168,8 +168,11 @@
         <button type="button" class="btn-sec sm" id="btn-pegar" data-i18n="acc.pegar">Pegar una lista</button>
         <button type="button" class="btn-sec sm" id="btn-pdf" data-i18n="acc.pdf">Subir un PDF</button>
         <button type="button" class="btn-sec sm" id="btn-foto" data-i18n="acc.foto">Foto de la medicación</button>
+        <button type="button" class="btn-sec sm" id="btn-caja" data-i18n="acc.caja">Foto de una caja</button>
+        <button type="button" class="btn-sec sm" id="btn-dictar" aria-pressed="false" data-i18n="acc.dictar">Dictar</button>
         <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
         <input type="file" id="foto-input" accept="image/*" hidden>
+        <input type="file" id="caja-input" accept="image/*" capture="environment" hidden>
         <button type="button" class="btn-sec sm" id="btn-ejemplo" data-i18n="acc.ejemplo">Ver un ejemplo</button>
         <button type="button" class="btn-sec sm" id="btn-vaciar" data-i18n="acc.vaciar">Vaciar</button>
       </div>
@@ -195,6 +198,7 @@
     </div>
     <div class="contexto-chips" id="contexto"></div>
     <div id="veredicto" class="veredicto"></div>
+    <section id="hoy" class="hoy" aria-label="Hoy"></section>
     <div id="resumen"></div>
     <div id="esencial"></div>
     <div class="tabs" role="tablist">
@@ -240,6 +244,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script type="module" src="js/app.js?v=202610151112"></script>
+<script type="module" src="js/app.js?v=202610151126"></script>
 </body>
 </html>

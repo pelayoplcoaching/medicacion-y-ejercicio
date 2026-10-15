@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151112";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151112";
+import { jspdf } from "./libs.js?v=202610151126";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151126";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -319,6 +319,15 @@ export async function pdfMedico(kb, res, ctx) {
     for (const k of claves.slice(0, 10)) pg.tarjeta(k);
   }
 
+  if (ctx.diario?.length) {
+    const d = ctx.diario.filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 28);
+    if (d.length) {
+      const min = d.reduce((n, x) => n + (x.min || 0), 0), rpe = (d.reduce((n, x) => n + (x.rpe || 0), 0) / d.length).toFixed(1);
+      const sint = [...new Set(d.flatMap((x) => x.sintomas || []))];
+      pg.seccion("Registro de sesiones del paciente (últimas 4 semanas)", "anotado por el paciente en la aplicación");
+      pg.parrafo(`${d.length} sesiones · ${min} min en total · RPE medio ${rpe}/10${sint.length ? " · síntomas anotados: " + sint.join(", ") : " · sin síntomas anotados"}.`, { size: 9 });
+    }
+  }
   pg.seccion("Medicación referida por el paciente", "dosis diaria estimada y efectos relevantes para el ejercicio");
   pg.tabla(
     [{ t: "Fármaco", w: .25 }, { t: "Dosis", w: .21 }, { t: "Grupo", w: .24 }, { t: "Efectos a vigilar", w: .3 }],

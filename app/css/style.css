@@ -502,3 +502,54 @@ body.cargando aside .panel::after { content: ""; position: absolute; inset: 0; b
 /* foco visible para teclado */
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 .btn:focus-visible, .btn-sec:focus-visible { outline-offset: 3px; }
+
+/* ---------- alfa 11: hoy/diario, glosario, hoja inferior, tipografía fluida, botones ocupados, modo profesional ---------- */
+.hoy { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; margin: 10px 0 6px; }
+.hoy-cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hoy-cab small { color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .7rem; }
+.hoy-cab h3 { margin: 2px 0 0; color: var(--fg); font-size: 1rem; }
+.hoy-franja { color: var(--info-ink); font-weight: 600; }
+.btn.sm { min-height: 38px; padding: 7px 14px; font-size: .9rem; }
+.hoy-semana { display: flex; align-items: center; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+.semana { width: 170px; height: 54px; }
+.semana rect.con { fill: var(--accent); }
+.semana rect.sin { fill: var(--line); }
+.semana text { font-size: 7px; fill: var(--muted); font-family: var(--font); }
+.semana text.val { font-size: 6.5px; fill: var(--accent-deep); font-weight: 700; }
+.hoy-resumen { font-size: .9rem; color: var(--muted); }
+.hoy-resumen b { color: var(--fg); font-size: 1.1rem; }
+.registro { margin-top: 10px; display: grid; gap: 8px; }
+.registro .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.registro .chip-btn input { position: absolute; opacity: 0; width: 0; height: 0; }
+.registro .chip-btn { position: relative; }
+.registro .chip-btn:has(input:checked) { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.registro label { font-size: .85rem; }
+.registro input[type=range] { width: 140px; vertical-align: middle; accent-color: var(--accent); }
+.registro output { font-weight: 800; color: var(--accent-deep); margin-left: 6px; }
+.diario-lista { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; font-size: .86rem; }
+.diario-lista li { display: grid; grid-template-columns: 5.5em 1fr auto; gap: 8px; align-items: center; padding: 4px 0; border-top: 1px solid var(--line); color: var(--muted); }
+.diario-lista li span:nth-child(2) { color: var(--fg); }
+.diario-lista .quitar { background: none; border: 0; color: var(--muted); font-size: 1.1rem; cursor: pointer; }
+abbr.glos { text-decoration: underline dotted var(--accent); text-underline-offset: 3px; cursor: help; border: 0; }
+/* hoja inferior en móvil para los diálogos (ficha, QR) */
+@media (max-width: 639px) {
+  dialog.ficha { width: 100vw; max-width: 100vw; max-height: 88dvh; margin: auto 0 0; border-radius: var(--r-lg) var(--r-lg) 0 0; animation: subir .25s ease-out; }
+  dialog.ficha::before { content: ""; display: block; width: 44px; height: 5px; border-radius: 999px; background: var(--line-strong); margin: 8px auto 0; }
+  @keyframes subir { from { transform: translateY(40px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+/* tipografía fluida y longitud de línea en pantallas grandes */
+html { font-size: clamp(15px, 0.92rem + 0.2vw, 17px); }
+#contenido-tab .cuerpo ul, .esencial ol, details.alarma ul, .sintoma, .regla p { max-width: 72ch; }
+h2 { font-size: clamp(1.15rem, 1rem + .5vw, 1.4rem); }
+/* botón ocupado: indicador en lugar de cambiar el texto */
+.btn[aria-busy="true"], .btn-sec[aria-busy="true"] { position: relative; color: transparent !important; pointer-events: none; }
+.btn[aria-busy="true"]::after, .btn-sec[aria-busy="true"]::after { content: ""; position: absolute; inset: 0; margin: auto; width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.4); border-top-color: #fff; animation: girar .8s linear infinite; }
+.btn-sec[aria-busy="true"]::after { border-color: var(--line-strong); border-top-color: var(--accent); }
+@keyframes girar { to { transform: rotate(360deg); } }
+/* modo profesional: acento propio para saber en qué modo se está */
+body[data-modo="profesional"] { --accent: #0f766e; --accent-deep: #0b5a54; --accent-soft: #e2f3f1; }
+:root[data-theme="dark"] body[data-modo="profesional"], :root:not([data-theme="light"]) body[data-modo="profesional"] { --accent-soft: #11302d; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) body[data-modo="profesional"] { --accent-soft: #e2f3f1; } }
+.badge-pro { display: inline-block; vertical-align: middle; font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); margin-left: 4px; }
+#btn-dictar[aria-pressed="true"] { background: var(--alerta-soft); color: var(--alerta-ink); border-color: var(--alerta); animation: pulso 1s ease-in-out infinite; }
+@keyframes pulso { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--alerta) 25%, transparent); } }

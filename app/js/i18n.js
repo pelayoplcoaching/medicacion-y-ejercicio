@@ -4,6 +4,12 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "acc.caja": "Foto de una caja", "acc.dictar": "Dictar", "modo.badge": "Profesional", "pdf.generado": "PDF generado.",
+  "dictar.escuchando": "Escuchando… diga el nombre y la dosis («metformina 850, uno cero uno»). Pulse de nuevo para terminar.", "dictar.error": "No se ha podido usar el micrófono", "dictar.nada": "No se ha entendido nada; pruebe de nuevo más cerca del micrófono.", "dictar.origen": "el dictado",
+  "caja.leyendo": "Leyendo la caja… (se procesa en su dispositivo)", "caja.nada": "No se ha reconocido ninguna marca en la foto. Pruebe con la cara donde está el nombre, bien iluminada.", "caja.ok": "Reconocido: {n}. Compruebe la dosis y pulse Añadir.",
+  "hoy.titulo": "Hoy", "hoy.descanso": "Descanso o paseo suave", "hoy.mejor": "mejor entre {f}", "hoy.registrar": "Registrar sesión", "hoy.sesiones": "sesiones", "hoy.esta_semana": "esta semana", "hoy.semana_aria": "Minutos de ejercicio en los últimos 7 días: {n}",
+  "hoy.minutos": "Minutos", "hoy.rpe": "Esfuerzo (RPE 1–10)", "hoy.sintomas": "¿Ha notado algo? (opcional)", "hoy.guardado": "Sesión registrada. Buen trabajo.", "hoy.guardado_sintomas": "Sesión registrada. Mire abajo qué fármacos podrían explicar lo que ha notado.",
+  "sesion.aerobico": "Aeróbico", "sesion.fuerza": "Fuerza", "sesion.equilibrio": "Equilibrio", "sesion.paseo": "Paseo",
   "rapido.recientes": "Añadir rápido (recientes y habituales)", "rapido.habituales": "Añadir rápido (los más habituales)", "dosis.habituales": "Dosis por comprimido en España",
   "veredicto.alerta": "Puede hacer ejercicio, con {a} punto(s) de atención que conviene leer antes de empezar.", "veredicto.precaucion": "Puede hacer ejercicio con normalidad; hay {p} precaución(es) que merece la pena conocer.", "veredicto.ok": "Sin precauciones especiales: puede hacer ejercicio con normalidad.",
   "sintomas.titulo": "Si nota algo al entrenar…", "sintomas.ayuda": "Elija lo que le ocurre y verá qué fármacos de su lista podrían explicarlo y qué hacer.", "sintomas.posibles": "Podrían contribuir: {f}.", "sintomas.ninguno": "Ningún fármaco de su lista lo explica de forma habitual; si se repite, consúltelo.",
@@ -96,6 +102,12 @@ const ES = {
 };
 
 const EN = {
+  "acc.caja": "Photo of a box", "acc.dictar": "Dictate", "modo.badge": "Professional", "pdf.generado": "PDF generated.",
+  "dictar.escuchando": "Listening… say the name and dose (“metformin 850, one zero one”). Tap again to finish.", "dictar.error": "The microphone could not be used", "dictar.nada": "Nothing was understood; try again closer to the microphone.", "dictar.origen": "dictation",
+  "caja.leyendo": "Reading the box… (processed on your device)", "caja.nada": "No brand was recognised in the photo. Try the side with the name, well lit.", "caja.ok": "Recognised: {n}. Check the dose and press Add.",
+  "hoy.titulo": "Today", "hoy.descanso": "Rest or an easy walk", "hoy.mejor": "best between {f}", "hoy.registrar": "Log session", "hoy.sesiones": "sessions", "hoy.esta_semana": "this week", "hoy.semana_aria": "Minutes of exercise in the last 7 days: {n}",
+  "hoy.minutos": "Minutes", "hoy.rpe": "Effort (RPE 1–10)", "hoy.sintomas": "Did you notice anything? (optional)", "hoy.guardado": "Session logged. Good work.", "hoy.guardado_sintomas": "Session logged. See below which drugs could explain what you noticed.",
+  "sesion.aerobico": "Aerobic", "sesion.fuerza": "Strength", "sesion.equilibrio": "Balance", "sesion.paseo": "Walk",
   "rapido.recientes": "Quick add (recent and common)", "rapido.habituales": "Quick add (most common)", "dosis.habituales": "Tablet strengths available in Spain",
   "veredicto.alerta": "You can exercise; there are {a} point(s) of attention worth reading before you start.", "veredicto.precaucion": "You can exercise normally; there are {p} precaution(s) worth knowing.", "veredicto.ok": "No special precautions: you can exercise normally.",
   "sintomas.titulo": "If you notice something while training…", "sintomas.ayuda": "Choose what happens to you to see which drugs on your list could explain it and what to do.", "sintomas.posibles": "Could contribute: {f}.", "sintomas.ninguno": "No drug on your list usually explains it; if it recurs, seek advice.",
@@ -188,6 +200,12 @@ const EN = {
 };
 
 const CA = {
+  "acc.caja": "Foto d'una capsa", "acc.dictar": "Dictar", "modo.badge": "Professional", "pdf.generado": "PDF generat.",
+  "dictar.escuchando": "Escoltant… digueu el nom i la dosi («metformina 850, u zero u»). Premeu de nou per acabar.", "dictar.error": "No s'ha pogut fer servir el micròfon", "dictar.nada": "No s'ha entès res; proveu de nou més a prop del micròfon.", "dictar.origen": "el dictat",
+  "caja.leyendo": "Llegint la capsa… (es processa al dispositiu)", "caja.nada": "No s'ha reconegut cap marca a la foto. Proveu amb la cara on hi ha el nom, ben il·luminada.", "caja.ok": "Reconegut: {n}. Comproveu la dosi i premeu Afegir.",
+  "hoy.titulo": "Avui", "hoy.descanso": "Descans o passeig suau", "hoy.mejor": "millor entre {f}", "hoy.registrar": "Registrar sessió", "hoy.sesiones": "sessions", "hoy.esta_semana": "aquesta setmana", "hoy.semana_aria": "Minuts d'exercici els últims 7 dies: {n}",
+  "hoy.minutos": "Minuts", "hoy.rpe": "Esforç (RPE 1–10)", "hoy.sintomas": "Heu notat alguna cosa? (opcional)", "hoy.guardado": "Sessió registrada. Bona feina.", "hoy.guardado_sintomas": "Sessió registrada. Mireu a sota quins fàrmacs podrien explicar el que heu notat.",
+  "sesion.aerobico": "Aeròbic", "sesion.fuerza": "Força", "sesion.equilibrio": "Equilibri", "sesion.paseo": "Passeig",
   "rapido.recientes": "Afegir ràpid (recents i habituals)", "rapido.habituales": "Afegir ràpid (els més habituals)", "dosis.habituales": "Dosi per comprimit a Espanya",
   "veredicto.alerta": "Pot fer exercici, amb {a} punt(s) d'atenció que convé llegir abans de començar.", "veredicto.precaucion": "Pot fer exercici amb normalitat; hi ha {p} precaució/ns que val la pena conèixer.", "veredicto.ok": "Sense precaucions especials: pot fer exercici amb normalitat.",
   "sintomas.titulo": "Si nota alguna cosa en entrenar…", "sintomas.ayuda": "Triï el que li passa i veurà quins fàrmacs de la llista podrien explicar-ho i què fer.", "sintomas.posibles": "Hi podrien contribuir: {f}.", "sintomas.ninguno": "Cap fàrmac de la llista ho explica habitualment; si es repeteix, consulti-ho.",
@@ -280,6 +298,12 @@ const CA = {
 };
 
 const GL = {
+  "acc.caja": "Foto dunha caixa", "acc.dictar": "Ditar", "modo.badge": "Profesional", "pdf.generado": "PDF xerado.",
+  "dictar.escuchando": "Escoitando… diga o nome e a dose («metformina 850, un cero un»). Prema de novo para rematar.", "dictar.error": "Non se puido usar o micrófono", "dictar.nada": "Non se entendeu nada; probe de novo máis preto do micrófono.", "dictar.origen": "o ditado",
+  "caja.leyendo": "Lendo a caixa… (procésase no seu dispositivo)", "caja.nada": "Non se recoñeceu ningunha marca na foto. Probe coa cara onde está o nome, ben iluminada.", "caja.ok": "Recoñecido: {n}. Comprobe a dose e prema Engadir.",
+  "hoy.titulo": "Hoxe", "hoy.descanso": "Descanso ou paseo suave", "hoy.mejor": "mellor entre {f}", "hoy.registrar": "Rexistrar sesión", "hoy.sesiones": "sesións", "hoy.esta_semana": "esta semana", "hoy.semana_aria": "Minutos de exercicio nos últimos 7 días: {n}",
+  "hoy.minutos": "Minutos", "hoy.rpe": "Esforzo (RPE 1–10)", "hoy.sintomas": "Notou algo? (opcional)", "hoy.guardado": "Sesión rexistrada. Bo traballo.", "hoy.guardado_sintomas": "Sesión rexistrada. Mire abaixo que fármacos poderían explicar o que notou.",
+  "sesion.aerobico": "Aeróbico", "sesion.fuerza": "Forza", "sesion.equilibrio": "Equilibrio", "sesion.paseo": "Paseo",
   "rapido.recientes": "Engadir rápido (recentes e habituais)", "rapido.habituales": "Engadir rápido (os máis habituais)", "dosis.habituales": "Dose por comprimido en España",
   "veredicto.alerta": "Pode facer exercicio, con {a} punto(s) de atención que convén ler antes de empezar.", "veredicto.precaucion": "Pode facer exercicio con normalidade; hai {p} precaución(s) que paga a pena coñecer.", "veredicto.ok": "Sen precaucións especiais: pode facer exercicio con normalidade.",
   "sintomas.titulo": "Se nota algo ao adestrar…", "sintomas.ayuda": "Escolla o que lle ocorre e verá que fármacos da súa lista poderían explicalo e que facer.", "sintomas.posibles": "Poderían contribuír: {f}.", "sintomas.ninguno": "Ningún fármaco da súa lista o explica habitualmente; se se repite, consúlteo.",

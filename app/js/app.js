@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles } from "./engine.js?v=202610151112";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151112";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151112";
-import { cargarScript } from "./libs.js?v=202610151112";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151112";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151112";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151126";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151126";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151126";
+import { cargarScript } from "./libs.js?v=202610151126";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151126";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151126";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -41,6 +41,8 @@ const ICONS = {
   editar: "M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3zm17.7-10.2a1 1 0 0 0 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7 1.9-1.7z",
   pausa: "M7 5h4v14H7V5zm6 0h4v14h-4V5z",
   reanudar: "M8 5v14l11-7L8 5z",
+  caja: "M4 7l8-4 8 4v10l-8 4-8-4V7zm2 1.2v7.6l5 2.5v-7.6l-5-2.5zm12 0-5 2.5v7.6l5-2.5V8.2zM12 5.2 7.6 7.4 12 9.6l4.4-2.2L12 5.2z",
+  mic: "M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm-7 9h2a5 5 0 0 0 10 0h2a7 7 0 0 1-6 6.9V20h3v2H8v-2h3v-2.1A7 7 0 0 1 5 11z",
   qr: "M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z",
   general: "M9 2h6a2 2 0 0 1 2 2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2-2zm0 2v2h6V4H9zM5 6v14h14V6h-2v2H7V6H5zm2.5 6.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4-6 6-3.5-3.5z",
   aerobico: "M13.5 2 8 12h4l-1.5 10L18 11h-4l-.5-9z",
@@ -54,7 +56,7 @@ const ICONS = {
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
 function ponerIconos() {
-  const mapa = { "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar", "btn-pdf-medico": "pdf", "btn-pdf-paciente": "pdf" };
+  const mapa = { "btn-caja": "caja", "btn-dictar": "mic", "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar", "btn-pdf-medico": "pdf", "btn-pdf-paciente": "pdf" };
   for (const [id, n] of Object.entries(mapa)) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
   for (const b of $$(".tabs [role=tab]")) if (!b.querySelector("svg") && ICONS[b.dataset.tab]) b.insertAdjacentHTML("afterbegin", icono(b.dataset.tab));
   for (const [id, n] of Object.entries({ "btn-qr": "qr", "btn-exportar": "guardar", "btn-importar-listas": "abrir" })) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
@@ -387,7 +389,7 @@ fichaInput.addEventListener("keydown", (ev) => { if (ev.key === "Enter") { ev.pr
 function mostrarFicha(pid) {
   const { principio: p, clase: c } = indice.porId.get(pid);
   const senales = [...new Set([...(c.senales || []), ...(p.senales_extra || [])])].map((s) => datos.kb.senales[s]).filter(Boolean);
-  const reglas = (amb) => (c[amb] || []).filter((r) => !r.si?.principio || r.si.principio === pid).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? " <em>(a dosis altas)</em>" : ""}${r.si?.edad_min ? ` <em>(≥ ${r.si.edad_min} años)</em>` : ""}${r.si?.condicion ? ` <em>(si ${r.si.condicion.replace(/_/g, " ")})</em>` : ""}</span></li>`).join("");
+  const reglas = (amb) => (c[amb] || []).filter((r) => !r.si?.principio || r.si.principio === pid).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? " <em>(a dosis altas)</em>" : ""}${r.si?.edad_min ? ` <em>(≥ ${r.si.edad_min} años)</em>` : ""}${r.si?.condicion ? ` <em>(si ${r.si.condicion.replace(/_/g, " ")})</em>` : ""}</span></li>`).join("");
   const h = p.horario || c.horario;
   const horario = h ? [...(h.evitar || []).map((x) => `<li class="nivel-${x.nivel === "rojo" ? "alerta" : "precaucion"}"><span class="punto"></span><span>Evitar entrenar entre ${x.desde} y ${x.hasta} h tras la toma: ${x.motivo}</span></li>`), ...(h.preferir || []).map((x) => `<li class="nivel-info"><span class="punto"></span><span>Preferible entre ${x.desde} y ${x.hasta} h tras la toma: ${x.motivo}</span></li>`)].join("") : "";
   const ddi = datos.ddiCurado.interacciones.filter((x) => [x.a, x.b].some((k) => k === pid || k === "clase:" + c.id)).map((x) => {
@@ -486,23 +488,66 @@ $("#foto-input").addEventListener("change", async () => {
   $("#foto-input").value = "";
 });
 
+/* ---------- dictar la medicación (reconocimiento de voz del navegador) ---------- */
+const Reconocedor = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!Reconocedor) $("#btn-dictar").hidden = true;
+let rec = null;
+$("#btn-dictar").addEventListener("click", () => {
+  if (rec) { rec.stop(); return; }
+  rec = new Reconocedor();
+  rec.lang = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES" }[idioma()] || "es-ES"; rec.interimResults = true; rec.continuous = true;
+  let final = "";
+  $("#btn-dictar").setAttribute("aria-pressed", "true"); progreso(t("dictar.escuchando"));
+  rec.onresult = (ev) => { let parcial = ""; for (const r of ev.results) { if (r.isFinal) final += r[0].transcript + "\n"; else parcial += r[0].transcript; } progreso(t("dictar.escuchando") + " " + (final + parcial).slice(-80)); };
+  rec.onerror = (e) => { progreso(t("dictar.error") + (e.error ? ` (${e.error})` : "")); };
+  rec.onend = () => {
+    $("#btn-dictar").setAttribute("aria-pressed", "false"); rec = null;
+    const txt = final.replace(/\b(uno|un)\b/g, "1").replace(/\bcero\b/g, "0").replace(/\bdos\b/g, "2").replace(/\btres\b/g, "3").replace(/\bmedio\b/g, "0,5").replace(/\s+(miligramos|mg)\b/g, " mg").replace(/\b(punto|coma)\b/g, ",");
+    if (txt.trim().length < 3) { progreso(t("dictar.nada")); return; }
+    incorporarTexto(txt, t("dictar.origen"));
+  };
+  rec.start();
+});
+
+/* ---------- foto de una caja: reconoce la marca y la deja lista para añadir ---------- */
+$("#btn-caja").addEventListener("click", () => $("#caja-input").click());
+$("#caja-input").addEventListener("change", async () => {
+  const f = $("#caja-input").files[0]; $("#caja-input").value = ""; if (!f) return;
+  progreso(t("caja.leyendo"));
+  try {
+    const texto = await textoDeImagen(f, progreso);
+    const lineas = texto.split(/\n+/).map((l) => l.replace(/[^\p{L}\p{N} ,./-]/gu, " ").trim()).filter((l) => l.length >= 4);
+    let mejor = null;
+    for (const l of lineas) {
+      const palabras = l.split(/\s+/).filter((w) => w.length >= 4);
+      for (let n = Math.min(3, palabras.length); n >= 1; n--) {
+        const q = palabras.slice(0, n).join(" ");
+        const r = buscar(indice, q, 3).filter((e) => !e.aproximado);
+        const hit = r.find((e) => e.norm.startsWith(normalizarTxt(q))) || r[0];
+        if (hit) { const score = n * 10 + (hit.dosis != null ? 1 : 0); if (!mejor || score > mejor.score) mejor = { e: hit, score, q }; break; }
+      }
+    }
+    if (!mejor) { progreso(t("caja.nada")); return; }
+    elegir(mejor.e); progreso(t("caja.ok", { n: mejor.e.texto })); $("#dosis").focus();
+  } catch (e) { progreso(t("foto.error")); }
+});
+const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
 /* ---------- Resúmenes en PDF ---------- */
 async function descargarPdf(tipo) {
   const btn = tipo === "medico" ? $("#btn-pdf-medico") : $("#btn-pdf-paciente");
-  const original = btn.textContent;
-  btn.disabled = true; btn.textContent = "Generando…";
+  btn.disabled = true; btn.setAttribute("aria-busy", "true");
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas };
+    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario() };
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
-    btn.textContent = "PDF generado";
+    toast(t("pdf.generado"), { ms: 3000 });
     preguntarUtil();
   } catch (e) {
-    btn.textContent = "No disponible aquí";
     $("#pdf-aviso").textContent = "No se ha podido generar el PDF (" + (e.message || e) + "). En la versión web pública la descarga funciona con normalidad.";
   }
-  setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
+  btn.removeAttribute("aria-busy"); btn.disabled = false;
 }
 $("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
 
@@ -600,8 +645,10 @@ const DIAS_PLAN = [
 ];
 function horaPlan() {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);
-  const verde = v.horas.find((h) => h.nivel === "verde" && h.hora >= 9 && h.hora <= 19) || v.horas.find((h) => h.nivel !== "rojo" && h.hora >= 9 && h.hora <= 19);
-  return verde ? verde.hora : 10;
+  const m = (v.mejores || []).map((x) => ({ desde: Math.max(x.desde, 9), hasta: Math.min(x.hasta, 19) })).filter((x) => x.hasta - x.desde >= 1).sort((a, b) => (b.hasta - b.desde) - (a.hasta - a.desde))[0];
+  if (m) return m.desde;
+  const ok = v.horas.find((h) => h.nivel !== "rojo" && h.h >= 9 && h.h <= 19);
+  return ok ? ok.h : 10;
 }
 function icsPlan() {
   const res = evaluar(datos, medsActivos(), ctxActual());
@@ -678,6 +725,93 @@ $("#btn-copiar").addEventListener("click", async () => {
 /* ---------- render ---------- */
 function etiqueta(nivel) { return datos.kb.niveles[nivel]?.etiqueta || nivel; }
 
+/* ---------- glosario: términos técnicos con definición al tocarlos ---------- */
+const GLOSARIO = {
+  "RPE": "Escala de esfuerzo percibido: del 0 (nada) al 10 (máximo). Moderado = 4–6, puede hablar pero no cantar.",
+  "Borg": "Escala de esfuerzo percibido de 6 a 20. Moderado = 11–14 (algo duro).",
+  "FITT": "Frecuencia, Intensidad, Tiempo y Tipo: las cuatro variables con que se prescribe el ejercicio.",
+  "NYHA": "Clase funcional de la insuficiencia cardíaca: I sin síntomas; II con esfuerzos normales; III con esfuerzos pequeños; IV en reposo.",
+  "FEVI": "Fracción de eyección del ventrículo izquierdo: porcentaje de sangre que el corazón expulsa en cada latido (normal ≥ 50 %).",
+  "FG": "Filtrado glomerular: medida de la función del riñón en mL/min (normal > 90; reducido < 60).",
+  "SPPB": "Short Physical Performance Battery: prueba de equilibrio, marcha y levantarse de la silla, de 0 a 12 puntos (≤ 9 indica fragilidad).",
+  "DAI": "Desfibrilador automático implantable: dispositivo que detecta arritmias graves y da una descarga.",
+  "Valsalva": "Aguantar la respiración haciendo fuerza: sube bruscamente la tensión. Al hacer fuerza, respire siempre.",
+  "isométrico": "Ejercicio en el que el músculo trabaja sin moverse (sostener una posición). Sube más la tensión que el movimiento continuo.",
+  "HIIT": "Entrenamiento interválico de alta intensidad: periodos cortos muy intensos alternados con descanso.",
+  "CK": "Creatina quinasa: enzima muscular que sube en sangre cuando hay daño muscular.",
+  "INR": "Medida de la anticoagulación con Sintrom o warfarina; el objetivo habitual es 2–3.",
+  "hipoglucemia": "Azúcar en sangre por debajo de 70 mg/dL: sudor frío, temblor, hambre, confusión.",
+  "ortostática": "Al ponerse de pie: la tensión baja al incorporarse y produce mareo.",
+  "mEq": "Miliequivalentes: unidad en que se miden el potasio y otros electrolitos.",
+};
+const GLOS_RE = new RegExp("\\b(" + Object.keys(GLOSARIO).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")\\b", "g");
+function glosar(html) {
+  if (!html) return html;
+  const vistos = new Set();
+  return html.replace(GLOS_RE, (m) => { if (vistos.has(m.toLowerCase())) return m; vistos.add(m.toLowerCase()); return `<abbr class="glos" data-glos="${m}" tabindex="0">${m}</abbr>`; });
+}
+document.addEventListener("click", (ev) => { const a = ev.target.closest("abbr.glos"); if (a) { ev.preventDefault(); toast(`<b>${a.dataset.glos}</b>: ${GLOSARIO[a.dataset.glos] || ""}`, { ms: 9000 }); } });
+
+/* ---------- diario de sesiones (solo en este dispositivo) ---------- */
+function leerDiario() { try { return JSON.parse(localStorage.getItem("medex.diario") || "[]"); } catch { return []; } }
+function escribirDiario(d) { try { localStorage.setItem("medex.diario", JSON.stringify(d.slice(-200))); } catch {} }
+const TIPOS_SESION = ["aerobico", "fuerza", "equilibrio", "paseo"];
+function hoyISO(d = new Date()) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
+function planDeHoy() {
+  const dow = new Date().getDay(); // 0 domingo
+  const fila = DIAS_PLAN.find(([d]) => d === dow);
+  if (!fila) return { tipo: "descanso", etiqueta: t("hoy.descanso") };
+  const [, tipo, etq] = fila;
+  return { tipo, etiqueta: tipo === "aerobico" ? t("plan.aerobico") : etq.includes("equilibrio") ? t("plan.fuerza_eq") : t("plan.fuerza") };
+}
+function franjaHoy() {
+  const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);
+  if (!v.horas.some((h) => h.nivel === "rojo" || h.nivel === "ambar")) return null; // sin restricciones no hace falta franja
+  const m = (v.mejores || []).map((x) => ({ desde: Math.max(x.desde, 8), hasta: Math.min(x.hasta, 21) })).filter((x) => x.hasta - x.desde >= 2).sort((a, b) => (b.hasta - b.desde) - (a.hasta - a.desde))[0];
+  return m ? `${m.desde}:00–${m.hasta}:00` : null;
+}
+function barrasSemana(diario) {
+  const dias = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return hoyISO(d); });
+  const min = dias.map((iso) => diario.filter((x) => x.fecha === iso).reduce((n, x) => n + (x.min || 0), 0));
+  const max = Math.max(30, ...min);
+  const L = ["L", "M", "X", "J", "V", "S", "D"];
+  return `<svg class="semana" viewBox="0 0 140 44" role="img" aria-label="${t("hoy.semana_aria", { n: min.reduce((a, b) => a + b, 0) })}">${dias.map((iso, i) => { const h = Math.round((min[i] / max) * 28); const d = new Date(iso + "T12:00"); return `<rect x="${i * 20 + 4}" y="${32 - h}" width="12" height="${Math.max(h, 2)}" rx="3" class="${min[i] ? "con" : "sin"}"/><text x="${i * 20 + 10}" y="42" text-anchor="middle">${L[(d.getDay() + 6) % 7]}</text>${min[i] ? `<text x="${i * 20 + 10}" y="${29 - h}" text-anchor="middle" class="val">${min[i]}</text>` : ""}`; }).join("")}</svg>`;
+}
+let diarioAbierto = false;
+function renderHoy() {
+  const box = $("#hoy"); if (!box) return;
+  const diario = leerDiario();
+  const plan = planDeHoy(); const franja = franjaHoy();
+  const semana = diario.filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6);
+  const nSem = semana.length, minSem = semana.reduce((n, x) => n + (x.min || 0), 0);
+  const ultimas = [...diario].reverse().slice(0, 4);
+  box.innerHTML = `
+    <div class="hoy-cab">
+      <div><small>${t("hoy.titulo")}</small><h3>${plan.etiqueta}${franja ? ` <span class="hoy-franja">· ${t("hoy.mejor", { f: franja })}</span>` : ""}</h3></div>
+      <button type="button" class="btn sm" id="btn-registrar">${diarioAbierto ? t("ficha.cerrar") : t("hoy.registrar")}</button>
+    </div>
+    <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
+    ${diarioAbierto ? `<form class="registro" id="form-registro">
+      <div class="chips">${TIPOS_SESION.map((x) => `<label class="chip chip-btn"><input type="radio" name="tipo" value="${x}"${x === (plan.tipo === "descanso" ? "paseo" : plan.tipo) ? " checked" : ""}> ${t("sesion." + x)}</label>`).join("")}</div>
+      <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label>${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><output>5</output></label></div>
+      <small>${t("hoy.sintomas")}</small>
+      <div class="chips">${SINTOMAS.slice(0, 7).map((x) => `<label class="chip chip-btn"><input type="checkbox" name="sint" value="${x.id}"> ${x.nombre}</label>`).join("")}</div>
+      <div class="acciones" style="margin:8px 0 0"><button type="submit" class="btn sm">${t("perf.guardar")}</button></div>
+    </form>` : ""}
+    ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
+  $("#btn-registrar").addEventListener("click", () => { diarioAbierto = !diarioAbierto; renderHoy(); });
+  box.querySelector("#form-registro")?.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const f = new FormData(ev.target);
+    const sint = f.getAll("sint");
+    const d = leerDiario(); d.push({ id: Date.now().toString(36), fecha: hoyISO(), tipo: f.get("tipo") || "aerobico", min: parseInt(f.get("min"), 10) || 0, rpe: parseInt(f.get("rpe"), 10) || 5, sintomas: sint });
+    escribirDiario(d); diarioAbierto = false; renderHoy();
+    toast(sint.length ? t("hoy.guardado_sintomas") : t("hoy.guardado"), { ms: 6000 });
+    if (sint.length) { sintomaAbierto = sint[0]; render(); $("#sintomas-card")?.scrollIntoView({ block: "center" }); }
+  });
+  box.querySelectorAll(".diario-lista .quitar").forEach((b) => b.addEventListener("click", () => { escribirDiario(leerDiario().filter((x) => x.id !== b.dataset.id)); renderHoy(); }));
+}
+
 let sintomaAbierto = null;
 function sintomaDetalle(res) {
   if (!sintomaAbierto) return `<p class="vacio">${t("sintomas.ayuda")}</p>`;
@@ -685,7 +819,7 @@ function sintomaDetalle(res) {
   if (!s) return "";
   return `<div class="sintoma">
     <p>${s.farmacos.length ? t("sintomas.posibles", { f: s.farmacos.join(", ") }) : t("sintomas.ninguno")}</p>
-    <p>${s.consejo}</p>
+    <p>${glosar(s.consejo)}</p>
     ${s.alarma ? `<p class="sintoma-alarma">${s.alarma}</p>` : ""}
   </div>`;
 }
@@ -775,12 +909,13 @@ function render() {
   const veredicto = nA || mayores ? t("veredicto.alerta", { a: nA + mayores }) : nP ? t("veredicto.precaucion", { p: nP }) : t("veredicto.ok");
   $("#veredicto").className = "veredicto " + (nA || mayores ? "v-alerta" : nP ? "v-precaucion" : "v-ok");
   $("#veredicto").innerHTML = `<p>${veredicto}</p>`;
+  renderHoy();
   // lo esencial (3-5 puntos accionables) + señales de alarma
   const esencial = loEsencial(res, 5);
   $("#esencial").innerHTML = (esencial.length ? `
     <section class="esencial">
       <div class="esencial-cab"><h3>${t("esencial.titulo")}</h3>${"speechSynthesis" in window ? `<button type="button" class="btn-sec sm" id="btn-escuchar">${icono(hablando ? "parar" : "escuchar")} ${hablando ? t("escuchar.parar") : t("escuchar")}</button>` : ""}</div>
-      <ol>${esencial.map((p) => `<li class="nivel-${p.nivel}"><span class="punto"></span><span><b>${p.titulo}.</b> ${p.texto}</span></li>`).join("")}</ol>
+      <ol>${esencial.map((p) => `<li class="nivel-${p.nivel}"><span class="punto"></span><span><b>${p.titulo}.</b> ${glosar(p.texto)}</span></li>`).join("")}</ol>
       <p class="esencial-nota">${t("esencial.nota")}</p>
     </section>` : "") + `
     <details class="alarma" id="alarma-card">
@@ -823,7 +958,7 @@ function render() {
         cuerpo.insertAdjacentHTML("beforeend", `
           <article class="regla nivel-${c.regla.nivel}">
             <header><h4>${c.regla.titulo}</h4><span class="nivel">${etiqueta(c.regla.nivel)}</span></header>
-            <p>${c.texto}</p>
+            <p>${glosar(c.texto)}</p>
             <footer>${c.implicados.map((it) => `<span class="chip">${it.principio.nombre}</span>`).join("")}</footer>
           </article>`);
       }
@@ -912,7 +1047,7 @@ function tarjetaFarmaco(g, amb, abierta) {
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
-          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span>${r.fuente ? ` <small class="fuente-regla">${r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
+          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span>${r.fuente ? ` <small class="fuente-regla">${r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
           <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}<a class="enlace-ft" href="${urlFicha(it.principio)}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>
         </div>
       </details>`;

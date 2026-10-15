@@ -1,6 +1,6 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { pdfjs } from "./libs.js?v=202610151112";
-import { normalizar } from "./engine.js?v=202610151112";
+import { pdfjs } from "./libs.js?v=202610151126";
+import { normalizar } from "./engine.js?v=202610151126";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
