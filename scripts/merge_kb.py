@@ -44,6 +44,13 @@ def main(dry=False):
                 for r in parche.get(amb + "_add", []):
                     if r["texto"] not in {x["texto"] for x in c.setdefault(amb, [])}:
                         c[amb].append(r)
+            if "horario" in parche:
+                c["horario"] = parche["horario"]
+        for pid, h in blk.get("principios_horario", {}).items():
+            for c in clases.values():
+                for pr in c["principios"]:
+                    if pr["id"] == pid:
+                        pr["horario"] = h
     kb["clases"] = list(clases.values())
     kb["reglas_combinadas"] = list(reglas.values())
     combos = {c["nombre"]: c for c in kb.get("combinaciones", [])}

@@ -444,7 +444,17 @@
       "fuentes": [
         "ACSM GETP 11ª ed.",
         "ACE"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0.5,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "efecto diurético máximo (necesidad de orinar, bajada de tensión)"
+          }
+        ]
+      }
     },
     {
       "id": "tiazidas",
@@ -523,7 +533,17 @@
       ],
       "fuentes": [
         "ACSM GETP 11ª ed."
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 1,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "efecto diurético"
+          }
+        ]
+      }
     },
     {
       "id": "ahorradores_potasio",
@@ -814,7 +834,17 @@
       "fuentes": [
         "ACSM GETP 11ª ed.",
         "AHA: Angina and physical activity"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 1,
+            "nivel": "ambar",
+            "motivo": "mareo y dolor de cabeza tras la toma"
+          }
+        ]
+      }
     },
     {
       "id": "digoxina",
@@ -960,6 +990,16 @@
           ],
           "umbral_mg": {
             "alta": 0.4
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0.5,
+                "hasta": 4,
+                "nivel": "ambar",
+                "motivo": "mareo al incorporarse"
+              }
+            ]
           }
         },
         {
@@ -1009,7 +1049,17 @@
       "fuentes": [
         "ACSM GETP 11ª ed.",
         "Criterios STOPP/START"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0.5,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "mareo al incorporarse (sobre todo las primeras semanas)"
+          }
+        ]
+      }
     },
     {
       "id": "ivabradina",
@@ -1455,7 +1505,10 @@
             "Insulatard",
             "Humulina NPH"
           ],
-          "unidad": "UI"
+          "unidad": "UI",
+          "horario": {
+            "evitar": []
+          }
         },
         {
           "id": "insulina_rapida",
@@ -1469,7 +1522,17 @@
             "Actrapid",
             "Humulina Regular"
           ],
-          "unidad": "UI"
+          "unidad": "UI",
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0.5,
+                "hasta": 3,
+                "nivel": "rojo",
+                "motivo": "pico de la insulina rápida: riesgo de hipoglucemia si no reduce la dosis o toma hidratos"
+              }
+            ]
+          }
         },
         {
           "id": "insulina_mezcla",
@@ -1539,7 +1602,17 @@
         "ADA Standards of Care 2026 — Physical activity",
         "Riddell et al. Lancet Diabetes Endocrinol 2017 (consenso ejercicio en DM1)"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0.5,
+            "hasta": 3,
+            "nivel": "ambar",
+            "motivo": "pico de acción de la insulina rápida: mayor riesgo de bajada de azúcar"
+          }
+        ]
+      }
     },
     {
       "id": "sulfonilureas",
@@ -1625,7 +1698,17 @@
       ],
       "fuentes": [
         "ADA Standards of Care 2026"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 1,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "pico de efecto: mayor riesgo de bajada de azúcar"
+          }
+        ]
+      }
     },
     {
       "id": "metformina",
@@ -1684,7 +1767,17 @@
       "fuentes": [
         "ADA Standards of Care 2026",
         "Konopka et al. Aging Cell 2019 (metformina y adaptación aeróbica)"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 1,
+            "nivel": "ambar",
+            "motivo": "molestias digestivas justo tras la toma"
+          }
+        ]
+      }
     },
     {
       "id": "isglt2",
@@ -1849,7 +1942,17 @@
       "fuentes": [
         "Wilding et al. NEJM 2021 (STEP 1, composición corporal)",
         "ADA Standards of Care 2026"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 24,
+            "nivel": "ambar",
+            "motivo": "náuseas el día de la inyección (solo en semanas de subida de dosis)"
+          }
+        ]
+      }
     },
     {
       "id": "pioglitazona",
@@ -2069,7 +2172,17 @@
       "fuentes": [
         "ACSM GETP 11ª ed.",
         "Guía ACR osteoporosis por glucocorticoides 2022"
-      ]
+      ],
+      "horario": {
+        "preferir": [
+          {
+            "desde": 4,
+            "hasta": 10,
+            "nivel": "verde",
+            "motivo": "si tiene diabetes, el ejercicio a media tarde contrarresta la subida de glucosa del corticoide matutino"
+          }
+        ]
+      }
     },
     {
       "id": "benzodiacepinas",
@@ -2195,7 +2308,23 @@
       "fuentes": [
         "Criterios Beers 2023 / STOPP-START v3",
         "Woolcott et al. Arch Intern Med 2009"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 3,
+            "nivel": "rojo",
+            "motivo": "somnolencia y reflejos lentos tras la toma"
+          },
+          {
+            "desde": 3,
+            "hasta": 8,
+            "nivel": "ambar",
+            "motivo": "somnolencia residual"
+          }
+        ]
+      }
     },
     {
       "id": "hipnoticos_z",
@@ -2218,6 +2347,16 @@
           ],
           "umbral_mg": {
             "alta": 10
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 7,
+                "nivel": "rojo",
+                "motivo": "efecto hipnótico"
+              }
+            ]
           }
         },
         {
@@ -2261,7 +2400,23 @@
       ],
       "fuentes": [
         "Criterios Beers 2023"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 7,
+            "nivel": "rojo",
+            "motivo": "efecto hipnótico"
+          },
+          {
+            "desde": 7,
+            "hasta": 9,
+            "nivel": "ambar",
+            "motivo": "somnolencia residual"
+          }
+        ]
+      }
     },
     {
       "id": "isrs_isrsn",
@@ -2510,7 +2665,17 @@
       "fuentes": [
         "Criterios Beers 2023",
         "ACSM GETP 11ª ed."
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 8,
+            "nivel": "ambar",
+            "motivo": "somnolencia y mareo"
+          }
+        ]
+      }
     },
     {
       "id": "otros_antidepresivos",
@@ -2534,6 +2699,16 @@
           ],
           "umbral_mg": {
             "alta": 30
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 9,
+                "nivel": "ambar",
+                "motivo": "somnolencia matutina"
+              }
+            ]
           }
         },
         {
@@ -2544,6 +2719,16 @@
           ],
           "umbral_mg": {
             "alta": 150
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 9,
+                "nivel": "ambar",
+                "motivo": "somnolencia y mareo matutinos"
+              }
+            ]
           }
         }
       ],
@@ -2576,7 +2761,17 @@
       ],
       "fuentes": [
         "Criterios Beers 2023"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 8,
+            "nivel": "ambar",
+            "motivo": "somnolencia (toma nocturna)"
+          }
+        ]
+      }
     },
     {
       "id": "antipsicoticos",
@@ -2602,6 +2797,16 @@
           ],
           "umbral_mg": {
             "alta": 300
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 8,
+                "nivel": "ambar",
+                "motivo": "somnolencia"
+              }
+            ]
           }
         },
         {
@@ -2692,7 +2897,17 @@
       "fuentes": [
         "ACSM GETP 11ª ed.",
         "Criterios Beers 2023"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 3,
+            "nivel": "ambar",
+            "motivo": "sedación y mareo tras la toma"
+          }
+        ]
+      }
     },
     {
       "id": "antiepilepticos",
@@ -2833,7 +3048,17 @@
         "Pimentel et al. Epilepsy Behav 2015 (ejercicio en epilepsia)",
         "Fichas técnicas AEMPS"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 2,
+            "nivel": "ambar",
+            "motivo": "mareo o somnolencia tras la toma (pregabalina, gabapentina)"
+          }
+        ]
+      }
     },
     {
       "id": "levodopa",
@@ -2870,6 +3095,16 @@
           ],
           "umbral_mg": {
             "alta": 1.5
+          },
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 2,
+                "nivel": "ambar",
+                "motivo": "posible somnolencia súbita"
+              }
+            ]
           }
         },
         {
@@ -2936,7 +3171,25 @@
         "Guía MDS/ Parkinson's Foundation exercise recommendations 2023",
         "Schenkman et al. JAMA Neurol 2018 (SPARX)"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "preferir": [
+          {
+            "desde": 0.75,
+            "hasta": 2.5,
+            "nivel": "verde",
+            "motivo": "periodo ON: mejor movilidad"
+          }
+        ],
+        "evitar": [
+          {
+            "desde": 3.5,
+            "hasta": 5,
+            "nivel": "ambar",
+            "motivo": "fin de dosis (OFF)"
+          }
+        ]
+      }
     },
     {
       "id": "opioides",
@@ -3082,7 +3335,17 @@
       "fuentes": [
         "Criterios Beers 2023",
         "CDC Opioid Guideline 2022"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 2,
+            "nivel": "ambar",
+            "motivo": "somnolencia tras la toma (formas de liberación rápida)"
+          }
+        ]
+      }
     },
     {
       "id": "broncodilatadores",
@@ -3608,7 +3871,17 @@
       ],
       "fuentes": [
         "Criterios Beers 2023"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 5,
+            "nivel": "ambar",
+            "motivo": "somnolencia"
+          }
+        ]
+      }
     },
     {
       "id": "anticolinergicos_urinarios",
@@ -4507,7 +4780,17 @@
       ],
       "fuentes": [
         "ACSM GETP 11ª ed."
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0.5,
+            "hasta": 3,
+            "nivel": "ambar",
+            "motivo": "somnolencia y mareo"
+          }
+        ]
+      }
     },
     {
       "id": "vasodilatadores_directos",
@@ -5187,7 +5470,17 @@
       ],
       "fuentes": [
         "ADA Standards of Care 2026"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0.5,
+            "hasta": 2.5,
+            "nivel": "ambar",
+            "motivo": "pico de repaglinida tras la comida"
+          }
+        ]
+      }
     },
     {
       "id": "orlistat",
@@ -5529,7 +5822,17 @@
       "fuentes": [
         "Ficha técnica AEMPS",
         "Guía NICE TDAH 2018"
-      ]
+      ],
+      "horario": {
+        "preferir": [
+          {
+            "desde": 1,
+            "hasta": 6,
+            "nivel": "verde",
+            "motivo": "mejor concentración y motivación"
+          }
+        ]
+      }
     },
     {
       "id": "anticolinesterasicos",
@@ -5711,7 +6014,17 @@
       "fuentes": [
         "Guía SEN cefaleas 2020",
         "Amin et al. J Headache Pain 2018 (ejercicio y migraña)"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 3,
+            "nivel": "rojo",
+            "motivo": "no haga ejercicio intenso tras un triptán"
+          }
+        ]
+      }
     },
     {
       "id": "preventivos_migrana_cgrp",
@@ -5830,7 +6143,17 @@
           },
           "senales_extra": [
             "anticolinergico"
-          ]
+          ],
+          "horario": {
+            "evitar": [
+              {
+                "desde": 0,
+                "hasta": 6,
+                "nivel": "ambar",
+                "motivo": "somnolencia prolongada"
+              }
+            ]
+          }
         },
         {
           "id": "metocarbamol",
@@ -5881,7 +6204,17 @@
       "fuentes": [
         "Criterios Beers 2023",
         "Guía NICE lumbalgia 2020"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 3,
+            "nivel": "ambar",
+            "motivo": "somnolencia y debilidad"
+          }
+        ]
+      }
     },
     {
       "id": "metamizol",
@@ -5940,7 +6273,17 @@
       ],
       "fuentes": [
         "Nota AEMPS metamizol 2018/2024"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 1.5,
+            "nivel": "ambar",
+            "motivo": "posible bajada de tensión"
+          }
+        ]
+      }
     },
     {
       "id": "otros_antidepresivos_2",
@@ -6143,7 +6486,17 @@
         "Guía MDS 2023",
         "Ficha técnica AEMPS"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 2,
+            "nivel": "ambar",
+            "motivo": "somnolencia o mareo tras la toma"
+          }
+        ]
+      }
     },
     {
       "id": "vertigo",
@@ -6232,7 +6585,17 @@
         "Guía AAO-HNS vértigo posicional 2017",
         "Criterios Beers 2023"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "somnolencia (cinarizina, sulpirida)"
+          }
+        ]
+      }
     },
     {
       "id": "deshabituacion",
@@ -6355,7 +6718,17 @@
         "Haasova et al. Addiction 2013 (ejercicio y craving)",
         "Ficha técnica AEMPS"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 2,
+            "nivel": "ambar",
+            "motivo": "somnolencia (metadona)"
+          }
+        ]
+      }
     },
     {
       "id": "melatonina_otros_sueno",
@@ -8105,7 +8478,17 @@
         "Ficha técnica AEMPS",
         "Nota AEMPS metoclopramida 2013 / domperidona 2014"
       ],
-      "combinable": true
+      "combinable": true,
+      "horario": {
+        "evitar": [
+          {
+            "desde": 0,
+            "hasta": 2,
+            "nivel": "ambar",
+            "motivo": "somnolencia (metoclopramida)"
+          }
+        ]
+      }
     },
     {
       "id": "eii_mesalazina",
@@ -8730,7 +9113,17 @@
       ],
       "fuentes": [
         "Ficha técnica AEMPS"
-      ]
+      ],
+      "horario": {
+        "evitar": [
+          {
+            "desde": 1,
+            "hasta": 4,
+            "nivel": "ambar",
+            "motivo": "efecto diurético"
+          }
+        ]
+      }
     },
     {
       "id": "heparinas",
@@ -9101,7 +9494,8 @@
         "todas": [
           "enmascara_hipoglucemia",
           "hipoglucemia"
-        ]
+        ],
+        "sin_condicion": "diabetes"
       },
       "nivel": "alerta",
       "titulo": "Betabloqueante + fármaco que baja el azúcar",

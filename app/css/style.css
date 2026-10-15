@@ -328,3 +328,35 @@ details.bloque .condiciones, details.bloque .fila { margin-top: 4px; }
 .enlace-ft { font-size: .78rem; color: var(--accent); text-decoration: none; font-weight: 600; }
 .enlace-ft:hover { text-decoration: underline; }
 body[data-modo="paciente"] .enlace-ft { display: none; }
+
+/* ---------- momentos de toma y ¿cuándo entrenar? ---------- */
+#lista-meds li { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nombre quitar" "dosis quitar" "momentos quitar"; }
+.momentos { grid-area: momentos; display: flex; gap: 4px; margin-top: 4px; }
+.momentos .mom { min-width: 30px; height: 26px; padding: 0 7px; border-radius: 999px; border: 1.5px solid var(--line-strong); background: var(--surface); color: var(--muted); font-size: .72rem; font-weight: 700; }
+.momentos .mom[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-deep); }
+.intro-cuando { color: var(--muted); max-width: 70ch; }
+.timeline { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 2px; margin: 14px 0 8px; }
+.timeline .hora { height: 34px; border-radius: 5px; background: var(--surface-2); position: relative; }
+.timeline .hora span { position: absolute; left: 2px; top: -16px; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.timeline .hora.nivel-verde { background: var(--info); }
+.timeline .hora.nivel-ambar { background: var(--precaucion); }
+.timeline .hora.nivel-rojo { background: var(--alerta); }
+.timeline .hora.nivel-neutro { background: var(--surface-2); border: 1px solid var(--line); }
+.mejores { margin: 10px 0 4px; font-size: 1rem; }
+.mejores b { color: var(--info-ink); background: var(--info-soft); padding: 2px 8px; border-radius: 999px; }
+.horas-tomas label { font-size: .8rem; }
+.horas-tomas input { width: 70px; }
+ul.motivos { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+ul.motivos li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 10px; align-items: start; max-width: 70ch; font-size: .92rem; }
+ul.motivos li .punto { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: var(--line-strong); }
+ul.motivos li.nivel-rojo .punto { background: var(--alerta); } ul.motivos li.nivel-ambar .punto { background: var(--precaucion); } ul.motivos li.nivel-verde .punto { background: var(--info); }
+
+/* ---------- perfiles ---------- */
+.cab-panel { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.cab-panel h2 { margin: 0; }
+.perfiles { display: grid; gap: 8px; padding: 12px; border-radius: var(--r-md); background: var(--surface-2); margin-bottom: 12px; }
+.perfiles ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.perfiles li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); font-size: .9rem; }
+.perfiles li .nom { flex: 1 1 120px; font-weight: 600; min-width: 0; }
+.perfiles li small { flex: 1 1 100%; }
+.perfiles .btn-sec.sm { min-height: 32px; padding: 4px 10px; font-size: .8rem; }

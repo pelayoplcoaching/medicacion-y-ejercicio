@@ -138,6 +138,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
     }
     if (ok && si.edad_min != null && !(ctx.edad != null && ctx.edad >= si.edad_min)) ok = false;
     if (ok && si.condicion && !(ctx.condiciones && ctx.condiciones.has(si.condicion))) ok = false;
+    if (ok && si.sin_condicion && ctx.condiciones && ctx.condiciones.has(si.sin_condicion)) ok = false;
     if (!ok) continue;
     combinadas.push({ regla: r, n: n || implicados.size, implicados: [...implicados], texto: r.texto.replace("{n}", String(n || implicados.size)) });
   }
@@ -218,4 +219,63 @@ export function informeTexto(kb, res, ctx) {
   }
   L.push("", kb.aviso, "", "By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia");
   return L.join("\n");
+}
+
+/* ---------- ¿Cuándo entrenar? ---------- */
+export const MOMENTOS = ["desayuno", "comida", "cena", "noche"];
+export const HORA_MOMENTO = { desayuno: 8, comida: 14, cena: 21, noche: 23 };
+export const MOMENTO_TXT = { desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Al acostarse" };
+
+/** Momentos por defecto a partir del número de tomas (cuando no se han indicado). */
+export function momentosPorDefecto(tomas) {
+  return [["desayuno"], ["desayuno", "cena"], ["desayuno", "comida", "cena"], MOMENTOS][Math.min(Math.max(tomas || 1, 1), 4) - 1];
+}
+
+/**
+ * Calcula, para cada hora del día (6–23), el nivel de idoneidad para entrenar según las tomas.
+ * @returns {{horas: [{h, nivel, motivos:[]}], franjas: [{desde, hasta, nivel}], mejores: [...], avisos: [...]}}
+ */
+export function ventanaEntrenamiento(indice, meds, horasMomento = HORA_MOMENTO) {
+  const NIV = { verde: -1, ambar: 1, rojo: 3 };
+  const horas = [];
+  for (let h = 6; h <= 23; h++) horas.push({ h, score: 0, motivos: [] });
+  const avisos = [];
+  for (const m of meds) {
+    const ref = indice.porId.get(m.pid);
+    if (!ref) continue;
+    const horario = ref.principio.horario || ref.clase.horario;
+    if (!horario) continue;
+    const momentos = (m.momentos && m.momentos.length ? m.momentos : momentosPorDefecto(m.tomas)).filter((x) => horasMomento[x] != null);
+    const reglas = [...(horario.evitar || []).map((r) => ({ ...r, tipo: "evitar" })), ...(horario.preferir || []).map((r) => ({ ...r, tipo: "preferir" }))];
+    for (const mom of momentos) {
+      const t0 = horasMomento[mom];
+      for (const r of reglas) {
+        if (r.hasta - r.desde >= 24) { avisos.push({ farmaco: ref.principio.nombre, motivo: r.motivo, nivel: r.nivel }); continue; }
+        for (const hh of horas) {
+          // la toma de la noche afecta a la mañana siguiente
+          const rel = ((hh.h - t0) + 24) % 24;
+          if (rel >= r.desde && rel < r.hasta) {
+            hh.score += NIV[r.nivel];
+            hh.motivos.push({ farmaco: ref.principio.nombre, momento: mom, motivo: r.motivo, nivel: r.nivel, tipo: r.tipo });
+          }
+        }
+      }
+    }
+  }
+  for (const hh of horas) hh.nivel = hh.score >= 3 ? "rojo" : hh.score >= 1 ? "ambar" : hh.score < 0 ? "verde" : "neutro";
+  // franjas contiguas
+  const franjas = [];
+  for (const hh of horas) {
+    const last = franjas[franjas.length - 1];
+    if (last && last.nivel === hh.nivel) last.hasta = hh.h + 1; else franjas.push({ desde: hh.h, hasta: hh.h + 1, nivel: hh.nivel });
+  }
+  const mejores = franjas.filter((f) => (f.nivel === "verde" || f.nivel === "neutro") && f.hasta - f.desde >= 2 && f.desde < 22).sort((a, b) => (b.nivel === "verde") - (a.nivel === "verde") || (b.hasta - b.desde) - (a.hasta - a.desde)).slice(0, 2);
+  // motivos agrupados (para explicar)
+  const motivosMap = new Map();
+  for (const hh of horas) for (const mo of hh.motivos) {
+    const k = `${mo.farmaco}|${mo.momento}|${mo.motivo}`;
+    const e = motivosMap.get(k) || { ...mo, desde: hh.h, hasta: hh.h + 1 };
+    e.hasta = hh.h + 1; motivosMap.set(k, e);
+  }
+  return { horas, franjas, mejores, motivos: [...motivosMap.values()], avisos };
 }

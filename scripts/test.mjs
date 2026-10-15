@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const { construirIndice, evaluar, buscar } = await import(path.join(ROOT, "app/js/engine.js"));
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento } = await import(path.join(ROOT, "app/js/engine.js"));
 const { extraerMedicacion } = await import(path.join(ROOT, "app/js/parser.js"));
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -136,6 +136,19 @@ console.log("Motor de reglas");
   check("condición NYHA III–IV", ids.includes("nyha34"));
   const res2 = evaluar(datos, meds, { edad: 50, condiciones: new Set() });
   check("sin condiciones no se disparan", !res2.combinadas.some((c) => ["renal_grave", "fragil_plan", "nyha34"].includes(c.regla.id)));
+}
+
+console.log("Momentos y ¿cuándo entrenar?");
+{
+  const r = extraerMedicacion(`FUROSEMIDA 40 MG 30 COMPRIMIDOS\n16/03/21\n1@desayuno\nLorazepam 1 mg 0-0-1\nNovorapid 6 UI en desayuno, comida y cena`, indice);
+  check("momentos desde columna PDF (furosemida desayuno)", JSON.stringify(get(r, "furosemida")?.momentos) === '["desayuno"]');
+  check("momentos desde pauta 0-0-1 (lorazepam cena)", JSON.stringify(get(r, "lorazepam")?.momentos) === '["cena"]');
+  check("momentos desde texto (insulina 3 tomas)", get(r, "insulina_rapida")?.momentos?.length === 3);
+  const v = ventanaEntrenamiento(indice, r.reconocidos.map((x) => ({ pid: x.pid, tomas: x.tomas, momentos: x.momentos })));
+  check("insulina rápida: 9–11 h en rojo", v.horas.find((h) => h.h === 9)?.nivel === "rojo" && v.horas.find((h) => h.h === 10)?.nivel === "rojo");
+  check("hay franjas preferibles", v.mejores.length >= 1);
+  const v2 = ventanaEntrenamiento(indice, [{ pid: "atorvastatina", tomas: 1, momentos: ["cena"] }]);
+  check("sin fármacos con horario → sin motivos", v2.motivos.length === 0);
 }
 
 console.log("Integridad de datos");

@@ -1,5 +1,5 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150856";
+import { normalizar } from "./engine.js?v=202610150904";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -29,6 +29,23 @@ export function tomasDesdePauta(n) {
   if (comidas) return Math.min(comidas, 4);
   if (/semana|semanal/.test(n)) return 1;
   return null;
+}
+
+/** Momentos de toma a partir de la pauta escrita (1-0-1, "por la noche", "@desayuno" del lector de PDF…). */
+export function momentosDesdePauta(n, siguientes = []) {
+  const res = new Set();
+  let m;
+  if ((m = n.match(/\b([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)(?:\s*[-\/]\s*([0-9]|[0-9][.,]5))?\b/))) {
+    const v = [m[1], m[2], m[3], m[4]].map((x) => (x == null ? 0 : parseFloat(x.replace(",", "."))));
+    if (v[0] > 0) res.add("desayuno"); if (v[1] > 0) res.add("comida"); if (v[2] > 0) res.add("cena"); if (v[3] > 0) res.add("noche");
+  }
+  const txt = [n, ...siguientes].join(" ");
+  for (const [re, mom] of [[/@desayuno|\bdesayuno|\bmanana\b|\bal levantarse|\ben ayunas/, "desayuno"], [/@comida|\bcomida|\bmediodia/, "comida"], [/@cena|\bcena/, "cena"], [/@noche|\bal acostarse|\bpor la noche|\bnoche\b|\bantes de dormir/, "noche"]]) if (re.test(txt)) res.add(mom);
+  if (!res.size) {
+    if (/cada\s*12\s*h|\b(dos|2)\s*veces/.test(txt)) { res.add("desayuno"); res.add("cena"); }
+    else if (/cada\s*8\s*h|\b(tres|3)\s*veces/.test(txt)) { res.add("desayuno"); res.add("comida"); res.add("cena"); }
+  }
+  return [...res];
 }
 
 /**
@@ -63,12 +80,14 @@ export function extraerMedicacion(texto, indice) {
         });
       }
       let tomasC = tomasDesdePauta(n);
-      if (tomasC == null) { let unos = 0; for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; if (/^(1|0[.,]5|2)$/.test(l)) unos++; } if (unos) tomasC = Math.min(unos, 4); }
+      const bloqueC = []; for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; bloqueC.push(l); }
+      if (tomasC == null) { let unos = 0; for (const l of bloqueC) if (/^(1|0[.,]5|2)(@[a-z]+)?$/.test(l)) unos++; if (unos) tomasC = Math.min(unos, 4); }
+      const momentosC = momentosDesdePauta(n, bloqueC);
       hit.componentes.forEach((c, k) => {
         if (vistos.has(c.pid)) return;
         vistos.add(c.pid);
         const refC = indice.porId.get(c.pid);
-        reconocidos.push({ pid: c.pid, dosis: asignadas ? asignadas[k] : c.dosis ?? null, tomas: tomasC || 1, unidad: refC.principio.unidad || "mg", combo: hit.texto, origen: linea.slice(0, 80) });
+        reconocidos.push({ pid: c.pid, dosis: asignadas ? asignadas[k] : c.dosis ?? null, tomas: tomasC || 1, unidad: refC.principio.unidad || "mg", combo: hit.texto, momentos: momentosC, origen: linea.slice(0, 80) });
       });
       continue;
     }
@@ -114,16 +133,14 @@ export function extraerMedicacion(texto, indice) {
     // tomas: de la propia línea o, en hojas con columnas (Desayuno/Comida/Cena/Acostarse),
     // de las líneas siguientes que solo contienen "1", "0,5", etc. hasta la próxima línea de fármaco
     let tomas = tomasDesdePauta(n);
+    const bloque = [];
+    for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; bloque.push(l); }
     if (tomas == null) {
       let unos = 0;
-      for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) {
-        const l = normalizar(lineas[j]);
-        if (cat.some((e) => e.re.test(l))) break; // siguiente fármaco
-        if (/^(1|0[.,]5|2|1[.,]5)$/.test(l)) unos++;
-        else if (/^(cronico|unidades|via|agudo|en la |en el |despues|antes)/.test(l) || /^\d{2}\/\d{2}\/\d{2,4}$/.test(l)) continue;
-      }
+      for (const l of bloque) if (/^(1|0[.,]5|2|1[.,]5)(@[a-z]+)?$/.test(l)) unos++;
       if (unos) tomas = Math.min(unos, 4);
     }
+    const momentos = momentosDesdePauta(n, bloque);
     // "si precisa" / "a demanda" en la línea o en las siguientes del bloque
     let aDemanda = /\b(si precisa|a demanda|si dolor|si fiebre|si necesita|cuando precise)\b/.test(n);
     if (!aDemanda) for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; if (/\b(si precisa|a demanda|si dolor|si fiebre|si necesita|cuando precise)\b/.test(l)) { aDemanda = true; break; } }
@@ -133,12 +150,13 @@ export function extraerMedicacion(texto, indice) {
     if (dosis != null && umbral != null && unidad === "mg" && dosis * tomas > umbral * 6) dosis = null;
     if (vistos.has(hit.pid)) continue;
     vistos.add(hit.pid);
-    reconocidos.push({ pid: hit.pid, dosis, tomas, unidad, aDemanda, origen: linea.slice(0, 80) });
+    reconocidos.push({ pid: hit.pid, dosis, tomas, unidad, aDemanda, momentos, origen: linea.slice(0, 80) });
   }
   return { reconocidos, noReconocidos };
 }
 
-/** Texto de un PDF usando pdf.js (global pdfjsLib cargado desde CDN). */
+/** Texto de un PDF usando pdf.js (global pdfjsLib cargado desde CDN).
+ *  En hojas con columnas de tomas (Desayuno / Comida / Cena / Al acostarse) anota cada "1" con su columna: "1@desayuno". */
 export async function textoDePdf(file) {
   if (!window.pdfjsLib) throw new Error("El lector de PDF no se ha podido cargar en este entorno.");
   const buf = await file.arrayBuffer();
@@ -147,16 +165,35 @@ export async function textoDePdf(file) {
   for (let p = 1; p <= pdf.numPages; p++) {
     const page = await pdf.getPage(p);
     const content = await page.getTextContent();
-    // reagrupar por coordenada vertical para reconstruir líneas
+    const items = content.items.filter((it) => it.str && it.str.trim());
+    // columnas de tomas: cabeceras y su x central
+    const cols = [];
+    for (const it of items) {
+      const t = normalizar(it.str);
+      const mom = /^desayuno$/.test(t) ? "desayuno" : /^comida$/.test(t) ? "comida" : /^cena$/.test(t) ? "cena" : /acostarse/.test(t) ? "noche" : null;
+      if (mom && !cols.some((c) => c.mom === mom)) cols.push({ mom, x: it.transform[4] + (it.width || 0) / 2 });
+    }
     const filas = new Map();
-    for (const it of content.items) {
-      if (!it.str) continue;
+    for (const it of items) {
       const y = Math.round(it.transform[5] / 3) * 3;
       if (!filas.has(y)) filas.set(y, []);
-      filas.get(y).push({ x: it.transform[4], s: it.str });
+      let str = it.str;
+      if (cols.length && /^(1|0,5|0\.5|2|1,5)$/.test(str.trim())) {
+        const xc = it.transform[4] + (it.width || 0) / 2;
+        let best = null;
+        for (const c of cols) { const d = Math.abs(c.x - xc); if (d < 40 && (!best || d < best.d)) best = { d, mom: c.mom }; }
+        if (best) str = str.trim() + "@" + best.mom;
+      }
+      filas.get(y).push({ x: it.transform[4], s: str });
     }
     const ys = [...filas.keys()].sort((a, b) => b - a);
-    for (const y of ys) lineas.push(filas.get(y).sort((a, b) => a.x - b.x).map((t) => t.s).join(" ").replace(/\s+/g, " ").trim());
+    for (const y of ys) {
+      const fila = filas.get(y).sort((a, b) => a.x - b.x);
+      // los "1@momento" van en líneas propias para que el lector cuente las tomas
+      const texto = fila.filter((t) => !/@/.test(t.s)).map((t) => t.s).join(" ").replace(/\s+/g, " ").trim();
+      if (texto) lineas.push(texto);
+      for (const t of fila) if (/@/.test(t.s)) lineas.push(t.s);
+    }
   }
   return lineas.join("\n");
 }

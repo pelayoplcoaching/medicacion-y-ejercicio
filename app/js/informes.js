@@ -1,7 +1,7 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150856";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610150904";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -44,17 +44,17 @@ async function prepararFuentes(doc) {
 
 /* ---------- maquetador ---------- */
 class Doc {
-  constructor(doc, font, logo, { titulo, subtitulo, tipo }) {
-    this.d = doc; this.font = font; this.logo = logo;
+  constructor(doc, font, logo, { titulo, subtitulo, tipo, escala = 1 }) {
+    this.d = doc; this.font = font; this.logo = logo; this.escala = escala;
     this.titulo = titulo; this.subtitulo = subtitulo; this.tipo = tipo;
     this.ml = 16; this.w = 210 - 32; this.bottom = 297 - 18; this.y = 0;
     this.cabecera();
   }
   f(style = "normal", size = 9.5, color = C.ink) {
     const st = style === "black" && this.font === "helvetica" ? "bold" : style;
-    this.d.setFont(this.font, st); this.d.setFontSize(size); this.d.setTextColor(...color);
+    this.d.setFont(this.font, st); this.d.setFontSize(size * this.escala); this.d.setTextColor(...color);
   }
-  lh(size) { return size * 0.46; }
+  lh(size) { return size * this.escala * 0.46; }
   cabecera() {
     const d = this.d;
     d.setFillColor(...C.soft); d.rect(0, 0, 210, 26, "F");
@@ -246,6 +246,29 @@ function prescripcion(res, ctx) {
 
 const SENAL_CORTA = { hipotension: "↓TA", bradicardia: "↓FC", fc_no_valida: "FC no válida", hipoglucemia: "hipoglucemia", enmascara_hipoglucemia: "enmascara hipogluc.", deshidratacion: "deshidratación", hiperpotasemia: "↑K", hipopotasemia: "↓K", hiponatremia: "↓Na", renal: "riesgo renal", sedacion: "sedación", anticolinergico: "anticolinérgico", caidas: "caídas", sangrado: "sangrado", miopatia: "miopatía", tendon: "tendón", qt: "QT", calor: "termorregulación", taquicardia: "↑FC", perdida_muscular: "sarcopenia", hueso: "hueso", trombosis: "TEV", inmunosupresion: "inmunosupresión", fatiga: "fatiga", hipertension: "↑TA", fotosensibilidad: "fotosensibilidad", litio: "litio" };
 
+const hh = (h) => `${String(h).padStart(2, "0")}:00`;
+function seccionCuando(pg, ctx, { paciente = false } = {}) {
+  const v = ctx.ventana;
+  if (!v) return;
+  const hayInfo = v.motivos.length || v.avisos.length;
+  pg.seccion(paciente ? "Cuándo entrenar" : "Ventana horaria recomendada", hayInfo ? "según la hora de las tomas" : "");
+  if (!hayInfo) { pg.parrafo(paciente ? "Ninguno de sus medicamentos condiciona la hora de entrenar: elija el momento del día que mejor le encaje y sea constante." : "Ningún fármaco de la lista condiciona la hora de la sesión.", { size: paciente ? 9.5 : 8.5 }); return; }
+  // barra horaria
+  const d = pg.d, x0 = pg.ml, w = pg.w, n = v.horas.length, cw = w / n, hb = 7;
+  pg.salto(hb + 10);
+  v.horas.forEach((x, i) => {
+    const col = x.nivel === "rojo" ? C.alerta : x.nivel === "ambar" ? C.precaucion : x.nivel === "verde" ? C.info : C.soft;
+    d.setFillColor(...col); d.rect(x0 + i * cw + 0.3, pg.y, cw - 0.6, hb, "F");
+    if (x.h % 3 === 0) { pg.f("normal", 6.5, C.muted); d.text(hh(x.h), x0 + i * cw, pg.y + hb + 3.5); }
+  });
+  pg.y += hb + 7;
+  if (v.mejores.length) pg.parrafo((paciente ? "Mejores momentos para entrenar: " : "Franjas preferibles: ") + v.mejores.map((f) => `${hh(f.desde)}–${hh(f.hasta)}`).join(" y ") + ".", { size: paciente ? 10 : 9, style: "bold" });
+  const horasTxt = ["desayuno", "comida", "cena", "noche"].map((m) => `${MOMENTO_TXT[m].toLowerCase()} ${hh(ctx.horas?.[m] ?? 0)}`).join(", ");
+  pg.parrafo(`Horas de las tomas consideradas: ${horasTxt}.`, { size: 7.5, color: C.muted });
+  for (const m of [...v.motivos].sort((a, b) => a.desde - b.desde)) pg.vineta(m.nivel === "rojo" ? "alerta" : m.nivel === "ambar" ? "precaucion" : "info", `${hh(m.desde)}–${hh(m.hasta)} · ${m.farmaco} (toma de ${MOMENTO_TXT[m.momento].toLowerCase()}): ${m.motivo}`, { size: paciente ? 9 : 8.3 });
+  for (const a of v.avisos) pg.vineta(a.nivel === "rojo" ? "alerta" : "precaucion", `${a.farmaco}: ${a.motivo}`, { size: paciente ? 9 : 8.3 });
+}
+
 /* ---------- INFORME CLÍNICO (médico) ---------- */
 export async function pdfMedico(kb, res, ctx) {
   const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
@@ -282,6 +305,7 @@ export async function pdfMedico(kb, res, ctx) {
     { size: 8 }
   );
   pg.parrafo("Marco: OMS 2020 / ACSM GETP 11.ª ed. Ajustar según valoración funcional (SPPB, Vivifrail) y comorbilidad. Programa multicomponente; progresar primero el volumen y después la intensidad.", { size: 7.5, color: C.muted });
+  if (ctx.ventana && (ctx.ventana.motivos.length || ctx.ventana.avisos.length)) seccionCuando(pg, ctx);
 
   const claves = [];
   for (const c of res.combinadas) if (c.regla.nivel === "alerta") claves.push({ nivel: "alerta", titulo: c.regla.titulo, texto: c.texto, pie: "Implicados: " + c.implicados.map((i) => i.principio.nombre).join(", ") });
@@ -340,7 +364,8 @@ export async function pdfPaciente(kb, res, ctx) {
   const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo.png");
-  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente" });
+  const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra mayor y solo lo esencial
+  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.12 : 1 });
 
   pg.parrafo("Este plan se ha preparado a partir de la medicación que usted ha introducido. Es información general para ayudarle a moverse con seguridad y a hablar con su médico; no sustituye a su consejo ni cambia ningún tratamiento.", { size: 9, color: C.muted });
 
@@ -385,6 +410,8 @@ export async function pdfPaciente(kb, res, ctx) {
     { size: 8.5 }
   );
 
+  seccionCuando(pg, ctx, { paciente: true });
+
   const alertas = [];
   for (const c of res.combinadas) if (c.regla.nivel === "alerta") alertas.push({ titulo: c.regla.titulo, texto: c.texto });
   for (const [amb] of AMBITOS) for (const g of res.ambitos[amb]) for (const r of g.reglas) if (r.nivel === "alerta") alertas.push({ titulo: g.item.principio.nombre, texto: r.texto });
@@ -403,7 +430,8 @@ export async function pdfPaciente(kb, res, ctx) {
   );
 
   for (const [amb, titulo] of AMBITOS) {
-    const grupos = res.ambitos[amb].map((g) => ({ it: g.item, reglas: g.reglas.filter((r) => r.nivel !== "alerta") })).filter((g) => g.reglas.length);
+    if (compacto && amb !== "general") continue; // en la versión para el paciente solo "antes de empezar"; el detalle está en la app
+    const grupos = res.ambitos[amb].map((g) => ({ it: g.item, reglas: g.reglas.filter((r) => r.nivel !== "alerta" && (!compacto || r.nivel === "precaucion")) })).filter((g) => g.reglas.length);
     const comb = res.combinadas.filter((c) => (c.regla.ambitos || []).includes(amb) && c.regla.nivel !== "alerta");
     if (!grupos.length && !comb.length) continue;
     pg.seccion(titulo);
@@ -415,7 +443,7 @@ export async function pdfPaciente(kb, res, ctx) {
     }
   }
 
-  const ddi = res.interacciones.filter((x) => ORDEN_DDI[x.nivel] >= 2);
+  const ddi = res.interacciones.filter((x) => ORDEN_DDI[x.nivel] >= (compacto ? 3 : 2));
   if (ddi.length) {
     pg.seccion("Medicamentos que se afectan entre sí");
     pg.parrafo("No significa que la combinación sea incorrecta (muchas veces es necesaria), sino que conviene conocerla y que su médico la tenga en cuenta.", { size: 8.3, color: C.muted });
@@ -430,6 +458,7 @@ export async function pdfPaciente(kb, res, ctx) {
     "Dolor muscular generalizado, debilidad u orina oscura en los días siguientes.",
     tiene(res, "sangrado") ? "Cualquier golpe en la cabeza, aunque se encuentre bien." : null,
   ].filter(Boolean)) pg.vineta("alerta", t, { size: 8.8 });
+  if (compacto) pg.parrafo("Este documento recoge lo esencial. En la aplicación encontrará el detalle de cada medicamento para cada tipo de ejercicio y la lista completa de interacciones.", { size: 8, color: C.muted });
   pg.parrafo(kb.aviso, { size: 7.5, color: C.muted });
   pg.pie();
   return doc;

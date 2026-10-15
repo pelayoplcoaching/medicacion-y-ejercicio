@@ -71,6 +71,10 @@ Una clase con el mismo `id` en un bloque sustituye a la existente: es la forma d
 
 Cobertura actual: ~100 clases, ~320 principios activos y ~50 combinaciones a dosis fijas (`kb.combinaciones`: una marca → varios componentes con su dosis) (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
 
+## ¿Cuándo entrenar?
+
+Cada clase (o principio) puede llevar `horario: {evitar: [{desde, hasta, nivel, motivo}], preferir: [...]}` en horas respecto a la toma (bloque `data/ext/06_horarios.json`). El motor (`ventanaEntrenamiento`) combina las tomas de cada fármaco (`momentos`: desayuno/comida/cena/noche, con horas editables) y pinta el día de 6:00 a 23:00 en verde/ámbar/rojo; rojo = evitar (p. ej. 0–3 h tras una benzodiacepina, pico de insulina rápida), ámbar = precaución, verde = preferible (periodo ON de levodopa). El lector de PDF anota cada "1" de la hoja de la CAM con su columna (`1@desayuno`) por posición horizontal.
+
 ## Cómo está organizada la base de conocimiento (`kb.json`)
 
 Cada **clase** tiene:
@@ -82,7 +86,7 @@ Cada **clase** tiene:
 
 Un principio puede añadir `senales_extra` (p. ej. citalopram → `qt`).
 
-`reglas_combinadas` se disparan por recuento de señales, por condición clínica del usuario (`{"condicion":"renal"}`; valores: diabetes, insuficiencia_cardiaca, renal, marcapasos, osteoporosis, epoc_asma) (`{"senal":"hipotension","min":2}`), por presencia simultánea (`{"todas":["ieca_ara","diuretico","aine"]}`) y opcionalmente por edad.
+`reglas_combinadas` se disparan por recuento de señales, por condición clínica del usuario (`{"condicion":"renal"}` o `{"sin_condicion":"diabetes"}`; valores: diabetes, insuficiencia_cardiaca, renal, renal_grave, marcapasos, osteoporosis, epoc_asma, oxigeno, embarazo, nyha34, fevi_baja, fragil, prefragil) (`{"senal":"hipotension","min":2}`), por presencia simultánea (`{"todas":["ieca_ara","diuretico","aine"]}`) y opcionalmente por edad.
 
 ## Funciones
 

@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150856">
+<link rel="stylesheet" href="css/style.css?v=202610150904">
 </head>
 <body>
 
@@ -127,7 +127,12 @@
     </div>
 
     <div class="panel">
-      <h2>Medicación habitual</h2>
+      <div class="cab-panel"><h2>Medicación habitual</h2><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false">Listas guardadas</button></div>
+      <div id="perfiles" class="perfiles" hidden>
+        <div class="fila"><label style="flex:1 1 160px">Guardar la lista actual como <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar">Guardar</button></div>
+        <small>Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
+        <ul id="perfiles-lista"></ul>
+      </div>
       <form id="form-med" autocomplete="off">
         <div class="buscador" style="margin-top:10px">
           <label for="buscar" class="sr-only">Buscar medicamento</label>
@@ -180,6 +185,7 @@
       <button type="button" role="tab" data-tab="aerobico">Aeróbico <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="fuerza">Fuerza <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="equilibrio">Equilibrio <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="cuando">¿Cuándo? <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="interacciones">Interacciones <span class="cnt"></span></button>
     </div>
     <div id="contenido-tab"></div>
@@ -207,6 +213,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="module" src="js/app.js?v=202610150856"></script>
+<script type="module" src="js/app.js?v=202610150904"></script>
 </body>
 </html>
