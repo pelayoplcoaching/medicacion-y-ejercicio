@@ -1,5 +1,5 @@
 /* Generación de resúmenes en PDF (jsPDF cargado como global desde CDN). */
-import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150704";
+import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150750";
 
 const AUTOR = "By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -25,15 +25,17 @@ class Pagina {
   }
   cabecera() {
     const d = this.doc;
-    d.setFillColor(...PURPURA); d.rect(0, 0, 210, 26, "F");
-    if (this.logo) { try { d.addImage(this.logo, "PNG", this.ml, 3, 20, 20); } catch {} }
-    d.setTextColor(255, 255, 255); d.setFont("helvetica", "bold"); d.setFontSize(15);
-    d.text(this.titulo, this.ml + (this.logo ? 24 : 0), 11);
-    d.setFont("helvetica", "normal"); d.setFontSize(9);
-    d.text(this.subtitulo, this.ml + (this.logo ? 24 : 0), 17);
-    d.text(`Medicación y Ejercicio · ${new Date().toLocaleDateString("es-ES")}`, this.ml + (this.logo ? 24 : 0), 22);
-    d.setTextColor(31, 26, 45);
-    this.y = 36;
+    d.setFillColor(243, 242, 246); d.rect(0, 0, 210, 28, "F");
+    d.setDrawColor(...PURPURA); d.setLineWidth(1.2); d.line(0, 28, 210, 28);
+    if (this.logo) { try { d.addImage(this.logo, "PNG", this.ml, 3.5, 21, 21); } catch {} }
+    const x = this.ml + (this.logo ? 26 : 0);
+    d.setTextColor(...PURPURA); d.setFont("helvetica", "bold"); d.setFontSize(15);
+    d.text(this.titulo, x, 11.5);
+    d.setTextColor(90, 84, 110); d.setFont("helvetica", "normal"); d.setFontSize(9);
+    d.text(this.subtitulo, x, 17.5);
+    d.text(`Medicación y Ejercicio · ${new Date().toLocaleDateString("es-ES")}`, x, 22.5);
+    d.setTextColor(31, 26, 45); d.setLineWidth(.2);
+    this.y = 38;
   }
   pie() {
     const d = this.doc; const n = d.internal.getNumberOfPages();

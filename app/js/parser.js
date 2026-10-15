@@ -1,5 +1,5 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150704";
+import { normalizar } from "./engine.js?v=202610150750";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -39,8 +39,9 @@ export function extraerMedicacion(texto, indice) {
   const cat = prepararCatalogo(indice);
   const reconocidos = [], noReconocidos = [];
   const vistos = new Set();
-  const lineas = texto.split(/\r?\n|;/).map((l) => l.trim()).filter((l) => l.length > 2);
-  for (const linea of lineas) {
+  const lineas = texto.split(/\r?\n|;/).map((l) => l.trim()).filter(Boolean);
+  for (let idx = 0; idx < lineas.length; idx++) {
+    const linea = lineas[idx];
     const n = normalizar(linea);
     const hit = cat.find((e) => e.re.test(n));
     if (!hit) {
@@ -72,17 +73,38 @@ export function extraerMedicacion(texto, indice) {
     } else if (hit.dosis != null) {
       dosis = hit.dosis; // presentación del nomenclátor
     }
-    // comprimidos por toma ("2 comprimidos cada 12 h", "medio comprimido")
+    // comprimidos por toma ("2 comprimidos cada 12 h", "medio comprimido").
+    // Un número grande delante de "comprimidos" justo tras la dosis es el tamaño del envase
+    // ("METFORMINA 850 MG 50 COMPRIMIDOS"), no la pauta: se ignora.
     let factor = 1;
-    if ((m = resto.match(/(\d+(?:[.,]\d+)?)\s*(comprimidos?|capsulas?|sobres?|cp|comp)/))) factor = parseFloat(m[1].replace(",", "."));
-    else if (/\b(medio|1\/2)\s*(comprimido|cp)/.test(resto)) factor = 0.5;
+    const restoSinEnvase = resto.replace(/^\s*(?:comprimidos?\s+)?(?:recubiertos\s+)?(?:con\s+pelicula\s+)?\d{2,4}\s*(comprimidos?|capsulas?|sobres?|cp|comp|unidades|parches?|viales?|jeringas?)\b/, " ");
+    if ((m = restoSinEnvase.match(/(\d+(?:[.,]\d+)?)\s*(comprimidos?|capsulas?|sobres?|cp|comp)\b/))) {
+      const f = parseFloat(m[1].replace(",", "."));
+      if (f > 0 && f <= 4) factor = f; // 5 o más "comprimidos" no es una toma, es un envase
+    } else if (/\b(medio|1\/2)\s*(comprimido|cp)/.test(resto)) factor = 0.5;
     else if ((m = n.match(/\b([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)\b/))) {
       // pauta tipo 3-0-3 o 0.5-0-0.5: unidades por toma (se usa la mayor)
-      const vals = [m[1], m[2], m[3]].map((x) => parseFloat(x.replace(",", "."))).filter((x) => x > 0);
+      const vals = [m[1], m[2], m[3]].map((x) => parseFloat(x.replace(",", "."))).filter((x) => x > 0 && x <= 4);
       if (vals.length) factor = Math.max(...vals);
     }
     if (dosis != null && factor !== 1) dosis = Math.round(dosis * factor * 1000) / 1000;
-    const tomas = tomasDesdePauta(n) || 1;
+    // tomas: de la propia línea o, en hojas con columnas (Desayuno/Comida/Cena/Acostarse),
+    // de las líneas siguientes que solo contienen "1", "0,5", etc. hasta la próxima línea de fármaco
+    let tomas = tomasDesdePauta(n);
+    if (tomas == null) {
+      let unos = 0;
+      for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) {
+        const l = normalizar(lineas[j]);
+        if (cat.some((e) => e.re.test(l))) break; // siguiente fármaco
+        if (/^(1|0[.,]5|2|1[.,]5)$/.test(l)) unos++;
+        else if (/^(cronico|unidades|via|agudo|en la |en el |despues|antes)/.test(l) || /^\d{2}\/\d{2}\/\d{2,4}$/.test(l)) continue;
+      }
+      if (unos) tomas = Math.min(unos, 4);
+    }
+    tomas = tomas || 1;
+    // plausibilidad: dosis diaria por encima del rango del fármaco → dejar en blanco para que el usuario la revise
+    const umbral = ref.principio.umbral_mg?.alta;
+    if (dosis != null && umbral != null && unidad === "mg" && dosis * tomas > umbral * 6) dosis = null;
     if (vistos.has(hit.pid)) continue;
     vistos.add(hit.pid);
     reconocidos.push({ pid: hit.pid, dosis, tomas, unidad, origen: linea.slice(0, 80) });
