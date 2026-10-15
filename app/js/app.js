@@ -1,15 +1,16 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, PLAN_SEMANA, sesionTipo, objetivoSemanal, rachaSemanas, progresion } from "./engine.js?v=202610151159";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151159";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151159";
-import { cargarScript } from "./libs.js?v=202610151159";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151159";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151159";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, PLAN_SEMANA, sesionTipo, objetivoSemanal, rachaSemanas, progresion } from "./engine.js?v=202610151203";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151203";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151203";
+import { cargarScript } from "./libs.js?v=202610151203";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151203";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151203";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 /** Medicación que entra en el informe (los fármacos "pausados" se quedan en la lista pero no cuentan). */
-const medsActivos = () => estado.meds.filter((m) => !m.pausado);
+const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
+const medsLibres = () => estado.meds.filter((m) => m.libre);
 
 /* ---------- avisos breves (toast) con acción opcional ---------- */
 let toastTimer = null;
@@ -154,8 +155,8 @@ function guardar() {
 function numeroEntre(v, min, max) { const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
 function sanearMeds(meds) {
   if (!Array.isArray(meds)) return [];
-  return meds.filter((m) => m && typeof m.pid === "string" && indice.porId.has(m.pid)).slice(0, 60).map((m) => ({
-    pid: m.pid,
+  return meds.filter((m) => m && typeof m.pid === "string" && (indice.porId.has(m.pid) || (m.pid.startsWith("libre:") && typeof m.nombre === "string"))).slice(0, 60).map((m) => ({
+    pid: m.pid, ...(m.pid.startsWith("libre:") ? { libre: true, nombre: String(m.nombre).slice(0, 60) } : {}),
     dosis: numeroEntre(m.dosis, 0, 1e6),
     tomas: numeroEntre(m.tomas, 1, 12) || 1,
     unidad: typeof m.unidad === "string" ? m.unidad.slice(0, 20) : undefined,
@@ -219,10 +220,16 @@ inputBuscar.addEventListener("input", () => {
   $("#dosis-wrap").hidden = true;
   const res = buscar(indice, inputBuscar.value);
   lista.innerHTML = "";
-  lista.hidden = !res.length;
   clearTimeout(timerSinResultado);
   const q = inputBuscar.value.trim();
   if (!res.length && q.length >= 4) timerSinResultado = setTimeout(() => registrarSinResultado(q.toLowerCase()), 1500);
+  lista.hidden = !res.length && q.length < 3;
+  if (!res.length && q.length >= 3) {
+    const li = document.createElement("li"); li.setAttribute("role", "option"); li.className = "libre-op";
+    li.innerHTML = `<span>${t("libre.anadir", { n: q })}</span><small>${t("libre.nota")}</small>`;
+    li.addEventListener("click", () => anadirLibre(q));
+    lista.append(li);
+  }
   for (const e of res) {
     const ref = indice.porId.get(e.pid);
     const li = document.createElement("li");
@@ -261,6 +268,18 @@ function renderRapido() {
   box.hidden = !pids.length || !$("#dosis-wrap").hidden;
   box.innerHTML = `<small>${rec.length ? t("rapido.recientes") : t("rapido.habituales")}</small>${pids.map((p) => `<button type="button" class="chip chip-btn" data-pid="${p}">${nombreCorto(indice.porId.get(p).principio)}</button>`).join("")}`;
   box.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { const e = indice.entradas.find((x) => x.tipo === "principio" && x.pid === b.dataset.pid); if (e) { elegir(e); $("#dosis").focus(); } }));
+}
+
+/** Medicamento que la base no conoce: se guarda tal cual para que la lista esté completa (sin recomendaciones). */
+function anadirLibre(nombre, dosis = null, tomas = 1) {
+  const limpio = nombre.replace(/\s+/g, " ").trim().slice(0, 60);
+  if (!limpio) return;
+  const pid = "libre:" + limpio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_");
+  if (estado.ejemplo) { estado.meds = []; estado.ejemplo = false; }
+  if (!estado.meds.some((m) => m.pid === pid)) estado.meds.push({ pid, nombre: limpio, libre: true, dosis, tomas, unidad: "mg", momentos: momentosPorDefecto(tomas) });
+  inputBuscar.value = ""; lista.hidden = true; $("#dosis-wrap").hidden = true; seleccion = null;
+  guardar(); render();
+  toast(t("libre.anadido", { n: limpio }), { ms: 6000 });
 }
 
 function elegir(e) {
@@ -362,8 +381,9 @@ function mostrarNoReconocidos(lineas) {
   for (const l of lineas.slice(0, 10)) {
     const li = document.createElement("li");
     const nombre = l.replace(/\s+\d.*$/, "").trim().slice(0, 60);
-    li.innerHTML = `<span>${l.slice(0, 80)}</span><button type="button" class="btn-sec sm" data-accion="buscar">${t("pegar.buscar")}</button><button type="button" class="btn-sec sm" data-accion="avisar">${t("pegar.avisar")}</button>`;
+    li.innerHTML = `<span>${l.slice(0, 80)}</span><button type="button" class="btn-sec sm" data-accion="buscar">${t("pegar.buscar")}</button><button type="button" class="btn-sec sm" data-accion="libre">${t("libre.btn")}</button><button type="button" class="btn-sec sm" data-accion="avisar">${t("pegar.avisar")}</button>`;
     li.querySelector('[data-accion="buscar"]').addEventListener("click", () => { inputBuscar.value = nombre.split(" ").slice(0, 2).join(" "); inputBuscar.dispatchEvent(new Event("input")); inputBuscar.focus(); inputBuscar.scrollIntoView({ block: "center" }); });
+    li.querySelector('[data-accion="libre"]').addEventListener("click", () => { const d = l.match(/(\d+(?:[.,]\d+)?)\s*(?:mg|miligramos)/i); anadirLibre(nombre, d ? parseFloat(d[1].replace(",", ".")) : null); li.remove(); });
     li.querySelector('[data-accion="avisar"]').addEventListener("click", () => {
       window.open(urlSugerencia({ lista: "No reconocido: " + l.slice(0, 120) }), "_blank", "noopener");
       li.querySelector('[data-accion="avisar"]').textContent = "Gracias";
@@ -566,7 +586,7 @@ async function descargarPdf(tipo) {
   btn.disabled = true; btn.setAttribute("aria-busy", "true");
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario() };
+    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
     toast(t("pdf.generado"), { ms: 3000 });
@@ -597,7 +617,7 @@ function preguntarUtil() {
 function textoCompartir() {
   const res = evaluar(datos, medsActivos(), ctxActual());
   const L = [`*${t("meta.titulo")}* (${t("meta.subtitulo")}) · ${t("compartir.cab")}`, ""];
-  L.push(`${t("compartir.meds")}: ${res.items.map((i) => i.principio.nombre).join(", ")}.`, "");
+  L.push(`${t("compartir.meds")}: ${[...res.items.map((i) => i.principio.nombre), ...medsLibres().map((m) => m.nombre + "*")].join(", ")}.${medsLibres().length ? " (*" + t("libre.sin_info_corto") + ")" : ""}`, "");
   L.push(`*${t("esencial.titulo")}*`);
   for (const p of loEsencial(res, 5)) L.push(`• ${p.titulo}: ${p.texto}`);
   L.push("", `*${t("alarma.titulo")}*`, ...ALARMA.slice(0, 4).map((a) => `• ${a}`));
@@ -618,7 +638,7 @@ $("#btn-email").addEventListener("click", () => {
     contexto y búsquedas sin resultado. Sustituye al correo; el correo queda como alternativa en el texto de ayuda. */
 const FORM_SUGERENCIAS = "https://tally.so/r/5XK9YM";
 function urlSugerencia(extra = {}) {
-  const lista = estado.meds.map((m) => `${m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
+  const lista = estado.meds.map((m) => `${m.libre ? "LIBRE " + m.nombre : m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
   let sinRes = []; try { sinRes = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]"); } catch {}
   const ctx = [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", ...estado.condiciones].filter(Boolean).join(", ");
   const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300), util: extra.util || "" });
@@ -730,7 +750,7 @@ $("#btn-tema").addEventListener("click", () => { const act = document.documentEl
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
 
 $("#btn-historia").addEventListener("click", async () => {
-  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas) };
+  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
   const res = evaluar(datos, medsActivos(), ctx);
   const txt = textoHistoria(datos.kb, res, ctx);
   const btn = $("#btn-historia");
@@ -882,7 +902,7 @@ function pintarPasos() {
 
 function render() {
   const ctx = ctxActual();
-  const resLista = evaluar(datos, estado.meds, ctx);     // todos, para pintar la lista
+  const resLista = evaluar(datos, estado.meds.filter((m) => !m.libre), ctx);     // todos los conocidos, para pintar la lista
   const res = evaluar(datos, medsActivos(), ctx);        // solo los activos, para el informe
   document.body.classList.toggle("sin-meds", !estado.meds.length);
   pintarPasos();
@@ -892,9 +912,22 @@ function render() {
   const ul = $("#lista-meds");
   ul.innerHTML = "";
   $("#ejemplo-banner").hidden = !estado.ejemplo;
-  resLista.items.forEach((it, i) => {
-    const m = estado.meds[i] || {};
+  let k = 0;
+  estado.meds.forEach((m, i) => {
     const li = document.createElement("li");
+    if (m.libre) {
+      li.classList.add("libre");
+      li.innerHTML = `
+        <div class="med-nombre"><strong>${m.nombre}</strong><small>${t("libre.sin_info")}</small></div>
+        <div class="med-dosis">${m.dosis != null ? `${m.dosis.toLocaleString("es-ES")} mg${m.tomas > 1 ? ` × ${m.tomas}/día` : ""}` : t("lista.sin_dosis")}</div>
+        <div class="med-acciones"><button type="button" class="pausar" title="${t("pegar.avisar")}" aria-label="${t("pegar.avisar")} ${m.nombre}">${icono("correo")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${m.nombre}">×</button></div>`;
+      li.querySelector(".pausar").addEventListener("click", () => window.open(urlSugerencia({ lista: "No reconocido: " + m.nombre }), "_blank", "noopener"));
+      li.querySelector(".quitar").addEventListener("click", () => { const q = estado.meds.splice(i, 1)[0]; guardar(); render(); toast(t("lista.quitado", { f: m.nombre }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds.splice(Math.min(i, estado.meds.length), 0, q); guardar(); render(); } }); });
+      ul.append(li);
+      return;
+    }
+    const it = resLista.items[k++];
+    if (!it) return;
     if (m.pausado) li.classList.add("pausado");
     const dosis = it.dosisTotal != null
       ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
@@ -920,6 +953,7 @@ function render() {
   });
   $("#sin-meds").hidden = estado.meds.length > 0;
   $("#informe").hidden = res.items.length === 0;
+  $("#solo-libres").hidden = !(res.items.length === 0 && medsLibres().length);
   if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; return; }
 
   // chips de contexto derivado

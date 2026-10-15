@@ -4,6 +4,9 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "libre.anadir": "Añadir «{n}» tal cual", "libre.nota": "No está en la base: quedará en la lista sin recomendaciones y nos avisará de que falta.", "libre.btn": "Añadir tal cual",
+  "libre.anadido": "«{n}» añadido a la lista sin recomendaciones (no está en la base). Puede que sea un producto de parafarmacia o un complemento.", "libre.sin_info": "Sin información en la base · no genera recomendaciones", "libre.sin_info_corto": "sin información en la base",
+  "libre.solo": "Los medicamentos añadidos tal cual no están en la base: no generan recomendaciones. Añada el resto de su medicación para ver el informe.",
   "tab.plan": "Mi plan", "plan.ver": "Ver mi plan", "plan.empezar": "Empezar sesión", "plan.ver_sesion": "Ver la sesión", "plan.marcar": "Marcar como hecha", "plan.hecho": "Hecha · {m} min",
   "plan.objetivo": "Objetivo semanal", "plan.objetivo_txt": "{m} minutos y {s} sesiones a la semana (aeróbico, fuerza y equilibrio).", "plan.racha": "{n} semana(s) seguidas cumpliendo", "plan.racha0": "Aún sin racha",
   "plan.fuerza_eq_corto": "Fuerza+eq.", "plan.descanso_corto": "Descanso", "plan.descanso_txt": "Día de descanso o paseo suave. Si le apetece, 20–30 minutos caminando cuentan.",
@@ -110,6 +113,9 @@ const ES = {
 };
 
 const EN = {
+  "libre.anadir": "Add “{n}” as typed", "libre.nota": "Not in the database: it will stay on the list without advice and we will be told it is missing.", "libre.btn": "Add as typed",
+  "libre.anadido": "“{n}” added to the list without advice (not in the database). It may be a parapharmacy product or a supplement.", "libre.sin_info": "No information in the database · no advice generated", "libre.sin_info_corto": "no information in the database",
+  "libre.solo": "Items added as typed are not in the database and generate no advice. Add the rest of your medication to see the report.",
   "tab.plan": "My plan", "plan.ver": "See my plan", "plan.empezar": "Start session", "plan.ver_sesion": "See the session", "plan.marcar": "Mark as done", "plan.hecho": "Done · {m} min",
   "plan.objetivo": "Weekly goal", "plan.objetivo_txt": "{m} minutes and {s} sessions a week (aerobic, strength and balance).", "plan.racha": "{n} week(s) in a row on target", "plan.racha0": "No streak yet",
   "plan.fuerza_eq_corto": "Strength+bal.", "plan.descanso_corto": "Rest", "plan.descanso_txt": "Rest day or an easy walk. If you feel like it, 20–30 minutes of walking count.",
@@ -216,6 +222,9 @@ const EN = {
 };
 
 const CA = {
+  "libre.anadir": "Afegir «{n}» tal qual", "libre.nota": "No és a la base: quedarà a la llista sense recomanacions i ens avisarà que falta.", "libre.btn": "Afegir tal qual",
+  "libre.anadido": "«{n}» afegit a la llista sense recomanacions (no és a la base). Pot ser un producte de parafarmàcia o un complement.", "libre.sin_info": "Sense informació a la base · no genera recomanacions", "libre.sin_info_corto": "sense informació a la base",
+  "libre.solo": "Els medicaments afegits tal qual no són a la base: no generen recomanacions. Afegiu la resta de la medicació per veure l'informe.",
   "tab.plan": "El meu pla", "plan.ver": "Veure el meu pla", "plan.empezar": "Començar sessió", "plan.ver_sesion": "Veure la sessió", "plan.marcar": "Marcar com a feta", "plan.hecho": "Feta · {m} min",
   "plan.objetivo": "Objectiu setmanal", "plan.objetivo_txt": "{m} minuts i {s} sessions a la setmana (aeròbic, força i equilibri).", "plan.racha": "{n} setmana/es seguides complint", "plan.racha0": "Encara sense ratxa",
   "plan.fuerza_eq_corto": "Força+eq.", "plan.descanso_corto": "Descans", "plan.descanso_txt": "Dia de descans o passeig suau. Si ve de gust, 20–30 minuts caminant compten.",
@@ -322,6 +331,9 @@ const CA = {
 };
 
 const GL = {
+  "libre.anadir": "Engadir «{n}» tal cal", "libre.nota": "Non está na base: quedará na lista sen recomendacións e avisaranos de que falta.", "libre.btn": "Engadir tal cal",
+  "libre.anadido": "«{n}» engadido á lista sen recomendacións (non está na base). Pode ser un produto de parafarmacia ou un complemento.", "libre.sin_info": "Sen información na base · non xera recomendacións", "libre.sin_info_corto": "sen información na base",
+  "libre.solo": "Os medicamentos engadidos tal cal non están na base: non xeran recomendacións. Engada o resto da súa medicación para ver o informe.",
   "tab.plan": "O meu plan", "plan.ver": "Ver o meu plan", "plan.empezar": "Comezar sesión", "plan.ver_sesion": "Ver a sesión", "plan.marcar": "Marcar como feita", "plan.hecho": "Feita · {m} min",
   "plan.objetivo": "Obxectivo semanal", "plan.objetivo_txt": "{m} minutos e {s} sesións á semana (aeróbico, forza e equilibrio).", "plan.racha": "{n} semana(s) seguidas cumprindo", "plan.racha0": "Aínda sen racha",
   "plan.fuerza_eq_corto": "Forza+eq.", "plan.descanso_corto": "Descanso", "plan.descanso_txt": "Día de descanso ou paseo suave. Se lle apetece, 20–30 minutos camiñando contan.",

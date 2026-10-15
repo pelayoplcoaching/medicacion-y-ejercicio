@@ -54,6 +54,12 @@ try {
   await p.click("#lista-meds li:nth-child(4) .quitar"); await p.waitForTimeout(150); await p.click("#toast button"); await p.waitForTimeout(150);
   check("quitar y deshacer", (await p.$$("#lista-meds li")).length === 5);
 
+  console.log("Añadir tal cual (no está en la base)");
+  await p.fill("#buscar", "Avefresh"); await p.waitForSelector("#sugerencias li.libre-op"); await p.click("#sugerencias li.libre-op"); await p.waitForTimeout(150);
+  check("producto desconocido añadido tal cual", (await p.$$("#lista-meds li.libre")).length === 1 && (await p.$$("#lista-meds li")).length === 6);
+  check("el informe sigue calculándose con los conocidos", !(await p.$eval("#informe", (e) => e.hidden)));
+  await p.click("#lista-meds li.libre .quitar"); await p.waitForTimeout(150);
+
   console.log("Pegar lista y no reconocidos");
   await p.click("#btn-pegar"); await p.fill("#pegar", "Atorvastatina 40 mg 0-0-1\nFantasiol 10 mg 1-0-0"); await p.click("#btn-importar"); await p.waitForTimeout(200);
   check("línea reconocida añadida", (await p.$$("#lista-meds li")).length === 6);

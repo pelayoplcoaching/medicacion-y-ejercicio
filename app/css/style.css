@@ -609,3 +609,9 @@ dialog.sesion h2 small { color: var(--muted); font-weight: 600; }
 .sesion-fin output { font-weight: 800; margin-left: 6px; }
 @media (prefers-reduced-motion: no-preference) { .celebra { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--info); color: #fff; font-weight: 800; animation: pop .5s cubic-bezier(.2,1.4,.4,1); } @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } } }
 @media print { .tira, .plan-dia .acciones, .sesion-fin { display: none !important; } }
+
+/* medicamentos añadidos tal cual (sin información en la base) */
+#lista-meds li.libre { border-style: dashed; }
+#lista-meds li.libre .med-nombre small { color: var(--precaucion-ink); }
+#sugerencias li.libre-op { border-top: 1px dashed var(--line-strong); }
+#sugerencias li.libre-op small { color: var(--muted); }

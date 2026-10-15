@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151159";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo } from "./engine.js?v=202610151159";
+import { jspdf } from "./libs.js?v=202610151203";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo } from "./engine.js?v=202610151203";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -334,6 +334,7 @@ export async function pdfMedico(kb, res, ctx) {
     res.items.map((it) => [{ t: it.principio.nombre, bold: true }, dosisTxt(it), it.clase.nombre.replace(/\s*\(.*?\)\s*/g, ""), [...it.senales].map((s) => SENAL_CORTA[s]).filter(Boolean).join(", ") || "—"]),
     { size: 8 }
   );
+  if (ctx.libres?.length) pg.parrafo(`Otros productos referidos sin información en la base (no evaluados): ${ctx.libres.join(", ")}.`, { size: 8.5, color: C.muted });
 
   pg.seccion("Interacciones fármaco–fármaco", res.interacciones.length ? `${res.interacciones.length} detectadas` : "ninguna relevante en las bases consultadas");
   if (res.interacciones.length) {
@@ -449,6 +450,7 @@ export async function pdfPaciente(kb, res, ctx) {
     res.items.map((it) => [{ t: it.principio.nombre, bold: true }, dosisTxt(it).replace(" · dosis alta", " (dosis alta)"), it.clase.resumen]),
     { size: 8.3 }
   );
+  if (ctx.libres?.length) pg.parrafo(`También toma: ${ctx.libres.join(", ")}. No están en nuestra base, así que no hay recomendaciones sobre ellos; coméntelos con su médico o farmacéutico.`, { size: 8.5, color: C.muted });
 
   for (const [amb, titulo] of AMBITOS) {
     if (compacto && amb !== "general") continue; // en la versión para el paciente solo "antes de empezar"; el detalle está en la app
@@ -495,6 +497,7 @@ export function textoHistoria(kb, res, ctx) {
   const perfil = [ctx.edad ? `${ctx.edad} años` : null, ctx.caidas ? "caídas en el último año" : null, ctx.fg != null ? `FG ${ctx.fg}` : null, ctx.fevi != null ? `FEVI ${ctx.fevi} %` : null, ctx.nyha != null ? `NYHA ${["", "I", "II", "III", "IV"][ctx.nyha]}` : null, ...cond.filter((c) => !(c === "nyha34" && ctx.nyha != null) && !(c === "fevi_baja" && ctx.fevi != null)).map((c) => condTxt[c]).filter(Boolean)].filter(Boolean);
   if (perfil.length) L.push("Perfil: " + perfil.join(", ") + ".");
   L.push(`Tratamiento considerado: ${res.items.map((it) => it.principio.nombre + (it.dosisTotal != null ? " " + dosisTxt(it) : "")).join("; ")}.`);
+  if (ctx.libres?.length) L.push(`Otros referidos, no evaluados: ${ctx.libres.join("; ")}.`);
   L.push("");
   L.push("Prescripción (FITT):");
   L.push(`- Aeróbico: ${P.aer.frec}. ${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}`);
