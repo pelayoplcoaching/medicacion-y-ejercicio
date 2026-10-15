@@ -144,6 +144,7 @@ def cargar_alias_kb():
         "drospirenona": None, "levonorgestrel": "progestageno_solo", "desogestrel": "progestageno_solo", "dienogest": None,
         "gestodeno": None, "norgestimato": None, "noretisterona": None, "nomegestrol": None, "clormadinona": None, "ciproterona": None,
         "potasio cloruro": "potasio_oral", "cloruro potasio": "potasio_oral", "potasio": "potasio_oral",
+        "calcio": "calcio_vitd", "calcio carbonato": "calcio_vitd", "carbonato calcico": "calcio_vitd", "calcio citrato": "calcio_vitd",
         "magnesio": "magnesio_oral", "magnesio oxido": "magnesio_oral", "magnesio pidolato": "magnesio_oral",
         "oxigeno": None, "oxido nitroso": None, "sodio cloruro": None, "sodio": None, "glucosa": None, "glucosa monohidrato": None,
         "sodio bicarbonato": None, "agua": None, "agua para inyectables": None, "clorhexidina": None, "clorhexidina digluconato": None,
@@ -161,7 +162,7 @@ def cargar_alias_kb():
     return alias
 
 
-SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|axetilo|pivoxilo|propanodiol|hemihidrato|sesquihidrato|hidrobromuro|bromhidrato|lactato|gluconato|carbonato|hidroxido|trometamol|dipropionato|furoato|propionato|valerato|cipionato|enantato|undecanoato|palmitato|pamoato|decanoato|hiclato|disodico|dipotasico|tosilato|camsilato|oxalato|benzoato|estearato|dihidrocloruro|monohidrocloruro)\b"
+SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|axetilo|pivoxilo|propanodiol|hemihidrato|sesquihidrato|hidrobromuro|bromhidrato|lactato|gluconato|carbonato|hidroxido|trometamol|dipropionato|furoato|propionato|valerato|cipionato|enantato|undecanoato|palmitato|pamoato|decanoato|hiclato|disodico|dipotasico|tosilato|camsilato|oxalato|benzoato|estearato|dihidrocloruro|monohidrocloruro|de|del)\b"
 
 
 def resolver(nombre_pa: str, alias: dict):
