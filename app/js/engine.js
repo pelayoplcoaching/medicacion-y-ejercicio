@@ -56,12 +56,12 @@ export function buscar(indice, q, limite = 8) {
 }
 
 /** Categoría de dosis: "alta" | "habitual" | "desconocida" */
-export function categoriaDosis(principio, dosisTotal, unidad) {
+export function categoriaDosis(principio, dosisTotal, unidad, aDemanda = false) {
   const umbral = principio.umbral_mg?.alta;
   if (umbral == null || dosisTotal == null || Number.isNaN(dosisTotal)) return "desconocida";
   const f = FACTOR[unidad ?? principio.unidad ?? "mg"];
   if (f == null) return "desconocida";
-  return dosisTotal * f >= umbral ? "alta" : "habitual";
+  return (aDemanda ? dosisTotal * f > umbral : dosisTotal * f >= umbral) ? "alta" : "habitual";
 }
 
 function cumple(cond, ctx) {
@@ -93,9 +93,9 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
     const unidad = m.unidad || principio.unidad || "mg";
     const esDiaria = !/semana|mes|año/.test(unidad);
     const total = m.dosis != null ? m.dosis * (esDiaria ? (m.tomas || 1) : 1) : null;
-    const dosisCat = categoriaDosis(principio, total, unidad);
+    const dosisCat = categoriaDosis(principio, total, unidad, !!m.aDemanda);
     const senales = new Set([...(clase.senales || []), ...(principio.senales_extra || [])]);
-    items.push({ principio, clase, unidad, dosisPorToma: m.dosis, tomas: m.tomas || 1, dosisTotal: total, dosisCat, senales, esDiaria });
+    items.push({ principio, clase, unidad, dosisPorToma: m.dosis, tomas: m.tomas || 1, dosisTotal: total, dosisCat, senales, esDiaria, aDemanda: !!m.aDemanda });
   }
 
   // 1) Recomendaciones por fármaco y ámbito

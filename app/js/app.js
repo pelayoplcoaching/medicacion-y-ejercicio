@@ -1,7 +1,7 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150753";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150753";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150753";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150753";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150807";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150807";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150807";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150807";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -115,15 +115,16 @@ $("#btn-importar").addEventListener("click", () => {
 });
 
 /** Reconoce fármacos en un texto y los añade a la lista. Devuelve contadores. */
-function incorporarTexto(texto, origen = "la lista") {
+function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
   const { reconocidos, noReconocidos } = extraerMedicacion(texto, indice);
+  const habia = estado.meds.length;
   if (reconocidos.length) {
-    if (estado.ejemplo) { estado.meds = []; estado.ejemplo = false; }
+    if (estado.ejemplo || reemplazar) { estado.meds = []; estado.ejemplo = false; }
     const ya = new Set(estado.meds.map((m) => m.pid));
-    for (const r of reconocidos) if (!ya.has(r.pid)) estado.meds.push({ pid: r.pid, dosis: r.dosis, tomas: r.tomas, unidad: r.unidad });
+    for (const r of reconocidos) if (!ya.has(r.pid)) estado.meds.push({ pid: r.pid, dosis: r.dosis, tomas: r.tomas, unidad: r.unidad, aDemanda: !!r.aDemanda });
   }
   const partes = [];
-  if (reconocidos.length) partes.push(`Reconocidos ${reconocidos.length} medicamentos de ${origen}; revise las dosis en la lista.`);
+  if (reconocidos.length) partes.push(`Reconocidos ${reconocidos.length} medicamentos de ${origen}${reemplazar && habia && !estado.ejemplo ? " (se ha sustituido la lista anterior)" : ""}; revise las dosis en la lista.`);
   else partes.push(`No se ha reconocido ningún medicamento en ${origen}.`);
   if (noReconocidos.length) partes.push(`Sin reconocer: ${noReconocidos.slice(0, 6).join(" · ")}${noReconocidos.length > 6 ? " …" : ""}.`);
   $("#pegar-aviso").textContent = partes.join(" ");
@@ -146,7 +147,7 @@ $("#pdf-input").addEventListener("change", async () => {
       progreso("El PDF no tiene texto: es un escaneo. Reconociendo con OCR (puede tardar un minuto la primera vez)…");
       texto = await textoDePdfEscaneado(f, progreso);
     }
-    incorporarTexto(texto, `«${f.name}»`);
+    incorporarTexto(texto, `«${f.name}»`, true);
   } catch (e) {
     progreso("No se ha podido leer el PDF: " + (e.message || e) + ". Puede pegar la lista a mano.");
   }
@@ -160,7 +161,7 @@ $("#foto-input").addEventListener("change", async () => {
   try {
     const texto = await textoDeImagen(f, progreso);
     if (texto.trim().length < 10) { progreso("No se ha podido leer texto en la foto. Pruebe con más luz, la hoja plana y el texto nítido."); return; }
-    incorporarTexto(texto, "la foto");
+    incorporarTexto(texto, "la foto", true);
   } catch (e) {
     progreso("No se ha podido leer la foto: " + (e.message || e) + ". Puede pegar la lista a mano.");
   }
@@ -231,7 +232,7 @@ function render() {
   res.items.forEach((it, i) => {
     const li = document.createElement("li");
     const dosis = it.dosisTotal != null
-      ? `${it.dosisPorToma} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.tomas}/día = ${it.dosisTotal} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}`
+      ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
       : "dosis no indicada";
     li.innerHTML = `
       <div class="med-nombre"><strong>${it.principio.nombre}</strong><small>${it.clase.nombre}</small></div>

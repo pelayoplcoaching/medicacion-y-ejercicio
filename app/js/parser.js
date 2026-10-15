@@ -1,5 +1,5 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150753";
+import { normalizar } from "./engine.js?v=202610150807";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -101,13 +101,16 @@ export function extraerMedicacion(texto, indice) {
       }
       if (unos) tomas = Math.min(unos, 4);
     }
+    // "si precisa" / "a demanda" en la línea o en las siguientes del bloque
+    let aDemanda = /\b(si precisa|a demanda|si dolor|si fiebre|si necesita|cuando precise)\b/.test(n);
+    if (!aDemanda) for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; if (/\b(si precisa|a demanda|si dolor|si fiebre|si necesita|cuando precise)\b/.test(l)) { aDemanda = true; break; } }
     tomas = tomas || 1;
     // plausibilidad: dosis diaria por encima del rango del fármaco → dejar en blanco para que el usuario la revise
     const umbral = ref.principio.umbral_mg?.alta;
     if (dosis != null && umbral != null && unidad === "mg" && dosis * tomas > umbral * 6) dosis = null;
     if (vistos.has(hit.pid)) continue;
     vistos.add(hit.pid);
-    reconocidos.push({ pid: hit.pid, dosis, tomas, unidad, origen: linea.slice(0, 80) });
+    reconocidos.push({ pid: hit.pid, dosis, tomas, unidad, aDemanda, origen: linea.slice(0, 80) });
   }
   return { reconocidos, noReconocidos };
 }
