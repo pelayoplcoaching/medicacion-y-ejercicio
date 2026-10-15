@@ -432,7 +432,7 @@ def main(argv):
         inspeccionar(root)
         sys.exit(f"\nNo se detectaron las etiquetas {faltan}. Ajuste TAGS_FIJAS en scripts/build_cima.py.")
 
-    salida, vistos = [], set()
+    salida, vistos = [], {}  # clave → fila (para acumular los códigos nacionales de los distintos envases)
     fichas = {}  # id de principio → URL de la ficha técnica (primera presentación comercializada)
     n_total = n_comerc = n_sin_pa = 0
     sin_resolver = Counter()
@@ -449,6 +449,7 @@ def main(argv):
         if not nombre:
             continue
         url_ft = texto(med, "url_fictec")
+        cn = texto(med, "cod_nacion").strip().zfill(6)[-6:] if texto(med, "cod_nacion").strip().isdigit() else None
         pas, dosis, unidad = [], [], None
         desconocidos = []  # (nombre PA, dosis, unidad) sin equivalente en la base
         atc = texto(med, "cod_atc")
@@ -487,13 +488,17 @@ def main(argv):
                     dd = int(dd)
                 clave = (acortar(nombre).upper(), nombre_pa, dd)
                 if clave in vistos:
+                    if cn and cn not in vistos[clave].setdefault("cn", []):
+                        vistos[clave]["cn"].append(cn)
                     continue
-                vistos.add(clave)
                 fila = {"nombre": acortar(nombre).upper(), "atc": atc, "pa": nombre_pa, "clase": clase}
                 if url_ft and "INYECTABLE" not in nombre.upper():
                     fila["ft"] = url_ft
                 if dd is not None:
                     fila["dosis"] = [dd]
+                if cn:
+                    fila["cn"] = [cn]
+                vistos[clave] = fila
                 salida.append(fila)
                 por_atc[clase] += 1
                 continue
@@ -510,11 +515,15 @@ def main(argv):
             dosis = []
         clave = (nombre.upper(), tuple(pas), tuple(dosis))
         if clave in vistos:
+            if cn and cn not in vistos[clave].setdefault("cn", []):
+                vistos[clave]["cn"].append(cn)
             continue
-        vistos.add(clave)
         fila = {"nombre": nombre.upper(), "principios": pas}
         if dosis:
             fila["dosis"] = dosis
+        if cn:
+            fila["cn"] = [cn]  # códigos nacionales de los envases (EAN-13 847 + CN + dígito de control): escáner de la app
+        vistos[clave] = fila
         salida.append(fila)
 
     salida.sort(key=lambda x: x["nombre"])

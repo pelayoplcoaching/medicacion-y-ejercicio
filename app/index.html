@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-xwD2HVQg194GeJwB3PJWjnMWUjQhsuTGKGBgihg0pP4=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500)}}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Pauta Activa · Medicación y Ejercicio</title>
 <meta name="description" content="Pauta Activa: introduce tu medicación habitual con la dosis y descubre qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre tus fármacos. Herramienta gratuita del Dr. Pelayo Fdez. Cidón (Fuerza Basada en Evidencia).">
@@ -59,17 +60,17 @@
 <link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="js/version.js?v=202610151443">
-<link rel="modulepreload" href="js/libs.js?v=202610151443">
-<link rel="modulepreload" href="js/i18n.js?v=202610151443">
-<link rel="modulepreload" href="js/engine.js?v=202610151443">
-<link rel="modulepreload" href="js/parser.js?v=202610151443">
-<link rel="modulepreload" href="js/informes.js?v=202610151443">
-<link rel="modulepreload" href="js/ocr.js?v=202610151443">
+<link rel="modulepreload" href="js/version.js?v=202610151534">
+<link rel="modulepreload" href="js/libs.js?v=202610151534">
+<link rel="modulepreload" href="js/i18n.js?v=202610151534">
+<link rel="modulepreload" href="js/engine.js?v=202610151534">
+<link rel="modulepreload" href="js/parser.js?v=202610151534">
+<link rel="modulepreload" href="js/informes.js?v=202610151534">
+<link rel="modulepreload" href="js/ocr.js?v=202610151534">
 <link rel="preload" href="data/kb.json" as="fetch" crossorigin>
 <link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151443">
+<link rel="stylesheet" href="css/style.css?v=202610151534">
 </head>
 <body class="cargando" data-modo="paciente">
 
@@ -111,8 +112,10 @@
       <small class="modo-nota" data-i18n="datos.nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
       <div class="fila" style="margin-top:10px">
         <label><span data-i18n="datos.edad">Edad</span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
+        <label><span class="lbl"><span data-i18n="datos.fcreposo">Pulso en reposo</span> <span class="unidad-mini">lpm, opcional</span></span><input type="number" id="fc-reposo" min="30" max="150" inputmode="numeric"></label>
         <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label>
       </div>
+      <div class="acciones sppb-acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-sppb" data-i18n="sppb.btn">Medir la forma física (SPPB guiado, 5 min)</button><small id="sppb-estado"></small></div>
       <details class="bloque" id="bloque-situacion" open>
       <summary><span class="sub-label" data-i18n="sit.titulo">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="condiciones">
@@ -125,6 +128,21 @@
         <label class="check"><input type="checkbox" id="cond-oxigeno"> <span data-i18n="sit.oxigeno">Oxígeno en casa</span></label>
         <label class="check"><input type="checkbox" id="cond-embarazo"> <span data-i18n="sit.embarazo">Embarazo o lactancia</span></label>
       </div>
+      <details class="bloque sub-bloque" id="bloque-situacion-mas">
+        <summary><span class="sub-label" data-i18n="sit.mas">Más situaciones (corazón, cáncer, articulaciones…)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <div class="condiciones">
+          <label class="check"><input type="checkbox" id="cond-hipertension"> <span data-i18n="sit.hipertension">Hipertensión arterial</span></label>
+          <label class="check"><input type="checkbox" id="cond-cardiopatia_isquemica"> <span data-i18n="sit.cardiopatia">Infarto, stent o angina</span></label>
+          <label class="check"><input type="checkbox" id="cond-fibrilacion_auricular"> <span data-i18n="sit.fa">Fibrilación auricular</span></label>
+          <label class="check"><input type="checkbox" id="cond-aneurisma_aorta"> <span data-i18n="sit.aneurisma">Aneurisma de aorta</span></label>
+          <label class="check"><input type="checkbox" id="cond-ictus"> <span data-i18n="sit.ictus">Ictus previo</span></label>
+          <label class="check"><input type="checkbox" id="cond-cancer"> <span data-i18n="sit.cancer">Cáncer en tratamiento o reciente</span></label>
+          <label class="check"><input type="checkbox" id="cond-artrosis"> <span data-i18n="sit.artrosis">Artrosis de rodilla o cadera</span></label>
+          <label class="check"><input type="checkbox" id="cond-epilepsia"> <span data-i18n="sit.epilepsia">Epilepsia</span></label>
+          <label class="check"><input type="checkbox" id="cond-hepatopatia"> <span data-i18n="sit.hepatopatia">Cirrosis o hepatopatía avanzada</span></label>
+          <label class="check"><input type="checkbox" id="cond-obesidad"> <span data-i18n="sit.obesidad">Obesidad</span></label>
+        </div>
+      </details>
       </details>
 
       <details class="bloque" id="bloque-cribado">
@@ -212,6 +230,7 @@
         <button type="button" class="btn-sec sm" id="btn-foto" data-i18n="acc.foto">Foto de la medicación</button>
         <button type="button" class="btn-sec sm" id="btn-caja" data-i18n="acc.caja">Foto de una caja</button>
         <button type="button" class="btn-sec sm" id="btn-dictar" aria-pressed="false" data-i18n="acc.dictar">Dictar</button>
+        <button type="button" class="btn-sec sm" id="btn-barras" hidden data-i18n="acc.barras">Escanear código de barras</button>
         <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
         <input type="file" id="foto-input" accept="image/*" hidden>
         <input type="file" id="caja-input" accept="image/*" capture="environment" hidden>
@@ -263,6 +282,7 @@
         <button type="button" class="btn" id="btn-pdf-medico" data-i18n="desc.medico">Resumen para su médico (PDF)</button>
         <button type="button" class="btn" id="btn-pdf-paciente" data-i18n="desc.paciente">Resumen para usted (PDF)</button>
       </div>
+      <div class="acciones"><button type="button" class="btn-sec sm" id="btn-pdf-entrenador" data-i18n="desc.entrenador">Ficha para el entrenador o fisioterapeuta (PDF)</button><button type="button" class="btn-sec sm" id="btn-pdf-tarjeta" data-i18n="desc.tarjeta">Tarjeta para la nevera (A5)</button></div>
       <small data-i18n="desc.nota">El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso" aria-live="polite"></small>
       <div class="util" id="util" hidden aria-live="polite"></div>
@@ -283,7 +303,9 @@
   </nav>
 </main>
 
+<dialog id="barras" class="ficha" aria-labelledby="barras-titulo"><div class="ficha-cab"><p id="barras-titulo" data-i18n="barras.titulo">Apunte al código de barras de la caja</p><button type="button" class="btn-sec sm" id="barras-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div class="ficha-cuerpo"><video id="barras-video" playsinline muted autoplay style="width:100%;border-radius:12px;background:#000"></video><p id="barras-estado" class="muted" aria-live="polite"></p></div></dialog>
 <dialog id="qr" class="ficha qr" aria-label="Código QR"><div class="ficha-cab"><p data-i18n="qr.texto">Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).</p><button type="button" class="btn-sec sm" id="qr-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="qr-cuerpo" class="qr-cuerpo"></div></dialog>
+<dialog id="sppb" class="ficha sesion" aria-labelledby="sppb-titulo"><div class="ficha-cab"><p id="sppb-titulo" data-i18n="sppb.titulo">Forma física: SPPB guiado</p><button type="button" class="btn-sec sm" id="sppb-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="sppb-cuerpo" class="ficha-cuerpo"></div></dialog>
 <dialog id="sesion" class="ficha sesion" aria-label="Sesión"><div class="ficha-cab"><p data-i18n="sesion.cab">Sesión guiada</p><button type="button" class="btn-sec sm" id="sesion-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="sesion-cuerpo" class="ficha-cuerpo"></div></dialog>
 <dialog id="ficha" class="ficha" aria-labelledby="ficha-titulo">
   <div class="ficha-cab">
@@ -299,6 +321,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202610151443"></script>
+<script type="module" src="js/app.js?v=202610151534"></script>
 </body>
 </html>

@@ -765,3 +765,35 @@ details.farmaco summary .ic-grupo { width: 30px; height: 30px; padding: 5px; }
 #kb-version { display: block; flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: 0; grid-column: auto; }
 .estado-linea #btn-instalar { flex: 0 0 auto; }
 @media (min-width: 640px) { .estado-linea { grid-column: 2 / -1; } }
+.sub-bloque { margin-top: 2px; } .sub-bloque > summary .sub-label { font-weight: 600; }
+/* ---------- beta 0: zona de intensidad, carga por fármaco, SPPB, escáner ---------- */
+.zona { margin: 0 0 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.zona h3 { margin: 0 0 4px; font-size: 1rem; }
+.zona > .muted { margin: 0 0 8px; font-size: .86rem; }
+.zonas { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.zonas li { display: grid; grid-template-columns: 92px 1fr; gap: 2px 10px; align-items: baseline; padding: 6px 10px; border-radius: var(--r-sm); background: var(--surface-2); }
+.zonas li b { font-variant-numeric: tabular-nums; }
+.zonas li small { grid-column: 2; color: var(--muted); }
+.zonas li:nth-child(1) .zona-lab { color: var(--info-ink); } .zonas li:nth-child(2) .zona-lab { color: var(--precaucion-ink); } .zonas li:nth-child(3) .zona-lab { color: var(--alerta-ink); }
+.zona-lab { font-weight: 800; font-size: .86rem; text-transform: uppercase; letter-spacing: .03em; }
+.zona-techo { margin: 8px 0 0; padding: 8px 10px; border-radius: var(--r-sm); background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .88rem; }
+.zona > small { display: block; margin-top: 8px; color: var(--muted); }
+@media (min-width: 640px) { .zonas { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); } .zonas li { grid-template-columns: 1fr; } .zonas li small { grid-column: 1; } }
+.impacto { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 8px; }
+.impacto li { display: grid; grid-template-columns: minmax(110px, 36%) 1fr; gap: 2px 10px; align-items: center; }
+.impacto .nom { font-weight: 700; }
+.impacto small { grid-column: 2; color: var(--muted); }
+.barra-imp { display: block; height: 10px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+.barra-imp span { display: block; height: 100%; min-width: 4px; border-radius: 6px; background: linear-gradient(90deg, var(--precaucion), var(--alerta)); }
+.sppb-progreso { margin: 0 0 4px; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; }
+#sppb-estado { display: block; margin-top: 4px; }
+#barras-video { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #000; }
+#fc-reposo { max-width: 120px; }
+/* alto contraste (tema manual): bordes y texto más marcados, sin degradados */
+:root[data-theme="contrast"] { --bg: #ffffff; --surface: #ffffff; --surface-2: #f2f2f2; --fg: #000000; --muted: #2b2b2b; --line: #000000; --line-strong: #000000; --accent: #3b0a9a; --accent-deep: #2a0770; --accent-soft: #ece4fb; --accent-fg: #ffffff; --alerta: #a10000; --alerta-soft: #ffe5e5; --alerta-ink: #7a0000; --precaucion: #7a4300; --precaucion-soft: #fff0d6; --precaucion-ink: #5a3000; --info: #005c2e; --info-soft: #dff5e7; --info-ink: #004522; --shadow: none; color-scheme: light; }
+:root[data-theme="contrast"] .btn, :root[data-theme="contrast"] .btn-sec, :root[data-theme="contrast"] input, :root[data-theme="contrast"] select, :root[data-theme="contrast"] textarea, :root[data-theme="contrast"] details.seccion, :root[data-theme="contrast"] .tarjeta, :root[data-theme="contrast"] .zona { border-width: 2px; border-style: solid; border-color: var(--line); }
+:root[data-theme="contrast"] a { text-decoration: underline; }
+:root[data-theme="contrast"] .barra-imp span { background: var(--alerta); }
+:root[data-theme="contrast"] :focus-visible { outline: 3px solid #000; outline-offset: 2px; }
+/* idioma distinto del español: el contenido se oculta (sin cambiar el layout) hasta que el diccionario sustituye los textos */
+html.i18n-espera body > :not(script) { visibility: hidden; }

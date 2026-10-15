@@ -47,20 +47,23 @@ export function construirIndice(kb, marcas = []) {
         entradas.push({ texto: m.pa, tipo: "principio", pid });
       }
       if (m.ft && !porId.get(pid).principio.ficha) porId.get(pid).principio.ficha = m.ft;
-      entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null });
+      entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null, cn: m.cn });
       continue;
     }
     const comps = m.principios.filter((x) => porId.has(x)).map((x, i) => ({ pid: x, dosis: m.dosis?.[m.principios.indexOf(x)] ?? null }));
     if (!comps.length) continue;
-    if (comps.length === 1) entradas.push({ texto: m.nombre, tipo: "marca", pid: comps[0].pid, dosis: comps[0].dosis, unidad: m.unidad });
-    else entradas.push({ texto: m.nombre, tipo: "combo", pid: comps[0].pid, componentes: comps });
+    if (comps.length === 1) entradas.push({ texto: m.nombre, tipo: "marca", pid: comps[0].pid, dosis: comps[0].dosis, unidad: m.unidad, cn: m.cn });
+    else entradas.push({ texto: m.nombre, tipo: "combo", pid: comps[0].pid, componentes: comps, cn: m.cn });
   }
   for (const e of entradas) e.norm = normalizar(e.texto);
+  // código nacional (6 dígitos) → entrada, para el escáner de códigos de barras (EAN-13 farmacéutico 847 + CN + control)
+  const porCn = new Map();
+  for (const e of entradas) for (const cn of e.cn || []) if (!porCn.has(cn)) porCn.set(cn, e);
   // dosis por comprimido disponibles en España (del nomenclátor), por principio: para ofrecerlas como opciones rápidas
   const dosisPorPid = new Map();
   for (const e of entradas) if (e.tipo === "marca" && e.dosis != null && e.dosis > 0) { const set = dosisPorPid.get(e.pid) || new Set(); set.add(e.dosis); dosisPorPid.set(e.pid, set); }
   for (const [k, v] of dosisPorPid) { const arr = [...v].sort((x, y) => x - y); const max = arr[arr.length - 1]; dosisPorPid.set(k, arr.filter((d) => d >= max / 50).slice(0, 8)); }
-  return { porId, entradas, dosisPorPid };
+  return { porId, entradas, dosisPorPid, porCn };
 }
 
 /** Distancia de edición limitada (Levenshtein con corte). */
@@ -577,7 +580,7 @@ export const SINTOMAS_ACSM = [
 const CLASES_ENFERMEDAD = /^(nitratos|digoxina|amiodarona|antiarritmicos_ic|sotalol_dronedarona|antianginosos_otros|ic_nuevos|ivabradina|anticoagulantes|antiagregantes|antiagregantes_vasculares|insulina|sulfonilureas|metformina|isglt2|aglp1|idpp4|pioglitazona|antidiabeticos_otros|epo_hematinicos|potasio_magnesio)$/;
 export function enfermedadSugerida(res, ctx = {}) {
   const cond = ctx.condiciones || new Set();
-  const porCond = ["diabetes", "insuficiencia_cardiaca", "renal", "renal_grave", "marcapasos", "nyha34", "fevi_baja"].filter((c) => cond.has(c));
+  const porCond = ["diabetes", "insuficiencia_cardiaca", "renal", "renal_grave", "marcapasos", "nyha34", "fevi_baja", "cardiopatia_isquemica", "fibrilacion_auricular", "aneurisma_aorta", "ictus"].filter((c) => cond.has(c));
   const porMeds = [...new Set(res.items.filter((it) => CLASES_ENFERMEDAD.test(it.clase.id)).map((it) => it.clase.nombre))];
   return { sugerida: porCond.length > 0 || porMeds.length > 0, porCond, porMeds };
 }
@@ -632,6 +635,7 @@ export function comprobarCaso(datos, caso, utils = {}) {
   const res = evaluar(datos, caso.meds, ctx);
   const e = caso.esperado || {};
   const fallos = [];
+  for (const m of caso.meds || []) if (datos.indice?.porId && !datos.indice.porId.has(m.pid)) fallos.push(`principio desconocido «${m.pid}»`);
   if (e.alerta_min != null && res.resumen.alerta < e.alerta_min) fallos.push(`alertas ${res.resumen.alerta} < ${e.alerta_min}`);
   if (e.precaucion_min != null && res.resumen.precaucion < e.precaucion_min) fallos.push(`precauciones ${res.resumen.precaucion} < ${e.precaucion_min}`);
   if (e.mayores_min != null && res.interacciones.filter((x) => x.nivel === "mayor").length < e.mayores_min) fallos.push(`interacciones mayores < ${e.mayores_min}`);
@@ -642,4 +646,58 @@ export function comprobarCaso(datos, caso, utils = {}) {
   if (e.cribado && caso.cribado) { const c = cribadoACSM(caso.cribado).clave; if (c !== e.cribado) fallos.push(`cribado ${c} ≠ ${e.cribado}`); }
   if (e.combinadas_incluye) for (const s of e.combinadas_incluye) if (!res.combinadas.some((c) => c.regla.titulo.toLowerCase().includes(s.toLowerCase()))) fallos.push(`falta la regla combinada «${s}»`);
   return { ok: !fallos.length, fallos, res };
+}
+
+/* ---------- Zona de intensidad personalizada ---------- */
+/** FC máxima estimada (Tanaka 2001) y zonas por frecuencia cardíaca de reserva (Karvonen); si la FC no sirve (betabloqueantes, FA, marcapasos…), guía por RPE y prueba del habla. */
+export function zonaIntensidad(res, ctx = {}, { fcReposo = null } = {}) {
+  const cond = ctx.condiciones || new Set();
+  const motivos = [];
+  for (const it of res.items) if (it.senales.has("fc_no_valida") || it.senales.has("bradicardia")) motivos.push(it.principio.nombre);
+  if (cond.has("fibrilacion_auricular")) motivos.push("fibrilación auricular");
+  if (cond.has("marcapasos")) motivos.push("marcapasos/DAI");
+  const edad = ctx.edad;
+  const fcmax = edad ? Math.round(208 - 0.7 * edad) : null;
+  const out = { metodo: motivos.length || !fcmax ? "rpe" : "fc", motivos: [...new Set(motivos)], fcmax, fcReposo: fcReposo ?? null, rpe: { ligera: "RPE 9–11 (puede cantar)", moderada: "RPE 12–14 (puede hablar, no cantar)", vigorosa: "RPE 15–17 (frases cortas)" }, habla: "Prueba del habla: moderado = puede hablar pero no cantar; vigoroso = solo frases cortas." };
+  if (out.metodo === "fc") {
+    const rep = fcReposo ?? 70;
+    const z = (lo, hi) => [Math.round(rep + (fcmax - rep) * lo), Math.round(rep + (fcmax - rep) * hi)];
+    out.zonas = { ligera: z(0.3, 0.39), moderada: z(0.4, 0.59), vigorosa: z(0.6, 0.89) };
+    out.reposoEstimado = fcReposo == null;
+  }
+  if (ctx.daiFc) { out.limiteDai = ctx.daiFc - 20; if (out.zonas) for (const k of Object.keys(out.zonas)) out.zonas[k] = out.zonas[k].map((v) => Math.min(v, out.limiteDai)); }
+  const ns = cond.has("nyha34") || cond.has("fevi_baja") || cond.has("aneurisma_aorta") || cond.has("cardiopatia_isquemica");
+  out.techo = ns ? "moderada" : "vigorosa";
+  return out;
+}
+
+/* ---------- Carga de precauciones por fármaco (para conversar sobre desprescripción) ---------- */
+export function impactoPorFarmaco(res) {
+  const lista = res.items.map((it) => {
+    let alerta = 0, precaucion = 0, interacciones = 0, combinadas = 0;
+    for (const amb of ["general", "aerobico", "fuerza", "equilibrio"]) for (const g of res.ambitos[amb]) if (g.item === it) for (const r of g.reglas) { if (r.nivel === "alerta") alerta++; else if (r.nivel === "precaucion") precaucion++; }
+    for (const c of res.combinadas) if (c.implicados.includes(it) && c.regla.nivel !== "info") combinadas++;
+    for (const x of res.interacciones) if ((x.a === it || x.b === it) && x.nivel !== "menor") interacciones += x.nivel === "mayor" ? 2 : 1;
+    const puntos = alerta * 3 + precaucion + combinadas + interacciones;
+    return { item: it, alerta, precaucion, combinadas, interacciones, puntos };
+  });
+  const max = Math.max(1, ...lista.map((x) => x.puntos));
+  return lista.map((x) => ({ ...x, pct: x.puntos / max })).sort((a, b) => b.puntos - a.puntos);
+}
+
+/* ---------- SPPB (Short Physical Performance Battery, Guralnik 1994) ---------- */
+/** @param r {lado: seg, semitandem: seg, tandem: seg, marcha: seg (4 m, mejor de dos), silla: seg (5 levantadas) | null si no puede} */
+export function puntuarSPPB(r = {}) {
+  const seg = (v) => (v == null || v === "" ? null : Number(v));
+  const lado = seg(r.lado), semi = seg(r.semitandem), tandem = seg(r.tandem), marcha = seg(r.marcha), silla = seg(r.silla);
+  let equilibrio = 0;
+  if (lado != null && lado >= 10) { equilibrio = 1; if (semi != null && semi >= 10) { equilibrio = 2; if (tandem != null) equilibrio += tandem >= 10 ? 2 : tandem >= 3 ? 1 : 0; } }
+  let marchaPts = 0;
+  if (marcha != null && marcha > 0) marchaPts = marcha < 4.82 ? 4 : marcha <= 6.2 ? 3 : marcha <= 8.7 ? 2 : 1;
+  let sillaPts = 0;
+  if (silla != null && silla > 0) sillaPts = silla <= 11.19 ? 4 : silla <= 13.69 ? 3 : silla <= 16.69 ? 2 : silla <= 60 ? 1 : 0;
+  const total = equilibrio + marchaPts + sillaPts;
+  const velocidad = marcha ? Math.round((4 / marcha) * 100) / 100 : null;
+  const categoria = total >= 10 ? "robusto" : total >= 7 ? "prefragil" : "fragil";
+  return { equilibrio, marcha: marchaPts, silla: sillaPts, total, velocidad, categoria, completo: lado != null && marcha != null && silla != null };
 }

@@ -1,10 +1,10 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso } from "./engine.js?v=202610151443";
-import { APP_VERSION } from "./version.js?v=202610151443";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151443";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151443";
-import { cargarScript } from "./libs.js?v=202610151443";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151443";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151443";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151534";
+import { APP_VERSION } from "./version.js?v=202610151534";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151534";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151534";
+import { cargarScript } from "./libs.js?v=202610151534";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151534";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151534";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -129,7 +129,8 @@ ponerIconos(); // antes de la primera pintura: evita que los botones cambien de 
 $("#idioma").value = idioma();
 $("#idioma").addEventListener("change", (e) => { aplicarIdioma(e.target.value); aplicarModo(); if (datos) { renderVersion(); render(); } });
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null };
+const sanearSppb = (x) => (x && Number.isFinite(Number(x.total)) ? { total: Math.max(0, Math.min(12, Number(x.total))), fecha: Number(x.fecha) || Date.now(), partes: x.partes || {}, velocidad: x.velocidad ?? null } : null);
 const sanearCribado = (c) => ({ regular: c?.regular === true ? true : c?.regular === false ? false : null, enfermedad: c?.enfermedad === true ? true : c?.enfermedad === false ? false : null, sintomas: Array.isArray(c?.sintomas) ? c.sintomas.filter((x) => SINTOMAS_ACSM.some((y) => y.id === x)) : [] });
 const sanearPrescrito = (p) => (p && Number.isFinite(Number(p.fecha)) ? { fecha: Number(p.fecha), semanas: [4, 6, 8, 12].includes(Number(p.semanas)) ? Number(p.semanas) : 6 } : null);
 /** Plan semanal vigente (día 0–6 → tipo), según los días elegidos por el usuario. */
@@ -137,7 +138,7 @@ const planActual = () => planSemana(estado.plan?.dias);
 const sanearPlan = (p) => ({ dias: Array.isArray(p?.dias) && p.dias.length ? [...new Set(p.dias.map(Number).filter((d) => d >= 0 && d <= 6))] : [1, 2, 3, 4, 5, 6] });
 /** Vibración breve en móviles que la admiten (marcar un bloque, terminar); nunca en escritorio. */
 const vibrar = (ms = 12) => { try { if (navigator.vibrate && matchMedia("(pointer: coarse)").matches) navigator.vibrate(ms); } catch {} };
-const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma", "oxigeno", "embarazo"];
+const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma", "oxigeno", "embarazo", "hipertension", "cardiopatia_isquemica", "fibrilacion_auricular", "aneurisma_aorta", "ictus", "cancer", "artrosis", "epilepsia", "hepatopatia", "obesidad"];
 const PAC = ["silla", "caminar", "ayuda"];
 const PRO = ["fg", "fevi", "nyha", "sppb", "vivifrail", "dai"];
 
@@ -152,14 +153,15 @@ function ctxActual() {
   if (p.dai != null) cond.add("marcapasos");
   // fragilidad: SPPB > Vivifrail > preguntas del paciente
   let frag = null;
-  if (p.sppb != null) frag = p.sppb <= 6 ? "fragil" : p.sppb <= 9 ? "prefragil" : "robusto";
+  const sppb = p.sppb ?? estado.sppb?.total ?? null;
+  if (sppb != null) frag = sppb <= 6 ? "fragil" : sppb <= 9 ? "prefragil" : "robusto";
   else if (p.vivifrail) frag = p.vivifrail === "A" || p.vivifrail === "B" ? "fragil" : p.vivifrail === "C" ? "prefragil" : "robusto";
   else {
     const malas = (q.silla ? 1 : 0) + (q.caminar ? 1 : 0) + (q.ayuda ? 1 : 0);
     if (malas) frag = malas >= 2 ? "fragil" : "prefragil"; // sin marcas no se infiere nada
   }
   if (frag && frag !== "robusto") cond.add(frag);
-  return { edad: estado.edad, caidas: estado.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, modo: estado.modo };
+  return { edad: estado.edad, caidas: estado.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, sppb, sppbGuiado: estado.sppb, fcReposo: estado.fcReposo, modo: estado.modo };
 }
 let datos, indice;
 
@@ -215,7 +217,7 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, cribado: estado.cribado, prescrito: estado.prescrito })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb })); } catch {}
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
 function numeroEntre(v, min, max) { if (v == null || v === "") return null; const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
@@ -234,11 +236,12 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito) });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb) });
   } catch {}
-  $("#edad").value = estado.edad ?? "";
+  $("#edad").value = estado.edad ?? ""; $("#fc-reposo").value = estado.fcReposo ?? "";
   $("#caidas").checked = estado.caidas;
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
+  if (estado.condiciones.some((c) => CONDICIONES.indexOf(c) >= 8)) $("#bloque-situacion-mas").open = true;
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
   pintarCribadoForm();
@@ -545,7 +548,7 @@ function mostrarFicha(pid) {
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
-function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito }; }
+function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb }; }
 function renderPerfiles() {
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
   const lista = leerPerfiles();
@@ -557,7 +560,7 @@ function renderPerfiles() {
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
       const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), ejemplo: false });
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
       mostrarCambios(previa);
@@ -577,7 +580,7 @@ $("#btn-perfil-guardar").addEventListener("click", () => {
   $("#perfil-nombre").value = ""; renderPerfiles();
 });
 function restaurarFormulario() {
-  $("#edad").value = estado.edad ?? ""; $("#caidas").checked = estado.caidas;
+  $("#edad").value = estado.edad ?? ""; $("#fc-reposo").value = estado.fcReposo ?? ""; $("#caidas").checked = estado.caidas;
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
@@ -668,13 +671,13 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 
 /* ---------- Resúmenes en PDF ---------- */
 async function descargarPdf(tipo) {
-  const btn = tipo === "medico" ? $("#btn-pdf-medico") : $("#btn-pdf-paciente");
+  const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true");
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), cribado: cribadoActual(res), prescriptor: estado.modo === "profesional" ? prescriptorActual() : null, prescrito: estado.prescrito, appVersion: APP_VERSION, enlace: `${location.origin}${location.pathname}#lista=${codificarEstado()}`, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
-    const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
-    doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
+    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), cribado: cribadoActual(res), zona: zonaIntensidad(res, ctxActual(), { fcReposo: estado.fcReposo }), prescriptor: estado.modo === "profesional" ? prescriptorActual() : null, prescrito: estado.prescrito, appVersion: APP_VERSION, enlace: `${location.origin}${location.pathname}#lista=${codificarEstado()}`, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
+    const doc = await ({ medico: pdfMedico, paciente: pdfPaciente, entrenador: pdfEntrenador, tarjeta: pdfTarjeta }[tipo])(datos.kb, res, ctx);
+    doc.save(`${{ medico: "resumen-medico", paciente: "resumen-paciente", entrenador: "ficha-entrenador", tarjeta: "tarjeta-nevera" }[tipo]}-${new Date().toISOString().slice(0, 10)}.pdf`);
     if (estado.modo === "profesional" && !estado.prescrito) { estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision }; guardar(); pintarReeval(); }
     toast(t("pdf.generado"), { ms: 3000 });
     preguntarUtil();
@@ -736,6 +739,8 @@ $$(".btn-sugerencia").forEach((b) => b.addEventListener("click", () => {
   $("#pdf-aviso").textContent = t("sug.abierto");
 }));
 $("#btn-pdf-paciente").addEventListener("click", () => descargarPdf("paciente"));
+$("#btn-pdf-entrenador").addEventListener("click", () => descargarPdf("entrenador"));
+$("#btn-pdf-tarjeta").addEventListener("click", () => descargarPdf("tarjeta"));
 
 $("#btn-ejemplo").addEventListener("click", () => {
   Object.assign(estado, structuredClone(EJEMPLO), { ejemplo: true });
@@ -744,6 +749,7 @@ $("#btn-ejemplo").addEventListener("click", () => {
 });
 $("#btn-vaciar").addEventListener("click", () => { estado.meds = []; estado.ejemplo = false; guardar(); render(); const c = $("#cambios"); if (c) c.hidden = true; });
 $("#edad").addEventListener("change", () => { estado.edad = parseInt($("#edad").value, 10) || null; guardar(); render(); });
+$("#fc-reposo").addEventListener("change", () => { estado.fcReposo = numeroEntre($("#fc-reposo").value, 30, 150); guardar(); render(); });
 $("#caidas").addEventListener("change", () => { estado.caidas = $("#caidas").checked; guardar(); render(); });
 for (const c of CONDICIONES) $("#cond-" + c)?.addEventListener("change", () => { estado.condiciones = CONDICIONES.filter((k) => $("#cond-" + k)?.checked); guardar(); render(); });
 
@@ -844,11 +850,11 @@ $("#btn-instalar").addEventListener("click", async () => {
 window.addEventListener("appinstalled", () => { $("#btn-instalar").hidden = true; toast(t("instalar.ok"), { ms: 4000 }); });
 
 /* ---------- tema claro / oscuro / automático ---------- */
-const TEMAS = ["auto", "light", "dark"];
+const TEMAS = ["auto", "light", "dark", "contrast"];
 function aplicarTema(tm) {
   if (tm === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = tm;
   try { localStorage.setItem("medex.tema", tm); } catch {}
-  const b = $("#btn-tema"); b.title = t("tema." + tm); b.setAttribute("aria-label", t("tema." + tm)); b.querySelector("span").textContent = { auto: "A", light: "☀", dark: "☾" }[tm];
+  const b = $("#btn-tema"); b.title = t("tema." + tm); b.setAttribute("aria-label", t("tema." + tm)); b.querySelector("span").textContent = { auto: "A", light: "☀", dark: "☾", contrast: "◐" }[tm];
 }
 $("#btn-tema").addEventListener("click", () => { const act = document.documentElement.dataset.theme || "auto"; aplicarTema(TEMAS[(TEMAS.indexOf(act) + 1) % TEMAS.length]); });
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
@@ -856,7 +862,7 @@ try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplic
 $("#btn-historia").addEventListener("click", async () => {
   const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), diario: leerDiario(), prescriptor: prescriptorActual(), prescrito: estado.prescrito, appVersion: APP_VERSION, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
   const res = evaluar(datos, medsActivos(), ctx);
-  ctx.cribado = cribadoActual(res);
+  ctx.cribado = cribadoActual(res); ctx.zona = zonaIntensidad(res, ctx, { fcReposo: estado.fcReposo });
   const txt = textoHistoria(datos.kb, res, ctx);
   const btn = $("#btn-historia");
   try { await navigator.clipboard.writeText(txt); btn.textContent = "Copiado para la historia"; }
@@ -1092,13 +1098,13 @@ function render() {
   $("#sin-meds").hidden = estado.meds.length > 0;
   $("#informe").hidden = res.items.length === 0;
   $("#solo-libres").hidden = !(res.items.length === 0 && medsLibres().length);
-  if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); return; }
+  if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); pintarSppbEstado(); $("#btn-barras").hidden = !barrasDisponible(); return; }
 
   // chips de contexto derivado
-  const etiquetasCtx = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia" };
-  const chips = [...ctx.condiciones].map((c) => etiquetasCtx[c]).filter(Boolean);
+  const chips = [...ctx.condiciones].map((c) => ETIQUETAS_CTX[c]).filter(Boolean);
   if (ctx.edad) chips.unshift(`${ctx.edad} años`);
   if (ctx.daiFc) chips.push(`DAI ${ctx.daiFc} lpm`);
+  if (ctx.sppb != null) chips.push(`SPPB ${ctx.sppb}`);
   $("#contexto").innerHTML = chips.length ? chips.map((c) => `<span class="chip">${c}</span>`).join("") : "";
   // resumen
   $("#resumen").innerHTML = ["alerta", "precaucion", "info"]
@@ -1109,7 +1115,8 @@ function render() {
   const mayores = res.interacciones.filter((x) => x.nivel === "mayor").length;
   const veredicto = nA || mayores ? t("veredicto.alerta", { a: nA + mayores }) : nP ? t("veredicto.precaucion", { p: nP }) : t("veredicto.ok");
   const crib = cribadoActual(res);
-  renderCribado(res); pintarReeval();
+  renderCribado(res); pintarReeval(); pintarSppbEstado();
+  $("#btn-barras").hidden = !barrasDisponible();
   $("#veredicto").className = "veredicto " + (nA || mayores ? "v-alerta" : nP ? "v-precaucion" : "v-ok");
   $("#veredicto").innerHTML = `<p>${veredicto}</p>${crib.clave !== "sin_datos" ? `<p class="veredicto-crib crib-${crib.nivel}"><b>${t("crib.chip." + crib.clave)}:</b> ${crib.texto} <small>(${t("crib.fuente")})</small></p>` : `<p class="veredicto-crib crib-pendiente"><button type="button" class="btn-sec sm" id="btn-ir-cribado">${t("crib.pendiente")}</button></p>`}`;
   $("#btn-ir-cribado")?.addEventListener("click", () => { const d = $("#bloque-cribado"); d.open = true; d.scrollIntoView({ block: "center" }); });
@@ -1157,6 +1164,7 @@ function render() {
   cont.innerHTML = "";
 
   if (estado.tab === "general") {
+    const imp = seccionImpacto(res); if (imp) cont.append(imp);
     if (res.combinadas.length) {
       const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
       const sec = seccion(t("inf.combinacion"), { clave: "combinadas", resumen: `${res.combinadas.length} ${t("inf.avisos")} · ${resumenNiveles(na, np, 0)}` });
@@ -1179,6 +1187,7 @@ function render() {
   } else if (estado.tab === "plan") {
     renderPlan(cont);
   } else {
+    if (estado.tab === "aerobico") cont.insertAdjacentHTML("beforeend", tarjetaZona(res));
     renderAmbito(cont, res.ambitos[estado.tab], null, estado.tab);
   }
   // perfil de señales
@@ -1576,7 +1585,7 @@ window.addEventListener("error", (e) => informarError(e.message));
 window.addEventListener("unhandledrejection", (e) => informarError(e.reason?.message || e.reason));
 
 /* ---------- cribado preparticipación (ACSM 2015) ---------- */
-const ETIQUETAS_CTX = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia" };
+const ETIQUETAS_CTX = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia", hipertension: "hipertensión", cardiopatia_isquemica: "cardiopatía isquémica", fibrilacion_auricular: "fibrilación auricular", aneurisma_aorta: "aneurisma de aorta", ictus: "ictus previo", cancer: "cáncer", artrosis: "artrosis", epilepsia: "epilepsia", hepatopatia: "hepatopatía", obesidad: "obesidad" };
 $("#crib-sintomas").innerHTML = SINTOMAS_ACSM.map((x) => `<label class="check"><input type="checkbox" data-crib-sint="${x.id}"> <span>${x.texto}</span></label>`).join("");
 function pintarCribadoForm() {
   const c = estado.cribado || {};
@@ -1694,6 +1703,105 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
   const enlaces = $$("#indice-informe a");
   const obs = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) enlaces.forEach((a) => a.classList.toggle("activo", a.getAttribute("href") === "#" + e.target.id)); }, { rootMargin: "-20% 0px -70% 0px" });
   for (const a of enlaces) { const el = document.querySelector(a.getAttribute("href")); if (el) obs.observe(el); }
+}
+
+/* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
+const SPPB_PASOS = [
+  { id: "lado", max: 10, pict: "unpie" },
+  { id: "semitandem", max: 10, pict: "unpie" },
+  { id: "tandem", max: 10, pict: "talonpunta" },
+  { id: "marcha", pict: "marcha" },
+  { id: "silla", pict: "silla" },
+];
+let sppbCrono = null, sppbInicio = 0;
+function abrirSppb() {
+  const dlg = $("#sppb"), cuerpo = $("#sppb-cuerpo");
+  const r = {};
+  let i = 0;
+  const pintar = () => {
+    if (i >= SPPB_PASOS.length) return resultado();
+    const paso = SPPB_PASOS[i];
+    cuerpo.innerHTML = `
+      <p class="muted sppb-progreso">${t("sppb.paso", { n: i + 1, t: SPPB_PASOS.length })}</p>
+      <h2>${picto(paso.pict)} ${t("sppb.t." + paso.id)}</h2>
+      <p>${t("sppb.x." + paso.id)}</p>
+      <p class="muted">${t("sppb.seguridad")}</p>
+      <div class="crono">${anilloCrono(0)}<span id="sppb-crono">0,0 s</span><button type="button" class="btn sm" id="sppb-ini">${t("sesion.iniciar")}</button></div>
+      <div class="fila"><label>${t("sppb.segundos")} <input type="number" id="sppb-seg" step="0.1" min="0" max="120" inputmode="decimal"></label></div>
+      <div class="acciones"><button type="button" class="btn" id="sppb-sig">${t("sppb.siguiente")}</button><button type="button" class="btn-sec sm" id="sppb-nopuede">${t("sppb.nopuede")}</button>${i ? `<button type="button" class="btn-sec sm" id="sppb-atras">${t("sppb.atras")}</button>` : ""}</div>`;
+    const seg = $("#sppb-seg"); const tick = () => { const sgs = (Date.now() - sppbInicio) / 1000; $("#sppb-crono").textContent = sgs.toFixed(1).replace(".", ",") + " s"; if (paso.max && sgs >= paso.max) { parar(); seg.value = paso.max; vibrar(30); } };
+    const parar = () => { clearInterval(sppbCrono); sppbCrono = null; $("#sppb-ini").textContent = t("sesion.iniciar"); seg.value = ((Date.now() - sppbInicio) / 1000).toFixed(1); };
+    $("#sppb-ini").addEventListener("click", () => { if (sppbCrono) { parar(); return; } sppbInicio = Date.now(); sppbCrono = setInterval(tick, 100); $("#sppb-ini").textContent = t("sppb.parar"); vibrar(10); });
+    $("#sppb-sig").addEventListener("click", () => { if (sppbCrono) parar(); const v = parseFloat(String(seg.value).replace(",", ".")); if (!Number.isFinite(v)) { seg.focus(); return; } r[paso.id] = v; if (paso.id === "lado" && v < 10) { r.semitandem = null; r.tandem = null; i += 3; } else if (paso.id === "semitandem" && v < 10) { r.tandem = null; i += 2; } else i++; pintar(); });
+    $("#sppb-nopuede").addEventListener("click", () => { if (sppbCrono) parar(); r[paso.id] = paso.max ? 0 : null; if (paso.id === "lado") { r.semitandem = null; r.tandem = null; i += 3; } else if (paso.id === "semitandem") { r.tandem = null; i += 2; } else i++; pintar(); });
+    $("#sppb-atras")?.addEventListener("click", () => { if (sppbCrono) parar(); i = Math.max(0, i - 1); pintar(); });
+  };
+  const resultado = () => {
+    const p = puntuarSPPB(r);
+    cuerpo.innerHTML = `
+      <h2>${t("sppb.resultado")}: <b>${p.total}</b> / 12</h2>
+      <p class="crib-resultado nivel-${p.categoria === "fragil" ? "alerta" : p.categoria === "prefragil" ? "precaucion" : "info"}">${t("sppb.cat." + p.categoria)}</p>
+      <ul class="bloques"><li><span class="min">${p.equilibrio}/4</span><span>${t("sppb.equilibrio")}</span></li><li><span class="min">${p.marcha}/4</span><span>${t("sppb.marcha")}${p.velocidad ? ` · ${p.velocidad.toLocaleString(idioma())} m/s` : ""}</span></li><li><span class="min">${p.silla}/4</span><span>${t("sppb.silla")}</span></li></ul>
+      <p class="muted">${t("sppb.nota")}</p>
+      <div class="acciones"><button type="button" class="btn" id="sppb-guardar">${t("sppb.guardar")}</button><button type="button" class="btn-sec sm" id="sppb-repetir">${t("sppb.repetir")}</button></div>`;
+    $("#sppb-guardar").addEventListener("click", () => { estado.sppb = { total: p.total, fecha: Date.now(), partes: r, velocidad: p.velocidad }; if (estado.modo === "profesional") { estado.pro.sppb = p.total; $("#pro-sppb").value = p.total; } guardar(); render(); dlg.close(); toast(t("sppb.guardado", { n: p.total }), { ms: 6000 }); vibrar([20, 60, 20]); });
+    $("#sppb-repetir").addEventListener("click", () => { i = 0; for (const k of Object.keys(r)) delete r[k]; pintar(); });
+  };
+  pintar(); dlg.showModal();
+}
+$("#btn-sppb").addEventListener("click", abrirSppb);
+$("#sppb-cerrar").addEventListener("click", () => { clearInterval(sppbCrono); sppbCrono = null; $("#sppb").close(); });
+function pintarSppbEstado() {
+  const e = $("#sppb-estado"); if (!e) return;
+  e.textContent = estado.sppb ? t("sppb.estado", { n: estado.sppb.total, d: new Date(estado.sppb.fecha).toLocaleDateString(idioma()) }) : "";
+}
+
+/* ---------- escáner de código de barras (EAN-13 farmacéutico → código nacional) ---------- */
+let barrasStream = null, barrasTimer = null;
+function barrasDisponible() { return "BarcodeDetector" in window && indice?.porCn?.size > 0; }
+async function abrirBarras() {
+  const dlg = $("#barras"), video = $("#barras-video"), estadoEl = $("#barras-estado");
+  try {
+    barrasStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = barrasStream; dlg.showModal(); estadoEl.textContent = t("barras.buscando");
+    const det = new window.BarcodeDetector({ formats: ["ean_13"] });
+    barrasTimer = setInterval(async () => {
+      try {
+        const codes = await det.detect(video);
+        for (const c of codes) {
+          const ean = c.rawValue || "";
+          if (!/^847\d{10}$/.test(ean)) continue;
+          const cn = ean.slice(6, 12);
+          const e = indice.porCn.get(cn);
+          if (e) { cerrarBarras(); elegir(e); toast(t("barras.ok", { n: e.texto }), { ms: 5000 }); vibrar(20); return; }
+          estadoEl.textContent = t("barras.desconocido", { cn });
+        }
+      } catch {}
+    }, 400);
+  } catch (e) { toast(t("barras.error"), { ms: 5000 }); cerrarBarras(); }
+}
+function cerrarBarras() { clearInterval(barrasTimer); barrasTimer = null; barrasStream?.getTracks().forEach((tr) => tr.stop()); barrasStream = null; const d = $("#barras"); if (d.open) d.close(); }
+$("#btn-barras").addEventListener("click", abrirBarras);
+$("#barras-cerrar").addEventListener("click", cerrarBarras);
+$("#barras").addEventListener("cancel", (ev) => { ev.preventDefault(); cerrarBarras(); });
+
+/* ---------- zona de intensidad y carga por fármaco ---------- */
+function tarjetaZona(res) {
+  const z = zonaIntensidad(res, ctxActual(), { fcReposo: estado.fcReposo });
+  const fila = (k, lab) => z.zonas ? `<li><span class="zona-lab">${lab}</span><b>${z.zonas[k][0]}–${z.zonas[k][1]} lpm</b><small>${z.rpe[k]}</small></li>` : `<li><span class="zona-lab">${lab}</span><b>${z.rpe[k]}</b></li>`;
+  const techo = z.techo === "moderada" ? `<p class="zona-techo">${t("zona.techo")}</p>` : "";
+  return `<section class="zona"><h3>${t("zona.titulo")}</h3>
+    <p class="muted">${z.metodo === "fc" ? t("zona.fc", { m: z.fcmax, r: z.fcReposo ?? "~70" }) + (z.reposoEstimado ? " " + t("zona.reposo_estimado") : "") : t("zona.rpe", { m: z.motivos.join(", ") })}</p>
+    <ul class="zonas">${fila("ligera", t("zona.ligera"))}${fila("moderada", t("zona.moderada"))}${z.techo === "vigorosa" ? fila("vigorosa", t("zona.vigorosa")) : ""}</ul>
+    ${z.limiteDai ? `<p class="zona-techo">${t("zona.dai", { n: z.limiteDai })}</p>` : ""}${techo}
+    <small>${z.habla}</small></section>`;
+}
+function seccionImpacto(res) {
+  const lista = impactoPorFarmaco(res).filter((x) => x.puntos > 0);
+  if (lista.length < 2) return null;
+  const sec = seccion(t("impacto.titulo"), { abierta: estado.modo === "profesional", clave: "impacto", resumen: `${lista.length} ${t("perf.farmacos")}` });
+  sec.querySelector(".cuerpo-sec").innerHTML = `<p class="muted">${t("impacto.intro")}</p><ul class="impacto">${lista.map((x) => `<li><span class="nom">${x.item.principio.nombre}</span><span class="barra-imp"><span style="width:${Math.round(x.pct * 100)}%"></span></span><small>${[x.alerta ? `${x.alerta} ${t("impacto.alerta")}` : "", x.precaucion ? `${x.precaucion} ${t("impacto.precaucion")}` : "", x.combinadas ? `${x.combinadas} ${t("impacto.comb")}` : "", x.interacciones ? `${x.interacciones} ${t("impacto.ddi")}` : ""].filter(Boolean).join(" · ")}</small></li>`).join("")}</ul><p class="esencial-nota">${t("impacto.nota")}</p>`;
+  return sec;
 }
 
 cargar();

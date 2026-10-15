@@ -135,6 +135,29 @@ try {
   check("regular + enfermedad → valoración antes de intensidad alta", await p.$eval("#crib-estado", (e) => e.classList.contains("crib-precaucion")));
   check("nivel de evidencia visible en las reglas", (await p.$$("#contenido-tab .evidencia")).length >= 1);
 
+  console.log("Beta 0: zona de intensidad, carga por fármaco, situaciones, SPPB, alto contraste");
+  await p.click('[data-tab="aerobico"]'); await p.waitForTimeout(150);
+  check("tarjeta de zona de intensidad al inicio del apartado aeróbico", await p.isVisible("#contenido-tab .zona") && (await p.textContent("#contenido-tab .zona")).includes("esfuerzo percibido"));
+  await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
+  check("sección de carga de precauciones por fármaco con barras", (await p.$$("#contenido-tab .impacto li .barra-imp")).length >= 2);
+  await p.click("#bloque-situacion-mas summary"); await p.check("#cond-aneurisma_aorta"); await p.waitForTimeout(250);
+  check("aneurisma de aorta → regla combinada de atención en Lo esencial", (await p.textContent("#esencial")).includes("Aneurisma"));
+  await p.uncheck("#cond-aneurisma_aorta"); await p.waitForTimeout(200);
+  await p.click("#btn-sppb"); await p.waitForTimeout(150);
+  check("diálogo SPPB abierto en el paso 1", await p.isVisible("#sppb") && (await p.textContent("#sppb-cuerpo")).includes("Paso 1 de 5"));
+  for (const v of ["10", "10", "10", "4", "10"]) { await p.fill("#sppb-seg", v); await p.click("#sppb-sig"); await p.waitForTimeout(80); }
+  check("resultado SPPB 12/12 robusto", (await p.textContent("#sppb-cuerpo")).includes("12") && (await p.textContent("#sppb-cuerpo")).includes("robusto"));
+  await p.click("#sppb-guardar"); await p.waitForTimeout(300);
+  check("SPPB guardado y visible en Sus datos", (await p.textContent("#sppb-estado")).includes("12/12") && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).sppb.total)) === 12);
+  await p.click("#btn-sppb"); await p.waitForTimeout(100); await p.fill("#sppb-seg", "5"); await p.click("#sppb-sig"); await p.waitForTimeout(80);
+  check("pies juntos < 10 s salta al paso de marcha", (await p.textContent("#sppb-cuerpo")).includes("Paso 4 de 5"));
+  await p.click("#sppb-cerrar"); await p.waitForTimeout(100);
+  for (let i = 0; i < 3; i++) await p.click("#btn-tema");
+  check("tema de alto contraste disponible en el ciclo", (await p.evaluate(() => document.documentElement.dataset.theme)) === "contrast" && (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--line").trim())) === "#000000");
+  await p.click("#btn-tema");
+  check("botones de ficha para el entrenador y tarjeta para la nevera", await p.isVisible("#btn-pdf-entrenador") && await p.isVisible("#btn-pdf-tarjeta"));
+  check("escáner de códigos de barras oculto sin códigos nacionales en el nomenclátor", await p.$eval("#btn-barras", (e) => e.hidden));
+
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
   check("acento del modo profesional", (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--accent").trim())) !== "#6b35c4");
@@ -144,7 +167,8 @@ try {
   const historia = await p.evaluate(() => navigator.clipboard.readText());
   check("texto para la historia clínica", historia.startsWith("RECOMENDACIÓN DE EJERCICIO") && historia.includes("NYHA"));
   check("la historia incluye el registro del paciente con constantes", historia.includes("Registro del paciente") && historia.includes("glucosa antes 140"));
-  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0.15"));
+  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0.1"));
+  check("la historia incluye la valoración funcional (SPPB) y la zona de intensidad", historia.includes("SPPB 12/12") && historia.includes("Zona de intensidad"));
   await p.click("#bloque-prescriptor summary"); await p.fill("#presc-nombre", "Dra. Prueba"); await p.fill("#presc-centro", "Centro de pruebas"); await p.$eval("#presc-centro", (e) => e.dispatchEvent(new Event("change"))); await p.$eval("#presc-nombre", (e) => e.dispatchEvent(new Event("change")));
   await p.click("#btn-prescrito"); await p.waitForTimeout(200);
   check("prescriptor guardado y prescripción marcada", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.prescriptor")).nombre)) === "Dra. Prueba" && (await p.textContent("#presc-estado")).includes("reevaluar"));
@@ -204,6 +228,10 @@ try {
   await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
   check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 5);
   await anchoCtx.close();
+  const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();
+  await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  check("navegador en inglés: interfaz traducida y visible (sin la clase de espera)", (await pe.textContent('[data-tab="cuando"]')).includes("When") && !(await pe.evaluate(() => document.documentElement.classList.contains("i18n-espera"))) && (await pe.$eval("main", (m) => getComputedStyle(m).visibility)) === "visible");
+  await enCtx.close();
 } catch (e) {
   fallos++; console.log("  ✘ excepción en las pruebas:", e.message);
 }

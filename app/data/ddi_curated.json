@@ -1364,6 +1364,111 @@
       "nivel": "moderada",
       "efecto": "Efectos opuestos; empeora la cognición.",
       "accion": "Evitar."
+    },
+    {
+      "a": "clase:sulfonilureas",
+      "b": "clase:fluoroquinolonas",
+      "nivel": "moderada",
+      "efecto": "Las quinolonas alteran la glucemia (hipo e hiperglucemia), más con sulfonilureas y en mayores.",
+      "accion": "Durante el antibiótico, mida la glucosa antes de entrenar y lleve azúcar; reduzca la intensidad."
+    },
+    {
+      "a": "clase:isglt2",
+      "b": "clase:sulfonilureas",
+      "nivel": "moderada",
+      "efecto": "Suma de efecto hipoglucemiante; además el iSGLT2 favorece la deshidratación con el ejercicio.",
+      "accion": "Hidratación, glucosa antes de sesiones largas; su médico puede bajar la sulfonilurea."
+    },
+    {
+      "a": "clase:corticoides",
+      "b": "clase:anticoagulantes",
+      "nivel": "moderada",
+      "efecto": "Mayor riesgo de sangrado digestivo y, con acenocumarol, alteración del INR.",
+      "accion": "Control de INR si es acenocumarol; evite antiinflamatorios añadidos; vigile heces negras."
+    },
+    {
+      "a": "clase:antipsicoticos",
+      "b": "clase:benzodiacepinas",
+      "nivel": "moderada",
+      "efecto": "Sedación y riesgo de caídas aditivos; en mayores, hipotensión ortostática.",
+      "accion": "Equilibrio con apoyo; no entrene en las horas de máximo efecto; revisar la necesidad de ambos."
+    },
+    {
+      "a": "amiodarona",
+      "b": "clase:fluoroquinolonas",
+      "nivel": "mayor",
+      "efecto": "Prolongación del QT aditiva: riesgo de arritmia grave, mayor con esfuerzo intenso, hipopotasemia o deshidratación.",
+      "accion": "Evitar la combinación si es posible; si es imprescindible, ECG, potasio normal y solo ejercicio ligero mientras dure el antibiótico."
+    },
+    {
+      "a": "ondansetron",
+      "b": "clase:antipsicoticos",
+      "nivel": "moderada",
+      "efecto": "Prolongación del QT aditiva.",
+      "accion": "Potasio y magnesio normales; evite el esfuerzo intenso los días de ondansetrón."
+    },
+    {
+      "a": "clase:diureticos_asa",
+      "b": "clase:tiazidas",
+      "nivel": "moderada",
+      "efecto": "Bloqueo secuencial de la nefrona: diuresis intensa, hipopotasemia, hiponatremia y deshidratación.",
+      "accion": "Pésese, beba con sales en sesiones largas, vigile calambres y mareo; analítica de potasio periódica."
+    },
+    {
+      "a": "clase:betabloqueantes",
+      "b": "clase:alfabloqueantes",
+      "nivel": "moderada",
+      "efecto": "Hipotensión ortostática aditiva, sobre todo al terminar el ejercicio o con calor.",
+      "accion": "Enfriamiento largo, levantarse despacio, hidratación; la tamsulosina/doxazosina mejor por la noche."
+    },
+    {
+      "a": "clase:nitratos",
+      "b": "clase:alfabloqueantes",
+      "nivel": "moderada",
+      "efecto": "Vasodilatación aditiva: mareo y síncope al incorporarse.",
+      "accion": "No tome el nitrato de acción corta justo antes de levantarse de golpe; transiciones lentas."
+    },
+    {
+      "a": "clase:pde5",
+      "b": "clase:alfabloqueantes",
+      "nivel": "moderada",
+      "efecto": "Hipotensión sintomática, sobre todo en las primeras dosis.",
+      "accion": "Separe las tomas varias horas; no entrene en las 4 horas siguientes a la primera combinación."
+    },
+    {
+      "a": "clase:aines",
+      "b": "clase:isglt2",
+      "nivel": "moderada",
+      "efecto": "Riesgo de fallo renal agudo con deshidratación (el iSGLT2 pierde volumen y el AINE reduce el flujo renal).",
+      "accion": "Evite el antiinflamatorio los días de ejercicio largo o calor; paracetamol como alternativa; beba."
+    },
+    {
+      "a": "clase:aines",
+      "b": "clase:ahorradores_potasio",
+      "nivel": "moderada",
+      "efecto": "Hiperpotasemia y deterioro de la función renal, más con deshidratación.",
+      "accion": "Evite el AINE; si es imprescindible, pocos días, hidratación y control de potasio y creatinina."
+    },
+    {
+      "a": "clase:anticoagulantes",
+      "b": "clase:heparinas",
+      "nivel": "mayor",
+      "efecto": "Doble anticoagulación: solo tiene sentido en transiciones cortas (puente); el riesgo de sangrado se multiplica.",
+      "accion": "Confirme con su médico que ambas están indicadas a la vez; sin deportes de contacto ni riesgo de caída mientras coincidan."
+    },
+    {
+      "a": "clase:antiagregantes",
+      "b": "clase:heparinas",
+      "nivel": "moderada",
+      "efecto": "Suma de riesgo de sangrado y hematomas en los puntos de inyección.",
+      "accion": "Inyecte lejos de las zonas que vaya a trabajar; evite golpes."
+    },
+    {
+      "a": "nicorandil",
+      "b": "clase:pde5",
+      "nivel": "mayor",
+      "efecto": "Hipotensión grave: nicorandil tiene efecto nitrato y el inhibidor de la PDE5 lo potencia.",
+      "accion": "Contraindicado: no combinar."
     }
   ]
 }

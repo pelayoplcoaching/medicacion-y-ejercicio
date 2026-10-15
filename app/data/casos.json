@@ -435,6 +435,150 @@
     ],
     "cribado": "continuar"
    }
+  },
+  {
+   "id": "c11",
+   "titulo": "Aneurisma de aorta abdominal con betabloqueante y estatina",
+   "descripcion": "68 años, aneurisma de aorta de 4,5 cm en seguimiento, bisoprolol + atorvastatina + AAS; activo. Debe aparecer la alerta de aneurisma (sin cargas máximas ni Valsalva) y el pulso no sirve de guía por el betabloqueante.",
+   "meds": [
+    {
+     "pid": "bisoprolol",
+     "dosis": 5,
+     "tomas": 1
+    },
+    {
+     "pid": "atorvastatina",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "aas",
+     "dosis": 100,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 68,
+    "caidas": false,
+    "condiciones": [
+     "aneurisma_aorta",
+     "hipertension"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "fc_no_valida",
+     "sangrado"
+    ],
+    "combinadas_incluye": [
+     "aneurisma de aorta",
+     "hipertensión arterial"
+    ],
+    "cribado": "valoracion_vigoroso"
+   }
+  },
+  {
+   "id": "c12",
+   "titulo": "Fibrilación auricular anticoagulada con digoxina y diurético",
+   "descripcion": "79 años, FA permanente, apixabán + digoxina + furosemida + bisoprolol; una caída. Debe salir la regla de FA (pulso no válido), sangrado y prevención de caídas.",
+   "meds": [
+    {
+     "pid": "apixaban",
+     "dosis": 5,
+     "tomas": 2
+    },
+    {
+     "pid": "digoxina",
+     "dosis": 0.125,
+     "tomas": 1
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "bisoprolol",
+     "dosis": 2.5,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 79,
+    "caidas": true,
+    "condiciones": [
+     "fibrilacion_auricular",
+     "insuficiencia_cardiaca"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "sangrado",
+     "hipotension",
+     "fc_no_valida",
+     "deshidratacion"
+    ],
+    "combinadas_incluye": [
+     "fibrilación auricular"
+    ],
+    "cribado": "valoracion_antes",
+    "mayores_min": 0
+   }
+  },
+  {
+   "id": "c13",
+   "titulo": "Cáncer de mama en tratamiento hormonal con osteoporosis",
+   "descripcion": "61 años, letrozol + denosumab + calcio/vitamina D + paracetamol; osteoporosis. Debe aparecer la regla de cáncer, la de osteoporosis y la señal de hueso; ninguna alerta.",
+   "meds": [
+    {
+     "pid": "inhibidor_aromatasa",
+     "dosis": 2.5,
+     "tomas": 1
+    },
+    {
+     "pid": "denosumab",
+     "dosis": 60,
+     "tomas": 1
+    },
+    {
+     "pid": "paracetamol",
+     "dosis": 1000,
+     "tomas": 3
+    }
+   ],
+   "ctx": {
+    "edad": 61,
+    "caidas": false,
+    "condiciones": [
+     "cancer",
+     "osteoporosis"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "hueso"
+    ],
+    "combinadas_incluye": [
+     "cáncer"
+    ],
+    "cribado": "continuar"
+   }
   }
  ]
 }

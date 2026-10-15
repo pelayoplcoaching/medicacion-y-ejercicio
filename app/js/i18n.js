@@ -4,6 +4,21 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "sit.mas": "Más situaciones (corazón, cáncer, articulaciones…)", "sit.hipertension": "Hipertensión arterial", "sit.cardiopatia": "Infarto, stent o angina", "sit.fa": "Fibrilación auricular", "sit.aneurisma": "Aneurisma de aorta", "sit.ictus": "Ictus previo", "sit.cancer": "Cáncer en tratamiento o reciente", "sit.artrosis": "Artrosis de rodilla o cadera", "sit.epilepsia": "Epilepsia", "sit.hepatopatia": "Cirrosis o hepatopatía avanzada", "sit.obesidad": "Obesidad",
+  "sppb.t.lado": "Equilibrio 1: pies juntos", "sppb.x.lado": "De pie, con los pies juntos, sin apoyarse. Aguante 10 segundos. Si no llega, apunte los segundos que aguantó.",
+  "sppb.t.semitandem": "Equilibrio 2: semitándem", "sppb.x.semitandem": "El talón de un pie junto al lado del dedo gordo del otro. 10 segundos sin apoyo.",
+  "sppb.t.tandem": "Equilibrio 3: tándem", "sppb.x.tandem": "Un pie justo delante del otro, talón contra punta. 10 segundos sin apoyo.",
+  "sppb.t.marcha": "Marcha: 4 metros", "sppb.x.marcha": "Marque 4 metros en el suelo y camine a su paso habitual; cronometre desde que empieza a moverse hasta que el primer pie cruza la marca. Puede usar bastón. Haga dos intentos y apunte el mejor.",
+  "sppb.t.silla": "Levantarse de la silla 5 veces", "sppb.x.silla": "Siéntese en una silla sin reposabrazos, con los brazos cruzados sobre el pecho. Levántese y siéntese 5 veces seguidas lo más rápido que pueda con seguridad; cronometre hasta la quinta vez de pie.",
+  "datos.fcreposo": "FC en reposo (lpm)", "sppb.btn": "Hacer el test SPPB guiado", "sppb.titulo": "Test SPPB guiado", "acc.barras": "Escanear la caja", "barras.titulo": "Escanear el código de barras de la caja",
+  "sppb.paso": "Paso {n} de {t}", "sppb.seguridad": "Hágalo con alguien cerca y una pared o silla al alcance. Pare si nota mareo.", "sppb.segundos": "Segundos", "sppb.siguiente": "Siguiente", "sppb.nopuede": "No puede hacerlo", "sppb.atras": "Atrás", "sppb.parar": "Parar",
+  "sppb.resultado": "Resultado SPPB", "sppb.cat.robusto": "Buena capacidad física (robusto)", "sppb.cat.prefragil": "Capacidad física algo reducida (prefrágil)", "sppb.cat.fragil": "Capacidad física reducida (frágil)", "sppb.equilibrio": "Equilibrio", "sppb.marcha": "Marcha 4 m", "sppb.silla": "Silla",
+  "sppb.nota": "El SPPB (Guralnik 1994) orienta sobre fragilidad y riesgo de caídas: ≤6 frágil, 7–9 prefrágil, ≥10 robusto. Repítalo cada 2–3 meses para ver su progreso.", "sppb.guardar": "Guardar y usar en mi plan", "sppb.repetir": "Repetir", "sppb.guardado": "SPPB {n}/12 guardado; el plan se ha ajustado.", "sppb.estado": "Último SPPB: {n}/12 ({d})",
+  "barras.buscando": "Enfoque el código de barras de la caja…", "barras.ok": "Añadido: {n}", "barras.desconocido": "Código nacional {cn} no encontrado en la base.", "barras.error": "No se ha podido usar la cámara.",
+  "zona.titulo": "Su zona de intensidad", "zona.fc": "FC máxima estimada {m} lpm (Tanaka) · FC en reposo {r} lpm · zonas por FC de reserva (Karvonen).", "zona.reposo_estimado": "Anote su FC en reposo en «Sus datos» para afinarla.", "zona.rpe": "El pulso no sirve para medir la intensidad ({m}): guíese por el esfuerzo percibido y la prueba del habla.",
+  "zona.ligera": "Ligera", "zona.moderada": "Moderada", "zona.vigorosa": "Vigorosa", "zona.dai": "Con DAI: mantenga la FC por debajo de {n} lpm.", "zona.techo": "Por su situación, quédese en intensidad ligera-moderada salvo que un programa supervisado indique otra cosa.",
+  "impacto.titulo": "Carga de precauciones por fármaco", "impacto.intro": "Qué medicamentos concentran más avisos para el ejercicio. Útil para conversar con su médico sobre el tratamiento; no indica que deba retirarse nada.", "impacto.alerta": "atención", "impacto.precaucion": "precaución", "impacto.comb": "por combinación", "impacto.ddi": "interacción", "impacto.nota": "Puntuación orientativa: atención ×3, precaución ×1, combinación ×1, interacción mayor ×2 / moderada ×1.",
+  "desc.entrenador": "Ficha para su entrenador (PDF)", "desc.tarjeta": "Tarjeta para la nevera (PDF A5)",
   "crib.titulo": "Antes de empezar: cribado de seguridad", "crib.intro": "Tres preguntas del algoritmo de preparticipación del ACSM (2015) para saber si conviene una valoración médica antes de empezar o de subir la intensidad.",
   "crib.regular": "¿Hace ejercicio con regularidad? (al menos 30 min de intensidad moderada, 3 días por semana, en los últimos 3 meses)", "crib.enfermedad": "¿Tiene una enfermedad cardiovascular, metabólica (diabetes) o renal conocida?", "crib.sintomas": "¿Nota alguno de estos síntomas? (marque los que tenga)", "crib.si": "Sí", "crib.no": "No",
   "crib.sugerencia": "Por lo que ha indicado ({q}) parece que sí; confírmelo.", "crib.fuente": "algoritmo ACSM 2015", "crib.pendiente": "Completar el cribado de seguridad (3 preguntas)",
@@ -54,7 +69,7 @@ const ES = {
   "plan.calendario": "Añadir mi plan al calendario", "plan.aerobico": "Ejercicio aeróbico (caminar, bici…)", "plan.fuerza": "Ejercicio de fuerza", "plan.fuerza_eq": "Fuerza y equilibrio", "plan.mas_eq": "Y equilibrio", "plan.pie": "Plan orientativo generado con Medicación y Ejercicio; adáptelo con su médico o entrenador.",
   "plan.descargado": "Plan descargado: {n} sesiones semanales durante 8 semanas, a las {h}, con aviso 30 minutos antes. Ábralo para añadirlo a su calendario.",
   "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: pulse el botón Compartir de Safari y después «Añadir a pantalla de inicio».", "instalar.otro": "En el menú del navegador (⋮) elija «Instalar aplicación» o «Añadir a pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
-  "tema.auto": "Tema: automático (según el sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: oscuro",
+  "tema.auto": "Tema: automático (según el sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: oscuro", "tema.contrast": "Tema: alto contraste",
   "cab.acerca": "Acerca de", "cab.presentacion": "¿Qué es esto?",
   "guia.1": "Añada su medicación (búsqueda, lista pegada, PDF o foto).", "guia.2": "Marque su edad y su situación clínica.", "guia.3": "Lea «Lo esencial» y llévese el PDF a su médico o entrenador.", "guia.cerrar": "Entendido",
   "esencial.titulo": "Lo esencial", "esencial.nota": "Lo más importante para usted, en cinco puntos. El detalle completo está en las pestañas de abajo.",
@@ -133,6 +148,21 @@ const ES = {
 };
 
 const EN = {
+  "sit.mas": "More situations (heart, cancer, joints…)", "sit.hipertension": "High blood pressure", "sit.cardiopatia": "Heart attack, stent or angina", "sit.fa": "Atrial fibrillation", "sit.aneurisma": "Aortic aneurysm", "sit.ictus": "Previous stroke", "sit.cancer": "Cancer under or after recent treatment", "sit.artrosis": "Knee or hip osteoarthritis", "sit.epilepsia": "Epilepsy", "sit.hepatopatia": "Cirrhosis or advanced liver disease", "sit.obesidad": "Obesity",
+  "sppb.t.lado": "Balance 1: feet together", "sppb.x.lado": "Stand with your feet together, without support. Hold for 10 seconds. If you cannot, note how many seconds you held.",
+  "sppb.t.semitandem": "Balance 2: semi-tandem", "sppb.x.semitandem": "The heel of one foot beside the big toe of the other. 10 seconds without support.",
+  "sppb.t.tandem": "Balance 3: tandem", "sppb.x.tandem": "One foot directly in front of the other, heel to toe. 10 seconds without support.",
+  "sppb.t.marcha": "Walk: 4 metres", "sppb.x.marcha": "Mark 4 metres on the floor and walk at your usual pace; time from the first movement until the first foot crosses the mark. A cane is allowed. Do two attempts and note the best.",
+  "sppb.t.silla": "Stand up from a chair 5 times", "sppb.x.silla": "Sit on a chair without armrests, arms crossed over the chest. Stand up and sit down 5 times in a row as fast as you safely can; time until the fifth stand.",
+  "datos.fcreposo": "Resting HR (bpm)", "sppb.btn": "Take the guided SPPB test", "sppb.titulo": "Guided SPPB test", "acc.barras": "Scan the box", "barras.titulo": "Scan the barcode on the box",
+  "sppb.paso": "Step {n} of {t}", "sppb.seguridad": "Do it with someone nearby and a wall or chair within reach. Stop if you feel dizzy.", "sppb.segundos": "Seconds", "sppb.siguiente": "Next", "sppb.nopuede": "Cannot do it", "sppb.atras": "Back", "sppb.parar": "Stop",
+  "sppb.resultado": "SPPB result", "sppb.cat.robusto": "Good physical capacity (robust)", "sppb.cat.prefragil": "Somewhat reduced physical capacity (pre-frail)", "sppb.cat.fragil": "Reduced physical capacity (frail)", "sppb.equilibrio": "Balance", "sppb.marcha": "4 m walk", "sppb.silla": "Chair",
+  "sppb.nota": "The SPPB (Guralnik 1994) indicates frailty and fall risk: ≤6 frail, 7–9 pre-frail, ≥10 robust. Repeat it every 2–3 months to track progress.", "sppb.guardar": "Save and use in my plan", "sppb.repetir": "Repeat", "sppb.guardado": "SPPB {n}/12 saved; the plan has been adjusted.", "sppb.estado": "Last SPPB: {n}/12 ({d})",
+  "barras.buscando": "Point at the barcode on the box…", "barras.ok": "Added: {n}", "barras.desconocido": "National code {cn} not found in the database.", "barras.error": "The camera could not be used.",
+  "zona.titulo": "Your intensity zone", "zona.fc": "Estimated max HR {m} bpm (Tanaka) · resting HR {r} bpm · zones by heart-rate reserve (Karvonen).", "zona.reposo_estimado": "Enter your resting HR under “Your details” to refine it.", "zona.rpe": "Pulse is not a valid intensity guide ({m}): use perceived exertion and the talk test.",
+  "zona.ligera": "Light", "zona.moderada": "Moderate", "zona.vigorosa": "Vigorous", "zona.dai": "With an ICD: keep HR below {n} bpm.", "zona.techo": "Given your situation, stay at light-moderate intensity unless a supervised programme says otherwise.",
+  "impacto.titulo": "Precaution load by drug", "impacto.intro": "Which medicines concentrate the most exercise warnings. Useful for discussing treatment with your doctor; it does not mean anything should be stopped.", "impacto.alerta": "caution", "impacto.precaucion": "precaution", "impacto.comb": "by combination", "impacto.ddi": "interaction", "impacto.nota": "Indicative score: caution ×3, precaution ×1, combination ×1, major interaction ×2 / moderate ×1.",
+  "desc.entrenador": "Sheet for your trainer (PDF)", "desc.tarjeta": "Fridge card (A5 PDF)",
   "crib.titulo": "Before you start: safety screening", "crib.intro": "Three questions from the ACSM pre-participation algorithm (2015) to know whether a medical check is advisable before starting or increasing intensity.",
   "crib.regular": "Do you exercise regularly? (at least 30 min of moderate intensity, 3 days a week, over the last 3 months)", "crib.enfermedad": "Do you have known cardiovascular, metabolic (diabetes) or kidney disease?", "crib.sintomas": "Do you notice any of these symptoms? (tick those you have)", "crib.si": "Yes", "crib.no": "No",
   "crib.sugerencia": "From what you entered ({q}) it looks like yes; please confirm.", "crib.fuente": "ACSM 2015 algorithm", "crib.pendiente": "Complete the safety screening (3 questions)",
@@ -183,7 +213,7 @@ const EN = {
   "plan.calendario": "Add my plan to the calendar", "plan.aerobico": "Aerobic exercise (walking, cycling…)", "plan.fuerza": "Strength training", "plan.fuerza_eq": "Strength and balance", "plan.mas_eq": "Plus balance", "plan.pie": "Indicative plan generated with Medicación y Ejercicio; adapt it with your doctor or trainer.",
   "plan.descargado": "Plan downloaded: {n} weekly sessions for 8 weeks at {h}, with a reminder 30 minutes before. Open it to add it to your calendar.",
   "instalar": "Install", "instalar.ios": "On iPhone/iPad: tap Safari's Share button, then “Add to Home Screen”.", "instalar.otro": "In the browser menu (⋮) choose “Install app” or “Add to Home screen”.", "instalar.ok": "App installed.",
-  "tema.auto": "Theme: automatic (system)", "tema.light": "Theme: light", "tema.dark": "Theme: dark",
+  "tema.auto": "Theme: automatic (system)", "tema.light": "Theme: light", "tema.dark": "Theme: dark", "tema.contrast": "Theme: high contrast",
   "cab.acerca": "About", "cab.presentacion": "What is this?",
   "guia.1": "Add your medication (search, pasted list, PDF or photo).", "guia.2": "Enter your age and clinical situation.", "guia.3": "Read “The essentials” and take the PDF to your doctor or trainer.", "guia.cerrar": "Got it",
   "esencial.titulo": "The essentials", "esencial.nota": "The most important points for you, in five lines. The full detail is in the tabs below.",
@@ -262,6 +292,21 @@ const EN = {
 };
 
 const CA = {
+  "sit.mas": "Més situacions (cor, càncer, articulacions…)", "sit.hipertension": "Hipertensió arterial", "sit.cardiopatia": "Infart, stent o angina", "sit.fa": "Fibril·lació auricular", "sit.aneurisma": "Aneurisma d'aorta", "sit.ictus": "Ictus previ", "sit.cancer": "Càncer en tractament o recent", "sit.artrosis": "Artrosi de genoll o maluc", "sit.epilepsia": "Epilèpsia", "sit.hepatopatia": "Cirrosi o hepatopatia avançada", "sit.obesidad": "Obesitat",
+  "sppb.t.lado": "Equilibri 1: peus junts", "sppb.x.lado": "Dret, amb els peus junts, sense recolzar-se. Aguanteu 10 segons. Si no hi arribeu, apunteu els segons que vau aguantar.",
+  "sppb.t.semitandem": "Equilibri 2: semitàndem", "sppb.x.semitandem": "El taló d'un peu al costat del dit gros de l'altre. 10 segons sense suport.",
+  "sppb.t.tandem": "Equilibri 3: tàndem", "sppb.x.tandem": "Un peu just davant de l'altre, taló contra punta. 10 segons sense suport.",
+  "sppb.t.marcha": "Marxa: 4 metres", "sppb.x.marcha": "Marqueu 4 metres a terra i camineu al vostre pas habitual; cronometreu des que comenceu a moure-us fins que el primer peu creua la marca. Podeu usar bastó. Feu dos intents i apunteu el millor.",
+  "sppb.t.silla": "Aixecar-se de la cadira 5 vegades", "sppb.x.silla": "Seieu en una cadira sense reposabraços, amb els braços creuats sobre el pit. Aixequeu-vos i seieu 5 vegades seguides tan ràpid com pugueu amb seguretat; cronometreu fins a la cinquena vegada dret.",
+  "datos.fcreposo": "FC en repòs (bpm)", "sppb.btn": "Fer el test SPPB guiat", "sppb.titulo": "Test SPPB guiat", "acc.barras": "Escanejar la capsa", "barras.titulo": "Escanejar el codi de barres de la capsa",
+  "sppb.paso": "Pas {n} de {t}", "sppb.seguridad": "Feu-ho amb algú a prop i una paret o cadira a l'abast. Pareu si noteu mareig.", "sppb.segundos": "Segons", "sppb.siguiente": "Següent", "sppb.nopuede": "No pot fer-ho", "sppb.atras": "Enrere", "sppb.parar": "Parar",
+  "sppb.resultado": "Resultat SPPB", "sppb.cat.robusto": "Bona capacitat física (robust)", "sppb.cat.prefragil": "Capacitat física una mica reduïda (prefràgil)", "sppb.cat.fragil": "Capacitat física reduïda (fràgil)", "sppb.equilibrio": "Equilibri", "sppb.marcha": "Marxa 4 m", "sppb.silla": "Cadira",
+  "sppb.nota": "L'SPPB (Guralnik 1994) orienta sobre fragilitat i risc de caigudes: ≤6 fràgil, 7–9 prefràgil, ≥10 robust. Repetiu-lo cada 2–3 mesos per veure el progrés.", "sppb.guardar": "Desar i usar en el meu pla", "sppb.repetir": "Repetir", "sppb.guardado": "SPPB {n}/12 desat; el pla s'ha ajustat.", "sppb.estado": "Últim SPPB: {n}/12 ({d})",
+  "barras.buscando": "Enfoqueu el codi de barres de la capsa…", "barras.ok": "Afegit: {n}", "barras.desconocido": "Codi nacional {cn} no trobat a la base.", "barras.error": "No s'ha pogut usar la càmera.",
+  "zona.titulo": "La vostra zona d'intensitat", "zona.fc": "FC màxima estimada {m} bpm (Tanaka) · FC en repòs {r} bpm · zones per FC de reserva (Karvonen).", "zona.reposo_estimado": "Anoteu la FC en repòs a «Les vostres dades» per afinar-la.", "zona.rpe": "El pols no serveix per mesurar la intensitat ({m}): guieu-vos per l'esforç percebut i la prova de la parla.",
+  "zona.ligera": "Lleugera", "zona.moderada": "Moderada", "zona.vigorosa": "Vigorosa", "zona.dai": "Amb DAI: mantingueu la FC per sota de {n} bpm.", "zona.techo": "Per la vostra situació, quedeu-vos en intensitat lleugera-moderada llevat que un programa supervisat indiqui una altra cosa.",
+  "impacto.titulo": "Càrrega de precaucions per fàrmac", "impacto.intro": "Quins medicaments concentren més avisos per a l'exercici. Útil per parlar amb el metge sobre el tractament; no indica que calgui retirar res.", "impacto.alerta": "atenció", "impacto.precaucion": "precaució", "impacto.comb": "per combinació", "impacto.ddi": "interacció", "impacto.nota": "Puntuació orientativa: atenció ×3, precaució ×1, combinació ×1, interacció major ×2 / moderada ×1.",
+  "desc.entrenador": "Fitxa per al vostre entrenador (PDF)", "desc.tarjeta": "Targeta per a la nevera (PDF A5)",
   "crib.titulo": "Abans de començar: cribratge de seguretat", "crib.intro": "Tres preguntes de l'algorisme de preparticipació de l'ACSM (2015) per saber si convé una valoració mèdica abans de començar o d'apujar la intensitat.",
   "crib.regular": "Fa exercici amb regularitat? (almenys 30 min d'intensitat moderada, 3 dies per setmana, els últims 3 mesos)", "crib.enfermedad": "Té una malaltia cardiovascular, metabòlica (diabetis) o renal coneguda?", "crib.sintomas": "Nota algun d'aquests símptomes? (marqui els que tingui)", "crib.si": "Sí", "crib.no": "No",
   "crib.sugerencia": "Pel que ha indicat ({q}) sembla que sí; confirmi-ho.", "crib.fuente": "algorisme ACSM 2015", "crib.pendiente": "Completar el cribratge de seguretat (3 preguntes)",
@@ -312,7 +357,7 @@ const CA = {
   "plan.calendario": "Afegir el meu pla al calendari", "plan.aerobico": "Exercici aeròbic (caminar, bici…)", "plan.fuerza": "Exercici de força", "plan.fuerza_eq": "Força i equilibri", "plan.mas_eq": "I equilibri", "plan.pie": "Pla orientatiu generat amb Medicació i Exercici; adapteu-lo amb el vostre metge o entrenador.",
   "plan.descargado": "Pla descarregat: {n} sessions setmanals durant 8 setmanes, a les {h}, amb avís 30 minuts abans. Obriu-lo per afegir-lo al calendari.",
   "instalar": "Instal·lar", "instalar.ios": "A iPhone/iPad: premeu el botó Compartir de Safari i després «Afegir a la pantalla d'inici».", "instalar.otro": "Al menú del navegador (⋮) trieu «Instal·lar aplicació» o «Afegir a la pantalla d'inici».", "instalar.ok": "Aplicació instal·lada.",
-  "tema.auto": "Tema: automàtic (segons el sistema)", "tema.light": "Tema: clar", "tema.dark": "Tema: fosc",
+  "tema.auto": "Tema: automàtic (segons el sistema)", "tema.light": "Tema: clar", "tema.dark": "Tema: fosc", "tema.contrast": "Tema: alt contrast",
   "cab.acerca": "Quant a", "cab.presentacion": "Què és això?",
   "guia.1": "Afegiu la vostra medicació (cerca, llista enganxada, PDF o foto).", "guia.2": "Marqueu l'edat i la situació clínica.", "guia.3": "Llegiu «L'essencial» i porteu el PDF al metge o entrenador.", "guia.cerrar": "Entesos",
   "esencial.titulo": "L'essencial", "esencial.nota": "El més important per a vós, en cinc punts. El detall complet és a les pestanyes de sota.",
@@ -391,6 +436,21 @@ const CA = {
 };
 
 const GL = {
+  "sit.mas": "Máis situacións (corazón, cancro, articulacións…)", "sit.hipertension": "Hipertensión arterial", "sit.cardiopatia": "Infarto, stent ou anxina", "sit.fa": "Fibrilación auricular", "sit.aneurisma": "Aneurisma de aorta", "sit.ictus": "Ictus previo", "sit.cancer": "Cancro en tratamento ou recente", "sit.artrosis": "Artrose de xeonllo ou cadeira", "sit.epilepsia": "Epilepsia", "sit.hepatopatia": "Cirrose ou hepatopatía avanzada", "sit.obesidad": "Obesidade",
+  "sppb.t.lado": "Equilibrio 1: pés xuntos", "sppb.x.lado": "De pé, cos pés xuntos, sen apoiarse. Aguante 10 segundos. Se non chega, apunte os segundos que aguantou.",
+  "sppb.t.semitandem": "Equilibrio 2: semitándem", "sppb.x.semitandem": "O talón dun pé xunto ao lado do dedo gordo do outro. 10 segundos sen apoio.",
+  "sppb.t.tandem": "Equilibrio 3: tándem", "sppb.x.tandem": "Un pé xusto diante do outro, talón contra punta. 10 segundos sen apoio.",
+  "sppb.t.marcha": "Marcha: 4 metros", "sppb.x.marcha": "Marque 4 metros no chan e camiñe ao seu paso habitual; cronometre desde que empeza a moverse ata que o primeiro pé cruza a marca. Pode usar bastón. Faga dous intentos e apunte o mellor.",
+  "sppb.t.silla": "Erguerse da cadeira 5 veces", "sppb.x.silla": "Séntese nunha cadeira sen repousabrazos, cos brazos cruzados sobre o peito. Érgase e séntese 5 veces seguidas o máis rápido que poida con seguridade; cronometre ata a quinta vez de pé.",
+  "datos.fcreposo": "FC en repouso (lpm)", "sppb.btn": "Facer o test SPPB guiado", "sppb.titulo": "Test SPPB guiado", "acc.barras": "Escanear a caixa", "barras.titulo": "Escanear o código de barras da caixa",
+  "sppb.paso": "Paso {n} de {t}", "sppb.seguridad": "Fágao con alguén preto e unha parede ou cadeira ao alcance. Pare se nota mareo.", "sppb.segundos": "Segundos", "sppb.siguiente": "Seguinte", "sppb.nopuede": "Non pode facelo", "sppb.atras": "Atrás", "sppb.parar": "Parar",
+  "sppb.resultado": "Resultado SPPB", "sppb.cat.robusto": "Boa capacidade física (robusto)", "sppb.cat.prefragil": "Capacidade física algo reducida (prefráxil)", "sppb.cat.fragil": "Capacidade física reducida (fráxil)", "sppb.equilibrio": "Equilibrio", "sppb.marcha": "Marcha 4 m", "sppb.silla": "Cadeira",
+  "sppb.nota": "O SPPB (Guralnik 1994) orienta sobre fraxilidade e risco de caídas: ≤6 fráxil, 7–9 prefráxil, ≥10 robusto. Repítao cada 2–3 meses para ver o progreso.", "sppb.guardar": "Gardar e usar no meu plan", "sppb.repetir": "Repetir", "sppb.guardado": "SPPB {n}/12 gardado; o plan axustouse.", "sppb.estado": "Último SPPB: {n}/12 ({d})",
+  "barras.buscando": "Enfoque o código de barras da caixa…", "barras.ok": "Engadido: {n}", "barras.desconocido": "Código nacional {cn} non atopado na base.", "barras.error": "Non se puido usar a cámara.",
+  "zona.titulo": "A súa zona de intensidade", "zona.fc": "FC máxima estimada {m} lpm (Tanaka) · FC en repouso {r} lpm · zonas por FC de reserva (Karvonen).", "zona.reposo_estimado": "Anote a súa FC en repouso en «Os seus datos» para afinala.", "zona.rpe": "O pulso non serve para medir a intensidade ({m}): guíese polo esforzo percibido e a proba da fala.",
+  "zona.ligera": "Lixeira", "zona.moderada": "Moderada", "zona.vigorosa": "Vigorosa", "zona.dai": "Con DAI: manteña a FC por debaixo de {n} lpm.", "zona.techo": "Pola súa situación, quede en intensidade lixeira-moderada agás que un programa supervisado indique outra cousa.",
+  "impacto.titulo": "Carga de precaucións por fármaco", "impacto.intro": "Que medicamentos concentran máis avisos para o exercicio. Útil para falar co seu médico sobre o tratamento; non indica que deba retirarse nada.", "impacto.alerta": "atención", "impacto.precaucion": "precaución", "impacto.comb": "por combinación", "impacto.ddi": "interacción", "impacto.nota": "Puntuación orientativa: atención ×3, precaución ×1, combinación ×1, interacción maior ×2 / moderada ×1.",
+  "desc.entrenador": "Ficha para o seu adestrador (PDF)", "desc.tarjeta": "Tarxeta para a neveira (PDF A5)",
   "crib.titulo": "Antes de comezar: cribado de seguridade", "crib.intro": "Tres preguntas do algoritmo de preparticipación do ACSM (2015) para saber se convén unha valoración médica antes de comezar ou de subir a intensidade.",
   "crib.regular": "Fai exercicio con regularidade? (polo menos 30 min de intensidade moderada, 3 días por semana, nos últimos 3 meses)", "crib.enfermedad": "Ten unha enfermidade cardiovascular, metabólica (diabetes) ou renal coñecida?", "crib.sintomas": "Nota algún destes síntomas? (marque os que teña)", "crib.si": "Si", "crib.no": "Non",
   "crib.sugerencia": "Polo que indicou ({q}) parece que si; confírmeo.", "crib.fuente": "algoritmo ACSM 2015", "crib.pendiente": "Completar o cribado de seguridade (3 preguntas)",
@@ -441,7 +501,7 @@ const GL = {
   "plan.calendario": "Engadir o meu plan ao calendario", "plan.aerobico": "Exercicio aeróbico (camiñar, bici…)", "plan.fuerza": "Exercicio de forza", "plan.fuerza_eq": "Forza e equilibrio", "plan.mas_eq": "E equilibrio", "plan.pie": "Plan orientativo xerado con Medicación e Exercicio; adápteo co seu médico ou adestrador.",
   "plan.descargado": "Plan descargado: {n} sesións semanais durante 8 semanas, ás {h}, con aviso 30 minutos antes. Ábrao para engadilo ao seu calendario.",
   "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: prema o botón Compartir de Safari e despois «Engadir á pantalla de inicio».", "instalar.otro": "No menú do navegador (⋮) escolla «Instalar aplicación» ou «Engadir á pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
-  "tema.auto": "Tema: automático (segundo o sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: escuro",
+  "tema.auto": "Tema: automático (segundo o sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: escuro", "tema.contrast": "Tema: alto contraste",
   "cab.acerca": "Acerca de", "cab.presentacion": "Que é isto?",
   "guia.1": "Engada a súa medicación (busca, lista pegada, PDF ou foto).", "guia.2": "Marque a súa idade e a súa situación clínica.", "guia.3": "Lea «O esencial» e leve o PDF ao seu médico ou adestrador.", "guia.cerrar": "Entendido",
   "esencial.titulo": "O esencial", "esencial.nota": "O máis importante para vostede, en cinco puntos. O detalle completo está nas lapelas de abaixo.",
@@ -560,5 +620,6 @@ export function aplicarIdioma(lang) {
   document.title = `${t("meta.titulo")} · ${t("meta.subtitulo")}`;
   const aviso = document.getElementById("aviso-idioma");
   if (aviso) { aviso.hidden = actual === "es"; aviso.textContent = t("aviso.idioma"); }
+  document.documentElement.classList.remove("i18n-espera"); // la página se oculta hasta aplicar el idioma (si no es español): sin saltos de maquetación
   document.dispatchEvent(new CustomEvent("idioma", { detail: actual }));
 }

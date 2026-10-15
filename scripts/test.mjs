@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORDEN = { alerta: 3, precaucion: 2, info: 1 };
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo, cribadoACSM, enfermedadSugerida, nivelEvidencia, seccionFT, comprobarCaso } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo, cribadoACSM, enfermedadSugerida, nivelEvidencia, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
 const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -293,6 +293,40 @@ console.log("\nCribado ACSM, evidencia y casos de validación (alfa 15)");
   check("hay al menos 10 casos de validación con id único", casos.length >= 10 && new Set(casos.map((c) => c.id)).size === casos.length);
   for (const c of casos) { const r = comprobarCaso(datosFull, c); check(`caso ${c.id}: ${c.titulo}`, r.ok, r.fallos.join("; ")); }
   check("un caso con expectativa imposible falla", !comprobarCaso(datosFull, { meds: [{ pid: "paracetamol", dosis: 500, tomas: 1 }], ctx: {}, esperado: { alerta_min: 3 } }).ok);
+}
+
+console.log("\nZona de intensidad, carga por fármaco, SPPB y escáner (beta 0)");
+{
+  const datos = { kb, ddiCurado, ddi: { pares: [] }, indice };
+  const resBB = evaluar(datos, [{ pid: "bisoprolol", dosis: 5, tomas: 1 }], { edad: 70, condiciones: new Set() });
+  const zBB = zonaIntensidad(resBB, { edad: 70, condiciones: new Set() });
+  check("betabloqueante → método RPE y motivo", zBB.metodo === "rpe" && zBB.motivos.includes("Bisoprolol") && !zBB.zonas, JSON.stringify(zBB.motivos));
+  const resP = evaluar(datos, [{ pid: "paracetamol", dosis: 1000, tomas: 1 }], { edad: 60, condiciones: new Set() });
+  const z = zonaIntensidad(resP, { edad: 60, condiciones: new Set() }, { fcReposo: 60 });
+  check("sin FC inválida → Karvonen con Tanaka (166 lpm a 60 años)", z.metodo === "fc" && z.fcmax === 166 && !z.reposoEstimado, String(z.fcmax));
+  check("zona moderada 40–59 % FCR: 102–123 lpm", z.zonas.moderada[0] === 102 && z.zonas.moderada[1] === 123, JSON.stringify(z.zonas));
+  check("vigorosa por debajo de FCmáx y techo vigorosa", z.zonas.vigorosa[1] < z.fcmax && z.techo === "vigorosa");
+  const zEst = zonaIntensidad(resP, { edad: 60, condiciones: new Set() });
+  check("sin FC en reposo se estima (70) y se avisa", zEst.reposoEstimado === true && zEst.zonas.moderada[0] === 108, JSON.stringify(zEst.zonas));
+  const zFA = zonaIntensidad(resP, { edad: 60, condiciones: new Set(["fibrilacion_auricular"]) }, { fcReposo: 60 });
+  check("fibrilación auricular → RPE aunque no haya fármacos", zFA.metodo === "rpe" && zFA.motivos.includes("fibrilación auricular"));
+  const zDai = zonaIntensidad(resP, { edad: 60, condiciones: new Set(["nyha34"]), daiFc: 150 }, { fcReposo: 60 });
+  check("DAI 150 → límite 130 y zonas recortadas; NYHA III–IV → techo moderada", zDai.limiteDai === 130 && zDai.zonas.vigorosa[1] <= 130 && zDai.techo === "moderada");
+  check("sin edad → RPE", zonaIntensidad(resP, { condiciones: new Set() }).metodo === "rpe");
+  const resImp = evaluar(datos, [{ pid: "paracetamol", dosis: 1000, tomas: 1 }, { pid: "apixaban", dosis: 5, tomas: 2 }, { pid: "insulina_basal", dosis: 20, tomas: 1 }], { edad: 75, caidas: true, condiciones: new Set(["diabetes"]) });
+  const imp = impactoPorFarmaco(resImp);
+  check("carga por fármaco: ordenada de mayor a menor y pct ≤ 1", imp.length === 3 && imp[0].puntos >= imp[1].puntos && imp[1].puntos >= imp[2].puntos && imp[0].pct === 1 && imp.every((x) => x.pct <= 1));
+  check("paracetamol con 0 puntos; insulina/apixabán con puntos", imp.find((x) => x.item.principio.id === "paracetamol").puntos === 0 && imp.find((x) => x.item.principio.id === "insulina_basal").puntos > 0, JSON.stringify(imp.map((x) => [x.item.principio.id, x.puntos])));
+  const s1 = puntuarSPPB({ lado: 10, semitandem: 10, tandem: 10, marcha: 3.5, silla: 9.5 });
+  check("SPPB máximo: 12 robusto, velocidad 1,14 m/s", s1.total === 12 && s1.categoria === "robusto" && s1.equilibrio === 4 && s1.marcha === 4 && s1.silla === 4 && Math.abs(s1.velocidad - 1.14) < 0.01, JSON.stringify(s1));
+  const s2 = puntuarSPPB({ lado: 10, semitandem: 10, tandem: 5, marcha: 7.2, silla: 15.8 });
+  check("SPPB intermedio: tándem 3–9,99 s = 3; marcha 6,53–8,7 s = 2; silla 13,7–16,69 s = 2 → 7 prefrágil", s2.equilibrio === 3 && s2.marcha === 2 && s2.silla === 2 && s2.total === 7 && s2.categoria === "prefragil", JSON.stringify(s2));
+  const s3 = puntuarSPPB({ lado: 10, semitandem: 4, tandem: null, marcha: 9.1, silla: null });
+  check("SPPB bajo: semitándem < 10 s = 1; marcha > 8,7 s = 1; silla no puede = 0 → 2 frágil", s3.equilibrio === 1 && s3.marcha === 1 && s3.silla === 0 && s3.total === 2 && s3.categoria === "fragil", JSON.stringify(s3));
+  check("SPPB: silla > 60 s puntúa 0", puntuarSPPB({ lado: 10, semitandem: 10, tandem: 10, marcha: 4, silla: 61 }).silla === 0);
+  const idxCn = construirIndice(JSON.parse(JSON.stringify(kb)), [{ nombre: "ELIQUIS 5 MG COMPRIMIDOS", principios: ["apixaban"], dosis: [5], cn: ["698857", "698858"] }, { nombre: "SIN CN", principios: ["paracetamol"], dosis: [1000] }]);
+  check("índice porCn: dos envases apuntan a la misma presentación; sin cn no entra", idxCn.porCn.size === 2 && idxCn.porCn.get("698857").pid === "apixaban" && idxCn.porCn.get("698858") === idxCn.porCn.get("698857"));
+  check("EAN-13 farmacéutico 847 + CN + control → CN = posiciones 6–11", "8470006988571".slice(6, 12) === "698857");
 }
 
 console.log(`\n${total - fallos}/${total} pruebas correctas`);

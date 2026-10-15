@@ -38,8 +38,9 @@ Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, car
 
 ## Versión, pruebas y validación
 
-- Versión de la aplicación en `app/js/version.js` (semver, `0.15.0-alfa`) y registro de cambios en `CHANGELOG.md`; la base de conocimiento lleva su propia fecha de versión (`app/data/kb.json`). Cada versión publicada se etiqueta en git (`v0.15.0-alfa`).
+- Versión de la aplicación en `app/js/version.js` (semver, `0.16.0-beta.0`) y registro de cambios en `CHANGELOG.md`; la base de conocimiento lleva su propia fecha de versión (`app/data/kb.json`). Cada versión publicada se etiqueta en git (`v0.16.0-beta.0`).
 - `app/data/casos.json`: casos clínicos de validación (viñetas anonimizadas con el resultado esperado). Se ejecutan en `scripts/test.mjs` y en `acerca.html`; en modo profesional, «Guardar como caso de prueba» genera uno nuevo a partir de la lista actual.
+- Documentación técnica: `docs/ARQUITECTURA.md` (estructura, flujo de datos, modelo de la base, persistencia) y `docs/BETA-CHECKLIST.md` (lo que falta para la beta).
 - Auditorías: `docs/lighthouse-2026-10-15.md` (rendimiento, accesibilidad, buenas prácticas, SEO) y axe-core (0 incidencias WCAG 2.1 AA en claro/oscuro × paciente/profesional).
 
 ```bash
@@ -76,9 +77,9 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 ## Pruebas
 
 ```bash
-node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación (107 comprobaciones)
+node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB (126 comprobaciones)
 npm i -D playwright && npx playwright install chromium
-node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (72 comprobaciones)
+node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (84 comprobaciones)
 ```
 Ambas se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 
@@ -92,7 +93,7 @@ python3 scripts/build_artifact.py      # empaqueta y sella la versión
 ```
 Una clase con el mismo `id` en un bloque sustituye a la existente: es la forma de corregir una clase sin tocar `kb.json` a mano. Las interacciones nuevas se añaden con el fichero `ddi_*.json` correspondiente (ver `scripts/`).
 
-Cobertura actual: ~100 clases, ~320 principios activos y ~50 combinaciones a dosis fijas (`kb.combinaciones`: una marca → varios componentes con su dosis) (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
+Cobertura actual: 112 clases, 354 principios activos, 60 reglas combinadas (situación clínica × medicación) y ~50 combinaciones a dosis fijas (`kb.combinaciones`: una marca → varios componentes con su dosis) (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
 
 ## ¿Cuándo entrenar?
 

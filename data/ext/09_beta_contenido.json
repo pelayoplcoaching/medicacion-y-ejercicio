@@ -1,0 +1,417 @@
+{
+ "_nota": "Beta-0 (15/10/2026): principios frecuentes que faltaban, clases nuevas y diez situaciones clínicas con reglas (ACSM GETP 11.ª ed.; ESC 2020 sports cardiology; ESC 2024 HTA; ACC/AHA 2022 aorta; ACSM 2019 oncología; EASL 2019 nutrición en hepatopatía; ILAE). Borrador pendiente de revisión clínica.",
+ "clases": [
+  {
+   "id": "ansioliticos_no_bzd",
+   "nombre": "Buspirona",
+   "atc": [
+    "N05BE01"
+   ],
+   "resumen": "Ansiolítico sin efecto sedante relevante ni dependencia. Para el ejercicio apenas condiciona: al inicio puede dar mareo o cefalea.",
+   "senales": [],
+   "principios": [
+    {
+     "id": "buspirona",
+     "nombre": "Buspirona",
+     "marcas": [
+      "Buspar"
+     ],
+     "umbral_mg": {
+      "alta": 30
+     }
+    }
+   ],
+   "general": [
+    {
+     "nivel": "info",
+     "texto": "La buspirona no da la somnolencia de las benzodiacepinas; si al empezar nota mareo, entrene con apoyo cerca hasta que pase (1–2 semanas)."
+    }
+   ],
+   "aerobico": [],
+   "fuerza": [],
+   "equilibrio": [],
+   "fuentes": [
+    "FT buspirona 4.8"
+   ]
+  },
+  {
+   "id": "antiespasmodicos",
+   "nombre": "Antiespasmódicos anticolinérgicos (butilescopolamina)",
+   "atc": [
+    "A03BB",
+    "A03AB"
+   ],
+   "resumen": "Alivian el dolor cólico abdominal bloqueando la acetilcolina: reducen la sudoración y pueden acelerar el pulso y dar visión borrosa.",
+   "senales": [
+    "anticolinergico",
+    "calor",
+    "taquicardia"
+   ],
+   "principios": [
+    {
+     "id": "butilescopolamina",
+     "nombre": "Butilescopolamina (hioscina)",
+     "marcas": [
+      "Buscapina"
+     ],
+     "umbral_mg": {
+      "alta": 60
+     }
+    }
+   ],
+   "general": [
+    {
+     "nivel": "precaucion",
+     "texto": "Con calor o sesiones largas, la menor sudoración dificulta regular la temperatura: entrene a horas frescas, beba y pare ante piel caliente y seca, náuseas o dolor de cabeza."
+    }
+   ],
+   "aerobico": [
+    {
+     "nivel": "info",
+     "texto": "Puede notar el pulso algo más rápido de lo habitual; no es una señal de alarma si no hay palpitaciones ni mareo."
+    }
+   ],
+   "fuerza": [],
+   "equilibrio": [],
+   "fuentes": [
+    "FT butilescopolamina 4.4/4.8"
+   ]
+  },
+  {
+   "id": "laxantes",
+   "nombre": "Laxantes (lactulosa, macrogol, bisacodilo, senósidos)",
+   "atc": [
+    "A06A"
+   ],
+   "resumen": "No condicionan el ejercicio; al contrario, moverse mejora el estreñimiento. Si producen diarrea, vigile la hidratación y las sales.",
+   "senales": [],
+   "principios": [
+    {
+     "id": "lactulosa",
+     "nombre": "Lactulosa / lactitol",
+     "marcas": [
+      "Duphalac",
+      "Emportal"
+     ],
+     "unidad": "g/día"
+    },
+    {
+     "id": "macrogol",
+     "nombre": "Macrogol (polietilenglicol)",
+     "marcas": [
+      "Movicol",
+      "Casenlax"
+     ],
+     "unidad": "g/día"
+    },
+    {
+     "id": "bisacodilo",
+     "nombre": "Bisacodilo / senósidos / picosulfato",
+     "marcas": [
+      "Dulcolaxo",
+      "Puntual",
+      "Evacuol"
+     ],
+     "umbral_mg": {
+      "alta": 10
+     }
+    }
+   ],
+   "general": [
+    {
+     "nivel": "info",
+     "texto": "Caminar y el ejercicio regular son parte del tratamiento del estreñimiento. Si el laxante le produce diarrea o toma los estimulantes a diario, beba más y añada sales en sesiones largas o con calor."
+    }
+   ],
+   "aerobico": [],
+   "fuerza": [],
+   "equilibrio": [],
+   "fuentes": [
+    "FT lactulosa/macrogol 4.4"
+   ]
+  },
+  {
+   "id": "corticoides_inhalados",
+   "nombre": "Corticoides inhalados solos (budesonida, fluticasona, beclometasona, mometasona)",
+   "atc": [
+    "R03BA"
+   ],
+   "resumen": "Controlan la inflamación bronquial con muy poco efecto en el resto del cuerpo. Bien tomados, permiten entrenar con normalidad; lo que importa es que el asma o la EPOC estén controlados.",
+   "senales": [],
+   "principios": [
+    {
+     "id": "ics",
+     "nombre": "Corticoide inhalado (budesonida, fluticasona, beclometasona, mometasona)",
+     "marcas": [
+      "Pulmicort",
+      "Flixotide",
+      "Budesonida Aldo-Union",
+      "Qvar",
+      "Asmanex",
+      "Alvesco"
+     ],
+     "unidad": "inhalaciones/día"
+    }
+   ],
+   "general": [
+    {
+     "nivel": "info",
+     "texto": "Tome el corticoide inhalado a diario aunque se encuentre bien y enjuáguese la boca después. Si necesita el inhalador de rescate más de dos veces por semana para entrenar, el asma no está bien controlado: consúltelo antes de subir la intensidad."
+    }
+   ],
+   "aerobico": [
+    {
+     "nivel": "info",
+     "texto": "El calentamiento progresivo de 10–15 minutos reduce el broncoespasmo inducido por el ejercicio; evite el aire muy frío y seco o use una braga en el cuello."
+    }
+   ],
+   "fuerza": [],
+   "equilibrio": [],
+   "fuentes": [
+    "GINA 2024",
+    "FT budesonida inhalada 4.4"
+   ]
+  }
+ ],
+ "clases_parche": [
+  {
+   "id": "antianginosos_otros",
+   "principios_add": [
+    {
+     "id": "nicorandil",
+     "nombre": "Nicorandil",
+     "marcas": [
+      "Dancor",
+      "Nicorandil Aurovitas"
+     ],
+     "senales_extra": [
+      "hipotension"
+     ],
+     "umbral_mg": {
+      "alta": 40
+     },
+     "nota": "Activador de canales de potasio con efecto nitrato: puede bajar la tensión y dar dolor de cabeza; evite los inhibidores de la PDE5 (sildenafilo y similares)."
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "si": {
+      "principio": "nicorandil"
+     },
+     "texto": "Nicorandil dilata las venas como los nitratos: levántese despacio tras el esfuerzo, termine con enfriamiento y no lo combine con sildenafilo, tadalafilo ni similares (bajada brusca de tensión)."
+    }
+   ]
+  },
+  {
+   "id": "antiparkinsonianos_otros",
+   "principios_add": [
+    {
+     "id": "entacapona",
+     "nombre": "Entacapona / opicapona (ICOMT)",
+     "marcas": [
+      "Comtan",
+      "Ongentys",
+      "Stalevo"
+     ],
+     "senales_extra": [
+      "hipotension"
+     ],
+     "umbral_mg": {
+      "alta": 1600
+     },
+     "nota": "Prolonga el efecto de la levodopa; puede aumentar las discinesias y la hipotensión. La orina teñida de naranja es inofensiva."
+    },
+    {
+     "id": "trihexifenidilo",
+     "nombre": "Trihexifenidilo (anticolinérgico)",
+     "marcas": [
+      "Artane"
+     ],
+     "senales_extra": [
+      "anticolinergico",
+      "calor",
+      "sedacion",
+      "caidas"
+     ],
+     "umbral_mg": {
+      "alta": 10
+     },
+     "nota": "Anticolinérgico: reduce la sudoración, puede dar confusión y mareo en mayores."
+    }
+   ]
+  },
+  {
+   "id": "broncodilatadores",
+   "principios_add": [
+    {
+     "id": "ipratropio",
+     "nombre": "Ipratropio (anticolinérgico de acción corta)",
+     "marcas": [
+      "Atrovent",
+      "Combiprasal"
+     ],
+     "unidad": "inhalaciones/día",
+     "nota": "Broncodilatador de rescate anticolinérgico; apenas acelera el pulso."
+    }
+   ]
+  }
+ ],
+ "senales_nuevas": {},
+ "reglas_combinadas": [
+  {
+   "id": "cardiopatia_isquemica",
+   "si": {
+    "condicion": "cardiopatia_isquemica"
+   },
+   "nivel": "precaucion",
+   "titulo": "Cardiopatía isquémica (infarto, stent, angina)",
+   "texto": "El ejercicio es parte del tratamiento tras un infarto o un stent (rehabilitación cardíaca): reduce la mortalidad. Empiece a intensidad ligera-moderada y progrese despacio, con calentamiento y enfriamiento de al menos 10 minutos; evite esfuerzos máximos, isométricos intensos y aguantar la respiración. Pare ante dolor u opresión en el pecho y lleve la nitroglicerina si se la han pautado. Si el evento es reciente (menos de 4–6 semanas) o tiene angina con esfuerzos pequeños, consulte antes de empezar.",
+   "ambitos": [
+    "general",
+    "fuerza"
+   ],
+   "fuente": "ACSM GETP 11 cap. 9; ESC 2020"
+  },
+  {
+   "id": "fibrilacion_auricular",
+   "si": {
+    "condicion": "fibrilacion_auricular"
+   },
+   "nivel": "precaucion",
+   "titulo": "Fibrilación auricular",
+   "texto": "Con el pulso irregular, la frecuencia cardíaca no sirve para medir la intensidad: guíese por la sensación de esfuerzo o la prueba del habla. El ejercicio moderado regular reduce los episodios; evite el alcohol y los estimulantes antes de entrenar. Palpitaciones muy rápidas, mareo o dolor en el pecho: pare y consulte. Si está anticoagulado, extreme la prevención de golpes y caídas.",
+   "ambitos": [
+    "general",
+    "aerobico"
+   ],
+   "fuente": "ESC 2020 sports cardiology; ESC 2024 FA"
+  },
+  {
+   "id": "hipertension_cond",
+   "si": {
+    "condicion": "hipertension"
+   },
+   "nivel": "precaucion",
+   "titulo": "Hipertensión arterial",
+   "texto": "El ejercicio aeróbico regular baja la tensión 5–8 mmHg y la fuerza moderada también ayuda. Respire siempre durante la fuerza (sin aguantar el aire) y evite las cargas máximas. Con tensión en reposo igual o mayor de 180/110 no entrene hasta controlarla; con 160/100 o más, solo intensidad ligera-moderada hasta ajustar el tratamiento. Mídase la tensión en casa de vez en cuando y comente los valores con su médico.",
+   "ambitos": [
+    "general",
+    "fuerza"
+   ],
+   "fuente": "ESC 2024 HTA; ACSM GETP 11"
+  },
+  {
+   "id": "hipertension_farmacos",
+   "si": {
+    "condicion": "hipertension",
+    "senal": "hipertension",
+    "min": 1
+   },
+   "nivel": "precaucion",
+   "titulo": "Hipertensión y fármacos que suben la tensión",
+   "texto": "Alguno de sus fármacos puede subir la tensión (antiinflamatorios, descongestivos, corticoides, estimulantes): tómelo el menor tiempo posible y no entrene fuerte el día que lo use si nota dolor de cabeza o la tensión alta.",
+   "ambitos": [
+    "general"
+   ],
+   "fuente": "ESC 2024 HTA"
+  },
+  {
+   "id": "ictus",
+   "si": {
+    "condicion": "ictus"
+   },
+   "nivel": "precaucion",
+   "titulo": "Ictus previo",
+   "texto": "Tras un ictus, el ejercicio aeróbico y de fuerza mejora la recuperación y previene nuevos episodios. Trabaje la fuerza del lado afectado, haga el equilibrio siempre con apoyo y evite las actividades con riesgo de caída hasta que la marcha sea segura. Controle la tensión y, si está anticoagulado o antiagregado, proteja la cabeza. Síntomas nuevos de debilidad, habla o visión: 112.",
+   "ambitos": [
+    "general",
+    "equilibrio"
+   ],
+   "fuente": "AHA/ASA 2014 physical activity after stroke; ACSM GETP 11"
+  },
+  {
+   "id": "cancer_cond",
+   "si": {
+    "condicion": "cancer"
+   },
+   "nivel": "precaucion",
+   "titulo": "Cáncer en tratamiento o reciente",
+   "texto": "El ejercicio durante y después del tratamiento oncológico es seguro y reduce la fatiga, la ansiedad y la pérdida de función (ACSM 2019): 3 sesiones aeróbicas de 30 minutos y 2 de fuerza por semana es el objetivo. Los días con defensas bajas, anemia marcada o plaquetas bajas evite el contacto y los gimnasios concurridos; con metástasis en el hueso no cargue ese segmento; proteja el reservorio (port-a-cath) de golpes. Con linfedema, la fuerza progresiva es beneficiosa, no perjudicial.",
+   "ambitos": [
+    "general",
+    "fuerza"
+   ],
+   "fuente": "ACSM 2019 roundtable; ESMO 2020"
+  },
+  {
+   "id": "artrosis",
+   "si": {
+    "condicion": "artrosis"
+   },
+   "nivel": "info",
+   "titulo": "Artrosis de rodilla o cadera",
+   "texto": "La fuerza de cuádriceps y glúteo y el ejercicio aeróbico de bajo impacto (bicicleta, piscina, caminar) son el tratamiento con más evidencia para el dolor. Un dolor leve durante el ejercicio que cede en 24 horas es aceptable; si aumenta o persiste, reduzca la carga. En un brote con la articulación hinchada, cambie temporalmente a ejercicios sin impacto.",
+   "ambitos": [
+    "fuerza",
+    "aerobico"
+   ],
+   "fuente": "OARSI 2019; NICE NG226"
+  },
+  {
+   "id": "aneurisma_aorta",
+   "si": {
+    "condicion": "aneurisma_aorta"
+   },
+   "nivel": "alerta",
+   "titulo": "Aneurisma de aorta",
+   "texto": "Con un aneurisma de aorta, evite levantar pesos pesados, aguantar la respiración haciendo fuerza (Valsalva), los ejercicios isométricos intensos y los deportes de contacto o con subidas bruscas de tensión: aumentan el riesgo de crecimiento o rotura. El ejercicio aeróbico moderado sí es beneficioso. La carga máxima que puede usar en fuerza (en general ligera, con la que pueda hablar) la debe fijar su cardiólogo o cirujano vascular según el tamaño del aneurisma.",
+   "ambitos": [
+    "general",
+    "fuerza"
+   ],
+   "fuente": "ACC/AHA 2022 aortic disease; ESC 2020 sports cardiology"
+  },
+  {
+   "id": "epilepsia_cond",
+   "si": {
+    "condicion": "epilepsia"
+   },
+   "nivel": "precaucion",
+   "titulo": "Epilepsia",
+   "texto": "Con la epilepsia controlada el ejercicio es seguro y puede reducir las crisis. Si no lleva al menos un año sin crisis, evite entrenar solo en el agua, en altura o con máquinas que puedan hacerle daño si pierde el conocimiento, y avise a quien le acompañe. Duerma bien, no entrene en ayunas prolongado y beba: la falta de sueño y la deshidratación facilitan las crisis.",
+   "ambitos": [
+    "general"
+   ],
+   "fuente": "ILAE Task Force 2016 sports and epilepsy"
+  },
+  {
+   "id": "hepatopatia_cond",
+   "si": {
+    "condicion": "hepatopatia"
+   },
+   "nivel": "precaucion",
+   "titulo": "Cirrosis o hepatopatía crónica avanzada",
+   "texto": "En la cirrosis, el ejercicio moderado y la fuerza mejoran la pérdida de músculo, que es un factor pronóstico. Evite esfuerzos intensos y aguantar la respiración si tiene varices esofágicas o ascitis importante (aumentan la presión en las venas del abdomen). Reparta las proteínas y tome algo antes de dormir; con encefalopatía, sangrado reciente o mucho líquido en el abdomen, consulte antes.",
+   "ambitos": [
+    "general",
+    "fuerza"
+   ],
+   "fuente": "EASL 2019 nutrición en hepatopatía crónica"
+  },
+  {
+   "id": "obesidad_cond",
+   "si": {
+    "condicion": "obesidad"
+   },
+   "nivel": "info",
+   "titulo": "Obesidad",
+   "texto": "Empiece por el volumen antes que por la intensidad: caminar, bicicleta o piscina cargan menos las articulaciones. La fuerza 2–3 días por semana conserva el músculo mientras pierde peso (imprescindible si toma semaglutida, tirzepatida o similares). Objetivo a medio plazo: 250–300 minutos semanales. Evite el calor y proteja la piel de los roces.",
+   "ambitos": [
+    "aerobico",
+    "fuerza"
+   ],
+   "fuente": "ACSM GETP 11 cap. 11; EASO 2024"
+  }
+ ]
+}

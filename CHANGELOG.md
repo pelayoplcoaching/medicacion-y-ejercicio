@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 0.16.0-beta.0 · 2026-10-15 (beta 0)
+- Contenido clínico: 10 situaciones nuevas (hipertensión, cardiopatía isquémica, fibrilación auricular, aneurisma de aorta, ictus, cáncer, artrosis, epilepsia, hepatopatía, obesidad) con reglas combinadas y fuente; 4 clases nuevas (buspirona, butilescopolamina, laxantes, corticoides inhalados) y parches a nicorandil, entacapona, trihexifenidilo e ipratropio; 15 interacciones revisadas más (209). Base: 112 clases · 354 principios · 60 reglas combinadas.
+- Zona de intensidad individual: FCmáx por Tanaka y zonas por FC de reserva (Karvonen) con la FC en reposo del paciente; método RPE/prueba del habla cuando el pulso no es válido (betabloqueantes, FA, marcapasos), límite con DAI y techo de intensidad moderada según situación. Tarjeta en el apartado aeróbico, en los PDF y en la historia.
+- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas con cronómetro, saltos automáticos y puntuación 0–12; el resultado ajusta la fragilidad y aparece en el informe clínico y en la historia.
+- Carga de precauciones por fármaco: ranking con barras (atención ×3, precaución, combinación, interacción) para conversar sobre desprescripción.
+- Dos PDF nuevos: ficha para el entrenador/fisioterapeuta (sin dosis ni diagnóstico) y tarjeta A5 para la nevera (semana, ritmo, esencial, alarma, QR).
+- Escáner de código de barras (EAN-13 farmacéutico → código nacional) preparado: se activa cuando el nomenclátor incluya `cn` (`build_cima.py` ya lo emite).
+- Tema de alto contraste; FC en reposo en «Sus datos»; 3 casos de validación más (13); `comprobarCaso` avisa de principios desconocidos.
+- Documentación técnica: `docs/ARQUITECTURA.md` y `docs/BETA-CHECKLIST.md`.
+
 ## 0.15.0-alfa · 2026-10-15 (alfa 15)
 - Cribado preparticipación (algoritmo ACSM 2015) con tres preguntas; resultado en el veredicto, Lo esencial, PDF e historia clínica.
 - Prescriptor en modo profesional (nombre, especialidad, centro, nº colegiado) y fecha de reevaluación con aviso al vencer; cabecera, número de documento, QR y bloque de firma en los PDF.

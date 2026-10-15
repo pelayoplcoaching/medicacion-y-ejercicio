@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202610151443";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151443";
+import { jspdf, cargarScript } from "./libs.js?v=202610151534";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151534";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -64,7 +64,11 @@ class Doc {
     if (this.logo) { try { d.addImage(this.logo, "PNG", this.ml, 3, 20, 20); } catch {} }
     const x = this.ml + (this.logo ? 25 : 0);
     this.f("black", 15, C.purpleDeep); d.text(this.titulo, x, 11.5);
-    this.f("normal", 8.5, C.muted); d.text(this.subtitulo, x, 17);
+    this.f("normal", 7.5, C.muted); const wTipo = d.getTextWidth(this.tipo);
+    this.f("normal", 8.5, C.muted);
+    const disp = 210 - this.ml - wTipo - 4 - x; // el subtítulo no invade el tipo de documento (derecha)
+    let sub = this.subtitulo; if (d.getTextWidth(sub) > disp) { sub = d.splitTextToSize(sub, disp - 3)[0]; if (sub !== this.subtitulo) sub += "…"; }
+    d.text(sub, x, 17);
     d.text(`${NOMBRE} · Medicación y Ejercicio · ${WEB}`, x, 22);
     this.f("bold", 8, C.muted); d.text(new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" }), 210 - this.ml, 11.5, { align: "right" });
     this.f("normal", 7.5, C.muted); d.text(this.tipo, 210 - this.ml, 17, { align: "right" });
@@ -321,6 +325,37 @@ function seccionCuando(pg, ctx, { paciente = false } = {}) {
   for (const a of v.avisos) pg.vineta(a.nivel === "rojo" ? "alerta" : "precaucion", `${a.farmaco}: ${a.motivo}`, { size: paciente ? 9 : 8.3 });
 }
 
+/* ---------- zona de intensidad y SPPB ---------- */
+function zonaTxt(z) {
+  if (!z) return null;
+  if (z.metodo === "fc") {
+    const r = (k) => `${z.zonas[k][0]}–${z.zonas[k][1]} lpm`;
+    return { lineas: [`Ligera ${r("ligera")} · Moderada ${r("moderada")}` + (z.techo === "vigorosa" ? ` · Vigorosa ${r("vigorosa")}` : "")], nota: `FCmáx estimada ${z.fcmax} lpm (Tanaka 208 − 0,7·edad); FC en reposo ${z.fcReposo ?? "70 (estimada)"} lpm; zonas por FC de reserva (Karvonen).` + (z.limiteDai ? ` Con DAI: FC < ${z.limiteDai} lpm.` : "") + (z.techo === "moderada" ? " Techo de intensidad moderada por la situación clínica." : "") };
+  }
+  return { lineas: [`Ligera: ${z.rpe.ligera} · Moderada: ${z.rpe.moderada}` + (z.techo === "vigorosa" ? ` · Vigorosa: ${z.rpe.vigorosa}` : "")], nota: `La FC no es un indicador válido de intensidad (${z.motivos.join(", ")}): usar RPE (Borg 6–20) y prueba del habla.` + (z.techo === "moderada" ? " Techo de intensidad moderada por la situación clínica." : "") };
+}
+function seccionZona(pg, ctx, { paciente = false } = {}) {
+  const z = zonaTxt(ctx.zona); if (!z) return;
+  pg.seccion(paciente ? "Su zona de intensidad" : "Zona de intensidad", paciente ? "cómo saber si va al ritmo adecuado" : "");
+  const zz = ctx.zona;
+  if (zz.metodo === "fc") {
+    const filas = [["Ligera", `${zz.zonas.ligera[0]}–${zz.zonas.ligera[1]} lpm`, zz.rpe.ligera], ["Moderada", `${zz.zonas.moderada[0]}–${zz.zonas.moderada[1]} lpm`, zz.rpe.moderada]];
+    if (zz.techo === "vigorosa") filas.push(["Vigorosa", `${zz.zonas.vigorosa[0]}–${zz.zonas.vigorosa[1]} lpm`, zz.rpe.vigorosa]);
+    pg.tabla([{ t: "Intensidad", w: .22 }, { t: "Pulso objetivo", w: .28 }, { t: "Esfuerzo percibido", w: .5 }], filas.map(([a, b, c]) => [{ t: a, bold: true }, b, c]), { size: paciente ? 9 : 8.3 });
+  } else {
+    pg.tabla([{ t: "Intensidad", w: .25 }, { t: "Esfuerzo percibido", w: .75 }], [["Ligera", zz.rpe.ligera], ["Moderada", zz.rpe.moderada], ...(zz.techo === "vigorosa" ? [["Vigorosa", zz.rpe.vigorosa]] : [])].map(([a, b]) => [{ t: a, bold: true }, b]), { size: paciente ? 9 : 8.3 });
+  }
+  pg.parrafo(z.nota + " " + zz.habla, { size: paciente ? 8.5 : 7.8, color: C.muted });
+}
+function sppbTxt(ctx) {
+  const g = ctx.sppbGuiado;
+  if (!g && ctx.sppb == null) return null;
+  const total = g?.total ?? ctx.sppb;
+  const cat = total <= 6 ? "frágil" : total <= 9 ? "prefrágil" : "robusto";
+  const partes = g?.partes ? ` (pies juntos ${g.partes.lado ?? "—"} s, semitándem ${g.partes.semitandem ?? "—"} s, tándem ${g.partes.tandem ?? "—"} s, marcha 4 m ${g.partes.marcha ?? "—"} s${g.velocidad ? " = " + g.velocidad.toLocaleString("es-ES") + " m/s" : ""}, 5 levantadas ${g.partes.silla ?? "no puede"}${g.partes.silla != null ? " s" : ""})` : "";
+  return `SPPB ${total}/12 · ${cat}${g?.fecha ? " · " + new Date(g.fecha).toLocaleDateString("es-ES") : ""}${partes}.`;
+}
+
 /* ---------- INFORME CLÍNICO (médico) ---------- */
 export async function pdfMedico(kb, res, ctx) {
   const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
@@ -330,7 +365,7 @@ export async function pdfMedico(kb, res, ctx) {
   pg.prescriptor(ctx.prescriptor, ctx.prescrito);
 
   const nAlerta = res.resumen.alerta, nPrec = res.resumen.precaucion, nDDI = res.interacciones.filter((x) => x.nivel !== "menor").length;
-  const condTxt = { diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", renal: "ERC", renal_grave: "FG < 30", marcapasos: "marcapasos/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno domiciliario", embarazo: "embarazo/lactancia", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad" };
+  const condTxt = { diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", renal: "ERC", renal_grave: "FG < 30", marcapasos: "marcapasos/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno domiciliario", embarazo: "embarazo/lactancia", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", hipertension: "HTA", cardiopatia_isquemica: "cardiopatía isquémica", fibrilacion_auricular: "fibrilación auricular", aneurisma_aorta: "aneurisma de aorta", ictus: "ictus previo", cancer: "cáncer en tratamiento/reciente", artrosis: "artrosis", epilepsia: "epilepsia", hepatopatia: "hepatopatía avanzada", obesidad: "obesidad" };
   const condiciones = [...(ctx.condiciones || [])].map((c) => condTxt[c]).filter(Boolean);
   const fragTxt = { fragil: "Frágil", prefragil: "Prefrágil", robusto: "Robusto" }[ctx.fragilidad] || "—";
   pg.banda([
@@ -346,6 +381,7 @@ export async function pdfMedico(kb, res, ctx) {
   ]);
 
   if (condiciones.length) pg.parrafo("Situación clínica referida: " + condiciones.join(", ") + ".", { size: 8.5, color: C.muted });
+  { const st = sppbTxt(ctx); if (st) pg.parrafo("Valoración funcional: " + st, { size: 8.5, color: C.muted }); }
   if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Cribado preparticipación (ACSM 2015)", texto: txt + (ctx.cribado.sintomas ? " Síntomas referidos por el paciente." : ""), pie: `Ejercicio regular: ${ctx.cribado.regular ? "sí" : "no"} · enfermedad CV/metabólica/renal conocida: ${ctx.cribado.enfermedad ? "sí" : "no"}` }); }
   else if (ctx.cribado) pg.parrafo("Cribado preparticipación (ACSM) no completado por el paciente.", { size: 8, color: C.muted });
   const P = prescripcion(res, ctx);
@@ -360,6 +396,7 @@ export async function pdfMedico(kb, res, ctx) {
     { size: 8 }
   );
   pg.parrafo("Marco: OMS 2020 / ACSM GETP 11.ª ed. Ajustar según valoración funcional (SPPB, Vivifrail) y comorbilidad. Programa multicomponente; progresar primero el volumen y después la intensidad.", { size: 7.5, color: C.muted });
+  seccionZona(pg, ctx);
   if (ctx.ventana && (ctx.ventana.motivos.length || ctx.ventana.avisos.length)) seccionCuando(pg, ctx);
 
   const claves = [];
@@ -495,6 +532,7 @@ export async function pdfPaciente(kb, res, ctx) {
     { size: 8.5 }
   );
 
+  seccionZona(pg, ctx, { paciente: true });
   {
     const fragil = (ctx.condiciones || new Set()).has("fragil") || (ctx.condiciones || new Set()).has("nyha34");
     const nombres = { fuerza_eq: "Fuerza y equilibrio", aerobico: "Aeróbico (caminar, bici…)", fuerza: "Fuerza", descanso: "Descanso o paseo suave" };
@@ -561,15 +599,157 @@ export async function pdfPaciente(kb, res, ctx) {
   return doc;
 }
 
+/* ---------- FICHA PARA EL ENTRENADOR / FISIOTERAPEUTA ---------- */
+function listasPaciente(res, ctx) {
+  const evite = [];
+  if (tiene(res, "sangrado")) evite.push("Deportes de contacto o con riesgo de golpes y caídas a velocidad.");
+  if (tiene(res, "tendon")) evite.push("Saltos, carrera intensa y cargas máximas durante el tratamiento y el mes siguiente.");
+  if (cuenta(res, "hipotension") >= 2) evite.push("Parar de golpe tras el esfuerzo y las duchas muy calientes justo después.");
+  if (tiene(res, "calor") || tiene(res, "deshidratacion")) evite.push("Entrenar con calor intenso o sin agua a mano.");
+  if (tiene(res, "sedacion")) evite.push("Entrenar en las horas siguientes a una toma que da sueño.");
+  if (tiene(res, "renal") || tiene(res, "sangrado") || tiene(res, "litio")) evite.push("Antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: paracetamol.");
+  if (tiene(res, "fc_no_valida") || tiene(res, "bradicardia")) evite.push("Guiarse por el pulso para medir la intensidad.");
+  const cond = ctx.condiciones || new Set();
+  if (cond.has("aneurisma_aorta")) evite.push("Cargas máximas, Valsalva y ejercicios isométricos intensos (aneurisma de aorta).");
+  if (cond.has("osteoporosis")) evite.push("Flexión forzada de columna con carga y giros bruscos (osteoporosis).");
+  const cuidado = [];
+  if (tiene(res, "hipoglucemia")) cuidado.push("Glucosa antes y después; azúcar a mano.");
+  if (cuenta(res, "hipotension") >= 1) cuidado.push("Transiciones lentas; enfriamiento 5–10 min.");
+  if (tiene(res, "caidas") || ctx.caidas || ctx.edad >= 65) cuidado.push("Equilibrio con apoyo cerca.");
+  if (tiene(res, "miopatia")) cuidado.push("Dolor muscular desproporcionado: derivar.");
+  if (tiene(res, "hiperpotasemia")) cuidado.push("Sin suplementos de potasio.");
+  if (tiene(res, "deshidratacion") || tiene(res, "litio")) cuidado.push("Hidratación con sales en sesiones largas.");
+  if (tiene(res, "qt")) cuidado.push("Palpitaciones o mareo: parar y derivar (riesgo de QT largo).");
+  if (tiene(res, "hueso") || tiene(res, "perdida_muscular")) cuidado.push("Prioridad a la fuerza progresiva (masa muscular y hueso).");
+  return { evite, cuidado };
+}
+export async function pdfEntrenador(kb, res, ctx) {
+  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
+  const font = await prepararFuentes(doc);
+  const logo = await dataUrl("assets/logo-app.png");
+  const pg = new Doc(doc, font, logo, { titulo: "Ficha para el entrenador", subtitulo: "Lo que debe saber quien dirige las sesiones", tipo: "Para entrenador o fisioterapeuta", numero: numeroDocumento(res, ctx), version: ctx.appVersion, qr: await qrPng(ctx.enlace) });
+  pg.prescriptor(ctx.prescriptor, ctx.prescrito);
+  pg.parrafo("Esta ficha resume lo que el profesional del ejercicio debe tener en cuenta por la medicación de la persona. No incluye el diagnóstico ni los nombres de todos los fármacos: solo los efectos que pueden aparecer durante la sesión y cómo actuar. Ante cualquier duda, consulte con el médico prescriptor.", { size: 8.8, color: C.muted });
+  const cond = ctx.condiciones || new Set();
+  const fragTxt = { fragil: "Frágil", prefragil: "Prefrágil", robusto: "Robusto" }[ctx.fragilidad] || "—";
+  pg.banda([
+    { k: "Edad", v: ctx.edad ? `${ctx.edad} años` : "—" },
+    { k: "Caídas último año", v: ctx.caidas ? "Sí" : "No", nivel: ctx.caidas ? "precaucion" : null },
+    { k: "Capacidad funcional", v: fragTxt + (ctx.sppb != null ? ` · SPPB ${ctx.sppb}` : ""), nivel: ctx.fragilidad === "fragil" ? "alerta" : ctx.fragilidad === "prefragil" ? "precaucion" : null },
+    { k: "Techo de intensidad", v: ctx.zona?.techo === "moderada" ? "Moderada" : "Vigorosa si tolera", nivel: ctx.zona?.techo === "moderada" ? "precaucion" : null },
+    { k: "Pulso como guía", v: ctx.zona?.metodo === "fc" ? "Válido" : "NO válido", nivel: ctx.zona?.metodo === "fc" ? null : "alerta" },
+  ]);
+  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Cribado previo a la participación", texto: txt.replace("Cribado ACSM: ", "").replace(/^./, (c) => c.toUpperCase()) }); }
+  const P = prescripcion(res, ctx);
+  pg.seccion("Prescripción (FITT)", "pauta de partida; progresar primero volumen y después intensidad");
+  pg.tabla(
+    [{ t: "Modalidad", w: .13 }, { t: "Frecuencia", w: .17 }, { t: "Intensidad", w: .28 }, { t: "Tiempo", w: .16 }, { t: "Tipo y observaciones", w: .26 }],
+    [[{ t: "Aeróbico", bold: true }, P.aer.frec, P.aer.int, P.aer.tiempo, P.aer.tipo], [{ t: "Fuerza", bold: true }, P.fue.frec, P.fue.int, P.fue.tiempo, P.fue.tipo], [{ t: "Equilibrio", bold: true }, P.eq.frec, P.eq.int, P.eq.tiempo, P.eq.tipo]],
+    { size: 8 }
+  );
+  seccionZona(pg, ctx);
+  const { evite, cuidado } = listasPaciente(res, ctx);
+  const puede = ["Trabajo aeróbico continuo o en intervalos suaves.", "Fuerza con máquinas, bandas o peso libre, técnica antes que carga.", "Equilibrio, movilidad y doble tarea."];
+  pg.columnasSemaforo([
+    { nivel: "info", titulo: "Puede hacer", items: puede },
+    { nivel: "precaucion", titulo: "Con cuidado", items: cuidado.length ? cuidado.slice(0, 6) : ["Progresión gradual estándar."] },
+    { nivel: "alerta", titulo: "Evitar", items: evite.length ? evite.slice(0, 6) : ["Nada específico por la medicación."] },
+  ]);
+  // efectos por fármaco relevantes en sesión (sin dosis ni grupo terapéutico)
+  const filas = res.items.map((it) => ({ it, s: [...it.senales].map((s) => SENAL_CORTA[s]).filter(Boolean), reglas: ["aerobico", "fuerza", "equilibrio"].flatMap((amb) => (res.ambitos[amb].find((g) => g.item === it)?.reglas || []).filter((r) => r.nivel === "alerta").map((r) => r.texto)) })).filter((x) => x.s.length || x.reglas.length);
+  if (filas.length) {
+    pg.seccion("Qué puede notar en la sesión", "por cada medicamento; el nombre lo decide el paciente compartirlo");
+    pg.tabla([{ t: "Medicamento", w: .26 }, { t: "Efectos a vigilar", w: .34 }, { t: "Atención en la sesión", w: .4 }], filas.map((x) => [{ t: x.it.principio.nombre, bold: true }, x.s.join(", ") || "—", x.reglas.join(" ") || "—"]), { size: 7.8 });
+  }
+  const comb = res.combinadas.filter((c) => c.regla.nivel !== "info");
+  if (comb.length) { pg.seccion("Por la combinación de medicación y situación"); for (const c of comb.slice(0, 6)) pg.tarjeta({ nivel: c.regla.nivel, titulo: c.regla.titulo, texto: c.texto, size: 8.4 }); }
+  if (ctx.ventana && (ctx.ventana.motivos.length || ctx.ventana.avisos.length)) seccionCuando(pg, ctx);
+  pg.seccion("Pare la sesión y avise si aparece…");
+  for (const a of ALARMA) pg.vineta("alerta", a, { size: 8.6 });
+  pg.parrafo("Dolor torácico, disnea desproporcionada, síncope o palpitaciones que no ceden en pocos minutos: 112. Hipoglucemia sospechada (sudor frío, temblor, confusión): glucosa y azúcar de absorción rápida.", { size: 8, color: C.muted });
+  pg.parrafo(kb.aviso, { size: 7.5, color: C.muted });
+  pg.firma(ctx.prescriptor, ctx.prescrito);
+  pg.pie();
+  return doc;
+}
+
+/* ---------- TARJETA PARA LA NEVERA (A5, una cara) ---------- */
+export async function pdfTarjeta(kb, res, ctx) {
+  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a5", orientation: "portrait", compress: true });
+  const font = await prepararFuentes(doc);
+  const logo = await dataUrl("assets/logo-app.png");
+  const d = doc, W = 148, H = 210, ml = 9, w = W - 2 * ml;
+  const f = (style, size, color = C.ink) => { const st = style === "black" && font === "helvetica" ? "bold" : style; d.setFont(font, st); d.setFontSize(size); d.setTextColor(...color); };
+  // cabecera
+  d.setFillColor(...C.purpleSoft); d.rect(0, 0, W, 22, "F"); d.setFillColor(...C.purple); d.rect(0, 22, W, 1, "F");
+  if (logo) { try { d.addImage(logo, "PNG", ml, 3, 16, 16); } catch {} }
+  f("black", 15, C.purpleDeep); d.text("Mi plan de ejercicio", ml + 20, 10.5);
+  f("normal", 8, C.muted); d.text(`${NOMBRE} · ${new Date().toLocaleDateString("es-ES")}${ctx.prescriptor?.nombre ? " · " + ctx.prescriptor.nombre : ""}`, ml + 20, 16.5);
+  let y = 31;
+  const titulo = (t) => { f("black", 11.5, C.ink); d.text(t, ml, y); y += 1.8; d.setDrawColor(...C.purple); d.setLineWidth(.7); d.line(ml, y, ml + 11, y); y += 5; };
+  const linea = (t, nivel, size = 9.4) => { f("normal", size, C.ink); const ls = d.splitTextToSize(t, w - 6); d.setFillColor(...(C[nivel] || C.muted)); d.circle(ml + 1.4, y - 1.2, 1.15, "F"); for (const l of ls) { d.text(l, ml + 5, y); y += size * 0.47; } y += 1.2; };
+  // semana
+  const fragil = (ctx.condiciones || new Set()).has("fragil") || (ctx.condiciones || new Set()).has("nyha34");
+  const plan = ctx.plan ? planSemana(ctx.plan.dias) : PLAN_SEMANA;
+  const nDias = Object.values(plan).filter((t) => t !== "descanso").length;
+  const nombres = { fuerza_eq: "Fuerza y equilibrio", aerobico: "Caminar / bici", fuerza: "Fuerza", descanso: "Descanso" };
+  const dias = [["L", 1], ["M", 2], ["X", 3], ["J", 4], ["V", 5], ["S", 6], ["D", 0]];
+  titulo("Mi semana");
+  const cw = w / 7, ch = 19;
+  dias.forEach(([lab, n], i) => {
+    const tipo = plan[n], x = ml + i * cw;
+    const col = tipo === "descanso" ? C.soft : tipo === "aerobico" ? C.infoSoft : C.purpleSoft;
+    d.setFillColor(...col); d.roundedRect(x + 0.5, y, cw - 1, ch, 1.5, 1.5, "F");
+    f("black", 10, C.ink); d.text(lab, x + cw / 2, y + 6, { align: "center" });
+    f("normal", 6, C.muted); for (const [k, l] of d.splitTextToSize(nombres[tipo], cw - 2.5).slice(0, 2).entries()) d.text(l, x + cw / 2, y + 11 + k * 3.1, { align: "center" });
+  });
+  y += ch + 4;
+  const P = prescripcion(res, ctx);
+  linea(fragil ? "Sesiones cortas (5–10 minutos), varias veces al día si hace falta." : `Objetivo: unos ${nDias >= 5 ? 150 : nDias * 30} minutos a la semana repartidos en ${nDias} días. Empiezo con 10–20 minutos y subo poco a poco.`, "info");
+  linea(`Fuerza: ${P.fue.frec.replace(/\s*\(.*?\)/, "").toLowerCase()}, 20–40 minutos (levantarme de la silla, subir escalones, empujar y tirar).`, "info");
+  linea(`Equilibrio: ${P.eq.frec.replace(/\s*\(.*?\)/, "").toLowerCase()}, 10–15 minutos, con un apoyo cerca.`, "info");
+  y += 1.5;
+  // ritmo
+  const z = ctx.zona;
+  if (z) {
+    titulo("Mi ritmo");
+    if (z.metodo === "fc") { linea(`Moderado: ${z.zonas.moderada[0]}–${z.zonas.moderada[1]} pulsaciones por minuto (puedo hablar, pero no cantar).`, "precaucion"); if (z.limiteDai) linea(`Nunca por encima de ${z.limiteDai} pulsaciones (DAI).`, "alerta"); }
+    else linea("Mi pulso no sirve de guía: voy a un ritmo en el que puedo hablar pero no cantar.", "precaucion");
+    if (z.techo === "moderada") linea("Me quedo en intensidad ligera-moderada; nada de esfuerzos máximos.", "precaucion");
+    y += 1.5;
+  }
+  // esencial
+  const esencial = loEsencial(res, 4);
+  if (esencial.length) { titulo("Lo esencial con mi medicación"); for (const a of esencial) linea(a.titulo + ": " + a.texto, a.nivel, 8.6); y += 1.5; }
+  // alarma
+  const yPie = H - 26;
+  if (y < yPie - 22) {
+    titulo("Paro y consulto si noto");
+    for (const a of ALARMA.slice(0, 4)) { if (y > yPie - 12) break; linea(a, "alerta", 8.6); }
+    if (y <= yPie - 6) linea("Si no cede en pocos minutos: 112.", "alerta", 8.6);
+  }
+  if (ctx.ventana?.mejores?.length && y < yPie - 8) { y += 1; f("bold", 9, C.ink); d.text("Mejor momento para entrenar: " + ctx.ventana.mejores.map((x) => `${hh(x.desde)}–${hh(x.hasta)}`).join(" y "), ml, y); y += 5; }
+  // pie con QR
+  const qr = await qrPng(ctx.enlace);
+  d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(ml, yPie - 2, W - ml, yPie - 2);
+  if (qr) { try { d.addImage(qr, "PNG", W - ml - 18, yPie - 1, 18, 18); } catch {} }
+  f("normal", 6.8, C.muted);
+  const pie = [`${NOMBRE} · ${WEB}${ctx.appVersion ? " · v" + ctx.appVersion : ""}`, "Información general: no sustituye el consejo de su médico ni cambia ningún tratamiento.", ctx.prescrito ? "Reevaluar: " + (() => { const f1 = new Date(ctx.prescrito.fecha); f1.setDate(f1.getDate() + ctx.prescrito.semanas * 7); return f1.toLocaleDateString("es-ES"); })() : null].filter(Boolean);
+  pie.forEach((l, i) => d.text(d.splitTextToSize(l, w - 22)[0], ml, yPie + 3 + i * 3.8));
+  if (qr) d.text("Abrir mi plan", W - ml - 9, yPie + 20.5, { align: "center" });
+  return doc;
+}
+
 /** Texto plano para pegar en la historia clínica o el informe de alta (modo profesional). */
 export function textoHistoria(kb, res, ctx) {
   const P = prescripcion(res, ctx);
   const L = [];
   const cond = [...(ctx.condiciones || [])];
-  const condTxt = { diabetes: "DM", insuficiencia_cardiaca: "IC", renal: "ERC", renal_grave: "FG<30", marcapasos: "MP/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "OCD", embarazo: "gestación/lactancia", nyha34: "NYHA III-IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad" };
+  const condTxt = { diabetes: "DM", insuficiencia_cardiaca: "IC", renal: "ERC", renal_grave: "FG<30", marcapasos: "MP/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "OCD", embarazo: "gestación/lactancia", nyha34: "NYHA III-IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", hipertension: "HTA", cardiopatia_isquemica: "C. isquémica", fibrilacion_auricular: "FA", aneurisma_aorta: "aneurisma aórtico", ictus: "ictus previo", cancer: "neoplasia activa/reciente", artrosis: "artrosis", epilepsia: "epilepsia", hepatopatia: "hepatopatía avanzada", obesidad: "obesidad" };
   L.push("RECOMENDACIÓN DE EJERCICIO FÍSICO (adaptada al tratamiento farmacológico)");
   const perfil = [ctx.edad ? `${ctx.edad} años` : null, ctx.caidas ? "caídas en el último año" : null, ctx.fg != null ? `FG ${ctx.fg}` : null, ctx.fevi != null ? `FEVI ${ctx.fevi} %` : null, ctx.nyha != null ? `NYHA ${["", "I", "II", "III", "IV"][ctx.nyha]}` : null, ...cond.filter((c) => !(c === "nyha34" && ctx.nyha != null) && !(c === "fevi_baja" && ctx.fevi != null)).map((c) => condTxt[c]).filter(Boolean)].filter(Boolean);
   if (perfil.length) L.push("Perfil: " + perfil.join(", ") + ".");
+  { const st = sppbTxt(ctx); if (st) L.push("Valoración funcional: " + st); }
   L.push(`Tratamiento considerado: ${res.items.map((it) => it.principio.nombre + (it.dosisTotal != null ? " " + dosisTxt(it) : "")).join("; ")}.`);
   if (ctx.libres?.length) L.push(`Otros referidos, no evaluados: ${ctx.libres.join("; ")}.`);
   if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) L.push(CRIBADO_PDF[ctx.cribado.clave][1] + ` (ejercicio regular: ${ctx.cribado.regular ? "sí" : "no"}; enfermedad CV/metabólica/renal: ${ctx.cribado.enfermedad ? "sí" : "no"}${ctx.cribado.sintomas ? "; síntomas referidos" : ""}).`);
@@ -578,6 +758,7 @@ export function textoHistoria(kb, res, ctx) {
   L.push(`- Aeróbico: ${P.aer.frec}. ${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}`);
   L.push(`- Fuerza: ${P.fue.frec}. ${P.fue.int} ${P.fue.tiempo}. ${P.fue.tipo}`);
   L.push(`- Equilibrio: ${P.eq.frec}. ${P.eq.int} ${P.eq.tiempo}. ${P.eq.tipo}`);
+  { const z = zonaTxt(ctx.zona); if (z) L.push(`- Zona de intensidad: ${z.lineas[0]}. ${z.nota}`); }
   if (ctx.ventana?.mejores?.length) L.push(`- Horario preferible según tomas: ${ctx.ventana.mejores.map((f) => `${String(f.desde).padStart(2, "0")}:00-${String(f.hasta).padStart(2, "0")}:00`).join(" y ")}.`);
   const claves = [];
   for (const c of res.combinadas) if (c.regla.nivel === "alerta") claves.push(`${c.regla.titulo}: ${c.texto}`);
