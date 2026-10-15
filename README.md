@@ -66,7 +66,7 @@ node scripts/test.mjs                    # comprueba que todo sigue en orden
 git add app/data/marcas.json && git commit -m "Nomenclátor AEMPS" && git push
 ```
 Si la descarga falla, baje https://listadomedicamentos.aemps.gob.es/prescripcion.zip con el navegador y ejecute `python3 scripts/build_cima.py ~/Descargas/prescripcion.zip`.
-El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la estructura sin escribir nada, y al terminar lista los principios activos frecuentes que aún no están en `kb.json`. Conviene repetirlo cada pocos meses (el nomenclátor cambia a diario).
+El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la estructura sin escribir nada, y al terminar lista los principios activos frecuentes que aún no están en `kb.json`. Las presentaciones cuyo principio activo no está en la base se clasifican por su **código ATC** (campo `atc` de cada clase, prefijo más largo que coincida) y aparecen en la app como principios «sintéticos» (`atc:<nombre>`) que heredan las reglas del grupo, con una nota visible de que no hay reglas específicas revisadas. Conviene repetirlo cada pocos meses (el nomenclátor cambia a diario).
 
 ## Ampliar la base de conocimiento
 
