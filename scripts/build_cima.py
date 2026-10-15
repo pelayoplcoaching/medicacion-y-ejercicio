@@ -65,6 +65,13 @@ def local(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
 
+def iter_local(el, tag):
+    """Como el.iter(tag) pero ignorando el espacio de nombres (el XML de la AEMPS lo lleva)."""
+    for e in el.iter():
+        if local(e.tag) == tag:
+            yield e
+
+
 def cargar_alias_kb():
     """Mapa de nombre de principio (sin acentos, minúsculas) → id de kb.json.
     Incluye el nombre, el id y sinónimos frecuentes del nomenclátor (sales, DCI)."""
@@ -153,7 +160,7 @@ def detectar_tags(root) -> dict:
         tags["medicamento"] = hijos.most_common(1)[0][0]
         print(f"· Etiqueta de medicamento detectada: <{tags['medicamento']}> ({hijos[tags['medicamento']]:,} elementos)")
 
-    primero = next(root.iter(tags["medicamento"]))
+    primero = next(iter_local(root, tags["medicamento"]))
     campos_med = Counter(local(e.tag) for e in primero.iter())
 
     def buscar(clave, universo):
@@ -171,7 +178,7 @@ def detectar_tags(root) -> dict:
         tags[clave] = buscar(clave, campos_med)
     # campos dentro de cada principio activo
     if tags["pa"]:
-        pa0 = next(primero.iter(tags["pa"]), None)
+        pa0 = next(iter_local(primero, tags["pa"]), None)
         universo_pa = Counter(local(e.tag) for e in pa0.iter()) if pa0 is not None else Counter()
         # quitar la propia etiqueta del principio
         universo_pa.pop(tags["pa"], None)
@@ -187,7 +194,7 @@ def inspeccionar(root):
     hijos = Counter(local(h.tag) for h in root)
     print(f"Raíz: <{local(root.tag)}>  hijos directos: {dict(hijos.most_common(5))}")
     med_tag = hijos.most_common(1)[0][0]
-    primero = next(root.iter(med_tag))
+    primero = next(iter_local(root, med_tag))
     print(f"\nPrimer <{med_tag}> (etiqueta → texto):")
     for e in primero.iter():
         txt = (e.text or "").strip()
@@ -235,7 +242,7 @@ def main(argv):
     salida, vistos = [], set()
     n_total = n_comerc = n_sin_pa = 0
     sin_resolver = Counter()
-    for med in root.iter(tags["medicamento"]):
+    for med in iter_local(root, tags["medicamento"]):
         n_total += 1
         com = texto(med, tags["comercializado"]).upper()
         if com not in ("S", "1", "TRUE", "SI", "SÍ", ""):
@@ -245,7 +252,7 @@ def main(argv):
         if not nombre:
             continue
         pas, dosis, unidad = [], [], None
-        for pa in [e for e in med.iter() if local(e.tag) == tags["pa"]]:
+        for pa in iter_local(med, tags["pa"]):
             nom_pa = texto(pa, tags["pa_nombre"])
             pid = resolver(nom_pa, alias)
             if pid is None:
