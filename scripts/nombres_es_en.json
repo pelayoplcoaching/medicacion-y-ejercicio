@@ -7,7 +7,10 @@
   "edoxaban": "Edoxaban",
   "dabigatran": "Dabigatran etexilate",
   "enoxaparina": "Enoxaparin",
-  "aas": "Aspirin",
+  "aas": [
+    "Aspirin",
+    "Acetylsalicylic acid"
+  ],
   "clopidogrel": "Clopidogrel",
   "ticagrelor": "Ticagrelor",
   "prasugrel": "Prasugrel",
@@ -82,7 +85,10 @@
     "Insulin lispro",
     "Insulin human"
   ],
-  "gliclazida": "Gliclazide",
+  "gliclazida": [
+    "Gliclazide",
+    "Tolbutamide"
+  ],
   "glimepirida": "Glimepiride",
   "glibenclamida": "Glyburide",
   "metformina": "Metformin",
@@ -100,8 +106,14 @@
   "levotiroxina": "Levothyroxine",
   "prednisona": "Prednisone",
   "prednisolona": "Prednisolone",
-  "metilprednisolona": "Methylprednisolone",
-  "dexametasona": "Dexamethasone",
+  "metilprednisolona": [
+    "Methylprednisolone",
+    "Triamcinolone"
+  ],
+  "dexametasona": [
+    "Dexamethasone",
+    "Betamethasone"
+  ],
   "deflazacort": "Deflazacort",
   "lorazepam": "Lorazepam",
   "diazepam": "Diazepam",
@@ -121,7 +133,10 @@
   "desvenlafaxina": "Desvenlafaxine",
   "duloxetina": "Duloxetine",
   "vortioxetina": "Vortioxetine",
-  "amitriptilina": "Amitriptyline",
+  "amitriptilina": [
+    "Amitriptyline",
+    "Doxepin"
+  ],
   "nortriptilina": "Nortriptyline",
   "clomipramina": "Clomipramine",
   "mirtazapina": "Mirtazapine",
@@ -145,7 +160,10 @@
   "ropinirol": "Ropinirole",
   "rasagilina": "Rasagiline",
   "tramadol": "Tramadol",
-  "codeina": "Codeine",
+  "codeina": [
+    "Codeine",
+    "Hydrocodone"
+  ],
   "morfina": "Morphine",
   "oxicodona": "Oxycodone",
   "fentanilo": "Fentanyl",
@@ -183,7 +201,11 @@
   "risedronato": "Risedronic acid",
   "zoledronico": "Zoledronic acid",
   "denosumab": "Denosumab",
-  "hidroxizina": "Hydroxyzine",
+  "hidroxizina": [
+    "Hydroxyzine",
+    "Promethazine",
+    "Alimemazine"
+  ],
   "dexclorfeniramina": "Dexchlorpheniramine",
   "difenhidramina": "Diphenhydramine",
   "oxibutinina": "Oxybutynin",
@@ -362,7 +384,10 @@
   "azitromicina": "Azithromycin",
   "claritromicina": "Clarithromycin",
   "eritromicina": "Erythromycin",
-  "fluconazol": "Fluconazole",
+  "fluconazol": [
+    "Fluconazole",
+    "Ketoconazole"
+  ],
   "itraconazol": "Itraconazole",
   "voriconazol": [
     "Voriconazole",
@@ -434,7 +459,10 @@
     "Upadacitinib",
     "Filgotinib"
   ],
-  "leflunomida": "Leflunomide",
+  "leflunomida": [
+    "Leflunomide",
+    "Teriflunomide"
+  ],
   "sulfasalazina": "Sulfasalazine",
   "tamoxifeno": "Tamoxifen",
   "inhibidor_aromatasa": [
