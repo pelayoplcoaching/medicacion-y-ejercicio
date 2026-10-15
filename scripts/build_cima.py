@@ -108,6 +108,9 @@ ATC_EXCLUIR = {
     "J01AA12",                                     # tigeciclina IV
     "N05CD08",                                     # midazolam (hospital)
     "G03CA04",                                     # estriol (uso vaginal)
+    "M01AX05", "M01AX25",                          # glucosamina, condroitín: no son AINE
+    "J01CR05",                                     # piperacilina/tazobactam IV
+    "G03AD01", "G03AD02", "G03XB02",               # anticoncepción de urgencia / ulipristal: no es terapia continuada
 }
 
 

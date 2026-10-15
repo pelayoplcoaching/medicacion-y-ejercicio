@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151144";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151144";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151144";
-import { cargarScript } from "./libs.js?v=202610151144";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151144";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151144";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151151";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151151";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151151";
+import { cargarScript } from "./libs.js?v=202610151151";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151151";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151151";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
