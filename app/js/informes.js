@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151203";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo } from "./engine.js?v=202610151203";
+import { jspdf } from "./libs.js?v=202610151302";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151302";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -326,6 +326,23 @@ export async function pdfMedico(kb, res, ctx) {
       const sint = [...new Set(d.flatMap((x) => x.sintomas || []))];
       pg.seccion("Registro de sesiones del paciente (últimas 4 semanas)", "anotado por el paciente en la aplicación");
       pg.parrafo(`${d.length} sesiones · ${min} min en total · RPE medio ${rpe}/10${sint.length ? " · síntomas anotados: " + sint.join(", ") : " · sin síntomas anotados"}.`, { size: 9 });
+      // constantes anotadas (glucosa antes/después, TA sistólica, FC al terminar): resumen de rangos y las últimas 6 sesiones con datos
+      const conConst = d.filter((x) => x.const && Object.values(x.const).some((v) => v != null));
+      if (conConst.length) {
+        const rango = (k) => { const v = conConst.map((x) => x.const[k]).filter((n) => n != null); return v.length ? `${Math.min(...v)}–${Math.max(...v)}` : "—"; };
+        const resumen = [];
+        if (conConst.some((x) => x.const.glucosa_antes != null || x.const.glucosa_despues != null)) resumen.push(`glucosa antes ${rango("glucosa_antes")} / después ${rango("glucosa_despues")} mg/dL`);
+        if (conConst.some((x) => x.const.ta != null)) resumen.push(`TAS ${rango("ta")} mmHg`);
+        if (conConst.some((x) => x.const.fc != null)) resumen.push(`FC al terminar ${rango("fc")} lpm`);
+        pg.parrafo(`Constantes anotadas en ${conConst.length} sesiones (mín.–máx.): ${resumen.join(" · ")}.`, { size: 9 });
+        const ult = conConst.slice(-6);
+        const tipos = { aerobico: "Aeróbico", fuerza: "Fuerza", equilibrio: "Equilibrio", paseo: "Paseo" };
+        pg.tabla(
+          [{ t: "Fecha", w: .16 }, { t: "Sesión", w: .2 }, { t: "RPE", w: .1 }, { t: "Glucosa a/d", w: .2 }, { t: "TAS", w: .16 }, { t: "FC fin", w: .18 }],
+          ult.map((x) => [x.fecha, `${tipos[x.tipo] || x.tipo} · ${x.min} min`, String(x.rpe ?? "—"), `${x.const.glucosa_antes ?? "—"} / ${x.const.glucosa_despues ?? "—"}`, x.const.ta != null ? String(x.const.ta) : "—", x.const.fc != null ? String(x.const.fc) : "—"]),
+          { size: 8 }
+        );
+      }
     }
   }
   pg.seccion("Medicación referida por el paciente", "dosis diaria estimada y efectos relevantes para el ejercicio");
@@ -429,7 +446,7 @@ export async function pdfPaciente(kb, res, ctx) {
     pg.seccion("Su semana", `plan tipo: ${fragil ? "sesiones cortas, varias veces al día si hace falta" : "unos 150 minutos y 5 sesiones a la semana"}; ajústelo con su médico o entrenador`);
     pg.tabla(
       [{ t: "Día", w: .16 }, { t: "Sesión", w: .3 }, { t: "Qué hacer", w: .54 }],
-      dias.map(([d, n]) => { const tipo = PLAN_SEMANA[n]; const s = tipo === "descanso" ? null : sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }); return [{ t: d, bold: true }, s ? `${nombres[tipo]} · ${s.min} min` : nombres[tipo], s ? s.bloques.map((b) => `${b.nombre} (${b.min}′)`).join(" · ") : "Si le apetece, 20–30 minutos caminando cuentan."]; }),
+      dias.map(([d, n]) => { const tipo = (ctx.plan ? planSemana(ctx.plan.dias) : PLAN_SEMANA)[n]; const s = tipo === "descanso" ? null : sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }); return [{ t: d, bold: true }, s ? `${nombres[tipo]} · ${s.min} min` : nombres[tipo], s ? s.bloques.map((b) => `${b.nombre} (${b.min}′)`).join(" · ") : "Si le apetece, 20–30 minutos caminando cuentan."]; }),
       { size: 8 }
     );
   }
@@ -512,6 +529,19 @@ export function textoHistoria(kb, res, ctx) {
   const prec = [];
   for (const c of res.combinadas) if (c.regla.nivel === "precaucion") prec.push(`${c.regla.titulo}: ${c.texto}`);
   if (prec.length) { L.push(""); L.push("Otras consideraciones:"); for (const k of prec.slice(0, 6)) L.push("- " + k); }
+  if (ctx.diario?.length) {
+    const d = ctx.diario.filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 28);
+    if (d.length) {
+      const rpe = (d.reduce((n, x) => n + (x.rpe || 0), 0) / d.length).toFixed(1);
+      const conConst = d.filter((x) => x.const && Object.values(x.const).some((v) => v != null));
+      const rango = (k) => { const v = conConst.map((x) => x.const[k]).filter((n) => n != null); return v.length ? `${Math.min(...v)}-${Math.max(...v)}` : null; };
+      const partes = [];
+      const g1 = rango("glucosa_antes"), g2 = rango("glucosa_despues"), ta = rango("ta"), fc = rango("fc");
+      if (g1 || g2) partes.push(`glucosa antes ${g1 || "-"} / después ${g2 || "-"} mg/dL`);
+      if (ta) partes.push(`TAS ${ta} mmHg`); if (fc) partes.push(`FC fin ${fc} lpm`);
+      L.push(""); L.push(`Registro del paciente (4 semanas): ${d.length} sesiones, ${d.reduce((n, x) => n + (x.min || 0), 0)} min, RPE medio ${rpe}/10${partes.length ? "; constantes anotadas: " + partes.join(", ") : ""}.`);
+    }
+  }
   L.push("");
   L.push("Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en 4-6 semanas. Generado con Pauta Activa · Medicación y Ejercicio (" + WEB + "), base de conocimiento v" + kb.version + "; recomendación orientativa que requiere valoración clínica individual.");
   return L.join("\n");

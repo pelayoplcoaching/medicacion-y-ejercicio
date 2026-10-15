@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORDEN = { alerta: 3, precaucion: 2, info: 1 };
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
 const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -237,6 +237,39 @@ console.log("\nIdiomas");
   usadas.push(...[...appjs.matchAll(/\bt\("([a-z0-9_.]+)"/g)].map((x) => x[1]).filter((k) => !k.endsWith(".")));  // claves dinámicas ("tema." + x) se ignoran
   const sinDef = [...new Set(usadas)].filter((k) => !dicc.ES.has(k));
   check("todas las claves usadas existen en ES", sinDef.length === 0, sinDef.join());
+}
+
+console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
+{
+  const p3 = planSemana([1, 3, 5]);
+  check("plan con 3 días alterna fuerza+eq, aeróbico y fuerza", p3[1] === "fuerza_eq" && p3[3] === "aerobico" && p3[5] === "fuerza" && p3[2] === "descanso" && p3[0] === "descanso");
+  check("plan con 1 día es fuerza+equilibrio", planSemana([0])[0] === "fuerza_eq" && planSemana([0])[1] === "descanso");
+  check("sin días → plan tipo", JSON.stringify(planSemana([])) === JSON.stringify(planSemana([1, 2, 3, 4, 5, 6])));
+  const hoy = new Date(); const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const haceDias = (n) => { const d = new Date(hoy); d.setDate(d.getDate() - n); return iso(d); };
+  const diario = [{ fecha: iso(hoy), min: 30 }, { fecha: haceDias(7), min: 40 }, { fecha: haceDias(8), min: 20 }];
+  const sem = minutosPorSemana(diario, 8, hoy);
+  check("8 semanas, la actual la última", sem.length === 8 && sem[7].min === 30);
+  check("la semana anterior suma 60 o la antepenúltima 20 (según el día)", sem[6].min + sem[5].min === 60);
+  const antes = [{ pid: "bisoprolol", dosis: 5, tomas: 1 }, { pid: "enalapril", dosis: 20, tomas: 1 }, { pid: "metformina", dosis: 850, tomas: 2 }];
+  const despues = [{ pid: "bisoprolol", dosis: 2.5, tomas: 1 }, { pid: "metformina", dosis: 850, tomas: 2 }, { pid: "apixaban", dosis: 5, tomas: 2 }];
+  const d = compararListas(antes, despues);
+  check("conciliación: 1 nuevo, 1 retirado, 1 cambio de dosis", d.nuevos[0].pid === "apixaban" && d.retirados[0].pid === "enalapril" && d.cambios[0].pid === "bisoprolol" && d.cambios[0].antes === 5 && d.cambios[0].despues === 2.5 && d.total === 3);
+  check("conciliación sin cambios", compararListas(antes, antes).total === 0);
+  const res = evaluar(datos, [{ pid: "gliclazida", dosis: 60, tomas: 1 }, { pid: "bisoprolol", dosis: 5, tomas: 1 }, { pid: "apixaban", dosis: 5, tomas: 2 }], { condiciones: new Set() });
+  const cs = constantesRelevantes(res, { condiciones: new Set() }).map((c) => c.id);
+  check("constantes: glucosa, TA y pulso con sulfonilurea + betabloqueante", cs.includes("glucosa") && cs.includes("ta") && cs.includes("fc"));
+  check("sin fármacos relevantes no se piden constantes", constantesRelevantes(evaluar(datos, [{ pid: "paracetamol", dosis: 1000, tomas: 3 }], { condiciones: new Set() }), { condiciones: new Set() }).length === 0);
+  const ch = chequeoPrevio(res, { condiciones: new Set(["epoc_asma"]), caidas: true });
+  const ids = ch.map((c) => c.id);
+  check("chequeo: universales + glucosa, mareo, sangrado, aire y apoyo", ["pecho", "fiebre", "glucosa", "mareo", "sangrado", "aire", "apoyo"].every((k) => ids.includes(k)) && !ids.includes("tendon"));
+  check("chequeo: gliclazida aparece como motivo de la glucosa", ch.find((c) => c.id === "glucosa").farmacos.some((f) => /gliclazida/i.test(f)));
+  check("veredicto: todo marcado → ok", veredictoChequeo(ch, ids).clave === "ok");
+  check("veredicto: falta un ámbar → suave", veredictoChequeo(ch, ids.filter((k) => k !== "agua" && k !== "mareo")).clave === "suave");
+  check("veredicto: falta dolor en el pecho → no entrenar", veredictoChequeo(ch, ids.filter((k) => k !== "pecho")).clave === "no");
+  const ses = sesionTipo("fuerza_eq", { fragil: false });
+  check("cada ejercicio de fuerza tiene pictograma, clave y variantes", ses.bloques.slice(1).every((b) => b.pict && b.clave && b.facil && b.dificil));
+  check("el calentamiento tiene pictograma", !!ses.bloques[0].pict);
 }
 
 console.log(`\n${total - fallos}/${total} pruebas correctas`);

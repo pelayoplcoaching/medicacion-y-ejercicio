@@ -59,7 +59,7 @@
 <link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151203">
+<link rel="stylesheet" href="css/style.css?v=202610151302">
 </head>
 <body class="cargando">
 
@@ -77,6 +77,7 @@
   </blockquote>
   <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><button type="button" class="btn-sec sm btn-icono" id="btn-tema" aria-label="Tema"><span>A</span></button><button type="button" class="btn-sec sm" id="btn-instalar" hidden data-i18n="instalar">Instalar</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
   <p class="banner" id="aviso-idioma" hidden></p>
+  <p class="conexion" id="conexion" hidden role="status"><span aria-hidden="true">●</span> <span data-i18n="conexion.off">Sin conexión · la app funciona igual</span></p>
 </header>
 
 <main class="contenedor">
@@ -185,6 +186,7 @@
         </div>
       <small id="pegar-aviso" class="aviso-import" aria-live="polite"></small>
       <div id="no-reconocidos" class="no-reconocidos" hidden></div>
+      <div id="cambios" class="cambios" hidden aria-live="polite"></div>
 
       <div id="ejemplo-banner" class="banner" data-i18n="ejemplo.banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
       <ul id="lista-meds"></ul>
@@ -249,6 +251,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202610151203"></script>
+<script type="module" src="js/app.js?v=202610151302"></script>
 </body>
 </html>

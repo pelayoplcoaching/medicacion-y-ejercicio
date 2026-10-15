@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, PLAN_SEMANA, sesionTipo, objetivoSemanal, rachaSemanas, progresion } from "./engine.js?v=202610151203";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151203";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151203";
-import { cargarScript } from "./libs.js?v=202610151203";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151203";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151203";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo } from "./engine.js?v=202610151302";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151302";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151302";
+import { cargarScript } from "./libs.js?v=202610151302";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151302";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151302";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -58,6 +58,60 @@ const ICONS = {
   whatsapp: "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0 1 12 4zm-3 4.3c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.6 2.6 1 3.2.8 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4l-2.1-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.9 8.7c-.2-.4-.4-.4-.6-.4H9z",
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
+
+/* ---------- pictogramas de ejercicios (figuras de trazo, 48×48) ---------- */
+const CAB = (x, y) => `<circle cx="${x}" cy="${y}" r="4"/>`;
+const PICTOS = {
+  silla: `${CAB(20, 9)}<path d="M20 13v12l-6 10M20 25l7 9M20 16l8 3M31 20v16h8M31 30h8M35 20v16"/>`,
+  talones: `${CAB(24, 8)}<path d="M24 12v16M24 28l-4 8M24 28l4 8M20 36l-2-2M28 36l2-2M24 17l8-3M24 17l-8-3M8 14v22M8 14h8"/>`,
+  rodilla: `${CAB(16, 9)}<path d="M16 13v13h12M28 26l12-2M16 26l-2 10M12 8v30M12 20h4"/>`,
+  brazo: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 16l-6 6 6 2M24 16l6 6-6 2M30 22v6"/><rect x="28" y="19" width="4" height="7" rx="1"/>`,
+  puente: `${CAB(8, 30)}<path d="M12 30l10-8 10 6 6-10M32 28l4 8M8 36h32"/>`,
+  sentadilla: `${CAB(24, 8)}<path d="M24 12v8l-6 6 2 10M24 20l6 6-2 10M24 14l-10 2M24 14l10 2M16 36h4M28 36h4"/>`,
+  pared: `${CAB(18, 10)}<path d="M18 14l6 12 6 10M24 26l-8 10M18 16l10-2M28 14l6-2M36 6v36"/>`,
+  remo: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 17l-8 5M24 17l8 5M16 22h-6M32 22h6M8 20v4M40 20v4"/>`,
+  bisagra: `${CAB(14, 14)}<path d="M18 16l10 6 4 14M32 36l-2-6M28 22l-8 8M20 30l-2 4M24 24h8"/>`,
+  hombro: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 15l-8-5V4M24 15l8-5V4M14 4h4M30 4h4"/>`,
+  unpie: `${CAB(24, 8)}<path d="M24 12v16M24 28l-2 10M24 28l8-2 2-8M24 16l-8 2M24 16l8 2M38 12v26"/>`,
+  talonpunta: `<path d="M24 6c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6zM24 20c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6zM24 34c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6z"/>`,
+  giro: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 16l-8 4M24 16l8 4M8 22a16 16 0 0 1 32 0M36 18l4 4-4 4"/>`,
+  marcha: `${CAB(26, 8)}<path d="M26 12l-2 14-6 12M24 26l8 8M24 16l-8 8M24 16l8 4 2 6"/>`,
+  bici: `<circle cx="12" cy="34" r="8"/><circle cx="36" cy="34" r="8"/><path d="M12 34l8-14h10l6 14M20 20l-4-6h-4M30 20l-2-8h4M22 34h8"/>${CAB(32, 8)}`,
+  estirar: `${CAB(24, 10)}<path d="M24 14v14M24 28l-5 10M24 28l5 10M24 18l-8-10M24 18l8-10"/>`,
+};
+const picto = (id) => PICTOS[id] ? `<svg class="picto" viewBox="0 0 48 48" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${PICTOS[id]}</svg>` : "";
+
+/* ---------- iconos por grupo terapéutico (según el código ATC de la clase) ---------- */
+const GRUPO_ICONS = {
+  corazon: "M12 21s-7.5-4.6-9.5-9.3C1.2 8.5 3.3 5 6.8 5c2 0 3.4 1.1 4.2 2.4C12.3 6.1 13.8 5 15.8 5c3.5 0 5.6 3.5 4.3 6.7C18 16.4 12 21 12 21z",
+  sangre: "M12 2.5s6.5 7 6.5 12a6.5 6.5 0 0 1-13 0c0-5 6.5-12 6.5-12zm0 3.3C10.3 8 7.5 11.8 7.5 14.5a4.5 4.5 0 0 0 9 0c0-2.7-2.8-6.5-4.5-8.7z",
+  azucar: "M4 8l8-4 8 4v9l-8 4-8-4V8zm2 1.3v6.5l5 2.5v-6.5L6 9.3zm12 0-5 2.5v6.5l5-2.5V9.3zM12 6.2 7.6 8.4 12 10.6l4.4-2.2L12 6.2z",
+  cerebro: "M9 3a4 4 0 0 0-4 4 3.5 3.5 0 0 0-1 6.3A3.5 3.5 0 0 0 7 19h1a3 3 0 0 0 4-2.8V5.5A3 3 0 0 0 9 3zm6 0a3 3 0 0 0-3 2.5v10.7A3 3 0 0 0 16 19h1a3.5 3.5 0 0 0 3-5.7A3.5 3.5 0 0 0 19 7a4 4 0 0 0-4-4z",
+  pulmon: "M11 3h2v8.5l2.6-2.6A4.5 4.5 0 0 1 22 12v6a3 3 0 0 1-3 3h-2a4 4 0 0 1-4-4v-6l-1-1-1 1v6a4 4 0 0 1-4 4H5a3 3 0 0 1-3-3v-6a4.5 4.5 0 0 1 6.4-3.1L11 11.5V3z",
+  hueso: "M6.5 3a2.5 2.5 0 0 1 2.4 1.8l6.3 6.3A2.5 2.5 0 1 1 21 14.5a2.5 2.5 0 0 1-3.5 2.3 2.5 2.5 0 0 1-2.3 3.5A2.5 2.5 0 0 1 12.7 18l-6.3-6.3A2.5 2.5 0 1 1 3 7.5a2.5 2.5 0 0 1 3.5-2.3V3z",
+  hormona: "M9 2h6v2h-1v5.2l5.4 9.3A2 2 0 0 1 17.7 22H6.3a2 2 0 0 1-1.7-3.5L10 9.2V4H9V2zm3 9-3.6 6h7.2L12 11z",
+  escudo: "M12 2l8 3v6c0 5-3.4 8.8-8 11-4.6-2.2-8-6-8-11V5l8-3zm0 2.2L6 6.5V11c0 3.9 2.5 7 6 8.9 3.5-1.9 6-5 6-8.9V6.5l-6-2.3z",
+  ojo: "M12 5c5 0 9 3.5 11 7-2 3.5-6 7-11 7S3 15.5 1 12c2-3.5 6-7 11-7zm0 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z",
+  pastilla: "M8.5 2.5a6 6 0 0 1 4.2 1.8l7 7a6 6 0 1 1-8.5 8.5l-7-7A6 6 0 0 1 8.5 2.5zm0 2a4 4 0 0 0-2.8 6.8l3.2 3.2 5.7-5.7-3.2-3.2A4 4 0 0 0 8.5 4.5z",
+  rinon: "M8 3c3 0 5 2.5 5 6v6c0 3.5-2 6-5 6s-5-2.5-5-6V9c0-3.5 2-6 5-6zm8 0c3 0 5 2.5 5 6v6c0 3.5-2 6-5 6a4.6 4.6 0 0 1-3-1.1V4.1A4.6 4.6 0 0 1 16 3z",
+};
+/** Grupo (icono) de una clase por su código ATC o su identificador. */
+function grupoClase(clase) {
+  const atc = (clase.atc || [])[0] || "";
+  const id = clase.id || "";
+  if (/^A10/.test(atc) || /insulina|sulfonil|metformina|sglt2|glp1|dpp4|pioglit|antidiabet/.test(id)) return "azucar";
+  if (/^B0?1/.test(atc) || /anticoag|antiagreg|heparina/.test(id)) return "sangre";
+  if (/^C/.test(atc)) return "corazon";
+  if (/^R/.test(atc) || /broncod|respirat|oxigeno/.test(id)) return "pulmon";
+  if (/^N/.test(atc) || /benzo|hipnot|antidepres|antipsic|antiepilep|opioid|levodopa|litio|melatonina/.test(id)) return "cerebro";
+  if (/^M/.test(atc) || /aines|bifosfon|osteop|relajantes|colchicina|alopurinol/.test(id)) return "hueso";
+  if (/^H|^G03|^L02/.test(atc) || /corticoid|tiroid|hormon|testosterona/.test(id)) return "hormona";
+  if (/^J|^P|^L0?[134]/.test(atc) || /antibiot|macrolid|fluoroquin|antifung|antirretro|inmuno|biolog|farme|quimio|hidroxicloro/.test(id)) return "escudo";
+  if (/^S/.test(atc) || /colirio/.test(id)) return "ojo";
+  if (/^G04|^G0?2/.test(atc) || /urinari|urolog|pde5|desmopres/.test(id)) return "rinon";
+  return "pastilla";
+}
+const iconoGrupo = (clase) => `<svg class="ic-grupo g-${grupoClase(clase)}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${GRUPO_ICONS[grupoClase(clase)]}"/></svg>`;
 function ponerIconos() {
   const mapa = { "btn-caja": "caja", "btn-dictar": "mic", "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar", "btn-pdf-medico": "pdf", "btn-pdf-paciente": "pdf" };
   for (const [id, n] of Object.entries(mapa)) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
@@ -70,7 +124,12 @@ aplicarIdioma(detectarIdioma());
 $("#idioma").value = idioma();
 $("#idioma").addEventListener("change", (e) => { aplicarIdioma(e.target.value); aplicarModo(); if (datos) { renderVersion(); render(); } });
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general" };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] } };
+/** Plan semanal vigente (día 0–6 → tipo), según los días elegidos por el usuario. */
+const planActual = () => planSemana(estado.plan?.dias);
+const sanearPlan = (p) => ({ dias: Array.isArray(p?.dias) && p.dias.length ? [...new Set(p.dias.map(Number).filter((d) => d >= 0 && d <= 6))] : [1, 2, 3, 4, 5, 6] });
+/** Vibración breve en móviles que la admiten (marcar un bloque, terminar); nunca en escritorio. */
+const vibrar = (ms = 12) => { try { if (navigator.vibrate && matchMedia("(pointer: coarse)").matches) navigator.vibrate(ms); } catch {} };
 const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma", "oxigeno", "embarazo"];
 const PAC = ["silla", "caminar", "ayuda"];
 const PRO = ["fg", "fevi", "nyha", "sppb", "vivifrail", "dai"];
@@ -149,10 +208,10 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan })); } catch {}
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
-function numeroEntre(v, min, max) { const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
+function numeroEntre(v, min, max) { if (v == null || v === "") return null; const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
 function sanearMeds(meds) {
   if (!Array.isArray(meds)) return [];
   return meds.filter((m) => m && typeof m.pid === "string" && (indice.porId.has(m.pid) || (m.pid.startsWith("libre:") && typeof m.nombre === "string"))).slice(0, 60).map((m) => ({
@@ -168,7 +227,7 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) } });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan) });
   } catch {}
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
@@ -357,6 +416,7 @@ $("#btn-importar").addEventListener("click", () => {
 function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
   const { reconocidos, noReconocidos } = extraerMedicacion(texto, indice);
   const habia = estado.meds.length;
+  const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
   if (reconocidos.length) {
     if (estado.ejemplo || reemplazar) { estado.meds = []; estado.ejemplo = false; }
     const ya = new Set(estado.meds.map((m) => m.pid));
@@ -368,7 +428,22 @@ function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
   $("#pegar-aviso").textContent = partes.join(" ");
   mostrarNoReconocidos(noReconocidos);
   guardar(); render();
+  if (reemplazar && reconocidos.length) mostrarCambios(previa);
   return { reconocidos: reconocidos.length, noReconocidos: noReconocidos.length };
+}
+
+/** Conciliación: qué ha cambiado al sustituir la lista (PDF, foto o lista guardada), con opción de volver atrás. */
+function mostrarCambios(previa) {
+  const box = $("#cambios"); if (!box) return;
+  box.hidden = true; box.innerHTML = "";
+  if (!previa.length) return;
+  const nombre = (m) => m.libre ? m.nombre : (indice.porId.get(m.pid)?.principio.nombre || m.pid);
+  const d = compararListas(previa, estado.meds);
+  const fila = (clase, titulo, lista) => lista.length ? `<li class="${clase}"><b>${titulo}</b> ${lista.join(", ")}</li>` : "";
+  box.innerHTML = `<div class="cambios-cab"><h3>${t("cambios.titulo")}</h3><span class="chip">${d.total ? d.total : "0"}</span></div>${d.total ? `<ul>${fila("c-nuevo", t("cambios.nuevos") + ":", d.nuevos.map(nombre))}${fila("c-retirado", t("cambios.retirados") + ":", d.retirados.map(nombre))}${fila("c-dosis", t("cambios.dosis") + ":", d.cambios.map((c) => `${indice.porId.get(c.pid)?.principio.nombre || c.pid} ${c.antes ?? "?"} → ${c.despues ?? "?"} ${c.unidad.split("/")[0]}/día`))}</ul>` : `<p>${t("cambios.ninguno")}</p>`}<div class="acciones" style="margin:8px 0 0"><button type="button" class="btn-sec sm" data-a="deshacer">${t("cambios.deshacer")}</button><button type="button" class="btn-sec sm" data-a="cerrar">${t("ficha.cerrar")}</button></div>`;
+  box.hidden = false;
+  box.querySelector('[data-a="deshacer"]').addEventListener("click", () => { estado.meds = sanearMeds(previa); guardar(); render(); box.hidden = true; toast(t("cambios.deshecho"), { ms: 3000 }); });
+  box.querySelector('[data-a="cerrar"]').addEventListener("click", () => { box.hidden = true; });
 }
 
 /** Líneas con pinta de medicamento que no se han reconocido: permitir buscarlas o avisar de que faltan. */
@@ -462,7 +537,7 @@ function mostrarFicha(pid) {
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
-function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas } }; }
+function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan) }; }
 function renderPerfiles() {
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
   const lista = leerPerfiles();
@@ -473,9 +548,11 @@ function renderPerfiles() {
     li.innerHTML = `<span class="nom">${pf.nombre}</span><button type="button" class="btn-sec sm" data-a="cargar">${t("perf.cargar")}</button><button type="button" class="btn-sec sm" data-a="actualizar">${t("perf.actualizar")}</button><button type="button" class="btn-sec sm" data-a="borrar">${t("perf.borrar")}</button><small>${n} ${t("perf.farmacos")} · ${new Date(pf.fecha).toLocaleDateString(idioma())}${pf.estado.edad ? " · " + pf.estado.edad + " " + t("perf.anos") : ""}</small>`;
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
-      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, ejemplo: false });
+      const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
+      mostrarCambios(previa);
       const dias = Math.round((Date.now() - pf.fecha) / 864e5);
       if (dias >= 90) toast(t("perf.antigua", { d: dias }), { ms: 9000 });
     });
@@ -586,7 +663,7 @@ async function descargarPdf(tipo) {
   btn.disabled = true; btn.setAttribute("aria-busy", "true");
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
+    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
     toast(t("pdf.generado"), { ms: 3000 });
@@ -655,12 +732,27 @@ $("#btn-ejemplo").addEventListener("click", () => {
   $("#edad").value = estado.edad; $("#caidas").checked = estado.caidas;
   guardar(); render();
 });
-$("#btn-vaciar").addEventListener("click", () => { estado.meds = []; estado.ejemplo = false; guardar(); render(); });
+$("#btn-vaciar").addEventListener("click", () => { estado.meds = []; estado.ejemplo = false; guardar(); render(); const c = $("#cambios"); if (c) c.hidden = true; });
 $("#edad").addEventListener("change", () => { estado.edad = parseInt($("#edad").value, 10) || null; guardar(); render(); });
 $("#caidas").addEventListener("change", () => { estado.caidas = $("#caidas").checked; guardar(); render(); });
 for (const c of CONDICIONES) $("#cond-" + c)?.addEventListener("change", () => { estado.condiciones = CONDICIONES.filter((k) => $("#cond-" + k)?.checked); guardar(); render(); });
 
-$$(".tabs button").forEach((b) => b.addEventListener("click", () => { estado.tab = b.dataset.tab; render(); }));
+$$(".tabs button").forEach((b) => b.addEventListener("click", () => {
+  if (estado.tab === b.dataset.tab) return;
+  estado.tab = b.dataset.tab; render();
+  // transición suave del contenido y pestaña activa siempre a la vista
+  const c = $("#contenido-tab"); c.classList.remove("entra"); void c.offsetWidth; c.classList.add("entra");
+  b.scrollIntoView({ inline: "center", block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+}));
+
+/* ---------- sin conexión: la app funciona igual (todo está en el dispositivo); se avisa discretamente ---------- */
+function pintarConexion() {
+  const el = $("#conexion"); if (!el) return;
+  el.hidden = navigator.onLine !== false;
+}
+window.addEventListener("offline", pintarConexion);
+window.addEventListener("online", () => { pintarConexion(); toast(t("conexion.on"), { ms: 3000 }); });
+pintarConexion();
 $("#esencial").addEventListener("click", (ev) => { if (ev.target.closest("#btn-escuchar")) escuchar(); });
 // barra inferior (móvil): lleva al informe o, estando en él, de vuelta a la medicación
 let enInforme = false;
@@ -687,9 +779,11 @@ function escuchar() {
 function pintarBtnEscuchar() { const b = $("#btn-escuchar"); if (b) b.innerHTML = `${icono(hablando ? "parar" : "escuchar")} ${hablando ? t("escuchar.parar") : t("escuchar")}`; }
 
 /* ---------- plan semanal en el calendario (.ics) ---------- */
-const DIAS_PLAN = [
-  [1, "fuerza", "fuerza+equilibrio"], [2, "aerobico", "aerobico"], [3, "fuerza", "fuerza"], [4, "aerobico", "aerobico"], [5, "fuerza", "fuerza+equilibrio"], [6, "aerobico", "aerobico"],
-];
+/** Días del plan vigente como [díaSemana, tipo, etiqueta] (domingo = 7 para que la semana empiece en lunes). */
+function diasPlan() {
+  const plan = planActual();
+  return [1, 2, 3, 4, 5, 6, 0].filter((d) => plan[d] !== "descanso").map((d) => [d === 0 ? 7 : d, plan[d] === "aerobico" ? "aerobico" : "fuerza", plan[d] === "fuerza_eq" ? "fuerza+equilibrio" : plan[d]]);
+}
 function horaPlan() {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);
   const m = (v.mejores || []).map((x) => ({ desde: Math.max(x.desde, 9), hasta: Math.min(x.hasta, 19) })).filter((x) => x.hasta - x.desde >= 1).sort((a, b) => (b.hasta - b.desde) - (a.hasta - a.desde))[0];
@@ -708,7 +802,7 @@ function icsPlan() {
   const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
   const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
   const DIA = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
-  for (const [dow, tipo, etiqueta] of DIAS_PLAN) {
+  for (const [dow, tipo, etiqueta] of diasPlan()) {
     const d = new Date(lunes); d.setDate(lunes.getDate() + dow - 1);
     const titulo = { aerobico: t("plan.aerobico"), fuerza: etiqueta.includes("equilibrio") ? t("plan.fuerza_eq") : t("plan.fuerza") }[tipo];
     const detalle = tipo === "aerobico" ? `${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}` : `${P.fue.int} ${P.fue.tiempo}. ${P.fue.tipo}${etiqueta.includes("equilibrio") ? ` ${t("plan.mas_eq")}: ${P.eq.tipo}` : ""}`;
@@ -725,7 +819,7 @@ $("#btn-calendario").addEventListener("click", () => {
   const blob = new Blob([icsPlan()], { type: "text/calendar;charset=utf-8" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "plan-ejercicio.ics"; document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  toast(t("plan.descargado", { h: String(horaPlan()).padStart(2, "0") + ":00" }), { ms: 7000 });
+  toast(t("plan.descargado", { n: diasPlan().length, h: String(horaPlan()).padStart(2, "0") + ":00" }), { ms: 7000 });
 });
 
 /* ---------- instalar como aplicación ---------- */
@@ -750,7 +844,7 @@ $("#btn-tema").addEventListener("click", () => { const act = document.documentEl
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
 
 $("#btn-historia").addEventListener("click", async () => {
-  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
+  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), diario: leerDiario(), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
   const res = evaluar(datos, medsActivos(), ctx);
   const txt = textoHistoria(datos.kb, res, ctx);
   const btn = $("#btn-historia");
@@ -803,10 +897,42 @@ document.addEventListener("click", (ev) => { const a = ev.target.closest("abbr.g
 function leerDiario() { try { return JSON.parse(localStorage.getItem("medex.diario") || "[]"); } catch { return []; } }
 function escribirDiario(d) { try { localStorage.setItem("medex.diario", JSON.stringify(d.slice(-200))); } catch {} }
 const TIPOS_SESION = ["aerobico", "fuerza", "equilibrio", "paseo"];
+/** Campos de constantes (glucosa, TA, pulso) que merece la pena anotar según la medicación; en blanco no cuentan. */
+function camposConstantes() {
+  const res = evaluar(datos, medsActivos(), ctxActual());
+  const cs = constantesRelevantes(res, ctxActual());
+  if (!cs.length) return "";
+  const campo = (name, c, ph) => `<input type="number" name="${name}" min="${c.min}" max="${c.max}" inputmode="numeric" placeholder="${ph}" aria-label="${t("const." + c.id)} ${ph}">`;
+  return `<small>${t("const.titulo")}</small><div class="fila constantes">${cs.map((c) => `<label><span>${t("const." + c.id)} <span class="unidad-mini">${c.unidad}</span></span>${c.doble ? campo("glucosa_antes", c, t("const.antes")) + campo("glucosa_despues", c, t("const.despues")) : campo(c.id, c, "")}</label>`).join("")}</div>`;
+}
+function leerConstantes(f) {
+  const n = (k) => { const v = parseInt(f.get(k), 10); return Number.isFinite(v) ? v : null; };
+  const c = { glucosa_antes: n("glucosa_antes"), glucosa_despues: n("glucosa_despues"), ta: n("ta"), fc: n("fc") };
+  return Object.values(c).some((v) => v != null) ? c : undefined;
+}
+function textoConstantes(c) {
+  if (!c) return "";
+  const p = [];
+  if (c.glucosa_antes != null || c.glucosa_despues != null) p.push(`${t("const.glu_corto")} ${c.glucosa_antes ?? "–"}/${c.glucosa_despues ?? "–"}`);
+  if (c.ta != null) p.push(`TA ${c.ta}`); if (c.fc != null) p.push(`${c.fc} lpm`);
+  return p.length ? ` · <span class="const-txt">${p.join(" · ")}</span>` : "";
+}
+/** Diario en CSV (separador «;», compatible con Excel en español) para llevarlo a la consulta. */
+function exportarDiarioCsv() {
+  const d = leerDiario();
+  if (!d.length) { toast(t("diario.csv_vacio"), { ms: 3000 }); return; }
+  const cab = ["fecha", "tipo", "minutos", "rpe", "sintomas", "glucosa_antes", "glucosa_despues", "ta_sistolica", "fc_fin"];
+  const filas = d.map((x) => [x.fecha, x.tipo, x.min, x.rpe, (x.sintomas || []).join("|"), x.const?.glucosa_antes ?? "", x.const?.glucosa_despues ?? "", x.const?.ta ?? "", x.const?.fc ?? ""]);
+  const csv = "\ufeff" + [cab, ...filas].map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `diario-ejercicio-${hoyISO()}.csv`; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast(t("diario.csv_ok", { n: d.length }), { ms: 4000 });
+}
 function hoyISO(d = new Date()) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
 function etiquetaTipo(tipo) { return { aerobico: t("plan.aerobico"), fuerza: t("plan.fuerza"), fuerza_eq: t("plan.fuerza_eq"), equilibrio: t("sesion.equilibrio"), descanso: t("hoy.descanso"), paseo: t("sesion.paseo") }[tipo] || tipo; }
 function planDeHoy(d = new Date()) {
-  const tipo = PLAN_SEMANA[d.getDay()] || "descanso";
+  const tipo = planActual()[d.getDay()] || "descanso";
   return { tipo, etiqueta: etiquetaTipo(tipo) };
 }
 const esFragil = () => { const c = ctxActual().condiciones; return c.has("fragil") || c.has("nyha34"); };
@@ -842,9 +968,10 @@ function renderHoy() {
       <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label>${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5"><output>5</output></label></div>
       <small>${t("hoy.sintomas")}</small>
       <div class="chips">${SINTOMAS.slice(0, 7).map((x) => `<label class="chip chip-btn"><input type="checkbox" name="sint" value="${x.id}"> ${x.nombre}</label>`).join("")}</div>
+      ${camposConstantes()}
       <div class="acciones" style="margin:8px 0 0"><button type="submit" class="btn sm">${t("perf.guardar")}</button></div>
     </form>` : ""}
-    ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
+    ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}${textoConstantes(x.const)}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
   $("#btn-registrar").addEventListener("click", () => { diarioAbierto = !diarioAbierto; renderHoy(); });
   $("#btn-ver-plan").addEventListener("click", () => { estado.tab = "plan"; render(); $(".tabs")?.scrollIntoView({ block: "start" }); });
   $("#btn-empezar-hoy")?.addEventListener("click", () => abrirSesion(plan.tipo));
@@ -853,7 +980,7 @@ function renderHoy() {
     ev.preventDefault();
     const f = new FormData(ev.target);
     const sint = f.getAll("sint");
-    const d = leerDiario(); d.push({ id: Date.now().toString(36), fecha: hoyISO(), tipo: f.get("tipo") || "aerobico", min: parseInt(f.get("min"), 10) || 0, rpe: parseInt(f.get("rpe"), 10) || 5, sintomas: sint });
+    const d = leerDiario(); d.push({ id: Date.now().toString(36), fecha: hoyISO(), tipo: f.get("tipo") || "aerobico", min: parseInt(f.get("min"), 10) || 0, rpe: parseInt(f.get("rpe"), 10) || 5, sintomas: sint, const: leerConstantes(f) });
     escribirDiario(d); diarioAbierto = false; renderHoy();
     toast(sint.length ? t("hoy.guardado_sintomas") : t("hoy.guardado"), { ms: 6000 });
     if (sint.length) { sintomaAbierto = sint[0]; render(); $("#sintomas-card")?.scrollIntoView({ block: "center" }); }
@@ -918,7 +1045,7 @@ function render() {
     if (m.libre) {
       li.classList.add("libre");
       li.innerHTML = `
-        <div class="med-nombre"><strong>${m.nombre}</strong><small>${t("libre.sin_info")}</small></div>
+        <div class="med-nombre"><svg class="ic-grupo g-libre" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${GRUPO_ICONS.pastilla}"/></svg><div><strong>${m.nombre}</strong><small>${t("libre.sin_info")}</small></div></div>
         <div class="med-dosis">${m.dosis != null ? `${m.dosis.toLocaleString("es-ES")} mg${m.tomas > 1 ? ` × ${m.tomas}/día` : ""}` : t("lista.sin_dosis")}</div>
         <div class="med-acciones"><button type="button" class="pausar" title="${t("pegar.avisar")}" aria-label="${t("pegar.avisar")} ${m.nombre}">${icono("correo")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${m.nombre}">×</button></div>`;
       li.querySelector(".pausar").addEventListener("click", () => window.open(urlSugerencia({ lista: "No reconocido: " + m.nombre }), "_blank", "noopener"));
@@ -933,7 +1060,7 @@ function render() {
       ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
       : t("lista.sin_dosis");
     li.innerHTML = `
-      <div class="med-nombre"><strong>${it.principio.nombre}</strong><small>${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div>
+      <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small>${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
       <div class="med-dosis"><button type="button" class="editar" title="${t("lista.editar_dosis")}">${dosis}${it.dosisCat === "alta" && !m.pausado ? ` <span class="chip chip-alta">${t("inf.dosis_alta")}</span>` : ""} ${icono("editar", "ic ic-sm")}</button></div>
       <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${MOMENTO_TXT[mm]}">${{ desayuno: "Des", comida: "Com", cena: "Cena", noche: "Noche" }[mm]}</button>`).join("")}</div>
       <div class="med-acciones"><button type="button" class="pausar" title="${m.pausado ? t("lista.reanudar") : t("lista.pausar")}" aria-label="${m.pausado ? t("lista.reanudar") : t("lista.pausar")} ${it.principio.nombre}">${icono(m.pausado ? "reanudar" : "pausa")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${it.principio.nombre}">×</button></div>`;
@@ -1112,6 +1239,7 @@ function tarjetaFarmaco(g, amb, abierta) {
       <details class="farmaco nivel-${max}"${abierta ? " open" : ""}>
         <summary>
           <span class="barra"></span>
+          ${iconoGrupo(it.clase)}
           <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small>${max !== "info" ? `<span class="una-frase">${fraseCorta(g.reglas.find((r) => r.nivel === max)?.texto)}</span>` : ""}</span>
           <span class="nivel">${etiqueta(max)}</span>
           <span class="flecha" aria-hidden="true">⌄</span>
@@ -1133,6 +1261,41 @@ function anillo(pct, texto, sub) {
   const r = 34, c = 2 * Math.PI * r, p = Math.min(1, Math.max(0, pct));
   return `<svg class="anillo" viewBox="0 0 90 90" role="img" aria-label="${texto} ${sub}"><circle cx="45" cy="45" r="${r}" class="fondo"/><circle cx="45" cy="45" r="${r}" class="valor" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 45 45)"/><text x="45" y="43" text-anchor="middle" class="num">${texto}</text><text x="45" y="58" text-anchor="middle" class="sub">${sub}</text></svg>`;
 }
+/** Tendencia de las últimas 8 semanas (barras) y comparación con la semana anterior. */
+function tendenciaSemanas(diario, objMin) {
+  const sem = minutosPorSemana(diario, 8);
+  if (!sem.some((x) => x.min)) return "";
+  const max = Math.max(objMin, ...sem.map((x) => x.min));
+  const act = sem[sem.length - 1].min, ant = sem[sem.length - 2]?.min || 0;
+  const dif = act - ant;
+  const txt = !ant && act ? t("tend.primera") : dif > 0 ? t("tend.mas", { n: dif }) : dif < 0 ? t("tend.menos", { n: -dif }) : t("tend.igual");
+  const yObj = 30 - Math.round((objMin / max) * 26);
+  return `<div class="tend-cab"><small>${t("tend.titulo")}</small><span class="${dif > 0 ? "t-ok" : dif < 0 ? "t-menos" : ""}">${txt}</span></div>
+    <svg class="tend" viewBox="0 0 168 36" role="img" aria-label="${t("tend.titulo")}: ${sem.map((x) => x.min).join(", ")} min">${sem.map((x, i) => { const h = Math.round((x.min / max) * 26); return `<rect x="${i * 21 + 3}" y="${30 - h}" width="15" height="${Math.max(h, 2)}" rx="3" class="${x.min >= objMin ? "obj" : x.min ? "con" : "sin"}"${i === sem.length - 1 ? ' opacity=".55"' : ""}><title>${x.desde}: ${x.min} min</title></rect>`; }).join("")}<line x1="2" x2="166" y1="${yObj}" y2="${yObj}" class="linea-obj"/></svg>`;
+}
+/** Variante elegida de cada ejercicio (más fácil / normal / más difícil), por nombre, en este dispositivo. */
+function leerVariantes() { try { return JSON.parse(localStorage.getItem("medex.variantes") || "{}"); } catch { return {}; } }
+function bloqueHtml(b, i, { grande = false } = {}) {
+  const v = leerVariantes()[b.nombre] || "normal";
+  const detalle = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle;
+  const botones = b.facil || b.dificil ? `<span class="variantes" role="group" aria-label="${t("ej.variante")}">${["facil", "normal", "dificil"].filter((k) => k === "normal" || b[k]).map((k) => `<button type="button" data-v="${k}" data-ej="${b.nombre}" aria-pressed="${v === k}">${t("ej." + k)}</button>`).join("")}</span>` : "";
+  const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones}`;
+  return grande
+    ? `<li><label><input type="checkbox" data-i="${i}">${picto(b.pict)}<span>${cuerpo}</span></label></li>`
+    : `<li><span class="min">${b.min}′</span>${picto(b.pict)}<span>${cuerpo}</span></li>`;
+}
+function activarVariantes(raiz) {
+  raiz.querySelectorAll(".variantes button").forEach((btn) => btn.addEventListener("click", (ev) => {
+    ev.preventDefault(); ev.stopPropagation();
+    const vs = leerVariantes(); if (btn.dataset.v === "normal") delete vs[btn.dataset.ej]; else vs[btn.dataset.ej] = btn.dataset.v;
+    try { localStorage.setItem("medex.variantes", JSON.stringify(vs)); } catch {}
+    const li = btn.closest("li"); const grupo = li.querySelector(".variantes");
+    grupo.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+    const ses = li.closest("[data-sesion]"); // en la sesión guiada no se vuelve a pintar todo
+    if (ses) { const b = JSON.parse(ses.dataset.sesion).find((x) => x.nombre === btn.dataset.ej); if (b) li.querySelector(".detalle").textContent = btn.dataset.v === "facil" ? b.facil : btn.dataset.v === "dificil" ? b.dificil : b.detalle; }
+    else render();
+  }));
+}
 function renderPlan(cont) {
   const diario = leerDiario();
   const fragil = esFragil();
@@ -1146,7 +1309,8 @@ function renderPlan(cont) {
   const prog = progresion(diario);
   if (!diaPlan) diaPlan = hoy;
   const sel = dias.find((d) => hoyISO(d) === diaPlan) || new Date();
-  const tipoSel = PLAN_SEMANA[sel.getDay()] || "descanso";
+  const plan = planActual();
+  const tipoSel = plan[sel.getDay()] || "descanso";
   const hechoSel = diario.filter((x) => x.fecha === hoyISO(sel));
   const ses = tipoSel === "descanso" ? null : sesionTipo(tipoSel, { fragil, minutosAer: fragil ? 10 : 30 });
   const res = evaluar(datos, medsActivos(), ctxActual());
@@ -1162,26 +1326,40 @@ function renderPlan(cont) {
         <p class="plan-racha">${racha ? t("plan.racha", { n: racha }) : t("plan.racha0")} · ${nSem} ${t("hoy.sesiones")} ${t("hoy.esta_semana")}</p>
       </div>
     </div>
-    <div class="tira" role="list">${dias.map((d) => { const iso = hoyISO(d); const tipo = PLAN_SEMANA[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" role="listitem" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
+    <div class="tendencia">${tendenciaSemanas(diario, obj.min)}</div>
+    <details class="bloque mis-dias"${estado.secciones?.misdias ? " open" : ""}><summary><span class="sub-label">${t("plan.dias")} <span class="dias-resumen">· ${[1, 2, 3, 4, 5, 6, 0].filter((d) => estado.plan.dias.includes(d)).map((d) => new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "narrow" })).join(" ")}</span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
+      <div class="dias-chips" role="group" aria-label="${t("plan.dias")}">${[1, 2, 3, 4, 5, 6, 0].map((d) => { const on = estado.plan.dias.includes(d); const nombre = new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "short" }).replace(".", ""); return `<button type="button" class="chip chip-btn${on ? " activo" : ""}" data-dia="${d}" aria-pressed="${on}">${nombre}</button>`; }).join("")}<button type="button" class="btn-sec sm" data-dias="tipo">${t("plan.restablecer")}</button></div>
+      <small>${t("plan.dias_nota")}</small>
+    </details>
+    <div class="tira" role="group" aria-label="${t("hoy.esta_semana")}">${dias.map((d) => { const iso = hoyISO(d); const tipo = plan[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
     <div class="plan-dia">
       <div class="plan-dia-cab"><h3>${sel.toLocaleDateString(idioma(), { weekday: "long", day: "numeric", month: "long" })}${hoyISO(sel) === hoy ? ` · ${t("hoy.titulo").toLowerCase()}` : ""}</h3>${hechoSel.length ? `<span class="chip chip-ok">${t("plan.hecho", { m: hechoSel.reduce((n, x) => n + (x.min || 0), 0) })}</span>` : ""}</div>
       ${ses ? `
         <p class="plan-dia-tit"><b>${ses.titulo}</b> · ${ses.min} min</p>
-        <ol class="bloques">${ses.bloques.map((b) => `<li><span class="min">${b.min}′</span><span><b>${b.nombre}</b><br><small>${b.detalle}</small></span></li>`).join("")}</ol>
+        <ol class="bloques con-picto">${ses.bloques.map((b, i) => bloqueHtml(b, i)).join("")}</ol>
         <p class="plan-fitt">${glosar(tipoSel === "aerobico" ? P.aer.int : P.fue.int)}</p>
         <div class="acciones"><button type="button" class="btn" id="btn-sesion">${hoyISO(sel) === hoy ? t("plan.empezar") : t("plan.ver_sesion")}</button><button type="button" class="btn-sec" id="btn-marcar">${t("plan.marcar")}</button></div>`
       : `<p class="vacio">${t("plan.descanso_txt")}</p>`}
     </div>
     <div class="plan-prog ${prog.clave}"><b>${t("prog.titulo")}</b> ${t("prog." + prog.clave, { n: prog.n, r: prog.rpe || "" })}</div>
-    <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button></div>
+    <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button><button type="button" class="btn-sec sm" id="btn-diario-csv">${icono("guardar")} ${t("diario.csv")}</button></div>
     <p class="esencial-nota">${t("plan.nota")}</p>`;
   cont.append(sec);
   sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { diaPlan = b.dataset.iso; render(); }));
+  sec.querySelectorAll(".dias-chips [data-dia]").forEach((b) => b.addEventListener("click", () => {
+    const d = Number(b.dataset.dia); const set = new Set(estado.plan.dias);
+    if (set.has(d)) { if (set.size === 1) { toast(t("plan.dias_min"), { ms: 3000 }); return; } set.delete(d); } else set.add(d);
+    estado.plan = { dias: [...set] }; guardar(); render();
+  }));
+  sec.querySelector(".mis-dias").addEventListener("toggle", (ev) => { (estado.secciones ||= {}).misdias = ev.target.open; });
+  sec.querySelector('[data-dias="tipo"]').addEventListener("click", () => { estado.plan = { dias: [1, 2, 3, 4, 5, 6] }; guardar(); render(); });
+  sec.querySelector("#btn-diario-csv").addEventListener("click", exportarDiarioCsv);
+  activarVariantes(sec);
   sec.querySelector("#btn-sesion")?.addEventListener("click", () => abrirSesion(tipoSel, hoyISO(sel)));
   sec.querySelector("#btn-marcar")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(sel), tipo: tipoSel === "fuerza_eq" ? "fuerza" : tipoSel, min: ses.min, rpe: 5, sintomas: [] }); celebrar(); });
   sec.querySelector("#btn-cal2").addEventListener("click", () => $("#btn-calendario").click());
   sec.querySelector("#btn-semana-wa").addEventListener("click", async () => {
-    const txt = `*${t("meta.titulo")}* · ${t("plan.semana_txt", { n: nSem, m: minSem, o: obj.min })}${racha ? " · " + t("plan.racha", { n: racha }) : ""}\n${dias.map((d) => `${fmtDia(d)} ${diario.some((x) => x.fecha === hoyISO(d)) ? "✅" : (PLAN_SEMANA[d.getDay()] === "descanso" ? "—" : "·")}`).join("  ")}\n${t("compartir.pie")}`;
+    const txt = `*${t("meta.titulo")}* · ${t("plan.semana_txt", { n: nSem, m: minSem, o: obj.min })}${racha ? " · " + t("plan.racha", { n: racha }) : ""}\n${dias.map((d) => `${fmtDia(d)} ${diario.some((x) => x.fecha === hoyISO(d)) ? "✅" : (plan[d.getDay()] === "descanso" ? "—" : "·")}`).join("  ")}\n${t("compartir.pie")}`;
     if (navigator.share) { try { await navigator.share({ text: txt }); return; } catch {} }
     window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
   });
@@ -1193,37 +1371,78 @@ function celebrar() {
   toast(`<span class="celebra">✓</span> ${t("hoy.guardado")}`, { ms: 5000 });
 }
 
-/* ---------- sesión guiada: lista de bloques con cronómetro, en grande ---------- */
+/* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
 function abrirSesion(tipo, fecha = hoyISO()) {
   const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
   const dlg = $("#sesion");
-  $("#sesion-cuerpo").innerHTML = `
+  const res = evaluar(datos, medsActivos(), ctxActual());
+  const chequeo = chequeoPrevio(res, ctxActual());
+  const cs = constantesRelevantes(res, ctxActual());
+  let chequeoClave = "sin";
+  const cuerpo = $("#sesion-cuerpo");
+  // Fase 1: chequeo previo (marque lo que se cumple hoy)
+  cuerpo.innerHTML = `
     <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
-    <div class="crono"><span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button></div>
-    <ol class="bloques grande">${ses.bloques.map((b, i) => `<li><label><input type="checkbox" data-i="${i}"><span><b>${b.nombre}</b> <em>${b.min}′</em><br><small>${b.detalle}</small></span></label></li>`).join("")}</ol>
-    <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
-    <div class="sesion-fin">
-      <label>${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output></label>
-      <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
-    </div>`;
-  $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
-  const pintar = () => { const s = Math.floor((Date.now() - cronoInicio) / 1000); $("#crono").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
-  $("#crono-btn").addEventListener("click", () => {
-    if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); return; }
-    cronoInicio = cronoInicio ? cronoInicio + (Date.now() - cronoPausa) : Date.now();
-    cronometro = setInterval(pintar, 500); $("#crono-btn").textContent = t("sesion.pausar");
-  });
-  $("#sesion-terminar").addEventListener("click", () => {
-    const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
-    const min = seg >= 120 ? Math.round(seg / 60) : ses.min;
-    registrarSesion({ fecha, tipo: tipo === "fuerza_eq" ? "fuerza" : tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [] });
-    cerrarSesion(); celebrar();
-  });
+    <section class="chequeo" id="chequeo">
+      <h3>${t("chequeo.titulo")}</h3>
+      <p class="muted">${t("chequeo.intro")}</p>
+      <ul>${chequeo.map((c) => `<li class="nivel-${c.nivel === "rojo" ? "alerta" : "precaucion"}"><label><input type="checkbox" data-id="${c.id}"><span>${c.texto}${c.farmacos.length ? ` <small>(${t("chequeo.por", { f: c.farmacos.join(", ") })})</small>` : ""}</span></label></li>`).join("")}</ul>
+      <div id="chequeo-resultado" class="chequeo-resultado" hidden></div>
+      <div class="acciones"><button type="button" class="btn" id="chequeo-continuar">${t("chequeo.continuar")}</button><button type="button" class="btn-sec sm" id="chequeo-saltar">${t("chequeo.saltar")}</button></div>
+    </section>`;
+  const faseSesion = (suave) => {
+    cuerpo.innerHTML = `
+      <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
+      ${suave ? `<p class="chequeo-aviso">${t("chequeo.suave_banner")}</p>` : ""}
+      <div class="crono">${anilloCrono(0)}<span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button></div>
+      <ol class="bloques grande con-picto" data-sesion='${JSON.stringify(ses.bloques.map((b) => ({ nombre: b.nombre, detalle: b.detalle, facil: b.facil, dificil: b.dificil }))).replace(/'/g, "&#39;")}'>${ses.bloques.map((b, i) => bloqueHtml(b, i, { grande: true })).join("")}</ol>
+      <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
+      <div class="sesion-fin">
+        <label>${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output></label>
+        ${cs.length ? `<form id="sesion-const" class="registro">${camposConstantes()}</form>` : ""}
+        <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
+      </div>`;
+    activarVariantes(cuerpo);
+    cuerpo.querySelectorAll(".bloques input[type=checkbox]").forEach((c) => c.addEventListener("change", () => { if (c.checked) vibrar(15); }));
+    $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
+    const pintar = () => {
+      const seg = Math.floor((Date.now() - cronoInicio) / 1000);
+      $("#crono").textContent = `${String(Math.floor(seg / 60)).padStart(2, "0")}:${String(seg % 60).padStart(2, "0")}`;
+      const c = cuerpo.querySelector(".anillo-crono .valor"); if (c) c.setAttribute("stroke-dasharray", `${(Math.min(1, seg / (ses.min * 60)) * 113.1).toFixed(1)} 113.1`);
+    };
+    $("#crono-btn").addEventListener("click", () => {
+      if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); return; }
+      cronoInicio = cronoInicio ? cronoInicio + (Date.now() - cronoPausa) : Date.now();
+      cronometro = setInterval(pintar, 500); $("#crono-btn").textContent = t("sesion.pausar"); vibrar(10);
+    });
+    $("#sesion-terminar").addEventListener("click", () => {
+      const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
+      const min = seg >= 120 ? Math.round(seg / 60) : ses.min;
+      const fc = $("#sesion-const"); const konst = fc ? leerConstantes(new FormData(fc)) : undefined;
+      registrarSesion({ fecha, tipo: tipo === "fuerza_eq" ? "fuerza" : tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [], const: konst, chequeo: chequeoClave });
+      cerrarSesion(); celebrar(); vibrar([20, 60, 20]);
+    });
+  };
+  const evaluarChequeo = () => {
+    const marcados = [...cuerpo.querySelectorAll("#chequeo input:checked")].map((x) => x.dataset.id);
+    const v = veredictoChequeo(chequeo, marcados);
+    chequeoClave = v.clave;
+    const box = $("#chequeo-resultado"); box.hidden = false; box.className = "chequeo-resultado r-" + v.clave;
+    if (v.clave === "ok") { faseSesion(false); return; }
+    box.innerHTML = `<p><b>${v.clave === "no" ? t("chequeo.no") : t("chequeo.suave")}</b></p><ul>${v.faltan.map((c) => `<li>${c.consejo}</li>`).join("")}</ul>${v.clave === "suave" ? `<button type="button" class="btn sm" id="chequeo-seguir">${t("chequeo.seguir_suave")}</button>` : `<button type="button" class="btn-sec sm" id="chequeo-cerrar">${t("ficha.cerrar")}</button>`}`;
+    $("#chequeo-seguir")?.addEventListener("click", () => faseSesion(true));
+    $("#chequeo-cerrar")?.addEventListener("click", cerrarSesion);
+    box.scrollIntoView({ block: "nearest" });
+  };
+  $("#chequeo-continuar").addEventListener("click", evaluarChequeo);
+  $("#chequeo-saltar").addEventListener("click", () => { chequeoClave = "saltado"; faseSesion(false); });
   cronoInicio = 0; cronometro = null;
   dlg.showModal();
   try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { dlg.__wake = w; }).catch(() => {}); } catch {}
 }
+/** Anillo de progreso del cronómetro respecto a la duración prevista (r = 18 → perímetro 113,1). */
+function anilloCrono(p) { return `<svg class="anillo-crono" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" class="fondo"/><circle cx="22" cy="22" r="18" class="valor" stroke-dasharray="${(p * 113.1).toFixed(1)} 113.1" transform="rotate(-90 22 22)"/></svg>`; }
 let cronoPausa = 0;
 function cerrarSesion() { clearInterval(cronometro); cronometro = null; cronoInicio = 0; const dlg = $("#sesion"); dlg.__wake?.release?.(); dlg.close(); }
 $("#sesion-cerrar").addEventListener("click", cerrarSesion);

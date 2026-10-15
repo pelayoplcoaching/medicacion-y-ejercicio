@@ -4,6 +4,15 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "cambios.titulo": "Cambios respecto a la lista anterior", "cambios.nuevos": "Nuevos", "cambios.retirados": "Retirados", "cambios.dosis": "Cambio de dosis", "cambios.ninguno": "La lista es igual que la anterior.", "cambios.deshacer": "Volver a la lista anterior", "cambios.deshecho": "Lista anterior recuperada.",
+  "chequeo.titulo": "Antes de empezar", "chequeo.intro": "Marque lo que se cumple hoy. Lo que no marque convierte la sesión en suave o la deja para otro día.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar el chequeo", "chequeo.por": "por {f}",
+  "chequeo.no": "Hoy mejor no entrenar.", "chequeo.suave": "Hoy, sesión suave:", "chequeo.seguir_suave": "Hacer la sesión suave", "chequeo.suave_banner": "Sesión suave: la mitad de series o de minutos, sin llegar a cansarse, y pare ante cualquier molestia.",
+  "const.titulo": "Constantes (opcional, solo si las mide)", "const.glucosa": "Glucosa", "const.ta": "Tensión (sistólica)", "const.fc": "Pulso al terminar", "const.antes": "antes", "const.despues": "después", "const.glu_corto": "Glu",
+  "diario.csv": "Exportar diario (CSV)", "diario.csv_vacio": "Aún no hay sesiones que exportar.", "diario.csv_ok": "Diario exportado: {n} sesiones.",
+  "plan.dias": "Mis días de ejercicio", "plan.dias_nota": "Toque los días que quiere entrenar: la app reparte fuerza, aeróbico y equilibrio entre ellos.", "plan.dias_min": "Deje al menos un día.", "plan.restablecer": "Plan tipo (L–S)",
+  "ej.facil": "Más fácil", "ej.normal": "Normal", "ej.dificil": "Más difícil", "ej.clave": "Clave", "ej.variante": "Dificultad del ejercicio",
+  "tend.titulo": "Últimas 8 semanas", "tend.mas": "{n} min más que la semana pasada", "tend.menos": "{n} min menos que la semana pasada", "tend.igual": "Igual que la semana pasada", "tend.primera": "Primera semana con registros",
+  "conexion.off": "Sin conexión · la app funciona igual", "conexion.on": "Conexión recuperada.",
   "libre.anadir": "Añadir «{n}» tal cual", "libre.nota": "No está en la base: quedará en la lista sin recomendaciones y nos avisará de que falta.", "libre.btn": "Añadir tal cual",
   "libre.anadido": "«{n}» añadido a la lista sin recomendaciones (no está en la base). Puede que sea un producto de parafarmacia o un complemento.", "libre.sin_info": "Sin información en la base · no genera recomendaciones", "libre.sin_info_corto": "sin información en la base",
   "libre.solo": "Los medicamentos añadidos tal cual no están en la base: no generan recomendaciones. Añada el resto de su medicación para ver el informe.",
@@ -32,7 +41,7 @@ const ES = {
   "pasos.1": "Medicación", "pasos.2": "Sus datos", "pasos.3": "Informe",
   "escuchar": "Escuchar", "escuchar.parar": "Parar",
   "plan.calendario": "Añadir mi plan al calendario", "plan.aerobico": "Ejercicio aeróbico (caminar, bici…)", "plan.fuerza": "Ejercicio de fuerza", "plan.fuerza_eq": "Fuerza y equilibrio", "plan.mas_eq": "Y equilibrio", "plan.pie": "Plan orientativo generado con Medicación y Ejercicio; adáptelo con su médico o entrenador.",
-  "plan.descargado": "Plan descargado: 6 sesiones semanales durante 8 semanas, a las {h}, con aviso 30 minutos antes. Ábralo para añadirlo a su calendario.",
+  "plan.descargado": "Plan descargado: {n} sesiones semanales durante 8 semanas, a las {h}, con aviso 30 minutos antes. Ábralo para añadirlo a su calendario.",
   "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: pulse el botón Compartir de Safari y después «Añadir a pantalla de inicio».", "instalar.otro": "En el menú del navegador (⋮) elija «Instalar aplicación» o «Añadir a pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
   "tema.auto": "Tema: automático (según el sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: oscuro",
   "cab.acerca": "Acerca de", "cab.presentacion": "¿Qué es esto?",
@@ -113,6 +122,15 @@ const ES = {
 };
 
 const EN = {
+  "cambios.titulo": "Changes from the previous list", "cambios.nuevos": "New", "cambios.retirados": "Removed", "cambios.dosis": "Dose change", "cambios.ninguno": "The list is the same as before.", "cambios.deshacer": "Restore the previous list", "cambios.deshecho": "Previous list restored.",
+  "chequeo.titulo": "Before you start", "chequeo.intro": "Tick what is true today. Anything left unticked makes the session gentle or postpones it.", "chequeo.continuar": "Continue", "chequeo.saltar": "Skip the check", "chequeo.por": "because of {f}",
+  "chequeo.no": "Better not to train today.", "chequeo.suave": "Today, a gentle session:", "chequeo.seguir_suave": "Do the gentle session", "chequeo.suave_banner": "Gentle session: half the sets or minutes, never to the point of tiredness, and stop at any discomfort.",
+  "const.titulo": "Measurements (optional, only if you take them)", "const.glucosa": "Glucose", "const.ta": "Blood pressure (systolic)", "const.fc": "Pulse at the end", "const.antes": "before", "const.despues": "after", "const.glu_corto": "Glu",
+  "diario.csv": "Export diary (CSV)", "diario.csv_vacio": "No sessions to export yet.", "diario.csv_ok": "Diary exported: {n} sessions.",
+  "plan.dias": "My exercise days", "plan.dias_nota": "Tap the days you want to train: the app spreads strength, aerobic and balance across them.", "plan.dias_min": "Keep at least one day.", "plan.restablecer": "Standard plan (Mon–Sat)",
+  "ej.facil": "Easier", "ej.normal": "Normal", "ej.dificil": "Harder", "ej.clave": "Cue", "ej.variante": "Exercise difficulty",
+  "tend.titulo": "Last 8 weeks", "tend.mas": "{n} min more than last week", "tend.menos": "{n} min less than last week", "tend.igual": "Same as last week", "tend.primera": "First week with records",
+  "conexion.off": "Offline · the app works the same", "conexion.on": "Connection restored.",
   "libre.anadir": "Add “{n}” as typed", "libre.nota": "Not in the database: it will stay on the list without advice and we will be told it is missing.", "libre.btn": "Add as typed",
   "libre.anadido": "“{n}” added to the list without advice (not in the database). It may be a parapharmacy product or a supplement.", "libre.sin_info": "No information in the database · no advice generated", "libre.sin_info_corto": "no information in the database",
   "libre.solo": "Items added as typed are not in the database and generate no advice. Add the rest of your medication to see the report.",
@@ -141,7 +159,7 @@ const EN = {
   "pasos.1": "Medication", "pasos.2": "Your data", "pasos.3": "Report",
   "escuchar": "Listen", "escuchar.parar": "Stop",
   "plan.calendario": "Add my plan to the calendar", "plan.aerobico": "Aerobic exercise (walking, cycling…)", "plan.fuerza": "Strength training", "plan.fuerza_eq": "Strength and balance", "plan.mas_eq": "Plus balance", "plan.pie": "Indicative plan generated with Medicación y Ejercicio; adapt it with your doctor or trainer.",
-  "plan.descargado": "Plan downloaded: 6 weekly sessions for 8 weeks at {h}, with a reminder 30 minutes before. Open it to add it to your calendar.",
+  "plan.descargado": "Plan downloaded: {n} weekly sessions for 8 weeks at {h}, with a reminder 30 minutes before. Open it to add it to your calendar.",
   "instalar": "Install", "instalar.ios": "On iPhone/iPad: tap Safari's Share button, then “Add to Home Screen”.", "instalar.otro": "In the browser menu (⋮) choose “Install app” or “Add to Home screen”.", "instalar.ok": "App installed.",
   "tema.auto": "Theme: automatic (system)", "tema.light": "Theme: light", "tema.dark": "Theme: dark",
   "cab.acerca": "About", "cab.presentacion": "What is this?",
@@ -222,6 +240,15 @@ const EN = {
 };
 
 const CA = {
+  "cambios.titulo": "Canvis respecte a la llista anterior", "cambios.nuevos": "Nous", "cambios.retirados": "Retirats", "cambios.dosis": "Canvi de dosi", "cambios.ninguno": "La llista és igual que l'anterior.", "cambios.deshacer": "Tornar a la llista anterior", "cambios.deshecho": "Llista anterior recuperada.",
+  "chequeo.titulo": "Abans de començar", "chequeo.intro": "Marqueu el que es compleix avui. El que no marqueu converteix la sessió en suau o la deixa per a un altre dia.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar la comprovació", "chequeo.por": "per {f}",
+  "chequeo.no": "Avui és millor no entrenar.", "chequeo.suave": "Avui, sessió suau:", "chequeo.seguir_suave": "Fer la sessió suau", "chequeo.suave_banner": "Sessió suau: la meitat de sèries o de minuts, sense arribar a cansar-se, i atureu-vos davant qualsevol molèstia.",
+  "const.titulo": "Constants (opcional, només si les mesureu)", "const.glucosa": "Glucosa", "const.ta": "Tensió (sistòlica)", "const.fc": "Pols en acabar", "const.antes": "abans", "const.despues": "després", "const.glu_corto": "Glu",
+  "diario.csv": "Exportar diari (CSV)", "diario.csv_vacio": "Encara no hi ha sessions per exportar.", "diario.csv_ok": "Diari exportat: {n} sessions.",
+  "plan.dias": "Els meus dies d'exercici", "plan.dias_nota": "Toqueu els dies que voleu entrenar: l'app reparteix força, aeròbic i equilibri entre ells.", "plan.dias_min": "Deixeu almenys un dia.", "plan.restablecer": "Pla tipus (dl–ds)",
+  "ej.facil": "Més fàcil", "ej.normal": "Normal", "ej.dificil": "Més difícil", "ej.clave": "Clau", "ej.variante": "Dificultat de l'exercici",
+  "tend.titulo": "Últimes 8 setmanes", "tend.mas": "{n} min més que la setmana passada", "tend.menos": "{n} min menys que la setmana passada", "tend.igual": "Igual que la setmana passada", "tend.primera": "Primera setmana amb registres",
+  "conexion.off": "Sense connexió · l'app funciona igual", "conexion.on": "Connexió recuperada.",
   "libre.anadir": "Afegir «{n}» tal qual", "libre.nota": "No és a la base: quedarà a la llista sense recomanacions i ens avisarà que falta.", "libre.btn": "Afegir tal qual",
   "libre.anadido": "«{n}» afegit a la llista sense recomanacions (no és a la base). Pot ser un producte de parafarmàcia o un complement.", "libre.sin_info": "Sense informació a la base · no genera recomanacions", "libre.sin_info_corto": "sense informació a la base",
   "libre.solo": "Els medicaments afegits tal qual no són a la base: no generen recomanacions. Afegiu la resta de la medicació per veure l'informe.",
@@ -250,7 +277,7 @@ const CA = {
   "pasos.1": "Medicació", "pasos.2": "Les seves dades", "pasos.3": "Informe",
   "escuchar": "Escoltar", "escuchar.parar": "Aturar",
   "plan.calendario": "Afegir el meu pla al calendari", "plan.aerobico": "Exercici aeròbic (caminar, bici…)", "plan.fuerza": "Exercici de força", "plan.fuerza_eq": "Força i equilibri", "plan.mas_eq": "I equilibri", "plan.pie": "Pla orientatiu generat amb Medicació i Exercici; adapteu-lo amb el vostre metge o entrenador.",
-  "plan.descargado": "Pla descarregat: 6 sessions setmanals durant 8 setmanes, a les {h}, amb avís 30 minuts abans. Obriu-lo per afegir-lo al calendari.",
+  "plan.descargado": "Pla descarregat: {n} sessions setmanals durant 8 setmanes, a les {h}, amb avís 30 minuts abans. Obriu-lo per afegir-lo al calendari.",
   "instalar": "Instal·lar", "instalar.ios": "A iPhone/iPad: premeu el botó Compartir de Safari i després «Afegir a la pantalla d'inici».", "instalar.otro": "Al menú del navegador (⋮) trieu «Instal·lar aplicació» o «Afegir a la pantalla d'inici».", "instalar.ok": "Aplicació instal·lada.",
   "tema.auto": "Tema: automàtic (segons el sistema)", "tema.light": "Tema: clar", "tema.dark": "Tema: fosc",
   "cab.acerca": "Quant a", "cab.presentacion": "Què és això?",
@@ -331,6 +358,15 @@ const CA = {
 };
 
 const GL = {
+  "cambios.titulo": "Cambios respecto á lista anterior", "cambios.nuevos": "Novos", "cambios.retirados": "Retirados", "cambios.dosis": "Cambio de dose", "cambios.ninguno": "A lista é igual que a anterior.", "cambios.deshacer": "Volver á lista anterior", "cambios.deshecho": "Lista anterior recuperada.",
+  "chequeo.titulo": "Antes de comezar", "chequeo.intro": "Marque o que se cumpre hoxe. O que non marque converte a sesión en suave ou déixaa para outro día.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar a comprobación", "chequeo.por": "por {f}",
+  "chequeo.no": "Hoxe mellor non adestrar.", "chequeo.suave": "Hoxe, sesión suave:", "chequeo.seguir_suave": "Facer a sesión suave", "chequeo.suave_banner": "Sesión suave: a metade de series ou de minutos, sen chegar a cansarse, e pare ante calquera molestia.",
+  "const.titulo": "Constantes (opcional, só se as mide)", "const.glucosa": "Glicosa", "const.ta": "Tensión (sistólica)", "const.fc": "Pulso ao rematar", "const.antes": "antes", "const.despues": "despois", "const.glu_corto": "Glu",
+  "diario.csv": "Exportar diario (CSV)", "diario.csv_vacio": "Aínda non hai sesións que exportar.", "diario.csv_ok": "Diario exportado: {n} sesións.",
+  "plan.dias": "Os meus días de exercicio", "plan.dias_nota": "Toque os días que quere adestrar: a app reparte forza, aeróbico e equilibrio entre eles.", "plan.dias_min": "Deixe polo menos un día.", "plan.restablecer": "Plan tipo (L–S)",
+  "ej.facil": "Máis fácil", "ej.normal": "Normal", "ej.dificil": "Máis difícil", "ej.clave": "Clave", "ej.variante": "Dificultade do exercicio",
+  "tend.titulo": "Últimas 8 semanas", "tend.mas": "{n} min máis que a semana pasada", "tend.menos": "{n} min menos que a semana pasada", "tend.igual": "Igual que a semana pasada", "tend.primera": "Primeira semana con rexistros",
+  "conexion.off": "Sen conexión · a app funciona igual", "conexion.on": "Conexión recuperada.",
   "libre.anadir": "Engadir «{n}» tal cal", "libre.nota": "Non está na base: quedará na lista sen recomendacións e avisaranos de que falta.", "libre.btn": "Engadir tal cal",
   "libre.anadido": "«{n}» engadido á lista sen recomendacións (non está na base). Pode ser un produto de parafarmacia ou un complemento.", "libre.sin_info": "Sen información na base · non xera recomendacións", "libre.sin_info_corto": "sen información na base",
   "libre.solo": "Os medicamentos engadidos tal cal non están na base: non xeran recomendacións. Engada o resto da súa medicación para ver o informe.",
@@ -359,7 +395,7 @@ const GL = {
   "pasos.1": "Medicación", "pasos.2": "Os seus datos", "pasos.3": "Informe",
   "escuchar": "Escoitar", "escuchar.parar": "Parar",
   "plan.calendario": "Engadir o meu plan ao calendario", "plan.aerobico": "Exercicio aeróbico (camiñar, bici…)", "plan.fuerza": "Exercicio de forza", "plan.fuerza_eq": "Forza e equilibrio", "plan.mas_eq": "E equilibrio", "plan.pie": "Plan orientativo xerado con Medicación e Exercicio; adápteo co seu médico ou adestrador.",
-  "plan.descargado": "Plan descargado: 6 sesións semanais durante 8 semanas, ás {h}, con aviso 30 minutos antes. Ábrao para engadilo ao seu calendario.",
+  "plan.descargado": "Plan descargado: {n} sesións semanais durante 8 semanas, ás {h}, con aviso 30 minutos antes. Ábrao para engadilo ao seu calendario.",
   "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: prema o botón Compartir de Safari e despois «Engadir á pantalla de inicio».", "instalar.otro": "No menú do navegador (⋮) escolla «Instalar aplicación» ou «Engadir á pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
   "tema.auto": "Tema: automático (segundo o sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: escuro",
   "cab.acerca": "Acerca de", "cab.presentacion": "Que é isto?",

@@ -415,38 +415,38 @@ export function sesionTipo(tipo, { fragil = false, minutosAer = 30 } = {}) {
   if (tipo === "aerobico") {
     const principal = fragil ? 10 : minutosAer;
     return { tipo, titulo: "Aeróbico", min: principal + 10, bloques: [
-      { nombre: "Calentamiento", detalle: "Caminar suave, mover brazos y tobillos", min: 5 },
-      { nombre: fragil ? "Marcha a paso cómodo" : "Marcha, bici o elíptica", detalle: fragil ? "Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere." : "Ritmo en el que puede hablar pero no cantar (RPE 4–6).", min: principal },
-      { nombre: "Enfriamiento", detalle: "Bajar el ritmo poco a poco; no pararse de golpe", min: 5 },
+      { nombre: "Calentamiento", detalle: "Caminar suave, mover brazos y tobillos", min: 5, pict: "marcha" },
+      { nombre: fragil ? "Marcha a paso cómodo" : "Marcha, bici o elíptica", detalle: fragil ? "Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere." : "Ritmo en el que puede hablar pero no cantar (RPE 4–6).", min: principal, pict: fragil ? "marcha" : "bici", clave: "Hombros relajados, mirada al frente; el ritmo lo marca la respiración, no el reloj.", facil: "Tramos de 3–5 minutos con pausas de 1 minuto; vale caminar por casa o el pasillo.", dificil: "Intervalos: 3 min a ritmo cómodo y 1 min algo más rápido (puede hablar con frases cortas), 5–6 veces." },
+      { nombre: "Enfriamiento", detalle: "Bajar el ritmo poco a poco; no pararse de golpe", min: 5, pict: "estirar" },
     ] };
   }
   if (tipo === "equilibrio") {
     return { tipo, titulo: "Equilibrio", min: 12, bloques: [
-      { nombre: "Levantarse y sentarse", detalle: "De una silla, 8–10 veces, con las manos en el pecho si puede", min: 3 },
-      { nombre: "Apoyo sobre un pie", detalle: "Junto a una pared o silla, 10–20 s cada pierna, 3 veces", min: 3 },
-      { nombre: "Marcha talón-punta", detalle: "10 pasos en línea, con apoyo cerca; ida y vuelta 3 veces", min: 3 },
-      { nombre: "Giros lentos y alcances", detalle: "Girar 90° a cada lado y alcanzar objetos a distintas alturas", min: 3 },
+      { nombre: "Levantarse y sentarse", detalle: "De una silla, 8–10 veces, con las manos en el pecho si puede", min: 3, pict: "silla", clave: "Pies bajo las rodillas, tronco hacia delante y empuje con las piernas.", facil: "Con las manos en los reposabrazos y una silla algo más alta (cojín).", dificil: "Sin manos, bajando en 3 segundos; o con los pies juntos." },
+      { nombre: "Apoyo sobre un pie", detalle: "Junto a una pared o silla, 10–20 s cada pierna, 3 veces", min: 3, pict: "unpie", clave: "Mirada fija en un punto; la mano roza el apoyo sin agarrarlo.", facil: "Con las dos manos en el respaldo, 5–10 s.", dificil: "Sin apoyo y con los ojos cerrados unos segundos, o sobre un cojín." },
+      { nombre: "Marcha talón-punta", detalle: "10 pasos en línea, con apoyo cerca; ida y vuelta 3 veces", min: 3, pict: "talonpunta", clave: "Despacio: el talón toca la punta del otro pie; brazos abiertos si hace falta.", facil: "Pasos medio solapados junto a la pared.", dificil: "Hacia atrás, o girando la cabeza a los lados mientras camina." },
+      { nombre: "Giros lentos y alcances", detalle: "Girar 90° a cada lado y alcanzar objetos a distintas alturas", min: 3, pict: "giro", clave: "Gire primero la cabeza, luego el tronco; vuelva al centro antes de cambiar de lado.", facil: "Sentado, alcanzando objetos sobre la mesa.", dificil: "De pie sobre una línea estrecha, alcanzando más lejos." },
     ] };
   }
   const fuerzaFragil = [
-    { nombre: "Levantarse de la silla", detalle: "2 series de 8–12; si es fácil, sin manos", min: 5 },
-    { nombre: "Elevación de talones", detalle: "Apoyado en el respaldo, 2 × 10–15", min: 3 },
-    { nombre: "Extensión de rodilla sentado", detalle: "Estirar la pierna y aguantar 2 s, 2 × 10 cada lado", min: 4 },
-    { nombre: "Flexión de brazos con botella o banda", detalle: "2 × 10–12 cada brazo", min: 4 },
-    { nombre: "Puente de glúteo o marcha en el sitio", detalle: "2 × 10, o 1 minuto de marcha levantando rodillas", min: 4 },
+    { nombre: "Levantarse de la silla", detalle: "2 series de 8–12; si es fácil, sin manos", min: 5, pict: "silla", clave: "Tronco hacia delante («nariz sobre los pies») y empuje con los talones.", facil: "Con las manos en los reposabrazos; silla más alta con un cojín.", dificil: "Sin manos y bajando despacio en 3 segundos; con una mochila ligera." },
+    { nombre: "Elevación de talones", detalle: "Apoyado en el respaldo, 2 × 10–15", min: 3, pict: "talones", clave: "Suba despacio hasta la punta de los pies y baje en 2 segundos.", facil: "Sentado, levantando los talones con las manos sobre los muslos.", dificil: "Sobre una sola pierna, o en el borde de un escalón." },
+    { nombre: "Extensión de rodilla sentado", detalle: "Estirar la pierna y aguantar 2 s, 2 × 10 cada lado", min: 4, pict: "rodilla", clave: "Punta del pie hacia usted; espalda apoyada en el respaldo.", facil: "Sin aguantar arriba; menos repeticiones.", dificil: "Con una tobillera lastrada de 0,5–1 kg o una banda en el tobillo." },
+    { nombre: "Flexión de brazos con botella o banda", detalle: "2 × 10–12 cada brazo", min: 4, pict: "brazo", clave: "Codo pegado al cuerpo; suba y baje sin balancear el tronco.", facil: "Botella de medio litro, o sin peso.", dificil: "Botella de 1,5 L o banda más dura; los dos brazos a la vez." },
+    { nombre: "Puente de glúteo o marcha en el sitio", detalle: "2 × 10, o 1 minuto de marcha levantando rodillas", min: 4, pict: "puente", clave: "Apriete los glúteos arriba; no arquee la espalda.", facil: "Marcha en el sitio sentado, levantando las rodillas.", dificil: "Puente con una pierna estirada; marcha levantando más las rodillas, 2 minutos." },
   ];
   const fuerzaStd = [
-    { nombre: "Sentadilla a la silla", detalle: "2–3 series de 8–15; bajar despacio, subir sin impulso", min: 6 },
-    { nombre: "Empuje (flexiones en pared o inclinadas)", detalle: "2–3 × 8–15", min: 5 },
-    { nombre: "Remo con banda elástica", detalle: "2–3 × 10–15, hombros atrás", min: 5 },
-    { nombre: "Bisagra de cadera", detalle: "Con mancuerna ligera o botella, 2–3 × 8–12; espalda recta", min: 5 },
-    { nombre: "Elevación de talones", detalle: "2 × 12–15", min: 3 },
-    { nombre: "Press de hombro ligero", detalle: "2 × 10–12; respire siempre, nunca aguante el aire", min: 5 },
+    { nombre: "Sentadilla a la silla", detalle: "2–3 series de 8–15; bajar despacio, subir sin impulso", min: 6, pict: "sentadilla", clave: "Rodillas en la dirección de los pies, peso en los talones; la silla es solo referencia.", facil: "Sentarse del todo y levantarse con ayuda de las manos.", dificil: "Sin tocar la silla, con una mochila o mancuernas; o sentadilla búlgara ligera." },
+    { nombre: "Empuje (flexiones en pared o inclinadas)", detalle: "2–3 × 8–15", min: 5, pict: "pared", clave: "Cuerpo en línea recta, codos a 45°, baje el pecho hacia el apoyo.", facil: "Más cerca de la pared, manos más altas.", dificil: "Manos en una mesa baja o en el suelo con rodillas apoyadas." },
+    { nombre: "Remo con banda elástica", detalle: "2–3 × 10–15, hombros atrás", min: 5, pict: "remo", clave: "Lleve los codos hacia atrás y junte las escápulas; cuello largo.", facil: "Banda más suave, o con una sola mano.", dificil: "Banda más dura, aguantando 2 s atrás; o con mancuerna inclinado." },
+    { nombre: "Bisagra de cadera", detalle: "Con mancuerna ligera o botella, 2–3 × 8–12; espalda recta", min: 5, pict: "bisagra", clave: "Cadera atrás como para cerrar un cajón con el trasero; rodillas poco flexionadas.", facil: "Sin peso, con las manos deslizando por los muslos.", dificil: "Peso muerto con mancuernas o garrafa; una pierna si tiene buen equilibrio." },
+    { nombre: "Elevación de talones", detalle: "2 × 12–15", min: 3, pict: "talones", clave: "Suba despacio hasta la punta de los pies y baje en 2 segundos.", facil: "Con las dos manos en el respaldo.", dificil: "A una pierna, o en el borde de un escalón." },
+    { nombre: "Press de hombro ligero", detalle: "2 × 10–12; respire siempre, nunca aguante el aire", min: 5, pict: "hombro", clave: "Expulse el aire al subir; no arquee la espalda baja.", facil: "Sentado, con botellas pequeñas, sin llegar a estirar del todo.", dificil: "Mancuernas de 3–5 kg o banda bajo los pies; de pie." },
   ];
   const bloques = (fragil ? fuerzaFragil : fuerzaStd).map((b) => ({ ...b }));
   const conEq = tipo === "fuerza_eq";
-  if (conEq) bloques.push({ nombre: "Equilibrio (5 min)", detalle: "Apoyo sobre un pie y marcha talón-punta, con apoyo cerca", min: 5 });
-  return { tipo, titulo: conEq ? "Fuerza y equilibrio" : "Fuerza", min: bloques.reduce((n, b) => n + b.min, 0) + 5, bloques: [{ nombre: "Calentamiento", detalle: "Marcha suave y movilidad de hombros, caderas y tobillos", min: 5 }, ...bloques] };
+  if (conEq) bloques.push({ nombre: "Equilibrio (5 min)", detalle: "Apoyo sobre un pie y marcha talón-punta, con apoyo cerca", min: 5, pict: "unpie", clave: "Mirada fija en un punto; la mano roza el apoyo sin agarrarlo.", facil: "Con las dos manos en el respaldo, pies algo separados.", dificil: "Sin apoyo, ojos cerrados unos segundos o sobre un cojín." });
+  return { tipo, titulo: conEq ? "Fuerza y equilibrio" : "Fuerza", min: bloques.reduce((n, b) => n + b.min, 0) + 5, bloques: [{ nombre: "Calentamiento", detalle: "Marcha suave y movilidad de hombros, caderas y tobillos", min: 5, pict: "marcha" }, ...bloques] };
 }
 
 /** Objetivo semanal: minutos y sesiones (OMS/ACSM: 150 min aeróbico + 2 fuerza; en fragilidad se empieza por 90 min). */
@@ -465,6 +465,87 @@ export function rachaSemanas(diario, objMin, ahora = new Date()) {
     ini = new Date(ini); ini.setDate(ini.getDate() - 7);
   }
   return racha;
+}
+
+/** Plan semanal personalizado: a partir de los días elegidos (0 domingo … 6 sábado) alterna fuerza+equilibrio, aeróbico y fuerza.
+    Devuelve un mapa día → tipo como PLAN_SEMANA. Sin días (o todos los de lunes a sábado) devuelve el plan tipo. */
+export function planSemana(dias) {
+  const sel = [...new Set((dias || []).map(Number).filter((d) => d >= 0 && d <= 6))];
+  if (!sel.length) return { ...PLAN_SEMANA };
+  const orden = sel.sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7)); // lunes primero
+  const ciclo = ["fuerza_eq", "aerobico", "fuerza", "aerobico", "fuerza_eq", "aerobico", "fuerza"];
+  const plan = { 0: "descanso", 1: "descanso", 2: "descanso", 3: "descanso", 4: "descanso", 5: "descanso", 6: "descanso" };
+  orden.forEach((d, i) => { plan[d] = ciclo[i % ciclo.length]; });
+  if (orden.length === 1) plan[orden[0]] = "fuerza_eq";
+  return plan;
+}
+
+/** Minutos por semana (lunes a domingo) de las últimas `n` semanas, de la más antigua a la actual. */
+export function minutosPorSemana(diario, n = 8, ahora = new Date()) {
+  const lunes = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+  const out = [];
+  let ini = lunes(ahora);
+  for (let i = 0; i < n; i++) {
+    const fin = new Date(ini); fin.setDate(ini.getDate() + 7);
+    const sem = diario.filter((x) => { const d = new Date(x.fecha + "T12:00"); return d >= ini && d < fin; });
+    out.unshift({ desde: ini.toISOString().slice(0, 10), min: sem.reduce((k, x) => k + (x.min || 0), 0), sesiones: sem.length });
+    ini = new Date(ini); ini.setDate(ini.getDate() - 7);
+  }
+  return out;
+}
+
+/** Diferencias entre dos listas de medicación (conciliación): nuevos, retirados y cambios de dosis diaria. */
+export function compararListas(antes, despues) {
+  const clave = (m) => m.pid;
+  const dosisDia = (m) => (m.dosis != null ? m.dosis * (m.tomas || 1) : null);
+  const A = new Map((antes || []).map((m) => [clave(m), m])), D = new Map((despues || []).map((m) => [clave(m), m]));
+  const nuevos = [...D.values()].filter((m) => !A.has(clave(m)));
+  const retirados = [...A.values()].filter((m) => !D.has(clave(m)));
+  const cambios = [...D.values()].filter((m) => A.has(clave(m)) && dosisDia(A.get(clave(m))) !== dosisDia(m) && (dosisDia(A.get(clave(m))) != null || dosisDia(m) != null)).map((m) => ({ pid: m.pid, antes: dosisDia(A.get(clave(m))), despues: dosisDia(m), unidad: m.unidad || A.get(clave(m)).unidad || "mg" }));
+  return { nuevos, retirados, cambios, total: nuevos.length + retirados.length + cambios.length };
+}
+
+/** Constantes que merece la pena anotar en el diario según la medicación: glucosa, tensión y pulso. */
+export function constantesRelevantes(res, ctx = {}) {
+  const cond = ctx.condiciones || new Set();
+  const tiene = (...s) => res.items.some((it) => s.some((x) => it.senales.has(x)));
+  const out = [];
+  if (tiene("hipoglucemia", "enmascara_hipoglucemia") || cond.has("diabetes")) out.push({ id: "glucosa", etiqueta: "Glucosa antes / después", unidad: "mg/dL", min: 20, max: 600, doble: true });
+  if (tiene("hipotension", "hipertension") || cond.has("insuficiencia_cardiaca")) out.push({ id: "ta", etiqueta: "Tensión (sistólica)", unidad: "mmHg", min: 60, max: 260 });
+  if (tiene("bradicardia", "fc_no_valida", "taquicardia", "qt") || cond.has("marcapasos")) out.push({ id: "fc", etiqueta: "Pulso al terminar", unidad: "lpm", min: 30, max: 220 });
+  return out;
+}
+
+/** Chequeo previo a la sesión: afirmaciones que conviene confirmar antes de empezar, según la medicación y la situación.
+    Cada punto: si el usuario NO lo marca, aplica `nivel` (rojo = no entrene hoy; ambar = sesión suave) y `consejo`. */
+const CHEQUEO = [
+  { id: "pecho", universal: true, nivel: "rojo", texto: "No tengo dolor en el pecho, palpitaciones ni más falta de aire de lo habitual", consejo: "No entrene hoy y consulte: con estos síntomas el ejercicio debe esperar a una valoración." },
+  { id: "fiebre", universal: true, nivel: "rojo", texto: "No tengo fiebre ni me encuentro enfermo", consejo: "Con fiebre o infección aguda, descanse; retome el plan cuando lleve 24–48 h sin fiebre." },
+  { id: "glucosa", senales: ["hipoglucemia"], nivel: "ambar", texto: "He comido en las últimas 2–3 horas y llevo azúcar encima (zumo, terrones)", consejo: "No entrene en ayunas: tome algo de hidratos y lleve 15 g de azúcar rápido. Si usa insulina o sulfonilureas, mida la glucosa antes (objetivo 100–250 mg/dL)." },
+  { id: "mareo", senales: ["hipotension", "bradicardia"], nivel: "ambar", texto: "No me he mareado hoy al levantarme", consejo: "Empiece más suave, sin cambios bruscos de posición y con apoyo cerca; termine con 5–10 min de enfriamiento." },
+  { id: "agua", senales: ["deshidratacion", "diuretico", "renal", "litio"], nivel: "ambar", texto: "He bebido agua en la última hora", consejo: "Beba un vaso de agua antes de empezar y lleve agua: su medicación favorece la deshidratación." },
+  { id: "sangrado", senales: ["sangrado"], nivel: "ambar", texto: "No tengo hematomas grandes, sangrado ni me he dado un golpe en la cabeza", consejo: "Con anticoagulantes, ante un sangrado o un golpe en la cabeza consulte antes de entrenar." },
+  { id: "sueno", senales: ["sedacion", "anticolinergico"], nivel: "ambar", texto: "No tengo somnolencia ni me noto torpe ahora mismo", consejo: "Espere a que pase el efecto o haga solo ejercicios sentado y con apoyo." },
+  { id: "tendon", senales: ["tendon"], nivel: "ambar", texto: "No tengo dolor en ningún tendón (talón, hombro, codo)", consejo: "Evite saltos y carrera; si el dolor es agudo en el talón, consulte antes de seguir." },
+  { id: "aire", condiciones: ["epoc_asma", "oxigeno"], nivel: "ambar", texto: "Respiro como de costumbre y tengo el inhalador de rescate (u oxígeno) a mano", consejo: "No entrene si hoy respira peor de lo normal; con el inhalador de rescate a mano, empiece despacio." },
+  { id: "apoyo", condiciones: ["fragil", "prefragil"], caidas: true, nivel: "ambar", texto: "Tengo un apoyo firme cerca (silla, pared) o alguien conmigo", consejo: "Haga la sesión junto a una silla o una pared y, si puede, acompañado." },
+];
+export function chequeoPrevio(res, ctx = {}) {
+  const cond = ctx.condiciones || new Set();
+  const tiene = (s) => res.items.filter((it) => s.some((x) => it.senales.has(x))).map((it) => it.principio.nombre);
+  return CHEQUEO.map((c) => {
+    if (c.universal) return { ...c, farmacos: [] };
+    const f = c.senales ? tiene(c.senales) : [];
+    const porCond = (c.condiciones || []).some((k) => cond.has(k)) || (c.caidas && ctx.caidas);
+    return f.length || porCond ? { ...c, farmacos: f } : null;
+  }).filter(Boolean);
+}
+/** Veredicto del chequeo: `marcados` son los ids confirmados. */
+export function veredictoChequeo(items, marcados) {
+  const falta = items.filter((c) => !marcados.includes(c.id));
+  if (falta.some((c) => c.nivel === "rojo")) return { clave: "no", faltan: falta };
+  if (falta.length) return { clave: "suave", faltan: falta };
+  return { clave: "ok", faltan: [] };
 }
 
 /** Sugerencia de progresión a partir de las últimas 2 semanas del diario. */

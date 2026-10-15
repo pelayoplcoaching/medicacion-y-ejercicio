@@ -85,11 +85,42 @@ try {
   console.log("Mi plan");
   await p.click('[data-tab="plan"]'); await p.waitForTimeout(250);
   check("tira de 7 días y sesión del día", (await p.$$(".tira .dia")).length === 7 && (await p.$$(".plan-dia .bloques li")).length >= 3);
+  check("iconos de grupo terapéutico en la lista", (await p.$$("#lista-meds .ic-grupo.g-corazon")).length >= 1 && (await p.$$("#lista-meds .ic-grupo.g-azucar")).length >= 1);
+  check("pictogramas, claves y variantes en los ejercicios", (await p.$$(".plan-dia .picto")).length >= 3 && (await p.$$(".plan-dia .variantes")).length >= 1 && (await p.$$(".plan-dia .clave")).length >= 1);
+  const detalleAntes = await p.textContent(".plan-dia .bloques li:nth-child(2) .detalle");
+  await p.click('.plan-dia .bloques li:nth-child(2) .variantes [data-v="facil"]'); await p.waitForTimeout(200);
+  check("variante «más fácil» cambia la descripción y se recuerda", (await p.textContent(".plan-dia .bloques li:nth-child(2) .detalle")) !== detalleAntes && (await p.$eval('.plan-dia .bloques li:nth-child(2) .variantes [data-v="facil"]', (b) => b.getAttribute("aria-pressed"))) === "true");
+  await p.click('.plan-dia .bloques li:nth-child(2) .variantes [data-v="normal"]'); await p.waitForTimeout(150);
+  check("mis días: 7 chips, 6 activos", (await p.$$(".dias-chips [data-dia]")).length === 7 && (await p.$$(".dias-chips [data-dia].activo")).length === 6);
+  await p.click(".mis-dias summary"); await p.waitForTimeout(150);
+  await p.click('.dias-chips [data-dia="2"]'); await p.waitForTimeout(200);
+  check("quitar el martes lo deja en descanso", (await p.$$(".dias-chips [data-dia].activo")).length === 5 && (await p.$$(".tira .dia.descanso")).length === 2);
+  await p.click('.dias-chips [data-dias="tipo"]'); await p.waitForTimeout(200);
   await p.click("#btn-sesion"); await p.waitForTimeout(200);
-  check("sesión guiada abierta", await p.$eval("#sesion", (e) => e.open));
+  check("sesión guiada abierta con el chequeo previo", await p.$eval("#sesion", (e) => e.open) && (await p.$$("#chequeo input")).length >= 3);
+  await p.click("#chequeo-continuar"); await p.waitForTimeout(150);
+  check("sin marcar nada: hoy mejor no entrenar", await p.$eval("#chequeo-resultado", (e) => e.classList.contains("r-no")));
+  for (const c of await p.$$("#chequeo input")) await c.check();
+  await p.click("#chequeo-continuar"); await p.waitForTimeout(200);
+  check("todo marcado: cronómetro con anillo y bloques con pictograma", await p.isVisible("#crono") && (await p.$$("#sesion .anillo-crono")).length === 1 && (await p.$$("#sesion .bloques .picto")).length >= 3);
+  check("constantes en la sesión (glucosa por insulina, pulso por betabloqueante)", (await p.$$("#sesion-const input")).length >= 3);
+  await p.fill('#sesion-const input[name="glucosa_antes"]', "140"); await p.fill('#sesion-const input[name="fc"]', "95");
   await p.click("#sesion-terminar"); await p.waitForTimeout(300);
   check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && (await p.textContent(".anillo .num")) !== "0");
+  check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
+  const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));
+  check("constantes guardadas con la sesión", diario[0].const?.glucosa_antes === 140 && diario[0].const?.fc === 95 && diario[0].chequeo === "ok");
+  const [csv] = await Promise.all([p.waitForEvent("download"), p.click("#btn-diario-csv")]);
+  check("diario exportable en CSV", csv.suggestedFilename().endsWith(".csv"));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
+
+  console.log("Conciliación (lista guardada)");
+  await p.click("#btn-perfiles"); await p.fill("#perfil-nombre", "Prueba"); await p.click("#btn-perfil-guardar"); await p.waitForTimeout(150);
+  await p.click("#lista-meds li:nth-child(1) .quitar"); await p.waitForTimeout(150); await p.click("#toast button").catch(() => {}); await p.waitForTimeout(100);
+  await p.click("#lista-meds li:nth-child(1) .quitar"); await p.waitForTimeout(400);
+  await p.click('#perfiles-lista [data-a="cargar"]'); await p.waitForTimeout(300);
+  check("al cargar la lista guardada se muestran los cambios", await p.isVisible("#cambios") && (await p.textContent("#cambios")).includes("Nuevos"));
+  await p.click('#cambios [data-a="cerrar"]'); await p.click("#btn-perfiles");
 
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
@@ -99,6 +130,7 @@ try {
   await p.click("#btn-historia"); await p.waitForTimeout(200);
   const historia = await p.evaluate(() => navigator.clipboard.readText());
   check("texto para la historia clínica", historia.startsWith("RECOMENDACIÓN DE EJERCICIO") && historia.includes("NYHA"));
+  check("la historia incluye el registro del paciente con constantes", historia.includes("Registro del paciente") && historia.includes("glucosa antes 140"));
   await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; navigator.share = undefined; });
   await p.click("#btn-whatsapp");
   check("texto de WhatsApp", decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").includes("Lo esencial"));
@@ -121,6 +153,11 @@ try {
   check("inputs con etiqueta", await p.$$eval("input:not([type=hidden]):not([type=file]):not([type=radio]):not([type=checkbox])", (es) => es.every((i) => i.labels?.length || i.getAttribute("aria-label") || i.id === "pegar")));
   await p.goto(`http://localhost:${PORT}/acerca.html`, { waitUntil: "networkidle" }); await p.waitForTimeout(400);
   check("acerca.html muestra el estado de la base", (await p.textContent("#estado-kb")).includes("Reglas"));
+  await p.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  await ctx.setOffline(true); await p.evaluate(() => window.dispatchEvent(new Event("offline"))); await p.waitForTimeout(100);
+  check("indicador de sin conexión", await p.isVisible("#conexion"));
+  await ctx.setOffline(false); await p.evaluate(() => window.dispatchEvent(new Event("online"))); await p.waitForTimeout(100);
+  check("indicador desaparece al volver la conexión", !(await p.isVisible("#conexion")));
 } catch (e) {
   fallos++; console.log("  ✘ excepción en las pruebas:", e.message);
 }

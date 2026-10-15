@@ -194,7 +194,7 @@ article footer { margin-top: 10px; font-size: .78rem; color: var(--muted); displ
 
 /* tarjeta de fármaco plegable */
 details.farmaco { border: 1px solid var(--line); border-radius: var(--r-md); margin-bottom: 10px; background: var(--surface); overflow: hidden; }
-details.farmaco summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 5px minmax(0, 1fr) auto auto; gap: 0 12px; align-items: center; min-height: 60px; padding-right: 14px; }
+details.farmaco summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 5px 30px minmax(0, 1fr) auto auto; gap: 0 12px; align-items: center; min-height: 60px; padding-right: 14px; }
 details.farmaco summary::-webkit-details-marker { display: none; }
 details.farmaco summary .barra { align-self: stretch; background: var(--line); }
 details.farmaco.nivel-alerta summary .barra { background: var(--alerta); }
@@ -615,3 +615,99 @@ dialog.sesion h2 small { color: var(--muted); font-weight: 600; }
 #lista-meds li.libre .med-nombre small { color: var(--precaucion-ink); }
 #sugerencias li.libre-op { border-top: 1px dashed var(--line-strong); }
 #sugerencias li.libre-op small { color: var(--muted); }
+
+/* ---------- alfa 14: conciliación, chequeo previo, constantes, mis días, variantes, pictogramas, iconos de grupo, tendencia, transición, sin conexión ---------- */
+/* conciliación de la lista (qué cambió al sustituirla) */
+.cambios { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line-strong); border-left: 4px solid var(--accent); border-radius: var(--r-md); background: var(--surface); font-size: .9rem; }
+.cambios-cab { display: flex; align-items: center; gap: 8px; }
+.cambios-cab h3 { margin: 0; font-size: .95rem; color: var(--fg); }
+.cambios ul { margin: 6px 0 0; padding-left: 18px; }
+.cambios li.c-nuevo b { color: var(--info-ink); }
+.cambios li.c-retirado b { color: var(--alerta-ink); }
+.cambios li.c-dosis b { color: var(--precaucion-ink); }
+/* chequeo previo a la sesión */
+.chequeo h3 { margin: 10px 0 2px; color: var(--fg); }
+.chequeo .muted { color: var(--muted); font-size: .9rem; margin: 0 0 8px; }
+.chequeo > ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.chequeo > ul > li { border: 1px solid var(--line); border-radius: var(--r-sm); padding: 8px 10px; border-left-width: 4px; }
+.chequeo li.nivel-alerta { border-left-color: var(--alerta); }
+.chequeo li.nivel-precaucion { border-left-color: var(--precaucion); }
+.chequeo label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 1rem; }
+.chequeo input { width: 24px; height: 24px; flex: 0 0 24px; accent-color: var(--info); margin-top: 2px; }
+.chequeo li small { color: var(--muted); }
+.chequeo .acciones { margin-top: 12px; }
+.chequeo-resultado { margin-top: 12px; padding: 10px 12px; border-radius: var(--r-sm); font-size: .95rem; }
+.chequeo-resultado.r-no { background: var(--alerta-soft); color: var(--alerta-ink); }
+.chequeo-resultado.r-suave { background: var(--precaucion-soft); color: var(--precaucion-ink); }
+.chequeo-resultado p { margin: 0 0 6px; }
+.chequeo-resultado ul { margin: 0 0 8px; padding-left: 18px; }
+.chequeo-aviso { background: var(--precaucion-soft); color: var(--precaucion-ink); padding: 8px 12px; border-radius: var(--r-sm); font-size: .92rem; margin: 0 0 8px; }
+/* constantes en el diario */
+.constantes { align-items: flex-end; }
+.constantes label { display: flex; flex-wrap: wrap; gap: 4px; font-size: .82rem; align-items: center; }
+.constantes label > span { color: var(--muted); flex-basis: 100%; }
+.constantes input { width: 78px; margin-right: 4px; }
+.const-txt { color: var(--accent-deep); font-weight: 600; }
+/* mis días de ejercicio */
+.mis-dias { margin: 4px 0 8px; }
+.dias-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; }
+.dias-chips .chip-btn { text-transform: capitalize; min-width: 46px; justify-content: center; }
+.dias-chips .chip-btn.activo { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.dias-chips .btn-sec { margin-left: auto; }
+/* variantes y claves por ejercicio */
+.bloques .clave { color: var(--muted); font-style: italic; }
+.variantes { display: inline-flex; gap: 0; margin-top: 6px; border: 1px solid var(--line-strong); border-radius: 999px; overflow: hidden; }
+.variantes button { background: var(--surface); color: var(--muted); border: 0; font: inherit; font-size: .74rem; font-weight: 700; padding: 3px 10px; cursor: pointer; min-height: 28px; }
+.variantes button + button { border-left: 1px solid var(--line-strong); }
+.variantes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.bloques.grande .variantes button { font-size: .82rem; padding: 5px 12px; min-height: 34px; }
+/* pictogramas de ejercicio */
+.picto { width: 40px; height: 40px; flex: 0 0 40px; color: var(--accent); background: var(--accent-soft); border-radius: 12px; padding: 5px; }
+.bloques.con-picto li { grid-template-columns: 44px 40px 1fr; }
+.bloques.grande.con-picto li { grid-template-columns: 1fr; }
+.bloques.grande.con-picto label { align-items: flex-start; }
+.bloques.grande .picto { width: 48px; height: 48px; flex-basis: 48px; }
+/* iconos por grupo terapéutico */
+#lista-meds .med-nombre { display: flex; gap: 10px; align-items: flex-start; }
+#lista-meds .med-nombre > div { min-width: 0; display: grid; }
+#lista-meds .med-nombre .ic-grupo { margin-top: 2px; }
+.ic-grupo { width: 32px; height: 32px; flex: 0 0 32px; padding: 6px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); fill: currentColor; }
+.ic-grupo.g-corazon { color: #b42318; background: #fde8e6; }
+.ic-grupo.g-sangre { color: #9a1b67; background: #fbe4f1; }
+.ic-grupo.g-azucar { color: #9a6700; background: #fff1cc; }
+.ic-grupo.g-cerebro { color: #4a3fbf; background: #e8e6fb; }
+.ic-grupo.g-pulmon { color: #0b6e99; background: #dff1fa; }
+.ic-grupo.g-hueso { color: #5b6b2f; background: #eef2d8; }
+.ic-grupo.g-hormona { color: #a2451c; background: #fde9dc; }
+.ic-grupo.g-escudo { color: #0f766e; background: #dcf3ef; }
+.ic-grupo.g-ojo { color: #205b8c; background: #e1ecf7; }
+.ic-grupo.g-rinon { color: #7a4a2e; background: #f4e8df; }
+.ic-grupo.g-libre { color: var(--muted); background: var(--surface-2); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ic-grupo { background: color-mix(in srgb, currentColor 18%, transparent); filter: brightness(1.5); } }
+:root[data-theme="dark"] .ic-grupo { background: color-mix(in srgb, currentColor 18%, transparent); filter: brightness(1.5); }
+details.farmaco summary .ic-grupo { width: 30px; height: 30px; padding: 5px; }
+/* tendencia de 8 semanas */
+.tendencia { margin: 2px 0 8px; }
+.tend-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: .82rem; color: var(--muted); }
+.tend-cab small { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .68rem; }
+.tend-cab .t-ok { color: var(--info-ink); font-weight: 600; }
+.tend-cab .t-menos { color: var(--precaucion-ink); font-weight: 600; }
+.tend { width: 100%; max-width: 340px; height: 44px; display: block; }
+.tend rect.obj { fill: var(--info); }
+.tend rect.con { fill: var(--accent); }
+.tend rect.sin { fill: var(--line); }
+.tend .linea-obj { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+/* transición entre pestañas */
+@media (prefers-reduced-motion: no-preference) {
+  #contenido-tab.entra { animation: entra-tab .28s ease-out; }
+  @keyframes entra-tab { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+/* anillo de progreso del cronómetro */
+.anillo-crono { width: 44px; height: 44px; flex: 0 0 44px; }
+.anillo-crono .fondo { fill: none; stroke: var(--line); stroke-width: 5; }
+.anillo-crono .valor { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; transition: stroke-dasharray .5s linear; }
+/* sin conexión */
+.conexion { display: inline-flex; align-items: center; gap: 6px; margin: 8px 0 0; padding: 4px 12px; border-radius: 999px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .8rem; font-weight: 600; }
+.conexion span[aria-hidden] { font-size: .6rem; }
+@media print { .variantes, .dias-chips, .chequeo .acciones, .cambios .acciones { display: none !important; } }
+.dias-resumen { color: var(--accent-deep); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
