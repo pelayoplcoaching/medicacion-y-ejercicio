@@ -557,3 +557,55 @@ body[data-modo="profesional"] { --accent: #0f766e; --accent-deep: #0b5a54; --acc
 .badge-pro { display: inline-block; vertical-align: middle; font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); margin-left: 4px; }
 #btn-dictar[aria-pressed="true"] { background: var(--alerta-soft); color: var(--alerta-ink); border-color: var(--alerta); animation: pulso 1s ease-in-out infinite; }
 @keyframes pulso { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--alerta) 25%, transparent); } }
+
+/* ---------- alfa 13: Mi plan ---------- */
+.hoy-botones { display: flex; gap: 6px; flex-wrap: wrap; }
+.plan-cab { display: flex; gap: 16px; align-items: center; margin: 10px 0 12px; }
+.anillo { width: 96px; height: 96px; flex: 0 0 96px; }
+.anillo .fondo { fill: none; stroke: var(--line); stroke-width: 9; }
+.anillo .valor { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; transition: stroke-dasharray .6s ease; }
+.anillo .num { font-size: 20px; font-weight: 800; fill: var(--fg); font-family: var(--font); }
+.anillo .sub { font-size: 9px; fill: var(--muted); font-family: var(--font); }
+.plan-obj h3 { margin: 0 0 2px; color: var(--fg); font-size: 1rem; }
+.plan-obj p { margin: 2px 0; font-size: .9rem; color: var(--muted); }
+.plan-racha { font-weight: 600; color: var(--accent-deep) !important; }
+.tira { display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 8px; -webkit-overflow-scrolling: touch; }
+.tira .dia { scroll-snap-align: start; flex: 0 0 72px; display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); color: var(--fg); font: inherit; cursor: pointer; position: relative; }
+.tira .dia .d { font-size: .7rem; text-transform: uppercase; color: var(--muted); letter-spacing: .04em; }
+.tira .dia .n { font-size: 1.15rem; font-weight: 800; line-height: 1; }
+.tira .dia .ic { width: 18px; height: 18px; color: var(--accent); }
+.tira .dia .tipo { font-size: .68rem; color: var(--muted); text-align: center; }
+.tira .dia.hoy { border-color: var(--accent); }
+.tira .dia.sel { background: var(--accent-soft); border-color: var(--accent); }
+.tira .dia.hecho .ok { position: absolute; top: 4px; right: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--info); color: #fff; font-size: .68rem; display: grid; place-items: center; }
+.tira .dia.descanso { opacity: .7; }
+.plan-dia { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; margin-top: 6px; }
+.plan-dia-cab { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.plan-dia-cab h3 { margin: 0; color: var(--fg); font-size: 1rem; text-transform: capitalize; }
+.chip-ok { background: var(--info-soft); color: var(--info-ink); }
+.plan-dia-tit { margin: 8px 0 4px; }
+.bloques { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.bloques li { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: start; padding: 6px 0; border-top: 1px solid var(--line); font-size: .93rem; }
+.bloques .min { font-weight: 800; color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+.bloques small { color: var(--muted); }
+.plan-fitt { font-size: .85rem; color: var(--muted); margin: 8px 0 0; }
+.plan-prog { margin-top: 12px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent-deep); font-size: .92rem; }
+.plan-prog.progresar { background: var(--info-soft); color: var(--info-ink); }
+.plan-prog.reducir, .plan-prog.sintomas { background: var(--precaucion-soft); color: var(--precaucion-ink); }
+.cnt.c-ok { background: var(--info); color: #fff; }
+/* sesión guiada en grande */
+dialog.sesion .ficha-cuerpo { font-size: 1.08rem; }
+dialog.sesion h2 { margin: 0 0 10px; }
+dialog.sesion h2 small { color: var(--muted); font-weight: 600; }
+.crono { display: flex; align-items: center; gap: 14px; margin: 6px 0 14px; }
+.crono #crono { font-size: 2.4rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .02em; color: var(--accent-deep); }
+.bloques.grande li { grid-template-columns: 1fr; }
+.bloques.grande label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.bloques.grande input { width: 24px; height: 24px; accent-color: var(--accent); flex: 0 0 24px; margin-top: 2px; }
+.bloques.grande input:checked + span { opacity: .55; text-decoration: line-through; }
+.bloques.grande em { color: var(--accent-deep); font-style: normal; font-weight: 700; }
+.sesion-fin { display: grid; gap: 10px; margin-top: 16px; }
+.sesion-fin input[type=range] { width: 160px; vertical-align: middle; accent-color: var(--accent); }
+.sesion-fin output { font-weight: 800; margin-left: 6px; }
+@media (prefers-reduced-motion: no-preference) { .celebra { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--info); color: #fff; font-weight: 800; animation: pop .5s cubic-bezier(.2,1.4,.4,1); } @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } } }
+@media print { .tira, .plan-dia .acciones, .sesion-fin { display: none !important; } }

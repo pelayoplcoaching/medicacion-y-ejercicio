@@ -76,6 +76,15 @@ try {
   await p.click("#sintomas-card summary"); await p.click('#sintomas-card button[data-s="mareo"]'); await p.waitForTimeout(150);
   check("síntomas → fármacos posibles", (await p.textContent("#sintoma-detalle")).includes("contribuir"));
 
+  console.log("Mi plan");
+  await p.click('[data-tab="plan"]'); await p.waitForTimeout(250);
+  check("tira de 7 días y sesión del día", (await p.$$(".tira .dia")).length === 7 && (await p.$$(".plan-dia .bloques li")).length >= 3);
+  await p.click("#btn-sesion"); await p.waitForTimeout(200);
+  check("sesión guiada abierta", await p.$eval("#sesion", (e) => e.open));
+  await p.click("#sesion-terminar"); await p.waitForTimeout(300);
+  check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && (await p.textContent(".anillo .num")) !== "0");
+  await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
+
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
   check("acento del modo profesional", (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--accent").trim())) !== "#6b35c4");

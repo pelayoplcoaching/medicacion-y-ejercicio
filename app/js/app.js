@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151151";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151151";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151151";
-import { cargarScript } from "./libs.js?v=202610151151";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151151";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151151";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, PLAN_SEMANA, sesionTipo, objetivoSemanal, rachaSemanas, progresion } from "./engine.js?v=202610151159";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151159";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151159";
+import { cargarScript } from "./libs.js?v=202610151159";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151159";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151159";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -52,6 +52,8 @@ const ICONS = {
   interacciones: "M8 11a4 4 0 0 1 4-4h2V5h-2a6 6 0 0 0 0 12h2v-2h-2a4 4 0 0 1-4-4zm8-6h-2v2h2a4 4 0 0 1 0 8h-2v2h2a6 6 0 0 0 0-12zm-7 5h6v2H9v-2z",
   guardar: "M4 3h12l4 4v14H4V3zm2 2v4h8V5H6zm1 8v6h10v-6H7z",
   abrir: "M4 4h16v6h-2V6H6v12h5v2H4V4zm10 8h6v6h-2v-2.6l-4.3 4.3-1.4-1.4L16.6 14H14v-2z",
+  plan: "M4 5h16v3H4V5zm0 5h4v9H4v-9zm6 0h4v9h-4v-9zm6 0h4v9h-4v-9z",
+  paseo: "M13 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-3 5.5 2.4-1.2L14 10l2.5 2-1.1 1.4-2-1.6-.7 2.6 2.3 2.5-1.2 4.6-1.9-.5 1-3.8-2.3-2.3-1.5 3.6-1.8-.8 2.1-5 1.6-3.7z",
   whatsapp: "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0 1 12 4zm-3 4.3c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.6 2.6 1 3.2.8 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4l-2.1-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.9 8.7c-.2-.4-.4-.4-.6-.4H9z",
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
@@ -782,13 +784,12 @@ function leerDiario() { try { return JSON.parse(localStorage.getItem("medex.diar
 function escribirDiario(d) { try { localStorage.setItem("medex.diario", JSON.stringify(d.slice(-200))); } catch {} }
 const TIPOS_SESION = ["aerobico", "fuerza", "equilibrio", "paseo"];
 function hoyISO(d = new Date()) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
-function planDeHoy() {
-  const dow = new Date().getDay(); // 0 domingo
-  const fila = DIAS_PLAN.find(([d]) => d === dow);
-  if (!fila) return { tipo: "descanso", etiqueta: t("hoy.descanso") };
-  const [, tipo, etq] = fila;
-  return { tipo, etiqueta: tipo === "aerobico" ? t("plan.aerobico") : etq.includes("equilibrio") ? t("plan.fuerza_eq") : t("plan.fuerza") };
+function etiquetaTipo(tipo) { return { aerobico: t("plan.aerobico"), fuerza: t("plan.fuerza"), fuerza_eq: t("plan.fuerza_eq"), equilibrio: t("sesion.equilibrio"), descanso: t("hoy.descanso"), paseo: t("sesion.paseo") }[tipo] || tipo; }
+function planDeHoy(d = new Date()) {
+  const tipo = PLAN_SEMANA[d.getDay()] || "descanso";
+  return { tipo, etiqueta: etiquetaTipo(tipo) };
 }
+const esFragil = () => { const c = ctxActual().condiciones; return c.has("fragil") || c.has("nyha34"); };
 function franjaHoy() {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);
   if (!v.horas.some((h) => h.nivel === "rojo" || h.nivel === "ambar")) return null; // sin restricciones no hace falta franja
@@ -813,7 +814,7 @@ function renderHoy() {
   box.innerHTML = `
     <div class="hoy-cab">
       <div><small>${t("hoy.titulo")}</small><h3>${plan.etiqueta}${franja ? ` <span class="hoy-franja">· ${t("hoy.mejor", { f: franja })}</span>` : ""}</h3></div>
-      <button type="button" class="btn sm" id="btn-registrar">${diarioAbierto ? t("ficha.cerrar") : t("hoy.registrar")}</button>
+      <div class="hoy-botones"><button type="button" class="btn sm" id="btn-empezar-hoy"${plan.tipo === "descanso" ? " hidden" : ""}>${t("plan.empezar")}</button><button type="button" class="btn-sec sm" id="btn-registrar">${diarioAbierto ? t("ficha.cerrar") : t("hoy.registrar")}</button><button type="button" class="btn-sec sm" id="btn-ver-plan">${t("plan.ver")}</button></div>
     </div>
     <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
     ${diarioAbierto ? `<form class="registro" id="form-registro">
@@ -825,6 +826,8 @@ function renderHoy() {
     </form>` : ""}
     ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
   $("#btn-registrar").addEventListener("click", () => { diarioAbierto = !diarioAbierto; renderHoy(); });
+  $("#btn-ver-plan").addEventListener("click", () => { estado.tab = "plan"; render(); $(".tabs")?.scrollIntoView({ block: "start" }); });
+  $("#btn-empezar-hoy")?.addEventListener("click", () => abrirSesion(plan.tipo));
   box.querySelector("input[name=rpe]")?.addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
   box.querySelector("#form-registro")?.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -967,6 +970,7 @@ function render() {
     b.setAttribute("aria-selected", b.dataset.tab === estado.tab);
     const c = b.querySelector(".cnt");
     if (b.dataset.tab === "cuando") { const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas); const nr = v.horas.filter((x) => x.nivel === "rojo").length; const na = v.horas.filter((x) => x.nivel === "ambar").length; c.textContent = nr || na ? (nr ? nr + "h" : na + "h") : ""; c.className = "cnt" + (nr ? " c-alerta" : na ? " c-precaucion" : ""); }
+    else if (b.dataset.tab === "plan") { const d = leerDiario(); const n = d.filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; c.textContent = n || ""; c.className = "cnt" + (n ? " c-ok" : ""); }
     else if (b.dataset.tab === "interacciones") { const n = res.interacciones.filter((x) => x.nivel !== "menor").length; c.textContent = n || ""; c.className = "cnt" + (res.interacciones.some((x) => x.nivel === "mayor") ? " c-alerta" : n ? " c-precaucion" : ""); }
     else { const { a, p } = cuenta(b.dataset.tab); c.textContent = a + p || ""; c.className = "cnt" + (a ? " c-alerta" : p ? " c-precaucion" : ""); }
   });
@@ -995,6 +999,8 @@ function render() {
     renderInteracciones(cont, res);
   } else if (estado.tab === "cuando") {
     renderCuando(cont);
+  } else if (estado.tab === "plan") {
+    renderPlan(cont);
   } else {
     renderAmbito(cont, res.ambitos[estado.tab], null, estado.tab);
   }
@@ -1085,6 +1091,109 @@ function tarjetaFarmaco(g, amb, abierta) {
       </details>`;
   }
 }
+
+/* ---------- pestaña «Mi plan»: semana, objetivo, sesión de hoy, progresión ---------- */
+let diaPlan = null; // día seleccionado en la tira semanal (ISO)
+function lunesDe(d = new Date()) { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
+function anillo(pct, texto, sub) {
+  const r = 34, c = 2 * Math.PI * r, p = Math.min(1, Math.max(0, pct));
+  return `<svg class="anillo" viewBox="0 0 90 90" role="img" aria-label="${texto} ${sub}"><circle cx="45" cy="45" r="${r}" class="fondo"/><circle cx="45" cy="45" r="${r}" class="valor" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 45 45)"/><text x="45" y="43" text-anchor="middle" class="num">${texto}</text><text x="45" y="58" text-anchor="middle" class="sub">${sub}</text></svg>`;
+}
+function renderPlan(cont) {
+  const diario = leerDiario();
+  const fragil = esFragil();
+  const obj = objetivoSemanal({ fragil });
+  const lunes = lunesDe();
+  const hoy = hoyISO();
+  const dias = [...Array(7)].map((_, i) => { const d = new Date(lunes); d.setDate(lunes.getDate() + i); return d; });
+  const semana = diario.filter((x) => { const d = new Date(x.fecha + "T12:00"); return d >= lunes && d < new Date(lunes.getTime() + 7 * 864e5); });
+  const minSem = semana.reduce((n, x) => n + (x.min || 0), 0), nSem = semana.length;
+  const racha = rachaSemanas(diario, obj.min);
+  const prog = progresion(diario);
+  if (!diaPlan) diaPlan = hoy;
+  const sel = dias.find((d) => hoyISO(d) === diaPlan) || new Date();
+  const tipoSel = PLAN_SEMANA[sel.getDay()] || "descanso";
+  const hechoSel = diario.filter((x) => x.fecha === hoyISO(sel));
+  const ses = tipoSel === "descanso" ? null : sesionTipo(tipoSel, { fragil, minutosAer: fragil ? 10 : 30 });
+  const res = evaluar(datos, medsActivos(), ctxActual());
+  const P = prescripcion(res, ctxActual());
+  const fmtDia = (d) => d.toLocaleDateString(idioma(), { weekday: "short" }).replace(".", "");
+  const sec = document.createElement("section"); sec.className = "plan";
+  sec.innerHTML = `
+    <div class="plan-cab">
+      ${anillo(minSem / obj.min, `${minSem}`, `/ ${obj.min} min`)}
+      <div class="plan-obj">
+        <h3>${t("plan.objetivo")}</h3>
+        <p>${t("plan.objetivo_txt", { m: obj.min, s: obj.sesiones })}</p>
+        <p class="plan-racha">${racha ? t("plan.racha", { n: racha }) : t("plan.racha0")} · ${nSem} ${t("hoy.sesiones")} ${t("hoy.esta_semana")}</p>
+      </div>
+    </div>
+    <div class="tira" role="list">${dias.map((d) => { const iso = hoyISO(d); const tipo = PLAN_SEMANA[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" role="listitem" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
+    <div class="plan-dia">
+      <div class="plan-dia-cab"><h3>${sel.toLocaleDateString(idioma(), { weekday: "long", day: "numeric", month: "long" })}${hoyISO(sel) === hoy ? ` · ${t("hoy.titulo").toLowerCase()}` : ""}</h3>${hechoSel.length ? `<span class="chip chip-ok">${t("plan.hecho", { m: hechoSel.reduce((n, x) => n + (x.min || 0), 0) })}</span>` : ""}</div>
+      ${ses ? `
+        <p class="plan-dia-tit"><b>${ses.titulo}</b> · ${ses.min} min</p>
+        <ol class="bloques">${ses.bloques.map((b) => `<li><span class="min">${b.min}′</span><span><b>${b.nombre}</b><br><small>${b.detalle}</small></span></li>`).join("")}</ol>
+        <p class="plan-fitt">${glosar(tipoSel === "aerobico" ? P.aer.int : P.fue.int)}</p>
+        <div class="acciones"><button type="button" class="btn" id="btn-sesion">${hoyISO(sel) === hoy ? t("plan.empezar") : t("plan.ver_sesion")}</button><button type="button" class="btn-sec" id="btn-marcar">${t("plan.marcar")}</button></div>`
+      : `<p class="vacio">${t("plan.descanso_txt")}</p>`}
+    </div>
+    <div class="plan-prog ${prog.clave}"><b>${t("prog.titulo")}</b> ${t("prog." + prog.clave, { n: prog.n, r: prog.rpe || "" })}</div>
+    <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button></div>
+    <p class="esencial-nota">${t("plan.nota")}</p>`;
+  cont.append(sec);
+  sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { diaPlan = b.dataset.iso; render(); }));
+  sec.querySelector("#btn-sesion")?.addEventListener("click", () => abrirSesion(tipoSel, hoyISO(sel)));
+  sec.querySelector("#btn-marcar")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(sel), tipo: tipoSel === "fuerza_eq" ? "fuerza" : tipoSel, min: ses.min, rpe: 5, sintomas: [] }); celebrar(); });
+  sec.querySelector("#btn-cal2").addEventListener("click", () => $("#btn-calendario").click());
+  sec.querySelector("#btn-semana-wa").addEventListener("click", async () => {
+    const txt = `*${t("meta.titulo")}* · ${t("plan.semana_txt", { n: nSem, m: minSem, o: obj.min })}${racha ? " · " + t("plan.racha", { n: racha }) : ""}\n${dias.map((d) => `${fmtDia(d)} ${diario.some((x) => x.fecha === hoyISO(d)) ? "✅" : (PLAN_SEMANA[d.getDay()] === "descanso" ? "—" : "·")}`).join("  ")}\n${t("compartir.pie")}`;
+    if (navigator.share) { try { await navigator.share({ text: txt }); return; } catch {} }
+    window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
+  });
+}
+function registrarSesion(x) {
+  const d = leerDiario(); d.push({ id: Date.now().toString(36), ...x }); escribirDiario(d); render();
+}
+function celebrar() {
+  toast(`<span class="celebra">✓</span> ${t("hoy.guardado")}`, { ms: 5000 });
+}
+
+/* ---------- sesión guiada: lista de bloques con cronómetro, en grande ---------- */
+let cronometro = null, cronoInicio = 0;
+function abrirSesion(tipo, fecha = hoyISO()) {
+  const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
+  const dlg = $("#sesion");
+  $("#sesion-cuerpo").innerHTML = `
+    <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
+    <div class="crono"><span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button></div>
+    <ol class="bloques grande">${ses.bloques.map((b, i) => `<li><label><input type="checkbox" data-i="${i}"><span><b>${b.nombre}</b> <em>${b.min}′</em><br><small>${b.detalle}</small></span></label></li>`).join("")}</ol>
+    <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
+    <div class="sesion-fin">
+      <label>${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output></label>
+      <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
+    </div>`;
+  $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
+  const pintar = () => { const s = Math.floor((Date.now() - cronoInicio) / 1000); $("#crono").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+  $("#crono-btn").addEventListener("click", () => {
+    if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); return; }
+    cronoInicio = cronoInicio ? cronoInicio + (Date.now() - cronoPausa) : Date.now();
+    cronometro = setInterval(pintar, 500); $("#crono-btn").textContent = t("sesion.pausar");
+  });
+  $("#sesion-terminar").addEventListener("click", () => {
+    const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
+    const min = seg >= 120 ? Math.round(seg / 60) : ses.min;
+    registrarSesion({ fecha, tipo: tipo === "fuerza_eq" ? "fuerza" : tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [] });
+    cerrarSesion(); celebrar();
+  });
+  cronoInicio = 0; cronometro = null;
+  dlg.showModal();
+  try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { dlg.__wake = w; }).catch(() => {}); } catch {}
+}
+let cronoPausa = 0;
+function cerrarSesion() { clearInterval(cronometro); cronometro = null; cronoInicio = 0; const dlg = $("#sesion"); dlg.__wake?.release?.(); dlg.close(); }
+$("#sesion-cerrar").addEventListener("click", cerrarSesion);
+$("#sesion").addEventListener("cancel", (ev) => { ev.preventDefault(); cerrarSesion(); });
 
 function renderCuando(cont) {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);

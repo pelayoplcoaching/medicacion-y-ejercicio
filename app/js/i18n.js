@@ -4,6 +4,12 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "tab.plan": "Mi plan", "plan.ver": "Ver mi plan", "plan.empezar": "Empezar sesión", "plan.ver_sesion": "Ver la sesión", "plan.marcar": "Marcar como hecha", "plan.hecho": "Hecha · {m} min",
+  "plan.objetivo": "Objetivo semanal", "plan.objetivo_txt": "{m} minutos y {s} sesiones a la semana (aeróbico, fuerza y equilibrio).", "plan.racha": "{n} semana(s) seguidas cumpliendo", "plan.racha0": "Aún sin racha",
+  "plan.fuerza_eq_corto": "Fuerza+eq.", "plan.descanso_corto": "Descanso", "plan.descanso_txt": "Día de descanso o paseo suave. Si le apetece, 20–30 minutos caminando cuentan.",
+  "plan.compartir_semana": "Compartir mi semana", "plan.semana_txt": "esta semana {n} sesiones · {m} de {o} min", "plan.nota": "Plan tipo orientado por su medicación y sus datos; su médico o entrenador puede ajustarlo. Las sesiones se registran en este dispositivo.",
+  "prog.titulo": "Siguiente paso:", "prog.pocos_datos": "registre sus sesiones ({n} hasta ahora) y en dos semanas le diremos si toca progresar.", "prog.progresar": "{n} sesiones en 2 semanas con esfuerzo medio {r}/10: toca subir un poco (5 minutos más de aeróbico o una serie más en fuerza).", "prog.mantener": "{n} sesiones en 2 semanas, esfuerzo {r}/10: mantenga este nivel una o dos semanas más.", "prog.reducir": "esfuerzo medio {r}/10, demasiado alto: reduzca intensidad o duración y recupere.", "prog.sintomas": "ha anotado síntomas en alguna sesión: no progrese y coméntelo con su médico.",
+  "sesion.cab": "Sesión guiada", "sesion.iniciar": "Iniciar", "sesion.pausar": "Pausar", "sesion.reanudar": "Reanudar", "sesion.terminar": "Terminar y registrar",
   "inf.ficha.buscar": "Buscar «{n}» en CIMA", "inf.ficha.buscar.t": "Abre el buscador de la AEMPS; escriba {n} en el campo de búsqueda",
   "error.inesperado": "Algo ha fallado en la aplicación. Puede seguir usándola; si se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto de una caja", "acc.dictar": "Dictar", "modo.badge": "Profesional", "pdf.generado": "PDF generado.",
@@ -104,6 +110,12 @@ const ES = {
 };
 
 const EN = {
+  "tab.plan": "My plan", "plan.ver": "See my plan", "plan.empezar": "Start session", "plan.ver_sesion": "See the session", "plan.marcar": "Mark as done", "plan.hecho": "Done · {m} min",
+  "plan.objetivo": "Weekly goal", "plan.objetivo_txt": "{m} minutes and {s} sessions a week (aerobic, strength and balance).", "plan.racha": "{n} week(s) in a row on target", "plan.racha0": "No streak yet",
+  "plan.fuerza_eq_corto": "Strength+bal.", "plan.descanso_corto": "Rest", "plan.descanso_txt": "Rest day or an easy walk. If you feel like it, 20–30 minutes of walking count.",
+  "plan.compartir_semana": "Share my week", "plan.semana_txt": "this week {n} sessions · {m} of {o} min", "plan.nota": "Template plan guided by your medication and data; your doctor or trainer can adjust it. Sessions are stored on this device.",
+  "prog.titulo": "Next step:", "prog.pocos_datos": "log your sessions ({n} so far) and in two weeks we will tell you whether to progress.", "prog.progresar": "{n} sessions in 2 weeks at an average effort of {r}/10: time to step up a little (5 more aerobic minutes or one more strength set).", "prog.mantener": "{n} sessions in 2 weeks, effort {r}/10: keep this level for another week or two.", "prog.reducir": "average effort {r}/10 is too high: reduce intensity or duration and recover.", "prog.sintomas": "you logged symptoms in a session: do not progress and discuss it with your doctor.",
+  "sesion.cab": "Guided session", "sesion.iniciar": "Start", "sesion.pausar": "Pause", "sesion.reanudar": "Resume", "sesion.terminar": "Finish and log",
   "inf.ficha.buscar": "Search “{n}” on CIMA", "inf.ficha.buscar.t": "Opens the AEMPS search; type {n} in the search box",
   "error.inesperado": "Something went wrong in the app. You can keep using it; if it happens again, let us know.", "error.informar": "Report",
   "acc.caja": "Photo of a box", "acc.dictar": "Dictate", "modo.badge": "Professional", "pdf.generado": "PDF generated.",
@@ -204,6 +216,12 @@ const EN = {
 };
 
 const CA = {
+  "tab.plan": "El meu pla", "plan.ver": "Veure el meu pla", "plan.empezar": "Començar sessió", "plan.ver_sesion": "Veure la sessió", "plan.marcar": "Marcar com a feta", "plan.hecho": "Feta · {m} min",
+  "plan.objetivo": "Objectiu setmanal", "plan.objetivo_txt": "{m} minuts i {s} sessions a la setmana (aeròbic, força i equilibri).", "plan.racha": "{n} setmana/es seguides complint", "plan.racha0": "Encara sense ratxa",
+  "plan.fuerza_eq_corto": "Força+eq.", "plan.descanso_corto": "Descans", "plan.descanso_txt": "Dia de descans o passeig suau. Si ve de gust, 20–30 minuts caminant compten.",
+  "plan.compartir_semana": "Compartir la meva setmana", "plan.semana_txt": "aquesta setmana {n} sessions · {m} de {o} min", "plan.nota": "Pla tipus orientat per la seva medicació i les seves dades; el metge o entrenador pot ajustar-lo. Les sessions es desen en aquest dispositiu.",
+  "prog.titulo": "Següent pas:", "prog.pocos_datos": "registri les sessions ({n} fins ara) i en dues setmanes li direm si toca progressar.", "prog.progresar": "{n} sessions en 2 setmanes amb esforç mitjà {r}/10: toca pujar una mica (5 minuts més d'aeròbic o una sèrie més de força).", "prog.mantener": "{n} sessions en 2 setmanes, esforç {r}/10: mantingui aquest nivell una o dues setmanes més.", "prog.reducir": "esforç mitjà {r}/10, massa alt: redueixi intensitat o durada i recuperi.", "prog.sintomas": "ha anotat símptomes en alguna sessió: no progressi i comenti-ho amb el metge.",
+  "sesion.cab": "Sessió guiada", "sesion.iniciar": "Iniciar", "sesion.pausar": "Pausar", "sesion.reanudar": "Reprendre", "sesion.terminar": "Acabar i registrar",
   "inf.ficha.buscar": "Cercar «{n}» a CIMA", "inf.ficha.buscar.t": "Obre el cercador de l'AEMPS; escriviu {n} al camp de cerca",
   "error.inesperado": "Alguna cosa ha fallat a l'aplicació. Podeu continuar; si es repeteix, informeu-nos.", "error.informar": "Informar",
   "acc.caja": "Foto d'una capsa", "acc.dictar": "Dictar", "modo.badge": "Professional", "pdf.generado": "PDF generat.",
@@ -304,6 +322,12 @@ const CA = {
 };
 
 const GL = {
+  "tab.plan": "O meu plan", "plan.ver": "Ver o meu plan", "plan.empezar": "Comezar sesión", "plan.ver_sesion": "Ver a sesión", "plan.marcar": "Marcar como feita", "plan.hecho": "Feita · {m} min",
+  "plan.objetivo": "Obxectivo semanal", "plan.objetivo_txt": "{m} minutos e {s} sesións á semana (aeróbico, forza e equilibrio).", "plan.racha": "{n} semana(s) seguidas cumprindo", "plan.racha0": "Aínda sen racha",
+  "plan.fuerza_eq_corto": "Forza+eq.", "plan.descanso_corto": "Descanso", "plan.descanso_txt": "Día de descanso ou paseo suave. Se lle apetece, 20–30 minutos camiñando contan.",
+  "plan.compartir_semana": "Compartir a miña semana", "plan.semana_txt": "esta semana {n} sesións · {m} de {o} min", "plan.nota": "Plan tipo orientado pola súa medicación e os seus datos; o seu médico ou adestrador pode axustalo. As sesións rexístranse neste dispositivo.",
+  "prog.titulo": "Seguinte paso:", "prog.pocos_datos": "rexistre as súas sesións ({n} ata agora) e en dúas semanas dirémoslle se toca progresar.", "prog.progresar": "{n} sesións en 2 semanas con esforzo medio {r}/10: toca subir un pouco (5 minutos máis de aeróbico ou unha serie máis en forza).", "prog.mantener": "{n} sesións en 2 semanas, esforzo {r}/10: manteña este nivel unha ou dúas semanas máis.", "prog.reducir": "esforzo medio {r}/10, demasiado alto: reduza intensidade ou duración e recupere.", "prog.sintomas": "anotou síntomas nalgunha sesión: non progrese e coménteo co seu médico.",
+  "sesion.cab": "Sesión guiada", "sesion.iniciar": "Iniciar", "sesion.pausar": "Pausar", "sesion.reanudar": "Retomar", "sesion.terminar": "Rematar e rexistrar",
   "inf.ficha.buscar": "Buscar «{n}» en CIMA", "inf.ficha.buscar.t": "Abre o buscador da AEMPS; escriba {n} no campo de busca",
   "error.inesperado": "Algo fallou na aplicación. Pode seguir usándoa; se se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto dunha caixa", "acc.dictar": "Ditar", "modo.badge": "Profesional", "pdf.generado": "PDF xerado.",

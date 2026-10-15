@@ -59,7 +59,7 @@
 <link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151151">
+<link rel="stylesheet" href="css/style.css?v=202610151159">
 </head>
 <body class="cargando">
 
@@ -209,6 +209,7 @@
       <button type="button" role="tab" data-tab="fuerza"><span data-i18n="tab.fuerza">Fuerza</span> <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="equilibrio"><span data-i18n="tab.equilibrio">Equilibrio</span> <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="cuando"><span data-i18n="tab.cuando">¿Cuándo?</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="plan"><span data-i18n="tab.plan">Mi plan</span> <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="interacciones"><span data-i18n="tab.interacciones">Interacciones</span> <span class="cnt"></span></button>
     </div>
     <div id="contenido-tab" role="tabpanel"></div>
@@ -232,6 +233,7 @@
 </main>
 
 <dialog id="qr" class="ficha qr" aria-label="Código QR"><div class="ficha-cab"><p data-i18n="qr.texto">Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).</p><button type="button" class="btn-sec sm" id="qr-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="qr-cuerpo" class="qr-cuerpo"></div></dialog>
+<dialog id="sesion" class="ficha sesion" aria-label="Sesión"><div class="ficha-cab"><p data-i18n="sesion.cab">Sesión guiada</p><button type="button" class="btn-sec sm" id="sesion-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="sesion-cuerpo" class="ficha-cuerpo"></div></dialog>
 <dialog id="ficha" class="ficha" aria-labelledby="ficha-titulo">
   <div class="ficha-cab">
     <div class="buscador"><label for="ficha-buscar" class="sr-only" data-i18n="ficha.sr">Buscar fármaco</label><input id="ficha-buscar" type="search" placeholder="Marca o principio activo…" data-i18n-ph="ficha.ph" autocomplete="off"><ul id="ficha-sugerencias" role="listbox" hidden></ul></div>
@@ -246,6 +248,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202610151151"></script>
+<script type="module" src="js/app.js?v=202610151159"></script>
 </body>
 </html>

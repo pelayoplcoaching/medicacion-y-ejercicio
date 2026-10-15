@@ -405,3 +405,76 @@ export function sintomasPosibles(res) {
     return { ...s, farmacos };
   });
 }
+
+/* ---------- Mi plan: sesiones concretas, objetivo semanal y progresión ---------- */
+/** Día de la semana (0 domingo … 6 sábado) → tipo de sesión del plan tipo. */
+export const PLAN_SEMANA = { 1: "fuerza_eq", 2: "aerobico", 3: "fuerza", 4: "aerobico", 5: "fuerza_eq", 6: "aerobico", 0: "descanso" };
+
+/** Bloques de una sesión según tipo y nivel (fragil / estándar). Tiempos en minutos. */
+export function sesionTipo(tipo, { fragil = false, minutosAer = 30 } = {}) {
+  if (tipo === "aerobico") {
+    const principal = fragil ? 10 : minutosAer;
+    return { tipo, titulo: "Aeróbico", min: principal + 10, bloques: [
+      { nombre: "Calentamiento", detalle: "Caminar suave, mover brazos y tobillos", min: 5 },
+      { nombre: fragil ? "Marcha a paso cómodo" : "Marcha, bici o elíptica", detalle: fragil ? "Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere." : "Ritmo en el que puede hablar pero no cantar (RPE 4–6).", min: principal },
+      { nombre: "Enfriamiento", detalle: "Bajar el ritmo poco a poco; no pararse de golpe", min: 5 },
+    ] };
+  }
+  if (tipo === "equilibrio") {
+    return { tipo, titulo: "Equilibrio", min: 12, bloques: [
+      { nombre: "Levantarse y sentarse", detalle: "De una silla, 8–10 veces, con las manos en el pecho si puede", min: 3 },
+      { nombre: "Apoyo sobre un pie", detalle: "Junto a una pared o silla, 10–20 s cada pierna, 3 veces", min: 3 },
+      { nombre: "Marcha talón-punta", detalle: "10 pasos en línea, con apoyo cerca; ida y vuelta 3 veces", min: 3 },
+      { nombre: "Giros lentos y alcances", detalle: "Girar 90° a cada lado y alcanzar objetos a distintas alturas", min: 3 },
+    ] };
+  }
+  const fuerzaFragil = [
+    { nombre: "Levantarse de la silla", detalle: "2 series de 8–12; si es fácil, sin manos", min: 5 },
+    { nombre: "Elevación de talones", detalle: "Apoyado en el respaldo, 2 × 10–15", min: 3 },
+    { nombre: "Extensión de rodilla sentado", detalle: "Estirar la pierna y aguantar 2 s, 2 × 10 cada lado", min: 4 },
+    { nombre: "Flexión de brazos con botella o banda", detalle: "2 × 10–12 cada brazo", min: 4 },
+    { nombre: "Puente de glúteo o marcha en el sitio", detalle: "2 × 10, o 1 minuto de marcha levantando rodillas", min: 4 },
+  ];
+  const fuerzaStd = [
+    { nombre: "Sentadilla a la silla", detalle: "2–3 series de 8–15; bajar despacio, subir sin impulso", min: 6 },
+    { nombre: "Empuje (flexiones en pared o inclinadas)", detalle: "2–3 × 8–15", min: 5 },
+    { nombre: "Remo con banda elástica", detalle: "2–3 × 10–15, hombros atrás", min: 5 },
+    { nombre: "Bisagra de cadera", detalle: "Con mancuerna ligera o botella, 2–3 × 8–12; espalda recta", min: 5 },
+    { nombre: "Elevación de talones", detalle: "2 × 12–15", min: 3 },
+    { nombre: "Press de hombro ligero", detalle: "2 × 10–12; respire siempre, nunca aguante el aire", min: 5 },
+  ];
+  const bloques = (fragil ? fuerzaFragil : fuerzaStd).map((b) => ({ ...b }));
+  const conEq = tipo === "fuerza_eq";
+  if (conEq) bloques.push({ nombre: "Equilibrio (5 min)", detalle: "Apoyo sobre un pie y marcha talón-punta, con apoyo cerca", min: 5 });
+  return { tipo, titulo: conEq ? "Fuerza y equilibrio" : "Fuerza", min: bloques.reduce((n, b) => n + b.min, 0) + 5, bloques: [{ nombre: "Calentamiento", detalle: "Marcha suave y movilidad de hombros, caderas y tobillos", min: 5 }, ...bloques] };
+}
+
+/** Objetivo semanal: minutos y sesiones (OMS/ACSM: 150 min aeróbico + 2 fuerza; en fragilidad se empieza por 90 min). */
+export function objetivoSemanal({ fragil = false } = {}) {
+  return { min: fragil ? 90 : 150, sesiones: fragil ? 4 : 5 };
+}
+
+/** Semanas consecutivas (hasta esta) cumpliendo el objetivo de minutos. */
+export function rachaSemanas(diario, objMin, ahora = new Date()) {
+  const lunes = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+  let ini = lunes(ahora), racha = 0;
+  for (let i = 0; i < 52; i++) {
+    const fin = new Date(ini); fin.setDate(ini.getDate() + 7);
+    const min = diario.filter((x) => { const d = new Date(x.fecha + "T12:00"); return d >= ini && d < fin; }).reduce((n, x) => n + (x.min || 0), 0);
+    if (min >= objMin) racha++; else if (i > 0) break; // la semana en curso no rompe la racha
+    ini = new Date(ini); ini.setDate(ini.getDate() - 7);
+  }
+  return racha;
+}
+
+/** Sugerencia de progresión a partir de las últimas 2 semanas del diario. */
+export function progresion(diario, ahora = Date.now()) {
+  const ult = diario.filter((x) => (ahora - new Date(x.fecha + "T12:00")) / 864e5 <= 14);
+  if (ult.length < 4) return { clave: "pocos_datos", n: ult.length };
+  const rpe = ult.reduce((n, x) => n + (x.rpe || 5), 0) / ult.length;
+  const sintomas = ult.some((x) => (x.sintomas || []).some((s) => ["mareo", "palpitaciones", "hipoglucemia", "sangrado"].includes(s)));
+  if (sintomas) return { clave: "sintomas", n: ult.length, rpe: rpe.toFixed(1) };
+  if (rpe >= 7.5) return { clave: "reducir", n: ult.length, rpe: rpe.toFixed(1) };
+  if (ult.length >= 6 && rpe <= 6) return { clave: "progresar", n: ult.length, rpe: rpe.toFixed(1) };
+  return { clave: "mantener", n: ult.length, rpe: rpe.toFixed(1) };
+}

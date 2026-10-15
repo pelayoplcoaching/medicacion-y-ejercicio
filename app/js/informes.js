@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151151";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151151";
+import { jspdf } from "./libs.js?v=202610151159";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo } from "./engine.js?v=202610151159";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -421,6 +421,17 @@ export async function pdfPaciente(kb, res, ctx) {
     { size: 8.5 }
   );
 
+  {
+    const fragil = (ctx.condiciones || new Set()).has("fragil") || (ctx.condiciones || new Set()).has("nyha34");
+    const nombres = { fuerza_eq: "Fuerza y equilibrio", aerobico: "Aeróbico (caminar, bici…)", fuerza: "Fuerza", descanso: "Descanso o paseo suave" };
+    const dias = [["Lunes", 1], ["Martes", 2], ["Miércoles", 3], ["Jueves", 4], ["Viernes", 5], ["Sábado", 6], ["Domingo", 0]];
+    pg.seccion("Su semana", `plan tipo: ${fragil ? "sesiones cortas, varias veces al día si hace falta" : "unos 150 minutos y 5 sesiones a la semana"}; ajústelo con su médico o entrenador`);
+    pg.tabla(
+      [{ t: "Día", w: .16 }, { t: "Sesión", w: .3 }, { t: "Qué hacer", w: .54 }],
+      dias.map(([d, n]) => { const tipo = PLAN_SEMANA[n]; const s = tipo === "descanso" ? null : sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }); return [{ t: d, bold: true }, s ? `${nombres[tipo]} · ${s.min} min` : nombres[tipo], s ? s.bloques.map((b) => `${b.nombre} (${b.min}′)`).join(" · ") : "Si le apetece, 20–30 minutos caminando cuentan."]; }),
+      { size: 8 }
+    );
+  }
   seccionCuando(pg, ctx, { paciente: true });
 
   const esencial = loEsencial(res, 5);
