@@ -1,7 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610150904";
+import { jspdf } from "./libs.js?v=202610150912";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610150912";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -271,7 +272,7 @@ function seccionCuando(pg, ctx, { paciente = false } = {}) {
 
 /* ---------- INFORME CLÍNICO (médico) ---------- */
 export async function pdfMedico(kb, res, ctx) {
-  const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
+  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo.png");
   const pg = new Doc(doc, font, logo, { titulo: "Informe clínico: medicación y ejercicio", subtitulo: "Prescripción de ejercicio adaptada al tratamiento farmacológico", tipo: "Documento para el profesional sanitario" });
@@ -361,7 +362,7 @@ export async function pdfMedico(kb, res, ctx) {
 
 /* ---------- SU PLAN (paciente) ---------- */
 export async function pdfPaciente(kb, res, ctx) {
-  const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
+  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo.png");
   const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra mayor y solo lo esencial

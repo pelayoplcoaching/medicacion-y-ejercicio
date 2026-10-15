@@ -1,23 +1,14 @@
 /* OCR en el navegador con Tesseract.js (se carga bajo demanda; el modelo en español se descarga la primera vez). */
-const TESSERACT_JS = "https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js";
+import { tesseract, pdfjs } from "./libs.js?v=202610150912";
 const LANG_PATH = "https://tessdata.projectnaptha.com/4.0.0_fast";
 
 let worker = null;
 
-function cargarScript(src) {
-  return new Promise((ok, ko) => {
-    if (document.querySelector(`script[src="${src}"]`)) return ok();
-    const s = document.createElement("script");
-    s.src = src; s.onload = ok; s.onerror = () => ko(new Error("no se ha podido cargar el motor de OCR"));
-    document.head.append(s);
-  });
-}
 
 async function obtenerWorker(progreso) {
   if (worker) return worker;
-  await cargarScript(TESSERACT_JS);
-  if (!window.Tesseract) throw new Error("motor de OCR no disponible");
-  worker = await window.Tesseract.createWorker("spa", 1, {
+  const T = await tesseract();
+  worker = await T.createWorker("spa", 1, {
     langPath: LANG_PATH,
     logger: (m) => {
       if (!progreso) return;
@@ -62,8 +53,8 @@ export async function textoDeImagen(src, progreso) {
 
 /** OCR de un PDF escaneado: renderiza cada página con pdf.js y la reconoce. */
 export async function textoDePdfEscaneado(file, progreso, maxPaginas = 6) {
-  if (!window.pdfjsLib) throw new Error("lector de PDF no disponible");
-  const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lib = await pdfjs();
+  const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
   const partes = [];
   for (let p = 1; p <= Math.min(pdf.numPages, maxPaginas); p++) {
     progreso?.(`Página ${p} de ${Math.min(pdf.numPages, maxPaginas)}…`);

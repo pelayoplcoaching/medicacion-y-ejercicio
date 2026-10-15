@@ -138,6 +138,20 @@ console.log("Motor de reglas");
   check("sin condiciones no se disparan", !res2.combinadas.some((c) => ["renal_grave", "fragil_plan", "nyha34"].includes(c.regla.id)));
 }
 
+console.log("Tolerancia a erratas y OCR");
+{
+  check("errata: bisporolol → bisoprolol", buscar(indice, "bisporolol", 1)[0]?.pid === "bisoprolol" && buscar(indice, "bisporolol", 1)[0]?.aproximado === true);
+  check("errata: metfromina → metformina", buscar(indice, "metfromina", 1)[0]?.pid === "metformina");
+  check("errata: emconcro → Emconcor", buscar(indice, "emconcro", 1)[0]?.pid === "bisoprolol");
+  check("sin falsos positivos cortos", buscar(indice, "xyzq", 1).length === 0);
+  const r = extraerMedicacion(`Sintrom 4 0.5-0-0\nAdiro 100\nMetformina 850rng 1-0-1\nEnalapril l0 mg 1-0-0\nBisoprolol 2,5 mg`, indice);
+  check("dosis sin unidad plausible (Sintrom 4 → 2 mg por medio comprimido)", get(r, "acenocumarol")?.dosis === 2);
+  check("dosis sin unidad (Adiro 100)", get(r, "aas")?.dosis === 100);
+  check("OCR 850rng → 850 mg", get(r, "metformina")?.dosis === 850);
+  check("OCR l0 mg → 10 mg", get(r, "enalapril")?.dosis === 10);
+  check("coma decimal 2,5", get(r, "bisoprolol")?.dosis === 2.5);
+}
+
 console.log("Momentos y ¿cuándo entrenar?");
 {
   const r = extraerMedicacion(`FUROSEMIDA 40 MG 30 COMPRIMIDOS\n16/03/21\n1@desayuno\nLorazepam 1 mg 0-0-1\nNovorapid 6 UI en desayuno, comida y cena`, indice);

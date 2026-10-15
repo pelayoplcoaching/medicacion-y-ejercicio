@@ -31,10 +31,14 @@ scripts/
 
 Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, carpeta `app/`). Dominio personalizado: `medicacionyejercicio.fuerzabasadaenevidencia.com` (registro CNAME en IONOS → `pelayoplcoaching.github.io`; configurado en Settings → Pages → Custom domain). Metaetiquetas SEO / Open Graph / Twitter y `manifest.webmanifest` (instalable como app) en `app/index.html`; imagen para redes en `app/assets/og.png`.
 
+## Sin conexión
+
+`app/sw.js` guarda la aplicación, la base de conocimiento y las librerías de CDN al primer uso. El nombre de la caché lleva el sello de versión (`bump_version.py`), así que cada despliegue descarga la versión nueva en segundo plano y muestra «Hay una versión nueva · Actualizar». Las librerías externas (pdf.js, jsPDF, Tesseract) se cargan bajo demanda desde `js/libs.js`.
+
 ## Pruebas
 
 ```bash
-node scripts/test.mjs   # 34 comprobaciones de lector, búsqueda, motor y datos; ejecútelo antes de cada commit
+node scripts/test.mjs   # ~50 comprobaciones de lector, búsqueda, motor y datos; ejecútelo antes de cada commit
 ```
 
 ## Ejecutar en local

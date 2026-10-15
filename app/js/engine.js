@@ -41,6 +41,22 @@ export function construirIndice(kb, marcas = []) {
   return { porId, entradas };
 }
 
+/** Distancia de edición limitada (Levenshtein con corte). */
+function distancia(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]; let minFila = i;
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (cur[j] < minFila) minFila = cur[j];
+    }
+    if (minFila > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
 export function buscar(indice, q, limite = 8) {
   const n = normalizar(q);
   if (n.length < 2) return [];
@@ -57,6 +73,19 @@ export function buscar(indice, q, limite = 8) {
     vistos.add(k);
     res.push(e);
     if (res.length >= limite) break;
+  }
+  // sin resultados: tolerar erratas comparando con la primera palabra de cada entrada
+  if (!res.length && n.length >= 4) {
+    const max = n.length <= 6 ? 1 : 2;
+    const cand = [];
+    for (const e of indice.entradas) {
+      const w = e.norm.split(/[\s(\/]/)[0];
+      if (!w || Math.abs(w.length - n.length) > max) continue;
+      const d = distancia(n, w.slice(0, Math.max(n.length, w.length)), max);
+      if (d <= max) cand.push({ e, d });
+    }
+    cand.sort((a, b) => a.d - b.d || (a.e.tipo === "principio" ? -1 : 1));
+    for (const { e } of cand) { const k = e.tipo + ":" + e.texto; if (vistos.has(k)) continue; vistos.add(k); res.push({ ...e, aproximado: true }); if (res.length >= limite) break; }
   }
   return res;
 }

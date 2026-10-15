@@ -1,7 +1,7 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150904";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150904";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150904";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150904";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150912";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150912";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150912";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150912";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -50,9 +50,11 @@ const EJEMPLO = {
 };
 
 async function cargar() {
+  $("#kb-version").textContent = "Cargando la base de conocimiento…";
   const [kb, ddiCurado, ddi, marcas] = await Promise.all(
     ["kb.json", "ddi_curated.json", "ddi.json", "marcas.json"].map((f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null))
   );
+  if (!kb) { $("#kb-version").textContent = "No se ha podido cargar la base de conocimiento. Compruebe la conexión y recargue la página."; $("#kb-version").classList.add("error"); return; }
   datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: ddi || { pares: [] } };
   indice = construirIndice(kb, marcas || []);
   datos.indice = indice;
@@ -102,19 +104,29 @@ const inputBuscar = $("#buscar");
 const lista = $("#sugerencias");
 let seleccion = null;
 
+let timerSinResultado = null;
+function registrarSinResultado(q) {
+  try {
+    const l = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]");
+    if (!l.includes(q)) { l.push(q); localStorage.setItem("medex.sinresultado", JSON.stringify(l.slice(-30))); }
+  } catch {}
+}
 inputBuscar.addEventListener("input", () => {
   seleccion = null;
   $("#dosis-wrap").hidden = true;
   const res = buscar(indice, inputBuscar.value);
   lista.innerHTML = "";
   lista.hidden = !res.length;
+  clearTimeout(timerSinResultado);
+  const q = inputBuscar.value.trim();
+  if (!res.length && q.length >= 4) timerSinResultado = setTimeout(() => registrarSinResultado(q.toLowerCase()), 1500);
   for (const e of res) {
     const ref = indice.porId.get(e.pid);
     const li = document.createElement("li");
     li.setAttribute("role", "option");
     li.innerHTML = e.tipo === "combo"
       ? `<span>${e.texto}</span><small>Combinación: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
-      : `<span>${e.texto}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+      : `<span>${e.texto}${e.aproximado ? ' <em class="aprox">¿quería decir?</em>' : ""}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
     li.addEventListener("click", () => elegir(e));
     lista.append(li);
   }
@@ -322,7 +334,6 @@ async function descargarPdf(tipo) {
   const original = btn.textContent;
   btn.disabled = true; btn.textContent = "Generando…";
   try {
-    if (!window.jspdf) throw new Error("el generador de PDF no se ha cargado");
     const res = evaluar(datos, estado.meds, ctxActual());
     const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, estado.meds, estado.horas), horas: estado.horas };
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
@@ -337,7 +348,8 @@ async function descargarPdf(tipo) {
 $("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
 $$(".btn-sugerencia").forEach((b) => b.addEventListener("click", async () => {
   const lista = estado.meds.map((m) => `${m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
-  const cuerpo = `Hola Pelayo,\n\n[Describe aquí el error o la mejora]\n\n---\nVersión: ${datos.kb.version} · ${navigator.userAgent.slice(0, 80)}\nContexto: ${estado.edad ? estado.edad + " años" : "sin edad"}${estado.caidas ? ", caídas" : ""}${estado.condiciones.length ? ", " + estado.condiciones.join(", ") : ""}\nMedicación introducida: ${lista || "(ninguna)"}\n(No incluyas nombre ni datos identificativos de ningún paciente.)`;
+  let sinRes = []; try { sinRes = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]"); } catch {}
+  const cuerpo = `Hola Pelayo,\n\n[Describe aquí el error o la mejora]\n\n---\nVersión: ${datos.kb.version} · ${navigator.userAgent.slice(0, 80)}${sinRes.length ? "\nBúsquedas sin resultado en este dispositivo: " + sinRes.join("; ") : ""}\nContexto: ${estado.edad ? estado.edad + " años" : "sin edad"}${estado.caidas ? ", caídas" : ""}${estado.condiciones.length ? ", " + estado.condiciones.join(", ") : ""}\nMedicación introducida: ${lista || "(ninguna)"}\n(No incluyas nombre ni datos identificativos de ningún paciente.)`;
   const asunto = "Sugerencia · Medicación y Ejercicio (alfa)";
   const mailto = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
   try { await navigator.clipboard.writeText(cuerpo); } catch {}
@@ -578,3 +590,19 @@ function renderInteracciones(cont, res) {
 }
 
 cargar();
+
+/* ---------- sin conexión / instalable ---------- */
+if ("serviceWorker" in navigator && location.protocol === "https:" && !location.hostname.endsWith("claude.ai")) {
+  navigator.serviceWorker.register("sw.js").then((reg) => {
+    reg.addEventListener("updatefound", () => {
+      const nuevo = reg.installing;
+      nuevo?.addEventListener("statechange", () => {
+        if (nuevo.state === "installed" && navigator.serviceWorker.controller) {
+          const b = $("#aviso-actualizar"); b.hidden = false;
+          b.querySelector("button").addEventListener("click", () => { nuevo.postMessage("activar"); });
+        }
+      });
+    });
+    navigator.serviceWorker.addEventListener("controllerchange", () => location.reload());
+  }).catch(() => {});
+}

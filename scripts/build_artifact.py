@@ -9,7 +9,7 @@ app = ROOT / "app"
 html = (app / "index.html").read_text(encoding="utf-8")
 css = (app / "css/style.css").read_text(encoding="utf-8")
 mods = []
-for f in ["js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/app.js"]:
+for f in ["js/libs.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/app.js"]:
     js = (app / f).read_text(encoding="utf-8")
     js = re.sub(r"^export (async function|const|function) ", r"\1 ", js, flags=re.M)
     js = re.sub(r"^import .*?;\n", "", js, flags=re.M)

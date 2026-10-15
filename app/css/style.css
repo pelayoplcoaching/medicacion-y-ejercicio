@@ -360,3 +360,15 @@ ul.motivos li.nivel-rojo .punto { background: var(--alerta); } ul.motivos li.niv
 .perfiles li .nom { flex: 1 1 120px; font-weight: 600; min-width: 0; }
 .perfiles li small { flex: 1 1 100%; }
 .perfiles .btn-sec.sm { min-height: 32px; padding: 4px 10px; font-size: .8rem; }
+
+/* ---------- carga, actualización, impresión ---------- */
+#kb-version.error { color: var(--alerta); font-weight: 600; }
+.aprox { font-style: normal; font-size: .72rem; color: var(--precaucion-ink); background: var(--precaucion-soft); padding: 1px 6px; border-radius: 999px; margin-left: 6px; font-weight: 600; }
+.aviso-actualizar { position: fixed; left: 50%; transform: translateX(-50%); top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 40; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 10px 8px 16px; box-shadow: 0 10px 30px -12px rgba(28, 24, 48, .4); display: flex; align-items: center; gap: 10px; font-size: .9rem; max-width: calc(100vw - 32px); }
+@media print {
+  body { padding: 0; background: #fff; color: #000; }
+  .barra-inferior, .aviso-actualizar, .tabs, aside .acciones, #dosis-wrap, .buscador, .descargas, .cabecera-informe .acciones, .utiles, .modo, #perfiles, .lema { display: none !important; }
+  .contenedor { grid-template-columns: 1fr; }
+  details { display: block; } details > summary { list-style: none; } details:not([open]) > *:not(summary) { display: block !important; }
+  article, details.farmaco { break-inside: avoid; }
+}

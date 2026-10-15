@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150904">
+<link rel="stylesheet" href="css/style.css?v=202610150912">
 </head>
 <body>
 
@@ -164,7 +164,7 @@
         <textarea id="pegar" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
         <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
         </div>
-      <small id="pegar-aviso" class="aviso-import"></small>
+      <small id="pegar-aviso" class="aviso-import" aria-live="polite"></small>
       <div id="no-reconocidos" class="no-reconocidos" hidden></div>
 
       <div id="ejemplo-banner" class="banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
@@ -188,7 +188,7 @@
       <button type="button" role="tab" data-tab="cuando">¿Cuándo? <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="interacciones">Interacciones <span class="cnt"></span></button>
     </div>
-    <div id="contenido-tab"></div>
+    <div id="contenido-tab" role="tabpanel"></div>
     <div id="perfil"></div>
     <textarea id="informe-texto" hidden readonly></textarea>
     <div class="descargas">
@@ -198,7 +198,7 @@
         <button type="button" class="btn" id="btn-pdf-paciente">Resumen para usted (PDF)</button>
       </div>
       <small>El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
-      <small id="pdf-aviso"></small>
+      <small id="pdf-aviso" aria-live="polite"></small>
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
@@ -206,13 +206,11 @@
   </section>
 </main>
 
+<div class="aviso-actualizar" id="aviso-actualizar" hidden>Hay una versión nueva. <button type="button" class="btn-sec sm">Actualizar</button></div>
 <div class="barra-inferior" id="barra-inferior" hidden>
   <button type="button" class="btn" id="btn-ir-informe">Ver el informe <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="module" src="js/app.js?v=202610150904"></script>
+<script type="module" src="js/app.js?v=202610150912"></script>
 </body>
 </html>

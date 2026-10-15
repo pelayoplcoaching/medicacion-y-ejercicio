@@ -10,6 +10,11 @@ s = p.read_text(encoding="utf-8")
 s = re.sub(r'(href="css/style\.css)(\?v=\d+)?"', rf'\1?v={v}"', s)
 s = re.sub(r'(src="js/app\.js)(\?v=\d+)?"', rf'\1?v={v}"', s)
 p.write_text(s, encoding="utf-8")
+sw = p.parent / "sw.js"
+if sw.exists():
+    t = sw.read_text(encoding="utf-8")
+    t = re.sub(r'const VERSION = "[^"]*";', f'const VERSION = "{v}";', t)
+    sw.write_text(t, encoding="utf-8")
 for js in (p.parent / "js").glob("*.js"):
     t = js.read_text(encoding="utf-8")
     t2 = re.sub(r'(from "\./[a-z]+\.js)(\?v=\d+)?"', rf'\1?v={v}"', t)

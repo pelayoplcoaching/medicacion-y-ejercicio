@@ -1,5 +1,6 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150904";
+import { pdfjs } from "./libs.js?v=202610150912";
+import { normalizar } from "./engine.js?v=202610150912";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -52,7 +53,19 @@ export function momentosDesdePauta(n, siguientes = []) {
  * Divide el texto en líneas y reconoce fármaco + dosis + tomas en cada una.
  * @returns {{reconocidos: Array, noReconocidos: string[]}}
  */
+/** Corrige errores típicos del OCR en unidades y números. */
+export function limpiarOcr(t) {
+  return t
+    .replace(/(\d)\s*(rng|mq|m9|mg\b|rrig)/gi, "$1 mg")
+    .replace(/(\d)\s*(rncg|rncq|mcq)/gi, "$1 mcg")
+    .replace(/\b([lI|])(\d)/g, "1$2").replace(/(\d)[lI|]\b/g, "$11")
+    .replace(/\bO(\d)/g, "0$1").replace(/(\d)O\b/g, "$10")
+    .replace(/(\d)\s*,\s*(\d)/g, "$1,$2")
+    .replace(/\s{2,}/g, " ");
+}
+
 export function extraerMedicacion(texto, indice) {
+  texto = limpiarOcr(texto);
   const cat = prepararCatalogo(indice);
   const reconocidos = [], noReconocidos = [];
   const vistos = new Set();
@@ -114,6 +127,11 @@ export function extraerMedicacion(texto, indice) {
       if (u === "mg" && unidad === "mcg") dosis *= 1000;
     } else if (hit.dosis != null) {
       dosis = hit.dosis; // presentación del nomenclátor
+    } else if (unidad === "mg" && (m = resto.match(/^\s*(\d+(?:[.,]\d+)?)(?!\s*(?:\/|%|h\b|x\b|-\d))\b/))) {
+      // número sin unidad justo tras el nombre ("Sintrom 4", "Adiro 100"): se acepta si es plausible
+      const v = parseFloat(m[1].replace(",", "."));
+      const umbral = ref.principio.umbral_mg?.alta;
+      if (umbral == null || (v > 0 && v <= umbral * 4)) dosis = v;
     }
     // comprimidos por toma ("2 comprimidos cada 12 h", "medio comprimido").
     // Un número grande delante de "comprimidos" justo tras la dosis es el tamaño del envase
@@ -158,9 +176,9 @@ export function extraerMedicacion(texto, indice) {
 /** Texto de un PDF usando pdf.js (global pdfjsLib cargado desde CDN).
  *  En hojas con columnas de tomas (Desayuno / Comida / Cena / Al acostarse) anota cada "1" con su columna: "1@desayuno". */
 export async function textoDePdf(file) {
-  if (!window.pdfjsLib) throw new Error("El lector de PDF no se ha podido cargar en este entorno.");
+  const lib = await pdfjs();
   const buf = await file.arrayBuffer();
-  const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
+  const pdf = await lib.getDocument({ data: buf }).promise;
   const lineas = [];
   for (let p = 1; p <= pdf.numPages; p++) {
     const page = await pdf.getPage(p);
