@@ -2,7 +2,8 @@
 """Genera app/data/ddi.json a partir de los CSV de DDInter 2.0.
 
 Uso:
-    python3 scripts/build_ddi.py data/raw/ddinter/*.csv
+    python3 scripts/build_ddi.py                      # lee todos los CSV de data/raw/ddinter/
+    python3 scripts/build_ddi.py C:\\Users\\yo\\Downloads  # o una carpeta / ficheros concretos
 
 Descarga previa (una sola vez): https://ddinter.scbdd.com/download/
 Descargue los ficheros "ddinter_downloads_code_X.csv" (uno por letra ATC: A, B, D, H, L, P, R, V)
@@ -18,8 +19,10 @@ Solo se conservan los pares en los que AMBOS fármacos están en la base de cono
 lo que mantiene el fichero pequeño (<100 KB) y cargable en el navegador.
 """
 import csv
+import glob
 import json
 import sys
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -53,15 +56,25 @@ def main(paths):
 
     pares: dict[tuple[str, str], str] = {}
     leidos = 0
+    sin_mapa = Counter()
     for path in paths:
-        with open(path, newline="", encoding="utf-8") as fh:
-            for row in csv.DictReader(fh):
+        print(f"Leyendo {path} …")
+        with open(path, newline="", encoding="utf-8-sig") as fh:
+            lector = csv.DictReader(fh)
+            if not lector.fieldnames or "Drug_A" not in lector.fieldnames:
+                print(f"  (se omite: cabecera inesperada {lector.fieldnames})")
+                continue
+            for row in lector:
                 leidos += 1
                 nivel = NIVEL.get(row.get("Level", "").strip().lower())
                 if not nivel:
                     continue
                 ids_a = en_to_ids.get(norm(row["Drug_A"]), ())
                 ids_b = en_to_ids.get(norm(row["Drug_B"]), ())
+                if not ids_a:
+                    sin_mapa[row["Drug_A"]] += 1
+                if not ids_b:
+                    sin_mapa[row["Drug_B"]] += 1
                 for a in ids_a:
                     for b in ids_b:
                         if a == b:
@@ -78,10 +91,34 @@ def main(paths):
         "pares": [[a, b, n] for (a, b), n in sorted(pares.items())],
     }
     OUT.write_text(json.dumps(salida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Filas leídas: {leidos:,}  →  pares conservados: {len(pares):,}  →  {OUT}")
+    print(f"Filas leídas: {leidos:,}  →  pares conservados: {len(pares):,}  →  {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KB)")
+    if sin_mapa:
+        print("\nFármacos de DDInter más frecuentes sin equivalente en la base (candidatos a añadir o a mapear en nombres_es_en.json):")
+        for n, c in sin_mapa.most_common(30):
+            print(f"  {c:6,}  {n}")
+
+
+def expandir(args):
+    """Acepta ficheros, carpetas o patrones (PowerShell no expande *.csv)."""
+    if not args:
+        args = [str(ROOT / "data" / "raw" / "ddinter")]
+    out = []
+    for a in args:
+        p = Path(a)
+        if p.is_dir():
+            out += sorted(str(x) for x in p.glob("*.csv"))
+        elif any(ch in a for ch in "*?"):
+            out += sorted(glob.glob(a))
+        elif p.exists():
+            out.append(str(p))
+        else:
+            print(f"No existe: {a}")
+    out = [x for x in out if "ddinter" in Path(x).name.lower()] or out
+    if not out:
+        sys.exit("No se encontró ningún CSV. Descargue los ficheros ddinter_downloads_code_*.csv de https://ddinter.scbdd.com/download/ "
+                 "y páselos como argumento (o guárdelos en data/raw/ddinter/).")
+    return out
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        sys.exit(__doc__)
-    main(sys.argv[1:])
+    main(expandir(sys.argv[1:]))
