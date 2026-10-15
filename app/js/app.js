@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151126";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151126";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151126";
-import { cargarScript } from "./libs.js?v=202610151126";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151126";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151126";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151136";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151136";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151136";
+import { cargarScript } from "./libs.js?v=202610151136";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151136";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151136";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -114,15 +114,26 @@ function renderVersion() {
   $("#kb-version").textContent = t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size });
 }
 
+const cargarJson = (f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 async function cargar() {
   $("#kb-version").textContent = "Cargando la base de conocimiento…";
-  const [kb, ddiCurado, ddi, marcas, fichas] = await Promise.all(
-    ["kb.json", "ddi_curated.json", "ddi.json", "marcas.json", "fichas.json"].map((f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null))
-  );
+  // Fase 1: lo imprescindible (base de conocimiento e interacciones revisadas, ~400 KB) → la app ya responde
+  const [kb, ddiCurado] = await Promise.all([cargarJson("kb.json"), cargarJson("ddi_curated.json")]);
   if (!kb) { $("#kb-version").textContent = t("kb.error"); $("#kb-version").classList.add("error"); return; }
-  datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: ddi || { pares: [] }, fichas: fichas || {} };
-  indice = construirIndice(kb, marcas || []);
+  datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: { pares: [] }, fichas: {} };
+  indice = construirIndice(kb, []);
   datos.indice = indice;
+  // Fase 2, en segundo plano: nomenclátor (1 MB), DDInter y fichas; se reconstruye el índice sin interrumpir
+  Promise.all([cargarJson("marcas.json"), cargarJson("ddi.json"), cargarJson("fichas.json")]).then(([marcas, ddi, fichas]) => {
+    if (ddi) datos.ddi = ddi;
+    if (fichas) datos.fichas = fichas;
+    if (marcas?.length) {
+      const kbFresco = JSON.parse(JSON.stringify(kb)); // construirIndice añade principios sintéticos a las clases
+      indice = construirIndice(kbFresco, marcas); datos.kb = kbFresco; datos.indice = indice;
+      restaurar(); // por si el estado guardado tenía fármacos del nomenclátor (atc:…)
+    }
+    renderVersion(); render();
+  });
   renderVersion();
   ponerIconos();
   document.body.classList.remove("cargando");
@@ -137,10 +148,24 @@ async function cargar() {
 function guardar() {
   try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas })); } catch {}
 }
+/** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
+function numeroEntre(v, min, max) { const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
+function sanearMeds(meds) {
+  if (!Array.isArray(meds)) return [];
+  return meds.filter((m) => m && typeof m.pid === "string" && indice.porId.has(m.pid)).slice(0, 60).map((m) => ({
+    pid: m.pid,
+    dosis: numeroEntre(m.dosis, 0, 1e6),
+    tomas: numeroEntre(m.tomas, 1, 12) || 1,
+    unidad: typeof m.unidad === "string" ? m.unidad.slice(0, 20) : undefined,
+    momentos: Array.isArray(m.momentos) ? m.momentos.filter((x) => MOMENTOS.includes(x)) : momentosPorDefecto(numeroEntre(m.tomas, 1, 12) || 1),
+    aDemanda: !!m.aDemanda, pausado: !!m.pausado, combo: typeof m.combo === "string" ? m.combo.slice(0, 80) : undefined,
+  }));
+}
+
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) } });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) } });
   } catch {}
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
@@ -426,7 +451,7 @@ function renderPerfiles() {
     li.innerHTML = `<span class="nom">${pf.nombre}</span><button type="button" class="btn-sec sm" data-a="cargar">${t("perf.cargar")}</button><button type="button" class="btn-sec sm" data-a="actualizar">${t("perf.actualizar")}</button><button type="button" class="btn-sec sm" data-a="borrar">${t("perf.borrar")}</button><small>${n} ${t("perf.farmacos")} · ${new Date(pf.fecha).toLocaleDateString(idioma())}${pf.estado.edad ? " · " + pf.estado.edad + " " + t("perf.anos") : ""}</small>`;
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
-      Object.assign(estado, { meds: structuredClone(e.meds), edad: e.edad ?? null, caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, ejemplo: false });
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
       const dias = Math.round((Date.now() - pf.fecha) / 864e5);
@@ -793,13 +818,14 @@ function renderHoy() {
     <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
     ${diarioAbierto ? `<form class="registro" id="form-registro">
       <div class="chips">${TIPOS_SESION.map((x) => `<label class="chip chip-btn"><input type="radio" name="tipo" value="${x}"${x === (plan.tipo === "descanso" ? "paseo" : plan.tipo) ? " checked" : ""}> ${t("sesion." + x)}</label>`).join("")}</div>
-      <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label>${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><output>5</output></label></div>
+      <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label>${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5"><output>5</output></label></div>
       <small>${t("hoy.sintomas")}</small>
       <div class="chips">${SINTOMAS.slice(0, 7).map((x) => `<label class="chip chip-btn"><input type="checkbox" name="sint" value="${x.id}"> ${x.nombre}</label>`).join("")}</div>
       <div class="acciones" style="margin:8px 0 0"><button type="submit" class="btn sm">${t("perf.guardar")}</button></div>
     </form>` : ""}
     ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
   $("#btn-registrar").addEventListener("click", () => { diarioAbierto = !diarioAbierto; renderHoy(); });
+  box.querySelector("input[name=rpe]")?.addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
   box.querySelector("#form-registro")?.addEventListener("submit", (ev) => {
     ev.preventDefault();
     const f = new FormData(ev.target);
@@ -1153,6 +1179,17 @@ inputBuscar.addEventListener("keydown", (ev) => {
   else return;
   items.forEach((x, k) => x.classList.toggle("activa", k === i)); items[i].scrollIntoView({ block: "nearest" });
 }, true);
+
+/* ---------- errores inesperados: aviso y botón para informar, nunca una pantalla en blanco ---------- */
+let ultimoError = 0;
+function informarError(msg) {
+  if (Date.now() - ultimoError < 5000) return; ultimoError = Date.now();
+  const txt = String(msg || "").slice(0, 200);
+  try { localStorage.setItem("medex.ultimoerror", `${new Date().toISOString()} ${txt}`); } catch {}
+  toast(t("error.inesperado"), { accion: t("error.informar"), onAccion: () => window.open(urlSugerencia({ lista: "ERROR: " + txt }), "_blank", "noopener"), ms: 12000 });
+}
+window.addEventListener("error", (e) => informarError(e.message));
+window.addEventListener("unhandledrejection", (e) => informarError(e.reason?.message || e.reason));
 
 cargar();
 

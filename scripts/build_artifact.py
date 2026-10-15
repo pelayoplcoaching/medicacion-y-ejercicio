@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 subprocess.run([sys.executable, str(ROOT / "scripts" / "bump_version.py")], check=True)
 app = ROOT / "app"
 html = (app / "index.html").read_text(encoding="utf-8")
-css = (app / "css/style.css").read_text(encoding="utf-8")
+css = (app / "css/style.css").read_text(encoding="utf-8").replace('url("../assets/', 'url("assets/')
 mods = []
 for f in ["js/libs.js", "js/i18n.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/app.js"]:
     js = (app / f).read_text(encoding="utf-8")

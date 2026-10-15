@@ -6,7 +6,8 @@
 <title>Novedades · Pauta Activa</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.ico" sizes="any">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <style>
   .novedades { max-width: 72ch; margin-inline: auto; }
@@ -28,6 +29,20 @@
 </header>
 <main class="novedades">
   <a class="btn-sec sm volver" href="./">← Volver a la aplicación</a>
+
+  <article>
+    <h2>15 de octubre de 2026 <small>· alfa 12 (pulido)</small></h2>
+    <ul>
+      <li>Carga en dos fases: la aplicación responde en cuanto llega la base de conocimiento; el nomenclátor (1 MB) y las interacciones amplias se cargan después en segundo plano.</li>
+      <li>Fuentes alojadas en la propia web (ya no se piden a Google Fonts): más rápido, funciona sin conexión y no hay terceros.</li>
+      <li>Política de seguridad de contenido (CSP) y política de referencia: la página solo puede cargar código de su propio origen y del CDN de los componentes.</li>
+      <li>Si una base nueva se publica, se descarga aunque la app esté instalada (red primero para los datos, caché de reserva).</li>
+      <li>Estado guardado y copias importadas se sanean antes de usarse; un error inesperado muestra un aviso con botón para informar, nunca una pantalla en blanco.</li>
+      <li>Auditoría de accesibilidad (axe-core) sin incidencias en los temas claro y oscuro y en ambos modos: contraste corregido en etiquetas y en el modo profesional oscuro, barra inferior como región de navegación.</li>
+      <li>Pruebas automáticas de interfaz (33 comprobaciones del flujo completo) que se ejecutan en cada cambio junto con las del motor.</li>
+      <li>Estilos de impresión para las secciones nuevas.</li>
+    </ul>
+  </article>
 
   <article>
     <h2>15 de octubre de 2026 <small>· alfa 11</small></h2>

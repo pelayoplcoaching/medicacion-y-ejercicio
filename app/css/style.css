@@ -2,6 +2,10 @@
    Layout: móvil primero, una columna (datos → medicación → informe) con barra inferior fija;
    desde 960px, dos columnas con la medicación fija a la izquierda y el informe a la derecha.
    Identidad: púrpura FBE como único acento; verde/ámbar/rojo solo para información clínica. */
+@font-face { font-family: "Manrope"; font-weight: 400; font-display: swap; src: url("../assets/fonts/Manrope-400.woff2") format("woff2"), url("../assets/fonts/Manrope-400.ttf") format("truetype"); }
+@font-face { font-family: "Manrope"; font-weight: 500 600; font-display: swap; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"); }
+@font-face { font-family: "Manrope"; font-weight: 700; font-display: swap; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"), url("../assets/fonts/Manrope-700.ttf") format("truetype"); }
+@font-face { font-family: "Manrope"; font-weight: 800; font-display: swap; src: url("../assets/fonts/Manrope-800.woff2") format("woff2"), url("../assets/fonts/Manrope-800.ttf") format("truetype"); }
 :root {
   --bg: #f7f6fb;
   --surface: #ffffff;
@@ -25,7 +29,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #110e1a; --surface: #1a1526; --surface-2: #221c31; --fg: #ebe7f5; --muted: #a59dbd;
-    --line: #2e2742; --line-strong: #46395f; --accent: #b89bf5; --accent-deep: #8f6ae0; --accent-soft: #2a2140; --accent-fg: #15102a;
+    --line: #2e2742; --line-strong: #46395f; --accent: #b89bf5; --accent-deep: #cdb8f8; --accent-soft: #2a2140; --accent-fg: #15102a;
     --alerta: #ff8f85; --alerta-soft: #3b1d1d; --alerta-ink: #ffb3ac;
     --precaucion: #ffbe6a; --precaucion-soft: #3a2a12; --precaucion-ink: #ffd49c;
     --info: #7fd4a4; --info-soft: #14301f; --info-ink: #a9e6c3;
@@ -34,7 +38,7 @@
 }
 :root[data-theme="dark"] {
   --bg: #110e1a; --surface: #1a1526; --surface-2: #221c31; --fg: #ebe7f5; --muted: #a59dbd;
-  --line: #2e2742; --line-strong: #46395f; --accent: #b89bf5; --accent-deep: #8f6ae0; --accent-soft: #2a2140; --accent-fg: #15102a;
+  --line: #2e2742; --line-strong: #46395f; --accent: #b89bf5; --accent-deep: #cdb8f8; --accent-soft: #2a2140; --accent-fg: #15102a;
   --alerta: #ff8f85; --alerta-soft: #3b1d1d; --alerta-ink: #ffb3ac;
   --precaucion: #ffbe6a; --precaucion-soft: #3a2a12; --precaucion-ink: #ffd49c;
   --info: #7fd4a4; --info-soft: #14301f; --info-ink: #a9e6c3;
@@ -414,7 +418,7 @@ details.alarma ul { margin: 10px 0 6px; padding-left: 20px; display: grid; gap: 
 details.alarma p { margin: 6px 0 0; font-size: .85rem; color: var(--muted); }
 .una-frase { display: block; font-size: .86rem; color: var(--text); opacity: .85; margin-top: 3px; line-height: 1.35; }
 details.farmaco[open] .una-frase { display: none; }
-.estado-regla { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; background: var(--line); color: var(--muted); vertical-align: middle; margin-left: 4px; }
+.estado-regla { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; background: var(--surface-2); color: var(--fg); border: 1px solid var(--line-strong); vertical-align: middle; margin-left: 4px; }
 .estado-regla.ok { background: color-mix(in srgb, var(--ok, #2e8b57) 18%, transparent); color: var(--ok, #2e8b57); }
 .fuente-regla { color: var(--muted); font-size: .78rem; }
 .util { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .92rem; margin-top: 10px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent-deep); }
@@ -425,7 +429,7 @@ html.retorno .solo-retorno { display: inline-flex; }
 @media (max-width: 639px) {
   html.retorno .cabecera .intro, html.retorno .cabecera .lema { display: none; }
 }
-@media print { .guia, .util, .compartir, details.alarma summary .flecha { display: none !important; } details.alarma { break-inside: avoid; } }
+@media print { .guia, .util, .compartir, details.alarma summary .flecha, .registro, #btn-registrar, #btn-escuchar, .rapido, .pasos, .toast { display: none !important; } details.alarma, .esencial, .hoy, .veredicto { break-inside: avoid; } details.alarma, details.sintomas, details.farmaco { open: true; } abbr.glos { text-decoration: none; } }
 
 /* ---------- alfa 9: iconos, toasts, pasos, edición en sitio, pausa, tiles ---------- */
 .ic { width: 18px; height: 18px; fill: currentColor; flex: 0 0 auto; vertical-align: -3px; }
@@ -547,9 +551,9 @@ h2 { font-size: clamp(1.15rem, 1rem + .5vw, 1.4rem); }
 .btn-sec[aria-busy="true"]::after { border-color: var(--line-strong); border-top-color: var(--accent); }
 @keyframes girar { to { transform: rotate(360deg); } }
 /* modo profesional: acento propio para saber en qué modo se está */
-body[data-modo="profesional"] { --accent: #0f766e; --accent-deep: #0b5a54; --accent-soft: #e2f3f1; }
-:root[data-theme="dark"] body[data-modo="profesional"], :root:not([data-theme="light"]) body[data-modo="profesional"] { --accent-soft: #11302d; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) body[data-modo="profesional"] { --accent-soft: #e2f3f1; } }
+body[data-modo="profesional"] { --accent: #0f766e; --accent-deep: #0b5a54; --accent-soft: #e2f3f1; --accent-fg: #ffffff; }
+:root[data-theme="dark"] body[data-modo="profesional"] { --accent: #5eead4; --accent-deep: #a7f3eb; --accent-soft: #11302d; --accent-fg: #062522; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body[data-modo="profesional"] { --accent: #5eead4; --accent-deep: #a7f3eb; --accent-soft: #11302d; --accent-fg: #062522; } }
 .badge-pro { display: inline-block; vertical-align: middle; font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); margin-left: 4px; }
 #btn-dictar[aria-pressed="true"] { background: var(--alerta-soft); color: var(--alerta-ink); border-color: var(--alerta); animation: pulso 1s ease-in-out infinite; }
 @keyframes pulso { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--alerta) 25%, transparent); } }

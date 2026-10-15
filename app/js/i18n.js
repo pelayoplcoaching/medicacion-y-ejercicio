@@ -4,6 +4,7 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "error.inesperado": "Algo ha fallado en la aplicación. Puede seguir usándola; si se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto de una caja", "acc.dictar": "Dictar", "modo.badge": "Profesional", "pdf.generado": "PDF generado.",
   "dictar.escuchando": "Escuchando… diga el nombre y la dosis («metformina 850, uno cero uno»). Pulse de nuevo para terminar.", "dictar.error": "No se ha podido usar el micrófono", "dictar.nada": "No se ha entendido nada; pruebe de nuevo más cerca del micrófono.", "dictar.origen": "el dictado",
   "caja.leyendo": "Leyendo la caja… (se procesa en su dispositivo)", "caja.nada": "No se ha reconocido ninguna marca en la foto. Pruebe con la cara donde está el nombre, bien iluminada.", "caja.ok": "Reconocido: {n}. Compruebe la dosis y pulse Añadir.",
@@ -102,6 +103,7 @@ const ES = {
 };
 
 const EN = {
+  "error.inesperado": "Something went wrong in the app. You can keep using it; if it happens again, let us know.", "error.informar": "Report",
   "acc.caja": "Photo of a box", "acc.dictar": "Dictate", "modo.badge": "Professional", "pdf.generado": "PDF generated.",
   "dictar.escuchando": "Listening… say the name and dose (“metformin 850, one zero one”). Tap again to finish.", "dictar.error": "The microphone could not be used", "dictar.nada": "Nothing was understood; try again closer to the microphone.", "dictar.origen": "dictation",
   "caja.leyendo": "Reading the box… (processed on your device)", "caja.nada": "No brand was recognised in the photo. Try the side with the name, well lit.", "caja.ok": "Recognised: {n}. Check the dose and press Add.",
@@ -200,6 +202,7 @@ const EN = {
 };
 
 const CA = {
+  "error.inesperado": "Alguna cosa ha fallat a l'aplicació. Podeu continuar; si es repeteix, informeu-nos.", "error.informar": "Informar",
   "acc.caja": "Foto d'una capsa", "acc.dictar": "Dictar", "modo.badge": "Professional", "pdf.generado": "PDF generat.",
   "dictar.escuchando": "Escoltant… digueu el nom i la dosi («metformina 850, u zero u»). Premeu de nou per acabar.", "dictar.error": "No s'ha pogut fer servir el micròfon", "dictar.nada": "No s'ha entès res; proveu de nou més a prop del micròfon.", "dictar.origen": "el dictat",
   "caja.leyendo": "Llegint la capsa… (es processa al dispositiu)", "caja.nada": "No s'ha reconegut cap marca a la foto. Proveu amb la cara on hi ha el nom, ben il·luminada.", "caja.ok": "Reconegut: {n}. Comproveu la dosi i premeu Afegir.",
@@ -298,6 +301,7 @@ const CA = {
 };
 
 const GL = {
+  "error.inesperado": "Algo fallou na aplicación. Pode seguir usándoa; se se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto dunha caixa", "acc.dictar": "Ditar", "modo.badge": "Profesional", "pdf.generado": "PDF xerado.",
   "dictar.escuchando": "Escoitando… diga o nome e a dose («metformina 850, un cero un»). Prema de novo para rematar.", "dictar.error": "Non se puido usar o micrófono", "dictar.nada": "Non se entendeu nada; probe de novo máis preto do micrófono.", "dictar.origen": "o ditado",
   "caja.leyendo": "Lendo a caixa… (procésase no seu dispositivo)", "caja.nada": "Non se recoñeceu ningunha marca na foto. Probe coa cara onde está o nome, ben iluminada.", "caja.ok": "Recoñecido: {n}. Comprobe a dose e prema Engadir.",

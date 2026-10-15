@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Pauta Activa · Medicación y Ejercicio</title>
 <meta name="description" content="Pauta Activa: introduce tu medicación habitual con la dosis y descubre qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre tus fármacos. Herramienta gratuita del Dr. Pelayo Fdez. Cidón (Fuerza Basada en Evidencia).">
@@ -54,10 +56,10 @@
   "publisher": {"@type": "Organization", "name": "Fuerza Basada en Evidencia", "logo": {"@type": "ImageObject", "url": "https://medicacionyejercicio.fuerzabasadaenevidencia.com/assets/icon-512.png"}}
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151126">
+<link rel="stylesheet" href="css/style.css?v=202610151136">
 </head>
 <body class="cargando">
 
@@ -239,11 +241,11 @@
 </dialog>
 <div class="aviso-actualizar" id="aviso-actualizar" hidden><span data-i18n="act.nueva">Hay una versión nueva.</span> <button type="button" class="btn-sec sm" data-i18n="act.btn">Actualizar</button></div>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
-<div class="barra-inferior" id="barra-inferior" hidden>
+<nav class="barra-inferior" id="barra-inferior" aria-label="Progreso" hidden>
   <div class="pasos" id="pasos"></div>
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
-</div>
+</nav>
 
-<script type="module" src="js/app.js?v=202610151126"></script>
+<script type="module" src="js/app.js?v=202610151136"></script>
 </body>
 </html>
