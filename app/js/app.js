@@ -1,10 +1,16 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150912";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150912";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150912";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150912";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150924";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150924";
+import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610150924";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150924";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610150924";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+// Idioma de la interfaz (la base de conocimiento sigue en español)
+aplicarIdioma(detectarIdioma());
+$("#idioma").value = idioma();
+$("#idioma").addEventListener("change", (e) => { aplicarIdioma(e.target.value); aplicarModo(); if (datos) { renderVersion(); render(); } });
 
 const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general" };
 const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma", "oxigeno", "embarazo"];
@@ -49,16 +55,20 @@ const EJEMPLO = {
   ],
 };
 
+function renderVersion() {
+  $("#kb-version").textContent = t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size });
+}
+
 async function cargar() {
   $("#kb-version").textContent = "Cargando la base de conocimiento…";
   const [kb, ddiCurado, ddi, marcas] = await Promise.all(
     ["kb.json", "ddi_curated.json", "ddi.json", "marcas.json"].map((f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null))
   );
-  if (!kb) { $("#kb-version").textContent = "No se ha podido cargar la base de conocimiento. Compruebe la conexión y recargue la página."; $("#kb-version").classList.add("error"); return; }
+  if (!kb) { $("#kb-version").textContent = t("kb.error"); $("#kb-version").classList.add("error"); return; }
   datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: ddi || { pares: [] } };
   indice = construirIndice(kb, marcas || []);
   datos.indice = indice;
-  $("#kb-version").textContent = `Base de conocimiento v${kb.version} · ${kb.clases.length} clases, ${indice.porId.size} principios activos`;
+  renderVersion();
   $("#aviso").textContent = kb.aviso;
   restaurar();
   const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
@@ -85,8 +95,8 @@ function restaurar() {
 function aplicarModo() {
   document.body.dataset.modo = estado.modo;
   $$(".modo button").forEach((b) => b.setAttribute("aria-checked", b.dataset.modo === estado.modo));
-  $("#btn-pdf-medico").textContent = estado.modo === "paciente" ? "Informe para su médico (PDF)" : "Informe clínico (PDF)";
-  $("#btn-pdf-paciente").textContent = estado.modo === "paciente" ? "Su plan (PDF)" : "Plan para el paciente (PDF)";
+  $("#btn-pdf-medico").textContent = estado.modo === "paciente" ? t("desc.medico") : t("desc.medico.pro");
+  $("#btn-pdf-paciente").textContent = estado.modo === "paciente" ? t("desc.paciente.pac") : t("desc.paciente.pro");
 }
 $("#btn-letra").addEventListener("click", () => {
   const on = !document.documentElement.classList.contains("letra-grande");
@@ -125,8 +135,8 @@ inputBuscar.addEventListener("input", () => {
     const li = document.createElement("li");
     li.setAttribute("role", "option");
     li.innerHTML = e.tipo === "combo"
-      ? `<span>${e.texto}</span><small>Combinación: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
-      : `<span>${e.texto}${e.aproximado ? ' <em class="aprox">¿quería decir?</em>' : ""}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+      ? `<span>${e.texto}</span><small>${t("buscar.combo")}: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
+      : `<span>${e.texto}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
     li.addEventListener("click", () => elegir(e));
     lista.append(li);
   }
@@ -143,7 +153,7 @@ function elegir(e) {
     inputBuscar.value = `${e.texto} (${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")})`;
     lista.hidden = true;
     const w = $("#dosis-wrap"); w.hidden = false;
-    $("#dosis").value = ""; $("#dosis").placeholder = "según presentación"; $("#dosis").disabled = true;
+    $("#dosis").value = ""; $("#dosis").placeholder = t("buscar.segun"); $("#dosis").disabled = true;
     $("#unidad").textContent = e.componentes.map((c) => (c.dosis != null ? c.dosis : "?")).join("/") + " mg";
     $("#tomas-wrap").hidden = false; $("#tomas").value = 1; $("#tomas").focus();
     return;
@@ -202,7 +212,7 @@ function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
   }
   const partes = [];
   if (reconocidos.length) partes.push(`Reconocidos ${reconocidos.length} medicamentos de ${origen}${reemplazar && habia && !estado.ejemplo ? " (se ha sustituido la lista anterior)" : ""}; revise las dosis en la lista.`);
-  else partes.push(`No se ha reconocido ningún medicamento en ${origen}.`);
+  else partes.push(t("pegar.ninguno", { n: origen }));
   $("#pegar-aviso").textContent = partes.join(" ");
   mostrarNoReconocidos(noReconocidos);
   guardar(); render();
@@ -214,7 +224,7 @@ function mostrarNoReconocidos(lineas) {
   const box = $("#no-reconocidos");
   box.innerHTML = ""; box.hidden = !lineas.length;
   if (!lineas.length) return;
-  box.insertAdjacentHTML("beforeend", `<p>${lineas.length === 1 ? "Esta línea no se ha reconocido" : "Estas líneas no se han reconocido"}. Puede buscarlas a mano o avisar de que faltan en la base.</p><ul></ul>`);
+  box.insertAdjacentHTML("beforeend", `<p>${lineas.length === 1 ? t("pegar.norec1") : t("pegar.norecN")}. ${t("pegar.norec.ayuda")}</p><ul></ul>`);
   const ul = box.querySelector("ul");
   for (const l of lineas.slice(0, 10)) {
     const li = document.createElement("li");
@@ -254,6 +264,49 @@ $("#btn-enlace").addEventListener("click", async () => {
   setTimeout(() => (btn.textContent = "Copiar enlace con mi lista"), 2500);
 });
 
+/* ---------- ficha de fármaco (consulta sin añadir a la lista) ---------- */
+const ficha = $("#ficha"), fichaInput = $("#ficha-buscar"), fichaLista = $("#ficha-sugerencias"), fichaCuerpo = $("#ficha-cuerpo");
+$("#btn-consultar").addEventListener("click", () => { ficha.showModal(); fichaInput.value = ""; fichaInput.focus(); });
+$("#ficha-cerrar").addEventListener("click", () => ficha.close());
+ficha.addEventListener("click", (ev) => { if (ev.target === ficha) ficha.close(); });
+fichaInput.addEventListener("input", () => {
+  const res = buscar(indice, fichaInput.value).filter((e) => e.tipo !== "combo");
+  fichaLista.innerHTML = ""; fichaLista.hidden = !res.length;
+  for (const e of res) {
+    const ref = indice.porId.get(e.pid);
+    const li = document.createElement("li"); li.setAttribute("role", "option");
+    li.innerHTML = `<span>${e.texto}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+    li.addEventListener("click", () => { fichaLista.hidden = true; fichaInput.value = e.texto; mostrarFicha(e.pid); });
+    fichaLista.append(li);
+  }
+});
+fichaInput.addEventListener("keydown", (ev) => { if (ev.key === "Enter") { ev.preventDefault(); fichaLista.querySelector("li")?.click(); } });
+function mostrarFicha(pid) {
+  const { principio: p, clase: c } = indice.porId.get(pid);
+  const senales = [...new Set([...(c.senales || []), ...(p.senales_extra || [])])].map((s) => datos.kb.senales[s]).filter(Boolean);
+  const reglas = (amb) => (c[amb] || []).filter((r) => !r.si?.principio || r.si.principio === pid).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? " <em>(a dosis altas)</em>" : ""}${r.si?.edad_min ? ` <em>(≥ ${r.si.edad_min} años)</em>` : ""}${r.si?.condicion ? ` <em>(si ${r.si.condicion.replace(/_/g, " ")})</em>` : ""}</span></li>`).join("");
+  const h = p.horario || c.horario;
+  const horario = h ? [...(h.evitar || []).map((x) => `<li class="nivel-${x.nivel === "rojo" ? "alerta" : "precaucion"}"><span class="punto"></span><span>Evitar entrenar entre ${x.desde} y ${x.hasta} h tras la toma: ${x.motivo}</span></li>`), ...(h.preferir || []).map((x) => `<li class="nivel-info"><span class="punto"></span><span>Preferible entre ${x.desde} y ${x.hasta} h tras la toma: ${x.motivo}</span></li>`)].join("") : "";
+  const ddi = datos.ddiCurado.interacciones.filter((x) => [x.a, x.b].some((k) => k === pid || k === "clase:" + c.id)).map((x) => {
+    const otro = [x.a, x.b].find((k) => k !== pid && k !== "clase:" + c.id) || x.b;
+    const nombre = otro.startsWith("clase:") ? (datos.kb.clases.find((k) => k.id === otro.slice(6))?.nombre || otro) : (indice.porId.get(otro)?.principio.nombre || otro);
+    return `<li><span class="nivel ddi-${x.nivel}" style="font-size:.68rem">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span><b>${nombre}</b>: ${x.efecto}${x.accion ? ` <span class="muted">${x.accion}</span>` : ""}</li>`;
+  });
+  const ddiOrden = { mayor: 0, moderada: 1, menor: 2 };
+  fichaCuerpo.innerHTML = `
+    <h2 id="ficha-titulo">${p.nombre}</h2>
+    <p class="clase-nombre">${c.nombre}${p.marcas?.length ? " · " + p.marcas.slice(0, 6).join(", ") : ""}${p.umbral_mg?.alta != null ? ` · dosis alta a partir de ${p.umbral_mg.alta.toLocaleString("es-ES")} ${p.unidad || "mg"}/día` : ""}</p>
+    <p>${c.resumen}</p>
+    ${p.nota ? `<p><em>${p.nota}</em></p>` : ""}
+    ${senales.length ? `<div class="senales-chips">${senales.map((x) => `<span class="chip">${x}</span>`).join("")}</div>` : ""}
+    ${[["general", t("tab.general")], ["aerobico", t("tab.aerobico")], ["fuerza", t("tab.fuerza")], ["equilibrio", t("tab.equilibrio")]].map(([amb, tit]) => { const r = reglas(amb); return r ? `<h3>${tit}</h3><ul class="reglas">${r}</ul>` : ""; }).join("")}
+    ${horario ? `<h3>${t("ficha.horario")}</h3><ul class="reglas">${horario}</ul>` : ""}
+    ${ddi.length ? `<h3>${t("ficha.interacciones")} (${ddi.length})</h3><ul class="ddi-mini">${ddi.join("")}</ul>` : ""}
+    <p class="fuentes" style="margin-top:12px">${c.fuentes?.length ? t("inf.fuentes") + ": " + c.fuentes.join(" · ") + " · " : ""}<a class="enlace-ft" style="display:inline" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(p.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>
+    <button type="button" class="btn btn-anadir" id="ficha-anadir">${t("ficha.anadir")}</button>`;
+  $("#ficha-anadir").addEventListener("click", () => { ficha.close(); const e = indice.entradas.find((x) => x.tipo === "principio" && x.pid === pid); if (e) { elegir(e); inputBuscar.scrollIntoView({ block: "center" }); } });
+}
+
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
@@ -261,19 +314,19 @@ function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.
 function renderPerfiles() {
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
   const lista = leerPerfiles();
-  if (!lista.length) { ul.innerHTML = `<li><small>Todavía no hay listas guardadas.</small></li>`; return; }
+  if (!lista.length) { ul.innerHTML = `<li><small>${t("perf.vacio")}</small></li>`; return; }
   for (const pf of lista) {
     const li = document.createElement("li");
     const n = pf.estado.meds.length;
-    li.innerHTML = `<span class="nom">${pf.nombre}</span><button type="button" class="btn-sec sm" data-a="cargar">Cargar</button><button type="button" class="btn-sec sm" data-a="actualizar">Guardar aquí</button><button type="button" class="btn-sec sm" data-a="borrar">Borrar</button><small>${n} fármaco${n === 1 ? "" : "s"} · ${new Date(pf.fecha).toLocaleDateString("es-ES")}${pf.estado.edad ? " · " + pf.estado.edad + " años" : ""}</small>`;
+    li.innerHTML = `<span class="nom">${pf.nombre}</span><button type="button" class="btn-sec sm" data-a="cargar">${t("perf.cargar")}</button><button type="button" class="btn-sec sm" data-a="actualizar">${t("perf.actualizar")}</button><button type="button" class="btn-sec sm" data-a="borrar">${t("perf.borrar")}</button><small>${n} ${t("perf.farmacos")} · ${new Date(pf.fecha).toLocaleDateString(idioma())}${pf.estado.edad ? " · " + pf.estado.edad + " " + t("perf.anos") : ""}</small>`;
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
       Object.assign(estado, { meds: structuredClone(e.meds), edad: e.edad ?? null, caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, ejemplo: false });
       if (e.modo) estado.modo = e.modo;
-      restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = `Lista «${pf.nombre}» cargada.`;
+      restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
     });
     li.querySelector('[data-a="actualizar"]').addEventListener("click", () => { pf.estado = snapshot(); pf.fecha = Date.now(); escribirPerfiles(lista); renderPerfiles(); });
-    li.querySelector('[data-a="borrar"]').addEventListener("click", () => { if (li.dataset.confirmar) { escribirPerfiles(lista.filter((x) => x.id !== pf.id)); renderPerfiles(); } else { li.dataset.confirmar = "1"; li.querySelector('[data-a="borrar"]').textContent = "¿Seguro? Borrar"; } });
+    li.querySelector('[data-a="borrar"]').addEventListener("click", () => { if (li.dataset.confirmar) { escribirPerfiles(lista.filter((x) => x.id !== pf.id)); renderPerfiles(); } else { li.dataset.confirmar = "1"; li.querySelector('[data-a="borrar"]').textContent = t("perf.seguro"); } });
     ul.append(li);
   }
 }
@@ -295,7 +348,7 @@ function restaurarFormulario() {
 /* ---------- PDF o foto de la medicación ---------- */
 $("#btn-pdf").addEventListener("click", () => $("#pdf-input").click());
 $("#btn-foto").addEventListener("click", () => $("#foto-input").click());
-const progreso = (t) => { $("#pegar-aviso").textContent = t; };
+const progreso = (m) => { $("#pegar-aviso").textContent = m; };
 
 $("#pdf-input").addEventListener("change", async () => {
   const f = $("#pdf-input").files[0];
@@ -320,7 +373,7 @@ $("#foto-input").addEventListener("change", async () => {
   progreso("Preparando la imagen… (se procesa en su dispositivo; la primera vez descarga el modelo de lectura)");
   try {
     const texto = await textoDeImagen(f, progreso);
-    if (texto.trim().length < 10) { progreso("No se ha podido leer texto en la foto. Pruebe con más luz, la hoja plana y el texto nítido."); return; }
+    if (texto.trim().length < 10) { progreso(t("foto.error")); return; }
     incorporarTexto(texto, "la foto", true);
   } catch (e) {
     progreso("No se ha podido leer la foto: " + (e.message || e) + ". Puede pegar la lista a mano.");
@@ -375,9 +428,18 @@ const desplazar = (el) => el.scrollIntoView({ behavior: matchMedia("(prefers-red
 $("#btn-ir-informe").addEventListener("click", () => desplazar(enInforme ? $("aside") : $("#informe")));
 new IntersectionObserver(([e]) => {
   enInforme = e.isIntersecting;
-  $("#btn-ir-informe").firstChild.textContent = enInforme ? "Editar la medicación " : "Ver el informe ";
+  $("#btn-ir-informe").firstChild.textContent = enInforme ? t("lista.editar") + " " : t("barra.ver") + " ";
 }, { rootMargin: "-40% 0px -55% 0px" }).observe($("#informe"));
 
+$("#btn-historia").addEventListener("click", async () => {
+  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, estado.meds, estado.horas) };
+  const res = evaluar(datos, estado.meds, ctx);
+  const txt = textoHistoria(datos.kb, res, ctx);
+  const btn = $("#btn-historia");
+  try { await navigator.clipboard.writeText(txt); btn.textContent = "Copiado para la historia"; }
+  catch { const ta = $("#informe-texto"); ta.hidden = false; ta.value = txt; ta.select(); btn.textContent = "Seleccione y copie"; }
+  setTimeout(() => (btn.textContent = "Texto para la historia clínica"), 2500);
+});
 $("#btn-copiar").addEventListener("click", async () => {
   const res = evaluar(datos, estado.meds, ctxActual());
   const txt = informeTexto(datos.kb, res, estado);
@@ -456,7 +518,7 @@ function render() {
   if (estado.tab === "general") {
     if (res.combinadas.length) {
       const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
-      const sec = seccion("Por la combinación de su medicación", { clave: "combinadas", resumen: `${res.combinadas.length} avisos · ${resumenNiveles(na, np, 0)}` });
+      const sec = seccion(t("inf.combinacion"), { clave: "combinadas", resumen: `${res.combinadas.length} ${t("inf.avisos")} · ${resumenNiveles(na, np, 0)}` });
       const cuerpo = sec.querySelector(".cuerpo-sec");
       for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
         cuerpo.insertAdjacentHTML("beforeend", `
@@ -505,7 +567,7 @@ function resumenNiveles(a, p, i) {
 }
 
 function renderAmbito(cont, grupos, titulo, amb) {
-  if (!grupos.length) { const sec = document.createElement("section"); sec.innerHTML = `<p class="vacio">Sin indicaciones específicas para su medicación en este apartado.</p>`; cont.append(sec); return; }
+  if (!grupos.length) { const sec = document.createElement("section"); sec.innerHTML = `<p class="vacio">${t("inf.sin")}</p>`; cont.append(sec); return; }
   const orden = [...grupos].sort((a, b) => Math.max(...b.reglas.map((r) => ORDEN_NIVEL[r.nivel])) - Math.max(...a.reglas.map((r) => ORDEN_NIVEL[r.nivel])));
   // dividir en "con avisos" (abierto) y "solo información" (plegado)
   const conAvisos = orden.filter((g) => g.reglas.some((r) => r.nivel !== "info"));
@@ -518,10 +580,10 @@ function renderAmbito(cont, grupos, titulo, amb) {
   if (conAvisos.length) {
     const a = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "alerta").length, 0);
     const p = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "precaucion").length, 0);
-    pintar(seccion(titulo ? `${titulo}: con avisos` : "Fármacos con avisos", { clave: (amb || "general") + ":avisos", resumen: `${conAvisos.length} fármacos · ${resumenNiveles(a, p, 0)}` }), conAvisos, true);
+    pintar(seccion(titulo ? `${titulo}: con avisos` : t("inf.con_avisos"), { clave: (amb || "general") + ":avisos", resumen: `${conAvisos.length} fármacos · ${resumenNiveles(a, p, 0)}` }), conAvisos, true);
   }
   if (soloInfo.length) {
-    pintar(seccion(titulo ? `${titulo}: solo información` : "Fármacos sin precauciones especiales", { abierta: !conAvisos.length, clave: (amb || "general") + ":info", resumen: `${soloInfo.length} fármacos · ${resumenNiveles(0, 0, soloInfo.reduce((n, g) => n + g.reglas.length, 0))}` }), soloInfo, false);
+    pintar(seccion(titulo ? `${titulo}: ${t("inf.solo_info")}` : t("inf.sin_precauciones"), { abierta: !conAvisos.length, clave: (amb || "general") + ":info", resumen: `${soloInfo.length} fármacos · ${resumenNiveles(0, 0, soloInfo.reduce((n, g) => n + g.reglas.length, 0))}` }), soloInfo, false);
   }
 }
 
@@ -534,14 +596,14 @@ function tarjetaFarmaco(g, amb, abierta) {
       <details class="farmaco nivel-${max}"${abierta ? " open" : ""}>
         <summary>
           <span class="barra"></span>
-          <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ' · <b>dosis alta</b>' : ""}</small></span>
+          <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small></span>
           <span class="nivel">${etiqueta(max)}</span>
           <span class="flecha" aria-hidden="true">⌄</span>
         </summary>
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
-          ${it.clase.fuentes?.length ? `<p class="fuentes">Fuentes: ${it.clase.fuentes.join(" · ")} · <a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">Ficha técnica (CIMA)</a></p>` : `<p class="fuentes"><a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">Ficha técnica (CIMA)</a></p>`}
+          ${it.clase.fuentes?.length ? `<p class="fuentes">${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · <a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>` : `<p class="fuentes"><a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>`}
         </div>
       </details>`;
   }
@@ -553,14 +615,14 @@ function renderCuando(cont) {
   const hh = (h) => `${String(h).padStart(2, "0")}:00`;
   const conInfo = v.motivos.length || v.avisos.length;
   sec.innerHTML = `
-    <p class="intro-cuando">${conInfo ? "Según la hora de sus tomas, estas son las franjas del día más y menos adecuadas para entrenar. Verde: momento preferible; ámbar: mejor evitar; rojo: no entrene." : "Ninguno de sus fármacos condiciona la hora de entrenar. Elija el momento del día que mejor le encaje; lo importante es la constancia."}</p>
-    <div class="timeline" role="img" aria-label="Franja horaria del día">${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
+    <p class="intro-cuando">${conInfo ? t("cuando.intro") : "Ninguno de sus fármacos condiciona la hora de entrenar. Elija el momento del día que mejor le encaje; lo importante es la constancia."}</p>
+    <div class="timeline" role="img" aria-label=t("cuando.titulo")>${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
     ${v.mejores.length ? `<p class="mejores">Mejores momentos: ${v.mejores.map((f) => `<b>${hh(f.desde)}–${hh(f.hasta)}</b>`).join(" y ")}</p>` : ""}
     <details class="bloque" open><summary><span class="sub-label">Hora de sus tomas</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="fila horas-tomas">${MOMENTOS.map((m) => `<label>${MOMENTO_TXT[m]} <input type="number" min="0" max="23" inputmode="numeric" data-hora="${m}" value="${estado.horas[m]}"></label>`).join("")}</div>
       <small>Marque en la lista de medicación (D / C / Ce / N) en qué tomas va cada fármaco.</small>
     </details>
-    ${v.motivos.length ? `<h3>Por qué</h3><ul class="motivos">${v.motivos.sort((a, b) => a.desde - b.desde).map((m) => `<li class="nivel-${m.nivel}"><span class="punto"></span><span><b>${hh(m.desde)}–${hh(m.hasta)}</b> · ${m.farmaco} (toma de ${MOMENTO_TXT[m.momento].toLowerCase()}): ${m.motivo}</span></li>`).join("")}</ul>` : ""}
+    ${v.motivos.length ? `<h3>${t("cuando.porque")}</h3><ul class="motivos">${v.motivos.sort((a, b) => a.desde - b.desde).map((m) => `<li class="nivel-${m.nivel}"><span class="punto"></span><span><b>${hh(m.desde)}–${hh(m.hasta)}</b> · ${m.farmaco} (toma de ${MOMENTO_TXT[m.momento].toLowerCase()}): ${m.motivo}</span></li>`).join("")}</ul>` : ""}
     ${v.avisos.length ? `<ul class="motivos">${v.avisos.map((a) => `<li class="nivel-${a.nivel}"><span class="punto"></span><span>${a.farmaco}: ${a.motivo}</span></li>`).join("")}</ul>` : ""}
     <p class="nota-fuentes">Las ventanas se calculan a partir del inicio y el pico de acción habituales de cada fármaco y de la hora de las tomas que indique. Son orientativas: la respuesta individual varía y, si su médico le ha dado una pauta concreta, siga la suya.</p>`;
   sec.querySelectorAll("[data-hora]").forEach((inp) => inp.addEventListener("change", () => { const v = parseInt(inp.value, 10); if (v >= 0 && v <= 23) { estado.horas[inp.dataset.hora] = v; guardar(); render(); } }));
@@ -570,22 +632,22 @@ function renderCuando(cont) {
 function renderInteracciones(cont, res) {
   const sec = document.createElement("section");
   if (!res.interacciones.length) {
-    sec.innerHTML = `<p class="vacio">No se han encontrado interacciones relevantes entre los fármacos introducidos en las bases consultadas.</p>`;
+    sec.innerHTML = `<p class="vacio">${t("ddi.ninguna")}</p>`;
   } else {
     for (const x of res.interacciones) {
       sec.insertAdjacentHTML("beforeend", `
         <article class="ddi ddi-${x.nivel}">
           <header><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span></header>
           <p>${x.efecto}</p>
-          ${x.accion ? `<p class="accion"><b>Qué hacer:</b> ${x.accion}</p>` : ""}
-          <footer>${x.fuente === "curada" ? "Revisión clínica propia" : x.fuente === "ddinter" ? "DDInter 2.0" : "Duplicidad detectada"}</footer>
+          ${x.accion ? `<p class="accion"><b>${t("ddi.que_hacer")}:</b> ${x.accion}</p>` : ""}
+          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : "Duplicidad detectada"}</footer>
         </article>`);
     }
   }
-  const fuentes = [`${datos.ddiCurado.interacciones.length} interacciones revisadas en español`];
+  const fuentes = [`${datos.ddiCurado.interacciones.length} ${t("ddi.revisadas")}`];
   if (datos.ddi?.pares?.length) fuentes.push(`DDInter 2.0 (${datos.ddi.pares.length.toLocaleString("es")} pares, ${datos.ddi.version})`);
   else fuentes.push("DDInter 2.0 pendiente de cargar");
-  sec.insertAdjacentHTML("beforeend", `<p class="nota-fuentes">Fuentes consultadas: ${fuentes.join(" · ")}. Las interacciones dependen también de la dosis, la función renal y otros factores que esta herramienta no conoce.</p>`);
+  sec.insertAdjacentHTML("beforeend", `<p class="nota-fuentes">${t("ddi.nota", { n: fuentes.join(" · ") })}</p>`);
   cont.append(sec);
 }
 

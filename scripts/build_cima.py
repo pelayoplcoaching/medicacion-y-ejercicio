@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """Genera app/data/marcas.json a partir del Nomenclátor de prescripción de la AEMPS (CIMA).
 
-Uso:
-    python3 scripts/build_cima.py                # descarga el nomenclátor y lo procesa
-    python3 scripts/build_cima.py data/raw/Prescripcion.xml   # usa un XML ya descargado
+Uso (desde la raíz del repositorio):
+    python3 scripts/build_cima.py                              # descarga el nomenclátor y lo procesa
+    python3 scripts/build_cima.py data/raw/prescripcion.zip    # usa el zip ya descargado
+    python3 scripts/build_cima.py data/raw/Prescripcion.xml    # usa el XML ya extraído
+    python3 scripts/build_cima.py --inspeccionar               # solo muestra la estructura del XML (sin escribir)
 
 Fuente: https://listadomedicamentos.aemps.gob.es/prescripcion.zip  (actualización diaria, público, sin clave)
 Documentación: https://www.aemps.gob.es/medicamentos-de-uso-humano/nomenclator-de-prescripcion/
 
-Salida: app/data/marcas.json → lista de presentaciones comercializadas cuyo principio activo está en kb.json:
+Salida: app/data/marcas.json → presentaciones comercializadas cuyo principio activo está en kb.json:
     [{"nombre": "EMCONCOR 5 mg comprimidos", "principios": ["bisoprolol"], "dosis": [5], "unidad": "mg"}, ...]
 La app la usa para autocompletar por nombre comercial y para preseleccionar la dosis por comprimido.
 
-Si la AEMPS cambia la estructura del XML, ajuste las etiquetas en TAGS (abajo).
+Las etiquetas del XML se detectan automáticamente (busca "nomco", "prese", "comercializ", "principio", "dosis", "unidad").
+Si la detección falla, ejecute con --inspeccionar y ajuste TAGS_FIJAS.
 """
 import io
 import json
@@ -22,6 +25,7 @@ import unicodedata
 import urllib.request
 import zipfile
 import xml.etree.ElementTree as ET
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -29,22 +33,36 @@ KB = ROOT / "app" / "data" / "kb.json"
 OUT = ROOT / "app" / "data" / "marcas.json"
 URL = "https://listadomedicamentos.aemps.gob.es/prescripcion.zip"
 
-# Etiquetas del XML Prescripcion.xml (nomenclátor de prescripción)
-TAGS = {
+# Etiquetas conocidas del Prescripcion.xml. Se usan si existen; si no, se detectan por nombre parecido.
+TAGS_FIJAS = {
     "medicamento": "prescription",
     "nombre": "des_nomco",          # nombre comercial
     "presentacion": "des_prese",    # descripción de la presentación
     "comercializado": "sw_comercializado",
-    "pa_lista": "principios_activos",
     "pa": "principio_activo",
     "pa_nombre": "nom_principio_activo",
     "pa_dosis": "dosis_pa",
     "pa_unidad": "unidad_dosis_pa",
 }
+# Pistas para detectar cada etiqueta cuando la fija no existe (substring, sin mayúsculas)
+PISTAS = {
+    "nombre": ["nomco", "nombre_com", "nom_med", "nombre"],
+    "presentacion": ["prese", "presentacion"],
+    "comercializado": ["comercializ"],
+    "pa": ["principio_activo", "principioactivo", "principio"],
+    "pa_nombre": ["nom_principio", "nombre_principio", "des_principio", "nom_pa", "nombre"],
+    "pa_dosis": ["dosis"],
+    "pa_unidad": ["unidad"],
+}
 
 
 def quitar_acentos(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn").lower()
+
+
+def local(tag: str) -> str:
+    """Nombre de etiqueta sin espacio de nombres."""
+    return tag.split("}", 1)[1] if "}" in tag else tag
 
 
 def cargar_alias_kb():
@@ -57,7 +75,9 @@ def cargar_alias_kb():
             alias[quitar_acentos(p["id"].replace("_", " "))] = p["id"]
             base = re.sub(r"\(.*?\)", "", p["nombre"]).strip()
             alias[quitar_acentos(base)] = p["id"]
-    # sinónimos manuales nomenclátor → id
+            for s in p.get("sinonimos", []) or []:
+                alias[quitar_acentos(s)] = p["id"]
+    # sinónimos manuales nomenclátor → id (None = componente que no interesa, p. ej. inhibidor de descarboxilasa)
     extra = {
         "acido acetilsalicilico": "aas",
         "insulina glargina": "insulina_basal", "insulina detemir": "insulina_basal", "insulina degludec": "insulina_basal",
@@ -80,64 +100,186 @@ def cargar_alias_kb():
         "icosapento de etilo": "omega3", "omega 3": "omega3",
         "naloxona": None, "paracetamol": "paracetamol",
     }
-    alias.update(extra)
+    for k, v in extra.items():
+        alias.setdefault(k, v)
     return alias
+
+
+SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|de)\b"
 
 
 def resolver(nombre_pa: str, alias: dict):
     n = quitar_acentos(nombre_pa)
-    n = re.sub(r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato)\b", "", n)
+    n = re.sub(r"[,;:()]", " ", n)
+    n = re.sub(SALES, "", n)
     n = " ".join(n.split())
     if n in alias:
         return alias[n]
-    # intentar por la primera palabra (p. ej. "metoprolol tartrato" → metoprolol)
-    primera = n.split(" ")[0]
+    # por la primera palabra (p. ej. "metoprolol tartrato" → metoprolol)
+    primera = n.split(" ")[0] if n else ""
     return alias.get(primera)
 
 
-def main(xml_path: str | None):
-    alias = cargar_alias_kb()
-    if xml_path:
-        data = Path(xml_path).read_bytes()
+def leer_xml(origen: str | None) -> bytes:
+    """Devuelve los bytes del XML desde una URL, un zip o un xml."""
+    if origen is None:
+        print(f"Descargando {URL} …")
+        req = urllib.request.Request(URL, headers={"User-Agent": "medicacion-y-ejercicio/1.0"})
+        with urllib.request.urlopen(req, timeout=180) as r:
+            data = r.read()
     else:
-        print("Descargando nomenclátor…")
-        with urllib.request.urlopen(URL, timeout=120) as r:
-            z = zipfile.ZipFile(io.BytesIO(r.read()))
-        nombre = next(n for n in z.namelist() if n.lower().endswith(".xml") and "prescripcion" in n.lower())
+        data = Path(origen).read_bytes()
+    if data[:2] == b"PK":  # zip
+        z = zipfile.ZipFile(io.BytesIO(data))
+        xmls = [n for n in z.namelist() if n.lower().endswith(".xml")]
+        if not xmls:
+            sys.exit(f"El zip no contiene ningún XML: {z.namelist()}")
+        nombre = next((n for n in xmls if "prescripcion" in n.lower()), xmls[0])
+        print(f"Usando {nombre} del zip")
         data = z.read(nombre)
+    return data
 
-    root = ET.fromstring(data)
-    salida = []
-    vistos = set()
-    for med in root.iter(TAGS["medicamento"]):
-        if (med.findtext(TAGS["comercializado"]) or "").strip().upper() not in ("S", "1", "TRUE", ""):
+
+def detectar_tags(root) -> dict:
+    """Devuelve el diccionario de etiquetas, usando las fijas si existen y buscando parecidas si no."""
+    presentes = Counter(local(e.tag) for e in root.iter())
+    tags = {}
+
+    # 1) elemento "medicamento": la etiqueta fija si existe; si no, el hijo directo del root más repetido
+    if presentes.get(TAGS_FIJAS["medicamento"]):
+        tags["medicamento"] = TAGS_FIJAS["medicamento"]
+    else:
+        hijos = Counter(local(h.tag) for h in root)
+        tags["medicamento"] = hijos.most_common(1)[0][0]
+        print(f"· Etiqueta de medicamento detectada: <{tags['medicamento']}> ({hijos[tags['medicamento']]:,} elementos)")
+
+    primero = next(root.iter(tags["medicamento"]))
+    campos_med = Counter(local(e.tag) for e in primero.iter())
+
+    def buscar(clave, universo):
+        fijo = TAGS_FIJAS[clave]
+        if fijo in universo:
+            return fijo
+        for pista in PISTAS[clave]:
+            cands = [t for t in universo if pista in t.lower() and t != tags["medicamento"]]
+            if cands:
+                print(f"· Etiqueta «{clave}» detectada como <{cands[0]}>")
+                return cands[0]
+        return None
+
+    for clave in ("nombre", "presentacion", "comercializado", "pa"):
+        tags[clave] = buscar(clave, campos_med)
+    # campos dentro de cada principio activo
+    if tags["pa"]:
+        pa0 = next(primero.iter(tags["pa"]), None)
+        universo_pa = Counter(local(e.tag) for e in pa0.iter()) if pa0 is not None else Counter()
+        # quitar la propia etiqueta del principio
+        universo_pa.pop(tags["pa"], None)
+        for clave in ("pa_nombre", "pa_dosis", "pa_unidad"):
+            tags[clave] = buscar(clave, universo_pa)
+    else:
+        for clave in ("pa_nombre", "pa_dosis", "pa_unidad"):
+            tags[clave] = None
+    return tags
+
+
+def inspeccionar(root):
+    hijos = Counter(local(h.tag) for h in root)
+    print(f"Raíz: <{local(root.tag)}>  hijos directos: {dict(hijos.most_common(5))}")
+    med_tag = hijos.most_common(1)[0][0]
+    primero = next(root.iter(med_tag))
+    print(f"\nPrimer <{med_tag}> (etiqueta → texto):")
+    for e in primero.iter():
+        txt = (e.text or "").strip()
+        if txt:
+            print(f"  {local(e.tag)}: {txt[:70]}")
+        else:
+            print(f"  {local(e.tag)}")
+    print("\nEtiquetas detectadas:")
+    for k, v in detectar_tags(root).items():
+        print(f"  {k}: {v}")
+
+
+def texto(el, tag):
+    if not tag:
+        return ""
+    # findtext ignora espacios de nombres si la etiqueta no lo lleva; buscamos manualmente
+    for e in el.iter():
+        if local(e.tag) == tag:
+            return (e.text or "").strip()
+    return ""
+
+
+def main(argv):
+    solo_inspeccionar = "--inspeccionar" in argv
+    args = [a for a in argv if not a.startswith("--")]
+    origen = args[0] if args else None
+
+    alias = cargar_alias_kb()
+    data = leer_xml(origen)
+    try:
+        root = ET.fromstring(data)
+    except ET.ParseError as e:
+        sys.exit(f"No se pudo leer el XML: {e}")
+
+    if solo_inspeccionar:
+        inspeccionar(root)
+        return
+
+    tags = detectar_tags(root)
+    faltan = [k for k in ("medicamento", "nombre", "pa", "pa_nombre") if not tags.get(k)]
+    if faltan:
+        inspeccionar(root)
+        sys.exit(f"\nNo se detectaron las etiquetas {faltan}. Ajuste TAGS_FIJAS en scripts/build_cima.py.")
+
+    salida, vistos = [], set()
+    n_total = n_comerc = n_sin_pa = 0
+    sin_resolver = Counter()
+    for med in root.iter(tags["medicamento"]):
+        n_total += 1
+        com = texto(med, tags["comercializado"]).upper()
+        if com not in ("S", "1", "TRUE", "SI", "SÍ", ""):
             continue
-        nombre = (med.findtext(TAGS["nombre"]) or med.findtext(TAGS["presentacion"]) or "").strip()
+        n_comerc += 1
+        nombre = texto(med, tags["nombre"]) or texto(med, tags["presentacion"])
         if not nombre:
             continue
         pas, dosis, unidad = [], [], None
-        for pa in med.iter(TAGS["pa"]):
-            pid = resolver(pa.findtext(TAGS["pa_nombre"]) or "", alias)
+        for pa in [e for e in med.iter() if local(e.tag) == tags["pa"]]:
+            nom_pa = texto(pa, tags["pa_nombre"])
+            pid = resolver(nom_pa, alias)
             if pid is None:
+                if nom_pa and quitar_acentos(nom_pa) not in alias:
+                    sin_resolver[quitar_acentos(nom_pa)] += 1
                 continue
             pas.append(pid)
             try:
-                dosis.append(float((pa.findtext(TAGS["pa_dosis"]) or "").replace(",", ".")))
+                dosis.append(float(texto(pa, tags["pa_dosis"]).replace(",", ".")))
             except ValueError:
                 dosis.append(None)
-            unidad = unidad or (pa.findtext(TAGS["pa_unidad"]) or "").strip().lower()
+            unidad = unidad or texto(pa, tags["pa_unidad"]).lower()
         if not pas:
+            n_sin_pa += 1
             continue
-        clave = (nombre.upper(), tuple(pas))
+        clave = (nombre.upper(), tuple(pas), tuple(dosis))
         if clave in vistos:
             continue
         vistos.add(clave)
         salida.append({"nombre": nombre.upper(), "principios": pas, "dosis": dosis, "unidad": unidad or "mg"})
 
     salida.sort(key=lambda x: x["nombre"])
+    if not salida:
+        inspeccionar(root)
+        sys.exit("\nNo se generó ninguna presentación: revise las etiquetas detectadas arriba.")
+
     OUT.write_text(json.dumps(salida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"{len(salida):,} presentaciones guardadas en {OUT}")
+    print(f"\nMedicamentos en el XML: {n_total:,} · comercializados: {n_comerc:,} · sin principio en la base: {n_sin_pa:,}")
+    print(f"{len(salida):,} presentaciones guardadas en {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KB)")
+    if sin_resolver:
+        print("\nPrincipios activos más frecuentes que NO están en kb.json (candidatos a añadir):")
+        for nom, n in sin_resolver.most_common(25):
+            print(f"  {n:4d}  {nom}")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else None)
+    main(sys.argv[1:])

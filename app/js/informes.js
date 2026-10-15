@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610150912";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610150912";
+import { jspdf } from "./libs.js?v=202610150924";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610150924";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -207,7 +207,7 @@ function dosisTxt(it) {
 const tiene = (res, s) => !!res.perfil[s]?.length;
 const cuenta = (res, s) => res.perfil[s]?.length || 0;
 
-function prescripcion(res, ctx) {
+export function prescripcion(res, ctx) {
   const mayor = ctx.edad != null && ctx.edad >= 65;
   const fcNoValida = tiene(res, "fc_no_valida") || tiene(res, "bradicardia") || tiene(res, "taquicardia");
   const hipo = tiene(res, "hipoglucemia");
@@ -463,4 +463,33 @@ export async function pdfPaciente(kb, res, ctx) {
   pg.parrafo(kb.aviso, { size: 7.5, color: C.muted });
   pg.pie();
   return doc;
+}
+
+/** Texto plano para pegar en la historia clínica o el informe de alta (modo profesional). */
+export function textoHistoria(kb, res, ctx) {
+  const P = prescripcion(res, ctx);
+  const L = [];
+  const cond = [...(ctx.condiciones || [])];
+  const condTxt = { diabetes: "DM", insuficiencia_cardiaca: "IC", renal: "ERC", renal_grave: "FG<30", marcapasos: "MP/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "OCD", embarazo: "gestación/lactancia", nyha34: "NYHA III-IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad" };
+  L.push("RECOMENDACIÓN DE EJERCICIO FÍSICO (adaptada al tratamiento farmacológico)");
+  const perfil = [ctx.edad ? `${ctx.edad} años` : null, ctx.caidas ? "caídas en el último año" : null, ctx.fg != null ? `FG ${ctx.fg}` : null, ctx.fevi != null ? `FEVI ${ctx.fevi} %` : null, ctx.nyha != null ? `NYHA ${["", "I", "II", "III", "IV"][ctx.nyha]}` : null, ...cond.filter((c) => !(c === "nyha34" && ctx.nyha != null) && !(c === "fevi_baja" && ctx.fevi != null)).map((c) => condTxt[c]).filter(Boolean)].filter(Boolean);
+  if (perfil.length) L.push("Perfil: " + perfil.join(", ") + ".");
+  L.push(`Tratamiento considerado: ${res.items.map((it) => it.principio.nombre + (it.dosisTotal != null ? " " + dosisTxt(it) : "")).join("; ")}.`);
+  L.push("");
+  L.push("Prescripción (FITT):");
+  L.push(`- Aeróbico: ${P.aer.frec}. ${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}`);
+  L.push(`- Fuerza: ${P.fue.frec}. ${P.fue.int} ${P.fue.tiempo}. ${P.fue.tipo}`);
+  L.push(`- Equilibrio: ${P.eq.frec}. ${P.eq.int} ${P.eq.tiempo}. ${P.eq.tipo}`);
+  if (ctx.ventana?.mejores?.length) L.push(`- Horario preferible según tomas: ${ctx.ventana.mejores.map((f) => `${String(f.desde).padStart(2, "0")}:00-${String(f.hasta).padStart(2, "0")}:00`).join(" y ")}.`);
+  const claves = [];
+  for (const c of res.combinadas) if (c.regla.nivel === "alerta") claves.push(`${c.regla.titulo}: ${c.texto}`);
+  for (const x of res.interacciones) if (x.nivel === "mayor") claves.push(`Interacción mayor ${x.a.principio.nombre} + ${x.b.principio.nombre}: ${x.efecto}${x.accion ? " " + x.accion : ""}`);
+  for (const [amb, titulo] of AMBITOS) for (const g of res.ambitos[amb]) for (const r of g.reglas) if (r.nivel === "alerta") claves.push(`${g.item.principio.nombre} (${titulo.toLowerCase()}): ${r.texto}`);
+  if (claves.length) { L.push(""); L.push("Precauciones relevantes:"); for (const k of claves.slice(0, 8)) L.push("- " + k); }
+  const prec = [];
+  for (const c of res.combinadas) if (c.regla.nivel === "precaucion") prec.push(`${c.regla.titulo}: ${c.texto}`);
+  if (prec.length) { L.push(""); L.push("Otras consideraciones:"); for (const k of prec.slice(0, 6)) L.push("- " + k); }
+  L.push("");
+  L.push("Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en 4-6 semanas. Generado con Medicación y Ejercicio (" + WEB + "), base de conocimiento v" + kb.version + "; recomendación orientativa que requiere valoración clínica individual.");
+  return L.join("\n");
 }

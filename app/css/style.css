@@ -305,6 +305,8 @@ body[data-modo="paciente"] details.farmaco .fuentes { display: none; }
 .utiles { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .utiles small { margin-left: auto; }
 .utiles a.btn-sec { text-decoration: none; }
+.utiles .idioma select { font: inherit; font-size: .8rem; font-weight: 700; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; }
+.cabecera #aviso-idioma { grid-column: 1 / -1; margin-top: 4px; }
 #btn-letra { font-weight: 800; letter-spacing: -.02em; padding-inline: 11px; }
 #btn-letra .mas { font-size: .75em; vertical-align: super; }
 #btn-letra[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
@@ -372,3 +374,21 @@ ul.motivos li.nivel-rojo .punto { background: var(--alerta); } ul.motivos li.niv
   details { display: block; } details > summary { list-style: none; } details:not([open]) > *:not(summary) { display: block !important; }
   article, details.farmaco { break-inside: avoid; }
 }
+
+/* ---------- ficha de fármaco ---------- */
+dialog.ficha { border: 0; border-radius: var(--r-lg); padding: 0; width: min(720px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--fg); box-shadow: 0 30px 80px -30px rgba(28, 24, 48, .5); }
+dialog.ficha::backdrop { background: rgba(28, 24, 48, .45); backdrop-filter: blur(3px); }
+.ficha-cab { display: flex; gap: 10px; align-items: center; padding: 14px 14px 10px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 2; }
+.ficha-cab .buscador { flex: 1 1 auto; }
+.ficha-cuerpo { padding: 14px 16px 20px; overflow: auto; max-height: calc(100dvh - 100px); }
+.ficha-cuerpo h2 { font-size: 1.3rem; }
+.ficha-cuerpo .clase-nombre { color: var(--muted); margin: 2px 0 10px; }
+.ficha-cuerpo .senales-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+.ficha-cuerpo h3 { margin-top: 16px; }
+.ficha-cuerpo ul.reglas { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.ficha-cuerpo ul.reglas li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 10px; align-items: start; }
+.ficha-cuerpo ul.reglas li .punto { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: var(--line-strong); }
+.ficha-cuerpo ul.reglas li.nivel-alerta .punto { background: var(--alerta); } .ficha-cuerpo ul.reglas li.nivel-precaucion .punto { background: var(--precaucion); } .ficha-cuerpo ul.reglas li.nivel-info .punto { background: var(--info); }
+.ficha-cuerpo .ddi-mini { font-size: .9rem; display: grid; gap: 4px; margin-top: 6px; }
+.ficha-cuerpo .ddi-mini li { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.ficha-cuerpo .btn-anadir { margin-top: 14px; }

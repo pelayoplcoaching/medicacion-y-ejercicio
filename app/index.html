@@ -56,161 +56,169 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150912">
+<link rel="stylesheet" href="css/style.css?v=202610150924">
 </head>
 <body>
 
 <header class="cabecera">
   <img src="assets/logo.png" alt="Fuerza Basada en Evidencia" class="logo" width="76" height="76">
   <div class="titulo">
-    <h1>Medicación y Ejercicio <span class="badge-alfa" title="Versión en pruebas">alfa</span></h1>
-    <p class="autor">By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.</p>
+    <h1><span data-i18n="meta.titulo">Medicación y Ejercicio</span> <span class="badge-alfa" data-i18n="cab.alfa" data-i18n-title="cab.alfa.title" title="Versión en pruebas">alfa</span></h1>
+    <p class="autor" data-i18n="cab.autor" data-i18n-html>By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.</p>
   </div>
-  <p class="intro">Introduzca su medicación habitual con la dosis y obtenga qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre sus fármacos.</p>
+  <p class="intro" data-i18n="cab.intro">Introduzca su medicación habitual con la dosis y obtenga qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre sus fármacos.</p>
   <blockquote class="lema">
-    <p>El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
-    <p>El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
+    <p data-i18n="cab.lema1">El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
+    <p data-i18n="cab.lema2">El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html">Novedades</a><small id="kb-version"></small></div>
+  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
+  <p class="banner" id="aviso-idioma" hidden></p>
 </header>
 
 <main class="contenedor">
   <aside>
     <div class="panel">
-      <div class="modo" role="radiogroup" aria-label="Quién rellena los datos">
-        <button type="button" role="radio" data-modo="paciente" aria-checked="true">Soy paciente</button>
-        <button type="button" role="radio" data-modo="profesional" aria-checked="false">Soy profesional sanitario</button>
+      <div class="modo" role="radiogroup" aria-label="Quién rellena los datos" data-i18n-aria="modo.aria">
+        <button type="button" role="radio" data-modo="paciente" aria-checked="true" data-i18n="modo.paciente">Soy paciente</button>
+        <button type="button" role="radio" data-modo="profesional" aria-checked="false" data-i18n="modo.pro">Soy profesional sanitario</button>
       </div>
-      <h2>Datos básicos</h2>
-      <small class="modo-nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
+      <h2 data-i18n="datos.titulo">Datos básicos</h2>
+      <small class="modo-nota" data-i18n="datos.nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
       <div class="fila" style="margin-top:10px">
-        <label>Edad <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años"></label>
-        <label class="check"><input type="checkbox" id="caidas"> Alguna caída en el último año</label>
+        <label><span data-i18n="datos.edad">Edad</span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
+        <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label>
       </div>
       <details class="bloque" id="bloque-situacion">
-      <summary><span class="sub-label">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+      <summary><span class="sub-label" data-i18n="sit.titulo">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="condiciones">
-        <label class="check"><input type="checkbox" id="cond-diabetes"> Diabetes</label>
-        <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> Insuficiencia cardíaca</label>
-        <label class="check"><input type="checkbox" id="cond-renal"> <span class="solo-paciente">Enfermedad del riñón</span><span class="solo-pro">Enfermedad renal crónica (FG &lt; 45)</span></label>
-        <label class="check"><input type="checkbox" id="cond-marcapasos"> Marcapasos o DAI</label>
-        <label class="check"><input type="checkbox" id="cond-osteoporosis"> Osteoporosis o fractura previa</label>
-        <label class="check"><input type="checkbox" id="cond-epoc_asma"> EPOC o asma</label>
-        <label class="check"><input type="checkbox" id="cond-oxigeno"> Oxígeno en casa</label>
-        <label class="check"><input type="checkbox" id="cond-embarazo"> Embarazo o lactancia</label>
+        <label class="check"><input type="checkbox" id="cond-diabetes"> <span data-i18n="sit.diabetes">Diabetes</span></label>
+        <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> <span data-i18n="sit.ic">Insuficiencia cardíaca</span></label>
+        <label class="check"><input type="checkbox" id="cond-renal"> <span class="solo-paciente" data-i18n="sit.renal.pac">Enfermedad del riñón</span><span class="solo-pro" data-i18n="sit.renal.pro">Enfermedad renal crónica (FG &lt; 45)</span></label>
+        <label class="check"><input type="checkbox" id="cond-marcapasos"> <span data-i18n="sit.marcapasos">Marcapasos o DAI</span></label>
+        <label class="check"><input type="checkbox" id="cond-osteoporosis"> <span data-i18n="sit.osteoporosis">Osteoporosis o fractura previa</span></label>
+        <label class="check"><input type="checkbox" id="cond-epoc_asma"> <span data-i18n="sit.epoc">EPOC o asma</span></label>
+        <label class="check"><input type="checkbox" id="cond-oxigeno"> <span data-i18n="sit.oxigeno">Oxígeno en casa</span></label>
+        <label class="check"><input type="checkbox" id="cond-embarazo"> <span data-i18n="sit.embarazo">Embarazo o lactancia</span></label>
       </div>
       </details>
 
       <details class="bloque solo-paciente" id="bloque-movilidad">
-        <summary><span class="sub-label">Cómo se mueve ahora (marque solo si le ocurre)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <summary><span class="sub-label" data-i18n="mov.titulo">Cómo se mueve ahora (marque solo si le ocurre)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
         <div class="condiciones">
-          <label class="check"><input type="checkbox" id="pac-silla"> Me cuesta levantarme de una silla sin usar las manos</label>
-          <label class="check"><input type="checkbox" id="pac-caminar"> No puedo caminar 10 minutos seguidos sin parar</label>
-          <label class="check"><input type="checkbox" id="pac-ayuda"> Uso bastón, andador o necesito ayuda para caminar</label>
+          <label class="check"><input type="checkbox" id="pac-silla"> <span data-i18n="mov.silla">Me cuesta levantarme de una silla sin usar las manos</span></label>
+          <label class="check"><input type="checkbox" id="pac-caminar"> <span data-i18n="mov.caminar">No puedo caminar 10 minutos seguidos sin parar</span></label>
+          <label class="check"><input type="checkbox" id="pac-ayuda"> <span data-i18n="mov.ayuda">Uso bastón, andador o necesito ayuda para caminar</span></label>
         </div>
       </details>
 
       <details class="bloque solo-pro" id="bloque-pro" open>
-        <summary><span class="sub-label">Datos clínicos (opcionales)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <summary><span class="sub-label" data-i18n="pro.titulo">Datos clínicos (opcionales)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
         <div class="fila">
-          <label><span class="lbl">FG estimado <span class="unidad-mini">mL/min</span></span><input type="number" id="pro-fg" min="5" max="150" inputmode="numeric" placeholder="CKD-EPI"></label>
-          <label><span class="lbl">FEVI <span class="unidad-mini">%</span></span><input type="number" id="pro-fevi" min="10" max="80" inputmode="numeric"></label>
+          <label><span class="lbl"><span data-i18n="pro.fg">FG estimado</span> <span class="unidad-mini">mL/min</span></span><input type="number" id="pro-fg" min="5" max="150" inputmode="numeric" placeholder="CKD-EPI"></label>
+          <label><span class="lbl"><span data-i18n="pro.fevi">FEVI</span> <span class="unidad-mini">%</span></span><input type="number" id="pro-fevi" min="10" max="80" inputmode="numeric"></label>
           <label>NYHA <select id="pro-nyha"><option value="">—</option><option value="1">I</option><option value="2">II</option><option value="3">III</option><option value="4">IV</option></select></label>
         </div>
         <div class="fila">
           <label><span class="lbl">SPPB <span class="unidad-mini">0–12</span></span><input type="number" id="pro-sppb" min="0" max="12" inputmode="numeric"></label>
-          <label>Vivifrail <select id="pro-vivifrail"><option value="">—</option><option value="A">A (discapacidad)</option><option value="B">B (frágil)</option><option value="C">C (prefrágil)</option><option value="D">D (robusto)</option></select></label>
-          <label><span class="lbl">FC detección DAI <span class="unidad-mini">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
+          <label>Vivifrail <select id="pro-vivifrail"><option value="">—</option><option value="A" data-i18n="pro.vA">A (discapacidad)</option><option value="B" data-i18n="pro.vB">B (frágil)</option><option value="C" data-i18n="pro.vC">C (prefrágil)</option><option value="D" data-i18n="pro.vD">D (robusto)</option></select></label>
+          <label><span class="lbl"><span data-i18n="pro.dai">FC detección DAI</span> <span class="unidad-mini">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
         </div>
-        <small>Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
+        <small data-i18n="pro.nota">Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
       </details>
     </div>
 
     <div class="panel">
-      <div class="cab-panel"><h2>Medicación habitual</h2><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false">Listas guardadas</button></div>
+      <div class="cab-panel"><h2 data-i18n="med.titulo">Medicación habitual</h2><div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-consultar" data-i18n="med.consultar">Consultar un fármaco</button><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false" data-i18n="med.perfiles">Listas guardadas</button></div></div>
       <div id="perfiles" class="perfiles" hidden>
-        <div class="fila"><label style="flex:1 1 160px">Guardar la lista actual como <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar">Guardar</button></div>
-        <small>Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
+        <div class="fila"><label style="flex:1 1 160px"><span data-i18n="perf.guardar_como">Guardar la lista actual como</span> <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" data-i18n-ph="perf.ph" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar" data-i18n="perf.guardar">Guardar</button></div>
+        <small data-i18n="perf.nota">Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
         <ul id="perfiles-lista"></ul>
       </div>
       <form id="form-med" autocomplete="off">
         <div class="buscador" style="margin-top:10px">
-          <label for="buscar" class="sr-only">Buscar medicamento</label>
-          <input id="buscar" type="search" placeholder="Marca o principio activo (Emconcor, bisoprolol…)" aria-controls="sugerencias" aria-autocomplete="list">
+          <label for="buscar" class="sr-only" data-i18n="buscar.sr">Buscar medicamento</label>
+          <input id="buscar" type="search" placeholder="Marca o principio activo (Emconcor, bisoprolol…)" data-i18n-ph="buscar.ph" aria-controls="sugerencias" aria-autocomplete="list">
           <ul id="sugerencias" role="listbox" hidden></ul>
         </div>
         <div id="dosis-wrap" hidden>
           <div class="fila">
-            <label>Dosis por toma <input type="number" id="dosis" step="any" min="0" inputmode="decimal"></label>
+            <label><span data-i18n="dosis.toma">Dosis por toma</span> <input type="number" id="dosis" step="any" min="0" inputmode="decimal"></label>
             <span class="unidad" id="unidad">mg</span>
-            <label id="tomas-wrap">Tomas al día <input type="number" id="tomas" min="1" max="6" value="1" inputmode="numeric"></label>
-            <button class="btn" type="submit">Añadir</button>
+            <label id="tomas-wrap"><span data-i18n="dosis.tomas">Tomas al día</span> <input type="number" id="tomas" min="1" max="6" value="1" inputmode="numeric"></label>
+            <button class="btn" type="submit" data-i18n="dosis.anadir">Añadir</button>
           </div>
-          <small>Si no conoce la dosis, puede añadirlo sin ella: perderá solo las indicaciones que dependen de la dosis.</small>
+          <small data-i18n="dosis.nota">Si no conoce la dosis, puede añadirlo sin ella: perderá solo las indicaciones que dependen de la dosis.</small>
         </div>
       </form>
 
       <div class="acciones">
-        <button type="button" class="btn-sec sm" id="btn-pegar">Pegar una lista</button>
-        <button type="button" class="btn-sec sm" id="btn-pdf">Subir un PDF</button>
-        <button type="button" class="btn-sec sm" id="btn-foto">Foto de la medicación</button>
+        <button type="button" class="btn-sec sm" id="btn-pegar" data-i18n="acc.pegar">Pegar una lista</button>
+        <button type="button" class="btn-sec sm" id="btn-pdf" data-i18n="acc.pdf">Subir un PDF</button>
+        <button type="button" class="btn-sec sm" id="btn-foto" data-i18n="acc.foto">Foto de la medicación</button>
         <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
         <input type="file" id="foto-input" accept="image/*" hidden>
-        <button type="button" class="btn-sec sm" id="btn-ejemplo">Ver un ejemplo</button>
-        <button type="button" class="btn-sec sm" id="btn-vaciar">Vaciar</button>
+        <button type="button" class="btn-sec sm" id="btn-ejemplo" data-i18n="acc.ejemplo">Ver un ejemplo</button>
+        <button type="button" class="btn-sec sm" id="btn-vaciar" data-i18n="acc.vaciar">Vaciar</button>
       </div>
-      <small class="privacidad">Todo se procesa en su dispositivo: la medicación, los PDF y las fotos no se envían a ningún servidor.</small>
+      <small class="privacidad" data-i18n="privacidad">Todo se procesa en su dispositivo: la medicación, los PDF y las fotos no se envían a ningún servidor.</small>
       <div id="pegar-wrap" hidden style="margin-top:10px">
-        <textarea id="pegar" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
-        <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
+        <textarea id="pegar" data-i18n-ph="pegar.ph" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
+        <div class="acciones"><button type="button" class="btn" id="btn-importar" data-i18n="pegar.anadir">Añadir estos medicamentos</button></div>
         </div>
       <small id="pegar-aviso" class="aviso-import" aria-live="polite"></small>
       <div id="no-reconocidos" class="no-reconocidos" hidden></div>
 
-      <div id="ejemplo-banner" class="banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
+      <div id="ejemplo-banner" class="banner" data-i18n="ejemplo.banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
       <ul id="lista-meds"></ul>
-      <p id="sin-meds" class="vacio" hidden>Todavía no hay medicamentos en la lista. Busque uno arriba, pegue su lista, suba el PDF o una foto de su hoja de medicación, o pulse «Ver un ejemplo» para ver cómo funciona.</p>
+      <p id="sin-meds" class="vacio" data-i18n="lista.vacia" hidden>Todavía no hay medicamentos en la lista. Busque uno arriba, pegue su lista, suba el PDF o una foto de su hoja de medicación, o pulse «Ver un ejemplo» para ver cómo funciona.</p>
     </div>
   </aside>
 
   <section id="informe" hidden>
     <div class="cabecera-informe">
-      <h2>Qué tener en cuenta</h2>
-      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-copiar">Copiar informe</button></div>
+      <h2 data-i18n="inf.titulo">Qué tener en cuenta</h2>
+      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button></div>
     </div>
     <div class="contexto-chips" id="contexto"></div>
     <div id="resumen"></div>
     <div class="tabs" role="tablist">
-      <button type="button" role="tab" data-tab="general">Antes de empezar <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="aerobico">Aeróbico <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="fuerza">Fuerza <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="equilibrio">Equilibrio <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="cuando">¿Cuándo? <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="interacciones">Interacciones <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="general"><span data-i18n="tab.general">Antes de empezar</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="aerobico"><span data-i18n="tab.aerobico">Aeróbico</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="fuerza"><span data-i18n="tab.fuerza">Fuerza</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="equilibrio"><span data-i18n="tab.equilibrio">Equilibrio</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="cuando"><span data-i18n="tab.cuando">¿Cuándo?</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="interacciones"><span data-i18n="tab.interacciones">Interacciones</span> <span class="cnt"></span></button>
     </div>
     <div id="contenido-tab" role="tabpanel"></div>
     <div id="perfil"></div>
     <textarea id="informe-texto" hidden readonly></textarea>
     <div class="descargas">
-      <h3>Llévese este informe</h3>
+      <h3 data-i18n="desc.titulo">Llévese este informe</h3>
       <div class="acciones">
-        <button type="button" class="btn" id="btn-pdf-medico">Resumen para su médico (PDF)</button>
-        <button type="button" class="btn" id="btn-pdf-paciente">Resumen para usted (PDF)</button>
+        <button type="button" class="btn" id="btn-pdf-medico" data-i18n="desc.medico">Resumen para su médico (PDF)</button>
+        <button type="button" class="btn" id="btn-pdf-paciente" data-i18n="desc.paciente">Resumen para usted (PDF)</button>
       </div>
-      <small>El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
+      <small data-i18n="desc.nota">El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso" aria-live="polite"></small>
-      <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia">Enviar una sugerencia o error</button>
+      <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
-    <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</p>
+    <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> <span data-i18n="firma">By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</span></p>
   </section>
 </main>
 
-<div class="aviso-actualizar" id="aviso-actualizar" hidden>Hay una versión nueva. <button type="button" class="btn-sec sm">Actualizar</button></div>
+<dialog id="ficha" class="ficha" aria-labelledby="ficha-titulo">
+  <div class="ficha-cab">
+    <div class="buscador"><label for="ficha-buscar" class="sr-only" data-i18n="ficha.sr">Buscar fármaco</label><input id="ficha-buscar" type="search" placeholder="Marca o principio activo…" data-i18n-ph="ficha.ph" autocomplete="off"><ul id="ficha-sugerencias" role="listbox" hidden></ul></div>
+    <button type="button" class="btn-sec sm" id="ficha-cerrar" data-i18n="ficha.cerrar">Cerrar</button>
+  </div>
+  <div id="ficha-cuerpo" class="ficha-cuerpo"><p class="vacio" data-i18n="ficha.vacio">Busque un medicamento para ver todo lo que la aplicación sabe de él: precauciones para cada tipo de ejercicio, horario, interacciones y fuentes. No se añade a su lista.</p></div>
+</dialog>
+<div class="aviso-actualizar" id="aviso-actualizar" hidden><span data-i18n="act.nueva">Hay una versión nueva.</span> <button type="button" class="btn-sec sm" data-i18n="act.btn">Actualizar</button></div>
 <div class="barra-inferior" id="barra-inferior" hidden>
-  <button type="button" class="btn" id="btn-ir-informe">Ver el informe <span class="contador" id="barra-contador"></span></button>
+  <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script type="module" src="js/app.js?v=202610150912"></script>
+<script type="module" src="js/app.js?v=202610150924"></script>
 </body>
 </html>

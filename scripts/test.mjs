@@ -177,5 +177,26 @@ console.log("Integridad de datos");
   check("combinaciones con componentes válidos", combosMal.length === 0, combosMal.map((c) => c.nombre).join());
 }
 
+console.log("\nIdiomas");
+{
+  // i18n.js usa document/localStorage solo dentro de funciones; aquí comprobamos los diccionarios
+  const src = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  const dicc = {};
+  for (const m of src.matchAll(/^const (ES|EN|CA|GL) = \{([\s\S]*?)^\};/gm)) {
+    dicc[m[1]] = new Set([...m[2].matchAll(/"([a-z0-9_.]+)":/g)].map((x) => x[1]));
+  }
+  check("cuatro diccionarios", Object.keys(dicc).length === 4, Object.keys(dicc).join());
+  for (const l of ["EN", "CA", "GL"]) {
+    const faltan = [...dicc.ES].filter((k) => !dicc[l].has(k));
+    check(`${l} tiene todas las claves de ES`, faltan.length === 0, faltan.join());
+  }
+  const html = fs.readFileSync(path.join(ROOT, "app/index.html"), "utf8");
+  const usadas = [...html.matchAll(/data-i18n(?:-ph|-title|-aria)?="([a-z0-9_.]+)"/g)].map((x) => x[1]);
+  const appjs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  usadas.push(...[...appjs.matchAll(/\bt\("([a-z0-9_.]+)"/g)].map((x) => x[1]));
+  const sinDef = [...new Set(usadas)].filter((k) => !dicc.ES.has(k));
+  check("todas las claves usadas existen en ES", sinDef.length === 0, sinDef.join());
+}
+
 console.log(`\n${total - fallos}/${total} pruebas correctas`);
 process.exit(fallos ? 1 : 0);

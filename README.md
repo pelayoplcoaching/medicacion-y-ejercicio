@@ -57,11 +57,16 @@ cd app && python3 -m http.server 8080
 
 Licencia de DDInter: CC BY-NC-SA 4.0 (uso no comercial, citar la fuente).
 
-**Nomenclátor AEMPS** (nombres comerciales):
+**Nomenclátor AEMPS** (nombres comerciales y dosis por comprimido). Hay que ejecutarlo en un ordenador con acceso a internet (no hace falta clave):
 ```bash
-python3 scripts/build_cima.py
+git clone https://github.com/pelayoplcoaching/medicacion-y-ejercicio.git   # o git pull si ya lo tiene
+cd medicacion-y-ejercicio
+python3 scripts/build_cima.py            # descarga prescripcion.zip de la AEMPS y escribe app/data/marcas.json
+node scripts/test.mjs                    # comprueba que todo sigue en orden
+git add app/data/marcas.json && git commit -m "Nomenclátor AEMPS" && git push
 ```
-Descarga `prescripcion.zip` de la AEMPS y genera `marcas.json` solo con las presentaciones cuyo principio activo está en `kb.json`. Si la AEMPS cambia las etiquetas del XML, ajuste `TAGS` en el script.
+Si la descarga falla, baje https://listadomedicamentos.aemps.gob.es/prescripcion.zip con el navegador y ejecute `python3 scripts/build_cima.py ~/Descargas/prescripcion.zip`.
+El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la estructura sin escribir nada, y al terminar lista los principios activos frecuentes que aún no están en `kb.json`. Conviene repetirlo cada pocos meses (el nomenclátor cambia a diario).
 
 ## Ampliar la base de conocimiento
 

@@ -17,6 +17,6 @@ if sw.exists():
     sw.write_text(t, encoding="utf-8")
 for js in (p.parent / "js").glob("*.js"):
     t = js.read_text(encoding="utf-8")
-    t2 = re.sub(r'(from "\./[a-z]+\.js)(\?v=\d+)?"', rf'\1?v={v}"', t)
+    t2 = re.sub(r'(from "\./[a-z0-9]+\.js)(\?v=\d+)?"', rf'\1?v={v}"', t)
     if t2 != t: js.write_text(t2, encoding="utf-8")
 print("versión", v)
