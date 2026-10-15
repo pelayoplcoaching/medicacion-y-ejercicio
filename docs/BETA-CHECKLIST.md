@@ -17,7 +17,7 @@ Estado al cierre de la última ronda alfa (v0.16.0-beta.0, 2026-10-15). Marcar a
 - [ ] Política de versiones de la base: quién aprueba cada regeneración y cómo se comunica al usuario (hoy: fecha en `kb.version` y «Novedades»).
 
 ## Calidad técnica
-- [x] `scripts/test.mjs` 126/126 · `scripts/ui_test.mjs` 84/84 · axe 0 incidencias · Lighthouse móvil ≥ 90, escritorio 100.
+- [x] `scripts/test.mjs` 126/126 · `scripts/ui_test.mjs` 112/112 · axe 0 incidencias · Lighthouse móvil ≥ 90, escritorio 100.
 - [x] Sin conexión: precache de la app y de los datos; aviso de nueva versión.
 - [ ] Probar en dispositivos reales: iOS Safari (instalación, dictado, cámara), Android Chrome (BarcodeDetector), lectores de pantalla (VoiceOver/TalkBack) en el flujo de medicación y SPPB.
 - [ ] Prueba de carga con listas largas (≥ 20 fármacos) y nomenclátor completo en móviles de gama baja.

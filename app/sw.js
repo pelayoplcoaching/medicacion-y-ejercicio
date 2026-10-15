@@ -1,11 +1,11 @@
 /* Service worker: la aplicación y la base de conocimiento funcionan sin conexión.
    El nombre de la caché cambia con cada despliegue (scripts/bump_version.py lo sella), de modo que
    una versión nueva se descarga en segundo plano y se activa cuando el usuario pulsa "Actualizar". */
-const VERSION = "202610151643";
+const VERSION = "202610151843";
 const CACHE = "medex-" + VERSION;
 const APP = ["./", "index.html", "novedades.html", "acerca.html", "manifest.webmanifest", "css/style.css", "js/app.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/libs.js", "js/i18n.js", "js/version.js",
   "data/kb.json", "data/ddi_curated.json", "data/ddi.json", "data/marcas.json",
-  "assets/logo.png", "assets/logo-app.png", "assets/logo-80.png", "assets/logo-app-152.png", "legal.html", "assets/favicon.png", "assets/icon-192.png", "assets/icon-512.png", "assets/fonts/Manrope-400.woff2", "assets/fonts/Manrope-700.woff2", "assets/fonts/Manrope-800.woff2", "data/fichas.json"];
+  "assets/logo.png", "assets/logo-app.png", "assets/logo-80.png", "assets/logo-app-152.png", "legal.html", "guia.html", "assets/guia/1-datos.webp", "assets/guia/2-buscar.webp", "assets/guia/3-anadir.webp", "assets/guia/4-informe.webp", "assets/guia/5-plan.webp", "assets/guia/6-descargas.webp", "assets/favicon.png", "assets/icon-192.png", "assets/icon-512.png", "assets/fonts/Manrope-400.woff2", "assets/fonts/Manrope-700.woff2", "assets/fonts/Manrope-800.woff2", "data/fichas.json"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(APP.map((u) => new Request(u, { cache: "reload" })))).catch(() => {}));

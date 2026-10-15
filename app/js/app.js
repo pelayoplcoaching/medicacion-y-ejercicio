@@ -1,10 +1,10 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151643";
-import { APP_VERSION } from "./version.js?v=202610151643";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151643";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151643";
-import { cargarScript } from "./libs.js?v=202610151643";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151643";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151643";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151843";
+import { APP_VERSION } from "./version.js?v=202610151843";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151843";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151843";
+import { cargarScript } from "./libs.js?v=202610151843";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151843";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151843";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -30,6 +30,11 @@ function ocultarToast() { const el = $("#toast"); el.classList.remove("visible")
 
 /* ---------- iconos (trazos propios, 24×24) ---------- */
 const ICONS = {
+  persona: "M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z",
+  informe: "M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5L14 3.5zM8 11h8v1.8H8V11zm0 3.5h8v1.8H8v-1.8zM8 18h5v1.8H8V18z",
+  barras: "M3 5h2v14H3V5zm3 0h1v14H6V5zm2 0h2v14H8V5zm3 0h1v14h-1V5zm2 0h3v14h-3V5zm4 0h1v14h-1V5zm2 0h2v14h-2V5z",
+  pastilla: "M7.1 3.1a5 5 0 0 1 7 0l6.8 6.8a5 5 0 0 1-7 7L7.1 10.1a5 5 0 0 1 0-7zm1.4 1.4a3 3 0 0 0 0 4.2l2.8 2.8 4.2-4.2-2.8-2.8a3 3 0 0 0-4.2 0z",
+  ayuda: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 15.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM12 6a3.6 3.6 0 0 1 3.6 3.6c0 1.6-1 2.3-1.8 2.9-.7.5-1 .8-1 1.5h-1.6c0-1.5.8-2.2 1.6-2.8.7-.5 1.2-.9 1.2-1.6a2 2 0 0 0-4 0H8.4A3.6 3.6 0 0 1 12 6z",
   buscar: "M10.5 3a7.5 7.5 0 1 0 4.7 13.4l4.2 4.2 1.4-1.4-4.2-4.2A7.5 7.5 0 0 0 10.5 3zm0 2a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z",
   foto: "M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z",
   pdf: "M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9.4V18H8v-5zm1.4 1.2v1.3h.8a.65.65 0 0 0 0-1.3h-.8zM12 13h1.8c1.6 0 2.5 1 2.5 2.5S15.4 18 13.8 18H12v-5zm1.4 1.2v2.6h.4c.8 0 1.1-.5 1.1-1.3s-.3-1.3-1.1-1.3h-.4zM17 13h3v1.2h-1.6v.9H20v1.2h-1.6V18H17v-5z",
@@ -120,7 +125,8 @@ function ponerIconos() {
   const mapa = { "btn-caja": "caja", "btn-dictar": "mic", "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar", "btn-pdf-medico": "pdf", "btn-pdf-paciente": "pdf" };
   for (const [id, n] of Object.entries(mapa)) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
   for (const b of $$(".tabs [role=tab]")) if (!b.querySelector("svg") && ICONS[b.dataset.tab]) b.insertAdjacentHTML("afterbegin", icono(b.dataset.tab));
-  for (const [id, n] of Object.entries({ "btn-qr": "qr", "btn-exportar": "guardar", "btn-importar-listas": "abrir" })) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
+  for (const [id, n] of Object.entries({ "btn-qr": "qr", "btn-exportar": "guardar", "btn-importar-listas": "abrir", "btn-anadir": "pegar", "btn-primero": "buscar", "btn-buscar-nombre": "buscar", "btn-barras": "barras", "btn-ver-mi-plan": "plan", "btn-ir-descargas": "pdf", "btn-compartir": "compartir", "btn-glosario": "ayuda" })) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
+  for (const b of $$("#barra-inferior button")) if (!b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(b.dataset.ic === "plan" ? "plan" : b.dataset.ic));
 }
 
 // Idioma de la interfaz (la base de conocimiento sigue en español)
@@ -164,6 +170,7 @@ function ctxActual() {
   return { edad: estado.edad, caidas: estado.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, sppb, sppbGuiado: estado.sppb, fcReposo: estado.fcReposo, modo: estado.modo };
 }
 let datos, indice;
+let ultimoAnadido = null; // pid del último medicamento añadido, para resaltar su tarjeta
 
 const EJEMPLO = {
   edad: 72, caidas: true,
@@ -213,11 +220,13 @@ async function cargar() {
   const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
   if (h && decodificarEstado(h[1])) { history.replaceState(null, "", location.pathname); restaurarFormulario(); guardar(); $("#pegar-aviso").textContent = "Lista cargada desde el enlace."; }
   render();
+  // primera visita sin lista: recorrido guiado sobre los elementos reales
+  try { if (localStorage.getItem("medex.guia") !== "1" && !estado.meds.length && !h) setTimeout(iniciarTour, 400); } catch {}
 }
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb })); } catch {}
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
 function numeroEntre(v, min, max) { if (v == null || v === "") return null; const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
@@ -236,7 +245,7 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb) });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb), informeVisto: !!s.informeVisto });
   } catch {}
   $("#edad").value = estado.edad ?? ""; $("#fc-reposo").value = estado.fcReposo ?? "";
   $("#caidas").checked = estado.caidas;
@@ -254,21 +263,27 @@ function aplicarModo() {
   conIcono($("#btn-pdf-medico"), estado.modo === "paciente" ? t("desc.medico") : t("desc.medico.pro"));
   conIcono($("#btn-pdf-paciente"), estado.modo === "paciente" ? t("desc.paciente.pac") : t("desc.paciente.pro"));
 }
-$("#btn-letra").addEventListener("click", () => {
-  const on = !document.documentElement.classList.contains("letra-grande");
-  document.documentElement.classList.toggle("letra-grande", on);
-  $("#btn-letra").setAttribute("aria-pressed", String(on));
-  try { localStorage.setItem("medex.letra", on ? "1" : "0"); } catch {}
-});
+/* tamaño de letra en tres pasos: normal → grande → muy grande (se recuerda en el dispositivo) */
+function aplicarLetra(n) {
+  n = Math.max(0, Math.min(2, Number(n) || 0));
+  document.documentElement.classList.toggle("letra-grande", n >= 1);
+  document.documentElement.classList.toggle("letra-xl", n === 2);
+  const b = $("#btn-letra"); b.setAttribute("aria-pressed", String(n > 0));
+  const e = $("#letra-estado"); if (e) e.textContent = t("letra." + n);
+  try { localStorage.setItem("medex.letra", String(n)); } catch {}
+  return n;
+}
+$("#btn-letra").addEventListener("click", () => { const n = aplicarLetra((Number(localStorage.getItem("medex.letra")) || 0) + 1 > 2 ? 0 : (Number(localStorage.getItem("medex.letra")) || 0) + 1); toast(t("letra." + n), { ms: 1800 }); });
 // cabecera compacta y guía de 3 pasos: solo la primera visita se muestra todo
 try {
   if (localStorage.getItem("medex.visto") === "1") document.documentElement.classList.add("retorno");
   else localStorage.setItem("medex.visto", "1");
 } catch {}
-$("#btn-presentacion").addEventListener("click", () => { document.documentElement.classList.toggle("retorno"); });
-$("#guia-cerrar").addEventListener("click", () => { $("#guia").hidden = true; try { localStorage.setItem("medex.guia", "1"); } catch {} });
-try { if (localStorage.getItem("medex.guia") === "1") $("#guia").hidden = true; } catch {}
-try { if (localStorage.getItem("medex.letra") === "1") { document.documentElement.classList.add("letra-grande"); $("#btn-letra").setAttribute("aria-pressed", "true"); } } catch {}
+try { aplicarLetra(localStorage.getItem("medex.letra") || 0); } catch { aplicarLetra(0); }
+// menú «Más»: se cierra al elegir una opción o al pulsar fuera
+$("#menu-mas .menu-lista").addEventListener("click", (ev) => { if (ev.target.closest("[role=menuitem]") && !ev.target.closest("#btn-letra, #btn-tema")) $("#menu-mas").open = false; });
+document.addEventListener("click", (ev) => { const m = $("#menu-mas"); if (m.open && !ev.target.closest("#menu-mas")) m.open = false; });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && $("#menu-mas").open) $("#menu-mas").open = false; });
 $$(".modo button").forEach((b) => b.addEventListener("click", () => { estado.modo = b.dataset.modo; aplicarModo(); guardar(); render(); }));
 for (const k of PAC) $("#pac-" + k)?.addEventListener("change", () => { estado.pac[k] = $("#pac-" + k).checked; guardar(); render(); });
 for (const k of PRO) $("#pro-" + k)?.addEventListener("change", () => { const v = $("#pro-" + k).value; estado.pro[k] = v === "" ? null : (k === "vivifrail" ? v : parseFloat(v)); guardar(); render(); });
@@ -405,6 +420,7 @@ $("#form-med").addEventListener("submit", (ev) => {
       if (rara && !confirm(t("dosis.rara", { d: diaria.toLocaleString("es-ES"), u: seleccion.unidad.split("/")[0], f: ref.principio.nombre }))) { $("#dosis").focus(); return; }
     }
     estado.meds.push({ pid: seleccion.pid, dosis: Number.isFinite(dosis) ? dosis : null, tomas, unidad: seleccion.unidad, momentos: momentosPorDefecto(tomas) });
+    ultimoAnadido = seleccion.pid;
   }
   seleccion = null;
   inputBuscar.value = "";
@@ -672,7 +688,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
-  btn.disabled = true; btn.setAttribute("aria-busy", "true");
+  btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
     const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), cribado: cribadoActual(res), zona: zonaIntensidad(res, ctxActual(), { fcReposo: estado.fcReposo }), prescriptor: estado.modo === "profesional" ? prescriptorActual() : null, prescrito: estado.prescrito, appVersion: APP_VERSION, enlace: `${location.origin}${location.pathname}#lista=${codificarEstado()}`, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
@@ -747,7 +763,11 @@ $("#btn-ejemplo").addEventListener("click", () => {
   $("#edad").value = estado.edad; $("#caidas").checked = estado.caidas;
   guardar(); render();
 });
-$("#btn-vaciar").addEventListener("click", () => { estado.meds = []; estado.ejemplo = false; guardar(); render(); const c = $("#cambios"); if (c) c.hidden = true; });
+$("#btn-vaciar").addEventListener("click", () => {
+  if (!estado.meds.length) return;
+  const copia = estado.meds; estado.meds = []; estado.ejemplo = false; guardar(); render(); const c = $("#cambios"); if (c) c.hidden = true;
+  toast(t("lista.vaciada", { n: copia.length }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds = copia; guardar(); render(); } });
+});
 $("#edad").addEventListener("change", () => { estado.edad = parseInt($("#edad").value, 10) || null; guardar(); render(); });
 $("#fc-reposo").addEventListener("change", () => { estado.fcReposo = numeroEntre($("#fc-reposo").value, 30, 150); guardar(); render(); });
 $("#caidas").addEventListener("change", () => { estado.caidas = $("#caidas").checked; guardar(); render(); });
@@ -770,23 +790,38 @@ window.addEventListener("offline", pintarConexion);
 window.addEventListener("online", () => { pintarConexion(); toast(t("conexion.on"), { ms: 3000 }); });
 pintarConexion();
 $("#esencial").addEventListener("click", (ev) => { if (ev.target.closest("#btn-escuchar")) escuchar(); });
+$("#btn-como").addEventListener("click", () => iniciarTour());
 // barra inferior (móvil): lleva al informe o, estando en él, de vuelta a la medicación
 let enInforme = false;
 const desplazar = (el) => el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-$("#btn-ir-informe").addEventListener("click", () => desplazar(enInforme ? $("aside") : $("#informe")));
+const DESTINOS_NAV = { datos: () => $("#panel-datos"), medicacion: () => $("#panel-medicacion"), informe: () => $("#informe"), plan: () => { if (estado.tab !== "plan") { estado.tab = "plan"; render(); } return $(".tabs"); } };
+$$("#barra-inferior button").forEach((b) => b.addEventListener("click", () => { const el = DESTINOS_NAV[b.dataset.ir]?.(); if (el) desplazar(el); if (b.dataset.ir === "informe" || b.dataset.ir === "plan") { estado.informeVisto = true; guardar(); } marcarNav(b.dataset.ir); }));
+function marcarNav(id) { $$("#barra-inferior button").forEach((b) => b.classList.toggle("activo", b.dataset.ir === id)); }
 new IntersectionObserver(([e]) => {
   enInforme = e.isIntersecting;
-  $("#btn-ir-informe").firstChild.textContent = enInforme ? t("lista.editar") + " " : t("barra.ver") + " ";
+  if (enInforme && estado.meds.length && !estado.informeVisto) { estado.informeVisto = true; guardar(); }
   if (datos) pintarPasos();
 }, { rootMargin: "-40% 0px -55% 0px" }).observe($("#informe"));
+// qué sección está a la vista → pestaña activa en la barra inferior
+{
+  const vis = new Map();
+  const obs = new IntersectionObserver((es) => {
+    for (const e of es) vis.set(e.target.id, e.intersectionRatio);
+    const ordenado = [...vis.entries()].sort((a, b) => b[1] - a[1])[0];
+    if (!ordenado || !ordenado[1]) return;
+    marcarNav({ "panel-datos": "datos", "panel-medicacion": "medicacion", informe: estado.tab === "plan" && enInforme ? "plan" : "informe" }[ordenado[0]]);
+  }, { threshold: [0, .25, .5, .75, 1] });
+  for (const id of ["panel-datos", "panel-medicacion", "informe"]) { const el = document.getElementById(id); if (el) obs.observe(el); }
+}
 
 /* ---------- escuchar «Lo esencial» (síntesis de voz del navegador) ---------- */
 let hablando = false;
-function escuchar() {
+function escuchar(texto) {
   if (!("speechSynthesis" in window)) return;
   if (hablando) { speechSynthesis.cancel(); hablando = false; pintarBtnEscuchar(); return; }
-  const res = evaluar(datos, medsActivos(), ctxActual());
-  const partes = [t("esencial.titulo") + ".", ...loEsencial(res, 5).map((p) => `${p.titulo}. ${p.texto}`), t("alarma.titulo"), ...ALARMA];
+  let partes;
+  if (typeof texto === "string") partes = [texto.replace(/\s+/g, " ").slice(0, 6000)];
+  else { const res = evaluar(datos, medsActivos(), ctxActual()); partes = [t("esencial.titulo") + ".", ...loEsencial(res, 5).map((p) => `${p.titulo}. ${p.texto}`), t("alarma.titulo"), ...ALARMA]; }
   const u = new SpeechSynthesisUtterance(partes.join(" \n"));
   u.lang = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES" }[idioma()] || "es-ES"; u.rate = 0.95;
   u.onend = u.onerror = () => { hablando = false; pintarBtnEscuchar(); };
@@ -854,7 +889,7 @@ const TEMAS = ["auto", "light", "dark", "contrast"];
 function aplicarTema(tm) {
   if (tm === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = tm;
   try { localStorage.setItem("medex.tema", tm); } catch {}
-  const b = $("#btn-tema"); b.title = t("tema." + tm); b.setAttribute("aria-label", t("tema." + tm)); b.querySelector("span").textContent = { auto: "A", light: "☀", dark: "☾", contrast: "◐" }[tm];
+  const b = $("#btn-tema"); b.title = t("tema." + tm); b.setAttribute("aria-label", t("tema." + tm)); b.querySelector(".ic-menu span").textContent = { auto: "A", light: "☀", dark: "☾", contrast: "◐" }[tm]; const tx = $("#tema-txt"); if (tx) tx.textContent = t("tema." + tm);
 }
 $("#btn-tema").addEventListener("click", () => { const act = document.documentElement.dataset.theme || "auto"; aplicarTema(TEMAS[(TEMAS.indexOf(act) + 1) % TEMAS.length]); });
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
@@ -1037,12 +1072,24 @@ function editarEnSitio(li, m, it) {
 }
 
 /** Pasos 1·2·3 de la barra inferior: medicación → datos → informe. */
+/* recorrido en tres pasos (datos → medicación → plan): estado de cada uno y botón «Siguiente» */
+function datosRellenos() { return !!(estado.edad || estado.condiciones.length || estado.caidas || estado.fcReposo || Object.values(estado.pac).some(Boolean) || Object.values(estado.pro).some((v) => v != null && v !== "")); }
+let pasoActual = 1;
 function pintarPasos() {
-  const p1 = estado.meds.length > 0;
-  const p2 = !!(estado.edad || estado.condiciones.length || estado.caidas || Object.values(estado.pac).some(Boolean) || Object.values(estado.pro).some((v) => v != null && v !== ""));
-  const p3 = p1 && enInforme;
-  $("#pasos").innerHTML = [[p1, t("pasos.1")], [p2, t("pasos.2")], [p3, t("pasos.3")]].map(([ok, txt], i) => `<span class="paso${ok ? " hecho" : ""}${!ok && (i === 0 || (i === 1 && p1) || (i === 2 && p1)) ? " actual" : ""}"><b>${ok ? "✓" : i + 1}</b>${txt}</span>`).join("");
+  const p1 = datosRellenos(), p2 = estado.meds.filter((m) => !m.libre).length > 0, p3 = p2 && (enInforme || estado.informeVisto);
+  pasoActual = !p1 ? 1 : !p2 ? 2 : !p3 ? 3 : 0;
+  const pasos = [[p1, t("pasos.1")], [p2, t("pasos.2")], [p3, t("pasos.3")]];
+  $("#recorrido-pasos").innerHTML = pasos.map(([ok, txt], i) => `<li class="paso${ok ? " hecho" : ""}${pasoActual === i + 1 ? " actual" : ""}"${pasoActual === i + 1 ? ' aria-current="step"' : ""}><b>${ok ? "✓" : i + 1}</b><span>${txt}</span></li>`).join("");
+  const b = $("#btn-siguiente"); b.hidden = pasoActual === 0;
+  b.innerHTML = `<span class="largo">${t(pasoActual === 1 ? "rec.ir_datos" : pasoActual === 2 ? "rec.ir_meds" : "rec.ir_plan")}</span><span class="corto">${t("rec.siguiente")}</span> →`;
+  // barra inferior (móvil): insignias
+  const nMeds = estado.meds.length; const bm = $('#barra-inferior [data-ir="medicacion"] .nav-badge'); if (bm) { bm.textContent = nMeds || ""; bm.hidden = !nMeds; }
 }
+$("#btn-siguiente").addEventListener("click", () => {
+  if (pasoActual === 1) { desplazar($("#panel-datos")); setTimeout(() => $("#edad").focus({ preventScroll: true }), 400); }
+  else if (pasoActual === 2) { desplazar($("#panel-medicacion")); setTimeout(() => $("#buscar").focus({ preventScroll: true }), 400); }
+  else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
+});
 
 function render() {
   const ctx = ctxActual();
@@ -1073,13 +1120,14 @@ function render() {
     const it = resLista.items[k++];
     if (!it) return;
     if (m.pausado) li.classList.add("pausado");
+    if (ultimoAnadido && m.pid === ultimoAnadido) { li.classList.add("nuevo"); ultimoAnadido = null; }
     const dosis = it.dosisTotal != null
       ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
       : t("lista.sin_dosis");
     li.innerHTML = `
       <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small>${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
       <div class="med-dosis"><button type="button" class="editar" title="${t("lista.editar_dosis")}">${dosis}${it.dosisCat === "alta" && !m.pausado ? ` <span class="chip chip-alta">${t("inf.dosis_alta")}</span>` : ""} ${icono("editar", "ic ic-sm")}</button></div>
-      <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${MOMENTO_TXT[mm]}">${{ desayuno: "Des", comida: "Com", cena: "Cena", noche: "Noche" }[mm]}</button>`).join("")}</div>
+      <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${MOMENTO_TXT[mm]}">${{ desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Noche" }[mm]}</button>`).join("")}</div>
       <div class="med-acciones"><button type="button" class="pausar" title="${m.pausado ? t("lista.reanudar") : t("lista.pausar")}" aria-label="${m.pausado ? t("lista.reanudar") : t("lista.pausar")} ${it.principio.nombre}">${icono(m.pausado ? "reanudar" : "pausa")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${it.principio.nombre}">×</button></div>`;
     li.querySelectorAll(".mom").forEach((b) => b.addEventListener("click", () => {
       const set = new Set(m.momentos || []);
@@ -1098,7 +1146,7 @@ function render() {
   $("#sin-meds").hidden = estado.meds.length > 0;
   $("#informe").hidden = res.items.length === 0;
   $("#solo-libres").hidden = !(res.items.length === 0 && medsLibres().length);
-  if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); pintarSppbEstado(); $("#btn-barras").hidden = !barrasDisponible(); return; }
+  if (!res.items.length) { $("#barra-inferior").hidden = $("#completitud").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); pintarSppbEstado(); $("#btn-barras").hidden = !barrasDisponible(); return; }
 
   // chips de contexto derivado
   const chips = [...ctx.condiciones].map((c) => ETIQUETAS_CTX[c]).filter(Boolean);
@@ -1113,7 +1161,7 @@ function render() {
   // veredicto en lenguaje claro
   const { alerta: nA, precaucion: nP } = res.resumen;
   const mayores = res.interacciones.filter((x) => x.nivel === "mayor").length;
-  const veredicto = nA || mayores ? t("veredicto.alerta", { a: nA + mayores }) : nP ? t("veredicto.precaucion", { p: nP }) : t("veredicto.ok");
+  const veredicto = nA || mayores ? t(nA + mayores === 1 ? "veredicto.alerta1" : "veredicto.alerta", { a: nA + mayores }) : nP ? t(nP === 1 ? "veredicto.precaucion1" : "veredicto.precaucion", { p: nP }) : t("veredicto.ok");
   const crib = cribadoActual(res);
   renderCribado(res); pintarReeval(); pintarSppbEstado();
   $("#btn-barras").hidden = !barrasDisponible();
@@ -1159,7 +1207,8 @@ function render() {
     else { const { a, p } = cuenta(b.dataset.tab); c.textContent = a + p || ""; c.className = "cnt" + (a ? " c-alerta" : p ? " c-precaucion" : ""); }
   });
   $("#barra-inferior").hidden = false;
-  $("#barra-contador").innerHTML = `<span style="background:var(--alerta)">${res.resumen.alerta}</span><span style="background:var(--precaucion)">${res.resumen.precaucion}</span>`;
+  { const bc = $("#barra-contador"); const n = res.resumen.alerta + res.resumen.precaucion; bc.textContent = n || ""; bc.hidden = !n; bc.className = "nav-badge" + (res.resumen.alerta ? " alerta" : ""); const bp = $('#barra-inferior [data-ir="plan"] .nav-badge'); if (bp) { const d = leerDiario().filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; bp.textContent = d || ""; bp.hidden = !d; } }
+  pintarCompletitud(res);
   const cont = $("#contenido-tab");
   cont.innerHTML = "";
 
@@ -1188,6 +1237,7 @@ function render() {
     renderPlan(cont);
   } else {
     if (estado.tab === "aerobico") cont.insertAdjacentHTML("beforeend", tarjetaZona(res));
+    if ("speechSynthesis" in window) { cont.insertAdjacentHTML("afterbegin", `<div class="escuchar-tab"><button type="button" class="btn-sec sm" data-escuchar-tab>${icono("escuchar")} ${t("escuchar.apartado")}</button></div>`); cont.querySelector("[data-escuchar-tab]").addEventListener("click", () => escuchar(cont.innerText)); }
     renderAmbito(cont, res.ambitos[estado.tab], null, estado.tab);
   }
   // perfil de señales
@@ -1803,6 +1853,104 @@ function seccionImpacto(res) {
   sec.querySelector(".cuerpo-sec").innerHTML = `<p class="muted">${t("impacto.intro")}</p><ul class="impacto">${lista.map((x) => `<li><span class="nom">${x.item.principio.nombre}</span><span class="barra-imp"><span style="width:${Math.round(x.pct * 100)}%"></span></span><small>${[x.alerta ? `${x.alerta} ${t("impacto.alerta")}` : "", x.precaucion ? `${x.precaucion} ${t("impacto.precaucion")}` : "", x.combinadas ? `${x.combinadas} ${t("impacto.comb")}` : "", x.interacciones ? `${x.interacciones} ${t("impacto.ddi")}` : ""].filter(Boolean).join(" · ")}</small></li>`).join("")}</ul><p class="esencial-nota">${t("impacto.nota")}</p>`;
   return sec;
 }
+
+/* ---------- UX beta 1: hoja «añadir», ayuda contextual, recorrido guiado, completitud, acciones del veredicto ---------- */
+const hojaAnadir = $("#hoja-anadir");
+function abrirHojaAnadir() { hojaAnadir.showModal(); }
+$("#btn-anadir").addEventListener("click", abrirHojaAnadir);
+$("#btn-primero").addEventListener("click", abrirHojaAnadir);
+$("#hoja-anadir-cerrar").addEventListener("click", () => hojaAnadir.close());
+$("#btn-buscar-nombre").addEventListener("click", () => { hojaAnadir.close(); desplazar($("#panel-medicacion")); setTimeout(() => $("#buscar").focus({ preventScroll: true }), 350); });
+for (const id of ["btn-foto", "btn-caja", "btn-pdf", "btn-pegar", "btn-barras"]) $("#" + id).addEventListener("click", () => { hojaAnadir.close(); if (id === "btn-pegar") { $("#pegar-wrap").hidden = false; setTimeout(() => $("#pegar").focus(), 100); } });
+$("#btn-dictar").addEventListener("click", () => { if ($("#btn-dictar").getAttribute("aria-pressed") === "true") { hojaAnadir.close(); toast(t("dictar.escuchando"), { accion: t("sppb.parar"), onAccion: () => $("#btn-dictar").click(), ms: 60000 }); } });
+for (const d of [hojaAnadir, $("#ayuda")]) d.addEventListener("click", (ev) => { if (ev.target === d) d.close(); }); // tocar fuera cierra la hoja
+
+// ayuda contextual: un «?» junto a cada apartado abre una hoja con qué es, por qué se pregunta y un ejemplo
+function abrirAyuda(clave) {
+  const d = $("#ayuda");
+  $("#ayuda-titulo").textContent = t("ayuda." + clave + ".t");
+  $("#ayuda-cuerpo").innerHTML = t("ayuda." + clave + ".x");
+  d.showModal();
+}
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-ayuda]"); if (b) { ev.preventDefault(); ev.stopPropagation(); abrirAyuda(b.dataset.ayuda); } }, true);
+$("#ayuda-cerrar").addEventListener("click", () => $("#ayuda").close());
+$("#btn-glosario").addEventListener("click", () => {
+  const d = $("#ayuda");
+  $("#ayuda-titulo").textContent = t("cab.glosario");
+  $("#ayuda-cuerpo").innerHTML = `<dl class="glosario">${Object.entries(GLOSARIO).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
+  d.showModal();
+});
+
+// recorrido guiado sobre los elementos reales (primera visita o desde «¿Cómo funciona?»)
+const TOUR = [
+  { sel: "#panel-datos", clave: "datos" },
+  { sel: "#buscar", clave: "buscar" },
+  { sel: "#btn-anadir", clave: "anadir" },
+  { sel: "#informe", clave: "informe", opcional: true },
+  { sel: "#barra-inferior", clave: "barra", opcional: true },
+  { sel: "#menu-mas", clave: "mas" },
+];
+let tourI = -1;
+function iniciarTour() { tourI = -1; $("#tour").hidden = false; document.documentElement.classList.remove("retorno"); tourPaso(1); }
+function tourPaso(dir) {
+  let i = tourI + dir;
+  while (TOUR[i] && TOUR[i].opcional && (!$(TOUR[i].sel) || $(TOUR[i].sel).hidden || (TOUR[i].sel === "#barra-inferior" && !matchMedia("(max-width: 959px)").matches))) i += dir;
+  if (!TOUR[i]) return cerrarTour();
+  tourI = i;
+  const paso = TOUR[i], el = $(paso.sel);
+  $$(".tour-foco").forEach((e) => e.classList.remove("tour-foco"));
+  el.classList.add("tour-foco");
+  el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  const visibles = TOUR.filter((p) => !p.opcional || ($(p.sel) && !$(p.sel).hidden && (p.sel !== "#barra-inferior" || matchMedia("(max-width: 959px)").matches)));
+  $("#tour-paso").textContent = t("tour.paso", { n: visibles.indexOf(paso) + 1, t: visibles.length });
+  $("#tour-titulo").textContent = t("tour." + paso.clave + ".t");
+  $("#tour-texto").textContent = t("tour." + paso.clave + ".x");
+  $("#tour-sig").textContent = visibles.indexOf(paso) === visibles.length - 1 ? t("tour.fin") : t("tour.sig");
+  setTimeout(() => $("#tour-sig").focus({ preventScroll: true }), 50);
+}
+function cerrarTour() { $$(".tour-foco").forEach((e) => e.classList.remove("tour-foco")); $("#tour").hidden = true; tourI = -1; try { localStorage.setItem("medex.guia", "1"); } catch {} }
+$("#tour-sig").addEventListener("click", () => tourPaso(1));
+$("#guia-cerrar").addEventListener("click", cerrarTour);
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && !$("#tour").hidden) cerrarTour(); });
+$("#tour-fondo").addEventListener("click", cerrarTour);
+
+// «Su plan está al N %»: qué falta por rellenar para afinar el plan, con un botón directo
+function pintarCompletitud(res) {
+  const q = estado.modo === "paciente" ? estado.pac : {};
+  const items = [
+    { id: "edad", ok: !!estado.edad, ir: () => { desplazar($("#panel-datos")); $("#edad").focus({ preventScroll: true }); } },
+    { id: "situacion", ok: estado.condiciones.length > 0 || estado.caidas || !!estado.edad && estado.edad < 50, ir: () => { $("#bloque-situacion").open = true; desplazar($("#bloque-situacion")); } },
+    { id: "cribado", ok: cribadoActual(res).clave !== "sin_datos", ir: () => { const d = $("#bloque-cribado"); d.open = true; desplazar(d); } },
+    { id: "fcreposo", ok: estado.fcReposo != null || res.items.some((it) => it.senales.has("fc_no_valida") || it.senales.has("bradicardia")), ir: () => { desplazar($("#panel-datos")); $("#fc-reposo").focus({ preventScroll: true }); } },
+    { id: "sppb", ok: ctxActual().sppb != null || Object.values(q).some(Boolean) || !!estado.pro.vivifrail || (estado.edad != null && estado.edad < 65), ir: () => $("#btn-sppb").click() },
+    { id: "plan", ok: leerDiario().length > 0 || (estado.plan?.dias || []).length !== 6, ir: () => { estado.tab = "plan"; render(); desplazar($(".tabs")); } },
+  ];
+  const hechos = items.filter((x) => x.ok).length, pct = Math.round(100 * hechos / items.length);
+  const falta = items.filter((x) => !x.ok);
+  const box = $("#completitud");
+  box.hidden = !falta.length;
+  if (!falta.length) return;
+  const sig = falta[0];
+  box.innerHTML = `<div class="comp-cab"><b>${t("comp.titulo", { p: pct })}</b><span class="comp-barra" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${t("comp.titulo", { p: pct })}"><span style="width:${pct}%"></span></span></div>
+    <p>${t("comp.sig")} <b>${t("comp." + sig.id)}</b> <small>· ${t("comp." + sig.id + ".por")}</small></p>
+    <div class="acciones"><button type="button" class="btn sm" id="comp-ir">${t("comp.ir")}</button>${falta.length > 1 ? `<button type="button" class="btn-sec sm" id="comp-todo" aria-expanded="false">${t("comp.todo", { n: falta.length })}</button>` : ""}</div>
+    <ul class="comp-lista" id="comp-lista" hidden>${falta.map((x) => `<li><button type="button" data-comp="${x.id}">${t("comp." + x.id)}</button></li>`).join("")}</ul>`;
+  $("#comp-ir").addEventListener("click", sig.ir);
+  $("#comp-todo")?.addEventListener("click", () => { const l = $("#comp-lista"); l.hidden = !l.hidden; $("#comp-todo").setAttribute("aria-expanded", String(!l.hidden)); });
+  box.querySelectorAll("[data-comp]").forEach((b) => b.addEventListener("click", () => items.find((x) => x.id === b.dataset.comp).ir()));
+}
+
+// acciones del veredicto: ver mi plan · descargar · compartir
+$("#btn-ver-mi-plan").addEventListener("click", () => { estado.tab = "plan"; render(); desplazar($(".tabs")); });
+$("#btn-ir-descargas").addEventListener("click", () => desplazar($("#descargas")));
+$("#btn-compartir").addEventListener("click", () => $("#btn-whatsapp").click());
+
+// pestañas: flechas del teclado (patrón WAI-ARIA tabs)
+$(".tabs").addEventListener("keydown", (ev) => {
+  const tabs = $$(".tabs [role=tab]"); const i = tabs.indexOf(document.activeElement); if (i < 0) return;
+  const j = ev.key === "ArrowRight" ? (i + 1) % tabs.length : ev.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length : ev.key === "Home" ? 0 : ev.key === "End" ? tabs.length - 1 : -1;
+  if (j < 0) return; ev.preventDefault(); tabs[j].focus(); tabs[j].click();
+});
 
 cargar();
 

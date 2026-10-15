@@ -60,17 +60,17 @@
 <link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="js/version.js?v=202610151643">
-<link rel="modulepreload" href="js/libs.js?v=202610151643">
-<link rel="modulepreload" href="js/i18n.js?v=202610151643">
-<link rel="modulepreload" href="js/engine.js?v=202610151643">
-<link rel="modulepreload" href="js/parser.js?v=202610151643">
-<link rel="modulepreload" href="js/informes.js?v=202610151643">
-<link rel="modulepreload" href="js/ocr.js?v=202610151643">
+<link rel="modulepreload" href="js/version.js?v=202610151843">
+<link rel="modulepreload" href="js/libs.js?v=202610151843">
+<link rel="modulepreload" href="js/i18n.js?v=202610151843">
+<link rel="modulepreload" href="js/engine.js?v=202610151843">
+<link rel="modulepreload" href="js/parser.js?v=202610151843">
+<link rel="modulepreload" href="js/informes.js?v=202610151843">
+<link rel="modulepreload" href="js/ocr.js?v=202610151843">
 <link rel="preload" href="data/kb.json" as="fetch" crossorigin>
 <link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151643">
+<link rel="stylesheet" href="css/style.css?v=202610151843">
 </head>
 <body class="cargando" data-modo="paciente">
 
@@ -86,8 +86,25 @@
     <p data-i18n="cab.lema1">El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
     <p data-i18n="cab.lema2">El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><a class="btn-sec sm" href="legal.html" data-i18n="cab.legal">Legal</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><button type="button" class="btn-sec sm btn-icono" id="btn-tema" aria-label="Tema"><span>A</span></button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label></div>
-  <div class="estado-linea"><small id="kb-version"></small><button type="button" class="btn-sec sm" id="btn-instalar" hidden data-i18n="instalar">Instalar</button></div>
+  <div class="utiles">
+    <button type="button" class="btn-sec sm" id="btn-como" data-i18n="cab.como">¿Cómo funciona?</button>
+    <label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label>
+    <details class="menu-mas" id="menu-mas">
+      <summary class="btn-sec sm" aria-haspopup="true"><span aria-hidden="true">⋯</span> <span data-i18n="cab.mas">Más</span></summary>
+      <div class="menu-lista" role="menu">
+        <button type="button" role="menuitem" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Tamaño de letra"><span class="ic-menu" aria-hidden="true">A<span class="mas">+</span></span><span data-i18n="cab.letra">Tamaño de letra</span><small id="letra-estado"></small></button>
+        <button type="button" role="menuitem" id="btn-tema" aria-label="Tema"><span class="ic-menu" aria-hidden="true"><span>A</span></span><span id="tema-txt" data-i18n="cab.tema">Tema</span></button>
+        <button type="button" role="menuitem" id="btn-glosario" data-i18n="cab.glosario">Glosario de términos</button>
+        <a role="menuitem" href="guia.html" data-i18n="cab.guia">Guía rápida</a>
+        <a role="menuitem" href="novedades.html" data-i18n="cab.novedades">Novedades</a>
+        <button type="button" role="menuitem" class="btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button>
+        <a role="menuitem" href="acerca.html" data-i18n="cab.acerca">Acerca de</a>
+        <a role="menuitem" href="legal.html" data-i18n="cab.legal">Legal</a>
+        <button type="button" role="menuitem" id="btn-instalar" hidden data-i18n="instalar">Instalar en el móvil</button>
+      </div>
+    </details>
+  </div>
+  <div class="estado-linea"><small id="kb-version"></small></div>
   <p class="banner" id="aviso-idioma" hidden></p>
   <p class="banner banner-reeval" id="aviso-reeval" hidden></p>
   <p class="conexion" id="conexion" hidden role="status"><span aria-hidden="true">●</span> <span data-i18n="conexion.off">Sin conexión · la app funciona igual</span></p>
@@ -95,29 +112,26 @@
 
 <main class="contenedor">
   <aside>
-    <div class="guia" id="guia">
-      <ol>
-        <li><b>1</b><span data-i18n="guia.1">Añada su medicación (búsqueda, lista pegada, PDF o foto).</span></li>
-        <li><b>2</b><span data-i18n="guia.2">Marque su edad y su situación clínica.</span></li>
-        <li><b>3</b><span data-i18n="guia.3">Lea «Lo esencial» y llévese el PDF a su médico o entrenador.</span></li>
-      </ol>
-      <button type="button" class="btn-sec sm" id="guia-cerrar" data-i18n="guia.cerrar">Entendido</button>
-    </div>
-    <div class="panel">
+    <nav class="recorrido" id="recorrido" aria-label="Pasos">
+      <ol id="recorrido-pasos"></ol>
+      <button type="button" class="btn sm" id="btn-siguiente"><span data-i18n="rec.siguiente">Siguiente</span> →</button>
+    </nav>
+    <div class="panel" id="panel-datos">
       <div class="modo" role="radiogroup" aria-label="Quién rellena los datos" data-i18n-aria="modo.aria">
         <button type="button" role="radio" data-modo="paciente" aria-checked="true" data-i18n="modo.paciente">Soy paciente</button>
         <button type="button" role="radio" data-modo="profesional" aria-checked="false" data-i18n="modo.pro">Soy profesional sanitario</button>
       </div>
-      <h2 data-i18n="datos.titulo">Datos básicos</h2>
+      <h2 class="h-ayuda"><span data-i18n="datos.titulo">Datos básicos</span><button type="button" class="btn-ayuda" data-ayuda="datos" aria-label="Ayuda: datos básicos">?</button></h2>
       <small class="modo-nota" data-i18n="datos.nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
       <div class="fila" style="margin-top:10px">
-        <label><span data-i18n="datos.edad">Edad</span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
-        <label><span class="lbl"><span data-i18n="datos.fcreposo">Pulso en reposo</span> <span class="unidad-mini">lpm, opcional</span></span><input type="number" id="fc-reposo" min="30" max="150" inputmode="numeric"></label>
-        <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label>
+        <label for="edad"><span class="lbl"><span data-i18n="datos.edad">Edad</span><button type="button" class="btn-ayuda" data-ayuda="edad" aria-label="Ayuda: edad">?</button></span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
+        <label for="fc-reposo"><span class="lbl"><span data-i18n="datos.fcreposo">Pulso en reposo</span> <span class="unidad-mini">lpm, opcional</span><button type="button" class="btn-ayuda" data-ayuda="fcreposo" aria-label="Ayuda: pulso en reposo">?</button></span><input type="number" id="fc-reposo" min="30" max="150" inputmode="numeric"></label>
+        <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label><button type="button" class="btn-ayuda" data-ayuda="caidas" aria-label="Ayuda: caídas">?</button>
       </div>
-      <div class="acciones sppb-acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-sppb" data-i18n="sppb.btn">Medir la forma física (SPPB guiado, 5 min)</button><small id="sppb-estado"></small></div>
+      <div class="acciones sppb-acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-sppb" data-i18n="sppb.btn">Medir la forma física (SPPB guiado, 5 min)</button><button type="button" class="btn-ayuda" data-ayuda="sppb" aria-label="Ayuda: SPPB">?</button><small id="sppb-estado"></small></div>
       <details class="bloque" id="bloque-situacion" open>
       <summary><span class="sub-label" data-i18n="sit.titulo">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+      <p class="ayuda-bloque"><button type="button" class="btn-ayuda" data-ayuda="situacion" aria-label="Ayuda: situación clínica">?</button> <small data-i18n="sit.ayuda_txt">¿Qué marcar y por qué?</small></p>
       <div class="condiciones">
         <label class="check"><input type="checkbox" id="cond-diabetes"> <span data-i18n="sit.diabetes">Diabetes</span></label>
         <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> <span data-i18n="sit.ic">Insuficiencia cardíaca</span></label>
@@ -147,6 +161,7 @@
 
       <details class="bloque" id="bloque-cribado">
         <summary><span class="sub-label"><span data-i18n="crib.titulo">Antes de empezar: cribado de seguridad</span> <span class="chip chip-crib" id="crib-estado" hidden></span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <p class="ayuda-bloque"><button type="button" class="btn-ayuda" data-ayuda="cribado" aria-label="Ayuda: cribado">?</button> <small data-i18n="crib.ayuda_txt">¿Para qué sirve este cribado?</small></p>
         <small data-i18n="crib.intro">Tres preguntas del algoritmo de preparticipación del ACSM (2015) para saber si conviene una valoración médica antes de empezar o de subir la intensidad.</small>
         <fieldset class="crib-preg"><legend data-i18n="crib.regular">¿Hace ejercicio con regularidad? (al menos 30 min de intensidad moderada, 3 días por semana, en los últimos 3 meses)</legend>
           <label class="check"><input type="radio" name="crib-regular" value="1"> <span data-i18n="crib.si">Sí</span></label><label class="check"><input type="radio" name="crib-regular" value="0"> <span data-i18n="crib.no">No</span></label></fieldset>
@@ -195,7 +210,7 @@
       </details>
     </div>
 
-    <div class="panel">
+    <div class="panel" id="panel-medicacion">
       <div class="cab-panel"><h2 data-i18n="med.titulo">Medicación habitual</h2><div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-consultar" data-i18n="med.consultar">Consultar un fármaco</button><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false" data-i18n="med.perfiles">Listas guardadas</button></div></div>
       <div id="perfiles" class="perfiles" hidden>
         <div class="fila"><label style="flex:1 1 160px"><span data-i18n="perf.guardar_como">Guardar la lista actual como</span> <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" data-i18n-ph="perf.ph" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar" data-i18n="perf.guardar">Guardar</button></div>
@@ -224,18 +239,12 @@
         </div>
       </form>
 
-      <div class="acciones">
-        <button type="button" class="btn-sec sm" id="btn-pegar" data-i18n="acc.pegar">Pegar una lista</button>
-        <button type="button" class="btn-sec sm" id="btn-pdf" data-i18n="acc.pdf">Subir un PDF</button>
-        <button type="button" class="btn-sec sm" id="btn-foto" data-i18n="acc.foto">Foto de la medicación</button>
-        <button type="button" class="btn-sec sm" id="btn-caja" data-i18n="acc.caja">Foto de una caja</button>
-        <button type="button" class="btn-sec sm" id="btn-dictar" aria-pressed="false" data-i18n="acc.dictar">Dictar</button>
-        <button type="button" class="btn-sec sm" id="btn-barras" hidden data-i18n="acc.barras">Escanear código de barras</button>
+      <div class="acciones acciones-anadir">
+        <button type="button" class="btn btn-anadir" id="btn-anadir"><span class="dos-lineas"><b data-i18n="acc.anadir">Más formas de añadir</b><small data-i18n="acc.anadir.x">foto de la hoja, PDF, lista pegada o voz</small></span></button>
+        <button type="button" class="btn-sec sm" id="btn-vaciar" data-i18n="acc.vaciar">Vaciar la lista</button>
         <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
         <input type="file" id="foto-input" accept="image/*" hidden>
         <input type="file" id="caja-input" accept="image/*" capture="environment" hidden>
-        <button type="button" class="btn-sec sm" id="btn-ejemplo" data-i18n="acc.ejemplo">Ver un ejemplo</button>
-        <button type="button" class="btn-sec sm" id="btn-vaciar" data-i18n="acc.vaciar">Vaciar</button>
       </div>
       <small class="privacidad" data-i18n="privacidad">Todo se procesa en su dispositivo: la medicación, los PDF y las fotos no se envían a ningún servidor.</small>
       <div id="pegar-wrap" hidden style="margin-top:10px">
@@ -250,28 +259,32 @@
       <ul id="lista-meds"></ul>
       <p id="solo-libres" class="banner" data-i18n="libre.solo" hidden>Los medicamentos añadidos tal cual no están en la base: no generan recomendaciones. Añada el resto de su medicación para ver el informe.</p>
       <div class="ilustracion" id="ilustracion" aria-hidden="true"><svg viewBox="0 0 160 90" width="160" height="90"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#6b35c4"/><stop offset="1" stop-color="#b89bf5"/></linearGradient></defs><path d="M12 68c10-22 36-30 58-26l10 2c6 1 10-3 16-2 14 2 34 10 50 18 4 2 3 8-2 8H14c-3 0-4-2-2-4z" fill="url(#g1)" opacity=".9"/><path d="M14 68h128" stroke="#fff" stroke-opacity=".5" stroke-width="2"/><rect x="92" y="14" width="46" height="20" rx="10" transform="rotate(-28 115 24)" fill="#fff" stroke="#6b35c4" stroke-width="2.5"/><path d="M103 38 125 26" stroke="#6b35c4" stroke-width="2.5"/><circle cx="46" cy="28" r="9" fill="none" stroke="#6b35c4" stroke-width="2.5"/><path d="M46 22v6l4 3" stroke="#6b35c4" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
-      <p id="sin-meds" class="vacio" data-i18n="lista.vacia" hidden>Todavía no hay medicamentos en la lista. Busque uno arriba, pegue su lista, suba el PDF o una foto de su hoja de medicación, o pulse «Ver un ejemplo» para ver cómo funciona.</p>
+      <div id="sin-meds" class="vacio" hidden>
+        <p data-i18n="lista.vacia">Todavía no hay medicamentos en su lista.</p>
+        <div class="acciones"><button type="button" class="btn" id="btn-primero" data-i18n="lista.primero">Añadir mi primer medicamento</button><button type="button" class="btn-sec sm" id="btn-ejemplo" data-i18n="acc.ejemplo">Ver un ejemplo</button></div>
+      </div>
     </div>
   </aside>
 
   <section id="informe" hidden>
     <div class="cabecera-informe">
       <h2 data-i18n="inf.titulo">Qué tener en cuenta</h2>
-      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-qr" data-i18n="qr.btn">Código QR</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button></div>
     </div>
     <div class="contexto-chips" id="contexto"></div>
     <div id="veredicto" class="veredicto"></div>
+    <div class="veredicto-acciones" id="veredicto-acciones"><button type="button" class="btn sm" id="btn-ver-mi-plan" data-i18n="ver.plan">Ver mi plan</button><button type="button" class="btn-sec sm" id="btn-ir-descargas" data-i18n="ver.descargar">Descargar</button><button type="button" class="btn-sec sm" id="btn-compartir" data-i18n="ver.compartir">Compartir</button><button type="button" class="btn-ayuda" data-ayuda="niveles" aria-label="Ayuda: qué significan los niveles">?</button></div>
+    <div id="completitud" class="completitud" hidden></div>
     <section id="hoy" class="hoy" aria-label="Hoy"></section>
     <div id="resumen"></div>
     <div id="esencial"></div>
     <div class="tabs" role="tablist">
-      <button type="button" role="tab" data-tab="general"><span data-i18n="tab.general">Antes de empezar</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="aerobico"><span data-i18n="tab.aerobico">Aeróbico</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="fuerza"><span data-i18n="tab.fuerza">Fuerza</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="equilibrio"><span data-i18n="tab.equilibrio">Equilibrio</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="cuando"><span data-i18n="tab.cuando">¿Cuándo?</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="plan"><span data-i18n="tab.plan">Mi plan</span> <span class="cnt"></span></button>
-      <button type="button" role="tab" data-tab="interacciones"><span data-i18n="tab.interacciones">Interacciones</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="general" data-ic="antes"><span data-i18n="tab.general">Antes de empezar</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="aerobico" data-ic="aerobico"><span data-i18n="tab.aerobico">Aeróbico</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="fuerza" data-ic="fuerza"><span data-i18n="tab.fuerza">Fuerza</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="equilibrio" data-ic="equilibrio"><span data-i18n="tab.equilibrio">Equilibrio</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="cuando" data-ic="reloj"><span data-i18n="tab.cuando">¿Cuándo?</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="plan" data-ic="plan"><span data-i18n="tab.plan">Mi plan</span> <span class="cnt"></span></button>
+      <button type="button" role="tab" data-tab="interacciones" data-ic="ddi"><span data-i18n="tab.interacciones">Interacciones</span> <span class="cnt"></span></button>
     </div>
     <div id="contenido-tab" role="tabpanel"></div>
     <div id="perfil"></div>
@@ -287,6 +300,7 @@
       <small id="pdf-aviso" aria-live="polite"></small>
       <div class="util" id="util" hidden aria-live="polite"></div>
       <div class="acciones compartir"><button type="button" class="btn-sec sm" id="btn-whatsapp" data-i18n="compartir.whatsapp">Compartir por WhatsApp</button><button type="button" class="btn-sec sm" id="btn-email" data-i18n="compartir.email">Enviar a mi médico por correo</button><button type="button" class="btn-sec sm" id="btn-calendario" data-i18n="plan.calendario">Añadir mi plan al calendario</button></div>
+      <div class="acciones compartir-enlaces"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-qr" data-i18n="qr.btn">Código QR</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button></div>
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
@@ -316,11 +330,38 @@
 </dialog>
 <div class="aviso-actualizar" id="aviso-actualizar" hidden><span data-i18n="act.nueva">Hay una versión nueva.</span> <button type="button" class="btn-sec sm" data-i18n="act.btn">Actualizar</button></div>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
-<nav class="barra-inferior" id="barra-inferior" aria-label="Progreso" hidden>
-  <div class="pasos" id="pasos"></div>
-  <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
+<dialog id="hoja-anadir" class="hoja" aria-labelledby="hoja-anadir-titulo">
+  <div class="hoja-cab"><p id="hoja-anadir-titulo" data-i18n="hoja.anadir">Añadir medicación</p><button type="button" class="btn-sec sm" id="hoja-anadir-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
+  <div class="hoja-opciones">
+    <button type="button" id="btn-buscar-nombre" data-ic="buscar"><b data-i18n="via.buscar">Buscar por nombre</b><small data-i18n="via.buscar.x">Marca o principio activo, con la dosis</small></button>
+    <button type="button" id="btn-foto" data-ic="camara"><b data-i18n="acc.foto">Foto de la hoja de medicación</b><small data-i18n="via.foto.x">La app lee los nombres y las dosis</small></button>
+    <button type="button" id="btn-caja" data-ic="caja"><b data-i18n="acc.caja">Foto de una caja</b><small data-i18n="via.caja.x">Un medicamento cada vez</small></button>
+    <button type="button" id="btn-pdf" data-ic="pdf"><b data-i18n="acc.pdf">Subir un PDF</b><small data-i18n="via.pdf.x">Informe de alta o receta electrónica</small></button>
+    <button type="button" id="btn-pegar" data-ic="pegar"><b data-i18n="acc.pegar">Pegar una lista</b><small data-i18n="via.pegar.x">Un medicamento por línea</small></button>
+    <button type="button" id="btn-dictar" aria-pressed="false" data-ic="micro"><b data-i18n="acc.dictar">Dictar</b><small data-i18n="via.dictar.x">Diga el nombre y la dosis</small></button>
+    <button type="button" id="btn-barras" hidden data-ic="barras"><b data-i18n="acc.barras">Escanear el código de barras</b><small data-i18n="via.barras.x">Con la cámara, sobre la caja</small></button>
+  </div>
+</dialog>
+<dialog id="ayuda" class="hoja" aria-labelledby="ayuda-titulo">
+  <div class="hoja-cab"><p id="ayuda-titulo"></p><button type="button" class="btn-sec sm" id="ayuda-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
+  <div class="hoja-cuerpo" id="ayuda-cuerpo"></div>
+</dialog>
+<div class="tour" id="tour" hidden>
+  <div class="tour-fondo" id="tour-fondo"></div>
+  <div class="tour-caja" role="dialog" aria-labelledby="tour-titulo" aria-describedby="tour-texto">
+    <p class="tour-paso" id="tour-paso"></p>
+    <h2 id="tour-titulo"></h2>
+    <p id="tour-texto"></p>
+    <div class="acciones"><button type="button" class="btn sm" id="tour-sig" data-i18n="tour.sig">Siguiente</button><button type="button" class="btn-sec sm" id="guia-cerrar" data-i18n="guia.cerrar">Saltar</button></div>
+  </div>
+</div>
+<nav class="barra-inferior" id="barra-inferior" aria-label="Secciones" hidden>
+  <button type="button" data-ir="datos" data-ic="persona"><span data-i18n="nav.datos">Datos</span></button>
+  <button type="button" data-ir="medicacion" data-ic="pastilla"><span data-i18n="nav.medicacion">Medicación</span><b class="nav-badge" hidden></b></button>
+  <button type="button" data-ir="informe" id="btn-ir-informe" data-ic="informe"><span data-i18n="nav.informe">Informe</span><b class="nav-badge" id="barra-contador" hidden></b></button>
+  <button type="button" data-ir="plan" data-ic="plan"><span data-i18n="nav.plan">Mi plan</span><b class="nav-badge" hidden></b></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202610151643"></script>
+<script type="module" src="js/app.js?v=202610151843"></script>
 </body>
 </html>
