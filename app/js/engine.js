@@ -60,14 +60,20 @@ function distancia(a, b, max) {
 export function buscar(indice, q, limite = 8) {
   const n = normalizar(q);
   if (n.length < 2) return [];
-  const empieza = [], contiene = [];
+  const empieza = [], contiene = [], palabras = [];
+  const toks = n.split(" ").filter(Boolean);
   for (const e of indice.entradas) {
     const i = e.norm.indexOf(n);
-    if (i === 0) empieza.push(e); else if (i > 0) contiene.push(e);
+    if (i === 0) empieza.push(e);
+    else if (i > 0) contiene.push(e);
+    else if (toks.length > 1 && toks.every((t) => e.norm === t || e.norm.startsWith(t + " ") || e.norm.includes(" " + t))) palabras.push(e); // "omeprazol 20" → OMEPRAZOL CINFA 20 MG
   }
+  // principios y marcas cortas antes que presentaciones largas del nomenclátor
+  const peso = (e) => (e.tipo === "principio" ? 0 : 1) * 1000 + e.norm.length;
+  empieza.sort((x, y) => peso(x) - peso(y)); palabras.sort((x, y) => peso(x) - peso(y));
   const vistos = new Set();
   const res = [];
-  for (const e of [...empieza, ...contiene]) {
+  for (const e of [...empieza, ...contiene, ...palabras]) {
     const k = e.tipo + ":" + e.texto;
     if (vistos.has(k)) continue;
     vistos.add(k);

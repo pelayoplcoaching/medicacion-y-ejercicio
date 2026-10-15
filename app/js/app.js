@@ -1,8 +1,8 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150924";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150924";
-import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610150924";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150924";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610150924";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610150948";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150948";
+import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610150948";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150948";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610150948";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
