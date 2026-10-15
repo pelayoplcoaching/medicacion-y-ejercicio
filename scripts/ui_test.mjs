@@ -61,7 +61,7 @@ try {
   await p.click("#lista-meds li.libre .quitar"); await p.waitForTimeout(150);
 
   console.log("Pegar lista y no reconocidos");
-  await p.click("#btn-pegar"); await p.fill("#pegar", "Atorvastatina 40 mg 0-0-1\nFantasiol 10 mg 1-0-0"); await p.click("#btn-importar"); await p.waitForTimeout(200);
+  await p.click("#btn-anadir"); await p.click("#btn-pegar"); await p.fill("#pegar", "Atorvastatina 40 mg 0-0-1\nFantasiol 10 mg 1-0-0"); await p.click("#btn-importar"); await p.waitForTimeout(200);
   check("línea reconocida añadida", (await p.$$("#lista-meds li")).length === 6);
   check("línea no reconocida avisada", await p.isVisible("#no-reconocidos"));
 
@@ -152,11 +152,61 @@ try {
   await p.click("#btn-sppb"); await p.waitForTimeout(100); await p.fill("#sppb-seg", "5"); await p.click("#sppb-sig"); await p.waitForTimeout(80);
   check("pies juntos < 10 s salta al paso de marcha", (await p.textContent("#sppb-cuerpo")).includes("Paso 4 de 5"));
   await p.click("#sppb-cerrar"); await p.waitForTimeout(100);
-  for (let i = 0; i < 3; i++) await p.click("#btn-tema");
+  await p.click("#menu-mas summary"); for (let i = 0; i < 3; i++) await p.click("#btn-tema");
   check("tema de alto contraste disponible en el ciclo", (await p.evaluate(() => document.documentElement.dataset.theme)) === "contrast" && (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--line").trim())) === "#000000");
-  await p.click("#btn-tema");
+  await p.click("#btn-tema"); await p.keyboard.press("Escape");
   check("botones de ficha para el entrenador y tarjeta para la nevera", await p.isVisible("#btn-pdf-entrenador") && await p.isVisible("#btn-pdf-tarjeta"));
   check("escáner de códigos de barras oculto sin códigos nacionales en el nomenclátor", await p.$eval("#btn-barras", (e) => e.hidden));
+
+  console.log("Beta 1: experiencia de uso (menú, recorrido, hoja de añadir, completitud, ayuda, barra, letra, deshacer)");
+  check("cabecera limpia: solo «¿Cómo funciona?», idioma y «Más» a la vista", (await p.$$(".utiles > .btn-sec, .utiles > .idioma, .utiles > .menu-mas")).length === 3 && !(await p.isVisible("#btn-letra")));
+  await p.click("#menu-mas summary"); await p.waitForTimeout(100);
+  check("menú «Más» con letra, tema, glosario, guía, novedades, sugerencias, acerca y legal", await p.isVisible("#btn-letra") && (await p.$$(".menu-lista [role=menuitem]")).length >= 8);
+  await p.click("#btn-letra"); await p.click("#btn-letra");
+  check("letra en tres tamaños (muy grande = clase letra-xl y se recuerda)", await p.$eval("html", (e) => e.classList.contains("letra-xl")) && (await p.evaluate(() => localStorage.getItem("medex.letra"))) === "2");
+  await p.click("#btn-letra"); await p.keyboard.press("Escape"); await p.waitForTimeout(100);
+  check("Escape cierra el menú y la letra vuelve a normal", !(await p.$eval("#menu-mas", (e) => e.open)) && !(await p.$eval("html", (e) => e.classList.contains("letra-grande"))));
+  check("recorrido en tres pasos: todos hechos y sin «Siguiente» cuando ya se ha visto el plan", (await p.$$("#recorrido-pasos li")).length === 3 && (await p.$$("#recorrido-pasos li.hecho")).length === 3 && await p.$eval("#btn-siguiente", (b) => b.hidden) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
+  check("medidor «su plan está al N %» con siguiente paso y botón directo", await p.isVisible("#completitud") && /\d+ %/.test(await p.textContent("#completitud")) && await p.isVisible("#comp-ir"));
+  await p.click("#comp-todo"); await p.waitForTimeout(100);
+  check("lista de todo lo que falta desplegable", !(await p.$eval("#comp-lista", (e) => e.hidden)) && (await p.$$("#comp-lista button")).length >= 1);
+  check("veredicto con acciones: ver mi plan, descargar, compartir y ayuda de niveles", await p.isVisible("#btn-ver-mi-plan") && await p.isVisible("#btn-ir-descargas") && await p.isVisible('[data-ayuda="niveles"]'));
+  await p.click('[data-ayuda="niveles"]'); await p.waitForTimeout(200);
+  check("ayuda contextual: hoja con título y los tres niveles", await p.$eval("#ayuda", (d) => d.open) && (await p.textContent("#ayuda-titulo")).includes("niveles") && (await p.$$("#ayuda-cuerpo .niveles-ayuda li")).length === 3);
+  await p.click("#ayuda-cerrar");
+  await p.click('[data-ayuda="edad"]'); await p.waitForTimeout(150);
+  check("la ayuda de un campo no activa el campo (el «?» dentro de la etiqueta)", await p.$eval("#ayuda", (d) => d.open) && (await p.textContent("#ayuda-titulo")).includes("edad"));
+  await p.click("#ayuda-cerrar");
+  await p.click("#menu-mas summary"); await p.click("#btn-glosario"); await p.waitForTimeout(150);
+  check("glosario desde el menú", (await p.$$("#ayuda-cuerpo .glosario dt")).length >= 10); await p.click("#ayuda-cerrar");
+  await p.click("#btn-anadir"); await p.waitForTimeout(200);
+  check("hoja «añadir» con seis vías visibles y el escáner oculto", (await p.$$eval(".hoja-opciones button", (bs) => bs.filter((b) => !b.hidden).length)) === 6 && await p.$eval("#btn-barras", (b) => b.hidden));
+  await p.click("#btn-buscar-nombre"); await p.waitForTimeout(500);
+  check("«Buscar por nombre» cierra la hoja y enfoca el buscador", !(await p.$eval("#hoja-anadir", (d) => d.open)) && (await p.evaluate(() => document.activeElement?.id)) === "buscar");
+  check("barra inferior con cuatro secciones e insignias (nº de fármacos y avisos)", (await p.$$("#barra-inferior button")).length === 4 && (await p.textContent('#barra-inferior [data-ir="medicacion"] .nav-badge')).trim() !== "" && !(await p.$eval("#barra-contador", (e) => e.hidden)));
+  await p.click('#barra-inferior [data-ir="datos"]'); await p.waitForTimeout(700);
+  check("la barra inferior lleva a la sección y la marca activa", await p.$eval('#barra-inferior [data-ir="datos"]', (b) => b.classList.contains("activo")));
+  const nAntes = (await p.$$("#lista-meds li")).length;
+  await p.click("#btn-vaciar"); await p.waitForTimeout(200);
+  check("vaciar la lista deja estado vacío con «Añadir mi primer medicamento»", (await p.$$("#lista-meds li")).length === 0 && await p.isVisible("#btn-primero") && !(await p.isVisible("#btn-vaciar")));
+  await p.click("#toast button"); await p.waitForTimeout(300);
+  check("deshacer recupera la lista completa", (await p.$$("#lista-meds li")).length === nAntes);
+  await p.click("#btn-como"); await p.waitForTimeout(600);
+  check("«¿Cómo funciona?» abre el recorrido guiado sobre el elemento real", !(await p.$eval("#tour", (e) => e.hidden)) && (await p.$$(".tour-foco")).length === 1 && (await p.textContent("#tour-paso")).includes("1"));
+  await p.click("#tour-sig"); await p.waitForTimeout(400);
+  check("el recorrido avanza y enfoca el buscador en el paso 2", await p.$eval("#buscar", (e) => e.classList.contains("tour-foco")));
+  await p.keyboard.press("Escape"); await p.waitForTimeout(100);
+  check("Escape cierra el recorrido", await p.$eval("#tour", (e) => e.hidden) && (await p.$$(".tour-foco")).length === 0);
+  await p.click('[data-tab="fuerza"]'); await p.waitForTimeout(200);
+  check("botón «Escuchar este apartado» en cada pestaña", await p.isVisible("#contenido-tab [data-escuchar-tab]"));
+  await p.focus('[data-tab="fuerza"]'); await p.keyboard.press("ArrowRight"); await p.waitForTimeout(200);
+  check("pestañas con flechas del teclado", (await p.evaluate(() => document.activeElement?.dataset.tab)) === "equilibrio" && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).tab)) === "equilibrio");
+  await p.click('[data-tab="general"]');
+  const arbol = await p.locator("body").ariaSnapshot();
+  check("árbol de accesibilidad: navegación, pasos, pestañas y ayudas con nombre", /navigation "Secciones"/.test(arbol) && /navigation "Pasos"/.test(arbol) && /tab "Fuerza/.test(arbol) && /button "Ayuda: edad"/.test(arbol) && /button "Ayuda: qué significan los niveles"/.test(arbol));
+  await p.goto(`http://localhost:${PORT}/guia.html`, { waitUntil: "networkidle" }); await p.waitForTimeout(300);
+  check("guía rápida con seis pasos, capturas y preguntas frecuentes", (await p.$$(".paso-guia")).length === 6 && (await p.$$eval(".paso-guia img", (is) => is.every((i) => i.complete && i.naturalWidth > 0))) && (await p.$$(".faq details")).length >= 5);
+  await p.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
 
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
@@ -195,7 +245,7 @@ try {
   await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; navigator.share = undefined; });
   await p.click("#btn-whatsapp");
   check("texto de WhatsApp", decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").includes("Lo esencial"));
-  await p.click(".utiles .btn-sugerencia");
+  await p.click("#menu-mas summary"); await p.click(".menu-lista .btn-sugerencia");
   check("formulario de sugerencias con campos ocultos", (await p.evaluate(() => window.__u[1])).includes("tally.so") && (await p.evaluate(() => window.__u[1])).includes("lista="));
 
   console.log("Persistencia e idiomas");
@@ -227,6 +277,12 @@ try {
   await pa.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pa.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("principios"), null, { timeout: 15000 });
   await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
   check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 5);
+  check("recorrido: con medicación y sin datos, el paso actual es «sus datos» y «Siguiente» lo indica", (await pa.$eval("#recorrido-pasos li[aria-current=step]", (e) => e.textContent)).includes("datos") && (await pa.textContent("#btn-siguiente")).includes("datos"));
+  await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
+  check("recorrido: con datos y medicación, «Siguiente» lleva al plan", (await pa.textContent("#btn-siguiente")).includes("plan"));
+  await pa.click("#btn-siguiente"); await pa.waitForTimeout(500);
+  check("al pulsar «Siguiente: ver su plan» queda marcado como visto y el botón desaparece", (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true && await pa.$eval("#btn-siguiente", (b) => b.hidden));
+  check("barra inferior oculta en escritorio", !(await pa.isVisible("#barra-inferior")));
   await anchoCtx.close();
   const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();
   await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });

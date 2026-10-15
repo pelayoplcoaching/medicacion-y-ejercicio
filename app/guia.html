@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guía rápida · Pauta Activa</title>
+<meta name="description" content="Cómo usar Pauta Activa en seis pasos: sus datos, su medicación, otras formas de añadirla, el veredicto y lo esencial, su plan semanal y los documentos para llevarse.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .guia-pag { max-width: 980px; margin-inline: auto; }
+  .volver { display: inline-flex; margin-bottom: 14px; text-decoration: none; }
+  .guia-intro { max-width: 70ch; color: var(--muted); margin: 0 0 18px; }
+  .pasos-guia { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  .paso-guia { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+  @media (min-width: 720px) { .paso-guia { grid-template-columns: minmax(0, 1fr) 300px; align-items: start; } .paso-guia:nth-child(even) { grid-template-columns: 300px minmax(0, 1fr); } .paso-guia:nth-child(even) figure { order: -1; } }
+  .paso-guia h2 { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; margin: 0 0 8px; }
+  .paso-guia h2 b { flex: 0 0 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); display: inline-grid; place-items: center; font-size: .95rem; }
+  .paso-guia p, .paso-guia li { font-size: .97rem; line-height: 1.5; }
+  .paso-guia ul { padding-left: 20px; margin: 6px 0 0; display: grid; gap: 4px; }
+  .paso-guia figure { margin: 0; }
+  .paso-guia img { width: 100%; height: auto; border-radius: var(--r-md); border: 1px solid var(--line); box-shadow: 0 10px 30px -18px rgba(28, 24, 48, .5); }
+  .paso-guia figcaption { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+  .consejo { padding: 12px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); color: var(--accent-deep); border-radius: 0 var(--r-md) var(--r-md) 0; font-weight: 600; margin: 18px 0; }
+  .faq { margin-top: 26px; }
+  .faq h2 { font-size: 1.2rem; margin: 0 0 10px; }
+  .faq details { border-top: 1px solid var(--line); padding: 10px 0; }
+  .faq summary { font-weight: 700; cursor: pointer; }
+  .faq p { margin: 8px 0 0; color: var(--fg); }
+</style>
+</head>
+<body>
+<header class="cabecera">
+  <img src="assets/logo-app-152.png" alt="Pauta Activa" class="logo" width="76" height="76" fetchpriority="high">
+  <div class="titulo">
+    <h1>Guía rápida</h1>
+    <p class="autor">Pauta Activa · Medicación y Ejercicio · en seis pasos</p>
+  </div>
+</header>
+<main class="guia-pag">
+  <a class="btn-sec sm volver" href="./">← Volver a la aplicación</a>
+  <p class="guia-intro">Pauta Activa le dice qué tener en cuenta para hacer ejercicio con su medicación. Solo necesita tres cosas: sus datos, su lista de medicamentos y un minuto para leer «Lo esencial». Todo se queda en su dispositivo.</p>
+
+  <ol class="pasos-guia">
+    <li class="paso-guia">
+      <div>
+        <h2><b>1</b>Sus datos</h2>
+        <p>Indique su edad, si ha tenido alguna caída en el último año y su situación clínica (diabetes, corazón, riñón…). Rellene solo lo que sepa: lo que quede en blanco no bloquea nada.</p>
+        <ul>
+          <li>El botón <strong>?</strong> junto a cada apartado explica para qué sirve.</li>
+          <li>El <strong>pulso en reposo</strong> es opcional; con él la app calcula sus pulsaciones de entrenamiento.</li>
+          <li>Si tiene 5 minutos, el <strong>test SPPB guiado</strong> mide su forma física y ajusta el plan.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/guia/1-datos.webp" alt="Panel de datos básicos con edad, pulso en reposo, caídas y situación clínica" width="640" height="1251" loading="lazy"><figcaption>Datos básicos, con la ayuda «?» en cada apartado.</figcaption></figure>
+    </li>
+    <li class="paso-guia">
+      <div>
+        <h2><b>2</b>Su medicación</h2>
+        <p>Escriba la marca o el principio activo en el buscador (por ejemplo, «Emconcor» o «bisoprolol»), elija la presentación y añada la dosis y las tomas. Debajo tiene los medicamentos más habituales para añadirlos con un toque.</p>
+        <ul>
+          <li>Cada tarjeta muestra el grupo del fármaco, la dosis y a qué hora lo toma (desayuno, comida, cena, noche): márquelo para que la app calcule la mejor franja para entrenar.</li>
+          <li>Puede editar la dosis, pausar un medicamento o quitarlo; siempre hay «Deshacer».</li>
+        </ul>
+      </div>
+      <figure><img src="assets/guia/2-buscar.webp" alt="Buscador de medicamentos con sugerencias y añadido rápido" width="640" height="1223" loading="lazy"><figcaption>Buscar por nombre y añadir con la dosis.</figcaption></figure>
+    </li>
+    <li class="paso-guia">
+      <div>
+        <h2><b>3</b>Otras formas de añadirla</h2>
+        <p>Con el botón <strong>«Más formas de añadir»</strong> puede subir una foto de su hoja de medicación o de una caja, un PDF (informe de alta o receta), pegar una lista escrita, dictarla con la voz o escanear el código de barras de la caja.</p>
+        <p>La lectura se hace en su dispositivo; nada se envía a ningún servidor. Compruebe siempre que la lista resultante coincide con la suya.</p>
+      </div>
+      <figure><img src="assets/guia/3-anadir.webp" alt="Hoja con las formas de añadir medicación: buscar, foto, caja, PDF, pegar, dictar" width="640" height="1149" loading="lazy"><figcaption>Todas las vías, en una hoja.</figcaption></figure>
+    </li>
+    <li class="paso-guia">
+      <div>
+        <h2><b>4</b>El veredicto y lo esencial</h2>
+        <p>En cuanto hay medicación aparece el informe. Arriba, el <strong>veredicto</strong> en una frase y tres botones: ver mi plan, descargar y compartir. Debajo, <strong>«Su plan está al N %»</strong> le propone el siguiente paso para afinarlo (cribado de seguridad, pulso, horas de las tomas…).</p>
+        <ul>
+          <li><strong>Lo esencial</strong>: de 3 a 5 puntos en lenguaje llano, con el botón «Escuchar».</li>
+          <li>Las pestañas (antes de empezar, aeróbico, fuerza, equilibrio, ¿cuándo?, interacciones) dan el detalle, con un contador de avisos en cada una.</li>
+          <li>El <strong>?</strong> junto a las acciones explica qué significan atención, precaución y para saber.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/guia/4-informe.webp" alt="Veredicto con acciones y medidor de completitud del plan" width="640" height="1149" loading="lazy"><figcaption>Veredicto, acciones y siguiente paso recomendado.</figcaption></figure>
+    </li>
+    <li class="paso-guia">
+      <div>
+        <h2><b>5</b>Mi plan</h2>
+        <p>En la pestaña <strong>Mi plan</strong> elige sus días de ejercicio y ve la sesión de cada día (fuerza y equilibrio, aeróbico o descanso). «Empezar sesión» le guía con un cronómetro y un chequeo previo; «Registrar sesión» anota minutos, esfuerzo y síntomas.</p>
+        <ul>
+          <li>El apartado aeróbico muestra <strong>su zona de intensidad</strong>: pulsaciones objetivo o, si su medicación no lo permite, la prueba del habla.</li>
+          <li>La barra inferior lleva a cada sección: datos, medicación, informe y plan.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/guia/5-plan.webp" alt="Pestaña Mi plan con los días de ejercicio y la sesión del día" width="640" height="1149" loading="lazy"><figcaption>Su semana y la sesión de hoy.</figcaption></figure>
+    </li>
+    <li class="paso-guia">
+      <div>
+        <h2><b>6</b>Llévese el plan</h2>
+        <p>Al final del informe están los documentos: <strong>resumen para su médico</strong>, <strong>resumen para usted</strong>, <strong>ficha para el entrenador</strong> y <strong>tarjeta para la nevera</strong> (A5). También puede compartir lo esencial por WhatsApp o correo, copiar un enlace con su lista o mostrar un código QR.</p>
+        <p>Los enlaces y los PDF no llevan su nombre: solo la medicación y los datos que haya introducido.</p>
+      </div>
+      <figure><img src="assets/guia/6-descargas.webp" alt="Botones de descarga de los PDF y de compartir" width="640" height="1149" loading="lazy"><figcaption>PDF para su médico, para usted, para el entrenador y para la nevera.</figcaption></figure>
+    </li>
+  </ol>
+
+  <p class="consejo">¿Se ha perdido? En la aplicación, pulse «¿Cómo funciona?» para repetir el recorrido guiado, o abra el menú «Más» para cambiar el tamaño de la letra, el tema o consultar el glosario.</p>
+
+  <section class="faq" aria-labelledby="faq-t">
+    <h2 id="faq-t">Preguntas frecuentes</h2>
+    <details><summary>¿Tengo que crear una cuenta?</summary><p>No. No hay cuentas ni contraseñas: todo se guarda en su navegador. Si cambia de dispositivo, use «Listas guardadas → Guardar copia» o el enlace con su lista.</p></details>
+    <details><summary>¿La app sustituye a mi médico?</summary><p>No. Es información general para ayudarle a moverse con seguridad y a hablar con su médico. No cambia ningún tratamiento ni decide si puede o no hacer ejercicio.</p></details>
+    <details><summary>No encuentro un medicamento</summary><p>Pruebe con el principio activo (está en la caja, debajo de la marca). Si tampoco aparece, puede añadirlo «tal cual»: no generará recomendaciones, pero quedará en su lista, y puede avisarnos con «Sugerencias».</p></details>
+    <details><summary>¿Qué significan los colores?</summary><p>Rojo (atención): algo importante que leer antes de entrenar. Ámbar (precaución): una adaptación concreta. Verde (para saber): información útil que no cambia el plan.</p></details>
+    <details><summary>¿Funciona sin conexión?</summary><p>Sí. Tras la primera visita la aplicación queda guardada en el dispositivo y funciona sin internet. Puede instalarla desde el menú «Más → Instalar en el móvil».</p></details>
+    <details><summary>La letra es pequeña</summary><p>En el menú «Más», «Tamaño de letra» tiene tres niveles. También puede activar el tema de alto contraste con «Tema».</p></details>
+  </section>
+
+  <p class="pie">La información es orientativa y no sustituye la valoración de su médico. <a href="legal.html">Información legal</a> · <a href="acerca.html">Acerca de</a></p>
+</main>
+</body>
+</html>
