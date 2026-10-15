@@ -3,11 +3,11 @@
    Uso: node scripts/test.mjs            (sin dependencias) */
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento } = await import(path.join(ROOT, "app/js/engine.js"));
-const { extraerMedicacion } = await import(path.join(ROOT, "app/js/parser.js"));
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
 const ddiCurado = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/ddi_curated.json"), "utf8"));
