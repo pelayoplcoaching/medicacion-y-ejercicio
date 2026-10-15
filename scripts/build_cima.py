@@ -96,10 +96,20 @@ def convertir(dosis, unidad_aemps: str, pid: str):
 
 
 ATC_CLASE = {}  # prefijo ATC → id de clase (de kb.json); se aplica el prefijo más largo que coincida
+# códigos que comparten prefijo con una clase pero no pertenecen a ella clínicamente
+ATC_EXCLUIR = {
+    "B01AC09", "B01AC11", "B01AC21", "B01AC27",   # prostaciclinas (hipertensión pulmonar), no antiagregantes
+    "J05AF08", "J05AF10", "J05AF11",              # adefovir, entecavir, telbivudina: hepatitis B, no VIH
+    "J01AA12",                                     # tigeciclina IV
+    "N05CD08",                                     # midazolam (hospital)
+    "G03CA04",                                     # estriol (uso vaginal)
+}
 
 
 def clase_por_atc(cod: str):
     cod = (cod or "").strip().upper()
+    if cod in ATC_EXCLUIR:
+        return None
     for n in range(len(cod), 2, -1):
         c = ATC_CLASE.get(cod[:n])
         if c:
@@ -135,7 +145,9 @@ def cargar_alias_kb():
         "acido acetilsalicilico": "aas",
         "insulina glargina": "insulina_basal", "insulina detemir": "insulina_basal", "insulina degludec": "insulina_basal",
         "insulina isofanica": "insulina_basal", "insulina humana isofanica": "insulina_basal",
-        "insulina aspart": "insulina_rapida", "insulina lispro": "insulina_rapida", "insulina glulisina": "insulina_rapida",
+        "insulina aspart": "insulina_rapida", "insulina asparta": "insulina_rapida", "insulina glulisina": "insulina_rapida", "insulina lispro": "insulina_rapida",
+        "insulina degludec": "insulina_basal", "insulina detemir": "insulina_basal", "insulina glargina": "insulina_basal", "insulina humana isofanica": "insulina_basal",
+        "nicotina": "nicotina_sustitutiva", "nicotina resinato": "nicotina_sustitutiva", "nicotina bitartrato": "nicotina_sustitutiva", "insulina lispro": "insulina_rapida", "insulina glulisina": "insulina_rapida",
         "insulina humana": "insulina_rapida",
         "levodopa": "levodopa", "carbidopa": None, "benserazida": None, "entacapona": None,
         "isosorbida mononitrato": "mononitrato_isosorbida", "mononitrato de isosorbida": "mononitrato_isosorbida",
@@ -443,7 +455,7 @@ def main(argv):
             # sin principio en la base: clasificar por el código ATC (reglas del grupo, sin reglas específicas)
             clase = clase_por_atc(atc) if desconocidos else None
             if clase:
-                nombre_pa = " + ".join(d[0].title() for d in desconocidos)
+                nombre_pa = " + ".join(dict.fromkeys(d[0].title() for d in desconocidos))
                 d0 = desconocidos[0]
                 try:
                     dd = float(d0[1].replace(",", "."))
