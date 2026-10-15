@@ -1,7 +1,7 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610142044";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610142044";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610142044";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610142044";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150620";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150620";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150620";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150620";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -270,10 +270,11 @@ function render() {
 
   if (estado.tab === "general") {
     if (res.combinadas.length) {
-      const sec = document.createElement("section");
-      sec.innerHTML = `<h3>Por la combinación de su medicación</h3>`;
+      const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
+      const sec = seccion("Por la combinación de su medicación", { clave: "combinadas", resumen: `${res.combinadas.length} avisos · ${resumenNiveles(na, np, 0)}` });
+      const cuerpo = sec.querySelector(".cuerpo-sec");
       for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
-        sec.insertAdjacentHTML("beforeend", `
+        cuerpo.insertAdjacentHTML("beforeend", `
           <article class="regla nivel-${c.regla.nivel}">
             <header><h4>${c.regla.titulo}</h4><span class="nivel">${etiqueta(c.regla.nivel)}</span></header>
             <p>${c.texto}</p>
@@ -282,7 +283,7 @@ function render() {
       }
       cont.append(sec);
     }
-    renderAmbito(cont, res.ambitos.general, "Fármaco por fármaco");
+    renderAmbito(cont, res.ambitos.general, null);
   } else if (estado.tab === "interacciones") {
     renderInteracciones(cont, res);
   } else {
@@ -290,22 +291,59 @@ function render() {
   }
   // perfil de señales
   const perfil = Object.entries(res.perfil).filter(([s]) => datos.kb.senales[s] && !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s)).sort((a, b) => b[1].length - a[1].length);
-  $("#perfil").innerHTML = perfil.length
-    ? `<h3>Efectos que se acumulan</h3><ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small></li>`).join("")}</ul>`
-    : "";
+  $("#perfil").innerHTML = "";
+  if (perfil.length) {
+    const sec = seccion("Efectos que se acumulan", { abierta: false, clave: "perfil", resumen: `${perfil.length} efectos` });
+    sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small></li>`).join("")}</ul>`;
+    $("#perfil").append(sec);
+  }
+}
+
+/** Sección plegable del informe. `clave` recuerda si el usuario la abrió o cerró. */
+function seccion(titulo, { abierta = true, clave, resumen = "" } = {}) {
+  const sec = document.createElement("details");
+  sec.className = "seccion";
+  if (clave && estado.secciones?.[clave] != null) abierta = estado.secciones[clave];
+  if (abierta) sec.open = true;
+  sec.innerHTML = `<summary><h3>${titulo}</h3>${resumen ? `<span class="resumen-sec">${resumen}</span>` : ""}<span class="flecha" aria-hidden="true">⌄</span></summary><div class="cuerpo-sec"></div>`;
+  if (clave) sec.addEventListener("toggle", () => { (estado.secciones ||= {})[clave] = sec.open; });
+  return sec;
+}
+function resumenNiveles(a, p, i) {
+  const partes = [];
+  if (a) partes.push(`<b class="t-alerta">${a}</b>`);
+  if (p) partes.push(`<b class="t-precaucion">${p}</b>`);
+  if (i) partes.push(`<b class="t-info">${i}</b>`);
+  return partes.join(" ");
 }
 
 function renderAmbito(cont, grupos, titulo, amb) {
-  const sec = document.createElement("section");
-  if (titulo) sec.innerHTML = `<h3>${titulo}</h3>`;
-  if (!grupos.length) { sec.insertAdjacentHTML("beforeend", `<p class="vacio">Sin indicaciones específicas para su medicación en este apartado.</p>`); cont.append(sec); return; }
+  if (!grupos.length) { const sec = document.createElement("section"); sec.innerHTML = `<p class="vacio">Sin indicaciones específicas para su medicación en este apartado.</p>`; cont.append(sec); return; }
   const orden = [...grupos].sort((a, b) => Math.max(...b.reglas.map((r) => ORDEN_NIVEL[r.nivel])) - Math.max(...a.reglas.map((r) => ORDEN_NIVEL[r.nivel])));
-  for (const g of orden) {
+  // dividir en "con avisos" (abierto) y "solo información" (plegado)
+  const conAvisos = orden.filter((g) => g.reglas.some((r) => r.nivel !== "info"));
+  const soloInfo = orden.filter((g) => !g.reglas.some((r) => r.nivel !== "info"));
+  const pintar = (sec, lista, abrirTarjetas) => {
+    const cuerpo = sec.querySelector(".cuerpo-sec");
+    for (const g of lista) cuerpo.insertAdjacentHTML("beforeend", tarjetaFarmaco(g, amb, abrirTarjetas && lista.length <= 4));
+    cont.append(sec);
+  };
+  if (conAvisos.length) {
+    const a = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "alerta").length, 0);
+    const p = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "precaucion").length, 0);
+    pintar(seccion(titulo ? `${titulo}: con avisos` : "Fármacos con avisos", { clave: (amb || "general") + ":avisos", resumen: `${conAvisos.length} fármacos · ${resumenNiveles(a, p, 0)}` }), conAvisos, true);
+  }
+  if (soloInfo.length) {
+    pintar(seccion(titulo ? `${titulo}: solo información` : "Fármacos sin precauciones especiales", { abierta: !conAvisos.length, clave: (amb || "general") + ":info", resumen: `${soloInfo.length} fármacos · ${resumenNiveles(0, 0, soloInfo.reduce((n, g) => n + g.reglas.length, 0))}` }), soloInfo, false);
+  }
+}
+
+function tarjetaFarmaco(g, amb, abierta) {
+  {
     const it = g.item;
     const max = g.reglas.reduce((m, r) => (ORDEN_NIVEL[r.nivel] > ORDEN_NIVEL[m] ? r.nivel : m), "info");
     const dosis = it.dosisTotal != null ? `${it.dosisTotal} ${it.unidad}${it.esDiaria ? "/día" : ""}` : "";
-    const abierta = ORDEN_NIVEL[max] >= 2 || orden.length <= 3;
-    sec.insertAdjacentHTML("beforeend", `
+    return `
       <details class="farmaco nivel-${max}"${abierta ? " open" : ""}>
         <summary>
           <span class="barra"></span>
@@ -318,9 +356,8 @@ function renderAmbito(cont, grupos, titulo, amb) {
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
           ${it.clase.fuentes?.length ? `<p class="fuentes">Fuentes: ${it.clase.fuentes.join(" · ")}</p>` : ""}
         </div>
-      </details>`);
+      </details>`;
   }
-  cont.append(sec);
 }
 
 function renderInteracciones(cont, res) {
