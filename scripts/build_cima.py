@@ -31,6 +31,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 KB = ROOT / "app" / "data" / "kb.json"
 OUT = ROOT / "app" / "data" / "marcas.json"
+OUT_FICHAS = ROOT / "app" / "data" / "fichas.json"
 URL = "https://listadomedicamentos.aemps.gob.es/prescripcion.zip"
 URL_DICC_PA = "https://listadomedicamentos.aemps.gob.es/DICCIONARIO_PRINCIPIOS_ACTIVOS.xml"
 
@@ -429,6 +430,7 @@ def main(argv):
         sys.exit(f"\nNo se detectaron las etiquetas {faltan}. Ajuste TAGS_FIJAS en scripts/build_cima.py.")
 
     salida, vistos = [], set()
+    fichas = {}  # id de principio → URL de la ficha técnica (primera presentación comercializada)
     n_total = n_comerc = n_sin_pa = 0
     sin_resolver = Counter()
     por_atc = Counter()
@@ -443,6 +445,7 @@ def main(argv):
         nombre = texto(med, tags["nombre"]) or texto(med, tags["presentacion"])
         if not nombre:
             continue
+        url_ft = texto(med, "url_fictec")
         pas, dosis, unidad = [], [], None
         desconocidos = []  # (nombre PA, dosis, unidad) sin equivalente en la base
         atc = texto(med, "cod_atc")
@@ -491,6 +494,8 @@ def main(argv):
                 continue
             n_sin_pa += 1
             continue
+        if url_ft and len(pas) == 1 and "INYECTABLE" not in nombre.upper():
+            fichas.setdefault(pas[0], url_ft)
         if "anticonceptivo_combinado" in pas:  # etinilestradiol + progestágeno = un solo principio de la base
             dosis = [d for p_, d in zip(pas, dosis) if p_ == "anticonceptivo_combinado"][:1]
             pas = ["anticonceptivo_combinado"]
@@ -513,6 +518,8 @@ def main(argv):
         sys.exit("\nNo se generó ninguna presentación: revise las etiquetas detectadas arriba.")
 
     OUT.write_text(json.dumps(salida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    OUT_FICHAS.write_text(json.dumps(dict(sorted(fichas.items())), ensure_ascii=False, indent=0), encoding="utf-8")
+    print(f"{len(fichas):,} enlaces a fichas técnicas en {OUT_FICHAS.relative_to(ROOT)}")
     print(f"\nMedicamentos en el XML: {n_total:,} · comercializados: {n_comerc:,} · clasificados solo por ATC: {sum(por_atc.values()):,} · sin clase: {n_sin_pa:,}")
     if por_atc:
         print("Clasificados por ATC (grupo): " + ", ".join(f"{c} {n}" for c, n in por_atc.most_common(12)))

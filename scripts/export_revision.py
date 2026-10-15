@@ -22,6 +22,10 @@ from openpyxl.worksheet.datavalidation import DataValidation
 ROOT = Path(__file__).resolve().parent.parent
 KB = json.loads((ROOT / "app/data/kb.json").read_text(encoding="utf-8"))
 DDI = json.loads((ROOT / "app/data/ddi_curated.json").read_text(encoding="utf-8"))
+try:
+    FICHAS = json.loads((ROOT / "app/data/fichas.json").read_text(encoding="utf-8"))
+except Exception:  # noqa: BLE001
+    FICHAS = {}
 AMBITOS = {"general": "Antes de empezar", "aerobico": "Aeróbico", "fuerza": "Fuerza", "equilibrio": "Equilibrio"}
 NIVEL = {"alerta": "ALERTA", "precaucion": "precaución", "info": "info"}
 
@@ -108,6 +112,7 @@ def main(out: Path):
         ["Niveles", "ALERTA = puede impedir o condicionar seriamente el ejercicio · precaución = adaptar · info = solo orientación."],
         ["Ámbitos", "Antes de empezar (general) · Aeróbico · Fuerza · Equilibrio."],
         ["Condición", "Cuándo se muestra la regla: 'dosis alta' (por encima del umbral de la hoja Umbrales), edad, situación clínica, solo un principio del grupo…"],
+        ["Fuente", "Si en COMENTARIO escribe la fuente al principio (p. ej. «FT 4.4», «ACSM ap. A», «Lexicomp»), se guarda junto a la regla y se muestra en la aplicación."],
         ["Al terminar", "Guarde el archivo (si es Google Sheets: Archivo → Descargar → Excel) y envíelo; scripts/import_revision.py aplica los cambios y regenera la base."],
         ["Hojas", "Reglas (612) · Umbrales de dosis · Reglas combinadas (por varios fármacos o situación) · Interacciones revisadas · Clases (resumen y señales)."],
     ]
@@ -125,9 +130,10 @@ def main(out: Path):
     for c in KB["clases"]:
         for amb, nom in AMBITOS.items():
             for i, r in enumerate(c.get(amb, [])):
-                filas.append([c["nombre"], nom, NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), r["texto"], "", "", "", f"regla|{c['id']}|{amb}|{i}"])
-    hoja(wb, "Reglas", ["Grupo", "Ámbito", "Nivel", "Condición", "Texto actual", "ESTADO", "TEXTO NUEVO", "COMENTARIO"], filas,
-         [30, 14, 11, 24, 80, 11, 60, 30], rev_desde=6)
+                fts = [FICHAS[p["id"]] for p in c["principios"] if p["id"] in FICHAS][:1]
+                filas.append([c["nombre"], nom, NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), r["texto"], "Sí" if r.get("revisado") else "", fts[0] if fts else "", "", "", "", f"regla|{c['id']}|{amb}|{i}"])
+    hoja(wb, "Reglas", ["Grupo", "Ámbito", "Nivel", "Condición", "Texto actual", "Revisada", "Ficha técnica (1.er principio)", "ESTADO", "TEXTO NUEVO", "COMENTARIO"], filas,
+         [30, 14, 11, 24, 80, 9, 24, 11, 60, 30], rev_desde=8)
 
     # --- Umbrales y principios
     filas = []
@@ -136,9 +142,9 @@ def main(out: Path):
             if p["id"].startswith("atc:"):
                 continue
             filas.append([c["nombre"], p["nombre"], ", ".join(p.get("marcas", [])[:6]), p.get("unidad", "mg"),
-                          p.get("umbral_mg", {}).get("alta"), p.get("nota", ""), "", "", "", f"principio|{c['id']}|{p['id']}"])
-    hoja(wb, "Umbrales", ["Grupo", "Principio activo", "Marcas", "Unidad", "Dosis alta a partir de (por día)", "Nota", "ESTADO", "UMBRAL NUEVO", "COMENTARIO"], filas,
-         [30, 34, 34, 10, 16, 50, 11, 14, 30], rev_desde=7)
+                          p.get("umbral_mg", {}).get("alta"), p.get("nota", ""), FICHAS.get(p["id"], ""), "", "", "", f"principio|{c['id']}|{p['id']}"])
+    hoja(wb, "Umbrales", ["Grupo", "Principio activo", "Marcas", "Unidad", "Dosis alta a partir de (por día)", "Nota", "Ficha técnica", "ESTADO", "UMBRAL NUEVO", "COMENTARIO"], filas,
+         [30, 34, 34, 10, 16, 50, 24, 11, 14, 30], rev_desde=8)
 
     # --- Reglas combinadas
     filas = []

@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151012";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT } from "./engine.js?v=202610151012";
+import { jspdf } from "./libs.js?v=202610151027";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151027";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -413,15 +413,14 @@ export async function pdfPaciente(kb, res, ctx) {
 
   seccionCuando(pg, ctx, { paciente: true });
 
-  const alertas = [];
-  for (const c of res.combinadas) if (c.regla.nivel === "alerta") alertas.push({ titulo: c.regla.titulo, texto: c.texto });
-  for (const [amb] of AMBITOS) for (const g of res.ambitos[amb]) for (const r of g.reglas) if (r.nivel === "alerta") alertas.push({ titulo: g.item.principio.nombre, texto: r.texto });
-  const vistos = new Set();
-  const unicas = alertas.filter((a) => { const k = a.titulo + a.texto; if (vistos.has(k)) return false; vistos.add(k); return true; });
-  if (unicas.length) {
-    pg.seccion("Lo más importante", `${unicas.length} puntos`);
-    for (const a of unicas) pg.tarjeta({ nivel: "alerta", titulo: a.titulo, texto: a.texto });
+  const esencial = loEsencial(res, 5);
+  if (esencial.length) {
+    pg.seccion("Lo esencial", `${esencial.length} puntos; el detalle, más abajo y en la aplicación`);
+    for (const a of esencial) pg.tarjeta({ nivel: a.nivel, titulo: a.titulo, texto: a.texto });
   }
+  pg.seccion("Pare y consulte si nota…", "señales de alarma durante o después del ejercicio");
+  for (const a of ALARMA) pg.vineta("alerta", a, { size: 8.8 });
+  pg.parrafo("Ante cualquiera de ellas deje de hacer ejercicio y consulte; si el dolor en el pecho o la falta de aire no ceden en pocos minutos, llame al 112.", { size: 8, color: C.muted });
 
   pg.seccion("Su medicación", "y lo esencial de cada una para el ejercicio");
   pg.tabla(

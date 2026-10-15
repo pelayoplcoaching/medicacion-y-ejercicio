@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acerca de · Medicación y Ejercicio</title>
+<meta name="description" content="Qué es Medicación y Ejercicio, cómo se construye su base de conocimiento, qué fuentes usa, qué no sabe y cómo trata sus datos.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .acerca { max-width: 72ch; margin-inline: auto; }
+  .acerca section { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .acerca h2 { font-size: 1.1rem; margin: 0 0 8px; }
+  .acerca p, .acerca li { font-size: .95rem; line-height: 1.5; }
+  .acerca ul { padding-left: 20px; display: grid; gap: 4px; }
+  .volver { display: inline-flex; margin-bottom: 14px; text-decoration: none; }
+  .acerca dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: .95rem; }
+  .acerca dt { font-weight: 700; }
+  .acerca dd { margin: 0; }
+  .estado { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-weight: 700; font-size: .85rem; }
+</style>
+</head>
+<body>
+<header class="cabecera">
+  <img src="assets/logo.png" alt="Fuerza Basada en Evidencia" class="logo" width="76" height="76">
+  <div class="titulo">
+    <h1>Acerca de</h1>
+    <p class="autor">Medicación y Ejercicio · versión alfa</p>
+  </div>
+</header>
+<main class="acerca">
+  <a class="btn-sec sm volver" href="./">← Volver a la aplicación</a>
+
+  <section>
+    <h2>Qué es</h2>
+    <p>Una herramienta gratuita que, a partir de la medicación habitual de una persona (con su dosis) y de unos pocos datos clínicos, enumera qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, en qué franja del día entrenar, y qué interacciones existen entre sus fármacos. Está pensada para pacientes, familiares, profesionales sanitarios y entrenadores.</p>
+    <p>Su punto de partida es una convicción clínica: <em>el ejercicio físico casi nunca está contraindicado; la medicación no lo impide, solo obliga a adaptarlo</em>.</p>
+    <p><span class="estado" id="estado-version">Versión alfa</span> Está en pruebas con un grupo de profesionales. El contenido clínico es un borrador en revisión: cada regla lleva la etiqueta <b>revisada</b> o <b>borrador</b>.</p>
+  </section>
+
+  <section>
+    <h2>Quién está detrás</h2>
+    <p><strong>Pelayo Fernández Cidón</strong>, médico especialista en Medicina Interna (Hospital Universitario La Paz, Madrid) y prescriptor de ejercicio físico; fundador de <a href="https://fuerzabasadaenevidencia.com/" target="_blank" rel="noopener">Fuerza Basada en Evidencia</a>. No hay financiación de la industria farmacéutica ni publicidad.</p>
+  </section>
+
+  <section>
+    <h2>Cómo se construye la base de conocimiento</h2>
+    <ul>
+      <li><strong>Lista de medicamentos</strong>: nomenclátor de prescripción de la <a href="https://www.aemps.gob.es/medicamentos-de-uso-humano/nomenclator-de-prescripcion/" target="_blank" rel="noopener">AEMPS</a> (todas las presentaciones comercializadas en España, con principio activo, dosis y código ATC), actualizado periódicamente.</li>
+      <li><strong>Grupos farmacológicos y reglas</strong>: cada fármaco pertenece a un grupo (betabloqueantes, diuréticos del asa, insulinas…). Las reglas describen el efecto del grupo sobre el ejercicio y se modulan por la dosis total diaria, la edad, las caídas y la situación clínica. Fuentes: fichas técnicas de la AEMPS (secciones 4.2, 4.4, 4.7 y 4.8), <em>ACSM Guidelines for Exercise Testing and Prescription</em> (apéndice de fármacos), guías ESC de ejercicio en cardiopatía, estándares ADA y consenso de ejercicio en diabetes, criterios Beers y STOPP/START, Vivifrail y guías de cada especialidad.</li>
+      <li><strong>Fármacos sin reglas propias</strong>: se clasifican automáticamente en su grupo por el código ATC y heredan las reglas del grupo, con un aviso visible.</li>
+      <li><strong>Interacciones</strong>: una capa revisada en español (nivel, mecanismo y qué hacer) y, como respaldo, la base internacional <a href="https://ddinter.scbdd.com/" target="_blank" rel="noopener">DDInter 2.0</a> (licencia CC BY-NC-SA), que aporta solo el nivel.</li>
+      <li><strong>Revisión clínica</strong>: las reglas se revisan contra las fuentes anteriores por clínicos; el estado de cada una se muestra en la aplicación. Las sugerencias recibidas se incorporan en cada versión (<a href="novedades.html">novedades</a>).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Qué no sabe la aplicación</h2>
+    <ul>
+      <li>No conoce su historia clínica completa: solo lo que usted introduce. No sustituye la valoración de su médico ni una prueba de esfuerzo cuando está indicada.</li>
+      <li>No detecta errores de medicación ni comprueba si cada dosis es la adecuada para usted; solo compara con umbrales orientativos.</li>
+      <li>Las interacciones dependen de la dosis, la función renal y hepática y otros factores que no siempre conoce.</li>
+      <li>El contenido clínico está en español; en otros idiomas se traduce la interfaz.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacidad</h2>
+    <p>Todo se procesa en su dispositivo: la medicación, los PDF, las fotos y los informes no se envían a ningún servidor. Las listas guardadas y las preferencias se almacenan solo en su navegador y puede borrarlas desde él. La aplicación no usa cookies de seguimiento ni analítica. El formulario de sugerencias es voluntario y pide expresamente no incluir datos de pacientes.</p>
+  </section>
+
+  <section>
+    <h2>Licencia y código</h2>
+    <p>El código es libre (licencia MIT) y el contenido clínico se publica con licencia CC BY-NC-SA 4.0. Repositorio: <a href="https://github.com/pelayoplcoaching/medicacion-y-ejercicio" target="_blank" rel="noopener">github.com/pelayoplcoaching/medicacion-y-ejercicio</a>. Si quiere colaborar en la revisión clínica o reutilizar la base, escriba a <a href="mailto:pelayoplcoaching@gmail.com">pelayoplcoaching@gmail.com</a>.</p>
+  </section>
+
+  <section>
+    <h2>Estado de la base</h2>
+    <dl id="estado-kb"><dt>Cargando…</dt><dd></dd></dl>
+  </section>
+
+  <p class="pie">La información es orientativa y no sustituye la valoración de su médico.</p>
+</main>
+<script type="module">
+  const r = await fetch("data/kb.json").then((x) => x.json()).catch(() => null);
+  const dl = document.getElementById("estado-kb");
+  if (!r) { dl.innerHTML = "<dt>No disponible</dt><dd></dd>"; }
+  else {
+    const amb = ["general", "aerobico", "fuerza", "equilibrio"];
+    let reglas = 0, revisadas = 0;
+    for (const c of r.clases) for (const a of amb) for (const x of c[a] || []) { reglas++; if (x.revisado) revisadas++; }
+    const principios = r.clases.reduce((n, c) => n + c.principios.length, 0);
+    const ddi = await fetch("data/ddi_curated.json").then((x) => x.json()).catch(() => ({ interacciones: [] }));
+    const ddi2 = await fetch("data/ddi.json").then((x) => x.json()).catch(() => ({ pares: [] }));
+    document.getElementById("estado-version").textContent = `Versión alfa · base ${r.version}`;
+    dl.innerHTML = [
+      ["Versión de la base", r.version],
+      ["Grupos farmacológicos", r.clases.length],
+      ["Principios activos con reglas", principios],
+      ["Reglas", `${reglas} (${revisadas} revisadas, ${reglas - revisadas} en borrador)`],
+      ["Reglas por combinación o situación", r.reglas_combinadas.length],
+      ["Interacciones revisadas en español", ddi.interacciones.length],
+      ["Interacciones DDInter 2.0", (ddi2.pares || []).length.toLocaleString("es")],
+    ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  }
+</script>
+</body>
+</html>

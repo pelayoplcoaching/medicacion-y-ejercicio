@@ -20,6 +20,7 @@ app/                 ← la aplicación (estática, sin build)
   data/ddi_curated.json  ← interacciones revisadas en español (editable a mano)
   data/ddi.json      ← generado por scripts/build_ddi.py (DDInter 2.0)
   data/marcas.json   ← generado por scripts/build_cima.py (nomenclátor AEMPS)
+  data/fichas.json   ← id de principio → URL de la ficha técnica (también de build_cima.py)
 scripts/
   build_ddi.py       ← CSV de DDInter → ddi.json (solo pares entre fármacos de kb.json)
   build_cima.py      ← nomenclátor CIMA → marcas.json (nombres comerciales + dosis por comprimido)

@@ -6,7 +6,8 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const ORDEN = { alerta: 3, precaucion: 2, info: 1 };
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
 const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -203,6 +204,18 @@ console.log("\nFármacos de consulta (bloque 08)");
   check("Frenadol es una combinación de 4 componentes", fren && fren.componentes.length === 4, fren && fren.componentes.map((c) => c.pid).join());
   const res = evaluar({ kb, ddiCurado, ddi: { pares: [] }, indice }, [{ pid: "dextrometorfano", dosisPorToma: 20, tomas: 3 }, { pid: "sertralina", dosisPorToma: 50, tomas: 1 }], { edad: 40, condiciones: new Set() });
   check("dextrometorfano + ISRS dispara la regla serotoninérgica", res.combinadas.some((c) => /serotonin/.test(c.regla.id)), res.combinadas.map((c) => c.regla.id).join());
+}
+
+console.log("\nLo esencial");
+{
+  const meds = [["bisoprolol", 5], ["furosemida", 40], ["acenocumarol", 2], ["metformina", 850], ["lorazepam", 1], ["insulina_rapida", null]].map(([p, d]) => ({ pid: p, dosis: d, tomas: 1 }));
+  const res = evaluar({ kb, ddiCurado, ddi: { pares: [] }, indice }, meds, { edad: 78, caidas: true, condiciones: new Set(["diabetes", "insuficiencia_cardiaca"]) });
+  const e = loEsencial(res, 5);
+  check("devuelve 5 puntos como máximo", e.length === 5, String(e.length));
+  check("alertas antes que precauciones", e.every((p, i) => i === 0 || ORDEN[e[i - 1].nivel] >= ORDEN[p.nivel]));
+  check("frases accionables y cortas", e.every((p) => p.texto.length <= 190 && /[A-Za-zÁ-ú]/.test(p.texto)), e.map((p) => p.texto.length).join());
+  check("sin títulos repetidos", new Set(e.map((p) => p.titulo)).size === e.length);
+  check("señales de alarma definidas", ALARMA.length >= 5);
 }
 
 console.log("\nIdiomas");

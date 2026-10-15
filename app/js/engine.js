@@ -221,7 +221,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
       if (!hit && ddi?.pares?.length) {
         const [x, y] = [a.principio.id, b.principio.id].sort();
         const p = ddi.pares.find((q) => q[0] === x && q[1] === y);
-        if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: "Interacción registrada en DDInter 2.0 (sin descripción traducida).", accion: "Consulte el detalle con su farmacéutico o en ddinter.scbdd.com." };
+        if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: `Interacción de nivel ${p[2] === "mayor" ? "mayor" : p[2] === "moderada" ? "moderado" : "menor"} registrada en la base internacional DDInter 2.0; esta base no incluye el mecanismo ni el texto en español.`, accion: p[2] === "mayor" ? "Pregunte a su médico o farmacéutico antes de combinarlos; consulte la sección 4.5 (interacciones) de las fichas técnicas." : "Suele bastar con comentarlo en la próxima consulta; el detalle está en la sección 4.5 de las fichas técnicas." };
       }
       if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, efecto: hit.efecto, accion: hit.accion, a, b });
     }
@@ -330,4 +330,50 @@ export function ventanaEntrenamiento(indice, meds, horasMomento = HORA_MOMENTO) 
     e.hasta = hh.h + 1; motivosMap.set(k, e);
   }
   return { horas, franjas, mejores, motivos: [...motivosMap.values()], avisos };
+}
+
+/** Señales de alarma universales: cuándo parar y consultar (ACSM / Exercise is Medicine). */
+export const ALARMA = [
+  "Dolor, opresión o quemazón en el pecho, el cuello, la mandíbula o el brazo.",
+  "Mareo intenso, desmayo o sensación de que se va a desmayar.",
+  "Falta de aire desproporcionada para el esfuerzo, o que no mejora al parar.",
+  "Palpitaciones rápidas o irregulares que no ceden en unos minutos.",
+  "Sudor frío, palidez, náuseas o confusión; en diabetes, temblor o hambre súbita (hipoglucemia).",
+  "Dolor articular u óseo agudo, o un golpe en la cabeza si toma anticoagulantes.",
+];
+
+const ACCION = /\b(enfriamiento|mida|evite|evitar|beba|lleve|no entrene|no haga|no use|haga|tome|consulte|pare|use|guíese|hidrat|pésese|reduzca|espere|prefiera|comente|acuda|respete|póngase|descanse|avise|pida|cambios de posición|siempre con|suspenda|levántese|mantenga|aumente)\b/i;
+
+/** Frase más útil de un texto: la primera que contiene una acción; si no, la primera. */
+function primeraFrase(txt, max = 190) {
+  const frases = (txt || "").split(/(?<=[.!?])\s+/).filter(Boolean);
+  const f = frases.find((x) => ACCION.test(x)) || frases[0] || "";
+  return f.length > max ? f.slice(0, max - 1).trimEnd() + "…" : f;
+}
+
+/** «Lo esencial»: hasta `max` puntos accionables, deduplicados (uno por fármaco, las reglas combinadas primero). */
+export function loEsencial(res, max = 5) {
+  const puntos = [];
+  const usados = new Set();
+  for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
+    if (c.regla.nivel === "info") continue;
+    puntos.push({ nivel: c.regla.nivel, titulo: c.regla.titulo, texto: primeraFrase(c.texto), de: c.implicados.map((i) => i.principio.nombre) });
+    for (const i of c.implicados) usados.add(i.principio.id);
+  }
+  for (const x of res.interacciones.filter((x) => x.nivel === "mayor")) {
+    puntos.push({ nivel: "alerta", titulo: `${x.a.principio.nombre} + ${x.b.principio.nombre}`, texto: primeraFrase(x.accion || x.efecto), de: [] });
+  }
+  for (const nivel of ["alerta", "precaucion"]) {
+    for (const amb of ["general", "aerobico", "fuerza", "equilibrio"]) {
+      for (const g of res.ambitos[amb]) {
+        const pid = g.item.principio.id;
+        if (usados.has(pid)) continue;
+        const r = g.reglas.find((r) => r.nivel === nivel);
+        if (!r) continue;
+        usados.add(pid);
+        puntos.push({ nivel, titulo: g.item.principio.nombre, texto: primeraFrase(r.texto), de: [] });
+      }
+    }
+  }
+  return puntos.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).slice(0, max);
 }

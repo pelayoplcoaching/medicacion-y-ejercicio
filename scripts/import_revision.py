@@ -48,6 +48,13 @@ def celdas(ws):
             yield d
 
 
+def fuente_de(d):
+    """Si el comentario empieza por 'Fuente:' o 'FT ...', se guarda como fuente de la regla (p. ej. 'FT 4.4', 'ACSM ap. A')."""
+    c = d.get("COMENTARIO", "")
+    m = re.match(r"^(?:fuente\s*:\s*)?((?:FT|ACSM|ESC|ADA|Beers|STOPP|Lexicomp|Micromedex|BOT|UpToDate|KDIGO|Vivifrail|GOLD|NICE)[^;.\n]{0,40})", c, re.I)
+    return m.group(1).strip() if m else None
+
+
 def estado(d):
     e = d.get("ESTADO", "").upper()
     nuevo = d.get("TEXTO NUEVO") or d.get("UMBRAL NUEVO") or d.get("NIVEL NUEVO (mayor/moderada/menor)") or d.get("RESUMEN NUEVO") or d.get("TEXTO NUEVO (efecto · qué hacer)")
@@ -73,7 +80,7 @@ class Fuentes:
             for c in d.get("clases_parche", []):
                 yield p, c, "parche"
 
-    def regla(self, cid, amb, texto, nuevo=None, eliminar=False):
+    def regla(self, cid, amb, texto, nuevo=None, eliminar=False, revisado=None, fuente=None):
         n = 0
         for p, c, tipo in self.clases():
             if c["id"] != cid:
@@ -84,7 +91,12 @@ class Fuentes:
                     if eliminar:
                         lista.remove(r)
                     else:
-                        r["texto"] = nuevo
+                        if nuevo:
+                            r["texto"] = nuevo
+                        if revisado:
+                            r["revisado"] = True
+                        if fuente:
+                            r["fuente"] = fuente
                     self.tocados.add(p)
                     n += 1
         return n
@@ -139,6 +151,7 @@ def main(xlsx: Path, simular: bool):
     ddi = cargar(DDI)
     ddi_ext = {p: cargar(p) for p in EXT_DDI}
     comentarios, log, avisos = [], [], []
+    revisadas = [0]
 
     def nota(d, hoja, contexto):
         if d.get("COMENTARIO"):
@@ -154,12 +167,15 @@ def main(xlsx: Path, simular: bool):
             n = F.regla(cid, amb, d["Texto actual"], eliminar=True)
             log.append(f"eliminar regla {cid}/{amb} ({n} fuentes): {d['Texto actual'][:60]}…")
         elif e == "CAMBIAR" and d.get("TEXTO NUEVO"):
-            n = F.regla(cid, amb, d["Texto actual"], nuevo=d["TEXTO NUEVO"])
+            n = F.regla(cid, amb, d["Texto actual"], nuevo=d["TEXTO NUEVO"], revisado=True, fuente=fuente_de(d))
             log.append(f"cambiar regla {cid}/{amb} ({n} fuentes): {d['TEXTO NUEVO'][:60]}…")
             if not n:
                 avisos.append(f"no encontrada la regla {cid}/{amb}: {d['Texto actual'][:60]}")
         elif e == "CAMBIAR":
             avisos.append(f"CAMBIAR sin TEXTO NUEVO en regla {cid}/{amb} (solo comentario)")
+        elif d.get("ESTADO", "").upper() == "OK":
+            n = F.regla(cid, amb, d["Texto actual"], revisado=True, fuente=fuente_de(d))
+            revisadas[0] += n and 1
 
     # Umbrales
     for d in celdas(wb["Umbrales"]):
@@ -238,7 +254,7 @@ def main(xlsx: Path, simular: bool):
         elif e == "ELIMINAR":
             avisos.append(f"ELIMINAR clase {cid}: no se aplica automáticamente (hay que quitarla a mano)")
 
-    print(f"Cambios: {len(log)} · comentarios: {len(comentarios)} · avisos: {len(avisos)}")
+    print(f"Cambios: {len(log)} · reglas marcadas como revisadas (OK): {revisadas[0]} · comentarios: {len(comentarios)} · avisos: {len(avisos)}")
     for l in log:
         print("  ·", l)
     for a in avisos:

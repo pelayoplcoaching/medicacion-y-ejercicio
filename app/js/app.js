@@ -1,8 +1,8 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610151012";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151012";
-import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610151012";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151012";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151012";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA } from "./engine.js?v=202610151027";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151027";
+import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610151027";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151027";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151027";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -61,11 +61,11 @@ function renderVersion() {
 
 async function cargar() {
   $("#kb-version").textContent = "Cargando la base de conocimiento…";
-  const [kb, ddiCurado, ddi, marcas] = await Promise.all(
-    ["kb.json", "ddi_curated.json", "ddi.json", "marcas.json"].map((f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null))
+  const [kb, ddiCurado, ddi, marcas, fichas] = await Promise.all(
+    ["kb.json", "ddi_curated.json", "ddi.json", "marcas.json", "fichas.json"].map((f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null))
   );
   if (!kb) { $("#kb-version").textContent = t("kb.error"); $("#kb-version").classList.add("error"); return; }
-  datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: ddi || { pares: [] } };
+  datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: ddi || { pares: [] }, fichas: fichas || {} };
   indice = construirIndice(kb, marcas || []);
   datos.indice = indice;
   renderVersion();
@@ -104,6 +104,14 @@ $("#btn-letra").addEventListener("click", () => {
   $("#btn-letra").setAttribute("aria-pressed", String(on));
   try { localStorage.setItem("medex.letra", on ? "1" : "0"); } catch {}
 });
+// cabecera compacta y guía de 3 pasos: solo la primera visita se muestra todo
+try {
+  if (localStorage.getItem("medex.visto") === "1") document.documentElement.classList.add("retorno");
+  else localStorage.setItem("medex.visto", "1");
+} catch {}
+$("#btn-presentacion").addEventListener("click", () => { document.documentElement.classList.toggle("retorno"); });
+$("#guia-cerrar").addEventListener("click", () => { $("#guia").hidden = true; try { localStorage.setItem("medex.guia", "1"); } catch {} });
+try { if (localStorage.getItem("medex.guia") === "1") $("#guia").hidden = true; } catch {}
 try { if (localStorage.getItem("medex.letra") === "1") { document.documentElement.classList.add("letra-grande"); $("#btn-letra").setAttribute("aria-pressed", "true"); } } catch {}
 $$(".modo button").forEach((b) => b.addEventListener("click", () => { estado.modo = b.dataset.modo; aplicarModo(); guardar(); render(); }));
 for (const k of PAC) $("#pac-" + k)?.addEventListener("change", () => { estado.pac[k] = $("#pac-" + k).checked; guardar(); render(); });
@@ -184,6 +192,14 @@ $("#form-med").addEventListener("submit", (ev) => {
     $("#dosis").disabled = false; $("#dosis").placeholder = "";
   } else {
     const dosis = parseFloat($("#dosis").value.replace(",", "."));
+    if (Number.isFinite(dosis)) {
+      // dosis implausible: más de 3 veces el umbral de dosis alta (o > 5.000 mg/día sin umbral) → pedir confirmación
+      const ref = indice.porId.get(seleccion.pid);
+      const umbral = ref?.principio?.umbral_mg?.alta;
+      const diaria = dosis * tomas;
+      const rara = umbral ? diaria > umbral * 3 : /^mg/.test(seleccion.unidad) && diaria > 5000;
+      if (rara && !confirm(t("dosis.rara", { d: diaria.toLocaleString("es-ES"), u: seleccion.unidad.split("/")[0], f: ref.principio.nombre }))) { $("#dosis").focus(); return; }
+    }
     estado.meds.push({ pid: seleccion.pid, dosis: Number.isFinite(dosis) ? dosis : null, tomas, unidad: seleccion.unidad, momentos: momentosPorDefecto(tomas) });
   }
   seleccion = null;
@@ -391,6 +407,7 @@ async function descargarPdf(tipo) {
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
     btn.textContent = "PDF generado";
+    preguntarUtil();
   } catch (e) {
     btn.textContent = "No disponible aquí";
     $("#pdf-aviso").textContent = "No se ha podido generar el PDF (" + (e.message || e) + "). En la versión web pública la descarga funciona con normalidad.";
@@ -398,6 +415,43 @@ async function descargarPdf(tipo) {
   setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
 }
 $("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
+
+/** Pregunta de un clic tras generar un PDF (una vez por dispositivo y versión). */
+function preguntarUtil() {
+  let ya = null; try { ya = localStorage.getItem("medex.util"); } catch {}
+  if (ya === datos.kb.version) return;
+  const box = $("#util");
+  box.hidden = false;
+  box.innerHTML = `<span>${t("util.pregunta")}</span><button type="button" class="btn-sec sm" data-u="si">${t("util.si")}</button><button type="button" class="btn-sec sm" data-u="no">${t("util.no")}</button>`;
+  box.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+    try { localStorage.setItem("medex.util", datos.kb.version); } catch {}
+    window.open(urlSugerencia({ util: b.dataset.u }), "_blank", "noopener");
+    box.innerHTML = `<span>${t("util.gracias")}</span>`;
+    setTimeout(() => { box.hidden = true; }, 4000);
+  }));
+}
+
+/** Texto breve para compartir (WhatsApp / correo): lo esencial + señales de alarma + enlace. */
+function textoCompartir() {
+  const res = evaluar(datos, estado.meds, ctxActual());
+  const L = [`*${t("meta.titulo")}* · ${t("compartir.cab")}`, ""];
+  L.push(`${t("compartir.meds")}: ${res.items.map((i) => i.principio.nombre).join(", ")}.`, "");
+  L.push(`*${t("esencial.titulo")}*`);
+  for (const p of loEsencial(res, 5)) L.push(`• ${p.titulo}: ${p.texto}`);
+  L.push("", `*${t("alarma.titulo")}*`, ...ALARMA.slice(0, 4).map((a) => `• ${a}`));
+  L.push("", t("compartir.pie"), "https://medicacionyejercicio.fuerzabasadaenevidencia.com/");
+  return L.join("\n");
+}
+$("#btn-whatsapp").addEventListener("click", async () => {
+  const txt = textoCompartir();
+  if (navigator.share) { try { await navigator.share({ text: txt }); return; } catch {} }
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
+});
+$("#btn-email").addEventListener("click", () => {
+  const res = evaluar(datos, estado.meds, ctxActual());
+  const cuerpo = `${textoCompartir()}\n\n----\n${informeTexto(datos.kb, res, ctxActual()).slice(0, 6000)}`;
+  window.location.href = `mailto:?subject=${encodeURIComponent(t("meta.titulo") + " · " + t("compartir.cab"))}&body=${encodeURIComponent(cuerpo)}`;
+});
 /** Formulario de sugerencias (Tally) con los datos técnicos en campos ocultos: versión, modo, idioma, lista (sin datos personales),
     contexto y búsquedas sin resultado. Sustituye al correo; el correo queda como alternativa en el texto de ayuda. */
 const FORM_SUGERENCIAS = "https://tally.so/r/5XK9YM";
@@ -405,7 +459,7 @@ function urlSugerencia(extra = {}) {
   const lista = estado.meds.map((m) => `${m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
   let sinRes = []; try { sinRes = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]"); } catch {}
   const ctx = [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", ...estado.condiciones].filter(Boolean).join(", ");
-  const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300) });
+  const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300), util: extra.util || "" });
   return `${FORM_SUGERENCIAS}?${q}`;
 }
 $$(".btn-sugerencia").forEach((b) => b.addEventListener("click", () => {
@@ -473,7 +527,7 @@ function render() {
     li.innerHTML = `
       <div class="med-nombre"><strong>${it.principio.nombre}</strong><small>${estado.meds[i]?.combo ? `En ${estado.meds[i].combo} · ` : ""}${it.clase.nombre}</small></div>
       <div class="med-dosis">${dosis}${it.dosisCat === "alta" ? ' <span class="chip chip-alta">dosis alta</span>' : ""}</div>
-      <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((m) => `<button type="button" class="mom" data-m="${m}" aria-pressed="${(estado.meds[i]?.momentos || []).includes(m)}" title="${MOMENTO_TXT[m]}">${{ desayuno: "D", comida: "C", cena: "Ce", noche: "N" }[m]}</button>`).join("")}</div>
+      <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((m) => `<button type="button" class="mom" data-m="${m}" aria-pressed="${(estado.meds[i]?.momentos || []).includes(m)}" title="${MOMENTO_TXT[m]}">${{ desayuno: "Des", comida: "Com", cena: "Cena", noche: "Noche" }[m]}</button>`).join("")}</div>
       <button type="button" class="quitar" aria-label="Quitar ${it.principio.nombre}">×</button>`;
     li.querySelectorAll(".mom").forEach((b) => b.addEventListener("click", () => {
       const m = estado.meds[i]; const set = new Set(m.momentos || []);
@@ -497,7 +551,20 @@ function render() {
   // resumen
   $("#resumen").innerHTML = ["alerta", "precaucion", "info"]
     .map((n) => `<div class="tile tile-${n}"><span class="num">${res.resumen[n]}</span><span>${etiqueta(n)}</span></div>`).join("") +
-    `<div class="tile tile-ddi"><span class="num">${res.interacciones.length}</span><span>Interacciones</span></div>`;
+    `<div class="tile tile-ddi"><span class="num">${res.interacciones.length}</span><span>${t("tab.interacciones")}</span></div>`;
+  // lo esencial (3-5 puntos accionables) + señales de alarma
+  const esencial = loEsencial(res, 5);
+  $("#esencial").innerHTML = (esencial.length ? `
+    <section class="esencial">
+      <h3>${t("esencial.titulo")}</h3>
+      <ol>${esencial.map((p) => `<li class="nivel-${p.nivel}"><span class="punto"></span><span><b>${p.titulo}.</b> ${p.texto}</span></li>`).join("")}</ol>
+      <p class="esencial-nota">${t("esencial.nota")}</p>
+    </section>` : "") + `
+    <details class="alarma" id="alarma-card">
+      <summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+      <ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul>
+      <p>${t("alarma.pie")}</p>
+    </details>`;
 
   // tabs con recuento de avisos (precaución + atención)
   const cuenta = (amb) => {
@@ -590,6 +657,16 @@ function renderAmbito(cont, grupos, titulo, amb) {
   }
 }
 
+/** Enlace a la ficha técnica: directo (fichas.json, del nomenclátor) o búsqueda en CIMA. */
+function urlFicha(principio) {
+  const u = datos.fichas?.[principio.id];
+  return u || `https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(principio.nombre.split(/[\s(\/]/)[0])}`;
+}
+function fraseCorta(txt, max = 120) {
+  const f = (txt || "").split(/(?<=[.!?])\s+/)[0] || "";
+  return f.length > max ? f.slice(0, max - 1).trimEnd() + "…" : f;
+}
+
 function tarjetaFarmaco(g, amb, abierta) {
   {
     const it = g.item;
@@ -599,15 +676,15 @@ function tarjetaFarmaco(g, amb, abierta) {
       <details class="farmaco nivel-${max}"${abierta ? " open" : ""}>
         <summary>
           <span class="barra"></span>
-          <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small></span>
+          <span class="txt"><h4>${it.principio.nombre}</h4><small>${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small>${max !== "info" ? `<span class="una-frase">${fraseCorta(g.reglas.find((r) => r.nivel === max)?.texto)}</span>` : ""}</span>
           <span class="nivel">${etiqueta(max)}</span>
           <span class="flecha" aria-hidden="true">⌄</span>
         </summary>
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
-          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
-          ${it.clase.fuentes?.length ? `<p class="fuentes">${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · <a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>` : `<p class="fuentes"><a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>`}
+          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span>${r.fuente ? ` <small class="fuente-regla">${r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
+          <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}<a class="enlace-ft" href="${urlFicha(it.principio)}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>
         </div>
       </details>`;
   }
@@ -644,7 +721,7 @@ function renderInteracciones(cont, res) {
           <header><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span></header>
           <p>${x.efecto}</p>
           ${x.accion ? `<p class="accion"><b>${t("ddi.que_hacer")}:</b> ${x.accion}</p>` : ""}
-          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : "Duplicidad detectada"}</footer>
+          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? `${t("ddi.ddinter")} · <a href="${urlFicha(x.a.principio)}" target="_blank" rel="noopener">${t("inf.ficha")} ${x.a.principio.nombre.split(/[\s(\/]/)[0]}</a> · <a href="${urlFicha(x.b.principio)}" target="_blank" rel="noopener">${x.b.principio.nombre.split(/[\s(\/]/)[0]}</a>` : t("ddi.duplicidad")}</footer>
         </article>`);
     }
   }

@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151012">
+<link rel="stylesheet" href="css/style.css?v=202610151027">
 </head>
 <body>
 
@@ -71,12 +71,20 @@
     <p data-i18n="cab.lema1">El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
     <p data-i18n="cab.lema2">El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
+  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
   <p class="banner" id="aviso-idioma" hidden></p>
 </header>
 
 <main class="contenedor">
   <aside>
+    <div class="guia" id="guia">
+      <ol>
+        <li><b>1</b><span data-i18n="guia.1">Añada su medicación (búsqueda, lista pegada, PDF o foto).</span></li>
+        <li><b>2</b><span data-i18n="guia.2">Marque su edad y su situación clínica.</span></li>
+        <li><b>3</b><span data-i18n="guia.3">Lea «Lo esencial» y llévese el PDF a su médico o entrenador.</span></li>
+      </ol>
+      <button type="button" class="btn-sec sm" id="guia-cerrar" data-i18n="guia.cerrar">Entendido</button>
+    </div>
     <div class="panel">
       <div class="modo" role="radiogroup" aria-label="Quién rellena los datos" data-i18n-aria="modo.aria">
         <button type="button" role="radio" data-modo="paciente" aria-checked="true" data-i18n="modo.paciente">Soy paciente</button>
@@ -88,7 +96,7 @@
         <label><span data-i18n="datos.edad">Edad</span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
         <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label>
       </div>
-      <details class="bloque" id="bloque-situacion">
+      <details class="bloque" id="bloque-situacion" open>
       <summary><span class="sub-label" data-i18n="sit.titulo">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="condiciones">
         <label class="check"><input type="checkbox" id="cond-diabetes"> <span data-i18n="sit.diabetes">Diabetes</span></label>
@@ -181,6 +189,7 @@
     </div>
     <div class="contexto-chips" id="contexto"></div>
     <div id="resumen"></div>
+    <div id="esencial"></div>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" data-tab="general"><span data-i18n="tab.general">Antes de empezar</span> <span class="cnt"></span></button>
       <button type="button" role="tab" data-tab="aerobico"><span data-i18n="tab.aerobico">Aeróbico</span> <span class="cnt"></span></button>
@@ -200,6 +209,8 @@
       </div>
       <small data-i18n="desc.nota">El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso" aria-live="polite"></small>
+      <div class="util" id="util" hidden aria-live="polite"></div>
+      <div class="acciones compartir"><button type="button" class="btn-sec sm" id="btn-whatsapp" data-i18n="compartir.whatsapp">Compartir por WhatsApp</button><button type="button" class="btn-sec sm" id="btn-email" data-i18n="compartir.email">Enviar a mi médico por correo</button></div>
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
@@ -219,6 +230,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script type="module" src="js/app.js?v=202610151012"></script>
+<script type="module" src="js/app.js?v=202610151027"></script>
 </body>
 </html>

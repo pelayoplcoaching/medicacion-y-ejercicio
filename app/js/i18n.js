@@ -4,6 +4,15 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "cab.acerca": "Acerca de", "cab.presentacion": "¿Qué es esto?",
+  "guia.1": "Añada su medicación (búsqueda, lista pegada, PDF o foto).", "guia.2": "Marque su edad y su situación clínica.", "guia.3": "Lea «Lo esencial» y llévese el PDF a su médico o entrenador.", "guia.cerrar": "Entendido",
+  "esencial.titulo": "Lo esencial", "esencial.nota": "Lo más importante para usted, en cinco puntos. El detalle completo está en las pestañas de abajo.",
+  "alarma.titulo": "Pare y consulte si nota…", "alarma.pie": "Ante cualquiera de estos síntomas, deje de hacer ejercicio y consulte; si el dolor en el pecho o la falta de aire no ceden en pocos minutos, llame al 112.",
+  "regla.revisada": "revisada", "regla.borrador": "borrador", "regla.revisada.t": "Regla revisada por un clínico contra las fuentes indicadas", "regla.borrador.t": "Redacción inicial pendiente de revisión clínica",
+  "ddi.ddinter": "DDInter 2.0 (solo nivel)", "ddi.duplicidad": "Duplicidad detectada",
+  "dosis.rara": "{d} {u} al día de {f} es una dosis inusualmente alta. ¿Es correcta?",
+  "util.pregunta": "¿Le ha sido útil?", "util.si": "Sí", "util.no": "No mucho", "util.gracias": "Gracias; su respuesta ayuda a mejorar la aplicación.",
+  "compartir.whatsapp": "Compartir por WhatsApp", "compartir.email": "Enviar a mi médico por correo", "compartir.cab": "mi plan de ejercicio con la medicación", "compartir.meds": "Medicación", "compartir.pie": "Información orientativa, generada en el dispositivo; no sustituye la valoración médica.",
   "cab.sugerencia": "Sugerencias",
   "sug.abierto": "Se ha abierto el formulario en una pestaña nueva (un minuto; no incluya datos de ningún paciente). Si no se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para el paciente (PDF)", "desc.paciente.pac": "Su plan (PDF)",
@@ -73,6 +82,15 @@ const ES = {
 };
 
 const EN = {
+  "cab.acerca": "About", "cab.presentacion": "What is this?",
+  "guia.1": "Add your medication (search, pasted list, PDF or photo).", "guia.2": "Enter your age and clinical situation.", "guia.3": "Read “The essentials” and take the PDF to your doctor or trainer.", "guia.cerrar": "Got it",
+  "esencial.titulo": "The essentials", "esencial.nota": "The most important points for you, in five lines. The full detail is in the tabs below.",
+  "alarma.titulo": "Stop and seek advice if you notice…", "alarma.pie": "With any of these symptoms, stop exercising and seek advice; if chest pain or breathlessness does not ease within a few minutes, call 112.",
+  "regla.revisada": "reviewed", "regla.borrador": "draft", "regla.revisada.t": "Rule reviewed by a clinician against the listed sources", "regla.borrador.t": "Initial wording pending clinical review",
+  "ddi.ddinter": "DDInter 2.0 (level only)", "ddi.duplicidad": "Duplication detected",
+  "dosis.rara": "{d} {u} per day of {f} is an unusually high dose. Is it correct?",
+  "util.pregunta": "Was this useful?", "util.si": "Yes", "util.no": "Not much", "util.gracias": "Thank you; your answer helps improve the app.",
+  "compartir.whatsapp": "Share on WhatsApp", "compartir.email": "Email to my doctor", "compartir.cab": "my exercise plan with my medication", "compartir.meds": "Medication", "compartir.pie": "Guidance generated on the device; it does not replace medical assessment.",
   "cab.sugerencia": "Feedback",
   "sug.abierto": "The form opened in a new tab (one minute; do not include any patient data). If it did not open, write to pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan for the patient (PDF)", "desc.paciente.pac": "Your plan (PDF)",
@@ -142,6 +160,15 @@ const EN = {
 };
 
 const CA = {
+  "cab.acerca": "Quant a", "cab.presentacion": "Què és això?",
+  "guia.1": "Afegiu la vostra medicació (cerca, llista enganxada, PDF o foto).", "guia.2": "Marqueu l'edat i la situació clínica.", "guia.3": "Llegiu «L'essencial» i porteu el PDF al metge o entrenador.", "guia.cerrar": "Entesos",
+  "esencial.titulo": "L'essencial", "esencial.nota": "El més important per a vós, en cinc punts. El detall complet és a les pestanyes de sota.",
+  "alarma.titulo": "Atureu-vos i consulteu si noteu…", "alarma.pie": "Davant de qualsevol d'aquests símptomes, deixeu de fer exercici i consulteu; si el dolor al pit o l'ofec no cedeixen en pocs minuts, truqueu al 112.",
+  "regla.revisada": "revisada", "regla.borrador": "esborrany", "regla.revisada.t": "Regla revisada per un clínic amb les fonts indicades", "regla.borrador.t": "Redacció inicial pendent de revisió clínica",
+  "ddi.ddinter": "DDInter 2.0 (només nivell)", "ddi.duplicidad": "Duplicitat detectada",
+  "dosis.rara": "{d} {u} al dia de {f} és una dosi inusualment alta. És correcta?",
+  "util.pregunta": "Us ha estat útil?", "util.si": "Sí", "util.no": "No gaire", "util.gracias": "Gràcies; la vostra resposta ajuda a millorar l'aplicació.",
+  "compartir.whatsapp": "Compartir per WhatsApp", "compartir.email": "Enviar al meu metge per correu", "compartir.cab": "el meu pla d'exercici amb la medicació", "compartir.meds": "Medicació", "compartir.pie": "Informació orientativa, generada al dispositiu; no substitueix la valoració mèdica.",
   "cab.sugerencia": "Suggeriments",
   "sug.abierto": "S'ha obert el formulari en una pestanya nova (un minut; no inclogueu dades de cap pacient). Si no s'obre, escriviu a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Pla per al pacient (PDF)", "desc.paciente.pac": "El vostre pla (PDF)",
@@ -211,6 +238,15 @@ const CA = {
 };
 
 const GL = {
+  "cab.acerca": "Acerca de", "cab.presentacion": "Que é isto?",
+  "guia.1": "Engada a súa medicación (busca, lista pegada, PDF ou foto).", "guia.2": "Marque a súa idade e a súa situación clínica.", "guia.3": "Lea «O esencial» e leve o PDF ao seu médico ou adestrador.", "guia.cerrar": "Entendido",
+  "esencial.titulo": "O esencial", "esencial.nota": "O máis importante para vostede, en cinco puntos. O detalle completo está nas lapelas de abaixo.",
+  "alarma.titulo": "Pare e consulte se nota…", "alarma.pie": "Ante calquera destes síntomas, deixe de facer exercicio e consulte; se a dor no peito ou a falta de aire non ceden en poucos minutos, chame ao 112.",
+  "regla.revisada": "revisada", "regla.borrador": "borrador", "regla.revisada.t": "Regra revisada por un clínico coas fontes indicadas", "regla.borrador.t": "Redacción inicial pendente de revisión clínica",
+  "ddi.ddinter": "DDInter 2.0 (só nivel)", "ddi.duplicidad": "Duplicidade detectada",
+  "dosis.rara": "{d} {u} ao día de {f} é unha dose inusualmente alta. É correcta?",
+  "util.pregunta": "Foille útil?", "util.si": "Si", "util.no": "Non moito", "util.gracias": "Grazas; a súa resposta axuda a mellorar a aplicación.",
+  "compartir.whatsapp": "Compartir por WhatsApp", "compartir.email": "Enviar ao meu médico por correo", "compartir.cab": "o meu plan de exercicio coa medicación", "compartir.meds": "Medicación", "compartir.pie": "Información orientativa, xerada no dispositivo; non substitúe a valoración médica.",
   "cab.sugerencia": "Suxestións",
   "sug.abierto": "Abriuse o formulario nunha lapela nova (un minuto; non inclúa datos de ningún paciente). Se non se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para o paciente (PDF)", "desc.paciente.pac": "O seu plan (PDF)",
