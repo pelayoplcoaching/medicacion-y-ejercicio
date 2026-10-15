@@ -38,7 +38,7 @@ Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, car
 
 ## Versión, pruebas y validación
 
-- Versión de la aplicación en `app/js/version.js` (semver, `0.16.0-beta.0`) y registro de cambios en `CHANGELOG.md`; la base de conocimiento lleva su propia fecha de versión (`app/data/kb.json`). Cada versión publicada se etiqueta en git (`v0.16.0-beta.0`).
+- Versión de la aplicación en `app/js/version.js` (semver, `0.17.0-beta.1`) y registro de cambios en `CHANGELOG.md`; la base de conocimiento lleva su propia fecha de versión (`app/data/kb.json`). Cada versión publicada se etiqueta en git (`v0.16.0-beta.0`).
 - `app/data/casos.json`: casos clínicos de validación (viñetas anonimizadas con el resultado esperado). Se ejecutan en `scripts/test.mjs` y en `acerca.html`; en modo profesional, «Guardar como caso de prueba» genera uno nuevo a partir de la lista actual.
 - Documentación técnica: `docs/ARQUITECTURA.md` (estructura, flujo de datos, modelo de la base, persistencia) y `docs/BETA-CHECKLIST.md` (lo que falta para la beta).
 - Auditorías: `docs/lighthouse-2026-10-15.md` (rendimiento, accesibilidad, buenas prácticas, SEO) y axe-core (0 incidencias WCAG 2.1 AA en claro/oscuro × paciente/profesional).
@@ -79,7 +79,7 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 ```bash
 node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB (126 comprobaciones)
 npm i -D playwright && npx playwright install chromium
-node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (84 comprobaciones)
+node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (112 comprobaciones)
 ```
 Ambas se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 

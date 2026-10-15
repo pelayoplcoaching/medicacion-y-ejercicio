@@ -2,6 +2,20 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 0.17.0-beta.1 · 2026-10-15 (beta 1 · experiencia de uso)
+- Cabecera limpia: solo «¿Cómo funciona?», idioma y un menú «Más» (tamaño de letra en tres niveles, tema, glosario, guía rápida, novedades, sugerencias, acerca de, legal, instalar).
+- Recorrido en tres pasos (sus datos → su medicación → su plan) fijo en la parte superior en móvil, con estado y botón «Siguiente» que lleva al paso pendiente.
+- Medidor «Su plan está al N %» con el siguiente paso recomendado, por qué importa y botón directo; lista de todo lo que falta.
+- Un solo botón «Más formas de añadir» que abre una hoja con las vías (buscar, foto de la hoja, foto de una caja, PDF, pegar, dictar, escanear) explicadas con icono y una frase; «Añadir mi primer medicamento» en el estado vacío.
+- Tarjeta de medicamento: icono del grupo, nombre, dosis en chip editable, tomas (desayuno/comida/cena/noche) tocables, pausar y quitar con deshacer.
+- Veredicto primero: frase en lenguaje llano y acciones «Ver mi plan», «Descargar», «Compartir» y «?» (qué significan los niveles); pestañas con contador de avisos e icono, navegación por teclado (flechas, Inicio, Fin).
+- Barra de navegación inferior en móvil (Datos · Medicación · Informe · Mi plan) con insignias.
+- Ayuda contextual «?» en datos, edad, caídas, pulso en reposo, SPPB, situación clínica, cribado y niveles; glosario de términos (RPE, FC de reserva, SPPB…) con términos marcados en el texto.
+- Recorrido guiado sobre los elementos reales la primera vez (y desde «¿Cómo funciona?»), con «Saltar».
+- Accesibilidad: tres tamaños de letra, objetivos táctiles de 44–48 px, «Escuchar este apartado» en cada pestaña, foco visible y árbol de accesibilidad comprobado; márgenes para que la barra fija no tape lo que se desplaza; insignias legibles en oscuro.
+- Estados y micro-interacciones: estado vacío con una sola acción, progreso al generar PDF o leer una foto, confirmación con deshacer al vaciar; `guia.html` con seis capturas y preguntas frecuentes.
+- Pruebas de interfaz: 112 (28 nuevas); axe 0 incidencias en claro/oscuro/alto contraste × paciente/profesional, legal.html y guia.html.
+
 ## 0.16.0-beta.0 · 2026-10-15 (beta 0)
 - Contenido clínico: 10 situaciones nuevas (hipertensión, cardiopatía isquémica, fibrilación auricular, aneurisma de aorta, ictus, cáncer, artrosis, epilepsia, hepatopatía, obesidad) con reglas combinadas y fuente; 4 clases nuevas (buspirona, butilescopolamina, laxantes, corticoides inhalados) y parches a nicorandil, entacapona, trihexifenidilo e ipratropio; 15 interacciones revisadas más (209). Base: 112 clases · 354 principios · 60 reglas combinadas.
 - Zona de intensidad individual: FCmáx por Tanaka y zonas por FC de reserva (Karvonen) con la FC en reposo del paciente; método RPE/prueba del habla cuando el pulso no es válido (betabloqueantes, FA, marcapasos), límite con DAI y techo de intensidad moderada según situación. Tarjeta en el apartado aeróbico, en los PDF y en la historia.

@@ -911,7 +911,7 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 @keyframes girar { to { transform: rotate(360deg); } }
 @media print { .recorrido, .barra-inferior, .veredicto-acciones, .completitud, .escuchar-tab, .btn-ayuda, .menu-mas, #btn-como, .acciones-anadir, .tour { display: none !important; } }
 .btn-anadir { width: 100%; border-radius: var(--r-md); text-align: left; padding: 10px 16px; }
-.btn-anadir .dos-lineas { display: grid; line-height: 1.25; } .btn-anadir .dos-lineas small { font-weight: 500; opacity: .85; }
+.btn-anadir .dos-lineas { display: grid; line-height: 1.25; } .btn-anadir .dos-lineas small { font-weight: 500; }
 .momentos { flex-wrap: wrap; } .momentos .mom { font-size: .78rem; }
 .vacio .acciones .btn { width: 100%; border-radius: var(--r-md); }
 .cab-panel .acciones .btn-sec.sm { padding: 6px 10px; font-size: .85rem; }
@@ -926,3 +926,7 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
   .panel, details.bloque, #informe, #hoy, #esencial, .tabs, #descargas, #lista-meds, #veredicto, #completitud, input, select, textarea, button { scroll-margin-top: 64px; scroll-margin-bottom: 84px; }
   body:has(#barra-inferior:not([hidden])) { padding-bottom: 84px; }
 }
+.ayuda-bloque { display: flex; align-items: center; gap: 6px; margin: 2px 0 8px; } .ayuda-bloque .btn-ayuda { margin-left: 0; } .ayuda-bloque small { color: var(--muted); }
+/* insignias de la barra inferior: en oscuro los colores de aviso son claros, así que el número va en tinta oscura */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nav-badge { color: #1c1830; } }
+:root[data-theme="dark"] .nav-badge { color: #1c1830; }

@@ -5,6 +5,7 @@ export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Gale
 
 const ES = {
   "sit.mas": "Más situaciones (corazón, cáncer, articulaciones…)", "sit.hipertension": "Hipertensión arterial", "sit.cardiopatia": "Infarto, stent o angina", "sit.fa": "Fibrilación auricular", "sit.aneurisma": "Aneurisma de aorta", "sit.ictus": "Ictus previo", "sit.cancer": "Cáncer en tratamiento o reciente", "sit.artrosis": "Artrosis de rodilla o cadera", "sit.epilepsia": "Epilepsia", "sit.hepatopatia": "Cirrosis o hepatopatía avanzada", "sit.obesidad": "Obesidad",
+"sit.ayuda_txt": "¿Qué marcar y por qué?", "crib.ayuda_txt": "¿Para qué sirve este cribado?",
   "cab.como": "¿Cómo funciona?", "cab.mas": "Más", "cab.tema": "Tema", "cab.glosario": "Glosario de términos", "cab.guia": "Guía rápida",
   "letra.0": "Letra normal", "letra.1": "Letra grande", "letra.2": "Letra muy grande",
   "rec.siguiente": "Siguiente", "rec.ir_datos": "Empezar: sus datos", "rec.ir_meds": "Siguiente: su medicación", "rec.ir_plan": "Siguiente: ver su plan",
@@ -174,6 +175,7 @@ const ES = {
 
 const EN = {
   "sit.mas": "More situations (heart, cancer, joints…)", "sit.hipertension": "High blood pressure", "sit.cardiopatia": "Heart attack, stent or angina", "sit.fa": "Atrial fibrillation", "sit.aneurisma": "Aortic aneurysm", "sit.ictus": "Previous stroke", "sit.cancer": "Cancer under or after recent treatment", "sit.artrosis": "Knee or hip osteoarthritis", "sit.epilepsia": "Epilepsy", "sit.hepatopatia": "Cirrhosis or advanced liver disease", "sit.obesidad": "Obesity",
+"sit.ayuda_txt": "What to tick and why?", "crib.ayuda_txt": "What is this screening for?",
   "cab.como": "How does it work?", "cab.mas": "More", "cab.tema": "Theme", "cab.glosario": "Glossary", "cab.guia": "Quick guide",
   "letra.0": "Normal text", "letra.1": "Large text", "letra.2": "Very large text",
   "rec.siguiente": "Next", "rec.ir_datos": "Start: your details", "rec.ir_meds": "Next: your medication", "rec.ir_plan": "Next: see your plan",
@@ -343,6 +345,7 @@ const EN = {
 
 const CA = {
   "sit.mas": "Més situacions (cor, càncer, articulacions…)", "sit.hipertension": "Hipertensió arterial", "sit.cardiopatia": "Infart, stent o angina", "sit.fa": "Fibril·lació auricular", "sit.aneurisma": "Aneurisma d'aorta", "sit.ictus": "Ictus previ", "sit.cancer": "Càncer en tractament o recent", "sit.artrosis": "Artrosi de genoll o maluc", "sit.epilepsia": "Epilèpsia", "sit.hepatopatia": "Cirrosi o hepatopatia avançada", "sit.obesidad": "Obesitat",
+"sit.ayuda_txt": "Què marcar i per què?", "crib.ayuda_txt": "Per a què serveix aquest cribratge?",
   "cab.como": "Com funciona?", "cab.mas": "Més", "cab.tema": "Tema", "cab.glosario": "Glossari de termes", "cab.guia": "Guia ràpida",
   "letra.0": "Lletra normal", "letra.1": "Lletra gran", "letra.2": "Lletra molt gran",
   "rec.siguiente": "Següent", "rec.ir_datos": "Començar: les vostres dades", "rec.ir_meds": "Següent: la vostra medicació", "rec.ir_plan": "Següent: veure el vostre pla",
@@ -512,6 +515,7 @@ const CA = {
 
 const GL = {
   "sit.mas": "Máis situacións (corazón, cancro, articulacións…)", "sit.hipertension": "Hipertensión arterial", "sit.cardiopatia": "Infarto, stent ou anxina", "sit.fa": "Fibrilación auricular", "sit.aneurisma": "Aneurisma de aorta", "sit.ictus": "Ictus previo", "sit.cancer": "Cancro en tratamento ou recente", "sit.artrosis": "Artrose de xeonllo ou cadeira", "sit.epilepsia": "Epilepsia", "sit.hepatopatia": "Cirrose ou hepatopatía avanzada", "sit.obesidad": "Obesidade",
+"sit.ayuda_txt": "Que marcar e por que?", "crib.ayuda_txt": "Para que serve este cribado?",
   "cab.como": "Como funciona?", "cab.mas": "Máis", "cab.tema": "Tema", "cab.glosario": "Glosario de termos", "cab.guia": "Guía rápida",
   "letra.0": "Letra normal", "letra.1": "Letra grande", "letra.2": "Letra moi grande",
   "rec.siguiente": "Seguinte", "rec.ir_datos": "Empezar: os seus datos", "rec.ir_meds": "Seguinte: a súa medicación", "rec.ir_plan": "Seguinte: ver o seu plan",
