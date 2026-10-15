@@ -167,9 +167,12 @@ try {
   await p.click("#btn-letra"); await p.keyboard.press("Escape"); await p.waitForTimeout(100);
   check("Escape cierra el menú y la letra vuelve a normal", !(await p.$eval("#menu-mas", (e) => e.open)) && !(await p.$eval("html", (e) => e.classList.contains("letra-grande"))));
   check("recorrido en tres pasos: todos hechos y sin «Siguiente» cuando ya se ha visto el plan", (await p.$$("#recorrido-pasos li")).length === 3 && (await p.$$("#recorrido-pasos li.hecho")).length === 3 && await p.$eval("#btn-siguiente", (b) => b.hidden) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
+  await p.click("#lista-meds li:nth-child(1) .pausar"); await p.waitForTimeout(200); // sin el betabloqueante activo, el pulso en reposo pasa a ser un dato que falta
   check("medidor «su plan está al N %» con siguiente paso y botón directo", await p.isVisible("#completitud") && /\d+ %/.test(await p.textContent("#completitud")) && await p.isVisible("#comp-ir"));
-  await p.click("#comp-todo"); await p.waitForTimeout(100);
-  check("lista de todo lo que falta desplegable", !(await p.$eval("#comp-lista", (e) => e.hidden)) && (await p.$$("#comp-lista button")).length >= 1);
+  if (await p.$("#comp-todo")) { await p.click("#comp-todo"); await p.waitForTimeout(100); }
+  check("lista de todo lo que falta: desplegable si hay varios, oculta si solo falta uno", (await p.$("#comp-todo")) ? !(await p.$eval("#comp-lista", (e) => e.hidden)) && (await p.$$("#comp-lista button")).length >= 2 : (await p.$$("#comp-lista button")).length === 1);
+  await p.click("#lista-meds li:nth-child(1) .pausar"); await p.waitForTimeout(200);
+  check("con todo completado el medidor desaparece", await p.$eval("#completitud", (e) => e.hidden));
   check("veredicto con acciones: ver mi plan, descargar, compartir y ayuda de niveles", await p.isVisible("#btn-ver-mi-plan") && await p.isVisible("#btn-ir-descargas") && await p.isVisible('[data-ayuda="niveles"]'));
   await p.click('[data-ayuda="niveles"]'); await p.waitForTimeout(200);
   check("ayuda contextual: hoja con título y los tres niveles", await p.$eval("#ayuda", (d) => d.open) && (await p.textContent("#ayuda-titulo")).includes("niveles") && (await p.$$("#ayuda-cuerpo .niveles-ayuda li")).length === 3);
@@ -200,12 +203,12 @@ try {
   await p.click('[data-tab="fuerza"]'); await p.waitForTimeout(200);
   check("botón «Escuchar este apartado» en cada pestaña", await p.isVisible("#contenido-tab [data-escuchar-tab]"));
   await p.focus('[data-tab="fuerza"]'); await p.keyboard.press("ArrowRight"); await p.waitForTimeout(200);
-  check("pestañas con flechas del teclado", (await p.evaluate(() => document.activeElement?.dataset.tab)) === "equilibrio" && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).tab)) === "equilibrio");
+  check("pestañas con flechas del teclado", (await p.evaluate(() => document.activeElement?.dataset.tab)) === "equilibrio" && (await p.getAttribute('[data-tab="equilibrio"]', "aria-selected")) === "true");
   await p.click('[data-tab="general"]');
   const arbol = await p.locator("body").ariaSnapshot();
   check("árbol de accesibilidad: navegación, pasos, pestañas y ayudas con nombre", /navigation "Secciones"/.test(arbol) && /navigation "Pasos"/.test(arbol) && /tab "Fuerza/.test(arbol) && /button "Ayuda: edad"/.test(arbol) && /button "Ayuda: qué significan los niveles"/.test(arbol));
   await p.goto(`http://localhost:${PORT}/guia.html`, { waitUntil: "networkidle" }); await p.waitForTimeout(300);
-  check("guía rápida con seis pasos, capturas y preguntas frecuentes", (await p.$$(".paso-guia")).length === 6 && (await p.$$eval(".paso-guia img", (is) => is.every((i) => i.complete && i.naturalWidth > 0))) && (await p.$$(".faq details")).length >= 5);
+  check("guía rápida con seis pasos, capturas y preguntas frecuentes", (await p.$$(".paso-guia")).length === 6 && (await p.$$eval(".paso-guia img", (is) => Promise.all(is.map((i) => { i.loading = "eager"; return i.decode().then(() => i.naturalWidth > 0, () => false); })).then((r) => r.every(Boolean)))) && (await p.$$(".faq details")).length >= 5);
   await p.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
 
   console.log("Modo profesional y textos");
@@ -279,9 +282,7 @@ try {
   check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 5);
   check("recorrido: con medicación y sin datos, el paso actual es «sus datos» y «Siguiente» lo indica", (await pa.$eval("#recorrido-pasos li[aria-current=step]", (e) => e.textContent)).includes("datos") && (await pa.textContent("#btn-siguiente")).includes("datos"));
   await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
-  check("recorrido: con datos y medicación, «Siguiente» lleva al plan", (await pa.textContent("#btn-siguiente")).includes("plan"));
-  await pa.click("#btn-siguiente"); await pa.waitForTimeout(500);
-  check("al pulsar «Siguiente: ver su plan» queda marcado como visto y el botón desaparece", (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true && await pa.$eval("#btn-siguiente", (b) => b.hidden));
+  check("recorrido en escritorio: con datos y medicación el plan ya está a la vista, los tres pasos quedan hechos y «Siguiente» desaparece", (await pa.$$("#recorrido-pasos li.hecho")).length === 3 && await pa.$eval("#btn-siguiente", (b) => b.hidden) && (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
   check("barra inferior oculta en escritorio", !(await pa.isVisible("#barra-inferior")));
   await anchoCtx.close();
   const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();

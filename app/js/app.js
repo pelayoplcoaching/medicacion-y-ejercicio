@@ -1077,7 +1077,7 @@ function datosRellenos() { return !!(estado.edad || estado.condiciones.length ||
 let pasoActual = 1;
 function pintarPasos() {
   const p1 = datosRellenos(), p2 = estado.meds.filter((m) => !m.libre).length > 0, p3 = p2 && (enInforme || estado.informeVisto);
-  pasoActual = !p1 && !p2 ? 1 : !p2 ? 2 : !p3 ? 3 : 0;
+  pasoActual = !p1 ? 1 : !p2 ? 2 : !p3 ? 3 : 0;
   const pasos = [[p1, t("pasos.1")], [p2, t("pasos.2")], [p3, t("pasos.3")]];
   $("#recorrido-pasos").innerHTML = pasos.map(([ok, txt], i) => `<li class="paso${ok ? " hecho" : ""}${pasoActual === i + 1 ? " actual" : ""}"${pasoActual === i + 1 ? ' aria-current="step"' : ""}><b>${ok ? "✓" : i + 1}</b><span>${txt}</span></li>`).join("");
   const b = $("#btn-siguiente"); b.hidden = pasoActual === 0;
@@ -1922,7 +1922,6 @@ function pintarCompletitud(res) {
     { id: "situacion", ok: estado.condiciones.length > 0 || estado.caidas || !!estado.edad && estado.edad < 50, ir: () => { $("#bloque-situacion").open = true; desplazar($("#bloque-situacion")); } },
     { id: "cribado", ok: cribadoActual(res).clave !== "sin_datos", ir: () => { const d = $("#bloque-cribado"); d.open = true; desplazar(d); } },
     { id: "fcreposo", ok: estado.fcReposo != null || res.items.some((it) => it.senales.has("fc_no_valida") || it.senales.has("bradicardia")), ir: () => { desplazar($("#panel-datos")); $("#fc-reposo").focus({ preventScroll: true }); } },
-    { id: "tomas", ok: estado.meds.filter((m) => !m.libre).every((m) => (m.momentos || []).length), ir: () => desplazar($("#lista-meds")) },
     { id: "sppb", ok: ctxActual().sppb != null || Object.values(q).some(Boolean) || !!estado.pro.vivifrail || (estado.edad != null && estado.edad < 65), ir: () => $("#btn-sppb").click() },
     { id: "plan", ok: leerDiario().length > 0 || (estado.plan?.dias || []).length !== 6, ir: () => { estado.tab = "plan"; render(); desplazar($(".tabs")); } },
   ];

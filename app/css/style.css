@@ -921,3 +921,8 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .btn-anadir .dos-lineas { flex: 1 1 auto; min-width: 0; } .btn-anadir small { color: inherit; font-size: .84rem; }
 .vacio .acciones { flex-direction: column; } .vacio .acciones .btn-sec { width: 100%; border-radius: var(--r-md); }
 @media (min-width: 960px) { .barra-inferior { display: none; } }
+/* con el recorrido fijo arriba y la barra inferior, los destinos de desplazamiento y del foco no quedan tapados */
+@media (max-width: 959px) {
+  .panel, details.bloque, #informe, #hoy, #esencial, .tabs, #descargas, #lista-meds, #veredicto, #completitud, input, select, textarea, button { scroll-margin-top: 64px; scroll-margin-bottom: 84px; }
+  body:has(#barra-inferior:not([hidden])) { padding-bottom: 84px; }
+}
