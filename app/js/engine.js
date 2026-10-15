@@ -220,7 +220,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
       for (const x of ddiCurado.interacciones) {
         const ka = claveDDI(x.a), kb_ = claveDDI(x.b);
         if ((coincideDDI(ka, a) && coincideDDI(kb_, b)) || (coincideDDI(ka, b) && coincideDDI(kb_, a))) {
-          if (!hit || ORDEN_DDI[x.nivel] > ORDEN_DDI[hit.nivel]) hit = { ...x, fuente: "curada" };
+          if (!hit || ORDEN_DDI[x.nivel] > ORDEN_DDI[hit.nivel]) hit = { ...x, fuente: "curada", fuenteTxt: x.fuente || "" };
         }
       }
       if (!hit && a.clase.id === b.clase.id && a.clase.principios.length > 1 && !a.clase.combinable) {
@@ -231,7 +231,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
         const p = ddi.pares.find((q) => q[0] === x && q[1] === y);
         if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: `Interacción de nivel ${p[2] === "mayor" ? "mayor" : p[2] === "moderada" ? "moderado" : "menor"} registrada en la base internacional DDInter 2.0; esta base no incluye el mecanismo ni el texto en español.`, accion: p[2] === "mayor" ? "Pregunte a su médico o farmacéutico antes de combinarlos; consulte la sección 4.5 (interacciones) de las fichas técnicas." : "Suele bastar con comentarlo en la próxima consulta; el detalle está en la sección 4.5 de las fichas técnicas." };
       }
-      if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, efecto: hit.efecto, accion: hit.accion, a, b });
+      if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, fuenteTxt: hit.fuenteTxt || "", efecto: hit.efecto, accion: hit.accion, a, b });
     }
   }
   interacciones.sort((x, y) => ORDEN_DDI[y.nivel] - ORDEN_DDI[x.nivel]);

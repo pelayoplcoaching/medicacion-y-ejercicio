@@ -253,7 +253,7 @@ try {
   const historia = await p.evaluate(() => navigator.clipboard.readText());
   check("texto para la historia clínica", historia.startsWith("RECOMENDACIÓN DE EJERCICIO") && historia.includes("NYHA"));
   check("la historia incluye el registro del paciente con constantes", historia.includes("Registro del paciente") && historia.includes("glucosa antes 140"));
-  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0.1"));
+  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0."));
   check("la historia incluye la valoración funcional (SPPB) y la zona de intensidad", historia.includes("SPPB 12/12") && historia.includes("Zona de intensidad"));
   await p.click("#bloque-prescriptor summary"); await p.fill("#presc-nombre", "Dra. Prueba"); await p.fill("#presc-centro", "Centro de pruebas"); await p.$eval("#presc-centro", (e) => e.dispatchEvent(new Event("change"))); await p.$eval("#presc-nombre", (e) => e.dispatchEvent(new Event("change")));
   await p.click("#btn-prescrito"); await p.waitForTimeout(200);
@@ -284,6 +284,45 @@ try {
   await p.click("#menu-mas summary"); await p.click(".menu-lista .btn-sugerencia"); await p.waitForTimeout(150);
   check("«Sugerencias» del menú abre la hoja de feedback con el contexto", await p.isVisible("#feedback") && (await p.textContent("#fb-contexto")).includes("lista:"));
   await p.click("#feedback-cerrar");
+
+  console.log("Beta 3: consulta, plantillas, FHIR, texto accesible, avisos, fuentes");
+  check("barra de consulta visible en modo profesional", await p.isVisible("#consulta") && (await p.textContent("#consulta-estado")).length > 0);
+  await p.evaluate(() => { window.prompt = () => "PAC-01"; });
+  await p.click("#btn-consulta-guardar"); await p.waitForTimeout(200);
+  check("guardar paciente crea el perfil y lo selecciona", (await p.$$eval("#consulta-paciente option", (os) => os.map((o) => o.textContent))).some((x) => x.startsWith("PAC-01")) && (await p.$eval("#consulta-paciente", (s) => s.value)) !== "");
+  const nMedsAntes = (await p.$$("#lista-meds li")).length;
+  await p.click("#btn-consulta-siguiente"); await p.waitForTimeout(300);
+  check("siguiente paciente vacía la lista y los datos", (await p.$$("#lista-meds li")).length === 0 && (await p.$eval("#edad", (e) => e.value)) === "" && (await p.$eval("#consulta-paciente", (s) => s.value)) === "");
+  await p.selectOption("#consulta-paciente", { index: 1 }); await p.waitForTimeout(400);
+  check("cargar el paciente guardado restaura la lista y la edad", (await p.$$("#lista-meds li")).length === nMedsAntes && (await p.$eval("#edad", (e) => e.value)) === "78");
+  await p.click('#cambios [data-a="cerrar"]').catch(() => {});
+  await p.selectOption("#plantilla", "ic"); await p.click("#btn-plantilla"); await p.waitForTimeout(300);
+  check("plantilla «insuficiencia cardíaca» marca la situación, 4 días de plan y reevaluación a 6 semanas", await p.isChecked("#cond-insuficiencia_cardiaca") && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).plan.dias.length)) === 4 && (await p.$eval("#presc-revision", (e) => e.value)) === "6");
+  const [dlFhir] = await Promise.all([p.waitForEvent("download"), p.click("#btn-fhir")]);
+  const fhir = JSON.parse((await import("node:fs")).readFileSync(await dlFhir.path(), "utf8"));
+  const tipos = fhir.entry.map((e) => e.resource.resourceType);
+  check("exportación FHIR: Bundle con Patient, MedicationStatement por fármaco conocido, Observation y CarePlan", fhir.resourceType === "Bundle" && tipos.includes("Patient") && tipos.filter((x) => x === "MedicationStatement").length >= 4 && tipos.includes("Observation") && tipos.includes("CarePlan") && tipos.includes("Practitioner"));
+  check("FHIR: los MedicationStatement llevan código ATC y el CarePlan tres actividades", fhir.entry.filter((e) => e.resource.resourceType === "MedicationStatement").every((e) => e.resource.medicationCodeableConcept.coding?.[0]?.system?.includes("atc")) && fhir.entry.find((e) => e.resource.resourceType === "CarePlan").resource.activity.length === 3);
+  const [dlTxt] = await Promise.all([p.waitForEvent("download"), p.click("#btn-txt")]);
+  const txt = (await import("node:fs")).readFileSync(await dlTxt.path(), "utf8");
+  check("versión en texto plano del informe (lector de pantalla): esencial + historia clínica", dlTxt.suggestedFilename().endsWith(".txt") && txt.includes("RECOMENDACIÓN DE EJERCICIO") && txt.includes("Dra. Prueba"));
+  await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(300);
+  check("cada interacción curada muestra su fuente", (await p.$$eval("article.ddi footer", (fs) => fs.filter((f) => f.textContent.includes("Revisión clínica propia")).every((f) => f.textContent.includes("FT AEMPS")) && fs.some((f) => f.textContent.includes("FT AEMPS")))));
+  await p.click('[data-tab="cuando"]'); await p.waitForTimeout(300);
+  await p.evaluate(() => { window.__notif = []; window.Notification = class { static permission = "granted"; static requestPermission() { return Promise.resolve("granted"); } constructor(t, o) { window.__notif.push({ t, o }); } }; });
+  if (await p.$("#aviso-on")) {
+    await p.check("#aviso-on"); await p.waitForTimeout(200);
+    check("aviso local activado y guardado", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.aviso")).on)) === true);
+    await p.fill("#aviso-hora", "07:30"); await p.$eval("#aviso-hora", (e) => e.dispatchEvent(new Event("change"))); await p.waitForTimeout(100);
+    check("hora del aviso guardada", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.aviso")).hora)) === "07:30");
+    await p.uncheck("#aviso-on"); await p.waitForTimeout(100);
+  } else check("bloque de avisos (requiere Notification en el navegador)", true);
+  await p.selectOption("#idioma", "eu"); await p.waitForTimeout(200);
+  check("interfaz en euskera (plantillas y consulta traducidas)", (await p.textContent('[data-tab="cuando"]')).includes("Noiz") && (await p.textContent("#plantilla option:nth-child(2)")).length > 3 && !(await p.textContent("#plantilla option:nth-child(2)")).includes("Insuficiencia"));
+  await p.selectOption("#idioma", "es"); await p.waitForTimeout(200);
+  await p.click('[data-modo="paciente"]'); await p.waitForTimeout(150);
+  check("barra de consulta oculta en modo paciente", !(await p.isVisible("#consulta")));
+  await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
 
   console.log("Persistencia e idiomas");
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });

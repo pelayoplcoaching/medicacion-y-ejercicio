@@ -1,7 +1,7 @@
 /* Service worker: la aplicación y la base de conocimiento funcionan sin conexión.
    El nombre de la caché cambia con cada despliegue (scripts/bump_version.py lo sella), de modo que
    una versión nueva se descarga en segundo plano y se activa cuando el usuario pulsa "Actualizar". */
-const VERSION = "202610151927";
+const VERSION = "202610152001";
 const CACHE = "medex-" + VERSION;
 const APP = ["./", "index.html", "novedades.html", "acerca.html", "manifest.webmanifest", "css/style.css", "js/app.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/libs.js", "js/i18n.js", "js/version.js",
   "data/kb.json", "data/ddi_curated.json", "data/ddi.json", "data/marcas.json",
@@ -14,6 +14,11 @@ self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k.startsWith("medex-") && k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener("message", (e) => { if (e.data === "activar") self.skipWaiting(); });
+// recordatorios locales: al tocar la notificación se abre (o se enfoca) la aplicación
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((cs) => { const c = cs.find((x) => "focus" in x); return c ? c.focus() : self.clients.openWindow("./"); }));
+});
 
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);

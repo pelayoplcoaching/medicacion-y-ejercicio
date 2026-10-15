@@ -938,3 +938,10 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 #feedback-form textarea { width: 100%; min-height: 110px; }
 #copia-form label, #feedback-form > label { display: grid; gap: 4px; margin: 8px 0; }
 #copia-form input[type=password] { width: 100%; max-width: 320px; }
+/* beta 3: consulta, plantillas */
+.consulta { margin: 10px 0 12px; padding: 10px 12px; border: 1px dashed var(--line-strong); border-radius: var(--r-md); background: var(--surface-2); }
+.consulta .consulta-sel { display: grid; gap: 4px; font-weight: 700; } .consulta select { width: 100%; }
+.consulta .acciones { margin-top: 8px; } .consulta small { display: block; margin-top: 6px; }
+.plantilla-fila { align-items: end; margin-top: 10px; }
+.aviso-plan { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); display: grid; gap: 6px; }
+.aviso-plan .aviso-hora { display: flex; align-items: center; gap: 8px; } .aviso-plan input[type=time] { max-width: 120px; }

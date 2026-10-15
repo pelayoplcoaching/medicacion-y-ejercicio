@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202610151927";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151927";
+import { jspdf, cargarScript } from "./libs.js?v=202610152001";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610152001";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -50,6 +50,8 @@ class Doc {
     this.d = doc; this.font = font; this.logo = logo; this.escala = escala;
     this.titulo = titulo; this.subtitulo = subtitulo; this.tipo = tipo; this.numero = numero; this.version = version; this.qr = qr;
     this.ml = 16; this.w = 210 - 32; this.bottom = 297 - 18; this.y = 0;
+    // metadatos del documento (título, idioma, autor): los lectores de pantalla y los gestores documentales los usan
+    try { doc.setProperties({ title: `${titulo} · ${NOMBRE}`, subject: subtitulo, author: AUTOR, creator: `${NOMBRE} v${version || ""}`, keywords: "medicación, ejercicio, prescripción" }); doc.setLanguage("es-ES"); } catch {}
     this.cabecera();
   }
   f(style = "normal", size = 9.5, color = C.ink) {
@@ -447,7 +449,7 @@ export async function pdfMedico(kb, res, ctx) {
   if (res.interacciones.length) {
     pg.tabla(
       [{ t: "Combinación", w: .26 }, { t: "Nivel", w: .11 }, { t: "Efecto", w: .33 }, { t: "Manejo", w: .3 }],
-      res.interacciones.map((x) => [{ t: `${x.a.principio.nombre} + ${x.b.principio.nombre}`, bold: true }, { t: NIVEL_TXT[x.nivel], nivel: x.nivel }, x.efecto, x.accion || "—"]),
+      res.interacciones.map((x) => [{ t: `${x.a.principio.nombre} + ${x.b.principio.nombre}`, bold: true }, { t: NIVEL_TXT[x.nivel], nivel: x.nivel }, x.efecto, (x.accion || "—") + (x.fuenteTxt ? ` [${x.fuenteTxt}]` : x.fuente === "ddinter" ? " [DDInter 2.0]" : "")]),
       { size: 7.8 }
     );
   }
@@ -679,6 +681,7 @@ export async function pdfTarjeta(kb, res, ctx) {
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo-app.png");
   const d = doc, W = 148, H = 210, ml = 9, w = W - 2 * ml;
+  try { doc.setProperties({ title: `Mi plan de ejercicio · ${NOMBRE}`, author: AUTOR, creator: `${NOMBRE} v${ctx.appVersion || ""}` }); doc.setLanguage("es-ES"); } catch {}
   const f = (style, size, color = C.ink) => { const st = style === "black" && font === "helvetica" ? "bold" : style; d.setFont(font, st); d.setFontSize(size); d.setTextColor(...color); };
   // cabecera
   d.setFillColor(...C.purpleSoft); d.rect(0, 0, W, 22, "F"); d.setFillColor(...C.purple); d.rect(0, 22, W, 1, "F");

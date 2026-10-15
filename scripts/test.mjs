@@ -125,6 +125,7 @@ console.log("Motor de reglas");
 {
   const meds = [{ pid: "analogo_lhrh" }, { pid: "abiraterona", dosis: 1000, tomas: 1 }, { pid: "tacrolimus", dosis: 3, tomas: 2 }, { pid: "micofenolato", dosis: 1000, tomas: 2 }];
   const res = evaluar(datos, meds, { edad: 70, condiciones: new Set() });
+  check("interacción curada con fuente por fila (fuenteTxt)", (() => { const r = evaluar(datos, [{ pid: "acenocumarol", dosis: 2, tomas: 1 }, { pid: "ibuprofeno", dosis: 1200, tomas: 3 }], { edad: 70, condiciones: new Set() }); return r.interacciones.some((x) => x.fuente === "curada" && /FT AEMPS/.test(x.fuenteTxt)); })());
   check("sin duplicidad en clases combinables", !res.interacciones.some((x) => x.fuente === "duplicidad"), res.interacciones.map((x) => x.fuente).join());
 }
 {
@@ -223,11 +224,11 @@ console.log("\nIdiomas");
   // i18n.js usa document/localStorage solo dentro de funciones; aquí comprobamos los diccionarios
   const src = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
   const dicc = {};
-  for (const m of src.matchAll(/^const (ES|EN|CA|GL) = \{([\s\S]*?)^\};/gm)) {
+  for (const m of src.matchAll(/^const (ES|EN|CA|GL|EU) = \{([\s\S]*?)^\};/gm)) {
     dicc[m[1]] = new Set([...m[2].matchAll(/"([a-z0-9_.]+)":/g)].map((x) => x[1]));
   }
-  check("cuatro diccionarios", Object.keys(dicc).length === 4, Object.keys(dicc).join());
-  for (const l of ["EN", "CA", "GL"]) {
+  check("cinco diccionarios", Object.keys(dicc).length === 5, Object.keys(dicc).join());
+  for (const l of ["EN", "CA", "GL", "EU"]) {
     const faltan = [...dicc.ES].filter((k) => !dicc[l].has(k));
     check(`${l} tiene todas las claves de ES`, faltan.length === 0, faltan.join());
   }

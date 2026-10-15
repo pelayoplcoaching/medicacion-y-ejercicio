@@ -12,1463 +12,1881 @@
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Aumento importante del riesgo de sangrado, sobre todo digestivo.",
-      "accion": "Evitar la combinación. Usar paracetamol para el dolor. Si es imprescindible, el menor tiempo posible con protección gástrica y bajo control médico."
+      "accion": "Evitar la combinación. Usar paracetamol para el dolor. Si es imprescindible, el menor tiempo posible con protección gástrica y bajo control médico.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "clase:anticoagulantes",
       "b": "clase:antiagregantes",
       "nivel": "mayor",
       "efecto": "Riesgo de sangrado muy aumentado.",
-      "accion": "Solo bajo indicación expresa del cardiólogo y durante el tiempo pautado. Extremar precauciones frente a golpes y caídas."
+      "accion": "Solo bajo indicación expresa del cardiólogo y durante el tiempo pautado. Extremar precauciones frente a golpes y caídas.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "clase:anticoagulantes",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Los ISRS reducen la función plaquetaria y aumentan el riesgo de sangrado con anticoagulantes.",
-      "accion": "Vigilar hematomas y sangrados; evitar añadir antiinflamatorios."
+      "accion": "Vigilar hematomas y sangrados; evitar añadir antiinflamatorios.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "clase:antiagregantes",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Aumento del riesgo de sangrado digestivo; el ibuprofeno puede además anular el efecto protector de la aspirina.",
-      "accion": "Evitar. Paracetamol como alternativa. Si se usa ibuprofeno, tomarlo al menos 2 h después de la aspirina."
+      "accion": "Evitar. Paracetamol como alternativa. Si se usa ibuprofeno, tomarlo al menos 2 h después de la aspirina.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "clase:antiagregantes",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de sangrado.",
-      "accion": "Vigilancia; protección gástrica si hay antecedentes digestivos."
+      "accion": "Vigilancia; protección gástrica si hay antecedentes digestivos.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "acenocumarol",
       "b": "clase:fluoroquinolonas",
       "nivel": "mayor",
       "efecto": "Las fluoroquinolonas aumentan el efecto anticoagulante (INR).",
-      "accion": "Control de INR a los 3–5 días de iniciar el antibiótico."
+      "accion": "Control de INR a los 3–5 días de iniciar el antibiótico.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:ieca_ara2",
       "b": "clase:ahorradores_potasio",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia, sobre todo con insuficiencia renal o deshidratación.",
-      "accion": "Combinación frecuente en insuficiencia cardíaca bajo control analítico. Evitar suplementos de potasio y antiinflamatorios."
+      "accion": "Combinación frecuente en insuficiencia cardíaca bajo control analítico. Evitar suplementos de potasio y antiinflamatorios.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "clase:ieca_ara2",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Pérdida del efecto antihipertensivo y riesgo de insuficiencia renal aguda, especialmente con deshidratación.",
-      "accion": "Evitar uso continuado. Paracetamol como alternativa."
+      "accion": "Evitar uso continuado. Paracetamol como alternativa.",
+      "fuente": "FT AEMPS 4.5 · Lapi 2013 BMJ (triple whammy)",
+      "revisado": true
     },
     {
       "a": "clase:diureticos_asa",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Menor efecto diurético y riesgo renal.",
-      "accion": "Evitar uso crónico; hidratación."
+      "accion": "Evitar uso crónico; hidratación.",
+      "fuente": "FT AEMPS 4.5 · Lapi 2013 BMJ (triple whammy)",
+      "revisado": true
     },
     {
       "a": "clase:tiazidas",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Menor efecto antihipertensivo y riesgo renal.",
-      "accion": "Evitar uso crónico."
+      "accion": "Evitar uso crónico.",
+      "fuente": "FT AEMPS 4.5 · Lapi 2013 BMJ (triple whammy)",
+      "revisado": true
     },
     {
       "a": "clase:diureticos_asa",
       "b": "digoxina",
       "nivel": "mayor",
       "efecto": "La pérdida de potasio y magnesio aumenta la toxicidad de la digoxina (arritmias).",
-      "accion": "Control periódico de potasio y digoxinemia. Hidratación en el ejercicio."
+      "accion": "Control periódico de potasio y digoxinemia. Hidratación en el ejercicio.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:tiazidas",
       "b": "digoxina",
       "nivel": "moderada",
       "efecto": "Hipopotasemia que favorece la toxicidad digitálica.",
-      "accion": "Control de potasio."
+      "accion": "Control de potasio.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "clase:calcioantagonistas_no_dhp",
       "nivel": "mayor",
       "efecto": "Bradicardia marcada, bloqueo cardíaco e hipotensión por doble frenado del corazón.",
-      "accion": "Combinación generalmente desaconsejada; si está pautada, vigilar pulso en reposo (<50 lpm consultar)."
+      "accion": "Combinación generalmente desaconsejada; si está pautada, vigilar pulso en reposo (<50 lpm consultar).",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "digoxina",
       "nivel": "moderada",
       "efecto": "Bradicardia aditiva.",
-      "accion": "Control de pulso; consultar si mareo o pulso muy lento."
+      "accion": "Control de pulso; consultar si mareo o pulso muy lento.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "amiodarona",
       "nivel": "moderada",
       "efecto": "Bradicardia e hipotensión aditivas.",
-      "accion": "Vigilar pulso."
+      "accion": "Vigilar pulso.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "clase:insulina",
       "nivel": "moderada",
       "efecto": "Enmascara los síntomas de hipoglucemia (salvo sudoración) y puede prolongarla.",
-      "accion": "Medir glucosa antes y después del ejercicio; no fiarse de los síntomas."
+      "accion": "Medir glucosa antes y después del ejercicio; no fiarse de los síntomas.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "clase:sulfonilureas",
       "nivel": "moderada",
       "efecto": "Enmascara los síntomas de hipoglucemia.",
-      "accion": "Medir glucosa; llevar azúcar."
+      "accion": "Medir glucosa; llevar azúcar.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "propranolol",
       "b": "salbutamol",
       "nivel": "mayor",
       "efecto": "El betabloqueante no selectivo bloquea el efecto del salbutamol y puede precipitar broncoespasmo.",
-      "accion": "Evitar propranolol en asma/EPOC; usar betabloqueante cardioselectivo si es imprescindible."
+      "accion": "Evitar propranolol en asma/EPOC; usar betabloqueante cardioselectivo si es imprescindible.",
+      "fuente": "FT AEMPS 4.3 (betabloqueantes no selectivos en asma) · GINA 2024",
+      "revisado": true
     },
     {
       "a": "clase:nitratos",
       "b": "sildenafilo",
       "nivel": "mayor",
       "efecto": "Hipotensión grave, potencialmente mortal.",
-      "accion": "Contraindicado. No usar fármacos para la disfunción eréctil con nitratos."
+      "accion": "Contraindicado. No usar fármacos para la disfunción eréctil con nitratos.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     },
     {
       "a": "clase:calcioantagonistas_no_dhp",
       "b": "simvastatina",
       "nivel": "mayor",
       "efecto": "Verapamilo y diltiazem aumentan los niveles de simvastatina y el riesgo de miopatía.",
-      "accion": "Dosis de simvastatina no superior a 20 mg o cambiar de estatina."
+      "accion": "Dosis de simvastatina no superior a 20 mg o cambiar de estatina.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "amlodipino",
       "b": "simvastatina",
       "nivel": "moderada",
       "efecto": "Aumenta los niveles de simvastatina.",
-      "accion": "Simvastatina máximo 20 mg/día."
+      "accion": "Simvastatina máximo 20 mg/día.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "amiodarona",
       "b": "simvastatina",
       "nivel": "mayor",
       "efecto": "Aumenta el riesgo de miopatía.",
-      "accion": "Simvastatina máximo 20 mg/día."
+      "accion": "Simvastatina máximo 20 mg/día.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:estatinas",
       "b": "gemfibrozilo",
       "nivel": "mayor",
       "efecto": "Riesgo muy aumentado de miopatía y rabdomiólisis.",
-      "accion": "Evitar la combinación. Si se necesita fibrato, fenofibrato es más seguro."
+      "accion": "Evitar la combinación. Si se necesita fibrato, fenofibrato es más seguro.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:estatinas",
       "b": "fenofibrato",
       "nivel": "moderada",
       "efecto": "Aumento del riesgo de miopatía.",
-      "accion": "Vigilar síntomas musculares; consultar ante dolor generalizado u orina oscura."
+      "accion": "Vigilar síntomas musculares; consultar ante dolor generalizado u orina oscura.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:estatinas",
       "b": "colchicina",
       "nivel": "moderada",
       "efecto": "Riesgo de miopatía y neuromiopatía.",
-      "accion": "Vigilar síntomas musculares, sobre todo con insuficiencia renal."
+      "accion": "Vigilar síntomas musculares, sobre todo con insuficiencia renal.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:insulina",
       "b": "clase:sulfonilureas",
       "nivel": "moderada",
       "efecto": "Riesgo aditivo de hipoglucemia.",
-      "accion": "Plan de ejercicio con control de glucosa y ajuste de dosis acordado."
+      "accion": "Plan de ejercicio con control de glucosa y ajuste de dosis acordado.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:insulina",
       "b": "clase:aglp1",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de hipoglucemia; a menudo requiere reducir la insulina.",
-      "accion": "Ajuste de insulina al iniciar el GLP-1 y al empezar un programa de ejercicio."
+      "accion": "Ajuste de insulina al iniciar el GLP-1 y al empezar un programa de ejercicio.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:sulfonilureas",
       "b": "clase:aglp1",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de hipoglucemia.",
-      "accion": "A menudo se reduce la sulfonilurea."
+      "accion": "A menudo se reduce la sulfonilurea.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:isglt2",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "Depleción de volumen e hipotensión aditivas.",
-      "accion": "Hidratación; vigilar mareo postural, sobre todo con calor."
+      "accion": "Hidratación; vigilar mareo postural, sobre todo con calor.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Riesgo elevado de úlcera y sangrado digestivo.",
-      "accion": "Evitar; si es imprescindible, protección gástrica."
+      "accion": "Evitar; si es imprescindible, protección gástrica.",
+      "fuente": "FT AEMPS 4.5 (corticoides)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:fluoroquinolonas",
       "nivel": "mayor",
       "efecto": "Riesgo muy aumentado de tendinopatía y rotura tendinosa.",
-      "accion": "Evitar la combinación si es posible; si no, evitar impacto y cargas altas durante el tratamiento y el mes posterior."
+      "accion": "Evitar la combinación si es posible; si no, evitar impacto y cargas altas durante el tratamiento y el mes posterior.",
+      "fuente": "FT AEMPS 4.5 (corticoides)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:insulina",
       "nivel": "moderada",
       "efecto": "Hiperglucemia, sobre todo por la tarde.",
-      "accion": "Control de glucosa; ajuste de insulina."
+      "accion": "Control de glucosa; ajuste de insulina.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:sulfonilureas",
       "nivel": "moderada",
       "efecto": "Hiperglucemia.",
-      "accion": "Control de glucosa."
+      "accion": "Control de glucosa.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:benzodiacepinas",
       "b": "clase:opioides",
       "nivel": "mayor",
       "efecto": "Depresión respiratoria, sedación profunda y riesgo de muerte.",
-      "accion": "Evitar la combinación salvo indicación muy justificada y a las dosis mínimas."
+      "accion": "Evitar la combinación salvo indicación muy justificada y a las dosis mínimas.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "clase:benzodiacepinas",
       "b": "clase:hipnoticos_z",
       "nivel": "mayor",
       "efecto": "Sedación y riesgo de caídas aditivos.",
-      "accion": "Evitar duplicidad."
+      "accion": "Evitar duplicidad.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "clase:benzodiacepinas",
       "b": "clase:antihistaminicos_sedantes",
       "nivel": "moderada",
       "efecto": "Sedación aditiva.",
-      "accion": "Evitar, sobre todo en mayores."
+      "accion": "Evitar, sobre todo en mayores.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "clase:opioides",
       "b": "clase:antihistaminicos_sedantes",
       "nivel": "moderada",
       "efecto": "Sedación aditiva.",
-      "accion": "Evitar en mayores."
+      "accion": "Evitar en mayores.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "tramadol",
       "b": "clase:isrs_isrsn",
       "nivel": "mayor",
       "efecto": "Riesgo de síndrome serotoninérgico y de convulsiones.",
-      "accion": "Evitar si es posible; vigilar agitación, temblor, sudoración, fiebre."
+      "accion": "Evitar si es posible; vigilar agitación, temblor, sudoración, fiebre.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "tramadol",
       "b": "clase:triciclicos",
       "nivel": "mayor",
       "efecto": "Síndrome serotoninérgico y convulsiones.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "clase:isrs_isrsn",
       "b": "clase:triciclicos",
       "nivel": "mayor",
       "efecto": "Síndrome serotoninérgico; los ISRS aumentan los niveles de tricíclicos.",
-      "accion": "Solo bajo supervisión especializada."
+      "accion": "Solo bajo supervisión especializada.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "clase:isrs_isrsn",
       "b": "clase:tiazidas",
       "nivel": "moderada",
       "efecto": "Hiponatremia, especialmente en mayores.",
-      "accion": "Control de sodio; evitar sobrehidratación con agua sola en ejercicio prolongado."
+      "accion": "Control de sodio; evitar sobrehidratación con agua sola en ejercicio prolongado.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:isrs_isrsn",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Aumento del riesgo de sangrado digestivo.",
-      "accion": "Paracetamol como alternativa; protección gástrica si es necesario."
+      "accion": "Paracetamol como alternativa; protección gástrica si es necesario.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "citalopram",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "Prolongación del QT aditiva.",
-      "accion": "ECG si se combinan; evitar hipopotasemia."
+      "accion": "ECG si se combinan; evitar hipopotasemia.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:antipsicoticos",
       "b": "amiodarona",
       "nivel": "mayor",
       "efecto": "Prolongación del QT y riesgo de arritmia.",
-      "accion": "Evitar o control ECG estrecho."
+      "accion": "Evitar o control ECG estrecho.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:antipsicoticos",
       "b": "clase:fluoroquinolonas",
       "nivel": "moderada",
       "efecto": "Prolongación del QT.",
-      "accion": "Preferir otro antibiótico si es posible."
+      "accion": "Preferir otro antibiótico si es posible.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:antipsicoticos",
       "b": "clase:anticolinergicos_urinarios",
       "nivel": "moderada",
       "efecto": "Carga anticolinérgica aditiva: estreñimiento, retención urinaria, confusión, intolerancia al calor.",
-      "accion": "Revisar necesidad; cuidado con el calor."
+      "accion": "Revisar necesidad; cuidado con el calor.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:triciclicos",
       "b": "clase:anticolinergicos_urinarios",
       "nivel": "moderada",
       "efecto": "Carga anticolinérgica aditiva.",
-      "accion": "Revisar; evitar en mayores."
+      "accion": "Revisar; evitar en mayores.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:antihistaminicos_sedantes",
       "b": "clase:anticolinergicos_urinarios",
       "nivel": "moderada",
       "efecto": "Carga anticolinérgica aditiva.",
-      "accion": "Evitar en mayores."
+      "accion": "Evitar en mayores.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "levodopa",
       "b": "clase:antipsicoticos",
       "nivel": "mayor",
       "efecto": "Los antipsicóticos (salvo quetiapina y clozapina) bloquean el efecto de la levodopa y empeoran el Parkinson.",
-      "accion": "Evitar; si se necesita antipsicótico, quetiapina a dosis bajas."
+      "accion": "Evitar; si se necesita antipsicótico, quetiapina a dosis bajas.",
+      "fuente": "FT AEMPS 4.3/4.5 (antagonismo dopaminérgico)",
+      "revisado": true
     },
     {
       "a": "levodopa",
       "b": "hierro_oral",
       "nivel": "moderada",
       "efecto": "El hierro reduce la absorción de levodopa.",
-      "accion": "Separar las tomas al menos 2 horas."
+      "accion": "Separar las tomas al menos 2 horas.",
+      "fuente": "FT AEMPS 4.5 (absorción: separar las tomas)",
+      "revisado": true
     },
     {
       "a": "levotiroxina",
       "b": "calcio_vitd",
       "nivel": "moderada",
       "efecto": "El calcio reduce la absorción de levotiroxina.",
-      "accion": "Separar al menos 4 horas."
+      "accion": "Separar al menos 4 horas.",
+      "fuente": "FT AEMPS 4.5 (absorción: separar las tomas)",
+      "revisado": true
     },
     {
       "a": "levotiroxina",
       "b": "hierro_oral",
       "nivel": "moderada",
       "efecto": "El hierro reduce la absorción de levotiroxina.",
-      "accion": "Separar al menos 4 horas."
+      "accion": "Separar al menos 4 horas.",
+      "fuente": "FT AEMPS 4.5 (absorción: separar las tomas)",
+      "revisado": true
     },
     {
       "a": "levotiroxina",
       "b": "clase:ibp",
       "nivel": "menor",
       "efecto": "Puede reducir algo la absorción de levotiroxina.",
-      "accion": "Control de TSH si se inicia o retira el IBP."
+      "accion": "Control de TSH si se inicia o retira el IBP.",
+      "fuente": "FT AEMPS 4.5 (absorción: separar las tomas)",
+      "revisado": true
     },
     {
       "a": "clase:bifosfonatos",
       "b": "calcio_vitd",
       "nivel": "moderada",
       "efecto": "El calcio impide la absorción del bifosfonato oral.",
-      "accion": "Tomar el bifosfonato en ayunas y el calcio al menos 30–60 minutos después."
+      "accion": "Tomar el bifosfonato en ayunas y el calcio al menos 30–60 minutos después.",
+      "fuente": "FT AEMPS 4.5 (absorción: separar las tomas)",
+      "revisado": true
     },
     {
       "a": "clase:bifosfonatos",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Mayor irritación esofágica y gástrica.",
-      "accion": "Evitar; protección gástrica si es necesario."
+      "accion": "Evitar; protección gástrica si es necesario.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "metotrexato",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Los AINE reducen la eliminación de metotrexato y aumentan su toxicidad, sobre todo a dosis altas o con insuficiencia renal.",
-      "accion": "A dosis semanales bajas suele tolerarse con control; evitar uso intensivo de AINE la semana de la dosis."
+      "accion": "A dosis semanales bajas suele tolerarse con control; evitar uso intensivo de AINE la semana de la dosis.",
+      "fuente": "FT AEMPS 4.5 (metotrexato)",
+      "revisado": true
     },
     {
       "a": "metotrexato",
       "b": "clase:ibp",
       "nivel": "moderada",
       "efecto": "Los IBP pueden retrasar la eliminación de metotrexato.",
-      "accion": "Relevante a dosis altas; control."
+      "accion": "Relevante a dosis altas; control.",
+      "fuente": "FT AEMPS 4.5 (metotrexato)",
+      "revisado": true
     },
     {
       "a": "alopurinol",
       "b": "clase:ieca_ara2",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de reacciones de hipersensibilidad.",
-      "accion": "Vigilar erupción cutánea."
+      "accion": "Vigilar erupción cutánea.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "colchicina",
       "b": "clase:calcioantagonistas_no_dhp",
       "nivel": "mayor",
       "efecto": "Verapamilo y diltiazem aumentan los niveles de colchicina (toxicidad grave).",
-      "accion": "Reducir dosis de colchicina o evitar."
+      "accion": "Reducir dosis de colchicina o evitar.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "digoxina",
       "b": "amiodarona",
       "nivel": "mayor",
       "efecto": "La amiodarona aumenta la digoxinemia.",
-      "accion": "Reducir la dosis de digoxina a la mitad y controlar niveles."
+      "accion": "Reducir la dosis de digoxina a la mitad y controlar niveles.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "digoxina",
       "b": "clase:calcioantagonistas_no_dhp",
       "nivel": "mayor",
       "efecto": "Aumento de la digoxinemia y bradicardia aditiva.",
-      "accion": "Control de niveles y pulso."
+      "accion": "Control de niveles y pulso.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "digoxina",
       "b": "espironolactona",
       "nivel": "moderada",
       "efecto": "Aumento de digoxinemia e interferencia analítica.",
-      "accion": "Control de niveles."
+      "accion": "Control de niveles.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "apixaban",
       "b": "amiodarona",
       "nivel": "moderada",
       "efecto": "Aumento de los niveles del anticoagulante.",
-      "accion": "Vigilar sangrado."
+      "accion": "Vigilar sangrado.",
+      "fuente": "FT AEMPS 4.5 (ACOD: P-gp / CYP3A4) · EHRA 2021",
+      "revisado": true
     },
     {
       "a": "rivaroxaban",
       "b": "amiodarona",
       "nivel": "moderada",
       "efecto": "Aumento de los niveles del anticoagulante.",
-      "accion": "Vigilar sangrado."
+      "accion": "Vigilar sangrado.",
+      "fuente": "FT AEMPS 4.5 (ACOD: P-gp / CYP3A4) · EHRA 2021",
+      "revisado": true
     },
     {
       "a": "dabigatran",
       "b": "verapamilo",
       "nivel": "mayor",
       "efecto": "Aumenta los niveles de dabigatrán.",
-      "accion": "Reducir dosis de dabigatrán; tomarlo 2 h antes del verapamilo."
+      "accion": "Reducir dosis de dabigatrán; tomarlo 2 h antes del verapamilo.",
+      "fuente": "FT AEMPS 4.5 (ACOD: P-gp / CYP3A4) · EHRA 2021",
+      "revisado": true
     },
     {
       "a": "dabigatran",
       "b": "amiodarona",
       "nivel": "moderada",
       "efecto": "Aumenta los niveles de dabigatrán.",
-      "accion": "Vigilar sangrado."
+      "accion": "Vigilar sangrado.",
+      "fuente": "FT AEMPS 4.5 (ACOD: P-gp / CYP3A4) · EHRA 2021",
+      "revisado": true
     },
     {
       "a": "clase:ieca_ara2",
       "b": "sacubitrilo_valsartan",
       "nivel": "mayor",
       "efecto": "Riesgo de angioedema; duplicidad.",
-      "accion": "Contraindicado con IECA (lavado de 36 h). No combinar con otro ARA-II."
+      "accion": "Contraindicado con IECA (lavado de 36 h). No combinar con otro ARA-II.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "metformina",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "La deshidratación por diuréticos aumenta el riesgo de acidosis láctica.",
-      "accion": "Hidratación; suspender metformina temporalmente ante vómitos, diarrea o deshidratación."
+      "accion": "Hidratación; suspender metformina temporalmente ante vómitos, diarrea o deshidratación.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:isglt2",
       "b": "clase:insulina",
       "nivel": "moderada",
       "efecto": "Hipoglucemia y, en dietas muy bajas en hidratos, cetoacidosis.",
-      "accion": "No reducir la insulina en exceso; evitar ayunos y dietas cetogénicas."
+      "accion": "No reducir la insulina en exceso; evitar ayunos y dietas cetogénicas.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "topiramato",
       "b": "clase:anticolinergicos_urinarios",
       "nivel": "moderada",
       "efecto": "Reducción aditiva de la sudoración: riesgo de golpe de calor.",
-      "accion": "Evitar el ejercicio con calor."
+      "accion": "Evitar el ejercicio con calor.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:antipsicoticos",
       "b": "clase:opioides",
       "nivel": "moderada",
       "efecto": "Sedación y depresión respiratoria aditivas.",
-      "accion": "Dosis mínimas; evitar en mayores."
+      "accion": "Dosis mínimas; evitar en mayores.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "pregabalina",
       "b": "clase:opioides",
       "nivel": "mayor",
       "efecto": "Depresión respiratoria y sedación aditivas.",
-      "accion": "Precaución; dosis mínimas."
+      "accion": "Precaución; dosis mínimas.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "gabapentina",
       "b": "clase:opioides",
       "nivel": "mayor",
       "efecto": "Depresión respiratoria y sedación aditivas.",
-      "accion": "Precaución; dosis mínimas."
+      "accion": "Precaución; dosis mínimas.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "carbamazepina",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "La carbamazepina reduce el efecto de los anticoagulantes (inducción enzimática).",
-      "accion": "Control de INR / evitar con anticoagulantes directos."
+      "accion": "Control de INR / evitar con anticoagulantes directos.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "carbamazepina",
       "b": "clase:estatinas",
       "nivel": "moderada",
       "efecto": "Reduce el efecto de simvastatina y atorvastatina.",
-      "accion": "Valorar rosuvastatina o pravastatina."
+      "accion": "Valorar rosuvastatina o pravastatina.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "Hipopotasemia aditiva (calambres, arritmias).",
-      "accion": "Control de potasio."
+      "accion": "Control de potasio.",
+      "fuente": "FT AEMPS 4.5 (corticoides)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:tiazidas",
       "nivel": "moderada",
       "efecto": "Hipopotasemia aditiva.",
-      "accion": "Control de potasio."
+      "accion": "Control de potasio.",
+      "fuente": "FT AEMPS 4.5 (corticoides)",
+      "revisado": true
     },
     {
       "a": "salbutamol",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "Hipopotasemia aditiva, sobre todo con uso frecuente del salbutamol.",
-      "accion": "Control de potasio si uso de rescate frecuente."
+      "accion": "Control de potasio si uso de rescate frecuente.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "litio",
       "b": "clase:tiazidas",
       "nivel": "mayor",
       "efecto": "Las tiazidas reducen la eliminación de litio: niveles tóxicos.",
-      "accion": "Evitar o controlar niveles estrechamente; hidratación con sales en el ejercicio."
+      "accion": "Evitar o controlar niveles estrechamente; hidratación con sales en el ejercicio.",
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "a": "litio",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "Pueden subir los niveles de litio, sobre todo con deshidratación.",
-      "accion": "Control de niveles; hidratación."
+      "accion": "Control de niveles; hidratación.",
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "a": "litio",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Los AINE suben los niveles de litio hasta la toxicidad.",
-      "accion": "Evitar; paracetamol como alternativa."
+      "accion": "Evitar; paracetamol como alternativa.",
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "a": "litio",
       "b": "clase:ieca_ara2",
       "nivel": "moderada",
       "efecto": "Aumento de litemia.",
-      "accion": "Control de niveles al iniciar o ajustar."
+      "accion": "Control de niveles al iniciar o ajustar.",
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "a": "litio",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Riesgo de síndrome serotoninérgico.",
-      "accion": "Vigilar temblor, agitación, sudoración, fiebre."
+      "accion": "Vigilar temblor, agitación, sudoración, fiebre.",
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "a": "claritromicina",
       "b": "clase:estatinas",
       "nivel": "mayor",
       "efecto": "Claritromicina inhibe el metabolismo de simvastatina, atorvastatina y lovastatina: riesgo de rabdomiólisis.",
-      "accion": "Suspender la estatina durante el tratamiento o usar pravastatina/rosuvastatina; evitar fuerza intensa."
+      "accion": "Suspender la estatina durante el tratamiento o usar pravastatina/rosuvastatina; evitar fuerza intensa.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "eritromicina",
       "b": "clase:estatinas",
       "nivel": "mayor",
       "efecto": "Igual que claritromicina.",
-      "accion": "Suspender la estatina durante el tratamiento."
+      "accion": "Suspender la estatina durante el tratamiento.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:macrolidos",
       "b": "colchicina",
       "nivel": "mayor",
       "efecto": "Claritromicina y eritromicina elevan la colchicina a niveles tóxicos (casos mortales).",
-      "accion": "Evitar; azitromicina es la alternativa con menos interacción."
+      "accion": "Evitar; azitromicina es la alternativa con menos interacción.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:macrolidos",
       "b": "clase:anticoagulantes",
       "nivel": "moderada",
       "efecto": "Aumento del efecto anticoagulante (INR o niveles de ACOD).",
-      "accion": "Control de INR; vigilar sangrado."
+      "accion": "Control de INR; vigilar sangrado.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:macrolidos",
       "b": "digoxina",
       "nivel": "moderada",
       "efecto": "Aumento de la digoxinemia.",
-      "accion": "Control de niveles."
+      "accion": "Control de niveles.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:macrolidos",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "Prolongación del QT aditiva.",
-      "accion": "Preferir otro antibiótico; reponer electrolitos."
+      "accion": "Preferir otro antibiótico; reponer electrolitos.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "clase:estatinas",
       "nivel": "mayor",
       "efecto": "Itraconazol, voriconazol y posaconazol elevan mucho simvastatina y atorvastatina (rabdomiólisis); fluconazol a dosis altas también.",
-      "accion": "Suspender la estatina durante el tratamiento o cambiar a pravastatina/rosuvastatina."
+      "accion": "Suspender la estatina durante el tratamiento o cambiar a pravastatina/rosuvastatina.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Aumento marcado del INR (acenocumarol/warfarina) y de los niveles de rivaroxabán/apixabán.",
-      "accion": "Control de INR; valorar alternativa."
+      "accion": "Control de INR; valorar alternativa.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "clase:benzodiacepinas",
       "nivel": "moderada",
       "efecto": "Aumento de niveles de midazolam, alprazolam, diazepam: sedación prolongada.",
-      "accion": "Reducir dosis; evitar actividades con riesgo de caída."
+      "accion": "Reducir dosis; evitar actividades con riesgo de caída.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "colchicina",
       "nivel": "mayor",
       "efecto": "Toxicidad de colchicina.",
-      "accion": "Evitar o reducir dosis."
+      "accion": "Evitar o reducir dosis.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "tacrolimus",
       "nivel": "mayor",
       "efecto": "Aumento marcado de niveles de tacrolimus (nefrotoxicidad).",
-      "accion": "Reducción de dosis y control de niveles por el equipo de trasplante."
+      "accion": "Reducción de dosis y control de niveles por el equipo de trasplante.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "clase:antifungicos_azoles",
       "b": "clase:calcioantagonistas_dhp",
       "nivel": "moderada",
       "efecto": "Aumento de niveles de amlodipino y otros: hipotensión, edemas.",
-      "accion": "Vigilar tensión."
+      "accion": "Vigilar tensión.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Rifampicina reduce drásticamente el efecto de acenocumarol, warfarina y anticoagulantes directos.",
-      "accion": "Evitar ACOD; con acenocumarol, controles de INR frecuentes y ajuste de dosis."
+      "accion": "Evitar ACOD; con acenocumarol, controles de INR frecuentes y ajuste de dosis.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "clase:hormonas_sexuales",
       "nivel": "mayor",
       "efecto": "Anula el efecto de los anticonceptivos hormonales.",
-      "accion": "Método anticonceptivo adicional durante el tratamiento y 4 semanas después."
+      "accion": "Método anticonceptivo adicional durante el tratamiento y 4 semanas después.",
+      "fuente": "FT AEMPS 4.5 (rifampicina, inductor)",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "clase:estatinas",
       "nivel": "moderada",
       "efecto": "Reduce el efecto de las estatinas.",
-      "accion": "Control de lípidos; valorar ajuste."
+      "accion": "Control de lípidos; valorar ajuste.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "clase:sulfonilureas",
       "nivel": "moderada",
       "efecto": "Reduce el efecto hipoglucemiante.",
-      "accion": "Control de glucemia."
+      "accion": "Control de glucemia.",
+      "fuente": "FT AEMPS 4.5 (rifampicina, inductor)",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "tacrolimus",
       "nivel": "mayor",
       "efecto": "Reduce drásticamente los niveles de tacrolimus (riesgo de rechazo).",
-      "accion": "Ajuste por el equipo de trasplante."
+      "accion": "Ajuste por el equipo de trasplante.",
+      "fuente": "FT AEMPS 4.5 (rifampicina, inductor)",
+      "revisado": true
     },
     {
       "a": "rifampicina",
       "b": "clase:antirretrovirales",
       "nivel": "mayor",
       "efecto": "Reduce los niveles de muchos antirretrovirales.",
-      "accion": "Pauta antituberculosa y antirretroviral coordinadas por especialistas."
+      "accion": "Pauta antituberculosa y antirretroviral coordinadas por especialistas.",
+      "fuente": "FT AEMPS 4.5 (rifampicina, inductor)",
+      "revisado": true
     },
     {
       "a": "cotrimoxazol",
       "b": "clase:ieca_ara2",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia grave, sobre todo en mayores o con insuficiencia renal.",
-      "accion": "Evitar o controlar potasio a los pocos días."
+      "accion": "Evitar o controlar potasio a los pocos días.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "cotrimoxazol",
       "b": "clase:ahorradores_potasio",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia grave.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "cotrimoxazol",
       "b": "acenocumarol",
       "nivel": "mayor",
       "efecto": "Aumento marcado del INR.",
-      "accion": "Control de INR; valorar otro antibiótico."
+      "accion": "Control de INR; valorar otro antibiótico.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "cotrimoxazol",
       "b": "metotrexato",
       "nivel": "mayor",
       "efecto": "Toxicidad hematológica grave del metotrexato.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 (metotrexato)",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "clase:estatinas",
       "nivel": "mayor",
       "efecto": "Ritonavir y cobicistat elevan simvastatina y lovastatina (contraindicadas) y atorvastatina (limitar dosis).",
-      "accion": "Usar pravastatina, pitavastatina o atorvastatina a dosis baja."
+      "accion": "Usar pravastatina, pitavastatina o atorvastatina a dosis baja.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "laba_ics",
       "nivel": "mayor",
       "efecto": "Fluticasona y budesonida inhaladas o nasales con ritonavir/cobicistat: síndrome de Cushing e insuficiencia suprarrenal.",
-      "accion": "Usar beclometasona; consultar con VIH."
+      "accion": "Usar beclometasona; consultar con VIH.",
+      "fuente": "FT AEMPS 4.5 · Liverpool HIV Drug Interactions",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "clase:benzodiacepinas",
       "nivel": "mayor",
       "efecto": "Sedación prolongada con midazolam, alprazolam, diazepam.",
-      "accion": "Lorazepam es la alternativa segura."
+      "accion": "Lorazepam es la alternativa segura.",
+      "fuente": "FT AEMPS 4.5 · Liverpool HIV Drug Interactions",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Altera los niveles de rivaroxabán, apixabán y acenocumarol.",
-      "accion": "Consultar en Liverpool HIV interactions; control estrecho."
+      "accion": "Consultar en Liverpool HIV interactions; control estrecho.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "clase:corticoides",
       "nivel": "moderada",
       "efecto": "Aumento de la exposición a corticoides sistémicos.",
-      "accion": "Dosis mínima; vigilar efectos."
+      "accion": "Dosis mínima; vigilar efectos.",
+      "fuente": "FT AEMPS 4.5 · Liverpool HIV Drug Interactions",
+      "revisado": true
     },
     {
       "a": "tar_potenciado",
       "b": "clase:pde5",
       "nivel": "mayor",
       "efecto": "Niveles muy aumentados de sildenafilo/tadalafilo.",
-      "accion": "Dosis reducida (sildenafilo máximo 25 mg/48 h)."
+      "accion": "Dosis reducida (sildenafilo máximo 25 mg/48 h).",
+      "fuente": "FT AEMPS 4.5 · Liverpool HIV Drug Interactions",
+      "revisado": true
     },
     {
       "a": "tenofovir",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Nefrotoxicidad aditiva.",
-      "accion": "Evitar AINE de forma habitual; paracetamol."
+      "accion": "Evitar AINE de forma habitual; paracetamol.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "tacrolimus",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Nefrotoxicidad aditiva e hiperpotasemia.",
-      "accion": "Evitar; paracetamol."
+      "accion": "Evitar; paracetamol.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "ciclosporina",
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Nefrotoxicidad aditiva.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "tacrolimus",
       "b": "clase:calcioantagonistas_no_dhp",
       "nivel": "mayor",
       "efecto": "Diltiazem y verapamilo aumentan los niveles de tacrolimus.",
-      "accion": "Ajuste de dosis con niveles."
+      "accion": "Ajuste de dosis con niveles.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "tacrolimus",
       "b": "clase:ahorradores_potasio",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia.",
-      "accion": "Control de potasio."
+      "accion": "Control de potasio.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "ciclosporina",
       "b": "clase:estatinas",
       "nivel": "mayor",
       "efecto": "Ciclosporina eleva mucho los niveles de estatinas (rabdomiólisis).",
-      "accion": "Dosis bajas de pravastatina o fluvastatina; evitar simvastatina a dosis altas."
+      "accion": "Dosis bajas de pravastatina o fluvastatina; evitar simvastatina a dosis altas.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "azatioprina",
       "b": "alopurinol",
       "nivel": "mayor",
       "efecto": "Alopurinol bloquea el metabolismo de azatioprina: toxicidad medular grave.",
-      "accion": "Evitar o reducir azatioprina al 25 % con control hematológico."
+      "accion": "Evitar o reducir azatioprina al 25 % con control hematológico.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "azatioprina",
       "b": "febuxostat",
       "nivel": "mayor",
       "efecto": "Igual que con alopurinol.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "everolimus",
       "b": "clase:antifungicos_azoles",
       "nivel": "mayor",
       "efecto": "Aumento de niveles de everolimus/sirolimus.",
-      "accion": "Ajuste con niveles."
+      "accion": "Ajuste con niveles.",
+      "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
+      "revisado": true
     },
     {
       "a": "capecitabina",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Capecitabina aumenta el INR con acenocumarol/warfarina.",
-      "accion": "Control de INR semanal o cambiar a HBPM/ACOD."
+      "accion": "Control de INR semanal o cambiar a HBPM/ACOD.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "tamoxifeno",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Paroxetina y fluoxetina reducen la activación del tamoxifeno (menor eficacia).",
-      "accion": "Preferir sertralina, escitalopram o venlafaxina."
+      "accion": "Preferir sertralina, escitalopram o venlafaxina.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "abiraterona",
       "b": "clase:diureticos_asa",
       "nivel": "moderada",
       "efecto": "Hipopotasemia aditiva.",
-      "accion": "Control de potasio; electrolitos en el ejercicio."
+      "accion": "Control de potasio; electrolitos en el ejercicio.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "abiraterona",
       "b": "clase:tiazidas",
       "nivel": "moderada",
       "efecto": "Hipopotasemia aditiva.",
-      "accion": "Control de potasio."
+      "accion": "Control de potasio.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "tki_antiangiogenico",
       "b": "clase:antifungicos_azoles",
       "nivel": "mayor",
       "efecto": "Aumento de niveles del inhibidor de tirosina quinasa.",
-      "accion": "Ajuste por oncología."
+      "accion": "Ajuste por oncología.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "palbociclib",
       "b": "clase:antifungicos_azoles",
       "nivel": "mayor",
       "efecto": "Aumento de niveles; ribociclib además QT.",
-      "accion": "Evitar o ajustar."
+      "accion": "Evitar o ajustar.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "desmopresina",
       "b": "clase:isrs_isrsn",
       "nivel": "mayor",
       "efecto": "Hiponatremia grave.",
-      "accion": "Evitar en mayores; control de sodio."
+      "accion": "Evitar en mayores; control de sodio.",
+      "fuente": "FT AEMPS 4.4/4.5 (desmopresina, hiponatremia)",
+      "revisado": true
     },
     {
       "a": "desmopresina",
       "b": "clase:tiazidas",
       "nivel": "mayor",
       "efecto": "Hiponatremia.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.4/4.5 (desmopresina, hiponatremia)",
+      "revisado": true
     },
     {
       "a": "desmopresina",
       "b": "clase:aines",
       "nivel": "moderada",
       "efecto": "Aumenta la retención de agua.",
-      "accion": "Evitar uso continuado."
+      "accion": "Evitar uso continuado.",
+      "fuente": "FT AEMPS 4.4/4.5 (desmopresina, hiponatremia)",
+      "revisado": true
     },
     {
       "a": "timolol_colirio",
       "b": "clase:betabloqueantes",
       "nivel": "moderada",
       "efecto": "Bradicardia e hipotensión aditivas (el colirio tiene efecto sistémico).",
-      "accion": "Vigilar pulso; valorar alternativa oftalmológica."
+      "accion": "Vigilar pulso; valorar alternativa oftalmológica.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "timolol_colirio",
       "b": "clase:calcioantagonistas_no_dhp",
       "nivel": "moderada",
       "efecto": "Bradicardia aditiva.",
-      "accion": "Vigilar pulso."
+      "accion": "Vigilar pulso.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "timolol_colirio",
       "b": "clase:anticolinesterasicos",
       "nivel": "moderada",
       "efecto": "Bradicardia y síncope.",
-      "accion": "Vigilar pulso y desmayos."
+      "accion": "Vigilar pulso y desmayos.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:anticolinesterasicos",
       "b": "clase:betabloqueantes",
       "nivel": "moderada",
       "efecto": "Bradicardia y síncope.",
-      "accion": "Vigilar pulso; consultar si desmayos."
+      "accion": "Vigilar pulso; consultar si desmayos.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:anticolinesterasicos",
       "b": "clase:anticolinergicos_urinarios",
       "nivel": "moderada",
       "efecto": "Efectos opuestos: el anticolinérgico anula parte del beneficio cognitivo.",
-      "accion": "Revisar necesidad; mirabegrón como alternativa."
+      "accion": "Revisar necesidad; mirabegrón como alternativa.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:triptanes",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Riesgo de síndrome serotoninérgico (bajo).",
-      "accion": "Vigilar síntomas; uso puntual aceptable."
+      "accion": "Vigilar síntomas; uso puntual aceptable.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "clase:triptanes",
       "b": "moclobemida",
       "nivel": "mayor",
       "efecto": "Síndrome serotoninérgico y crisis hipertensiva.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "moclobemida",
       "b": "clase:isrs_isrsn",
       "nivel": "mayor",
       "efecto": "Síndrome serotoninérgico.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "moclobemida",
       "b": "tramadol",
       "nivel": "mayor",
       "efecto": "Síndrome serotoninérgico.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "moclobemida",
       "b": "clase:estimulantes_tdah",
       "nivel": "mayor",
       "efecto": "Crisis hipertensiva.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "bupropion",
       "b": "tramadol",
       "nivel": "moderada",
       "efecto": "Riesgo de convulsiones aumentado.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · Boyer 2005 NEJM (síndrome serotoninérgico)",
+      "revisado": true
     },
     {
       "a": "metadona",
       "b": "clase:benzodiacepinas",
       "nivel": "mayor",
       "efecto": "Depresión respiratoria.",
-      "accion": "Evitar; dosis mínimas."
+      "accion": "Evitar; dosis mínimas.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "metadona",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "QT aditivo.",
-      "accion": "ECG; electrolitos."
+      "accion": "ECG; electrolitos.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:relajantes_musculares",
       "b": "clase:benzodiacepinas",
       "nivel": "moderada",
       "efecto": "Sedación y riesgo de caídas aditivos.",
-      "accion": "Evitar en mayores."
+      "accion": "Evitar en mayores.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "clase:relajantes_musculares",
       "b": "clase:opioides",
       "nivel": "mayor",
       "efecto": "Sedación y depresión respiratoria.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "tizanidina",
       "b": "clase:ieca_ara2",
       "nivel": "moderada",
       "efecto": "Hipotensión aditiva.",
-      "accion": "Vigilar tensión; cambios de posición lentos."
+      "accion": "Vigilar tensión; cambios de posición lentos.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:estimulantes_tdah",
       "b": "clase:betabloqueantes",
       "nivel": "menor",
       "efecto": "Efectos opuestos sobre pulso y tensión.",
-      "accion": "Control de tensión."
+      "accion": "Control de tensión.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:antitiroideos",
       "b": "clase:anticoagulantes",
       "nivel": "moderada",
       "efecto": "Al normalizarse la función tiroidea cambia el efecto del anticoagulante.",
-      "accion": "Controles de INR frecuentes."
+      "accion": "Controles de INR frecuentes.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "levotiroxina",
       "b": "clase:anticoagulantes",
       "nivel": "moderada",
       "efecto": "Cambios de dosis de levotiroxina alteran el INR.",
-      "accion": "Control de INR tras ajustes."
+      "accion": "Control de INR tras ajustes.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:hormonas_sexuales",
       "b": "clase:anticoagulantes",
       "nivel": "moderada",
       "efecto": "Los estrógenos aumentan el riesgo trombótico y pueden alterar el INR.",
-      "accion": "Valorar con hematología/ginecología."
+      "accion": "Valorar con hematología/ginecología.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:hormonas_sexuales",
       "b": "lamotrigina",
       "nivel": "moderada",
       "efecto": "Los anticonceptivos combinados bajan los niveles de lamotrigina (más crisis).",
-      "accion": "Ajuste de dosis de lamotrigina."
+      "accion": "Ajuste de dosis de lamotrigina.",
+      "fuente": "FT AEMPS 4.5 (anticonceptivos / THS)",
+      "revisado": true
     },
     {
       "a": "carbamazepina",
       "b": "clase:hormonas_sexuales",
       "nivel": "mayor",
       "efecto": "Carbamazepina (y fenitoína, fenobarbital, topiramato >200 mg) anulan el efecto anticonceptivo.",
-      "accion": "Método adicional o DIU."
+      "accion": "Método adicional o DIU.",
+      "fuente": "FT AEMPS 4.5 (anticonceptivos / THS)",
+      "revisado": true
     },
     {
       "a": "fenitoina",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Interacción compleja con acenocumarol; reduce ACOD.",
-      "accion": "Evitar ACOD; INR frecuente."
+      "accion": "Evitar ACOD; INR frecuente.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "fenobarbital",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Reduce el efecto anticoagulante.",
-      "accion": "Evitar ACOD; INR frecuente."
+      "accion": "Evitar ACOD; INR frecuente.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:hidroxicloroquina",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "QT aditivo.",
-      "accion": "ECG; electrolitos."
+      "accion": "ECG; electrolitos.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:hidroxicloroquina",
       "b": "clase:macrolidos",
       "nivel": "mayor",
       "efecto": "QT aditivo (combinación asociada a arritmias).",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "domperidona",
       "b": "clase:macrolidos",
       "nivel": "mayor",
       "efecto": "QT prolongado y aumento de domperidona.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "domperidona",
       "b": "clase:antifungicos_azoles",
       "nivel": "mayor",
       "efecto": "QT prolongado.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "metoclopramida",
       "b": "levodopa",
       "nivel": "mayor",
       "efecto": "Metoclopramida bloquea la dopamina y empeora el Parkinson.",
-      "accion": "Usar domperidona (con precaución QT) u otra alternativa."
+      "accion": "Usar domperidona (con precaución QT) u otra alternativa.",
+      "fuente": "FT AEMPS 4.3/4.5 (antagonismo dopaminérgico)",
+      "revisado": true
     },
     {
       "a": "metoclopramida",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "Síntomas extrapiramidales aditivos.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.3/4.5 (antagonismo dopaminérgico)",
+      "revisado": true
     },
     {
       "a": "clase:antiarritmicos_ic",
       "b": "clase:betabloqueantes",
       "nivel": "menor",
       "efecto": "Combinación habitual y deseable (protección en esfuerzo); bradicardia posible.",
-      "accion": "Vigilar pulso."
+      "accion": "Vigilar pulso.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "flecainida",
       "b": "clase:isrs_isrsn",
       "nivel": "moderada",
       "efecto": "Paroxetina y fluoxetina elevan los niveles de flecainida.",
-      "accion": "Preferir sertralina o escitalopram."
+      "accion": "Preferir sertralina o escitalopram.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "dronedarona",
       "b": "digoxina",
       "nivel": "mayor",
       "efecto": "Aumento de digoxinemia y bradicardia.",
-      "accion": "Reducir digoxina a la mitad."
+      "accion": "Reducir digoxina a la mitad.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "dronedarona",
       "b": "clase:estatinas",
       "nivel": "moderada",
       "efecto": "Aumento de simvastatina/atorvastatina.",
-      "accion": "Limitar dosis de estatina."
+      "accion": "Limitar dosis de estatina.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "dronedarona",
       "b": "dabigatran",
       "nivel": "mayor",
       "efecto": "Aumento de niveles de dabigatrán.",
-      "accion": "Evitar o reducir dosis."
+      "accion": "Evitar o reducir dosis.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "sotalol",
       "b": "clase:diureticos_asa",
       "nivel": "mayor",
       "efecto": "Hipopotasemia + QT largo: torsades.",
-      "accion": "Control de potasio y magnesio."
+      "accion": "Control de potasio y magnesio.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "ranolazina",
       "b": "clase:macrolidos",
       "nivel": "mayor",
       "efecto": "Aumento de ranolazina y QT.",
-      "accion": "Contraindicado con claritromicina."
+      "accion": "Contraindicado con claritromicina.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "ranolazina",
       "b": "simvastatina",
       "nivel": "moderada",
       "efecto": "Aumento de simvastatina.",
-      "accion": "Simvastatina máximo 20 mg."
+      "accion": "Simvastatina máximo 20 mg.",
+      "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
+      "revisado": true
     },
     {
       "a": "vericiguat",
       "b": "clase:nitratos",
       "nivel": "mayor",
       "efecto": "Hipotensión grave.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     },
     {
       "a": "vericiguat",
       "b": "clase:pde5",
       "nivel": "mayor",
       "efecto": "Hipotensión grave.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     },
     {
       "a": "finerenona",
       "b": "clase:ieca_ara2",
       "nivel": "moderada",
       "efecto": "Hiperpotasemia.",
-      "accion": "Control de potasio (combinación habitual)."
+      "accion": "Control de potasio (combinación habitual).",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "finerenona",
       "b": "clase:ahorradores_potasio",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia grave.",
-      "accion": "Evitar la combinación."
+      "accion": "Evitar la combinación.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "finerenona",
       "b": "clase:antifungicos_azoles",
       "nivel": "mayor",
       "efecto": "Aumento de niveles de finerenona.",
-      "accion": "Contraindicado con itraconazol/ketoconazol."
+      "accion": "Contraindicado con itraconazol/ketoconazol.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:antihipertensivos_centrales",
       "b": "clase:betabloqueantes",
       "nivel": "moderada",
       "efecto": "Bradicardia; la retirada brusca de clonidina con betabloqueante produce crisis hipertensiva.",
-      "accion": "No suspender clonidina de golpe."
+      "accion": "No suspender clonidina de golpe.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:antihipertensivos_centrales",
       "b": "clase:triciclicos",
       "nivel": "moderada",
       "efecto": "Los tricíclicos anulan el efecto de clonidina.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "cilostazol",
       "b": "clase:antiagregantes",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de sangrado.",
-      "accion": "Vigilar sangrado."
+      "accion": "Vigilar sangrado.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "cilostazol",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "Mayor riesgo de sangrado.",
-      "accion": "Evitar salvo indicación."
+      "accion": "Evitar salvo indicación.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "hidrocortisona",
       "b": "rifampicina",
       "nivel": "mayor",
       "efecto": "Rifampicina acelera el metabolismo de la hidrocortisona: riesgo de insuficiencia suprarrenal.",
-      "accion": "Aumentar la dosis de hidrocortisona durante el tratamiento."
+      "accion": "Aumentar la dosis de hidrocortisona durante el tratamiento.",
+      "fuente": "FT AEMPS 4.5 (rifampicina, inductor)",
+      "revisado": true
     },
     {
       "a": "clase:estimulantes_tdah",
       "b": "cafeina",
       "nivel": "moderada",
       "efecto": "Taquicardia, hipertensión, insomnio aditivos.",
-      "accion": "Limitar cafeína; evitar pre-entrenos."
+      "accion": "Limitar cafeína; evitar pre-entrenos.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "multivitaminico",
       "b": "clase:anticoagulantes",
       "nivel": "mayor",
       "efecto": "El hipérico reduce el efecto anticoagulante; ginkgo y ginseng aumentan el sangrado.",
-      "accion": "Evitar hierbas sin consultar."
+      "accion": "Evitar hierbas sin consultar.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "multivitaminico",
       "b": "clase:hormonas_sexuales",
       "nivel": "mayor",
       "efecto": "El hipérico anula el efecto anticonceptivo.",
-      "accion": "Evitar hipérico."
+      "accion": "Evitar hipérico.",
+      "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
+      "revisado": true
     },
     {
       "a": "multivitaminico",
       "b": "clase:isrs_isrsn",
       "nivel": "mayor",
       "efecto": "Hipérico + ISRS: síndrome serotoninérgico.",
-      "accion": "Evitar hipérico."
+      "accion": "Evitar hipérico.",
+      "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
+      "revisado": true
     },
     {
       "a": "multivitaminico",
       "b": "tacrolimus",
       "nivel": "mayor",
       "efecto": "El hipérico reduce los niveles de tacrolimus/ciclosporina (rechazo).",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
+      "revisado": true
     },
     {
       "a": "multivitaminico",
       "b": "clase:antirretrovirales",
       "nivel": "mayor",
       "efecto": "El hipérico reduce los niveles de antirretrovirales.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
+      "revisado": true
     },
     {
       "a": "creatina",
       "b": "clase:aines",
       "nivel": "menor",
       "efecto": "Posible estrés renal aditivo con deshidratación.",
-      "accion": "Hidratación; evitar AINE habituales."
+      "accion": "Hidratación; evitar AINE habituales.",
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "a": "clase:potasio_magnesio",
       "b": "clase:ieca_ara2",
       "nivel": "moderada",
       "efecto": "Hiperpotasemia con suplementos de potasio.",
-      "accion": "Solo bajo control analítico."
+      "accion": "Solo bajo control analítico.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "clase:potasio_magnesio",
       "b": "clase:ahorradores_potasio",
       "nivel": "mayor",
       "efecto": "Hiperpotasemia grave con suplementos de potasio.",
-      "accion": "Evitar salvo indicación con controles."
+      "accion": "Evitar salvo indicación con controles.",
+      "fuente": "FT AEMPS 4.5 · KDIGO 2024 (hiperpotasemia)",
+      "revisado": true
     },
     {
       "a": "epoetina",
       "b": "clase:hormonas_sexuales",
       "nivel": "moderada",
       "efecto": "Riesgo trombótico aditivo.",
-      "accion": "Valorar; evitar inmovilidad."
+      "accion": "Valorar; evitar inmovilidad.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "inhibidor_jak",
       "b": "clase:hormonas_sexuales",
       "nivel": "moderada",
       "efecto": "Riesgo trombótico aditivo.",
-      "accion": "Valorar alternativas anticonceptivas."
+      "accion": "Valorar alternativas anticonceptivas.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "tamoxifeno",
       "b": "clase:hormonas_sexuales",
       "nivel": "mayor",
       "efecto": "Los estrógenos contrarrestan el tamoxifeno y suman riesgo trombótico.",
-      "accion": "Contraindicado."
+      "accion": "Contraindicado.",
+      "fuente": "FT AEMPS 4.5 (oncología)",
+      "revisado": true
     },
     {
       "a": "clase:anticolinergicos_urinarios",
       "b": "clase:relajantes_musculares",
       "nivel": "moderada",
       "efecto": "Carga anticolinérgica (ciclobenzaprina) y sedación.",
-      "accion": "Evitar en mayores."
+      "accion": "Evitar en mayores.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:vertigo",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "Sulpirida es un antipsicótico: duplicidad y extrapiramidalismo.",
-      "accion": "Revisar."
+      "accion": "Revisar.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "betahistina",
       "b": "clase:antihistaminicos_sedantes",
       "nivel": "menor",
       "efecto": "Los antihistamínicos reducen el efecto de betahistina.",
-      "accion": "Separar o evitar."
+      "accion": "Separar o evitar.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:anticolinesterasicos",
       "b": "clase:antihistaminicos_sedantes",
       "nivel": "moderada",
       "efecto": "Los anticolinérgicos anulan el efecto del anticolinesterásico.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:anticolinesterasicos",
       "b": "clase:triciclicos",
       "nivel": "moderada",
       "efecto": "Efectos opuestos; empeora la cognición.",
-      "accion": "Evitar."
+      "accion": "Evitar.",
+      "fuente": "FT AEMPS 4.5 · Beers 2023 (carga anticolinérgica)",
+      "revisado": true
     },
     {
       "a": "clase:sulfonilureas",
       "b": "clase:fluoroquinolonas",
       "nivel": "moderada",
       "efecto": "Las quinolonas alteran la glucemia (hipo e hiperglucemia), más con sulfonilureas y en mayores.",
-      "accion": "Durante el antibiótico, mida la glucosa antes de entrenar y lleve azúcar; reduzca la intensidad."
+      "accion": "Durante el antibiótico, mida la glucosa antes de entrenar y lleve azúcar; reduzca la intensidad.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:isglt2",
       "b": "clase:sulfonilureas",
       "nivel": "moderada",
       "efecto": "Suma de efecto hipoglucemiante; además el iSGLT2 favorece la deshidratación con el ejercicio.",
-      "accion": "Hidratación, glucosa antes de sesiones largas; su médico puede bajar la sulfonilurea."
+      "accion": "Hidratación, glucosa antes de sesiones largas; su médico puede bajar la sulfonilurea.",
+      "fuente": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)",
+      "revisado": true
     },
     {
       "a": "clase:corticoides",
       "b": "clase:anticoagulantes",
       "nivel": "moderada",
       "efecto": "Mayor riesgo de sangrado digestivo y, con acenocumarol, alteración del INR.",
-      "accion": "Control de INR si es acenocumarol; evite antiinflamatorios añadidos; vigile heces negras."
+      "accion": "Control de INR si es acenocumarol; evite antiinflamatorios añadidos; vigile heces negras.",
+      "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
+      "revisado": true
     },
     {
       "a": "clase:antipsicoticos",
       "b": "clase:benzodiacepinas",
       "nivel": "moderada",
       "efecto": "Sedación y riesgo de caídas aditivos; en mayores, hipotensión ortostática.",
-      "accion": "Equilibrio con apoyo; no entrene en las horas de máximo efecto; revisar la necesidad de ambos."
+      "accion": "Equilibrio con apoyo; no entrene en las horas de máximo efecto; revisar la necesidad de ambos.",
+      "fuente": "FT AEMPS 4.4/4.5 · FDA 2016 (opioides + sedantes)",
+      "revisado": true
     },
     {
       "a": "amiodarona",
       "b": "clase:fluoroquinolonas",
       "nivel": "mayor",
       "efecto": "Prolongación del QT aditiva: riesgo de arritmia grave, mayor con esfuerzo intenso, hipopotasemia o deshidratación.",
-      "accion": "Evitar la combinación si es posible; si es imprescindible, ECG, potasio normal y solo ejercicio ligero mientras dure el antibiótico."
+      "accion": "Evitar la combinación si es posible; si es imprescindible, ECG, potasio normal y solo ejercicio ligero mientras dure el antibiótico.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "ondansetron",
       "b": "clase:antipsicoticos",
       "nivel": "moderada",
       "efecto": "Prolongación del QT aditiva.",
-      "accion": "Potasio y magnesio normales; evite el esfuerzo intenso los días de ondansetrón."
+      "accion": "Potasio y magnesio normales; evite el esfuerzo intenso los días de ondansetrón.",
+      "fuente": "FT AEMPS 4.5 · CredibleMeds (QT)",
+      "revisado": true
     },
     {
       "a": "clase:diureticos_asa",
       "b": "clase:tiazidas",
       "nivel": "moderada",
       "efecto": "Bloqueo secuencial de la nefrona: diuresis intensa, hipopotasemia, hiponatremia y deshidratación.",
-      "accion": "Pésese, beba con sales en sesiones largas, vigile calambres y mareo; analítica de potasio periódica."
+      "accion": "Pésese, beba con sales en sesiones largas, vigile calambres y mareo; analítica de potasio periódica.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:betabloqueantes",
       "b": "clase:alfabloqueantes",
       "nivel": "moderada",
       "efecto": "Hipotensión ortostática aditiva, sobre todo al terminar el ejercicio o con calor.",
-      "accion": "Enfriamiento largo, levantarse despacio, hidratación; la tamsulosina/doxazosina mejor por la noche."
+      "accion": "Enfriamiento largo, levantarse despacio, hidratación; la tamsulosina/doxazosina mejor por la noche.",
+      "fuente": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)",
+      "revisado": true
     },
     {
       "a": "clase:nitratos",
       "b": "clase:alfabloqueantes",
       "nivel": "moderada",
       "efecto": "Vasodilatación aditiva: mareo y síncope al incorporarse.",
-      "accion": "No tome el nitrato de acción corta justo antes de levantarse de golpe; transiciones lentas."
+      "accion": "No tome el nitrato de acción corta justo antes de levantarse de golpe; transiciones lentas.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     },
     {
       "a": "clase:pde5",
       "b": "clase:alfabloqueantes",
       "nivel": "moderada",
       "efecto": "Hipotensión sintomática, sobre todo en las primeras dosis.",
-      "accion": "Separe las tomas varias horas; no entrene en las 4 horas siguientes a la primera combinación."
+      "accion": "Separe las tomas varias horas; no entrene en las 4 horas siguientes a la primera combinación.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     },
     {
       "a": "clase:aines",
       "b": "clase:isglt2",
       "nivel": "moderada",
       "efecto": "Riesgo de fallo renal agudo con deshidratación (el iSGLT2 pierde volumen y el AINE reduce el flujo renal).",
-      "accion": "Evite el antiinflamatorio los días de ejercicio largo o calor; paracetamol como alternativa; beba."
+      "accion": "Evite el antiinflamatorio los días de ejercicio largo o calor; paracetamol como alternativa; beba.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:aines",
       "b": "clase:ahorradores_potasio",
       "nivel": "moderada",
       "efecto": "Hiperpotasemia y deterioro de la función renal, más con deshidratación.",
-      "accion": "Evite el AINE; si es imprescindible, pocos días, hidratación y control de potasio y creatinina."
+      "accion": "Evite el AINE; si es imprescindible, pocos días, hidratación y control de potasio y creatinina.",
+      "fuente": "FT AEMPS 4.5 (volumen, potasio y función renal)",
+      "revisado": true
     },
     {
       "a": "clase:anticoagulantes",
       "b": "clase:heparinas",
       "nivel": "mayor",
       "efecto": "Doble anticoagulación: solo tiene sentido en transiciones cortas (puente); el riesgo de sangrado se multiplica.",
-      "accion": "Confirme con su médico que ambas están indicadas a la vez; sin deportes de contacto ni riesgo de caída mientras coincidan."
+      "accion": "Confirme con su médico que ambas están indicadas a la vez; sin deportes de contacto ni riesgo de caída mientras coincidan.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "clase:antiagregantes",
       "b": "clase:heparinas",
       "nivel": "moderada",
       "efecto": "Suma de riesgo de sangrado y hematomas en los puntos de inyección.",
-      "accion": "Inyecte lejos de las zonas que vaya a trabajar; evite golpes."
+      "accion": "Inyecte lejos de las zonas que vaya a trabajar; evite golpes.",
+      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "revisado": true
     },
     {
       "a": "nicorandil",
       "b": "clase:pde5",
       "nivel": "mayor",
       "efecto": "Hipotensión grave: nicorandil tiene efecto nitrato y el inhibidor de la PDE5 lo potencia.",
-      "accion": "Contraindicado: no combinar."
+      "accion": "Contraindicado: no combinar.",
+      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "revisado": true
     }
   ]
 }

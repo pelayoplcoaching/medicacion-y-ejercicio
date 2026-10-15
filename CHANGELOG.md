@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 0.19.0-beta.3 · 2026-10-15 (beta 3 · consulta y centros)
+- Consulta con varios pacientes por sesión (modo profesional): barra «Paciente en consulta» con guardar, cargar y «Siguiente paciente» (guarda y vacía); los pacientes se guardan como listas en el dispositivo, sin nombres reales.
+- Plantillas de prescripción por perfil (10: insuficiencia cardíaca, diabetes con insulina, mayor frágil y prefrágil, cardiopatía isquémica, oncológico, hipertenso activo, EPOC con oxígeno, osteoporosis, FA anticoagulada) que rellenan situación clínica, cribado, días de ejercicio, Vivifrail y plazo de reevaluación.
+- Exportación FHIR R4 básica (`Bundle` con `Patient`, `Practitioner`, `Observation` LOINC, `Condition`, `MedicationStatement` con ATC y horario, `CarePlan` FITT) para integrar en historia clínica; versión en texto plano del informe (lo esencial + historia) para lectores de pantalla; los PDF llevan título, autor, asunto, palabras clave e idioma en los metadatos.
+- Interfaz en euskera (quinto idioma; guarda del idioma y hash CSP actualizados).
+- Recordatorios locales: notificación los días de ejercicio a la hora elegida (sin servidores: mientras la app está abierta o al abrirla) y aviso de reevaluación vencida en modo profesional; clic en la notificación abre la app.
+- Las 209 interacciones curadas llevan fuente por fila (`scripts/fuentes_ddi.py`), visible en la tarjeta y en el PDF clínico.
+- Fábrica de contenido asistida por IA: `scripts/propuesta_ia.py` genera el encargo (estructura, señales, fuentes exigidas, ficha técnica de CIMA) para que un modelo proponga un grupo, un principio o una interacción, y `scripts/validar_bloque.py` comprueba la propuesta (estructura, niveles, longitud, fuente y evidencia) antes de fusionarla con `merge_kb.py`; sin llamadas a ninguna API.
+- Pruebas: motor 128, interfaz 134.
+
 ## 0.18.0-beta.2 · 2026-10-15 (beta 2 · validación)
 - Revisión clínica cerrada: las 617 reglas y las 60 reglas combinadas llevan fuente, nivel de evidencia y estado «revisada» (`docs/REVISION-CLINICA-2026-10-15.md`, `scripts/revision_beta2.py`); correcciones en insulina (umbrales de glucosa del consenso), benzodiacepinas en mayores y paracetamol; glosario ampliado y textos de ayuda revisados.
 - Feedback dentro de la app: hoja con tipo, texto y datos técnicos (versión, pantalla, pasos recientes, errores, navegador, lista anonimizada) que prerrellena el formulario; «copiar informe» y «enviar por correo». El aviso de error inesperado abre la hoja con el error ya escrito.

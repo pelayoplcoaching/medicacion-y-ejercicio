@@ -25,6 +25,9 @@ scripts/
   build_ddi.py       ← CSV de DDInter → ddi.json (solo pares entre fármacos de kb.json)
   build_cima.py      ← nomenclátor CIMA → marcas.json (nombres comerciales + dosis por comprimido)
   build_artifact.py  ← empaqueta app/ en dist/artifact.html para publicarlo en claude.ai
+  fuentes_ddi.py     ← asigna fuente por fila a las interacciones curadas (idempotente)
+  propuesta_ia.py    ← fábrica de contenido: escribe el encargo para un modelo (grupo, principio o interacción)
+  validar_bloque.py  ← valida un bloque propuesto (JSON) antes de fusionarlo con merge_kb.py
   nombres_es_en.json ← mapa id ↔ nombre inglés para cruzar con DDInter
 ```
 
@@ -78,9 +81,9 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 ## Pruebas
 
 ```bash
-node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB (126 comprobaciones)
+node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB, fuentes de interacciones (128 comprobaciones)
 npm i -D playwright && npx playwright install chromium
-node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (122 comprobaciones)
+node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (134 comprobaciones)
 ```
 Ambas se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 
@@ -140,5 +143,19 @@ python3 scripts/export_revision.py                       # → data/revision/rev
 python3 scripts/import_revision.py data/revision/revision_<fecha>.xlsx --simular   # muestra qué cambiaría
 python3 scripts/import_revision.py data/revision/revision_<fecha>.xlsx             # aplica en data/ext y kb.json, regenera la base
 ```
+
+### Fábrica de contenido asistida por IA (beta 3)
+
+Para ampliar la base con ayuda de un modelo de lenguaje sin que escriba nada directamente en ella:
+
+```bash
+python3 scripts/propuesta_ia.py --candidatos                                   # principios frecuentes sin reglas propias
+python3 scripts/propuesta_ia.py --principio lenalidomida --clase quimio_oral_tki # → data/propuestas/lenalidomida.prompt.md
+python3 scripts/propuesta_ia.py --ddi "apixaban + claritromicina"              # → data/propuestas/ddi_apixaban_claritromicina.prompt.md
+# pegar el encargo en el modelo, guardar su JSON en data/propuestas/<nombre>.json y validar:
+python3 scripts/validar_bloque.py data/propuestas/lenalidomida.json            # estructura, niveles, longitud, fuente y evidencia por regla
+# si es válido: copiar a data/ext/<nn>_<nombre>.json, revisarlo clínicamente, merge_kb.py y test.mjs
+```
+El encargo exige fuente y nivel de evidencia por regla, trato de «usted», longitud acotada y el vocabulario de señales del motor; la validación rechaza lo que no cumple y avisa de siglas sin explicar o tuteo. La revisión clínica sigue siendo humana (hoja de revisión + `import_revision.py`).
 
 Los cambios se aplican en las **fuentes** (`data/ext/*.json`, `app/data/kb.json`, `app/data/ddi_curated.json`), no solo en la salida, y los comentarios se recogen en `data/revision/comentarios_<fecha>.md`. El archivo puede editarse en Excel o subirse a Google Drive (se convierte en Google Sheets); para importarlo, descargarlo de nuevo como Excel.
