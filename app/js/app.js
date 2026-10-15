@@ -1,8 +1,8 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610151006";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151006";
-import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610151006";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151006";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151006";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento } from "./engine.js?v=202610151012";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151012";
+import { pdfMedico, pdfPaciente, textoHistoria } from "./informes.js?v=202610151012";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151012";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151012";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -229,11 +229,10 @@ function mostrarNoReconocidos(lineas) {
   for (const l of lineas.slice(0, 10)) {
     const li = document.createElement("li");
     const nombre = l.replace(/\s+\d.*$/, "").trim().slice(0, 60);
-    li.innerHTML = `<span>${l.slice(0, 80)}</span><button type="button" class="btn-sec sm" data-accion="buscar">Buscar</button><button type="button" class="btn-sec sm" data-accion="avisar">Avisar de que falta</button>`;
+    li.innerHTML = `<span>${l.slice(0, 80)}</span><button type="button" class="btn-sec sm" data-accion="buscar">${t("pegar.buscar")}</button><button type="button" class="btn-sec sm" data-accion="avisar">${t("pegar.avisar")}</button>`;
     li.querySelector('[data-accion="buscar"]').addEventListener("click", () => { inputBuscar.value = nombre.split(" ").slice(0, 2).join(" "); inputBuscar.dispatchEvent(new Event("input")); inputBuscar.focus(); inputBuscar.scrollIntoView({ block: "center" }); });
     li.querySelector('[data-accion="avisar"]').addEventListener("click", () => {
-      const cuerpo = `Hola Pelayo,\n\nEste medicamento no lo reconoce la app:\n${l}\n\nVersión: ${datos.kb.version}`;
-      window.location.href = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent("Fármaco no reconocido · Medicación y Ejercicio")}&body=${encodeURIComponent(cuerpo)}`;
+      window.open(urlSugerencia({ lista: "No reconocido: " + l.slice(0, 120) }), "_blank", "noopener");
       li.querySelector('[data-accion="avisar"]').textContent = "Gracias";
     });
     ul.append(li);
@@ -399,15 +398,19 @@ async function descargarPdf(tipo) {
   setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
 }
 $("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
-$$(".btn-sugerencia").forEach((b) => b.addEventListener("click", async () => {
+/** Formulario de sugerencias (Tally) con los datos técnicos en campos ocultos: versión, modo, idioma, lista (sin datos personales),
+    contexto y búsquedas sin resultado. Sustituye al correo; el correo queda como alternativa en el texto de ayuda. */
+const FORM_SUGERENCIAS = "https://tally.so/r/5XK9YM";
+function urlSugerencia(extra = {}) {
   const lista = estado.meds.map((m) => `${m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
   let sinRes = []; try { sinRes = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]"); } catch {}
-  const cuerpo = `Hola Pelayo,\n\n[Describe aquí el error o la mejora]\n\n---\nVersión: ${datos.kb.version} · ${navigator.userAgent.slice(0, 80)}${sinRes.length ? "\nBúsquedas sin resultado en este dispositivo: " + sinRes.join("; ") : ""}\nContexto: ${estado.edad ? estado.edad + " años" : "sin edad"}${estado.caidas ? ", caídas" : ""}${estado.condiciones.length ? ", " + estado.condiciones.join(", ") : ""}\nMedicación introducida: ${lista || "(ninguna)"}\n(No incluyas nombre ni datos identificativos de ningún paciente.)`;
-  const asunto = "Sugerencia · Medicación y Ejercicio (alfa)";
-  const mailto = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-  try { await navigator.clipboard.writeText(cuerpo); } catch {}
-  window.location.href = mailto;
-  $("#pdf-aviso").textContent = "Se ha abierto su correo con los datos de la versión (también copiados al portapapeles). Si no se abre, escriba a pelayoplcoaching@gmail.com.";
+  const ctx = [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", ...estado.condiciones].filter(Boolean).join(", ");
+  const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300) });
+  return `${FORM_SUGERENCIAS}?${q}`;
+}
+$$(".btn-sugerencia").forEach((b) => b.addEventListener("click", () => {
+  window.open(urlSugerencia(), "_blank", "noopener");
+  $("#pdf-aviso").textContent = t("sug.abierto");
 }));
 $("#btn-pdf-paciente").addEventListener("click", () => descargarPdf("paciente"));
 

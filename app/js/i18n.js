@@ -4,6 +4,8 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "cab.sugerencia": "Sugerencias",
+  "sug.abierto": "Se ha abierto el formulario en una pestaña nueva (un minuto; no incluya datos de ningún paciente). Si no se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para el paciente (PDF)", "desc.paciente.pac": "Su plan (PDF)",
   "meta.titulo": "Medicación y Ejercicio",
   "cab.alfa": "alfa", "cab.alfa.title": "Versión en pruebas",
@@ -71,6 +73,8 @@ const ES = {
 };
 
 const EN = {
+  "cab.sugerencia": "Feedback",
+  "sug.abierto": "The form opened in a new tab (one minute; do not include any patient data). If it did not open, write to pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan for the patient (PDF)", "desc.paciente.pac": "Your plan (PDF)",
   "meta.titulo": "Medication and Exercise",
   "cab.alfa": "alpha", "cab.alfa.title": "Test version",
@@ -138,6 +142,8 @@ const EN = {
 };
 
 const CA = {
+  "cab.sugerencia": "Suggeriments",
+  "sug.abierto": "S'ha obert el formulari en una pestanya nova (un minut; no inclogueu dades de cap pacient). Si no s'obre, escriviu a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Pla per al pacient (PDF)", "desc.paciente.pac": "El vostre pla (PDF)",
   "meta.titulo": "Medicació i Exercici",
   "cab.alfa": "alfa", "cab.alfa.title": "Versió en proves",
@@ -205,6 +211,8 @@ const CA = {
 };
 
 const GL = {
+  "cab.sugerencia": "Suxestións",
+  "sug.abierto": "Abriuse o formulario nunha lapela nova (un minuto; non inclúa datos de ningún paciente). Se non se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para o paciente (PDF)", "desc.paciente.pac": "O seu plan (PDF)",
   "meta.titulo": "Medicación e Exercicio",
   "cab.alfa": "alfa", "cab.alfa.title": "Versión en probas",
