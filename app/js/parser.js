@@ -1,5 +1,5 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150620";
+import { normalizar } from "./engine.js?v=202610150704";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -76,6 +76,11 @@ export function extraerMedicacion(texto, indice) {
     let factor = 1;
     if ((m = resto.match(/(\d+(?:[.,]\d+)?)\s*(comprimidos?|capsulas?|sobres?|cp|comp)/))) factor = parseFloat(m[1].replace(",", "."));
     else if (/\b(medio|1\/2)\s*(comprimido|cp)/.test(resto)) factor = 0.5;
+    else if ((m = n.match(/\b([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)\s*[-\/]\s*([0-9]|[0-9][.,]5)\b/))) {
+      // pauta tipo 3-0-3 o 0.5-0-0.5: unidades por toma (se usa la mayor)
+      const vals = [m[1], m[2], m[3]].map((x) => parseFloat(x.replace(",", "."))).filter((x) => x > 0);
+      if (vals.length) factor = Math.max(...vals);
+    }
     if (dosis != null && factor !== 1) dosis = Math.round(dosis * factor * 1000) / 1000;
     const tomas = tomasDesdePauta(n) || 1;
     if (vistos.has(hit.pid)) continue;

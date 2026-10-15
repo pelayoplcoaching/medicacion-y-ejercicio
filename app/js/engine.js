@@ -6,6 +6,7 @@ export const ORDEN_DDI = { mayor: 3, moderada: 2, menor: 1 };
 
 // factor para pasar la unidad introducida a la unidad del umbral (mg o equivalente)
 const FACTOR = {
+  "gotas/día": null, "g/día": null, "mEq/día": null, "mg/24 h": 1, "mg/mes": 1, "mg/3 meses": 1, "mg/2 meses": 1, "mcg/día": 0.001, "UI/semana": null,
   mg: 1, "mg/día": 1, "mg/semana": 1, "mg/6 meses": 1, "mg/año": 1,
   mcg: 0.001, "mcg/h": 0.001, "inhalaciones/día": 1, UI: null,
 };
@@ -152,7 +153,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
           if (!hit || ORDEN_DDI[x.nivel] > ORDEN_DDI[hit.nivel]) hit = { ...x, fuente: "curada" };
         }
       }
-      if (!hit && a.clase.id === b.clase.id && a.clase.principios.length > 1) {
+      if (!hit && a.clase.id === b.clase.id && a.clase.principios.length > 1 && !a.clase.combinable) {
         hit = { nivel: "moderada", fuente: "duplicidad", efecto: `Dos fármacos de la misma clase (${a.clase.nombre}).`, accion: "Suele ser una duplicidad terapéutica; coméntelo con su médico o farmacéutico." };
       }
       if (!hit && ddi?.pares?.length) {

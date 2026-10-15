@@ -1,0 +1,1081 @@
+{
+  "clases": [
+    {
+      "id": "estimulantes_tdah",
+      "nombre": "Estimulantes para el TDAH (metilfenidato, lisdexanfetamina) y atomoxetina",
+      "atc": [
+        "N06BA"
+      ],
+      "resumen": "Aceleran el pulso y suben algo la tensión. El ejercicio es seguro y suele mejorar los síntomas del TDAH; el pulso no es buena guía de intensidad mientras hacen efecto.",
+      "senales": [
+        "taquicardia",
+        "hipertension",
+        "fc_no_valida",
+        "calor"
+      ],
+      "principios": [
+        {
+          "id": "metilfenidato",
+          "nombre": "Metilfenidato",
+          "marcas": [
+            "Concerta",
+            "Medikinet",
+            "Rubifen",
+            "Equasym"
+          ],
+          "umbral_mg": {
+            "alta": 54
+          }
+        },
+        {
+          "id": "lisdexanfetamina",
+          "nombre": "Lisdexanfetamina",
+          "marcas": [
+            "Elvanse"
+          ],
+          "umbral_mg": {
+            "alta": 50
+          }
+        },
+        {
+          "id": "atomoxetina",
+          "nombre": "Atomoxetina",
+          "marcas": [
+            "Strattera"
+          ],
+          "umbral_mg": {
+            "alta": 80
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "El pulso y la tensión están algo elevados mientras dura el efecto: use la sensación de esfuerzo para medir la intensidad. Palpitaciones intensas o dolor en el pecho con el esfuerzo: pare y consulte."
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Reducen la sensación de sed y de fatiga y favorecen el sobrecalentamiento: beba por horario (no por sed) y evite el ejercicio intenso con calor."
+        },
+        {
+          "nivel": "info",
+          "texto": "Si el apetito está reducido, asegúrese de comer antes de entrenar; muchos deportistas lo toman después del entrenamiento matinal."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado. En competición, consulte la normativa antidopaje (requieren autorización de uso terapéutico)."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS",
+        "Guía NICE TDAH 2018"
+      ]
+    },
+    {
+      "id": "anticolinesterasicos",
+      "nombre": "Fármacos para la demencia (donepezilo, rivastigmina, galantamina, memantina)",
+      "atc": [
+        "N06DA",
+        "N06DX01"
+      ],
+      "resumen": "Los anticolinesterásicos frenan el pulso y pueden dar mareo y desmayos; la memantina es más neutra. El ejercicio supervisado mejora la función y reduce caídas en personas con deterioro cognitivo.",
+      "senales": [
+        "bradicardia",
+        "caidas",
+        "hipotension"
+      ],
+      "principios": [
+        {
+          "id": "donepezilo",
+          "nombre": "Donepezilo",
+          "marcas": [
+            "Aricept"
+          ],
+          "umbral_mg": {
+            "alta": 10
+          }
+        },
+        {
+          "id": "rivastigmina",
+          "nombre": "Rivastigmina (oral o parche)",
+          "marcas": [
+            "Exelon",
+            "Prometax"
+          ],
+          "umbral_mg": {
+            "alta": 9.5
+          }
+        },
+        {
+          "id": "galantamina",
+          "nombre": "Galantamina",
+          "marcas": [
+            "Reminyl"
+          ],
+          "umbral_mg": {
+            "alta": 16
+          }
+        },
+        {
+          "id": "memantina",
+          "nombre": "Memantina",
+          "marcas": [
+            "Ebixa",
+            "Axura"
+          ],
+          "umbral_mg": {
+            "alta": 20
+          },
+          "senales_extra": []
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Donepezilo, rivastigmina y galantamina pueden frenar el pulso y provocar mareo o desmayo, sobre todo combinados con betabloqueantes. Si hay desmayos, consulte antes de continuar el programa."
+        },
+        {
+          "nivel": "info",
+          "texto": "El ejercicio debe hacerse acompañado y con instrucciones sencillas y repetidas. Caminar, ejercicios de fuerza sentado-de pie y equilibrio con apoyo son los más útiles."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Caminar a diario, acompañado, en entornos conocidos. Intensidad por sensación de esfuerzo."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Levantarse de la silla, subir escalones, ejercicios con bandas: 2–3 veces por semana con supervisión."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "alerta",
+          "texto": "Riesgo de caída alto: equilibrio siempre con apoyo y supervisión; revise calzado e iluminación de la casa."
+        }
+      ],
+      "fuentes": [
+        "Criterios Beers 2023",
+        "Guía SEN demencia"
+      ]
+    },
+    {
+      "id": "triptanes",
+      "nombre": "Triptanes (sumatriptán, rizatriptán, zolmitriptán…)",
+      "atc": [
+        "N02CC"
+      ],
+      "resumen": "Tratamiento de la crisis de migraña. Contraen los vasos: no deben usarse si hay cardiopatía isquémica, y conviene no entrenar intensamente justo después de una toma.",
+      "senales": [
+        "hipertension"
+      ],
+      "principios": [
+        {
+          "id": "sumatriptan",
+          "nombre": "Sumatriptán",
+          "marcas": [
+            "Imigran"
+          ],
+          "umbral_mg": {
+            "alta": 100
+          }
+        },
+        {
+          "id": "rizatriptan",
+          "nombre": "Rizatriptán",
+          "marcas": [
+            "Maxalt"
+          ],
+          "umbral_mg": {
+            "alta": 10
+          }
+        },
+        {
+          "id": "zolmitriptan",
+          "nombre": "Zolmitriptán",
+          "marcas": [
+            "Zomig"
+          ],
+          "umbral_mg": {
+            "alta": 5
+          }
+        },
+        {
+          "id": "eletriptan",
+          "nombre": "Eletriptán / almotriptán / naratriptán",
+          "marcas": [
+            "Relpax",
+            "Almogran",
+            "Naramig"
+          ],
+          "umbral_mg": {
+            "alta": 40
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "No haga ejercicio intenso en las 2–3 horas siguientes a tomar un triptán: la combinación con el esfuerzo puede dar opresión en el pecho o subidas de tensión. Si aparece dolor torácico, consulte."
+        },
+        {
+          "nivel": "info",
+          "texto": "El ejercicio aeróbico regular reduce la frecuencia de las migrañas. Un calentamiento progresivo y una buena hidratación evitan que el propio esfuerzo desencadene crisis."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Si tiene angina, infarto previo o hipertensión no controlada, los triptanes están contraindicados: coméntelo con su médico."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado entre crisis, con calentamiento largo. Evite el esfuerzo máximo brusco, que es desencadenante de migraña en algunas personas."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación entre crisis; respiración continua (la apnea puede desencadenar cefalea)."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Guía SEN cefaleas 2020",
+        "Amin et al. J Headache Pain 2018 (ejercicio y migraña)"
+      ]
+    },
+    {
+      "id": "preventivos_migrana_cgrp",
+      "nombre": "Anticuerpos anti-CGRP (erenumab, galcanezumab, fremanezumab) y gepantes",
+      "atc": [
+        "N02CD"
+      ],
+      "resumen": "Preventivos modernos de la migraña. No afectan al pulso ni a la capacidad de esfuerzo; erenumab puede subir la tensión y dar estreñimiento.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "erenumab",
+          "nombre": "Erenumab",
+          "marcas": [
+            "Aimovig"
+          ],
+          "unidad": "mg/mes",
+          "senales_extra": [
+            "hipertension"
+          ]
+        },
+        {
+          "id": "galcanezumab",
+          "nombre": "Galcanezumab / fremanezumab / eptinezumab",
+          "marcas": [
+            "Emgality",
+            "Ajovy",
+            "Vyepti"
+          ],
+          "unidad": "mg/mes"
+        },
+        {
+          "id": "rimegepant",
+          "nombre": "Rimegepant / atogepant",
+          "marcas": [
+            "Vydura",
+            "Aquipta"
+          ],
+          "umbral_mg": {
+            "alta": 75
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación para el ejercicio. Con erenumab, controle la tensión de vez en cuando."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado; el aeróbico regular es por sí mismo preventivo de la migraña."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "relajantes_musculares",
+      "nombre": "Relajantes musculares (baclofeno, tizanidina, ciclobenzaprina, metocarbamol)",
+      "atc": [
+        "M03BX",
+        "M03BA"
+      ],
+      "resumen": "Producen somnolencia, debilidad y mareo; la tizanidina además baja la tensión. Útiles en espasticidad; en lumbalgia su uso debe ser corto y el ejercicio es el tratamiento principal.",
+      "senales": [
+        "sedacion",
+        "caidas",
+        "hipotension"
+      ],
+      "principios": [
+        {
+          "id": "baclofeno",
+          "nombre": "Baclofeno",
+          "marcas": [
+            "Lioresal"
+          ],
+          "umbral_mg": {
+            "alta": 60
+          },
+          "nota": "No suspender bruscamente."
+        },
+        {
+          "id": "tizanidina",
+          "nombre": "Tizanidina",
+          "marcas": [
+            "Sirdalud"
+          ],
+          "umbral_mg": {
+            "alta": 12
+          }
+        },
+        {
+          "id": "ciclobenzaprina",
+          "nombre": "Ciclobenzaprina",
+          "marcas": [
+            "Yurelax"
+          ],
+          "umbral_mg": {
+            "alta": 30
+          },
+          "senales_extra": [
+            "anticolinergico"
+          ]
+        },
+        {
+          "id": "metocarbamol",
+          "nombre": "Metocarbamol",
+          "marcas": [
+            "Robaxisal (con paracetamol)"
+          ],
+          "umbral_mg": {
+            "alta": 1500
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Somnolencia, debilidad y mareo, más marcados las primeras horas tras la toma: entrene alejado de ella y evite actividades con riesgo de caída."
+        },
+        {
+          "nivel": "info",
+          "texto": "En dolor lumbar o cervical, el movimiento y el ejercicio progresivo son el tratamiento con más evidencia; el relajante debe ser un apoyo breve, no una condición para moverse."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "baclofeno"
+          },
+          "texto": "En espasticidad, programe las sesiones en el momento de mejor efecto del baclofeno y coordine el programa con su fisioterapeuta."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado a intensidad ligera-moderada, evitando el calor (tizanidina y ciclobenzaprina lo toleran peor)."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Cargas ligeras-moderadas con técnica cuidada; la debilidad por el fármaco puede sobreestimar lo que puede levantar."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Riesgo de caída por somnolencia, debilidad e hipotensión: con apoyo."
+        }
+      ],
+      "fuentes": [
+        "Criterios Beers 2023",
+        "Guía NICE lumbalgia 2020"
+      ]
+    },
+    {
+      "id": "metamizol",
+      "nombre": "Metamizol (Nolotil)",
+      "atc": [
+        "N02BB02"
+      ],
+      "resumen": "Analgésico muy usado en España. Puede bajar la tensión, sobre todo si se toma con poco líquido o por vía intravenosa, y, raramente, bajar las defensas (agranulocitosis).",
+      "senales": [
+        "hipotension"
+      ],
+      "principios": [
+        {
+          "id": "metamizol",
+          "nombre": "Metamizol",
+          "marcas": [
+            "Nolotil",
+            "Metalgial"
+          ],
+          "umbral_mg": {
+            "alta": 2000
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Puede producir mareo o bajada de tensión en la hora siguiente a la toma, más si está deshidratado: no lo tome justo antes de entrenar."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Fiebre, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y consulte el mismo día (posible bajada de defensas). No entrene con esos síntomas."
+        },
+        {
+          "nivel": "info",
+          "texto": "Para dolor muscular tras el ejercicio, el paracetamol es la primera opción; el metamizol, para uso puntual y el menor tiempo posible."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación alejado de la toma."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Posible mareo postural tras la toma."
+        }
+      ],
+      "fuentes": [
+        "Nota AEMPS metamizol 2018/2024"
+      ]
+    },
+    {
+      "id": "otros_antidepresivos_2",
+      "nombre": "Bupropión, agomelatina y moclobemida",
+      "atc": [
+        "N06AX12",
+        "N06AX22",
+        "N06AG02"
+      ],
+      "resumen": "Antidepresivos con perfiles distintos: bupropión es activador y sube algo la tensión; agomelatina es neutra; moclobemida (IMAO) obliga a cuidar los suplementos y algunos alimentos.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "bupropion",
+          "nombre": "Bupropión",
+          "marcas": [
+            "Elontril",
+            "Zyntabac"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          },
+          "senales_extra": [
+            "hipertension",
+            "taquicardia"
+          ]
+        },
+        {
+          "id": "agomelatina",
+          "nombre": "Agomelatina",
+          "marcas": [
+            "Valdoxan",
+            "Thymanax"
+          ],
+          "umbral_mg": {
+            "alta": 50
+          }
+        },
+        {
+          "id": "moclobemida",
+          "nombre": "Moclobemida",
+          "marcas": [
+            "Manerix"
+          ],
+          "umbral_mg": {
+            "alta": 600
+          },
+          "senales_extra": [
+            "serotoninergico",
+            "hipertension"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "bupropion"
+          },
+          "texto": "Bupropión puede subir la tensión y el pulso y dar insomnio: entrene por la mañana o a media tarde, no de noche, y controle la tensión de vez en cuando. Reduce el umbral de convulsiones: evite la deshidratación y el ejercicio extenuante en ayunas."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "moclobemida"
+          },
+          "texto": "Con moclobemida evite suplementos deportivos con tiramina, efedrina, sinefrina o 'pre-entrenos' estimulantes y limite los quesos curados y embutidos: riesgo de subida brusca de tensión."
+        },
+        {
+          "nivel": "info",
+          "texto": "El ejercicio regular potencia el efecto antidepresivo."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Indicado."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ]
+    },
+    {
+      "id": "antiparkinsonianos_otros",
+      "nombre": "Otros antiparkinsonianos (safinamida, amantadina, biperideno, rotigotina)",
+      "atc": [
+        "N04BD03",
+        "N04BB01",
+        "N04AA02",
+        "N04BC09"
+      ],
+      "resumen": "Complementos de la levodopa. Amantadina y biperideno tienen efectos anticolinérgicos (confusión, calor); rotigotina (parche) y safinamida se parecen a los agonistas dopaminérgicos.",
+      "senales": [
+        "hipotension",
+        "caidas",
+        "sedacion"
+      ],
+      "principios": [
+        {
+          "id": "safinamida",
+          "nombre": "Safinamida",
+          "marcas": [
+            "Xadago"
+          ],
+          "umbral_mg": {
+            "alta": 100
+          }
+        },
+        {
+          "id": "amantadina",
+          "nombre": "Amantadina",
+          "marcas": [
+            "Amantadine Juventus"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          },
+          "senales_extra": [
+            "anticolinergico"
+          ]
+        },
+        {
+          "id": "biperideno",
+          "nombre": "Biperideno",
+          "marcas": [
+            "Akineton"
+          ],
+          "umbral_mg": {
+            "alta": 6
+          },
+          "senales_extra": [
+            "anticolinergico",
+            "calor"
+          ]
+        },
+        {
+          "id": "rotigotina",
+          "nombre": "Rotigotina (parche)",
+          "marcas": [
+            "Neupro"
+          ],
+          "unidad": "mg/24 h",
+          "umbral_mg": {
+            "alta": 8
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Entrene en el periodo de mejor movilidad (ON). Mareo al incorporarse frecuente: transiciones lentas e hidratación."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "rotigotina"
+          },
+          "texto": "El parche de rotigotina no debe exponerse a calor directo (sauna, manta eléctrica); con sudoración abundante compruebe que sigue adherido."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "biperideno"
+          },
+          "texto": "Biperideno reduce la sudoración y puede dar confusión en mayores: evite el calor."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable (cinta, bici, caminar rápido) a intensidad moderada-alta si está en ON."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Indicado, con énfasis en piernas, extensores y amplitud de movimiento."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "alerta",
+          "texto": "Prioritario por el riesgo de caída: equilibrio y marcha 3 veces por semana con apoyo o supervisión."
+        }
+      ],
+      "fuentes": [
+        "Guía MDS 2023",
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "vertigo",
+      "nombre": "Fármacos para el vértigo (betahistina, cinarizina, sulpirida)",
+      "atc": [
+        "N07CA01",
+        "N07CA02",
+        "N05AL01"
+      ],
+      "resumen": "Betahistina es neutra para el ejercicio; cinarizina y sulpirida producen somnolencia y, a largo plazo, síntomas parkinsonianos en mayores. En el vértigo, la rehabilitación vestibular (ejercicios de equilibrio) es el tratamiento más eficaz.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "betahistina",
+          "nombre": "Betahistina",
+          "marcas": [
+            "Serc"
+          ],
+          "umbral_mg": {
+            "alta": 48
+          }
+        },
+        {
+          "id": "cinarizina",
+          "nombre": "Cinarizina / flunarizina",
+          "marcas": [
+            "Stugeron",
+            "Sibelium"
+          ],
+          "umbral_mg": {
+            "alta": 75
+          },
+          "senales_extra": [
+            "sedacion",
+            "caidas"
+          ]
+        },
+        {
+          "id": "sulpirida",
+          "nombre": "Sulpirida",
+          "marcas": [
+            "Dogmatil"
+          ],
+          "umbral_mg": {
+            "alta": 150
+          },
+          "senales_extra": [
+            "sedacion",
+            "caidas",
+            "qt"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Los ejercicios de equilibrio y de habituación vestibular son el tratamiento con más evidencia para el vértigo crónico; los fármacos sedantes (cinarizina, sulpirida) usados de forma prolongada retrasan esa recuperación."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "sulpirida"
+          },
+          "texto": "Sulpirida y cinarizina a largo plazo pueden producir temblor, rigidez o lentitud en mayores: si aparecen, consulte."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Caminar es seguro y útil; evite bici en tráfico o actividades con riesgo si tiene vértigo activo."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; evite cambios bruscos de posición de la cabeza al inicio."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Es el apartado más importante: ejercicios de giros de cabeza, fijación visual y marcha con giros, con apoyo cerca."
+        }
+      ],
+      "fuentes": [
+        "Guía AAO-HNS vértigo posicional 2017",
+        "Criterios Beers 2023"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "deshabituacion",
+      "nombre": "Deshabituación (vareniclina, nicotina sustitutiva, naltrexona, disulfiram, metadona)",
+      "atc": [
+        "N07BA",
+        "N07BB",
+        "N07BC"
+      ],
+      "resumen": "Tratamientos para dejar de fumar o de beber y para la dependencia de opioides. El ejercicio reduce la ansiedad y el craving y es un apoyo demostrado en la deshabituación.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "vareniclina",
+          "nombre": "Vareniclina / citisina",
+          "marcas": [
+            "Champix",
+            "Todacitan"
+          ],
+          "umbral_mg": {
+            "alta": 2
+          }
+        },
+        {
+          "id": "nicotina_sustitutiva",
+          "nombre": "Nicotina sustitutiva (parches, chicles)",
+          "marcas": [
+            "Nicotinell",
+            "Nicorette",
+            "Niquitin"
+          ],
+          "unidad": "mg/día",
+          "senales_extra": [
+            "taquicardia"
+          ]
+        },
+        {
+          "id": "naltrexona",
+          "nombre": "Naltrexona / nalmefeno",
+          "marcas": [
+            "Antaxone",
+            "Selincro"
+          ],
+          "umbral_mg": {
+            "alta": 50
+          }
+        },
+        {
+          "id": "disulfiram",
+          "nombre": "Disulfiram",
+          "marcas": [
+            "Antabus"
+          ],
+          "umbral_mg": {
+            "alta": 500
+          }
+        },
+        {
+          "id": "metadona",
+          "nombre": "Metadona",
+          "marcas": [
+            "Metasedin"
+          ],
+          "umbral_mg": {
+            "alta": 80
+          },
+          "senales_extra": [
+            "sedacion",
+            "qt",
+            "caidas"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "El ejercicio aeróbico de 20–30 minutos reduce el deseo de fumar o beber durante horas: úselo como herramienta en los momentos de más craving."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "nicotina_sustitutiva"
+          },
+          "texto": "No fume con el parche puesto; el parche puede acelerar el pulso. Con sudoración abundante compruebe que sigue adherido."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "naltrexona"
+          },
+          "texto": "Naltrexona bloquea los opioides: si sufre una lesión, avise de que lo toma (los analgésicos opioides no harán efecto)."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "metadona"
+          },
+          "texto": "Metadona alarga el QT y produce somnolencia: reponga electrolitos en sesiones largas, evite el ejercicio intenso con calor y las actividades con riesgo de caída tras la toma."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado; la capacidad aeróbica mejora rápidamente al dejar de fumar."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Indicado."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación (con metadona, apoyo si hay somnolencia)."
+        }
+      ],
+      "fuentes": [
+        "Haasova et al. Addiction 2013 (ejercicio y craving)",
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "melatonina_otros_sueno",
+      "nombre": "Melatonina y antihistamínicos H1 no sedantes",
+      "atc": [
+        "N05CH01",
+        "R06AX"
+      ],
+      "resumen": "Melatonina ayuda a regular el sueño sin efectos sobre el ejercicio; los antihistamínicos modernos (cetirizina, loratadina, bilastina, desloratadina) apenas dan sueño y son la opción para la alergia del deportista.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "melatonina",
+          "nombre": "Melatonina",
+          "marcas": [
+            "Circadin",
+            "Slenyto"
+          ],
+          "umbral_mg": {
+            "alta": 5
+          }
+        },
+        {
+          "id": "antihistaminico_no_sedante",
+          "nombre": "Antihistamínico no sedante (cetirizina, loratadina, bilastina, desloratadina, ebastina)",
+          "marcas": [
+            "Zyrtec",
+            "Clarityne",
+            "Bilaxten",
+            "Aerius",
+            "Ebastel"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "melatonina"
+          },
+          "texto": "Tómela 1–2 horas antes de acostarse; el ejercicio intenso en las 2 horas previas a dormir reduce su efecto."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "antihistaminico_no_sedante"
+          },
+          "texto": "Cetirizina puede dar algo de somnolencia en personas sensibles; bilastina y loratadina no. Útiles para la rinitis del ejercicio al aire libre."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "analgesicos_topicos",
+      "nombre": "Analgésicos tópicos (parche de lidocaína, capsaicina, AINE en gel)",
+      "atc": [
+        "N01BB02",
+        "M02AB",
+        "M02AA"
+      ],
+      "resumen": "Tratamientos locales para el dolor. Los antiinflamatorios en gel pasan muy poco a la sangre y son una alternativa segura a los orales para molestias musculares o articulares.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "lidocaina_parche",
+          "nombre": "Lidocaína parche 5 %",
+          "marcas": [
+            "Versatis"
+          ]
+        },
+        {
+          "id": "capsaicina",
+          "nombre": "Capsaicina (crema o parche)",
+          "marcas": [
+            "Capsidol",
+            "Qutenza"
+          ]
+        },
+        {
+          "id": "aine_topico",
+          "nombre": "Antiinflamatorio en gel (diclofenaco, ibuprofeno, ketoprofeno)",
+          "marcas": [
+            "Voltaren Emulgel",
+            "Fastum",
+            "Calmatel"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Los antiinflamatorios en gel son la opción recomendable para dolor localizado si toma anticoagulantes o medicación para la tensión o el riñón, porque casi no pasan a la sangre."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "aine_topico"
+          },
+          "texto": "Ketoprofeno en gel produce reacciones intensas con el sol: no entrene al aire libre con la zona descubierta hasta 2 semanas después de usarlo."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "lidocaina_parche"
+          },
+          "texto": "Retire el parche de lidocaína antes de entrenar si va a sudar mucho o aplicar calor sobre la zona."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    }
+  ],
+  "reglas_combinadas": [
+    {
+      "id": "estimulante_taquicardia",
+      "si": {
+        "senal": "taquicardia",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que aceleran el corazón",
+      "texto": "Toma {n} fármacos que aceleran el pulso o dan temblor. El pulso no sirve para medir la intensidad; evite además 'pre-entrenos', cafeína en exceso y el calor intenso.",
+      "ambitos": [
+        "aerobico"
+      ]
+    }
+  ]
+}

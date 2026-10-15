@@ -27,7 +27,10 @@
   "olmesartan": "Olmesartan",
   "telmisartan": "Telmisartan",
   "irbesartan": "Irbesartan",
-  "sacubitrilo_valsartan": ["Sacubitril", "Valsartan"],
+  "sacubitrilo_valsartan": [
+    "Sacubitril",
+    "Valsartan"
+  ],
   "furosemida": "Furosemide",
   "torasemida": "Torsemide",
   "hidroclorotiazida": "Hydrochlorothiazide",
@@ -57,11 +60,28 @@
   "fenofibrato": "Fenofibrate",
   "gemfibrozilo": "Gemfibrozil",
   "ezetimiba": "Ezetimibe",
-  "evolocumab": ["Evolocumab", "Alirocumab"],
+  "evolocumab": [
+    "Evolocumab",
+    "Alirocumab"
+  ],
   "omega3": "Icosapent ethyl",
-  "insulina_basal": ["Insulin glargine", "Insulin detemir", "Insulin degludec", "Insulin human"],
-  "insulina_rapida": ["Insulin aspart", "Insulin lispro", "Insulin glulisine", "Insulin human"],
-  "insulina_mezcla": ["Insulin aspart", "Insulin lispro", "Insulin human"],
+  "insulina_basal": [
+    "Insulin glargine",
+    "Insulin detemir",
+    "Insulin degludec",
+    "Insulin human"
+  ],
+  "insulina_rapida": [
+    "Insulin aspart",
+    "Insulin lispro",
+    "Insulin glulisine",
+    "Insulin human"
+  ],
+  "insulina_mezcla": [
+    "Insulin aspart",
+    "Insulin lispro",
+    "Insulin human"
+  ],
   "gliclazida": "Gliclazide",
   "glimepirida": "Glimepiride",
   "glibenclamida": "Glyburide",
@@ -133,8 +153,21 @@
   "buprenorfina": "Buprenorphine",
   "salbutamol": "Salbutamol",
   "terbutalina": "Terbutaline",
-  "laba_ics": ["Salmeterol", "Formoterol", "Vilanterol", "Budesonide", "Fluticasone propionate", "Fluticasone furoate", "Beclomethasone dipropionate"],
-  "lama": ["Tiotropium", "Glycopyrronium", "Umeclidinium", "Aclidinium"],
+  "laba_ics": [
+    "Salmeterol",
+    "Formoterol",
+    "Vilanterol",
+    "Budesonide",
+    "Fluticasone propionate",
+    "Fluticasone furoate",
+    "Beclomethasone dipropionate"
+  ],
+  "lama": [
+    "Tiotropium",
+    "Glycopyrronium",
+    "Umeclidinium",
+    "Aclidinium"
+  ],
   "ibuprofeno": "Ibuprofen",
   "naproxeno": "Naproxen",
   "diclofenaco": "Diclofenac",
@@ -166,7 +199,333 @@
   "metotrexato": "Methotrexate",
   "sildenafilo": "Sildenafil",
   "tadalafilo": "Tadalafil",
-  "hierro_oral": ["Ferrous sulfate", "Ferrous fumarate", "Iron"],
-  "vitamina_d": ["Cholecalciferol", "Calcifediol"],
-  "calcio_vitd": ["Calcium carbonate", "Cholecalciferol"]
+  "hierro_oral": [
+    "Ferrous sulfate",
+    "Ferrous fumarate",
+    "Iron"
+  ],
+  "vitamina_d": [
+    "Cholecalciferol",
+    "Calcifediol"
+  ],
+  "calcio_vitd": [
+    "Calcium carbonate",
+    "Cholecalciferol"
+  ],
+  "flecainida": "Flecainide",
+  "propafenona": "Propafenone",
+  "sotalol": "Sotalol",
+  "dronedarona": "Dronedarone",
+  "ranolazina": "Ranolazine",
+  "trimetazidina": "Trimetazidine",
+  "moxonidina": "Moxonidine",
+  "clonidina": "Clonidine",
+  "metildopa": "Methyldopa",
+  "hidralazina": "Hydralazine",
+  "minoxidil_oral": "Minoxidil",
+  "finerenona": "Finerenone",
+  "vericiguat": "Vericiguat",
+  "cilostazol": "Cilostazol",
+  "pentoxifilina": "Pentoxifylline",
+  "hidrocortisona": "Hydrocortisone",
+  "fludrocortisona": "Fludrocortisone",
+  "metimazol": "Methimazole",
+  "carbimazol": "Carbimazole",
+  "propiltiouracilo": "Propylthiouracil",
+  "anticonceptivo_combinado": [
+    "Ethinylestradiol",
+    "Drospirenone",
+    "Levonorgestrel",
+    "Desogestrel"
+  ],
+  "ths_estrogenos": [
+    "Estradiol",
+    "Conjugated estrogens"
+  ],
+  "progestageno_solo": [
+    "Desogestrel",
+    "Levonorgestrel",
+    "Medroxyprogesterone acetate"
+  ],
+  "testosterona": "Testosterone",
+  "teriparatida": "Teriparatide",
+  "romosozumab": "Romosozumab",
+  "raloxifeno": [
+    "Raloxifene",
+    "Bazedoxifene"
+  ],
+  "repaglinida": "Repaglinide",
+  "acarbosa": "Acarbose",
+  "orlistat": "Orlistat",
+  "potasio_oral": "Potassium chloride",
+  "magnesio_oral": [
+    "Magnesium oxide",
+    "Magnesium sulfate"
+  ],
+  "epoetina": [
+    "Epoetin alfa",
+    "Darbepoetin alfa"
+  ],
+  "vitamina_b12": "Cyanocobalamin",
+  "acido_folico": "Folic acid",
+  "litio": "Lithium",
+  "metilfenidato": "Methylphenidate",
+  "lisdexanfetamina": "Lisdexamfetamine",
+  "atomoxetina": "Atomoxetine",
+  "donepezilo": "Donepezil",
+  "rivastigmina": "Rivastigmine",
+  "galantamina": "Galantamine",
+  "memantina": "Memantine",
+  "sumatriptan": "Sumatriptan",
+  "rizatriptan": "Rizatriptan",
+  "zolmitriptan": "Zolmitriptan",
+  "eletriptan": [
+    "Eletriptan",
+    "Almotriptan",
+    "Naratriptan"
+  ],
+  "erenumab": "Erenumab",
+  "galcanezumab": [
+    "Galcanezumab",
+    "Fremanezumab",
+    "Eptinezumab"
+  ],
+  "rimegepant": [
+    "Rimegepant",
+    "Atogepant"
+  ],
+  "baclofeno": "Baclofen",
+  "tizanidina": "Tizanidine",
+  "ciclobenzaprina": "Cyclobenzaprine",
+  "metocarbamol": "Methocarbamol",
+  "metamizol": "Metamizole",
+  "bupropion": "Bupropion",
+  "agomelatina": "Agomelatine",
+  "moclobemida": "Moclobemide",
+  "safinamida": "Safinamide",
+  "amantadina": "Amantadine",
+  "biperideno": "Biperiden",
+  "rotigotina": "Rotigotine",
+  "betahistina": "Betahistine",
+  "cinarizina": [
+    "Cinnarizine",
+    "Flunarizine"
+  ],
+  "sulpirida": "Sulpiride",
+  "vareniclina": [
+    "Varenicline",
+    "Cytisine"
+  ],
+  "nicotina_sustitutiva": "Nicotine",
+  "naltrexona": [
+    "Naltrexone",
+    "Nalmefene"
+  ],
+  "disulfiram": "Disulfiram",
+  "metadona": "Methadone",
+  "melatonina": "Melatonin",
+  "antihistaminico_no_sedante": [
+    "Cetirizine",
+    "Loratadine",
+    "Bilastine",
+    "Desloratadine",
+    "Ebastine"
+  ],
+  "lidocaina_parche": "Lidocaine",
+  "capsaicina": "Capsaicin",
+  "aine_topico": [
+    "Diclofenac",
+    "Ketoprofen"
+  ],
+  "amoxicilina": [
+    "Amoxicillin",
+    "Clavulanic acid"
+  ],
+  "cefalosporina": [
+    "Cefuroxime",
+    "Cefixime",
+    "Cefadroxil"
+  ],
+  "doxiciclina": [
+    "Doxycycline",
+    "Minocycline"
+  ],
+  "cotrimoxazol": [
+    "Sulfamethoxazole",
+    "Trimethoprim"
+  ],
+  "nitrofurantoina": [
+    "Nitrofurantoin",
+    "Fosfomycin"
+  ],
+  "metronidazol": "Metronidazole",
+  "azitromicina": "Azithromycin",
+  "claritromicina": "Clarithromycin",
+  "eritromicina": "Erythromycin",
+  "fluconazol": "Fluconazole",
+  "itraconazol": "Itraconazole",
+  "voriconazol": [
+    "Voriconazole",
+    "Posaconazole",
+    "Isavuconazole"
+  ],
+  "terbinafina": "Terbinafine",
+  "tar_integrasa": [
+    "Dolutegravir",
+    "Bictegravir",
+    "Raltegravir"
+  ],
+  "tar_potenciado": [
+    "Ritonavir",
+    "Cobicistat",
+    "Darunavir",
+    "Atazanavir",
+    "Lopinavir",
+    "Elvitegravir"
+  ],
+  "tenofovir": [
+    "Tenofovir disoproxil",
+    "Tenofovir alafenamide",
+    "Emtricitabine",
+    "Lamivudine",
+    "Abacavir"
+  ],
+  "tar_nnrti": [
+    "Efavirenz",
+    "Rilpivirine",
+    "Doravirine"
+  ],
+  "cabotegravir": "Cabotegravir",
+  "rifampicina": "Rifampicin",
+  "isoniazida": "Isoniazid",
+  "pirazinamida": "Pyrazinamide",
+  "etambutol": "Ethambutol",
+  "hidroxicloroquina": "Hydroxychloroquine",
+  "cloroquina": "Chloroquine",
+  "tacrolimus": "Tacrolimus",
+  "ciclosporina": "Cyclosporine",
+  "micofenolato": [
+    "Mycophenolate mofetil",
+    "Mycophenolic acid"
+  ],
+  "azatioprina": "Azathioprine",
+  "everolimus": [
+    "Everolimus",
+    "Sirolimus"
+  ],
+  "anti_tnf": [
+    "Adalimumab",
+    "Etanercept",
+    "Infliximab",
+    "Golimumab",
+    "Certolizumab pegol"
+  ],
+  "biologico_otros": [
+    "Ustekinumab",
+    "Secukinumab",
+    "Tocilizumab",
+    "Vedolizumab",
+    "Rituximab",
+    "Dupilumab"
+  ],
+  "inhibidor_jak": [
+    "Tofacitinib",
+    "Baricitinib",
+    "Upadacitinib",
+    "Filgotinib"
+  ],
+  "leflunomida": "Leflunomide",
+  "sulfasalazina": "Sulfasalazine",
+  "tamoxifeno": "Tamoxifen",
+  "inhibidor_aromatasa": [
+    "Letrozole",
+    "Anastrozole",
+    "Exemestane"
+  ],
+  "analogo_lhrh": [
+    "Leuprolide",
+    "Triptorelin",
+    "Goserelin",
+    "Degarelix"
+  ],
+  "antiandrogeno": "Bicalutamide",
+  "abiraterona": "Abiraterone",
+  "enzalutamida": [
+    "Enzalutamide",
+    "Apalutamide",
+    "Darolutamide"
+  ],
+  "capecitabina": "Capecitabine",
+  "tki_antiangiogenico": [
+    "Sunitinib",
+    "Sorafenib",
+    "Pazopanib",
+    "Lenvatinib",
+    "Cabozantinib",
+    "Regorafenib"
+  ],
+  "imatinib": [
+    "Imatinib",
+    "Dasatinib",
+    "Nilotinib"
+  ],
+  "palbociclib": [
+    "Palbociclib",
+    "Ribociclib",
+    "Abemaciclib"
+  ],
+  "osimertinib": [
+    "Osimertinib",
+    "Alectinib",
+    "Lorlatinib"
+  ],
+  "desmopresina": "Desmopressin",
+  "finasterida": [
+    "Finasteride",
+    "Dutasteride"
+  ],
+  "mirabegron": [
+    "Mirabegron",
+    "Vibegron"
+  ],
+  "timolol_colirio": "Timolol",
+  "prostaglandina_colirio": [
+    "Latanoprost",
+    "Bimatoprost",
+    "Travoprost"
+  ],
+  "brimonidina_dorzolamida": [
+    "Brimonidine",
+    "Dorzolamide",
+    "Brinzolamide"
+  ],
+  "isotretinoina": "Isotretinoin",
+  "famotidina": [
+    "Famotidine",
+    "Ranitidine"
+  ],
+  "metoclopramida": "Metoclopramide",
+  "domperidona": "Domperidone",
+  "loperamida": "Loperamide",
+  "antiacido": [
+    "Almagate",
+    "Magaldrate",
+    "Aluminum hydroxide"
+  ],
+  "mesalazina": "Mesalazine",
+  "budesonida_oral": "Budesonide",
+  "lacosamida": "Lacosamide",
+  "zonisamida": "Zonisamide",
+  "brivaracetam": "Brivaracetam",
+  "perampanel": "Perampanel",
+  "fenitoina": "Phenytoin",
+  "fenobarbital": "Phenobarbital",
+  "creatina": "Creatine",
+  "cafeina": "Caffeine",
+  "proteina_suplemento": [],
+  "multivitaminico": [
+    "St. John's Wort",
+    "Ginkgo biloba",
+    "Ginseng"
+  ]
 }

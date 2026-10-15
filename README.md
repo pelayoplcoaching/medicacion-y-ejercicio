@@ -53,10 +53,23 @@ python3 scripts/build_cima.py
 ```
 Descarga `prescripcion.zip` de la AEMPS y genera `marcas.json` solo con las presentaciones cuyo principio activo está en `kb.json`. Si la AEMPS cambia las etiquetas del XML, ajuste `TAGS` en el script.
 
+## Ampliar la base de conocimiento
+
+Los bloques de ampliación viven en `data/ext/0*.json` (clases y reglas) y `data/ext/ddi_*.json` (interacciones). Para incorporarlos:
+
+```bash
+python3 scripts/merge_kb.py            # fusiona data/ext/0*.json en app/data/kb.json y valida (ids, señales, niveles)
+python3 scripts/build_artifact.py      # empaqueta y sella la versión
+```
+Una clase con el mismo `id` en un bloque sustituye a la existente: es la forma de corregir una clase sin tocar `kb.json` a mano. Las interacciones nuevas se añaden con el fichero `ddi_*.json` correspondiente (ver `scripts/`).
+
+Cobertura actual: ~100 clases y ~315 principios activos (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
+
 ## Cómo está organizada la base de conocimiento (`kb.json`)
 
 Cada **clase** tiene:
 - `principios`: lista de principios activos con `marcas` (sinónimos para la búsqueda), `unidad` (por defecto mg) y `umbral_mg.alta` (dosis diaria, en mg o equivalente, a partir de la cual se considera "dosis alta").
+- `combinable: true` indica que los fármacos de la clase suelen pautarse juntos (p. ej. tacrolimus + micofenolato) y no se marcan como duplicidad.
 - `senales`: etiquetas de efecto que se acumulan entre fármacos (p. ej. `hipotension`, `sedacion`, `sangrado`). Las usan las `reglas_combinadas`.
 - `general`, `aerobico`, `fuerza`, `equilibrio`: listas de recomendaciones `{nivel, texto, si}`. `nivel` ∈ info | precaucion | alerta. `si` condiciona la regla: `{"dosis":"alta"}`, `{"edad_min":65}`, `{"principio":"venlafaxina"}`, `{"caidas":true}`.
 - `fuentes`: referencias que se muestran al pie.

@@ -1,0 +1,1389 @@
+{
+  "senales_nuevas": {
+    "hipopotasemia": "Puede bajar el potasio en sangre (calambres, arritmias)",
+    "hipertension": "Puede subir la tensión arterial",
+    "fotosensibilidad": "Aumenta la sensibilidad de la piel al sol",
+    "trombosis": "Aumenta el riesgo de trombosis venosa",
+    "inmunosupresion": "Reduce las defensas frente a infecciones",
+    "fatiga": "Produce cansancio o menor tolerancia al esfuerzo",
+    "litio": "Litio (margen estrecho; la deshidratación lo hace tóxico)"
+  },
+  "clases": [
+    {
+      "id": "antiarritmicos_ic",
+      "nombre": "Antiarrítmicos clase IC (flecainida, propafenona)",
+      "atc": [
+        "C01BC"
+      ],
+      "resumen": "Previenen la fibrilación auricular. El ejercicio intenso puede favorecer arritmias con estos fármacos (efecto 'dependiente de frecuencia'), por lo que la intensidad debe estar pautada por su cardiólogo.",
+      "senales": [
+        "fc_no_valida"
+      ],
+      "principios": [
+        {
+          "id": "flecainida",
+          "nombre": "Flecainida",
+          "marcas": [
+            "Apocard"
+          ],
+          "umbral_mg": {
+            "alta": 200
+          }
+        },
+        {
+          "id": "propafenona",
+          "nombre": "Propafenona",
+          "marcas": [
+            "Rytmonorm"
+          ],
+          "umbral_mg": {
+            "alta": 450
+          },
+          "nota": "Tiene además leve efecto betabloqueante."
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Con frecuencias cardíacas altas estos fármacos pueden volverse proarrítmicos. Pregunte a su cardiólogo hasta qué frecuencia o intensidad puede llegar; en general se recomienda ejercicio moderado, evitando esfuerzos máximos o sprints."
+        },
+        {
+          "nivel": "info",
+          "texto": "Casi siempre se combinan con un betabloqueante o con verapamilo/diltiazem precisamente para proteger durante el esfuerzo: no deje de tomarlo los días de entrenamiento."
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Palpitaciones rápidas y mantenidas, mareo o desmayo durante el ejercicio: pare y consulte de forma urgente."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intensidad ligera-moderada (debe poder hablar). Evite el ejercicio de alta intensidad por intervalos salvo autorización expresa."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Seguro con cargas moderadas, repeticiones controladas y sin apnea."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación específica."
+        }
+      ],
+      "fuentes": [
+        "Guía ESC fibrilación auricular 2024",
+        "Ficha técnica AEMPS"
+      ]
+    },
+    {
+      "id": "sotalol_dronedarona",
+      "nombre": "Sotalol y dronedarona",
+      "atc": [
+        "C07AA07",
+        "C01BD07"
+      ],
+      "resumen": "Antiarrítmicos que alargan el QT; el sotalol además es betabloqueante. La pérdida de potasio y magnesio con el sudor o los diuréticos aumenta el riesgo de arritmia.",
+      "senales": [
+        "qt",
+        "bradicardia",
+        "fc_no_valida",
+        "hipotension"
+      ],
+      "principios": [
+        {
+          "id": "sotalol",
+          "nombre": "Sotalol",
+          "marcas": [
+            "Sotapor"
+          ],
+          "umbral_mg": {
+            "alta": 160
+          }
+        },
+        {
+          "id": "dronedarona",
+          "nombre": "Dronedarona",
+          "marcas": [
+            "Multaq"
+          ],
+          "umbral_mg": {
+            "alta": 800
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Hidrátese con bebidas que contengan sales en sesiones largas o con calor: la pérdida de potasio y magnesio favorece arritmias con este fármaco. Evite laxantes y diuréticos sin control."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Palpitaciones, mareo brusco o desmayo durante o tras el ejercicio son motivo de consulta urgente."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intensidad moderada guiada por la sensación de esfuerzo (sotalol frena el pulso). Evite esfuerzos máximos."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Seguro con cargas moderadas y respiración continua."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Posible mareo postural; transiciones lentas."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS",
+        "ACSM GETP 11ª ed."
+      ]
+    },
+    {
+      "id": "antianginosos_otros",
+      "nombre": "Ranolazina y trimetazidina",
+      "atc": [
+        "C01EB18",
+        "C01EB15"
+      ],
+      "resumen": "Antianginosos que no cambian el pulso ni la tensión. La ranolazina puede alargar el QT; la trimetazidina puede producir temblor o rigidez (síntomas parkinsonianos) en mayores.",
+      "senales": [
+        "qt"
+      ],
+      "principios": [
+        {
+          "id": "ranolazina",
+          "nombre": "Ranolazina",
+          "marcas": [
+            "Ranexa"
+          ],
+          "umbral_mg": {
+            "alta": 1500
+          }
+        },
+        {
+          "id": "trimetazidina",
+          "nombre": "Trimetazidina",
+          "marcas": [
+            "Idaptan"
+          ],
+          "umbral_mg": {
+            "alta": 70
+          },
+          "nota": "Retirada en muchos pacientes por riesgo de parkinsonismo; si nota temblor o rigidez, consulte."
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Si tiene angina de esfuerzo, el programa de ejercicio debe estar pautado por cardiología (rehabilitación cardíaca). Lleve siempre su nitroglicerina de rescate."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "trimetazidina"
+          },
+          "texto": "Si aparece temblor, lentitud o inestabilidad, puede deberse al fármaco: coméntelo antes de atribuirlo a la edad."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "El pulso responde con normalidad. Calentamiento largo (10 minutos) y progresión hasta el umbral que le hayan indicado."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Cargas moderadas, sin apnea ni esfuerzos isométricos mantenidos."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "trimetazidina"
+          },
+          "texto": "Si hay rigidez o temblor, entrene el equilibrio con apoyo."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS",
+        "Nota AEMPS trimetazidina 2012"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "antihipertensivos_centrales",
+      "nombre": "Antihipertensivos de acción central (moxonidina, clonidina, metildopa)",
+      "atc": [
+        "C02AC",
+        "C02AB"
+      ],
+      "resumen": "Bajan la tensión actuando en el cerebro. Producen somnolencia, sequedad de boca y mareo al incorporarse; la clonidina además frena el pulso y no debe suspenderse de golpe.",
+      "senales": [
+        "hipotension",
+        "sedacion",
+        "caidas",
+        "bradicardia"
+      ],
+      "principios": [
+        {
+          "id": "moxonidina",
+          "nombre": "Moxonidina",
+          "marcas": [
+            "Moxon"
+          ],
+          "umbral_mg": {
+            "alta": 0.4
+          }
+        },
+        {
+          "id": "clonidina",
+          "nombre": "Clonidina",
+          "marcas": [
+            "Catapresan"
+          ],
+          "umbral_mg": {
+            "alta": 0.3
+          },
+          "nota": "Suspenderla bruscamente provoca subidas de tensión de rebote."
+        },
+        {
+          "id": "metildopa",
+          "nombre": "Metildopa",
+          "marcas": [
+            "Aldomet"
+          ],
+          "umbral_mg": {
+            "alta": 1000
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Somnolencia y mareo al ponerse de pie, sobre todo las primeras semanas. Entrene alejado de la toma y levántese despacio."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "clonidina"
+          },
+          "texto": "No olvide ninguna toma: la retirada brusca de clonidina produce subidas de tensión y taquicardia que se agravan con el ejercicio."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado a intensidad moderada; enfriamiento progresivo. Con clonidina, use la sensación de esfuerzo en vez del pulso."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Seguro; incorpórese despacio tras ejercicios en el suelo."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Mareo postural y somnolencia: equilibrio con apoyo, sobre todo en mayores."
+        }
+      ],
+      "fuentes": [
+        "ACSM GETP 11ª ed."
+      ]
+    },
+    {
+      "id": "vasodilatadores_directos",
+      "nombre": "Hidralazina y minoxidil",
+      "atc": [
+        "C02DB",
+        "C02DC"
+      ],
+      "resumen": "Dilatan las arterias con fuerza; aceleran el pulso por reflejo y retienen líquido. Se usan en hipertensión difícil o insuficiencia cardíaca junto a otros fármacos.",
+      "senales": [
+        "hipotension",
+        "taquicardia"
+      ],
+      "principios": [
+        {
+          "id": "hidralazina",
+          "nombre": "Hidralazina",
+          "marcas": [
+            "Hydrapres"
+          ],
+          "umbral_mg": {
+            "alta": 100
+          }
+        },
+        {
+          "id": "minoxidil_oral",
+          "nombre": "Minoxidil oral",
+          "marcas": [
+            "Loniten"
+          ],
+          "umbral_mg": {
+            "alta": 10
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "El pulso en reposo y en esfuerzo está acelerado por el fármaco: no refleja bien la intensidad. Guíese por la sensación de esfuerzo."
+        },
+        {
+          "nivel": "info",
+          "texto": "Hinchazón de tobillos y dolor de cabeza son efectos frecuentes, no signos de que el ejercicio vaya mal."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intensidad moderada, enfriamiento largo y evitar el calor: la vasodilatación favorece el mareo al terminar."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Seguro sin apneas; levántese despacio."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Mareo postural frecuente; transiciones lentas con apoyo."
+        }
+      ],
+      "fuentes": [
+        "ACSM GETP 11ª ed."
+      ]
+    },
+    {
+      "id": "ic_nuevos",
+      "nombre": "Finerenona y vericiguat",
+      "atc": [
+        "C03DA05",
+        "C01DX22"
+      ],
+      "resumen": "Fármacos recientes para la insuficiencia cardíaca y la enfermedad renal diabética. Finerenona retiene potasio; vericiguat baja la tensión. El ejercicio supervisado es parte del tratamiento de la insuficiencia cardíaca.",
+      "senales": [
+        "hiperpotasemia",
+        "hipotension"
+      ],
+      "principios": [
+        {
+          "id": "finerenona",
+          "nombre": "Finerenona",
+          "marcas": [
+            "Kerendia"
+          ],
+          "umbral_mg": {
+            "alta": 20
+          },
+          "senales_extra": []
+        },
+        {
+          "id": "vericiguat",
+          "nombre": "Vericiguat",
+          "marcas": [
+            "Verquvo"
+          ],
+          "umbral_mg": {
+            "alta": 10
+          },
+          "nota": "No combinar con nitratos ni con sildenafilo/tadalafilo."
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "finerenona"
+          },
+          "texto": "No use suplementos ni bebidas ricas en potasio ni sal de régimen; si además toma IECA/ARA-II o espironolactona, el potasio se controla con análisis periódicos."
+        },
+        {
+          "nivel": "alerta",
+          "si": {
+            "principio": "vericiguat"
+          },
+          "texto": "No combine con nitratos ni con fármacos para la disfunción eréctil: la bajada de tensión puede ser grave."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado. En insuficiencia cardíaca, el programa ideal es el de rehabilitación cardíaca; en casa, caminar a ritmo que permita hablar y progresar poco a poco."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable en insuficiencia cardíaca: cargas ligeras-moderadas, muchas repeticiones, sin apnea."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Posible mareo postural con vericiguat; transiciones lentas."
+        }
+      ],
+      "fuentes": [
+        "Guía ESC insuficiencia cardíaca 2021/2023",
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "antiagregantes_vasculares",
+      "nombre": "Cilostazol y pentoxifilina (claudicación intermitente)",
+      "atc": [
+        "B01AC23",
+        "C04AD03"
+      ],
+      "resumen": "Para el dolor en las piernas al caminar por mala circulación (claudicación). El tratamiento más eficaz es precisamente caminar hasta el dolor de forma programada; el fármaco lo complementa.",
+      "senales": [
+        "sangrado",
+        "taquicardia"
+      ],
+      "principios": [
+        {
+          "id": "cilostazol",
+          "nombre": "Cilostazol",
+          "marcas": [
+            "Pletal",
+            "Ekistol"
+          ],
+          "umbral_mg": {
+            "alta": 200
+          },
+          "nota": "Contraindicado en insuficiencia cardíaca."
+        },
+        {
+          "id": "pentoxifilina",
+          "nombre": "Pentoxifilina",
+          "marcas": [
+            "Hemovas",
+            "Elorgan"
+          ],
+          "umbral_mg": {
+            "alta": 1200
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "El programa de marcha supervisada (caminar hasta dolor moderado, descansar hasta que ceda y repetir, 30–45 minutos, 3 veces por semana) mejora la distancia de marcha más que cualquier fármaco. El dolor de claudicación durante la marcha es esperable y no peligroso; el dolor en reposo o una herida que no cura sí requieren consulta."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "cilostazol"
+          },
+          "texto": "Cilostazol puede acelerar el pulso y dar palpitaciones o dolor de cabeza las primeras semanas."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Caminar es el tratamiento. Si no tolera la marcha, bici o ergómetro de brazos como alternativa, pero la marcha es lo que más mejora."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Recomendable, con énfasis en pantorrillas y piernas."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación específica."
+        }
+      ],
+      "fuentes": [
+        "Guía ESC enfermedad arterial periférica 2024",
+        "Lane et al. Cochrane 2017 (ejercicio en claudicación)"
+      ]
+    },
+    {
+      "id": "hidrocortisona_sustitutiva",
+      "nombre": "Hidrocortisona y fludrocortisona (insuficiencia suprarrenal)",
+      "atc": [
+        "H02AB09",
+        "H02AA02"
+      ],
+      "resumen": "Sustituyen las hormonas que las glándulas suprarrenales no producen. El ejercicio es seguro y recomendable, pero el cuerpo no puede aumentar el cortisol por sí mismo ante un esfuerzo grande o una enfermedad: hay que saber cuándo ajustar la dosis.",
+      "senales": [
+        "hipotension",
+        "deshidratacion"
+      ],
+      "principios": [
+        {
+          "id": "hidrocortisona",
+          "nombre": "Hidrocortisona",
+          "marcas": [
+            "Hidroaltesona",
+            "Plenadren"
+          ],
+          "umbral_mg": {
+            "alta": 30
+          }
+        },
+        {
+          "id": "fludrocortisona",
+          "nombre": "Fludrocortisona",
+          "marcas": [
+            "Astonin"
+          ],
+          "umbral_mg": {
+            "alta": 0.2
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Para ejercicio prolongado o muy intenso (más de 60–90 minutos, competiciones, calor extremo) hable con su endocrinólogo sobre una dosis extra de hidrocortisona antes de la sesión (habitualmente 5–10 mg). Lleve siempre su tarjeta de insuficiencia suprarrenal e hidrocortisona de emergencia."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Náuseas, vómitos, mareo intenso, debilidad extrema o confusión durante o tras el ejercicio pueden ser una crisis suprarrenal: tome la dosis de emergencia y llame al 112."
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Beba agua con sal o bebidas isotónicas en sesiones con sudoración abundante: pierde más sodio de lo habitual (sobre todo si toma fludrocortisona)."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado a intensidad moderada; progrese despacio y aprenda a reconocer la fatiga anormal."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Recomendable; protege músculo y hueso, que el tratamiento crónico puede debilitar."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Posible mareo postural; transiciones lentas e hidratación."
+        }
+      ],
+      "fuentes": [
+        "Guía Endocrine Society insuficiencia suprarrenal 2016",
+        "Simpson et al. Clin Endocrinol 2020 (ejercicio e hidrocortisona)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "antitiroideos",
+      "nombre": "Antitiroideos (metimazol, carbimazol, propiltiouracilo)",
+      "atc": [
+        "H03BB",
+        "H03BA"
+      ],
+      "resumen": "Tratan el hipertiroidismo. Mientras la función tiroidea no esté controlada, el corazón va acelerado y el ejercicio intenso puede provocar arritmias; una vez controlada, no hay limitación.",
+      "senales": [
+        "taquicardia",
+        "calor",
+        "fatiga"
+      ],
+      "principios": [
+        {
+          "id": "metimazol",
+          "nombre": "Metimazol / tiamazol",
+          "marcas": [
+            "Tirodril"
+          ],
+          "umbral_mg": {
+            "alta": 30
+          }
+        },
+        {
+          "id": "carbimazol",
+          "nombre": "Carbimazol",
+          "marcas": [
+            "Neo-Tomizol"
+          ],
+          "umbral_mg": {
+            "alta": 40
+          }
+        },
+        {
+          "id": "propiltiouracilo",
+          "nombre": "Propiltiouracilo",
+          "marcas": [
+            "Propycil"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Hasta que su médico confirme que las hormonas tiroideas están en rango, limítese a ejercicio ligero-moderado: con hipertiroidismo activo el pulso, la temperatura y la fatiga muscular responden de forma exagerada."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Fiebre, dolor de garganta o llagas en la boca con estos fármacos obligan a consultar de inmediato (bajada de defensas por el fármaco); no entrene con esos síntomas."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Mientras no esté controlado: intensidad ligera, ambiente fresco, pulso en reposo como referencia (si supera 100, consulte antes de aumentar)."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "El hipertiroidismo debilita el músculo (sobre todo muslos y hombros); una vez controlado, la fuerza ayuda a recuperarlo."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación específica."
+        }
+      ],
+      "fuentes": [
+        "Guía ATA hipertiroidismo 2016"
+      ]
+    },
+    {
+      "id": "hormonas_sexuales",
+      "nombre": "Estrógenos, terapia hormonal de la menopausia y anticonceptivos hormonales",
+      "atc": [
+        "G03A",
+        "G03C",
+        "G03F"
+      ],
+      "resumen": "Los estrógenos orales aumentan algo el riesgo de trombosis venosa, que la inmovilidad agrava y el ejercicio reduce. Por lo demás, no limitan el entrenamiento.",
+      "senales": [
+        "trombosis"
+      ],
+      "principios": [
+        {
+          "id": "anticonceptivo_combinado",
+          "nombre": "Anticonceptivo hormonal combinado (etinilestradiol + progestágeno)",
+          "marcas": [
+            "Yasmin",
+            "Yasminelle",
+            "Diane",
+            "Loette",
+            "Edelsin",
+            "Drosure",
+            "Sibilla",
+            "Zoely",
+            "Qlaira"
+          ]
+        },
+        {
+          "id": "ths_estrogenos",
+          "nombre": "Terapia hormonal de la menopausia (estradiol oral o transdérmico)",
+          "marcas": [
+            "Progynova",
+            "Estraderm",
+            "Evopad",
+            "Oestraclin",
+            "Activelle",
+            "Angeliq",
+            "Femoston"
+          ]
+        },
+        {
+          "id": "progestageno_solo",
+          "nombre": "Progestágeno solo (desogestrel, DIU levonorgestrel, inyectable)",
+          "marcas": [
+            "Cerazet",
+            "Azalia",
+            "Mirena",
+            "Kyleena",
+            "Depo-Progevera"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "El ejercicio regular reduce el riesgo de trombosis asociado a los estrógenos. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico."
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Dolor e hinchazón en una sola pantorrilla, o falta de aire súbita con dolor en el pecho, no son agujetas: consulte de urgencia."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "ths_estrogenos"
+          },
+          "texto": "La vía transdérmica (parche o gel) tiene menos riesgo trombótico que la oral; es un tema a hablar con su ginecólogo si entrena mucho o viaja con frecuencia."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable en la menopausia para proteger hueso y masa muscular."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Guía NAMS 2022 terapia hormonal",
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "testosterona",
+      "nombre": "Testosterona (sustitutiva)",
+      "atc": [
+        "G03BA03"
+      ],
+      "resumen": "Tratamiento del hipogonadismo confirmado. Mejora masa muscular y fuerza; hay que vigilar el hematocrito, la tensión y las apneas del sueño.",
+      "senales": [
+        "trombosis",
+        "hipertension"
+      ],
+      "principios": [
+        {
+          "id": "testosterona",
+          "nombre": "Testosterona (gel, inyectable)",
+          "marcas": [
+            "Testim",
+            "Testogel",
+            "Itnogen",
+            "Reandron",
+            "Testex"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "El entrenamiento de fuerza potencia el efecto del tratamiento sobre músculo y hueso."
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La testosterona sube el hematocrito y puede subir la tensión: controles analíticos periódicos y, si entrena en altitud o con deshidratación, hidratación cuidadosa."
+        },
+        {
+          "nivel": "info",
+          "texto": "Con gel: lávese las manos tras aplicarlo y cubra la zona antes de entrenar con otras personas (se transfiere por contacto con la piel)."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable: es donde más se nota el beneficio del tratamiento."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Guía Endocrine Society hipogonadismo 2018"
+      ]
+    },
+    {
+      "id": "osteoporosis_anabolicos",
+      "nombre": "Teriparatida, romosozumab y raloxifeno",
+      "atc": [
+        "H05AA02",
+        "M05BX06",
+        "G03XC01"
+      ],
+      "resumen": "Tratamientos de la osteoporosis grave. El ejercicio con carga e impacto moderado es parte del tratamiento. Raloxifeno aumenta el riesgo de trombosis; romosozumab requiere valoración cardiovascular.",
+      "senales": [
+        "hueso",
+        "trombosis"
+      ],
+      "principios": [
+        {
+          "id": "teriparatida",
+          "nombre": "Teriparatida",
+          "marcas": [
+            "Forsteo",
+            "Movymia",
+            "Terrosa"
+          ],
+          "unidad": "mcg/día"
+        },
+        {
+          "id": "romosozumab",
+          "nombre": "Romosozumab",
+          "marcas": [
+            "Evenity"
+          ],
+          "unidad": "mg/mes"
+        },
+        {
+          "id": "raloxifeno",
+          "nombre": "Raloxifeno / bazedoxifeno",
+          "marcas": [
+            "Evista",
+            "Conbriza"
+          ],
+          "umbral_mg": {
+            "alta": 60
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Si tiene osteoporosis con fracturas, evite flexiones de columna con carga y giros bruscos del tronco; priorice extensores de espalda, fuerza de piernas y caminar."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "teriparatida"
+          },
+          "texto": "Teriparatida puede dar mareo o calambres en las piernas las primeras semanas, sobre todo tras la inyección: póngasela sentado y no justo antes de entrenar."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "raloxifeno"
+          },
+          "texto": "Raloxifeno aumenta el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pantorrilla."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Caminar rápido, escaleras, baile. Impacto moderado si su médico lo autoriza."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Prioritario: 2–3 sesiones semanales, cadera, columna (extensión) y piernas, con progresión."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "alerta",
+          "texto": "Prevenir caídas es parte del tratamiento: equilibrio 2–3 veces por semana, con apoyo si lo necesita."
+        }
+      ],
+      "fuentes": [
+        "Guía SEIOMM 2022",
+        "Beck et al. 2017 (ESSA osteoporosis)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "antidiabeticos_otros",
+      "nombre": "Repaglinida y acarbosa",
+      "atc": [
+        "A10BX02",
+        "A10BF01"
+      ],
+      "resumen": "Antidiabéticos menos usados. Repaglinida actúa como una sulfonilurea corta (riesgo de hipoglucemia alrededor de las comidas); acarbosa no produce hipoglucemia por sí sola, pero si la hay, hay que tratarla con glucosa pura.",
+      "senales": [
+        "hipoglucemia"
+      ],
+      "principios": [
+        {
+          "id": "repaglinida",
+          "nombre": "Repaglinida",
+          "marcas": [
+            "Novonorm",
+            "Prandin"
+          ],
+          "umbral_mg": {
+            "alta": 4
+          }
+        },
+        {
+          "id": "acarbosa",
+          "nombre": "Acarbosa",
+          "marcas": [
+            "Glucobay",
+            "Glumida"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "repaglinida"
+          },
+          "texto": "Tome repaglinida solo si va a comer; si entrena en las 2 horas siguientes a una comida con repaglinida, lleve azúcar y vigile síntomas de bajada."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "acarbosa"
+          },
+          "texto": "Si toma acarbosa junto a insulina o sulfonilurea y tiene una bajada de azúcar, el azúcar de mesa no sirve (la acarbosa bloquea su absorción): use tabletas o gel de glucosa."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; con repaglinida, precauciones de hipoglucemia."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "ADA Standards of Care 2026"
+      ]
+    },
+    {
+      "id": "orlistat",
+      "nombre": "Orlistat",
+      "atc": [
+        "A08AB01"
+      ],
+      "resumen": "Reduce la absorción de grasa. Puede producir urgencia y pérdidas fecales, sobre todo tras comidas grasas, lo que condiciona cuándo entrenar.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "orlistat",
+          "nombre": "Orlistat",
+          "marcas": [
+            "Xenical",
+            "Alli"
+          ],
+          "umbral_mg": {
+            "alta": 360
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Evite entrenar en las 2–3 horas siguientes a una comida con grasa si toma orlistat: la urgencia fecal es frecuente. Tome las vitaminas liposolubles (A, D, E, K) si se las han pautado, separadas del fármaco."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Recomendable para conservar músculo durante la pérdida de peso."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ]
+    },
+    {
+      "id": "potasio_magnesio",
+      "nombre": "Suplementos de potasio y magnesio",
+      "atc": [
+        "A12B",
+        "A12C"
+      ],
+      "resumen": "Suplementos pautados para compensar pérdidas (por diuréticos, por ejemplo). Lo importante es no acumular fuentes de potasio si además toma fármacos que lo retienen.",
+      "senales": [
+        "hiperpotasemia"
+      ],
+      "principios": [
+        {
+          "id": "potasio_oral",
+          "nombre": "Potasio oral",
+          "marcas": [
+            "Boi-K",
+            "Potasion"
+          ],
+          "unidad": "mEq/día"
+        },
+        {
+          "id": "magnesio_oral",
+          "nombre": "Magnesio oral",
+          "marcas": [
+            "Magnesioboi",
+            "Magnogene"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "potasio_oral"
+          },
+          "texto": "Si además toma IECA/ARA-II, espironolactona o antiinflamatorios, el potasio puede subir demasiado: no añada bebidas o suplementos 'ricos en potasio' por su cuenta y siga los controles analíticos."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "magnesio_oral"
+          },
+          "texto": "El magnesio puede dar diarrea a dosis altas; tómelo separado del ejercicio y de otros fármacos (levotiroxina, antibióticos) al menos 2 horas."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [],
+      "combinable": true
+    },
+    {
+      "id": "epo_hematinicos",
+      "nombre": "Eritropoyetina, vitamina B12 y ácido fólico",
+      "atc": [
+        "B03XA",
+        "B03BA",
+        "B03BB"
+      ],
+      "resumen": "Tratamientos de la anemia. A medida que se corrige, la capacidad de esfuerzo mejora. La eritropoyetina sube la tensión y el riesgo de trombosis si el hematocrito sube demasiado.",
+      "senales": [
+        "hipertension",
+        "trombosis",
+        "fatiga"
+      ],
+      "principios": [
+        {
+          "id": "epoetina",
+          "nombre": "Eritropoyetina (epoetina, darbepoetina)",
+          "marcas": [
+            "Eprex",
+            "Aranesp",
+            "Neorecormon",
+            "Retacrit",
+            "Mircera"
+          ],
+          "unidad": "UI/semana"
+        },
+        {
+          "id": "vitamina_b12",
+          "nombre": "Vitamina B12 (cianocobalamina)",
+          "marcas": [
+            "Optovite B12",
+            "Cromatonbic B12"
+          ]
+        },
+        {
+          "id": "acido_folico",
+          "nombre": "Ácido fólico",
+          "marcas": [
+            "Acfol",
+            "Zolico"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Con anemia, la fatiga y la falta de aire con esfuerzos pequeños son esperables: entrene a intensidad baja y aumente conforme mejore el análisis."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "epoetina"
+          },
+          "texto": "La eritropoyetina sube la tensión arterial y, si el hematocrito sube en exceso, el riesgo de trombosis: hidrátese bien y controle la tensión en casa."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Intensidad ajustada a la anemia (debe poder hablar). Progrese cuando la hemoglobina se normalice."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; cargas moderadas."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "La anemia puede dar mareo al incorporarse; transiciones lentas."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "litio",
+      "nombre": "Litio",
+      "atc": [
+        "N05AN01"
+      ],
+      "resumen": "Estabilizador del ánimo con un margen de seguridad estrecho: la deshidratación por sudor, los diuréticos y los antiinflamatorios suben sus niveles y pueden intoxicar. El ejercicio es seguro con una hidratación bien hecha.",
+      "senales": [
+        "litio",
+        "renal",
+        "deshidratacion"
+      ],
+      "principios": [
+        {
+          "id": "litio",
+          "nombre": "Carbonato de litio",
+          "marcas": [
+            "Plenur"
+          ],
+          "umbral_mg": {
+            "alta": 1200
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Con el sudor se pierde sodio y el riñón retiene litio: en sesiones largas, con calor o con sudoración abundante beba agua con sales (bebida isotónica) y no restrinja la sal ese día. Temblor que empeora, diarrea, vómitos, torpeza al caminar o confusión son signos de intoxicación: pare y consulte de urgencia."
+        },
+        {
+          "nivel": "alerta",
+          "texto": "No tome antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: suben los niveles de litio. Use paracetamol. Lo mismo con diuréticos o IECA nuevos: siempre con control de niveles."
+        },
+        {
+          "nivel": "info",
+          "texto": "Un temblor fino de manos es efecto habitual del litio y no empeora con el ejercicio moderado."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Evite el ejercicio intenso con calor o humedad altos. Prefiera horas frescas e interiores climatizados en verano."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; hidratación normal."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Si nota inestabilidad o temblor marcado, consulte (puede ser nivel alto)."
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS",
+        "Malhi et al. Lancet Psychiatry 2017 (manejo del litio)"
+      ]
+    }
+  ],
+  "reglas_combinadas": [
+    {
+      "id": "litio_riesgo",
+      "si": {
+        "todas": [
+          "litio",
+          "diuretico"
+        ]
+      },
+      "nivel": "alerta",
+      "titulo": "Litio + diurético",
+      "texto": "Los diuréticos (sobre todo las tiazidas) suben los niveles de litio, y la deshidratación del ejercicio lo agrava. Hidratación con sales, control de niveles y consulta ante temblor intenso, náuseas o inestabilidad.",
+      "ambitos": [
+        "general",
+        "aerobico"
+      ]
+    },
+    {
+      "id": "litio_aine",
+      "si": {
+        "todas": [
+          "litio",
+          "aine"
+        ]
+      },
+      "nivel": "alerta",
+      "titulo": "Litio + antiinflamatorio",
+      "texto": "Los antiinflamatorios suben los niveles de litio hasta niveles tóxicos. Sustituya el antiinflamatorio por paracetamol y consulte.",
+      "ambitos": [
+        "general"
+      ]
+    },
+    {
+      "id": "litio_ieca",
+      "si": {
+        "todas": [
+          "litio",
+          "ieca_ara"
+        ]
+      },
+      "nivel": "precaucion",
+      "titulo": "Litio + IECA/ARA-II",
+      "texto": "Los IECA y ARA-II pueden subir los niveles de litio. Control de niveles, sobre todo al iniciar el tratamiento o si se deshidrata entrenando.",
+      "ambitos": [
+        "general"
+      ]
+    },
+    {
+      "id": "hipopotasemia_multiple",
+      "si": {
+        "senal": "hipopotasemia",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que bajan el potasio",
+      "texto": "Toma {n} fármacos que bajan el potasio; el sudor lo baja más. Calambres, debilidad o palpitaciones tras el ejercicio son motivo de análisis. Use bebidas con electrolitos en sesiones largas.",
+      "ambitos": [
+        "aerobico",
+        "general"
+      ]
+    },
+    {
+      "id": "hipopotasemia_qt",
+      "si": {
+        "todas": [
+          "hipopotasemia",
+          "qt"
+        ]
+      },
+      "nivel": "alerta",
+      "titulo": "Fármaco que baja el potasio + fármaco que alarga el QT",
+      "texto": "La combinación aumenta el riesgo de arritmia grave, y la sudoración intensa lo agrava. Reponga electrolitos en sesiones largas o con calor y consulte ante palpitaciones o mareo brusco.",
+      "ambitos": [
+        "aerobico",
+        "general"
+      ]
+    },
+    {
+      "id": "trombosis_multiple",
+      "si": {
+        "senal": "trombosis",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que aumentan el riesgo de trombosis",
+      "texto": "Toma {n} fármacos que aumentan el riesgo de trombosis venosa. El ejercicio regular lo reduce; evite periodos largos sentado o inmóvil y consulte ante dolor e hinchazón de una pierna o falta de aire súbita.",
+      "ambitos": [
+        "general"
+      ]
+    },
+    {
+      "id": "hipertension_multiple",
+      "si": {
+        "senal": "hipertension",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que suben la tensión",
+      "texto": "Toma {n} fármacos que pueden subir la tensión arterial. Controle la tensión en casa de forma periódica y evite el esfuerzo isométrico mantenido (empujar o sostener peso sin moverse, apnea).",
+      "ambitos": [
+        "fuerza",
+        "general"
+      ]
+    },
+    {
+      "id": "fotosensibilidad_multiple",
+      "si": {
+        "senal": "fotosensibilidad",
+        "min": 2
+      },
+      "nivel": "info",
+      "titulo": "Varios fármacos que sensibilizan al sol",
+      "texto": "Toma {n} fármacos que aumentan la sensibilidad al sol. Si entrena al aire libre: protección solar alta, ropa, gorra y evitar las horas centrales del día.",
+      "ambitos": [
+        "aerobico"
+      ]
+    },
+    {
+      "id": "inmunosupresion_multiple",
+      "si": {
+        "senal": "inmunosupresion",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios fármacos que bajan las defensas",
+      "texto": "Toma {n} fármacos que reducen las defensas. El ejercicio moderado las mejora; el muy intenso y prolongado las baja temporalmente. Evite entrenar con fiebre o infección activa, cuide la higiene en gimnasios y piscinas, y consulte ante heridas que no curan.",
+      "ambitos": [
+        "general"
+      ]
+    },
+    {
+      "id": "fatiga_multiple",
+      "si": {
+        "senal": "fatiga",
+        "min": 2
+      },
+      "nivel": "info",
+      "titulo": "Varios fármacos que producen cansancio",
+      "texto": "Toma {n} fármacos que producen cansancio o reducen la tolerancia al esfuerzo. Empiece con sesiones cortas y frecuentes (10–20 minutos) y aumente antes la frecuencia que la intensidad.",
+      "ambitos": [
+        "aerobico"
+      ]
+    }
+  ]
+}
