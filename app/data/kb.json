@@ -1123,14 +1123,6 @@
           "marcas": [
             "Pradaxa"
           ]
-        },
-        {
-          "id": "enoxaparina",
-          "nombre": "Enoxaparina",
-          "marcas": [
-            "Clexane"
-          ],
-          "nota": "Inyección subcutánea; hematomas en zona de punción frecuentes."
         }
       ],
       "general": [
@@ -1511,6 +1503,14 @@
         {
           "nivel": "precaucion",
           "texto": "La hipoglucemia puede aparecer varias horas después, incluso de madrugada, sobre todo tras sesiones largas o intensas. Mida la glucosa antes de acostarse los días que entrene y tome un pequeño tentempié si está por debajo de 120 mg/dL."
+        },
+        {
+          "nivel": "info",
+          "texto": "Orientación general que debe pactar con su equipo de diabetes (consenso internacional de ejercicio en diabetes tipo 1): si entrena en las 2 horas siguientes a una comida con insulina rápida, reducir esa dosis un 25 % para 30 minutos de ejercicio moderado, un 50 % para 60 minutos y hasta un 75 % para ejercicio intenso o prolongado. Si usa bomba, reducir la basal un 50–80 % desde 60–90 minutos antes. Los días de ejercicio prolongado (más de 90 minutos) la insulina basal nocturna puede reducirse un 20 %. Nunca aplique estos ajustes sin un plan acordado."
+        },
+        {
+          "nivel": "info",
+          "texto": "Glucosa antes de empezar: por debajo de 90 mg/dL tome 15–30 g de hidratos y espere; entre 90 y 125, tome 10–20 g si va a hacer aeróbico; entre 126 y 250, puede empezar; por encima de 250 con cetonas, no entrene."
         }
       ],
       "aerobico": [
@@ -8731,6 +8731,312 @@
       "fuentes": [
         "Ficha técnica AEMPS"
       ]
+    },
+    {
+      "id": "heparinas",
+      "nombre": "Heparinas de bajo peso molecular (enoxaparina, bemiparina, tinzaparina)",
+      "atc": [
+        "B01AB"
+      ],
+      "resumen": "Inyecciones anticoagulantes, en profilaxis (tras cirugía o inmovilización) o a dosis de tratamiento. A dosis profiláctica el riesgo de sangrado es bajo y el ejercicio ayuda a prevenir la trombosis que se quiere evitar; a dosis de tratamiento, las mismas precauciones que los anticoagulantes orales.",
+      "senales": [
+        "sangrado"
+      ],
+      "principios": [
+        {
+          "id": "enoxaparina",
+          "nombre": "Enoxaparina",
+          "marcas": [
+            "Clexane",
+            "Inhixa",
+            "Enoxaparina Rovi"
+          ],
+          "unidad": "mg/día",
+          "umbral_mg": {
+            "alta": 60
+          },
+          "nota": "Profilaxis: 20–40 mg/día. Tratamiento: 1 mg/kg cada 12 h."
+        },
+        {
+          "id": "bemiparina",
+          "nombre": "Bemiparina",
+          "marcas": [
+            "Hibor"
+          ],
+          "unidad": "UI/día"
+        },
+        {
+          "id": "tinzaparina",
+          "nombre": "Tinzaparina / dalteparina",
+          "marcas": [
+            "Innohep",
+            "Fragmin"
+          ],
+          "unidad": "UI/día"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Si la heparina es preventiva (tras una operación, una escayola o un ingreso), caminar y mover las piernas varias veces al día es parte del tratamiento: la inmovilidad es lo que favorece la trombosis."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "dosis": "alta"
+          },
+          "texto": "A dosis de tratamiento (anticoagulación completa): evite deportes de contacto o con riesgo de caída y consulte ante cualquier golpe en la cabeza. Hematomas en la zona de inyección son normales; no se inyecte en el músculo que va a ejercitar."
+        },
+        {
+          "nivel": "info",
+          "texto": "Para el dolor use paracetamol, no antiinflamatorios."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Caminar a diario es lo más indicado; en recuperación postoperatoria, siga las pautas de su cirujano o fisioterapeuta sobre carga."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Seguro con cargas moderadas; evite golpes con material."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Recomendable, con apoyo si hay inmovilización reciente."
+        }
+      ],
+      "fuentes": [
+        "Guía ESC TEV 2019",
+        "Ficha técnica AEMPS"
+      ]
+    },
+    {
+      "id": "antipsicoticos_depot",
+      "nombre": "Antipsicóticos inyectables de larga duración (depot)",
+      "atc": [
+        "N05AX13",
+        "N05AX08",
+        "N05AH03"
+      ],
+      "resumen": "Inyección cada 2–12 semanas. Mismos efectos que la vía oral (sedación, mareo, calor, aumento de peso) con niveles más estables; los días siguientes a la inyección pueden notarse más.",
+      "senales": [
+        "sedacion",
+        "hipotension",
+        "calor",
+        "caidas",
+        "qt"
+      ],
+      "principios": [
+        {
+          "id": "aripiprazol_depot",
+          "nombre": "Aripiprazol depot",
+          "marcas": [
+            "Abilify Maintena",
+            "Aripiprazol mensual"
+          ],
+          "unidad": "mg/mes"
+        },
+        {
+          "id": "paliperidona_depot",
+          "nombre": "Paliperidona depot",
+          "marcas": [
+            "Xeplion",
+            "Trevicta",
+            "Byannli"
+          ],
+          "unidad": "mg/mes"
+        },
+        {
+          "id": "risperidona_depot",
+          "nombre": "Risperidona depot",
+          "marcas": [
+            "Risperdal Consta",
+            "Okedi",
+            "Rykindo"
+          ],
+          "unidad": "mg/2 semanas"
+        },
+        {
+          "id": "olanzapina_depot",
+          "nombre": "Olanzapina depot",
+          "marcas": [
+            "Zypadhera"
+          ],
+          "unidad": "mg/mes"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Estos fármacos dificultan sudar y regular la temperatura: riesgo de golpe de calor con ejercicio en ambiente caluroso. Entrene en horas frescas, con agua, y pare ante mareo, náuseas o confusión."
+        },
+        {
+          "nivel": "info",
+          "texto": "Los 2–3 días siguientes a la inyección pueden notarse más somnolencia o mareo: sesiones suaves esos días. Con Zypadhera, no entrene en las 3 horas siguientes (observación obligatoria)."
+        },
+        {
+          "nivel": "info",
+          "texto": "El ejercicio regular, fuerza incluida, es parte esencial del tratamiento para el aumento de peso y el riesgo metabólico."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intensidad moderada en ambiente fresco; use la sensación de esfuerzo."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Posible rigidez o inestabilidad: con apoyo."
+        }
+      ],
+      "fuentes": [
+        "Fichas técnicas AEMPS"
+      ]
+    },
+    {
+      "id": "inmunoterapia_oncologica",
+      "nombre": "Inmunoterapia oncológica (nivolumab, pembrolizumab, atezolizumab, ipilimumab…)",
+      "atc": [
+        "L01FF",
+        "L01FX04"
+      ],
+      "resumen": "Anticuerpos que activan el sistema inmunitario contra el tumor. No bajan las defensas, pero pueden provocar inflamación de órganos (tiroides, pulmón, corazón, intestino, músculo) que a veces se manifiesta primero como fatiga o intolerancia al esfuerzo.",
+      "senales": [
+        "fatiga"
+      ],
+      "principios": [
+        {
+          "id": "anti_pd1",
+          "nombre": "Nivolumab / pembrolizumab / cemiplimab",
+          "marcas": [
+            "Opdivo",
+            "Keytruda",
+            "Libtayo"
+          ],
+          "unidad": "mg/3 semanas"
+        },
+        {
+          "id": "anti_pdl1",
+          "nombre": "Atezolizumab / durvalumab / avelumab",
+          "marcas": [
+            "Tecentriq",
+            "Imfinzi",
+            "Bavencio"
+          ],
+          "unidad": "mg/3 semanas"
+        },
+        {
+          "id": "ipilimumab",
+          "nombre": "Ipilimumab / tremelimumab",
+          "marcas": [
+            "Yervoy",
+            "Imjudo"
+          ],
+          "unidad": "mg/3 semanas"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Una pérdida brusca de capacidad de esfuerzo, falta de aire nueva, palpitaciones, dolor en el pecho o debilidad muscular progresiva no se deben atribuir a 'falta de forma': pueden ser miocarditis, neumonitis, miositis o tiroiditis por la inmunoterapia y requieren consulta urgente con oncología."
+        },
+        {
+          "nivel": "info",
+          "texto": "El ejercicio moderado es seguro y mejora la fatiga y la tolerancia al tratamiento; hay datos preliminares de que podría mejorar la respuesta. Adapte cada sesión a cómo se encuentre."
+        },
+        {
+          "nivel": "info",
+          "texto": "Diarrea persistente o dolor abdominal (colitis): hidratación y consulta; no entrene hasta valorarlo."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado a intensidad ligera-moderada, con progresión según tolerancia."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Recomendable para conservar masa muscular durante el tratamiento."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación específica."
+        }
+      ],
+      "fuentes": [
+        "Guía ESMO toxicidad inmunoterapia 2022",
+        "Guía ACSM ejercicio y cáncer 2019"
+      ]
+    },
+    {
+      "id": "oxigeno",
+      "nombre": "Oxígeno domiciliario",
+      "atc": [
+        "V03AN01"
+      ],
+      "resumen": "El oxígeno es un tratamiento más. Con oxígeno crónico el ejercicio está indicado (rehabilitación respiratoria) y, si se ha prescrito oxígeno de deambulación, debe usarse durante el entrenamiento al flujo que le hayan indicado.",
+      "senales": [
+        "fatiga"
+      ],
+      "principios": [
+        {
+          "id": "oxigeno_domiciliario",
+          "nombre": "Oxígeno domiciliario (concentrador, portátil, líquido)",
+          "marcas": [
+            "Oxigenoterapia crónica domiciliaria"
+          ],
+          "unidad": "L/min"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si tiene oxígeno de deambulación, entrene con él puesto al flujo pautado para el esfuerzo (suele ser mayor que el de reposo). Si dispone de pulsioxímetro, mantenga la saturación por encima del valor que le haya indicado su neumólogo (habitualmente ≥ 88–90 %)."
+        },
+        {
+          "nivel": "info",
+          "texto": "El entrenamiento de fuerza de piernas y el aeróbico por intervalos cortos (1–2 minutos de esfuerzo, 1–2 de descanso) son los mejor tolerados con limitación respiratoria."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intervalos cortos con descansos; intensidad guiada por la escala de disnea (debe poder decir frases cortas)."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable, sobre todo piernas; respiración con labios fruncidos durante el esfuerzo."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Con apoyo si hay fatiga o mareo."
+        }
+      ],
+      "fuentes": [
+        "GOLD 2025",
+        "Guía SEPAR rehabilitación respiratoria"
+      ]
     }
   ],
   "reglas_combinadas": [
@@ -9294,6 +9600,125 @@
       "texto": "Lleve el inhalador de rescate al entrenar. Use la escala de disnea (debe poder hablar frases cortas); el aire frío y seco empeora los síntomas (braga o bufanda). La fuerza de piernas es especialmente útil en EPOC.",
       "ambitos": [
         "general"
+      ]
+    },
+    {
+      "id": "renal_grave",
+      "si": {
+        "condicion": "renal_grave"
+      },
+      "nivel": "alerta",
+      "titulo": "Filtrado glomerular por debajo de 30",
+      "texto": "Con esta función renal varios fármacos requieren ajuste o están contraindicados (metformina, algunos SGLT2, anticoagulantes directos, AINE, litio, gabapentinoides, opioides). El ejercicio es seguro y beneficioso, pero la deshidratación es más peligrosa: hidratación pactada con su nefrólogo si tiene restricción de líquidos, nada de antiinflamatorios ni suplementos de potasio, y consulte ante vómitos o diarrea.",
+      "ambitos": [
+        "general",
+        "aerobico"
+      ]
+    },
+    {
+      "id": "nyha34",
+      "si": {
+        "condicion": "nyha34"
+      },
+      "nivel": "alerta",
+      "titulo": "Insuficiencia cardíaca con síntomas con esfuerzos pequeños (NYHA III–IV)",
+      "texto": "El ejercicio sigue estando indicado, pero debe iniciarse de forma supervisada (rehabilitación cardíaca) o con un programa muy progresivo pautado por cardiología: sesiones cortas (5–10 minutos) varias veces al día, intensidad que permita hablar, y fuerza de piernas con cargas ligeras. Pésese a diario y consulte ante aumento de 2 kg en 3 días, más disnea o edemas.",
+      "ambitos": [
+        "general",
+        "aerobico",
+        "fuerza"
+      ]
+    },
+    {
+      "id": "fevi_baja",
+      "si": {
+        "condicion": "fevi_baja"
+      },
+      "nivel": "precaucion",
+      "titulo": "Fracción de eyección reducida",
+      "texto": "Con FEVI reducida el entrenamiento aeróbico continuo moderado y el de fuerza a intensidad baja-moderada mejoran la capacidad funcional y el pronóstico. Evite esfuerzos máximos, apnea y el ejercicio isométrico mantenido; progrese el tiempo antes que la intensidad.",
+      "ambitos": [
+        "aerobico",
+        "fuerza"
+      ]
+    },
+    {
+      "id": "dai_fc",
+      "si": {
+        "condicion": "marcapasos"
+      },
+      "nivel": "info",
+      "titulo": "Frecuencia máxima con DAI",
+      "texto": "Si tiene un desfibrilador, pregunte a su cardiólogo la frecuencia de detección programada y mantenga el pulso al menos 10–20 latidos por debajo durante el ejercicio. Si en el perfil se ha indicado esa frecuencia, la prescripción la incorpora.",
+      "ambitos": [
+        "aerobico"
+      ]
+    },
+    {
+      "id": "fragil_plan",
+      "si": {
+        "condicion": "fragil"
+      },
+      "nivel": "alerta",
+      "titulo": "Fragilidad",
+      "texto": "El ejercicio multicomponente (fuerza + equilibrio + marcha) es el tratamiento con más evidencia para revertir la fragilidad y prevenir la dependencia. Empiece por la fuerza de piernas y el equilibrio con apoyo (programa tipo Vivifrail A–B), sesiones cortas y frecuentes, con supervisión al inicio; el aeróbico, caminando lo que tolere y aumentando 1–2 minutos cada pocos días.",
+      "ambitos": [
+        "general",
+        "fuerza",
+        "equilibrio"
+      ]
+    },
+    {
+      "id": "prefragil_plan",
+      "si": {
+        "condicion": "prefragil"
+      },
+      "nivel": "precaucion",
+      "titulo": "Prefragilidad",
+      "texto": "Está en el momento de mayor beneficio: 2–3 sesiones semanales de fuerza (levantarse de la silla, subir escalones, bandas) y equilibrio, más caminar a diario, reducen el riesgo de progresar a fragilidad y de caídas. Programa tipo Vivifrail C.",
+      "ambitos": [
+        "general",
+        "fuerza"
+      ]
+    },
+    {
+      "id": "embarazo",
+      "si": {
+        "condicion": "embarazo"
+      },
+      "nivel": "precaucion",
+      "titulo": "Embarazo o lactancia",
+      "texto": "El ejercicio moderado está recomendado en el embarazo sin complicaciones (150 min/semana, fuerza incluida). Evite deportes de contacto y con riesgo de caída, el ejercicio tumbada boca arriba de forma prolongada a partir del segundo trimestre, el calor intenso y la apnea. Varios fármacos de esta lista requieren revisión en el embarazo: confirme con su médico que todos son adecuados.",
+      "ambitos": [
+        "general"
+      ]
+    },
+    {
+      "id": "oxigeno_cond",
+      "si": {
+        "condicion": "oxigeno"
+      },
+      "nivel": "precaucion",
+      "titulo": "Oxígeno domiciliario",
+      "texto": "Entrene con el oxígeno de deambulación al flujo pautado para el esfuerzo y, si dispone de pulsioxímetro, mantenga la saturación por encima del valor indicado por su neumólogo. Intervalos cortos y fuerza de piernas son lo mejor tolerado.",
+      "ambitos": [
+        "aerobico",
+        "fuerza"
+      ]
+    },
+    {
+      "id": "renal_acod",
+      "si": {
+        "condicion": "renal",
+        "senal": "sangrado",
+        "min": 1
+      },
+      "nivel": "precaucion",
+      "titulo": "Enfermedad renal y anticoagulante o antiagregante",
+      "texto": "Con filtrado reducido los anticoagulantes directos se acumulan y el riesgo de sangrado es mayor: las precauciones frente a golpes y caídas son más estrictas y la dosis debe estar ajustada a la función renal.",
+      "ambitos": [
+        "general",
+        "equilibrio"
       ]
     }
   ],

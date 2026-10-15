@@ -35,6 +35,15 @@ def main(dry=False):
         for r in blk.get("reglas_combinadas", []):
             reglas[r["id"]] = r
             n_re += 1
+        for parche in blk.get("clases_parche", []):
+            c = clases.get(parche["id"])
+            if not c:
+                print(f"  AVISO: parche para clase inexistente {parche['id']}")
+                continue
+            for amb in AMBITOS:
+                for r in parche.get(amb + "_add", []):
+                    if r["texto"] not in {x["texto"] for x in c.setdefault(amb, [])}:
+                        c[amb].append(r)
     kb["clases"] = list(clases.values())
     kb["reglas_combinadas"] = list(reglas.values())
     combos = {c["nombre"]: c for c in kb.get("combinaciones", [])}

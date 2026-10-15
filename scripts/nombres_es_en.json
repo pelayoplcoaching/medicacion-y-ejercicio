@@ -541,5 +541,29 @@
     "Netupitant"
   ],
   "bempedoico": "Bempedoic acid",
-  "acetazolamida": "Acetazolamide"
+  "acetazolamida": "Acetazolamide",
+  "bemiparina": "Bemiparin",
+  "tinzaparina": [
+    "Tinzaparin",
+    "Dalteparin"
+  ],
+  "aripiprazol_depot": "Aripiprazole",
+  "paliperidona_depot": "Paliperidone",
+  "risperidona_depot": "Risperidone",
+  "olanzapina_depot": "Olanzapine",
+  "anti_pd1": [
+    "Nivolumab",
+    "Pembrolizumab",
+    "Cemiplimab"
+  ],
+  "anti_pdl1": [
+    "Atezolizumab",
+    "Durvalumab",
+    "Avelumab"
+  ],
+  "ipilimumab": [
+    "Ipilimumab",
+    "Tremelimumab"
+  ],
+  "oxigeno_domiciliario": []
 }

@@ -281,3 +281,22 @@ details.seccion .cuerpo-sec > article:last-child, details.seccion .cuerpo-sec > 
 .condiciones .check { min-height: 36px; font-size: .9rem; }
 .privacidad { display: block; margin-top: 10px; color: var(--muted); }
 #dosis:disabled { background: var(--surface-2); color: var(--muted); }
+
+/* ---------- modo paciente / profesional ---------- */
+.modo { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 999px; margin-bottom: 14px; }
+.modo button { border: 0; background: none; border-radius: 999px; min-height: 40px; padding: 6px 10px; font-weight: 700; color: var(--muted); font-size: .9rem; }
+.modo button[aria-checked="true"] { background: var(--surface); color: var(--accent-deep); box-shadow: 0 1px 3px rgba(28, 24, 48, .12); }
+.modo-nota { display: block; margin-top: 2px; }
+body[data-modo="paciente"] .solo-pro { display: none !important; }
+body[data-modo="profesional"] .solo-paciente { display: none !important; }
+.unidad-mini { font-weight: 400; font-size: .78rem; color: var(--muted); margin-left: 4px; }
+select { font: inherit; color: var(--fg); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--r-sm); padding: 10px 11px; min-height: var(--tap); width: 100%; }
+.fila > label select, .fila > label input[type="number"] { width: 120px; }
+body[data-modo="paciente"] .descargas .acciones { flex-direction: row-reverse; }
+body[data-modo="paciente"] details.farmaco .fuentes { display: none; }
+.contexto-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.contexto-chips .chip { background: var(--accent-soft); color: var(--accent-deep); }
+
+.fila > label.check { display: flex; flex-direction: row; align-items: center; gap: 10px; font-size: .95rem; font-weight: 500; color: var(--fg); }
+.fila > label .unidad-mini { display: inline; }
+.fila > label > span.lbl { display: inline-flex; gap: 4px; align-items: baseline; }

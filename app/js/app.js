@@ -1,14 +1,36 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150841";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150841";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150841";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150841";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150851";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150851";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150851";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150851";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], tab: "general" };
-const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma"];
-const ctxActual = () => ({ edad: estado.edad, caidas: estado.caidas, condiciones: new Set(estado.condiciones) });
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, tab: "general" };
+const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma", "oxigeno", "embarazo"];
+const PAC = ["silla", "caminar", "ayuda"];
+const PRO = ["fg", "fevi", "nyha", "sppb", "vivifrail", "dai"];
+
+/** Contexto para el motor: condiciones marcadas + las derivadas de los datos numéricos o de las preguntas sencillas. */
+function ctxActual() {
+  const cond = new Set(estado.condiciones);
+  const p = estado.modo === "profesional" ? estado.pro : {};
+  const q = estado.modo === "paciente" ? estado.pac : {};
+  if (p.fg != null) { if (p.fg < 45) cond.add("renal"); if (p.fg < 30) cond.add("renal_grave"); }
+  if (p.nyha != null && p.nyha >= 3) { cond.add("nyha34"); cond.add("insuficiencia_cardiaca"); }
+  if (p.fevi != null && p.fevi < 40) { cond.add("fevi_baja"); cond.add("insuficiencia_cardiaca"); }
+  if (p.dai != null) cond.add("marcapasos");
+  // fragilidad: SPPB > Vivifrail > preguntas del paciente
+  let frag = null;
+  if (p.sppb != null) frag = p.sppb <= 6 ? "fragil" : p.sppb <= 9 ? "prefragil" : "robusto";
+  else if (p.vivifrail) frag = p.vivifrail === "A" || p.vivifrail === "B" ? "fragil" : p.vivifrail === "C" ? "prefragil" : "robusto";
+  else {
+    const malas = (q.silla ? 1 : 0) + (q.caminar ? 1 : 0) + (q.ayuda ? 1 : 0);
+    if (malas) frag = malas >= 2 ? "fragil" : "prefragil"; // sin marcas no se infiere nada
+  }
+  if (frag && frag !== "robusto") cond.add(frag);
+  return { edad: estado.edad, caidas: estado.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, modo: estado.modo };
+}
 let datos, indice;
 
 const EJEMPLO = {
@@ -42,17 +64,29 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro })); } catch {}
 }
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [] });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {} });
   } catch {}
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
+  for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
+  for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
+  aplicarModo();
 }
+function aplicarModo() {
+  document.body.dataset.modo = estado.modo;
+  $$(".modo button").forEach((b) => b.setAttribute("aria-checked", b.dataset.modo === estado.modo));
+  $("#btn-pdf-medico").textContent = estado.modo === "paciente" ? "Informe para su médico (PDF)" : "Informe clínico (PDF)";
+  $("#btn-pdf-paciente").textContent = estado.modo === "paciente" ? "Su plan (PDF)" : "Plan para el paciente (PDF)";
+}
+$$(".modo button").forEach((b) => b.addEventListener("click", () => { estado.modo = b.dataset.modo; aplicarModo(); guardar(); render(); }));
+for (const k of PAC) $("#pac-" + k)?.addEventListener("change", () => { estado.pac[k] = $("#pac-" + k).checked; guardar(); render(); });
+for (const k of PRO) $("#pro-" + k)?.addEventListener("change", () => { const v = $("#pro-" + k).value; estado.pro[k] = v === "" ? null : (k === "vivifrail" ? v : parseFloat(v)); guardar(); render(); });
 
 /* ---------- búsqueda ---------- */
 const inputBuscar = $("#buscar");
@@ -277,6 +311,12 @@ function render() {
   $("#informe").hidden = res.items.length === 0;
   if (!res.items.length) { $("#barra-inferior").hidden = true; return; }
 
+  // chips de contexto derivado
+  const etiquetasCtx = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia" };
+  const chips = [...ctx.condiciones].map((c) => etiquetasCtx[c]).filter(Boolean);
+  if (ctx.edad) chips.unshift(`${ctx.edad} años`);
+  if (ctx.daiFc) chips.push(`DAI ${ctx.daiFc} lpm`);
+  $("#contexto").innerHTML = chips.length ? chips.map((c) => `<span class="chip">${c}</span>`).join("") : "";
   // resumen
   $("#resumen").innerHTML = ["alerta", "precaucion", "info"]
     .map((n) => `<div class="tile tile-${n}"><span class="num">${res.resumen[n]}</span><span>${etiqueta(n)}</span></div>`).join("") +

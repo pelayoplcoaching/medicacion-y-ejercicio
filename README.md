@@ -84,6 +84,10 @@ Un principio puede añadir `senales_extra` (p. ej. citalopram → `qt`).
 - Informe en pantalla por ámbito (antes de empezar, aeróbico, fuerza, equilibrio, interacciones).
 - **Dos PDF descargables** (jsPDF): resumen clínico para el médico y resumen en lenguaje sencillo para el paciente.
 
+## Modo paciente / profesional
+
+El selector "Soy paciente / Soy profesional sanitario" cambia qué datos se piden (preguntas sencillas de movilidad frente a FG, FEVI, NYHA, SPPB/Vivifrail y FC de detección del DAI) y el orden y nombre de los PDF. Lo que quede en blanco no se usa. De los datos numéricos se derivan condiciones (`renal` si FG < 45, `renal_grave` si < 30, `nyha34`, `fevi_baja`, `fragil`/`prefragil` por SPPB, Vivifrail o las preguntas del paciente) que disparan reglas y adaptan la prescripción FITT del informe clínico.
+
 ## Pendiente de revisión clínica (v0)
 
 - Todos los textos de `kb.json` y `ddi_curated.json` son un borrador generado para revisión; en particular los **umbrales de dosis** (`umbral_mg.alta`) se fijaron de forma orientativa en la mitad superior del rango habitual.

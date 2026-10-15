@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150841">
+<link rel="stylesheet" href="css/style.css?v=202610150851">
 </head>
 <body>
 
@@ -77,7 +77,12 @@
 <main class="contenedor">
   <aside>
     <div class="panel">
+      <div class="modo" role="radiogroup" aria-label="Quién rellena los datos">
+        <button type="button" role="radio" data-modo="paciente" aria-checked="true">Soy paciente</button>
+        <button type="button" role="radio" data-modo="profesional" aria-checked="false">Soy profesional sanitario</button>
+      </div>
       <h2>Datos básicos</h2>
+      <small class="modo-nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
       <div class="fila" style="margin-top:10px">
         <label>Edad <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años"></label>
         <label class="check"><input type="checkbox" id="caidas"> Alguna caída en el último año</label>
@@ -86,10 +91,36 @@
       <div class="condiciones">
         <label class="check"><input type="checkbox" id="cond-diabetes"> Diabetes</label>
         <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> Insuficiencia cardíaca</label>
-        <label class="check"><input type="checkbox" id="cond-renal"> Enfermedad renal (filtrado &lt; 45)</label>
+        <label class="check"><input type="checkbox" id="cond-renal"> <span class="solo-paciente">Enfermedad del riñón</span><span class="solo-pro">Enfermedad renal crónica (FG &lt; 45)</span></label>
         <label class="check"><input type="checkbox" id="cond-marcapasos"> Marcapasos o DAI</label>
         <label class="check"><input type="checkbox" id="cond-osteoporosis"> Osteoporosis o fractura previa</label>
         <label class="check"><input type="checkbox" id="cond-epoc_asma"> EPOC o asma</label>
+        <label class="check"><input type="checkbox" id="cond-oxigeno"> Oxígeno en casa</label>
+        <label class="check"><input type="checkbox" id="cond-embarazo"> Embarazo o lactancia</label>
+      </div>
+
+      <div class="solo-paciente">
+        <p class="sub-label">Cómo se mueve ahora (marque solo si le ocurre)</p>
+        <div class="condiciones">
+          <label class="check"><input type="checkbox" id="pac-silla"> Me cuesta levantarme de una silla sin usar las manos</label>
+          <label class="check"><input type="checkbox" id="pac-caminar"> No puedo caminar 10 minutos seguidos sin parar</label>
+          <label class="check"><input type="checkbox" id="pac-ayuda"> Uso bastón, andador o necesito ayuda para caminar</label>
+        </div>
+      </div>
+
+      <div class="solo-pro">
+        <p class="sub-label">Datos clínicos (opcionales)</p>
+        <div class="fila">
+          <label><span class="lbl">FG estimado <span class="unidad-mini">mL/min</span></span><input type="number" id="pro-fg" min="5" max="150" inputmode="numeric" placeholder="CKD-EPI"></label>
+          <label><span class="lbl">FEVI <span class="unidad-mini">%</span></span><input type="number" id="pro-fevi" min="10" max="80" inputmode="numeric"></label>
+          <label>NYHA <select id="pro-nyha"><option value="">—</option><option value="1">I</option><option value="2">II</option><option value="3">III</option><option value="4">IV</option></select></label>
+        </div>
+        <div class="fila">
+          <label><span class="lbl">SPPB <span class="unidad-mini">0–12</span></span><input type="number" id="pro-sppb" min="0" max="12" inputmode="numeric"></label>
+          <label>Vivifrail <select id="pro-vivifrail"><option value="">—</option><option value="A">A (discapacidad)</option><option value="B">B (frágil)</option><option value="C">C (prefrágil)</option><option value="D">D (robusto)</option></select></label>
+          <label><span class="lbl">FC detección DAI <span class="unidad-mini">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
+        </div>
+        <small>Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
       </div>
     </div>
 
@@ -139,6 +170,7 @@
       <h2>Qué tener en cuenta</h2>
       <button type="button" class="btn-sec sm" id="btn-copiar">Copiar informe</button>
     </div>
+    <div class="contexto-chips" id="contexto"></div>
     <div id="resumen"></div>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" data-tab="general">Antes de empezar <span class="cnt"></span></button>
@@ -172,6 +204,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="module" src="js/app.js?v=202610150841"></script>
+<script type="module" src="js/app.js?v=202610150851"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150841";
+import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150851";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -169,7 +169,7 @@ class Doc {
     items.forEach((it, i) => {
       const x = this.ml + i * wi + 3.5;
       this.f("bold", 6.5, C.muted); d.text(it.k.toUpperCase(), x, this.y + 4.5);
-      this.f(it.nivel ? "black" : "bold", 10.5, it.nivel ? C[it.nivel] : C.ink); d.text(String(it.v), x, this.y + 10);
+      this.f(it.nivel ? "black" : "bold", n > 6 ? 9 : 10.5, it.nivel ? C[it.nivel] : C.ink); d.text(String(it.v), x, this.y + 10);
       if (i) { d.setDrawColor(...C.line); d.line(this.ml + i * wi, this.y + 2.5, this.ml + i * wi, this.y + h - 2.5); }
     });
     this.y += h + 4;
@@ -218,22 +218,26 @@ function prescripcion(res, ctx) {
   const miop = tiene(res, "miopatia");
   const calor = tiene(res, "calor") || tiene(res, "deshidratacion");
   const sed = tiene(res, "sedacion");
+  const cond = ctx.condiciones || new Set();
+  const fragil = cond.has("fragil"), prefragil = cond.has("prefragil");
+  const nyha34 = cond.has("nyha34"), feviBaja = cond.has("fevi_baja");
+  const dai = ctx.daiFc ? ` Con DAI programado a ${ctx.daiFc} lpm: mantener FC < ${ctx.daiFc - 20} lpm.` : "";
   return {
     aer: {
-      frec: "5 días/semana (mín. 3)",
-      int: fcNoValida ? "Moderada por RPE 11–14 (Borg 6–20) o prueba del habla. No usar %FCmáx ni zonas de pulso." : "Moderada: 40–60 % FC de reserva o RPE 11–14; progresar a vigorosa si tolera.",
-      tiempo: "150–300 min/semana; empezar con 10–20 min y aumentar 5–10 min/semana",
+      frec: fragil || nyha34 ? "Diario, en varias sesiones cortas" : "5 días/semana (mín. 3)",
+      int: (fcNoValida ? "Moderada por RPE 11–14 (Borg 6–20) o prueba del habla. No usar %FCmáx ni zonas de pulso." : feviBaja || nyha34 ? "Ligera-moderada: RPE 10–13; sin esfuerzos máximos ni intervalos de alta intensidad salvo en programa supervisado." : "Moderada: 40–60 % FC de reserva o RPE 11–14; progresar a vigorosa si tolera.") + dai,
+      tiempo: fragil ? "Marcha 5–10 min, 2–3 veces al día; aumentar 1–2 min cada pocos días hasta 30 min" : nyha34 ? "5–10 min, 2–4 veces al día; progresar a 20–30 min continuos" : "150–300 min/semana; empezar con 10–20 min y aumentar 5–10 min/semana",
       tipo: ["Caminar, bici estática, elíptica, natación" + (sangra ? " (sin contacto ni riesgo de caída a velocidad)" : "") + ".", hipot >= 2 ? "Enfriamiento ≥10 min; evitar paradas bruscas y cambios posturales rápidos." : "Enfriamiento 5–10 min.", calor ? "Evitar calor; electrolitos en sesiones >60 min." : "", hipo ? "Glucemia capilar pre/post; HC de absorción rápida disponibles." : ""].filter(Boolean).join(" "),
     },
     fue: {
-      frec: musc ? "2–3 días/semana (prioritario)" : "2–3 días/semana no consecutivos",
-      int: tendon ? "Cargas ligeras, sin trabajo explosivo ni excéntrico intenso durante el tratamiento y 4 semanas después." : miop ? "Progresión lenta (ajustes cada 2–3 semanas); evitar fallo muscular y excéntricos intensos las primeras semanas." : "8–15 repeticiones, 2–3 series, RPE 5–7/10; progresar cuando complete las repeticiones con técnica.",
+      frec: fragil || prefragil || musc ? "2–3 días/semana (prioritario)" : "2–3 días/semana no consecutivos",
+      int: fragil ? "Programa multicomponente tipo Vivifrail A–B: sentarse-levantarse, elevaciones de talón, bandas elásticas; 1–2 series de 8–12 rep, RPE 4–6/10, progresión semanal." : tendon ? "Cargas ligeras, sin trabajo explosivo ni excéntrico intenso durante el tratamiento y 4 semanas después." : miop ? "Progresión lenta (ajustes cada 2–3 semanas); evitar fallo muscular y excéntricos intensos las primeras semanas." : "8–15 repeticiones, 2–3 series, RPE 5–7/10; progresar cuando complete las repeticiones con técnica.",
       tiempo: "20–40 min por sesión",
       tipo: ["Grandes grupos musculares (sentadilla/levantarse de silla, empuje, tracción, bisagra de cadera).", "Respiración continua, sin Valsalva.", hipo ? "Fuerza antes del aeróbico en la misma sesión." : "", sangra ? "Máquinas o pesos ligeros al inicio; evitar golpes." : ""].filter(Boolean).join(" "),
     },
     eq: {
-      frec: caidas >= 2 ? "3 días/semana (prioritario)" : "2–3 días/semana",
-      int: caidas >= 2 || sed ? "Con apoyo (pared, silla, barandilla) y supervisión inicial." : "Progresar de apoyo bipodal a unipodal y doble tarea.",
+      frec: caidas >= 2 || fragil ? "3 días/semana (prioritario)" : "2–3 días/semana",
+      int: caidas >= 2 || sed || fragil ? "Con apoyo (pared, silla, barandilla) y supervisión inicial." : "Progresar de apoyo bipodal a unipodal y doble tarea.",
       tiempo: "10–15 min (integrable en las sesiones de fuerza)",
       tipo: ["Transferencias sentado-de pie, marcha en tándem, apoyo monopodal, giros, tai chi.", sangra ? "Prevención de caídas prioritaria por el anticoagulante." : "", hipot >= 2 ? "Transiciones de posición lentas." : ""].filter(Boolean).join(" "),
     },
@@ -250,15 +254,22 @@ export async function pdfMedico(kb, res, ctx) {
   const pg = new Doc(doc, font, logo, { titulo: "Informe clínico: medicación y ejercicio", subtitulo: "Prescripción de ejercicio adaptada al tratamiento farmacológico", tipo: "Documento para el profesional sanitario" });
 
   const nAlerta = res.resumen.alerta, nPrec = res.resumen.precaucion, nDDI = res.interacciones.filter((x) => x.nivel !== "menor").length;
+  const condTxt = { diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", renal: "ERC", renal_grave: "FG < 30", marcapasos: "marcapasos/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno domiciliario", embarazo: "embarazo/lactancia", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad" };
+  const condiciones = [...(ctx.condiciones || [])].map((c) => condTxt[c]).filter(Boolean);
+  const fragTxt = { fragil: "Frágil", prefragil: "Prefrágil", robusto: "Robusto" }[ctx.fragilidad] || "—";
   pg.banda([
     { k: "Edad", v: ctx.edad ? `${ctx.edad} años` : "—" },
-    { k: "Caídas último año", v: ctx.caidas ? "Sí" : "No referidas" },
+    { k: "Caídas", v: ctx.caidas ? "Sí" : "No" },
+    { k: "Fragilidad", v: fragTxt, nivel: ctx.fragilidad === "fragil" ? "alerta" : ctx.fragilidad === "prefragil" ? "precaucion" : null },
+    { k: "FG", v: ctx.fg != null ? `${ctx.fg}` : "—", nivel: ctx.fg != null && ctx.fg < 30 ? "alerta" : ctx.fg != null && ctx.fg < 45 ? "precaucion" : null },
+    { k: "FEVI / NYHA", v: `${ctx.fevi != null ? ctx.fevi + " %" : "—"} / ${ctx.nyha != null ? ["", "I", "II", "III", "IV"][ctx.nyha] : "—"}` },
     { k: "Fármacos", v: res.items.length },
     { k: "Atención", v: nAlerta, nivel: nAlerta ? "alerta" : null },
     { k: "Precaución", v: nPrec, nivel: nPrec ? "precaucion" : null },
     { k: "Interacciones", v: nDDI, nivel: res.interacciones.some((x) => x.nivel === "mayor") ? "alerta" : nDDI ? "precaucion" : null },
   ]);
 
+  if (condiciones.length) pg.parrafo("Situación clínica referida: " + condiciones.join(", ") + ".", { size: 8.5, color: C.muted });
   const P = prescripcion(res, ctx);
   pg.seccion("Prescripción de ejercicio propuesta", "formato FITT, adaptada a los fármacos y al perfil");
   pg.tabla(
