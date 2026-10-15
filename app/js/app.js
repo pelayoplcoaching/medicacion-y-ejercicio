@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles } from "./engine.js?v=202610151100";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151100";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151100";
-import { cargarScript } from "./libs.js?v=202610151100";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151100";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151100";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles } from "./engine.js?v=202610151112";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151112";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151112";
+import { cargarScript } from "./libs.js?v=202610151112";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151112";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151112";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -215,6 +215,14 @@ document.addEventListener("click", (ev) => { if (!ev.target.closest(".buscador")
 const HABITUALES = ["paracetamol", "omeprazol", "atorvastatina", "metformina", "enalapril", "bisoprolol", "aas", "amlodipino", "simvastatina", "lorazepam"];
 function leerRecientes() { try { return JSON.parse(localStorage.getItem("medex.recientes") || "[]"); } catch { return []; } }
 function anotarReciente(pid) { try { const r = [pid, ...leerRecientes().filter((x) => x !== pid)].slice(0, 8); localStorage.setItem("medex.recientes", JSON.stringify(r)); } catch {} }
+/** Nombre corto para chips y enlaces: siglas conocidas, o la primera palabra del nombre. */
+const CORTOS = { aas: "AAS", calcio_vitd: "Calcio + vit. D", vitamina_d: "Vitamina D", hierro_oral: "Hierro", omega3: "Omega-3", potasio_oral: "Potasio", magnesio_oral: "Magnesio", insulina_rapida: "Insulina rápida", insulina_basal: "Insulina basal", insulina_mezcla: "Insulina mezcla", nicotina_sustitutiva: "Nicotina", antihistaminico_no_sedante: "Antihistamínico", anticonceptivo_combinado: "Anticonceptivo", ths_estrogenos: "THS", timolol_colirio: "Timolol colirio", laba_ics: "Inhalador LABA/ICS", lama: "Inhalador LAMA" };
+function nombreCorto(principio) {
+  if (CORTOS[principio.id]) return CORTOS[principio.id];
+  const sigla = principio.nombre.match(/\(([A-ZÁÉÍÓÚ]{2,6})\)/);
+  return sigla ? sigla[1] : principio.nombre.split(/[\s(\/]/)[0];
+}
+
 function renderRapido() {
   const box = $("#rapido"); if (!box || !indice) return;
   const ya = new Set(estado.meds.map((m) => m.pid));
@@ -222,7 +230,7 @@ function renderRapido() {
   const hab = HABITUALES.filter((p) => indice.porId.has(p) && !ya.has(p) && !rec.includes(p));
   const pids = [...rec, ...hab].slice(0, 8);
   box.hidden = !pids.length || !$("#dosis-wrap").hidden;
-  box.innerHTML = `<small>${rec.length ? t("rapido.recientes") : t("rapido.habituales")}</small>${pids.map((p) => `<button type="button" class="chip chip-btn" data-pid="${p}">${indice.porId.get(p).principio.nombre.split(/[\s(\/]/)[0]}</button>`).join("")}`;
+  box.innerHTML = `<small>${rec.length ? t("rapido.recientes") : t("rapido.habituales")}</small>${pids.map((p) => `<button type="button" class="chip chip-btn" data-pid="${p}">${nombreCorto(indice.porId.get(p).principio)}</button>`).join("")}`;
   box.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { const e = indice.entradas.find((x) => x.tipo === "principio" && x.pid === b.dataset.pid); if (e) { elegir(e); $("#dosis").focus(); } }));
 }
 
@@ -942,7 +950,7 @@ function renderInteracciones(cont, res) {
           <header><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span></header>
           <p>${x.efecto}</p>
           ${x.accion ? `<p class="accion"><b>${t("ddi.que_hacer")}:</b> ${x.accion}</p>` : ""}
-          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? `${t("ddi.ddinter")} · <a href="${urlFicha(x.a.principio)}" target="_blank" rel="noopener">${t("inf.ficha")} ${x.a.principio.nombre.split(/[\s(\/]/)[0]}</a> · <a href="${urlFicha(x.b.principio)}" target="_blank" rel="noopener">${x.b.principio.nombre.split(/[\s(\/]/)[0]}</a>` : t("ddi.duplicidad")}</footer>
+          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? `${t("ddi.ddinter")} · <a href="${urlFicha(x.a.principio)}" target="_blank" rel="noopener">${t("inf.ficha")} ${nombreCorto(x.a.principio)}</a> · <a href="${urlFicha(x.b.principio)}" target="_blank" rel="noopener">${nombreCorto(x.b.principio)}</a>` : t("ddi.duplicidad")}</footer>
         </article>`);
     }
   }
