@@ -1,7 +1,7 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150807";
+import { ORDEN_NIVEL, ORDEN_DDI } from "./engine.js?v=202610150841";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";

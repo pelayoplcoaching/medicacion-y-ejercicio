@@ -26,10 +26,16 @@ export function construirIndice(kb, marcas = []) {
       for (const m of p.marcas || []) entradas.push({ texto: m, tipo: "marca", pid: p.id });
     }
   }
+  for (const cmb of kb.combinaciones || []) {
+    const comps = cmb.componentes.filter((c) => porId.has(c.pid));
+    if (comps.length < 2) continue;
+    for (const m of [cmb.nombre, ...(cmb.marcas || [])]) entradas.push({ texto: m, tipo: "combo", pid: comps[0].pid, componentes: comps, generico: m === cmb.nombre });
+  }
   for (const m of marcas) {
-    const pid = m.principios.find((x) => porId.has(x));
-    if (!pid) continue;
-    entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null, unidad: m.unidad });
+    const comps = m.principios.filter((x) => porId.has(x)).map((x, i) => ({ pid: x, dosis: m.dosis?.[m.principios.indexOf(x)] ?? null }));
+    if (!comps.length) continue;
+    if (comps.length === 1) entradas.push({ texto: m.nombre, tipo: "marca", pid: comps[0].pid, dosis: comps[0].dosis, unidad: m.unidad });
+    else entradas.push({ texto: m.nombre, tipo: "combo", pid: comps[0].pid, componentes: comps });
   }
   for (const e of entradas) e.norm = normalizar(e.texto);
   return { porId, entradas };
@@ -70,6 +76,8 @@ function cumple(cond, ctx) {
   if (cond.principio && cond.principio !== ctx.principio.id) return false;
   if (cond.edad_min != null && !(ctx.edad != null && ctx.edad >= cond.edad_min)) return false;
   if (cond.caidas && !ctx.caidas) return false;
+  if (cond.condicion && !(ctx.condiciones && ctx.condiciones.has(cond.condicion))) return false;
+  if (cond.sin_condicion && ctx.condiciones && ctx.condiciones.has(cond.sin_condicion)) return false;
   return true;
 }
 
@@ -101,7 +109,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
   // 1) Recomendaciones por fármaco y ámbito
   const ambitos = { general: [], aerobico: [], fuerza: [], equilibrio: [] };
   for (const it of items) {
-    const base = { principio: it.principio, edad: ctx.edad, caidas: ctx.caidas, dosisCat: it.dosisCat };
+    const base = { principio: it.principio, edad: ctx.edad, caidas: ctx.caidas, dosisCat: it.dosisCat, condiciones: ctx.condiciones };
     for (const amb of Object.keys(ambitos)) {
       const reglas = (it.clase[amb] || []).filter((r) => cumple(r.si, base));
       // si una regla condicionada a dosis alta se cumple, elimina las de "info" redundantes? no: se muestran todas
@@ -129,6 +137,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
       c.forEach((it) => implicados.add(it));
     }
     if (ok && si.edad_min != null && !(ctx.edad != null && ctx.edad >= si.edad_min)) ok = false;
+    if (ok && si.condicion && !(ctx.condiciones && ctx.condiciones.has(si.condicion))) ok = false;
     if (!ok) continue;
     combinadas.push({ regla: r, n: n || implicados.size, implicados: [...implicados], texto: r.texto.replace("{n}", String(n || implicados.size)) });
   }

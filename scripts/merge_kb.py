@@ -37,6 +37,11 @@ def main(dry=False):
             n_re += 1
     kb["clases"] = list(clases.values())
     kb["reglas_combinadas"] = list(reglas.values())
+    combos = {c["nombre"]: c for c in kb.get("combinaciones", [])}
+    for path in EXT:
+        for c in json.loads(path.read_text(encoding="utf-8")).get("combinaciones", []):
+            combos[c["nombre"]] = c
+    kb["combinaciones"] = list(combos.values())
 
     # --- validación ---
     errores = []
@@ -74,6 +79,10 @@ def main(dry=False):
                 errores.append(f"regla {r['id']}: señal desconocida '{s}'")
         if r.get("nivel") not in NIVELES:
             errores.append(f"regla {r['id']}: nivel inválido")
+    for c in kb["combinaciones"]:
+        for comp in c["componentes"]:
+            if comp["pid"] not in pids:
+                errores.append(f"combinación {c['nombre']}: principio desconocido '{comp['pid']}'")
     if errores:
         print("\n".join("ERROR " + e for e in errores))
         sys.exit(1)
@@ -82,7 +91,7 @@ def main(dry=False):
     kb["fecha"] = date.today().isoformat()
     n_p = sum(len(c["principios"]) for c in kb["clases"])
     print(f"Bloques: {len(EXT)} · clases añadidas/sustituidas: {n_cl} · reglas: {n_re}")
-    print(f"Resultado: {len(kb['clases'])} clases · {n_p} principios activos · {len(kb['reglas_combinadas'])} reglas combinadas · {len(kb['senales'])} señales")
+    print(f"Resultado: {len(kb['clases'])} clases · {n_p} principios activos · {len(kb['reglas_combinadas'])} reglas combinadas · {len(kb['senales'])} señales · {len(kb['combinaciones'])} combinaciones")
     if not dry:
         KB.write_text(json.dumps(kb, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"Escrito {KB}")

@@ -273,3 +273,11 @@ details.seccion .cuerpo-sec > article:last-child, details.seccion .cuerpo-sec > 
 .lema p { margin: 0; color: var(--accent-deep); font-weight: 600; font-size: .98rem; line-height: 1.45; text-wrap: pretty; }
 .lema p + p { margin-top: 4px; font-weight: 500; color: var(--muted); font-size: .9rem; }
 @media (min-width: 640px) { .lema { grid-column: 2 / -1; } }
+
+/* ---------- alfa, condiciones, privacidad ---------- */
+.badge-alfa { display: inline-block; vertical-align: middle; margin-left: 6px; font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-fg); background: var(--accent); padding: 3px 8px; border-radius: 999px; position: relative; top: -4px; }
+.sub-label { margin: 12px 0 6px; font-size: .85rem; font-weight: 600; color: var(--muted); }
+.condiciones { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 12px; }
+.condiciones .check { min-height: 36px; font-size: .9rem; }
+.privacidad { display: block; margin-top: 10px; color: var(--muted); }
+#dosis:disabled { background: var(--surface-2); color: var(--muted); }

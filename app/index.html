@@ -56,14 +56,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150807">
+<link rel="stylesheet" href="css/style.css?v=202610150841">
 </head>
 <body>
 
 <header class="cabecera">
   <img src="assets/logo.png" alt="Fuerza Basada en Evidencia" class="logo" width="76" height="76">
   <div class="titulo">
-    <h1>Medicación y Ejercicio</h1>
+    <h1>Medicación y Ejercicio <span class="badge-alfa" title="Versión en pruebas">alfa</span></h1>
     <p class="autor">By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.</p>
   </div>
   <p class="intro">Introduzca su medicación habitual con la dosis y obtenga qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre sus fármacos.</p>
@@ -81,6 +81,15 @@
       <div class="fila" style="margin-top:10px">
         <label>Edad <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años"></label>
         <label class="check"><input type="checkbox" id="caidas"> Alguna caída en el último año</label>
+      </div>
+      <p class="sub-label">Situación clínica (marque lo que tenga)</p>
+      <div class="condiciones">
+        <label class="check"><input type="checkbox" id="cond-diabetes"> Diabetes</label>
+        <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> Insuficiencia cardíaca</label>
+        <label class="check"><input type="checkbox" id="cond-renal"> Enfermedad renal (filtrado &lt; 45)</label>
+        <label class="check"><input type="checkbox" id="cond-marcapasos"> Marcapasos o DAI</label>
+        <label class="check"><input type="checkbox" id="cond-osteoporosis"> Osteoporosis o fractura previa</label>
+        <label class="check"><input type="checkbox" id="cond-epoc_asma"> EPOC o asma</label>
       </div>
     </div>
 
@@ -112,6 +121,7 @@
         <button type="button" class="btn-sec sm" id="btn-ejemplo">Ver un ejemplo</button>
         <button type="button" class="btn-sec sm" id="btn-vaciar">Vaciar</button>
       </div>
+      <small class="privacidad">Todo se procesa en su dispositivo: la medicación, los PDF y las fotos no se envían a ningún servidor.</small>
       <div id="pegar-wrap" hidden style="margin-top:10px">
         <textarea id="pegar" placeholder="Una línea por medicamento, por ejemplo:&#10;Bisoprolol 5 mg 1-0-0&#10;Enalapril 20 mg 1 vez al día&#10;Sintrom&#10;Metformina 850 mg 1-0-1"></textarea>
         <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
@@ -148,6 +158,7 @@
       </div>
       <small>El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso"></small>
+      <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
     <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</p>
@@ -161,6 +172,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="module" src="js/app.js?v=202610150807"></script>
+<script type="module" src="js/app.js?v=202610150841"></script>
 </body>
 </html>

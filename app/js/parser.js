@@ -1,5 +1,5 @@
 /* Reconocimiento de medicación en texto libre (lista pegada o texto extraído de un PDF). */
-import { normalizar } from "./engine.js?v=202610150807";
+import { normalizar } from "./engine.js?v=202610150841";
 
 let catalogo = null; // [{norm, pid, tipo, dosis, unidad}] ordenado por longitud desc
 
@@ -47,6 +47,29 @@ export function extraerMedicacion(texto, indice) {
     if (!hit) {
       // líneas con pinta de medicamento (tienen mg) pero no reconocidas
       if (RE_DOSIS.test(n)) noReconocidos.push(linea);
+      continue;
+    }
+    if (hit.tipo === "combo") {
+      // marca combinada: "CO-DIOVAN 160/12,5 mg" → cada componente con su dosis (en el orden de la combinación)
+      const tras = n.slice(n.indexOf(hit.norm) + hit.norm.length);
+      const mD = tras.match(/(\d+(?:[.,]\d+)?)\s*(?:mg)?\s*\/\s*(\d+(?:[.,]\d+)?)\s*(?:mg)?(?:\s*\/\s*(\d+(?:[.,]\d+)?)\s*(?:mg)?)?/);
+      let dosisLinea = mD ? [mD[1], mD[2], mD[3]].filter(Boolean).map((x) => parseFloat(x.replace(",", "."))) : [];
+      // emparejar cada componente con el número de la línea más parecido a su dosis habitual (el orden del etiquetado varía)
+      let asignadas = null;
+      if (dosisLinea.length === hit.componentes.length && hit.componentes.every((c) => c.dosis != null)) {
+        const libres = [...dosisLinea]; asignadas = hit.componentes.map((c) => {
+          let best = 0; libres.forEach((v, i) => { if (Math.abs(Math.log(v / c.dosis)) < Math.abs(Math.log(libres[best] / c.dosis))) best = i; });
+          return libres.splice(best, 1)[0];
+        });
+      }
+      let tomasC = tomasDesdePauta(n);
+      if (tomasC == null) { let unos = 0; for (let j = idx + 1; j < lineas.length && j <= idx + 6; j++) { const l = normalizar(lineas[j]); if (cat.some((e) => e.re.test(l))) break; if (/^(1|0[.,]5|2)$/.test(l)) unos++; } if (unos) tomasC = Math.min(unos, 4); }
+      hit.componentes.forEach((c, k) => {
+        if (vistos.has(c.pid)) return;
+        vistos.add(c.pid);
+        const refC = indice.porId.get(c.pid);
+        reconocidos.push({ pid: c.pid, dosis: asignadas ? asignadas[k] : c.dosis ?? null, tomas: tomasC || 1, unidad: refC.principio.unidad || "mg", combo: hit.texto, origen: linea.slice(0, 80) });
+      });
       continue;
     }
     const ref = indice.porId.get(hit.pid);

@@ -63,7 +63,7 @@ python3 scripts/build_artifact.py      # empaqueta y sella la versión
 ```
 Una clase con el mismo `id` en un bloque sustituye a la existente: es la forma de corregir una clase sin tocar `kb.json` a mano. Las interacciones nuevas se añaden con el fichero `ddi_*.json` correspondiente (ver `scripts/`).
 
-Cobertura actual: ~100 clases y ~315 principios activos (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
+Cobertura actual: ~100 clases, ~320 principios activos y ~50 combinaciones a dosis fijas (`kb.combinaciones`: una marca → varios componentes con su dosis) (incluye cardiovascular completo, diabetes, psiquiatría, neurología, dolor, infecciosos, inmunosupresores, oncología oral, urología, oftalmología, suplementos). Fuente de la lista de fármacos comercializados en España: nomenclátor AEMPS (`build_cima.py`). Marco para los efectos sobre el ejercicio: ACSM *Guidelines for Exercise Testing and Prescription* (Apéndice A, efectos de los fármacos sobre FC, TA, ECG y capacidad de esfuerzo), fichas técnicas AEMPS, criterios Beers/STOPP-START y guías de cada especialidad; todo el contenido es un borrador pendiente de revisión clínica.
 
 ## Cómo está organizada la base de conocimiento (`kb.json`)
 
@@ -76,7 +76,7 @@ Cada **clase** tiene:
 
 Un principio puede añadir `senales_extra` (p. ej. citalopram → `qt`).
 
-`reglas_combinadas` se disparan por recuento de señales (`{"senal":"hipotension","min":2}`), por presencia simultánea (`{"todas":["ieca_ara","diuretico","aine"]}`) y opcionalmente por edad.
+`reglas_combinadas` se disparan por recuento de señales, por condición clínica del usuario (`{"condicion":"renal"}`; valores: diabetes, insuficiencia_cardiaca, renal, marcapasos, osteoporosis, epoc_asma) (`{"senal":"hipotension","min":2}`), por presencia simultánea (`{"todas":["ieca_ara","diuretico","aine"]}`) y opcionalmente por edad.
 
 ## Funciones
 

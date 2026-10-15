@@ -1,12 +1,14 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150807";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150807";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150807";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150807";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150841";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150841";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150841";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150841";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-const estado = { meds: [], edad: null, caidas: false, tab: "general" };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], tab: "general" };
+const CONDICIONES = ["diabetes", "insuficiencia_cardiaca", "renal", "marcapasos", "osteoporosis", "epoc_asma"];
+const ctxActual = () => ({ edad: estado.edad, caidas: estado.caidas, condiciones: new Set(estado.condiciones) });
 let datos, indice;
 
 const EJEMPLO = {
@@ -40,15 +42,16 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones })); } catch {}
 }
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [] });
   } catch {}
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
+  for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
 }
 
 /* ---------- búsqueda ---------- */
@@ -66,7 +69,9 @@ inputBuscar.addEventListener("input", () => {
     const ref = indice.porId.get(e.pid);
     const li = document.createElement("li");
     li.setAttribute("role", "option");
-    li.innerHTML = `<span>${e.texto}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+    li.innerHTML = e.tipo === "combo"
+      ? `<span>${e.texto}</span><small>Combinación: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
+      : `<span>${e.texto}</span><small>${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
     li.addEventListener("click", () => elegir(e));
     lista.append(li);
   }
@@ -78,6 +83,17 @@ inputBuscar.addEventListener("keydown", (ev) => {
 document.addEventListener("click", (ev) => { if (!ev.target.closest(".buscador")) lista.hidden = true; });
 
 function elegir(e) {
+  if (e.tipo === "combo") {
+    seleccion = { combo: e };
+    inputBuscar.value = `${e.texto} (${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")})`;
+    lista.hidden = true;
+    const w = $("#dosis-wrap"); w.hidden = false;
+    $("#dosis").value = ""; $("#dosis").placeholder = "según presentación"; $("#dosis").disabled = true;
+    $("#unidad").textContent = e.componentes.map((c) => (c.dosis != null ? c.dosis : "?")).join("/") + " mg";
+    $("#tomas-wrap").hidden = false; $("#tomas").value = 1; $("#tomas").focus();
+    return;
+  }
+  $("#dosis").disabled = false; $("#dosis").placeholder = "";
   const ref = indice.porId.get(e.pid);
   seleccion = { pid: e.pid, unidad: ref.principio.unidad || "mg" };
   inputBuscar.value = e.tipo === "marca" ? `${e.texto} (${ref.principio.nombre})` : e.texto;
@@ -95,10 +111,16 @@ function elegir(e) {
 $("#form-med").addEventListener("submit", (ev) => {
   ev.preventDefault();
   if (!seleccion) return;
-  const dosis = parseFloat($("#dosis").value.replace(",", "."));
   const tomas = parseInt($("#tomas").value, 10) || 1;
   if (estado.ejemplo) { estado.meds = []; estado.ejemplo = false; }
-  estado.meds.push({ pid: seleccion.pid, dosis: Number.isFinite(dosis) ? dosis : null, tomas, unidad: seleccion.unidad });
+  if (seleccion.combo) {
+    const ya = new Set(estado.meds.map((m) => m.pid));
+    for (const c of seleccion.combo.componentes) if (!ya.has(c.pid)) estado.meds.push({ pid: c.pid, dosis: c.dosis ?? null, tomas, unidad: indice.porId.get(c.pid).principio.unidad || "mg", combo: seleccion.combo.texto });
+    $("#dosis").disabled = false; $("#dosis").placeholder = "";
+  } else {
+    const dosis = parseFloat($("#dosis").value.replace(",", "."));
+    estado.meds.push({ pid: seleccion.pid, dosis: Number.isFinite(dosis) ? dosis : null, tomas, unidad: seleccion.unidad });
+  }
   seleccion = null;
   inputBuscar.value = "";
   $("#dosis-wrap").hidden = true;
@@ -175,7 +197,7 @@ async function descargarPdf(tipo) {
   btn.disabled = true; btn.textContent = "Generando…";
   try {
     if (!window.jspdf) throw new Error("el generador de PDF no se ha cargado");
-    const res = evaluar(datos, estado.meds, { edad: estado.edad, caidas: estado.caidas });
+    const res = evaluar(datos, estado.meds, ctxActual());
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, estado);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
     btn.textContent = "PDF generado";
@@ -186,6 +208,15 @@ async function descargarPdf(tipo) {
   setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
 }
 $("#btn-pdf-medico").addEventListener("click", () => descargarPdf("medico"));
+$$(".btn-sugerencia").forEach((b) => b.addEventListener("click", async () => {
+  const lista = estado.meds.map((m) => `${m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
+  const cuerpo = `Hola Pelayo,\n\n[Describe aquí el error o la mejora]\n\n---\nVersión: ${datos.kb.version} · ${navigator.userAgent.slice(0, 80)}\nContexto: ${estado.edad ? estado.edad + " años" : "sin edad"}${estado.caidas ? ", caídas" : ""}${estado.condiciones.length ? ", " + estado.condiciones.join(", ") : ""}\nMedicación introducida: ${lista || "(ninguna)"}\n(No incluyas nombre ni datos identificativos de ningún paciente.)`;
+  const asunto = "Sugerencia · Medicación y Ejercicio (alfa)";
+  const mailto = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+  try { await navigator.clipboard.writeText(cuerpo); } catch {}
+  window.location.href = mailto;
+  $("#pdf-aviso").textContent = "Se ha abierto su correo con los datos de la versión (también copiados al portapapeles). Si no se abre, escriba a pelayoplcoaching@gmail.com.";
+}));
 $("#btn-pdf-paciente").addEventListener("click", () => descargarPdf("paciente"));
 
 $("#btn-ejemplo").addEventListener("click", () => {
@@ -196,6 +227,7 @@ $("#btn-ejemplo").addEventListener("click", () => {
 $("#btn-vaciar").addEventListener("click", () => { estado.meds = []; estado.ejemplo = false; guardar(); render(); });
 $("#edad").addEventListener("change", () => { estado.edad = parseInt($("#edad").value, 10) || null; guardar(); render(); });
 $("#caidas").addEventListener("change", () => { estado.caidas = $("#caidas").checked; guardar(); render(); });
+for (const c of CONDICIONES) $("#cond-" + c)?.addEventListener("change", () => { estado.condiciones = CONDICIONES.filter((k) => $("#cond-" + k)?.checked); guardar(); render(); });
 
 $$(".tabs button").forEach((b) => b.addEventListener("click", () => { estado.tab = b.dataset.tab; render(); }));
 // barra inferior (móvil): lleva al informe o, estando en él, de vuelta a la medicación
@@ -208,7 +240,7 @@ new IntersectionObserver(([e]) => {
 }, { rootMargin: "-40% 0px -55% 0px" }).observe($("#informe"));
 
 $("#btn-copiar").addEventListener("click", async () => {
-  const res = evaluar(datos, estado.meds, { edad: estado.edad, caidas: estado.caidas });
+  const res = evaluar(datos, estado.meds, ctxActual());
   const txt = informeTexto(datos.kb, res, estado);
   const btn = $("#btn-copiar");
   try { await navigator.clipboard.writeText(txt); btn.textContent = "Copiado"; }
@@ -222,7 +254,7 @@ $("#btn-copiar").addEventListener("click", async () => {
 function etiqueta(nivel) { return datos.kb.niveles[nivel]?.etiqueta || nivel; }
 
 function render() {
-  const ctx = { edad: estado.edad, caidas: estado.caidas };
+  const ctx = ctxActual();
   const res = evaluar(datos, estado.meds, ctx);
 
   // lista de medicación
@@ -235,7 +267,7 @@ function render() {
       ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
       : "dosis no indicada";
     li.innerHTML = `
-      <div class="med-nombre"><strong>${it.principio.nombre}</strong><small>${it.clase.nombre}</small></div>
+      <div class="med-nombre"><strong>${it.principio.nombre}</strong><small>${estado.meds[i]?.combo ? `En ${estado.meds[i].combo} · ` : ""}${it.clase.nombre}</small></div>
       <div class="med-dosis">${dosis}${it.dosisCat === "alta" ? ' <span class="chip chip-alta">dosis alta</span>' : ""}</div>
       <button type="button" class="quitar" aria-label="Quitar ${it.principio.nombre}">×</button>`;
     li.querySelector(".quitar").addEventListener("click", () => { estado.meds.splice(i, 1); estado.ejemplo = false; guardar(); render(); });

@@ -527,5 +527,19 @@
     "St. John's Wort",
     "Ginkgo biloba",
     "Ginseng"
-  ]
+  ],
+  "clozapina": "Clozapine",
+  "teofilina": "Theophylline",
+  "montelukast": "Montelukast",
+  "roflumilast": "Roflumilast",
+  "ondansetron": [
+    "Ondansetron",
+    "Granisetron"
+  ],
+  "aprepitant": [
+    "Aprepitant",
+    "Netupitant"
+  ],
+  "bempedoico": "Bempedoic acid",
+  "acetazolamida": "Acetazolamide"
 }
