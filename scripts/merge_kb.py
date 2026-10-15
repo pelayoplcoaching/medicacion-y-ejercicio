@@ -46,6 +46,9 @@ def main(dry=False):
                         c[amb].append(r)
             if "horario" in parche:
                 c["horario"] = parche["horario"]
+            for pr in parche.get("principios_add", []):
+                if pr["id"] not in {x["id"] for x in c["principios"]}:
+                    c["principios"].append(pr)
         for pid, h in blk.get("principios_horario", {}).items():
             for c in clases.values():
                 for pr in c["principios"]:

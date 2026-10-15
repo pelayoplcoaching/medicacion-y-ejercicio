@@ -602,6 +602,7 @@ function tarjetaFarmaco(g, amb, abierta) {
         </summary>
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
+          ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
           ${it.clase.fuentes?.length ? `<p class="fuentes">${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · <a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>` : `<p class="fuentes"><a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>`}
         </div>

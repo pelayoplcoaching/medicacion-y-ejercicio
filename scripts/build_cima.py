@@ -95,11 +95,26 @@ def convertir(dosis, unidad_aemps: str, pid: str):
     return round(dosis * f, 4) if f else None
 
 
+ATC_CLASE = {}  # prefijo ATC → id de clase (de kb.json); se aplica el prefijo más largo que coincida
+
+
+def clase_por_atc(cod: str):
+    cod = (cod or "").strip().upper()
+    for n in range(len(cod), 2, -1):
+        c = ATC_CLASE.get(cod[:n])
+        if c:
+            return c
+    return None
+
+
 def cargar_alias_kb():
     """Mapa de nombre de principio (sin acentos, minúsculas) → id de kb.json.
     Incluye el nombre, el id y sinónimos frecuentes del nomenclátor (sales, DCI)."""
     kb = json.loads(KB.read_text(encoding="utf-8"))
     alias = {}
+    for clase in kb["clases"]:
+        for pref in clase.get("atc") or []:
+            ATC_CLASE[pref.upper()] = clase["id"]
     for clase in kb["clases"]:
         for p in clase["principios"]:
             UNIDAD_KB[p["id"]] = p.get("unidad") or "mg"
@@ -109,7 +124,7 @@ def cargar_alias_kb():
             # "Finasterida / dutasterida", "Cefalosporina oral (cefuroxima, cefixima)", "Doxiciclina / minociclina"…
             for trozo in re.split(r"[(),/]| o | y |\+", p["nombre"]):
                 t = quitar_acentos(trozo.strip())
-                t = re.sub(r"\b(oral|orales|transdermico|inyectable|inhalado|con|sin|de|la|el|los|las|solo|sola)\b", "", t)
+                t = re.sub(r"\b(oral|orales|transdermico|inyectable|inhalado|colirio|topico|topica|nasal|con|sin|de|la|el|los|las|solo|sola|en|para)\b", "", t)
                 t = " ".join(t.split())
                 if len(t) >= 5 and " " not in t and not t.startswith("anti") and t not in ESTOP:
                     alias.setdefault(t, p["id"])
@@ -124,7 +139,7 @@ def cargar_alias_kb():
         "insulina humana": "insulina_rapida",
         "levodopa": "levodopa", "carbidopa": None, "benserazida": None, "entacapona": None,
         "isosorbida mononitrato": "mononitrato_isosorbida", "mononitrato de isosorbida": "mononitrato_isosorbida",
-        "acido zoledronico": "zoledronico", "acido alendronico": "alendronato", "acido risedronico": "risedronato",
+        "acido zoledronico": "zoledronico", "acido alendronico": "alendronato", "acido risedronico": "risedronato", "acido ibandronico": "ibandronato",
         "acido valproico": "valproato", "valproato sodico": "valproato",
         "hierro": "hierro_oral", "sulfato ferroso": "hierro_oral", "hierro sacarosa": None,
         "colecalciferol": "vitamina_d", "calcifediol": "vitamina_d",
@@ -172,6 +187,12 @@ def resolver(nombre_pa: str, alias: dict):
     n = " ".join(n.split())
     if n in alias:
         return alias[n]
+    # "ibandronico acido" (orden del nomenclátor) → "acido ibandronico" / "ibandronico"
+    if n.endswith(" acido"):
+        r = n[:-6].strip()
+        for cand in ("acido " + r, r):
+            if cand in alias:
+                return alias[cand]
     # por la primera palabra (p. ej. "metoprolol tartrato" → metoprolol); la clave debe existir, aunque sea None
     primera = n.split(" ")[0] if n else ""
     if primera in alias:
@@ -386,6 +407,7 @@ def main(argv):
     salida, vistos = [], set()
     n_total = n_comerc = n_sin_pa = 0
     sin_resolver = Counter()
+    por_atc = Counter()
     for med in iter_local(root, tags["medicamento"]):
         n_total += 1
         com = texto(med, tags["comercializado"]).upper()
@@ -398,12 +420,15 @@ def main(argv):
         if not nombre:
             continue
         pas, dosis, unidad = [], [], None
+        desconocidos = []  # (nombre PA, dosis, unidad) sin equivalente en la base
+        atc = texto(med, "cod_atc")
         for pa in iter_local(med, tags["pa"]):
             nom_pa = texto(pa, tags["pa_nombre"]) if tags.get("pa_nombre") else dicc.get(texto(pa, tags["pa_codigo"]), "")
             pid = resolver(nom_pa, alias)
             if pid == "?":
                 if nom_pa:
                     sin_resolver[quitar_acentos(nom_pa)] += 1
+                    desconocidos.append((nom_pa, texto(pa, tags["pa_dosis"]), texto(pa, tags["pa_unidad"])))
                 continue
             if pid is None:
                 continue
@@ -415,6 +440,29 @@ def main(argv):
             dosis.append(convertir(d, texto(pa, tags["pa_unidad"]), pid))
             unidad = unidad or UNIDAD_KB.get(pid, "mg")
         if not pas:
+            # sin principio en la base: clasificar por el código ATC (reglas del grupo, sin reglas específicas)
+            clase = clase_por_atc(atc) if desconocidos else None
+            if clase:
+                nombre_pa = " + ".join(d[0].title() for d in desconocidos)
+                d0 = desconocidos[0]
+                try:
+                    dd = float(d0[1].replace(",", "."))
+                except ValueError:
+                    dd = None
+                u = UNIDADES.get(d0[2].strip().lower())
+                dd = dd if u == "mg" else (round(dd / 1000, 4) if (u == "mcg" and dd is not None) else (dd * 1000 if (u == "g" and dd is not None) else None))
+                if dd is not None and float(dd).is_integer():
+                    dd = int(dd)
+                clave = (acortar(nombre).upper(), nombre_pa, dd)
+                if clave in vistos:
+                    continue
+                vistos.add(clave)
+                fila = {"nombre": acortar(nombre).upper(), "atc": atc, "pa": nombre_pa, "clase": clase}
+                if dd is not None:
+                    fila["dosis"] = [dd]
+                salida.append(fila)
+                por_atc[clase] += 1
+                continue
             n_sin_pa += 1
             continue
         if "anticonceptivo_combinado" in pas:  # etinilestradiol + progestágeno = un solo principio de la base
@@ -439,12 +487,20 @@ def main(argv):
         sys.exit("\nNo se generó ninguna presentación: revise las etiquetas detectadas arriba.")
 
     OUT.write_text(json.dumps(salida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"\nMedicamentos en el XML: {n_total:,} · comercializados: {n_comerc:,} · sin principio en la base: {n_sin_pa:,}")
+    print(f"\nMedicamentos en el XML: {n_total:,} · comercializados: {n_comerc:,} · clasificados solo por ATC: {sum(por_atc.values()):,} · sin clase: {n_sin_pa:,}")
+    if por_atc:
+        print("Clasificados por ATC (grupo): " + ", ".join(f"{c} {n}" for c, n in por_atc.most_common(12)))
     print(f"{len(salida):,} presentaciones guardadas en {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KB)")
     if sin_resolver:
         print("\nPrincipios activos más frecuentes que NO están en kb.json (candidatos a añadir):")
         for nom, n in sin_resolver.most_common(25):
             print(f"  {n:4d}  {nom}")
+    # principios desconocidos pero clasificados por ATC: cuáles son, para revisarlos
+    if por_atc:
+        vistos_pa = Counter((f["clase"], f["pa"]) for f in salida if f.get("clase"))
+        print("\nFármacos clasificados por ATC (revisar que el grupo sea correcto):")
+        for (c, pa), n in vistos_pa.most_common(40):
+            print(f"  {c:28s} {pa}")
 
 
 if __name__ == "__main__":

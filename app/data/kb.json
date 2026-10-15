@@ -3669,6 +3669,13 @@
           "umbral_mg": {
             "alta": 30
           }
+        },
+        {
+          "id": "rabeprazol",
+          "nombre": "Rabeprazol",
+          "marcas": [
+            "Pariet"
+          ]
         }
       ],
       "general": [
@@ -3752,6 +3759,16 @@
             "Prolia"
           ],
           "unidad": "mg/6 meses"
+        },
+        {
+          "id": "ibandronato",
+          "nombre": "Ibandronato (mensual)",
+          "marcas": [
+            "Bonviva",
+            "Ibandronato Normon"
+          ],
+          "unidad": "mg/mes",
+          "nota": "Comprimido de 150 mg una vez al mes; mismas normas de ayuno y postura que los semanales, durante 60 minutos."
         }
       ],
       "general": [
@@ -3766,6 +3783,13 @@
         {
           "nivel": "precaucion",
           "texto": "Un dolor sordo y persistente en el muslo o la ingle sin golpe es motivo de consulta (fractura atípica, rara pero relevante en tratamientos largos)."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "ibandronato"
+          },
+          "texto": "Con el comprimido mensual, permanezca erguido 60 minutos (no 30) antes de tumbarse o hacer ejercicio en el suelo."
         }
       ],
       "aerobico": [
@@ -3840,6 +3864,17 @@
           "umbral_mg": {
             "alta": 50
           }
+        },
+        {
+          "id": "clorfenamina",
+          "nombre": "Clorfenamina (en antigripales)",
+          "marcas": [
+            "Frenadol",
+            "Couldina",
+            "Ilvico",
+            "Vincigrip",
+            "Polaramine (dexclorfeniramina)"
+          ]
         }
       ],
       "general": [
@@ -4387,6 +4422,21 @@
           "umbral_mg": {
             "alta": 20
           }
+        },
+        {
+          "id": "vardenafilo",
+          "nombre": "Vardenafilo",
+          "marcas": [
+            "Levitra",
+            "Vivanza"
+          ]
+        },
+        {
+          "id": "avanafilo",
+          "nombre": "Avanafilo",
+          "marcas": [
+            "Spedra"
+          ]
         }
       ],
       "general": [
@@ -5208,6 +5258,17 @@
             "Kyleena",
             "Depo-Progevera"
           ]
+        },
+        {
+          "id": "progesterona",
+          "nombre": "Progesterona micronizada",
+          "marcas": [
+            "Utrogestan",
+            "Progeffik"
+          ],
+          "senales_extra": [
+            "sedacion"
+          ]
         }
       ],
       "general": [
@@ -5225,6 +5286,13 @@
             "principio": "ths_estrogenos"
           },
           "texto": "La vía transdérmica (parche o gel) tiene menos riesgo trombótico que la oral; es un tema a hablar con su ginecólogo si entrena mucho o viaja con frecuencia."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "progesterona"
+          },
+          "texto": "La progesterona oral da somnolencia y algo de mareo: tómela al acostarse y no entrene en las 2–3 horas siguientes. Por vía vaginal este efecto es mínimo."
         }
       ],
       "aerobico": [
@@ -9430,6 +9498,249 @@
         "GOLD 2025",
         "Guía SEPAR rehabilitación respiratoria"
       ]
+    },
+    {
+      "id": "resfriado_tos",
+      "nombre": "Antigripales, antitusivos, descongestivos y mucolíticos",
+      "atc": [
+        "R05DA",
+        "R05CB",
+        "R01BA",
+        "R05X",
+        "N02BE51"
+      ],
+      "resumen": "Preparados 'para el resfriado' y la tos. Lo importante para el ejercicio no es el propio fármaco sino la infección: con fiebre o síntomas por debajo del cuello (tos productiva, dolor muscular generalizado, malestar) no se entrena. Los descongestivos (pseudoefedrina, fenilefrina) suben el pulso y la tensión; los antitusivos y los antihistamínicos que llevan muchos antigripales dan sueño.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "dextrometorfano",
+          "nombre": "Dextrometorfano",
+          "marcas": [
+            "Romilar",
+            "Bisolvon Antitusivo",
+            "Iniston Antitusivo",
+            "Frenadol (componente)"
+          ],
+          "senales_extra": [
+            "sedacion",
+            "serotoninergico"
+          ],
+          "umbral_mg": {
+            "alta": 90
+          }
+        },
+        {
+          "id": "pseudoefedrina",
+          "nombre": "Pseudoefedrina / fenilefrina (descongestivos)",
+          "marcas": [
+            "Rinoebastel",
+            "Actifed",
+            "Frenadol Complex",
+            "Couldina",
+            "Ilvico",
+            "Vincigrip"
+          ],
+          "senales_extra": [
+            "taquicardia",
+            "hipertension",
+            "calor"
+          ],
+          "umbral_mg": {
+            "alta": 120
+          }
+        },
+        {
+          "id": "acetilcisteina",
+          "nombre": "Acetilcisteína / carbocisteína / ambroxol (mucolíticos)",
+          "marcas": [
+            "Fluimucil",
+            "Flumil",
+            "Pectox",
+            "Mucosan",
+            "Motosol"
+          ],
+          "umbral_mg": {
+            "alta": 1200
+          }
+        },
+        {
+          "id": "codeina_antitusiva",
+          "nombre": "Codeína en jarabes para la tos",
+          "marcas": [
+            "Codeisan",
+            "Toseina",
+            "Histaverin"
+          ],
+          "senales_extra": [
+            "sedacion"
+          ],
+          "umbral_mg": {
+            "alta": 60
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "La regla del cuello: con síntomas solo por encima del cuello (mocos, estornudos, dolor de garganta leve) puede entrenar suave; con fiebre, tos con flemas, dolores musculares o malestar general, descanse y vuelva de forma progresiva cuando lleve 24–48 horas sin fiebre."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "pseudoefedrina"
+          },
+          "texto": "Los descongestivos suben el pulso y la tensión y dificultan disipar el calor: no entrene intenso ni con calor en las 4–6 horas siguientes a la toma. Si tiene hipertensión, arritmias o cardiopatía, mejor evitarlos (suero fisiológico o corticoide nasal como alternativa)."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "dextrometorfano"
+          },
+          "texto": "Puede dar somnolencia y mareo; a dosis altas o junto a antidepresivos (ISRS, tramadol) aumenta el riesgo de síndrome serotoninérgico. Respete la dosis del envase y no lo combine con otros antigripales."
+        },
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "codeina_antitusiva"
+          },
+          "texto": "La codeína da sueño y enlentece los reflejos: no entrene ni conduzca en las horas siguientes a la toma."
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "acetilcisteina"
+          },
+          "texto": "Los mucolíticos no afectan al ejercicio. Beba agua suficiente: ayudan más con buena hidratación."
+        },
+        {
+          "nivel": "info",
+          "texto": "Muchos antigripales llevan paracetamol (650 mg por sobre) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "pseudoefedrina"
+          },
+          "texto": "El pulso sube más de lo normal con el esfuerzo mientras dura el efecto: no se guíe por el pulsómetro y evite sesiones intensas o con calor."
+        },
+        {
+          "nivel": "info",
+          "texto": "Caminar suave puede ayudar con la congestión; nada intenso hasta que desaparezcan los síntomas."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación propia del fármaco; posponga las sesiones exigentes hasta recuperarse de la infección."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "si": {
+            "edad_min": 65
+          },
+          "texto": "Somnolencia y mareo (antitusivos, antihistamínicos de los antigripales) aumentan el riesgo de caída en mayores: haga el equilibrio con apoyo o pospóngalo mientras los tome."
+        }
+      ],
+      "fuentes": [
+        "Fichas técnicas AEMPS",
+        "ACSM GETP 11.ª ed. (ejercicio e infección aguda)"
+      ]
+    },
+    {
+      "id": "antivirales_herpes",
+      "nombre": "Antivirales del herpes (aciclovir, valaciclovir, famciclovir)",
+      "atc": [
+        "J05AB01",
+        "J05AB11",
+        "J05AB09",
+        "J05AB"
+      ],
+      "resumen": "Tratamientos cortos del herpes labial, genital o zóster, o profilaxis a dosis baja. El fármaco en sí no limita el ejercicio; lo que manda es la fase aguda de la infección y el dolor del zóster.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "aciclovir",
+          "nombre": "Aciclovir",
+          "marcas": [
+            "Zovirax",
+            "Aciclovir Normon"
+          ],
+          "umbral_mg": {
+            "alta": 2000
+          },
+          "senales_extra": [
+            "renal",
+            "deshidratacion"
+          ]
+        },
+        {
+          "id": "valaciclovir",
+          "nombre": "Valaciclovir",
+          "marcas": [
+            "Valtrex",
+            "Valherpes"
+          ],
+          "umbral_mg": {
+            "alta": 2000
+          },
+          "senales_extra": [
+            "renal",
+            "deshidratacion"
+          ]
+        },
+        {
+          "id": "famciclovir",
+          "nombre": "Famciclovir",
+          "marcas": [
+            "Famvir"
+          ],
+          "umbral_mg": {
+            "alta": 1000
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "si": {
+            "dosis": "alta"
+          },
+          "texto": "A dosis de tratamiento (zóster, herpes genital) el fármaco se elimina por el riñón y puede dañarlo si se deshidrata: beba abundante agua y evite entrenar con calor mientras dure el tratamiento, sobre todo si es mayor o tiene la función renal reducida."
+        },
+        {
+          "nivel": "info",
+          "texto": "En la fase aguda del zóster o de un brote con fiebre, descanso relativo; retome el ejercicio progresivamente cuando el dolor lo permita. El ejercicio regular se asocia a menos recurrencias de herpes."
+        },
+        {
+          "nivel": "info",
+          "texto": "Con lesiones activas de herpes (labial o genital) evite deportes de contacto y compartir material o toallas hasta que estén secas."
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; hidratación extra a dosis altas."
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación."
+        }
+      ],
+      "fuentes": [
+        "Fichas técnicas AEMPS"
+      ]
     }
   ],
   "reglas_combinadas": [
@@ -10999,6 +11310,109 @@
         {
           "pid": "amoxicilina",
           "dosis": 875
+        }
+      ]
+    },
+    {
+      "nombre": "Frenadol (paracetamol/dextrometorfano/clorfenamina/cafeína)",
+      "marcas": [
+        "Frenadol",
+        "Frenadol Forte",
+        "Frenadol Descongestivo"
+      ],
+      "componentes": [
+        {
+          "pid": "paracetamol",
+          "dosis": 650
+        },
+        {
+          "pid": "dextrometorfano",
+          "dosis": 20
+        },
+        {
+          "pid": "clorfenamina",
+          "dosis": 4
+        },
+        {
+          "pid": "cafeina",
+          "dosis": 30
+        }
+      ]
+    },
+    {
+      "nombre": "Frenadol Complex (paracetamol/dextrometorfano/clorfenamina/pseudoefedrina)",
+      "marcas": [
+        "Frenadol Complex"
+      ],
+      "componentes": [
+        {
+          "pid": "paracetamol",
+          "dosis": 650
+        },
+        {
+          "pid": "dextrometorfano",
+          "dosis": 20
+        },
+        {
+          "pid": "clorfenamina",
+          "dosis": 4
+        },
+        {
+          "pid": "pseudoefedrina",
+          "dosis": 60
+        }
+      ]
+    },
+    {
+      "nombre": "Couldina (ácido acetilsalicílico/clorfenamina/fenilefrina)",
+      "marcas": [
+        "Couldina",
+        "Couldina Instant"
+      ],
+      "componentes": [
+        {
+          "pid": "aas",
+          "dosis": 500
+        },
+        {
+          "pid": "clorfenamina",
+          "dosis": 2
+        },
+        {
+          "pid": "pseudoefedrina",
+          "dosis": 7.5
+        }
+      ]
+    },
+    {
+      "nombre": "Rinoebastel (ebastina/pseudoefedrina)",
+      "marcas": [
+        "Rinoebastel"
+      ],
+      "componentes": [
+        {
+          "pid": "antihistaminico_no_sedante",
+          "dosis": 10
+        },
+        {
+          "pid": "pseudoefedrina",
+          "dosis": 120
+        }
+      ]
+    },
+    {
+      "nombre": "Actifed (triprolidina/pseudoefedrina)",
+      "marcas": [
+        "Actifed"
+      ],
+      "componentes": [
+        {
+          "pid": "clorfenamina",
+          "dosis": 2.5
+        },
+        {
+          "pid": "pseudoefedrina",
+          "dosis": 60
         }
       ]
     }

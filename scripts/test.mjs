@@ -177,6 +177,34 @@ console.log("Integridad de datos");
   check("combinaciones con componentes válidos", combosMal.length === 0, combosMal.map((c) => c.nombre).join());
 }
 
+console.log("\nNomenclátor y clasificación ATC");
+{
+  const marcas = [
+    { nombre: "CELIPROLOL NORMON 200 MG COMPRIMIDOS", atc: "C07AB08", pa: "Celiprolol", clase: "betabloqueantes", dosis: [200] },
+    { nombre: "OMEPRAZOL CINFA 20 MG CAPSULAS", principios: ["omeprazol"], dosis: [20] },
+  ];
+  const kb2 = JSON.parse(JSON.stringify(kb));
+  const idx = construirIndice(kb2, marcas);
+  const r1 = buscar(idx, "celipro");
+  check("principio sintético por ATC aparece en la búsqueda", r1.some((e) => e.pid === "atc:celiprolol" && e.tipo === "principio"));
+  check("marca del nomenclátor con dosis por comprimido", buscar(idx, "omeprazol 20").some((e) => e.dosis === 20));
+  const res = evaluar({ kb: kb2, ddiCurado, ddi: { pares: [] }, indice: idx }, [{ pid: "atc:celiprolol", dosisPorToma: 200, tomas: 1 }, { pid: "bisoprolol", dosisPorToma: 5, tomas: 1 }], { edad: 70, condiciones: new Set() });
+  const it = res.items.find((i) => i.principio.id === "atc:celiprolol");
+  check("el sintético hereda clase y señales del grupo", it && it.clase.id === "betabloqueantes" && it.senales.has("bradicardia"), it && [...it.senales].join());
+  check("reglas combinadas cuentan al sintético (bradicardia múltiple)", res.combinadas.some((c) => c.regla.id === "bradicardia_multiple"));
+  check("nota de clasificación automática", /ATC/.test(it?.principio.nota || ""));
+}
+
+console.log("\nFármacos de consulta (bloque 08)");
+{
+  const ids = new Set(kb.clases.flatMap((c) => c.principios.map((p) => p.id)));
+  check("rabeprazol, vardenafilo, ibandronato, progesterona, clorfenamina, dextrometorfano, aciclovir", ["rabeprazol", "vardenafilo", "ibandronato", "progesterona", "clorfenamina", "dextrometorfano", "aciclovir"].every((x) => ids.has(x)));
+  const fren = buscar(indice, "frenadol").find((e) => e.tipo === "combo");
+  check("Frenadol es una combinación de 4 componentes", fren && fren.componentes.length === 4, fren && fren.componentes.map((c) => c.pid).join());
+  const res = evaluar({ kb, ddiCurado, ddi: { pares: [] }, indice }, [{ pid: "dextrometorfano", dosisPorToma: 20, tomas: 3 }, { pid: "sertralina", dosisPorToma: 50, tomas: 1 }], { edad: 40, condiciones: new Set() });
+  check("dextrometorfano + ISRS dispara la regla serotoninérgica", res.combinadas.some((c) => /serotonin/.test(c.regla.id)), res.combinadas.map((c) => c.regla.id).join());
+}
+
 console.log("\nIdiomas");
 {
   // i18n.js usa document/localStorage solo dentro de funciones; aquí comprobamos los diccionarios

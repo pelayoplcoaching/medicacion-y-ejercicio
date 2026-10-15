@@ -31,7 +31,24 @@ export function construirIndice(kb, marcas = []) {
     if (comps.length < 2) continue;
     for (const m of [cmb.nombre, ...(cmb.marcas || [])]) entradas.push({ texto: m, tipo: "combo", pid: comps[0].pid, componentes: comps, generico: m === cmb.nombre });
   }
+  const clasesPorId = new Map(kb.clases.map((c) => [c.id, c]));
   for (const m of marcas) {
+    if (m.clase && m.pa && !m.principios) {
+      // presentación del nomenclátor sin principio en la base, clasificada por su código ATC:
+      // se crea un principio "sintético" en la clase, que hereda las precauciones del grupo
+      const clase = clasesPorId.get(m.clase);
+      if (!clase) continue;
+      const pid = "atc:" + normalizar(m.pa).replace(/[^a-z0-9]+/g, "_");
+      if (!porId.has(pid)) {
+        const principio = { id: pid, nombre: m.pa, marcas: [], atc: m.atc, sintetico: true,
+          nota: `Clasificado automáticamente por su código ATC (${m.atc}) en el grupo «${clase.nombre}»: se aplican las precauciones generales del grupo, sin reglas específicas revisadas para este fármaco ni umbral de dosis.` };
+        clase.principios.push(principio);
+        porId.set(pid, { principio, clase });
+        entradas.push({ texto: m.pa, tipo: "principio", pid });
+      }
+      entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null });
+      continue;
+    }
     const comps = m.principios.filter((x) => porId.has(x)).map((x, i) => ({ pid: x, dosis: m.dosis?.[m.principios.indexOf(x)] ?? null }));
     if (!comps.length) continue;
     if (comps.length === 1) entradas.push({ texto: m.nombre, tipo: "marca", pid: comps[0].pid, dosis: comps[0].dosis, unidad: m.unidad });
