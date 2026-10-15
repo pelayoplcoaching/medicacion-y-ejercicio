@@ -1,10 +1,10 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151534";
-import { APP_VERSION } from "./version.js?v=202610151534";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151534";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151534";
-import { cargarScript } from "./libs.js?v=202610151534";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151534";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151534";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151643";
+import { APP_VERSION } from "./version.js?v=202610151643";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151643";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151643";
+import { cargarScript } from "./libs.js?v=202610151643";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151643";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151643";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -1809,15 +1809,22 @@ cargar();
 /* ---------- sin conexión / instalable ---------- */
 if ("serviceWorker" in navigator && location.protocol === "https:" && !location.hostname.endsWith("claude.ai")) {
   navigator.serviceWorker.register("sw.js").then((reg) => {
-    reg.addEventListener("updatefound", () => {
-      const nuevo = reg.installing;
-      nuevo?.addEventListener("statechange", () => {
-        if (nuevo.state === "installed" && navigator.serviceWorker.controller) {
-          const b = $("#aviso-actualizar"); b.hidden = false;
-          b.querySelector("button").addEventListener("click", () => { nuevo.postMessage("activar"); });
-        }
-      });
-    });
-    navigator.serviceWorker.addEventListener("controllerchange", () => location.reload());
+    // aviso «hay una versión nueva» con el botón que activa el service worker en espera
+    const ofrecer = (sw) => {
+      if (!sw) return;
+      const b = $("#aviso-actualizar"); b.hidden = false;
+      const btn = b.querySelector("button"); btn.onclick = () => { btn.disabled = true; sw.postMessage("activar"); };
+    };
+    const vigilar = (sw) => { sw?.addEventListener("statechange", () => { if (sw.state === "installed" && navigator.serviceWorker.controller) ofrecer(sw); }); };
+    if (reg.waiting && navigator.serviceWorker.controller) ofrecer(reg.waiting); // ya había una versión instalada esperando (p. ej., de una visita anterior)
+    vigilar(reg.installing);
+    reg.addEventListener("updatefound", () => vigilar(reg.installing));
+    // comprobar actualizaciones al volver a la pestaña o a la app instalada y cada hora: los móviles rara vez cierran la pestaña
+    const comprobar = () => { reg.update().catch(() => {}); };
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") comprobar(); });
+    window.addEventListener("focus", comprobar);
+    setInterval(comprobar, 60 * 60 * 1000);
+    let recargando = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (recargando) return; recargando = true; location.reload(); });
   }).catch(() => {});
 }
