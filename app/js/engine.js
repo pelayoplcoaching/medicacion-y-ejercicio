@@ -40,12 +40,13 @@ export function construirIndice(kb, marcas = []) {
       if (!clase) continue;
       const pid = "atc:" + normalizar(m.pa).replace(/[^a-z0-9]+/g, "_");
       if (!porId.has(pid)) {
-        const principio = { id: pid, nombre: m.pa, marcas: [], atc: m.atc, sintetico: true,
+        const principio = { id: pid, nombre: m.pa, marcas: [], atc: m.atc, sintetico: true, ficha: m.ft || null,
           nota: `Clasificado automáticamente por su código ATC (${m.atc}) en el grupo «${clase.nombre}»: se aplican las precauciones generales del grupo, sin reglas específicas revisadas para este fármaco ni umbral de dosis.` };
         clase.principios.push(principio);
         porId.set(pid, { principio, clase });
         entradas.push({ texto: m.pa, tipo: "principio", pid });
       }
+      if (m.ft && !porId.get(pid).principio.ficha) porId.get(pid).principio.ficha = m.ft;
       entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null });
       continue;
     }

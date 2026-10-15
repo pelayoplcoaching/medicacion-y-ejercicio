@@ -4,6 +4,7 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "inf.ficha.buscar": "Buscar «{n}» en CIMA", "inf.ficha.buscar.t": "Abre el buscador de la AEMPS; escriba {n} en el campo de búsqueda",
   "error.inesperado": "Algo ha fallado en la aplicación. Puede seguir usándola; si se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto de una caja", "acc.dictar": "Dictar", "modo.badge": "Profesional", "pdf.generado": "PDF generado.",
   "dictar.escuchando": "Escuchando… diga el nombre y la dosis («metformina 850, uno cero uno»). Pulse de nuevo para terminar.", "dictar.error": "No se ha podido usar el micrófono", "dictar.nada": "No se ha entendido nada; pruebe de nuevo más cerca del micrófono.", "dictar.origen": "el dictado",
@@ -103,6 +104,7 @@ const ES = {
 };
 
 const EN = {
+  "inf.ficha.buscar": "Search “{n}” on CIMA", "inf.ficha.buscar.t": "Opens the AEMPS search; type {n} in the search box",
   "error.inesperado": "Something went wrong in the app. You can keep using it; if it happens again, let us know.", "error.informar": "Report",
   "acc.caja": "Photo of a box", "acc.dictar": "Dictate", "modo.badge": "Professional", "pdf.generado": "PDF generated.",
   "dictar.escuchando": "Listening… say the name and dose (“metformin 850, one zero one”). Tap again to finish.", "dictar.error": "The microphone could not be used", "dictar.nada": "Nothing was understood; try again closer to the microphone.", "dictar.origen": "dictation",
@@ -202,6 +204,7 @@ const EN = {
 };
 
 const CA = {
+  "inf.ficha.buscar": "Cercar «{n}» a CIMA", "inf.ficha.buscar.t": "Obre el cercador de l'AEMPS; escriviu {n} al camp de cerca",
   "error.inesperado": "Alguna cosa ha fallat a l'aplicació. Podeu continuar; si es repeteix, informeu-nos.", "error.informar": "Informar",
   "acc.caja": "Foto d'una capsa", "acc.dictar": "Dictar", "modo.badge": "Professional", "pdf.generado": "PDF generat.",
   "dictar.escuchando": "Escoltant… digueu el nom i la dosi («metformina 850, u zero u»). Premeu de nou per acabar.", "dictar.error": "No s'ha pogut fer servir el micròfon", "dictar.nada": "No s'ha entès res; proveu de nou més a prop del micròfon.", "dictar.origen": "el dictat",
@@ -301,6 +304,7 @@ const CA = {
 };
 
 const GL = {
+  "inf.ficha.buscar": "Buscar «{n}» en CIMA", "inf.ficha.buscar.t": "Abre o buscador da AEMPS; escriba {n} no campo de busca",
   "error.inesperado": "Algo fallou na aplicación. Pode seguir usándoa; se se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto dunha caixa", "acc.dictar": "Ditar", "modo.badge": "Profesional", "pdf.generado": "PDF xerado.",
   "dictar.escuchando": "Escoitando… diga o nome e a dose («metformina 850, un cero un»). Prema de novo para rematar.", "dictar.error": "Non se puido usar o micrófono", "dictar.nada": "Non se entendeu nada; probe de novo máis preto do micrófono.", "dictar.origen": "o ditado",

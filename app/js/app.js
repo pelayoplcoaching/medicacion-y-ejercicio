@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151136";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151136";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151136";
-import { cargarScript } from "./libs.js?v=202610151136";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151136";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151136";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS } from "./engine.js?v=202610151144";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151144";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151144";
+import { cargarScript } from "./libs.js?v=202610151144";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151144";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151144";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -432,7 +432,7 @@ function mostrarFicha(pid) {
     ${[["general", t("tab.general")], ["aerobico", t("tab.aerobico")], ["fuerza", t("tab.fuerza")], ["equilibrio", t("tab.equilibrio")]].map(([amb, tit]) => { const r = reglas(amb); return r ? `<h3>${tit}</h3><ul class="reglas">${r}</ul>` : ""; }).join("")}
     ${horario ? `<h3>${t("ficha.horario")}</h3><ul class="reglas">${horario}</ul>` : ""}
     ${ddi.length ? `<h3>${t("ficha.interacciones")} (${ddi.length})</h3><ul class="ddi-mini">${ddi.join("")}</ul>` : ""}
-    <p class="fuentes" style="margin-top:12px">${c.fuentes?.length ? t("inf.fuentes") + ": " + c.fuentes.join(" · ") + " · " : ""}<a class="enlace-ft" style="display:inline" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(p.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>
+    <p class="fuentes" style="margin-top:12px">${c.fuentes?.length ? t("inf.fuentes") + ": " + c.fuentes.join(" · ") + " · " : ""}${enlaceFicha(p)}</p>
     <button type="button" class="btn btn-anadir" id="ficha-anadir">${t("ficha.anadir")}</button>`;
   $("#ficha-anadir").addEventListener("click", () => { ficha.close(); const e = indice.entradas.find((x) => x.tipo === "principio" && x.pid === pid); if (e) { elegir(e); inputBuscar.scrollIntoView({ block: "center" }); } });
 }
@@ -1049,8 +1049,14 @@ function renderAmbito(cont, grupos, titulo, amb) {
 
 /** Enlace a la ficha técnica: directo (fichas.json, del nomenclátor) o búsqueda en CIMA. */
 function urlFicha(principio) {
-  const u = datos.fichas?.[principio.id];
-  return u || `https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(principio.nombre.split(/[\s(\/]/)[0])}`;
+  return principio.ficha || datos.fichas?.[principio.id] || "https://cima.aemps.es/cima/publico/lista.html";
+}
+function tieneFicha(principio) { return !!(principio.ficha || datos.fichas?.[principio.id]); }
+/** Enlace a la ficha técnica: directo (PDF de la AEMPS) o, si aún no se ha generado fichas.json, al buscador de CIMA. */
+function enlaceFicha(principio, extra = "") {
+  return tieneFicha(principio)
+    ? `<a class="enlace-ft" href="${urlFicha(principio)}" target="_blank" rel="noopener">${t("inf.ficha")}${extra}</a>`
+    : `<a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html" target="_blank" rel="noopener" title="${t("inf.ficha.buscar.t", { n: nombreCorto(principio) })}">${t("inf.ficha.buscar", { n: nombreCorto(principio) })}${extra}</a>`;
 }
 function fraseCorta(txt, max = 120) {
   const f = (txt || "").split(/(?<=[.!?])\s+/)[0] || "";
@@ -1074,7 +1080,7 @@ function tarjetaFarmaco(g, amb, abierta) {
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span>${r.fuente ? ` <small class="fuente-regla">${r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
-          <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}<a class="enlace-ft" href="${urlFicha(it.principio)}" target="_blank" rel="noopener">${t("inf.ficha")}</a></p>
+          <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}${enlaceFicha(it.principio)}</p>
         </div>
       </details>`;
   }
@@ -1111,7 +1117,7 @@ function renderInteracciones(cont, res) {
           <header><h4>${x.a.principio.nombre} <span class="mas">+</span> ${x.b.principio.nombre}</h4><span class="nivel">${datos.ddiCurado.niveles?.[x.nivel] || x.nivel}</span></header>
           <p>${x.efecto}</p>
           ${x.accion ? `<p class="accion"><b>${t("ddi.que_hacer")}:</b> ${x.accion}</p>` : ""}
-          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? `${t("ddi.ddinter")} · <a href="${urlFicha(x.a.principio)}" target="_blank" rel="noopener">${t("inf.ficha")} ${nombreCorto(x.a.principio)}</a> · <a href="${urlFicha(x.b.principio)}" target="_blank" rel="noopener">${nombreCorto(x.b.principio)}</a>` : t("ddi.duplicidad")}</footer>
+          <footer>${x.fuente === "curada" ? t("ddi.fuente_propia") : x.fuente === "ddinter" ? `${t("ddi.ddinter")} · ${enlaceFicha(x.a.principio, " " + nombreCorto(x.a.principio))} · ${enlaceFicha(x.b.principio, " " + nombreCorto(x.b.principio))}` : t("ddi.duplicidad")}</footer>
         </article>`);
     }
   }

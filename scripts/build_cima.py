@@ -487,6 +487,8 @@ def main(argv):
                     continue
                 vistos.add(clave)
                 fila = {"nombre": acortar(nombre).upper(), "atc": atc, "pa": nombre_pa, "clase": clase}
+                if url_ft and "INYECTABLE" not in nombre.upper():
+                    fila["ft"] = url_ft
                 if dd is not None:
                     fila["dosis"] = [dd]
                 salida.append(fila)

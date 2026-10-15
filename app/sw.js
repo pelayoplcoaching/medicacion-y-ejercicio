@@ -1,7 +1,7 @@
 /* Service worker: la aplicación y la base de conocimiento funcionan sin conexión.
    El nombre de la caché cambia con cada despliegue (scripts/bump_version.py lo sella), de modo que
    una versión nueva se descarga en segundo plano y se activa cuando el usuario pulsa "Actualizar". */
-const VERSION = "202610151136";
+const VERSION = "202610151144";
 const CACHE = "medex-" + VERSION;
 const APP = ["./", "index.html", "novedades.html", "acerca.html", "manifest.webmanifest", "css/style.css", "js/app.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/libs.js", "js/i18n.js",
   "data/kb.json", "data/ddi_curated.json", "data/ddi.json", "data/marcas.json",
