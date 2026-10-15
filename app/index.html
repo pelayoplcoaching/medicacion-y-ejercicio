@@ -56,9 +56,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151041">
+<link rel="stylesheet" href="css/style.css?v=202610151053">
 </head>
-<body>
+<body class="cargando">
 
 <header class="cabecera">
   <img src="assets/logo.png" alt="Fuerza Basada en Evidencia" class="logo" width="76" height="76">
@@ -141,6 +141,7 @@
         <div class="fila"><label style="flex:1 1 160px"><span data-i18n="perf.guardar_como">Guardar la lista actual como</span> <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" data-i18n-ph="perf.ph" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar" data-i18n="perf.guardar">Guardar</button></div>
         <small data-i18n="perf.nota">Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
         <ul id="perfiles-lista"></ul>
+        <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-exportar" data-i18n="perf.exportar">Guardar copia de las listas</button><button type="button" class="btn-sec sm" id="btn-importar-listas" data-i18n="perf.importar">Recuperar copia</button><input type="file" id="importar-listas-input" accept="application/json,.json" hidden></div>
       </div>
       <form id="form-med" autocomplete="off">
         <div class="buscador" style="margin-top:10px">
@@ -148,6 +149,7 @@
           <input id="buscar" type="search" placeholder="Marca o principio activo (Emconcor, bisoprolol…)" data-i18n-ph="buscar.ph" aria-controls="sugerencias" aria-autocomplete="list">
           <ul id="sugerencias" role="listbox" hidden></ul>
         </div>
+        <div id="rapido" class="rapido" hidden></div>
         <div id="dosis-wrap" hidden>
           <div class="fila">
             <label><span data-i18n="dosis.toma">Dosis por toma</span> <input type="number" id="dosis" step="any" min="0" inputmode="decimal"></label>
@@ -155,6 +157,7 @@
             <label id="tomas-wrap"><span data-i18n="dosis.tomas">Tomas al día</span> <input type="number" id="tomas" min="1" max="6" value="1" inputmode="numeric"></label>
             <button class="btn" type="submit" data-i18n="dosis.anadir">Añadir</button>
           </div>
+          <div id="dosis-presets" class="rapido" hidden></div>
           <small data-i18n="dosis.nota">Si no conoce la dosis, puede añadirlo sin ella: perderá solo las indicaciones que dependen de la dosis.</small>
         </div>
       </form>
@@ -178,6 +181,7 @@
 
       <div id="ejemplo-banner" class="banner" data-i18n="ejemplo.banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
       <ul id="lista-meds"></ul>
+      <div class="ilustracion" id="ilustracion" aria-hidden="true"><svg viewBox="0 0 160 90" width="160" height="90"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#6b35c4"/><stop offset="1" stop-color="#b89bf5"/></linearGradient></defs><path d="M12 68c10-22 36-30 58-26l10 2c6 1 10-3 16-2 14 2 34 10 50 18 4 2 3 8-2 8H14c-3 0-4-2-2-4z" fill="url(#g1)" opacity=".9"/><path d="M14 68h128" stroke="#fff" stroke-opacity=".5" stroke-width="2"/><rect x="92" y="14" width="46" height="20" rx="10" transform="rotate(-28 115 24)" fill="#fff" stroke="#6b35c4" stroke-width="2.5"/><path d="M103 38 125 26" stroke="#6b35c4" stroke-width="2.5"/><circle cx="46" cy="28" r="9" fill="none" stroke="#6b35c4" stroke-width="2.5"/><path d="M46 22v6l4 3" stroke="#6b35c4" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
       <p id="sin-meds" class="vacio" data-i18n="lista.vacia" hidden>Todavía no hay medicamentos en la lista. Busque uno arriba, pegue su lista, suba el PDF o una foto de su hoja de medicación, o pulse «Ver un ejemplo» para ver cómo funciona.</p>
     </div>
   </aside>
@@ -185,9 +189,10 @@
   <section id="informe" hidden>
     <div class="cabecera-informe">
       <h2 data-i18n="inf.titulo">Qué tener en cuenta</h2>
-      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button></div>
+      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-qr" data-i18n="qr.btn">Código QR</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button></div>
     </div>
     <div class="contexto-chips" id="contexto"></div>
+    <div id="veredicto" class="veredicto"></div>
     <div id="resumen"></div>
     <div id="esencial"></div>
     <div class="tabs" role="tablist">
@@ -218,6 +223,7 @@
   </section>
 </main>
 
+<dialog id="qr" class="ficha qr" aria-label="Código QR"><div class="ficha-cab"><p data-i18n="qr.texto">Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).</p><button type="button" class="btn-sec sm" id="qr-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="qr-cuerpo" class="qr-cuerpo"></div></dialog>
 <dialog id="ficha" class="ficha" aria-labelledby="ficha-titulo">
   <div class="ficha-cab">
     <div class="buscador"><label for="ficha-buscar" class="sr-only" data-i18n="ficha.sr">Buscar fármaco</label><input id="ficha-buscar" type="search" placeholder="Marca o principio activo…" data-i18n-ph="ficha.ph" autocomplete="off"><ul id="ficha-sugerencias" role="listbox" hidden></ul></div>
@@ -232,6 +238,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script type="module" src="js/app.js?v=202610151041"></script>
+<script type="module" src="js/app.js?v=202610151053"></script>
 </body>
 </html>

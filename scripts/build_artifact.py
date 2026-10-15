@@ -18,7 +18,7 @@ engine = "\n".join(mods[:-1]); appjs = mods[-1]
 # quedarnos con el contenido de <head> útil y el <body>
 head = re.search(r"<head>(.*?)</head>", html, re.S).group(1)
 head = re.sub(r"<meta charset[^>]*>|<meta name=\"viewport\"[^>]*>|<link rel=\"stylesheet\" href=\"css/style.css\">", "", head)
-body = re.search(r"<body>(.*?)</body>", html, re.S).group(1)
+body = re.search(r"<body[^>]*>(.*?)</body>", html, re.S).group(1)
 body = re.sub(r'<script type="module" src="js/app\.js[^"]*"></script>', "", body)
 out = f"{head.strip()}\n<style>\n{css}\n</style>\n{body}\n<script type=\"module\">\n{engine}\n{appjs}\n</script>\n"
 (ROOT / "dist").mkdir(exist_ok=True)

@@ -4,6 +4,12 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "rapido.recientes": "Añadir rápido (recientes y habituales)", "rapido.habituales": "Añadir rápido (los más habituales)", "dosis.habituales": "Dosis por comprimido en España",
+  "veredicto.alerta": "Puede hacer ejercicio, con {a} punto(s) de atención que conviene leer antes de empezar.", "veredicto.precaucion": "Puede hacer ejercicio con normalidad; hay {p} precaución(es) que merece la pena conocer.", "veredicto.ok": "Sin precauciones especiales: puede hacer ejercicio con normalidad.",
+  "sintomas.titulo": "Si nota algo al entrenar…", "sintomas.ayuda": "Elija lo que le ocurre y verá qué fármacos de su lista podrían explicarlo y qué hacer.", "sintomas.posibles": "Podrían contribuir: {f}.", "sintomas.ninguno": "Ningún fármaco de su lista lo explica de forma habitual; si se repite, consúltelo.",
+  "qr.btn": "Código QR", "qr.texto": "Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).", "qr.error": "No se ha podido generar el código QR (compruebe la conexión).",
+  "perf.exportar": "Guardar copia de las listas", "perf.importar": "Recuperar copia", "perf.exportado": "Copia guardada con {n} lista(s).", "perf.importado": "{n} lista(s) recuperadas.", "perf.importar_error": "El archivo no es una copia válida.", "perf.antigua": "Esta lista tiene {d} días. Compruebe que la medicación sigue siendo la misma.",
+  "atajos.lista": "Atajos: «/» buscar · ↑↓ y Enter elegir · Ctrl+Enter ver el informe · Ctrl+Mayús+P generar el PDF.",
   "lista.pausado": "en pausa (no cuenta en el informe)", "lista.pausar": "Pausar: ver el informe sin este fármaco", "lista.reanudar": "Volver a contar este fármaco", "lista.editar_dosis": "Cambiar la dosis", "lista.deshacer": "Deshacer",
   "lista.quitado": "{f} quitado de la lista.", "lista.pausado_msg": "{f} en pausa: el informe se calcula sin él.", "lista.reanudado_msg": "{f} vuelve a contar en el informe.", "lista.actualizado": "Dosis de {f} actualizada.",
   "pasos.1": "Medicación", "pasos.2": "Sus datos", "pasos.3": "Informe",
@@ -90,6 +96,12 @@ const ES = {
 };
 
 const EN = {
+  "rapido.recientes": "Quick add (recent and common)", "rapido.habituales": "Quick add (most common)", "dosis.habituales": "Tablet strengths available in Spain",
+  "veredicto.alerta": "You can exercise; there are {a} point(s) of attention worth reading before you start.", "veredicto.precaucion": "You can exercise normally; there are {p} precaution(s) worth knowing.", "veredicto.ok": "No special precautions: you can exercise normally.",
+  "sintomas.titulo": "If you notice something while training…", "sintomas.ayuda": "Choose what happens to you to see which drugs on your list could explain it and what to do.", "sintomas.posibles": "Could contribute: {f}.", "sintomas.ninguno": "No drug on your list usually explains it; if it recurs, seek advice.",
+  "qr.btn": "QR code", "qr.texto": "Scan this code with your phone to open the list (no name or personal data).", "qr.error": "The QR code could not be generated (check your connection).",
+  "perf.exportar": "Save a backup of the lists", "perf.importar": "Restore backup", "perf.exportado": "Backup saved with {n} list(s).", "perf.importado": "{n} list(s) restored.", "perf.importar_error": "The file is not a valid backup.", "perf.antigua": "This list is {d} days old. Check that the medication is still the same.",
+  "atajos.lista": "Shortcuts: “/” search · ↑↓ and Enter to choose · Ctrl+Enter see the report · Ctrl+Shift+P generate the PDF.",
   "lista.pausado": "paused (not counted in the report)", "lista.pausar": "Pause: see the report without this drug", "lista.reanudar": "Count this drug again", "lista.editar_dosis": "Change the dose", "lista.deshacer": "Undo",
   "lista.quitado": "{f} removed from the list.", "lista.pausado_msg": "{f} paused: the report is calculated without it.", "lista.reanudado_msg": "{f} counts in the report again.", "lista.actualizado": "Dose of {f} updated.",
   "pasos.1": "Medication", "pasos.2": "Your data", "pasos.3": "Report",
@@ -176,6 +188,12 @@ const EN = {
 };
 
 const CA = {
+  "rapido.recientes": "Afegir ràpid (recents i habituals)", "rapido.habituales": "Afegir ràpid (els més habituals)", "dosis.habituales": "Dosi per comprimit a Espanya",
+  "veredicto.alerta": "Pot fer exercici, amb {a} punt(s) d'atenció que convé llegir abans de començar.", "veredicto.precaucion": "Pot fer exercici amb normalitat; hi ha {p} precaució/ns que val la pena conèixer.", "veredicto.ok": "Sense precaucions especials: pot fer exercici amb normalitat.",
+  "sintomas.titulo": "Si nota alguna cosa en entrenar…", "sintomas.ayuda": "Triï el que li passa i veurà quins fàrmacs de la llista podrien explicar-ho i què fer.", "sintomas.posibles": "Hi podrien contribuir: {f}.", "sintomas.ninguno": "Cap fàrmac de la llista ho explica habitualment; si es repeteix, consulti-ho.",
+  "qr.btn": "Codi QR", "qr.texto": "Escanegi aquest codi amb el mòbil per obrir la llista (sense nom ni dades personals).", "qr.error": "No s'ha pogut generar el codi QR (comprovi la connexió).",
+  "perf.exportar": "Desar còpia de les llistes", "perf.importar": "Recuperar còpia", "perf.exportado": "Còpia desada amb {n} llista/es.", "perf.importado": "{n} llista/es recuperades.", "perf.importar_error": "El fitxer no és una còpia vàlida.", "perf.antigua": "Aquesta llista té {d} dies. Comprovi que la medicació segueix sent la mateixa.",
+  "atajos.lista": "Dreceres: «/» cercar · ↑↓ i Retorn triar · Ctrl+Retorn veure l'informe · Ctrl+Maj+P generar el PDF.",
   "lista.pausado": "en pausa (no compta a l'informe)", "lista.pausar": "Pausar: veure l'informe sense aquest fàrmac", "lista.reanudar": "Tornar a comptar aquest fàrmac", "lista.editar_dosis": "Canviar la dosi", "lista.deshacer": "Desfer",
   "lista.quitado": "{f} tret de la llista.", "lista.pausado_msg": "{f} en pausa: l'informe es calcula sense ell.", "lista.reanudado_msg": "{f} torna a comptar a l'informe.", "lista.actualizado": "Dosi de {f} actualitzada.",
   "pasos.1": "Medicació", "pasos.2": "Les seves dades", "pasos.3": "Informe",
@@ -262,6 +280,12 @@ const CA = {
 };
 
 const GL = {
+  "rapido.recientes": "Engadir rápido (recentes e habituais)", "rapido.habituales": "Engadir rápido (os máis habituais)", "dosis.habituales": "Dose por comprimido en España",
+  "veredicto.alerta": "Pode facer exercicio, con {a} punto(s) de atención que convén ler antes de empezar.", "veredicto.precaucion": "Pode facer exercicio con normalidade; hai {p} precaución(s) que paga a pena coñecer.", "veredicto.ok": "Sen precaucións especiais: pode facer exercicio con normalidade.",
+  "sintomas.titulo": "Se nota algo ao adestrar…", "sintomas.ayuda": "Escolla o que lle ocorre e verá que fármacos da súa lista poderían explicalo e que facer.", "sintomas.posibles": "Poderían contribuír: {f}.", "sintomas.ninguno": "Ningún fármaco da súa lista o explica habitualmente; se se repite, consúlteo.",
+  "qr.btn": "Código QR", "qr.texto": "Escanee este código co móbil para abrir a lista (sen nome nin datos persoais).", "qr.error": "Non se puido xerar o código QR (comprobe a conexión).",
+  "perf.exportar": "Gardar copia das listas", "perf.importar": "Recuperar copia", "perf.exportado": "Copia gardada con {n} lista(s).", "perf.importado": "{n} lista(s) recuperadas.", "perf.importar_error": "O ficheiro non é unha copia válida.", "perf.antigua": "Esta lista ten {d} días. Comprobe que a medicación segue sendo a mesma.",
+  "atajos.lista": "Atallos: «/» buscar · ↑↓ e Intro escoller · Ctrl+Intro ver o informe · Ctrl+Maiús+P xerar o PDF.",
   "lista.pausado": "en pausa (non conta no informe)", "lista.pausar": "Pausar: ver o informe sen este fármaco", "lista.reanudar": "Volver contar este fármaco", "lista.editar_dosis": "Cambiar a dose", "lista.deshacer": "Desfacer",
   "lista.quitado": "{f} quitado da lista.", "lista.pausado_msg": "{f} en pausa: o informe calcúlase sen el.", "lista.reanudado_msg": "{f} volve contar no informe.", "lista.actualizado": "Dose de {f} actualizada.",
   "pasos.1": "Medicación", "pasos.2": "Os seus datos", "pasos.3": "Informe",

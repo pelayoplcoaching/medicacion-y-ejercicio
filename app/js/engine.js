@@ -55,7 +55,11 @@ export function construirIndice(kb, marcas = []) {
     else entradas.push({ texto: m.nombre, tipo: "combo", pid: comps[0].pid, componentes: comps });
   }
   for (const e of entradas) e.norm = normalizar(e.texto);
-  return { porId, entradas };
+  // dosis por comprimido disponibles en España (del nomenclátor), por principio: para ofrecerlas como opciones rápidas
+  const dosisPorPid = new Map();
+  for (const e of entradas) if (e.tipo === "marca" && e.dosis != null && e.dosis > 0) { const set = dosisPorPid.get(e.pid) || new Set(); set.add(e.dosis); dosisPorPid.set(e.pid, set); }
+  for (const [k, v] of dosisPorPid) { const arr = [...v].sort((x, y) => x - y); const max = arr[arr.length - 1]; dosisPorPid.set(k, arr.filter((d) => d >= max / 50).slice(0, 8)); }
+  return { porId, entradas, dosisPorPid };
 }
 
 /** Distancia de edición limitada (Levenshtein con corte). */
@@ -376,4 +380,27 @@ export function loEsencial(res, max = 5) {
     }
   }
   return puntos.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).slice(0, max);
+}
+
+
+/** Síntomas frecuentes al entrenar y las señales farmacológicas que pueden explicarlos. */
+export const SINTOMAS = [
+  { id: "mareo", nombre: "Mareo al levantarme o al terminar", senales: ["hipotension", "bradicardia", "sedacion", "hipoglucemia", "deshidratacion"], consejo: "Termine siempre con 5–10 minutos suaves, levántese despacio, beba agua y no entrene en ayunas si toma medicación para el azúcar. Si se repite o llega a desmayarse, consulte: puede que haya que ajustar alguna dosis.", alarma: "Si el mareo va con dolor en el pecho, desmayo o palpitaciones, deje de entrenar y consulte hoy." },
+  { id: "calambres", nombre: "Calambres o dolor muscular", senales: ["miopatia", "hipopotasemia", "deshidratacion", "estatina", "diuretico"], consejo: "Hidratación con algo de sal en sesiones largas, progresión lenta de la carga y estiramientos suaves. Si el dolor muscular es generalizado, con debilidad o la orina oscura, deje de entrenar y consulte: hay que descartar un efecto del fármaco (analítica de CK y potasio)." },
+  { id: "cansancio", nombre: "Me canso mucho más de lo normal", senales: ["fatiga", "bradicardia", "fc_no_valida", "sedacion", "perdida_muscular", "hipotension"], consejo: "Algunos fármacos limitan el pulso o la energía disponible: guíese por la sensación de esfuerzo, no por el reloj, y entrene en la franja del día en que se encuentre mejor (pestaña ¿Cuándo?). Si el cansancio es nuevo o va a más, coméntelo con su médico." },
+  { id: "hipoglucemia", nombre: "Sudor frío, temblor o hambre repentina", senales: ["hipoglucemia", "enmascara_hipoglucemia"], consejo: "Puede ser una bajada de azúcar. Pare, tome 15 g de azúcar rápido (zumo, 3 terrones) y espere 15 minutos. Mida la glucosa antes de entrenar y lleve siempre algo de azúcar. Si usa insulina o sulfonilureas, hable con su médico de ajustar la dosis los días de ejercicio.", alarma: "Confusión, dificultad para hablar o pérdida de conocimiento: avise a alguien y llame al 112." },
+  { id: "palpitaciones", nombre: "Palpitaciones o pulso irregular", senales: ["taquicardia", "qt", "hipopotasemia", "hipertension"], consejo: "Reduzca la intensidad y evite estimulantes (café, pre-entrenos, descongestivos). Si las palpitaciones duran más de unos minutos, van con mareo o se repiten, consulte: con algunos fármacos conviene un electrocardiograma y un control de potasio.", alarma: "Palpitaciones con dolor en el pecho, desmayo o falta de aire intensa: pare y llame al 112." },
+  { id: "calor", nombre: "Mucho calor, poca sudoración o boca seca", senales: ["calor", "anticolinergico", "deshidratacion"], consejo: "Hay fármacos que dificultan disipar el calor o reducen la sudoración. Entrene a primera hora o en interiores climatizados, beba antes de tener sed y pare ante dolor de cabeza, náuseas o piel caliente y seca." },
+  { id: "sangrado", nombre: "Moratones, sangrados o encías que sangran", senales: ["sangrado"], consejo: "Con anticoagulantes o antiagregantes son esperables moratones pequeños; evite deportes de contacto y proteja cabeza y articulaciones. Hematomas grandes sin golpe, sangre en orina o heces negras: consulte sin esperar.", alarma: "Golpe en la cabeza tomando anticoagulantes: acuda a urgencias aunque se encuentre bien." },
+  { id: "tendon", nombre: "Dolor en un tendón (talón, hombro)", senales: ["tendon", "corticoide"], consejo: "Algunos antibióticos (quinolonas) y los corticoides debilitan los tendones. Pare la actividad que lo provoca, no estire con dolor y consulte: con dolor agudo en el talón hay que descartar rotura del Aquiles." },
+  { id: "inestabilidad", nombre: "Inestabilidad o miedo a caerme", senales: ["caidas", "sedacion", "hipotension", "anticolinergico"], consejo: "El entrenamiento de equilibrio es la mejor prevención, siempre con apoyo al alcance. Revise con su médico los fármacos que dan sueño o bajan la tensión: a menudo se puede reducir alguno. Zapatillas con suela firme y luz suficiente." },
+  { id: "piel", nombre: "Quemaduras solares con poco sol", senales: ["fotosensibilidad"], consejo: "Fotosensibilidad por el fármaco: entrene a la sombra o a primera hora, con protector solar 50 y ropa que cubra; si aparece una erupción, consulte." },
+];
+
+/** Para cada síntoma, los fármacos de la lista que podrían explicarlo (por sus señales). */
+export function sintomasPosibles(res) {
+  return SINTOMAS.map((s) => {
+    const farmacos = res.items.filter((it) => s.senales.some((x) => it.senales.has(x))).map((it) => it.principio.nombre);
+    return { ...s, farmacos };
+  });
 }
