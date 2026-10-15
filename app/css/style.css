@@ -80,7 +80,7 @@ input:focus, textarea:focus { border-color: var(--accent); }
 input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 75%, transparent); }
 textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
 input[type="number"] { font-variant-numeric: tabular-nums; }
-input[type="checkbox"] { width: 22px; height: 22px; min-height: 0; accent-color: var(--accent); margin: 0; }
+input[type="checkbox"], input[type="radio"] { width: 22px; height: 22px; min-height: 0; padding: 0; accent-color: var(--accent); margin: 0; flex: 0 0 22px; }
 
 .btn, .btn-sec {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -719,7 +719,7 @@ details.farmaco summary .ic-grupo { width: 30px; height: 30px; padding: 5px; }
 /* ---------- alfa 15: cribado ACSM, prescriptor, evidencia, casos, índice lateral, legal ---------- */
 .crib-preg { border: 0; margin: 8px 0 0; padding: 0; }
 .crib-preg legend { font-size: .9rem; font-weight: 600; color: var(--fg); padding: 0; margin-bottom: 2px; }
-.crib-preg .check { display: inline-flex; margin-right: 14px; min-height: 36px; }
+.crib-preg .check { display: inline-flex; align-items: center; gap: 8px; margin-right: 18px; min-height: 36px; }
 .crib-sug { display: block; color: var(--accent-deep); font-weight: 600; margin-top: 2px; }
 .chip-crib { margin-left: 6px; }
 .chip-crib.crib-info { background: var(--info-soft); color: var(--info-ink); }
