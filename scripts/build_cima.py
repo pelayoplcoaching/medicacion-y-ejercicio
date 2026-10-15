@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 KB = ROOT / "app" / "data" / "kb.json"
 OUT = ROOT / "app" / "data" / "marcas.json"
 URL = "https://listadomedicamentos.aemps.gob.es/prescripcion.zip"
+URL_DICC_PA = "https://listadomedicamentos.aemps.gob.es/DICCIONARIO_PRINCIPIOS_ACTIVOS.xml"
 
 # Etiquetas conocidas del Prescripcion.xml. Se usan si existen; si no, se detectan por nombre parecido.
 TAGS_FIJAS = {
@@ -39,7 +40,8 @@ TAGS_FIJAS = {
     "nombre": "des_nomco",          # nombre comercial
     "presentacion": "des_prese",    # descripción de la presentación
     "comercializado": "sw_comercializado",
-    "pa": "principio_activo",
+    "pa": "composicion_pa",
+    "pa_codigo": "cod_principio_activo",
     "pa_nombre": "nom_principio_activo",
     "pa_dosis": "dosis_pa",
     "pa_unidad": "unidad_dosis_pa",
@@ -49,7 +51,8 @@ PISTAS = {
     "nombre": ["nomco", "nombre_com", "nom_med", "nombre"],
     "presentacion": ["prese", "presentacion"],
     "comercializado": ["comercializ"],
-    "pa": ["principio_activo", "principioactivo", "principio"],
+    "pa": ["composicion_pa", "principio_activo", "principioactivo", "principio"],
+    "pa_codigo": ["cod_principio", "codigo_principio", "cod_pa"],
     "pa_nombre": ["nom_principio", "nombre_principio", "des_principio", "nom_pa", "nombre"],
     "pa_dosis": ["dosis"],
     "pa_unidad": ["unidad"],
@@ -127,24 +130,72 @@ def resolver(nombre_pa: str, alias: dict):
     return alias.get(primera)
 
 
-def leer_xml(origen: str | None) -> bytes:
-    """Devuelve los bytes del XML desde una URL, un zip o un xml."""
-    if origen is None:
-        print(f"Descargando {URL} …")
-        req = urllib.request.Request(URL, headers={"User-Agent": "medicacion-y-ejercicio/1.0"})
-        with urllib.request.urlopen(req, timeout=180) as r:
-            data = r.read()
-    else:
-        data = Path(origen).read_bytes()
+def descargar(url: str) -> bytes:
+    print(f"Descargando {url} …")
+    req = urllib.request.Request(url, headers={"User-Agent": "medicacion-y-ejercicio/1.0"})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        return r.read()
+
+
+def leer_xml(origen: str | None):
+    """Devuelve (bytes del XML principal, bytes del diccionario de principios activos o None)."""
+    data = descargar(URL) if origen is None else Path(origen).read_bytes()
+    dicc = None
     if data[:2] == b"PK":  # zip
         z = zipfile.ZipFile(io.BytesIO(data))
         xmls = [n for n in z.namelist() if n.lower().endswith(".xml")]
         if not xmls:
             sys.exit(f"El zip no contiene ningún XML: {z.namelist()}")
         nombre = next((n for n in xmls if "prescripcion" in n.lower()), xmls[0])
-        print(f"Usando {nombre} del zip")
+        print(f"Ficheros del zip: {', '.join(z.namelist())}")
+        print(f"Usando {nombre}")
         data = z.read(nombre)
-    return data
+        d = next((n for n in xmls if "principio" in n.lower()), None)
+        if d:
+            print(f"Diccionario de principios activos: {d}")
+            dicc = z.read(d)
+    if dicc is None:
+        # el diccionario puede estar junto al xml descargado a mano, o en la web de la AEMPS
+        if origen:
+            for cand in Path(origen).parent.glob("*.xml"):
+                if "principio" in cand.name.lower():
+                    print(f"Diccionario de principios activos: {cand}")
+                    dicc = cand.read_bytes()
+                    break
+        if dicc is None:
+            try:
+                dicc = descargar(URL_DICC_PA)
+            except Exception as e:  # noqa: BLE001
+                print(f"  (no se pudo descargar el diccionario: {e})")
+    return data, dicc
+
+
+def cargar_diccionario_pa(data: bytes | None) -> dict:
+    """Código de principio activo → nombre, leyendo el DICCIONARIO_PRINCIPIOS_ACTIVOS.xml de la AEMPS.
+    Detecta las etiquetas: el hijo más repetido de la raíz es la entrada; dentro, la etiqueta con "cod" es el código
+    y la primera etiqueta con texto no numérico es el nombre."""
+    if not data:
+        return {}
+    root = ET.fromstring(data)
+    hijos = Counter(local(h.tag) for h in root)
+    if not hijos:
+        return {}
+    entrada = hijos.most_common(1)[0][0]
+    out = {}
+    for e in iter_local(root, entrada):
+        cod, nom = None, None
+        for h in e:
+            tag, txt = local(h.tag).lower(), (h.text or "").strip()
+            if not txt:
+                continue
+            if cod is None and "cod" in tag and txt.replace(".", "").isdigit():
+                cod = txt
+            elif nom is None and not txt.replace(".", "").isdigit() and "fecha" not in tag:
+                nom = txt
+        if cod and nom:
+            out[cod] = nom
+    print(f"Diccionario: {len(out):,} principios activos")
+    return out
 
 
 def detectar_tags(root) -> dict:
@@ -182,10 +233,10 @@ def detectar_tags(root) -> dict:
         universo_pa = Counter(local(e.tag) for e in pa0.iter()) if pa0 is not None else Counter()
         # quitar la propia etiqueta del principio
         universo_pa.pop(tags["pa"], None)
-        for clave in ("pa_nombre", "pa_dosis", "pa_unidad"):
+        for clave in ("pa_codigo", "pa_nombre", "pa_dosis", "pa_unidad"):
             tags[clave] = buscar(clave, universo_pa)
     else:
-        for clave in ("pa_nombre", "pa_dosis", "pa_unidad"):
+        for clave in ("pa_codigo", "pa_nombre", "pa_dosis", "pa_unidad"):
             tags[clave] = None
     return tags
 
@@ -223,7 +274,7 @@ def main(argv):
     origen = args[0] if args else None
 
     alias = cargar_alias_kb()
-    data = leer_xml(origen)
+    data, dicc_bytes = leer_xml(origen)
     try:
         root = ET.fromstring(data)
     except ET.ParseError as e:
@@ -234,7 +285,10 @@ def main(argv):
         return
 
     tags = detectar_tags(root)
-    faltan = [k for k in ("medicamento", "nombre", "pa", "pa_nombre") if not tags.get(k)]
+    dicc = cargar_diccionario_pa(dicc_bytes) if tags.get("pa_codigo") else {}
+    faltan = [k for k in ("medicamento", "nombre", "pa") if not tags.get(k)]
+    if not tags.get("pa_nombre") and not (tags.get("pa_codigo") and dicc):
+        faltan.append("pa_nombre (o pa_codigo + diccionario de principios activos)")
     if faltan:
         inspeccionar(root)
         sys.exit(f"\nNo se detectaron las etiquetas {faltan}. Ajuste TAGS_FIJAS en scripts/build_cima.py.")
@@ -253,7 +307,7 @@ def main(argv):
             continue
         pas, dosis, unidad = [], [], None
         for pa in iter_local(med, tags["pa"]):
-            nom_pa = texto(pa, tags["pa_nombre"])
+            nom_pa = texto(pa, tags["pa_nombre"]) if tags.get("pa_nombre") else dicc.get(texto(pa, tags["pa_codigo"]), "")
             pid = resolver(nom_pa, alias)
             if pid is None:
                 if nom_pa and quitar_acentos(nom_pa) not in alias:
