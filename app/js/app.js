@@ -1,7 +1,7 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150750";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150750";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150750";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150750";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150753";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150753";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150753";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150753";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -47,7 +47,6 @@ function restaurar() {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
     if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: s.meds.filter((m) => indice.porId.has(m.pid)), edad: s.edad ?? null, caidas: !!s.caidas });
   } catch {}
-  if (!estado.meds.length) Object.assign(estado, structuredClone(EJEMPLO), { ejemplo: true });
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
 }
