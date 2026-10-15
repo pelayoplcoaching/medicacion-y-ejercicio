@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151027">
+<link rel="stylesheet" href="css/style.css?v=202610151041">
 </head>
 <body>
 
@@ -71,7 +71,7 @@
     <p data-i18n="cab.lema1">El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
     <p data-i18n="cab.lema2">El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
+  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><button type="button" class="btn-sec sm btn-icono" id="btn-tema" aria-label="Tema"><span>A</span></button><button type="button" class="btn-sec sm" id="btn-instalar" hidden data-i18n="instalar">Instalar</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
   <p class="banner" id="aviso-idioma" hidden></p>
 </header>
 
@@ -210,7 +210,7 @@
       <small data-i18n="desc.nota">El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso" aria-live="polite"></small>
       <div class="util" id="util" hidden aria-live="polite"></div>
-      <div class="acciones compartir"><button type="button" class="btn-sec sm" id="btn-whatsapp" data-i18n="compartir.whatsapp">Compartir por WhatsApp</button><button type="button" class="btn-sec sm" id="btn-email" data-i18n="compartir.email">Enviar a mi médico por correo</button></div>
+      <div class="acciones compartir"><button type="button" class="btn-sec sm" id="btn-whatsapp" data-i18n="compartir.whatsapp">Compartir por WhatsApp</button><button type="button" class="btn-sec sm" id="btn-email" data-i18n="compartir.email">Enviar a mi médico por correo</button><button type="button" class="btn-sec sm" id="btn-calendario" data-i18n="plan.calendario">Añadir mi plan al calendario</button></div>
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
@@ -226,10 +226,12 @@
   <div id="ficha-cuerpo" class="ficha-cuerpo"><p class="vacio" data-i18n="ficha.vacio">Busque un medicamento para ver todo lo que la aplicación sabe de él: precauciones para cada tipo de ejercicio, horario, interacciones y fuentes. No se añade a su lista.</p></div>
 </dialog>
 <div class="aviso-actualizar" id="aviso-actualizar" hidden><span data-i18n="act.nueva">Hay una versión nueva.</span> <button type="button" class="btn-sec sm" data-i18n="act.btn">Actualizar</button></div>
+<div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 <div class="barra-inferior" id="barra-inferior" hidden>
+  <div class="pasos" id="pasos"></div>
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </div>
 
-<script type="module" src="js/app.js?v=202610151027"></script>
+<script type="module" src="js/app.js?v=202610151041"></script>
 </body>
 </html>

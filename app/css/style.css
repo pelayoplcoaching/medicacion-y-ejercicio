@@ -145,7 +145,7 @@ input[type="checkbox"] { width: 22px; height: 22px; min-height: 0; accent-color:
 #lista-meds .med-nombre { grid-area: nombre; display: grid; min-width: 0; }
 #lista-meds .med-nombre strong { font-weight: 700; }
 #lista-meds .med-dosis { grid-area: dosis; font-size: .86rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-#lista-meds .quitar { grid-area: quitar; width: var(--tap); height: var(--tap); background: none; border: 0; color: var(--muted); font-size: 1.4rem; line-height: 1; border-radius: 50%; display: grid; place-items: center; }
+#lista-meds .quitar { width: var(--tap); height: var(--tap); background: none; border: 0; color: var(--muted); font-size: 1.4rem; line-height: 1; border-radius: 50%; display: grid; place-items: center; }
 #lista-meds .quitar:hover { background: var(--alerta-soft); color: var(--alerta); }
 .banner { font-size: .88rem; background: var(--accent-soft); color: var(--accent-deep); padding: 10px 12px; border-radius: var(--r-sm); margin-top: 12px; line-height: 1.4; }
 .vacio { color: var(--muted); padding: 14px 0 4px; }
@@ -425,3 +425,39 @@ html.retorno .solo-retorno { display: inline-flex; }
   html.retorno .cabecera .intro, html.retorno .cabecera .lema { display: none; }
 }
 @media print { .guia, .util, .compartir, details.alarma summary .flecha { display: none !important; } details.alarma { break-inside: avoid; } }
+
+/* ---------- alfa 9: iconos, toasts, pasos, edición en sitio, pausa, tiles ---------- */
+.ic { width: 18px; height: 18px; fill: currentColor; flex: 0 0 auto; vertical-align: -3px; }
+.ic-sm { width: 14px; height: 14px; opacity: .7; }
+.btn .ic, .btn-sec .ic { margin-right: 2px; }
+.btn-icono { width: var(--tap); padding: 0; justify-content: center; font-weight: 800; }
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px); opacity: 0; transition: opacity .2s, transform .2s; z-index: 60; max-width: min(92vw, 520px); display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-radius: var(--r-md); background: var(--fg); color: var(--bg); box-shadow: 0 8px 30px -10px rgba(0,0,0,.5); font-size: .92rem; line-height: 1.35; }
+.toast.visible { opacity: 1; transform: translate(-50%, 0); }
+.toast .btn-sec { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 50%, transparent); white-space: nowrap; }
+@media (min-width: 960px) { .toast { bottom: 24px; } }
+.pasos { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 6px; font-size: .74rem; color: var(--muted); }
+.pasos .paso { display: inline-flex; align-items: center; gap: 5px; }
+.pasos .paso b { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line-strong); display: inline-grid; place-items: center; font-size: .68rem; }
+.pasos .paso.hecho b { background: var(--info); border-color: var(--info); color: #fff; }
+.pasos .paso.actual { color: var(--accent-deep); font-weight: 700; }
+.pasos .paso.actual b { border-color: var(--accent); color: var(--accent); }
+#lista-meds li { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nombre acciones" "dosis acciones" "momentos acciones"; }
+#lista-meds .med-acciones { grid-area: acciones; display: flex; flex-direction: column; align-items: center; }
+#lista-meds .pausar { width: var(--tap); height: 36px; background: none; border: 0; color: var(--muted); border-radius: 50%; display: grid; place-items: center; }
+#lista-meds .pausar:hover { background: var(--accent-soft); color: var(--accent); }
+#lista-meds li.pausado { opacity: .62; border-style: dashed; }
+#lista-meds li.pausado .momentos, #lista-meds li.pausado .chip-alta { display: none; }
+#lista-meds .med-dosis .editar { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; border-radius: 6px; }
+#lista-meds .med-dosis .editar:hover { color: var(--accent); }
+.editor { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-top: 4px; }
+.editor label { font-size: .8rem; display: grid; gap: 2px; }
+.editor input { width: 84px; }
+.editor .btn.sm { min-height: 38px; padding: 7px 13px; font-size: .9rem; }
+.esencial-cab { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+.esencial-cab h3 { margin: 0; }
+/* estado vacío: las acciones de carga como mosaico grande */
+body.sin-meds aside .acciones:not(.compartir) { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+body.sin-meds aside .acciones:not(.compartir) .btn-sec.sm { min-height: 64px; flex-direction: column; gap: 4px; font-size: .88rem; border-radius: var(--r-md); }
+body.sin-meds aside .acciones:not(.compartir) .btn-sec.sm .ic { width: 24px; height: 24px; margin: 0; }
+body.sin-meds aside .acciones:not(.compartir) #btn-vaciar { display: none; }
+@media (prefers-reduced-motion: no-preference) { .btn:active, .btn-sec:active { transform: scale(.98); } }

@@ -4,6 +4,14 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "lista.pausado": "en pausa (no cuenta en el informe)", "lista.pausar": "Pausar: ver el informe sin este fármaco", "lista.reanudar": "Volver a contar este fármaco", "lista.editar_dosis": "Cambiar la dosis", "lista.deshacer": "Deshacer",
+  "lista.quitado": "{f} quitado de la lista.", "lista.pausado_msg": "{f} en pausa: el informe se calcula sin él.", "lista.reanudado_msg": "{f} vuelve a contar en el informe.", "lista.actualizado": "Dosis de {f} actualizada.",
+  "pasos.1": "Medicación", "pasos.2": "Sus datos", "pasos.3": "Informe",
+  "escuchar": "Escuchar", "escuchar.parar": "Parar",
+  "plan.calendario": "Añadir mi plan al calendario", "plan.aerobico": "Ejercicio aeróbico (caminar, bici…)", "plan.fuerza": "Ejercicio de fuerza", "plan.fuerza_eq": "Fuerza y equilibrio", "plan.mas_eq": "Y equilibrio", "plan.pie": "Plan orientativo generado con Medicación y Ejercicio; adáptelo con su médico o entrenador.",
+  "plan.descargado": "Plan descargado: 6 sesiones semanales durante 8 semanas, a las {h}, con aviso 30 minutos antes. Ábralo para añadirlo a su calendario.",
+  "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: pulse el botón Compartir de Safari y después «Añadir a pantalla de inicio».", "instalar.otro": "En el menú del navegador (⋮) elija «Instalar aplicación» o «Añadir a pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
+  "tema.auto": "Tema: automático (según el sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: oscuro",
   "cab.acerca": "Acerca de", "cab.presentacion": "¿Qué es esto?",
   "guia.1": "Añada su medicación (búsqueda, lista pegada, PDF o foto).", "guia.2": "Marque su edad y su situación clínica.", "guia.3": "Lea «Lo esencial» y llévese el PDF a su médico o entrenador.", "guia.cerrar": "Entendido",
   "esencial.titulo": "Lo esencial", "esencial.nota": "Lo más importante para usted, en cinco puntos. El detalle completo está en las pestañas de abajo.",
@@ -82,6 +90,14 @@ const ES = {
 };
 
 const EN = {
+  "lista.pausado": "paused (not counted in the report)", "lista.pausar": "Pause: see the report without this drug", "lista.reanudar": "Count this drug again", "lista.editar_dosis": "Change the dose", "lista.deshacer": "Undo",
+  "lista.quitado": "{f} removed from the list.", "lista.pausado_msg": "{f} paused: the report is calculated without it.", "lista.reanudado_msg": "{f} counts in the report again.", "lista.actualizado": "Dose of {f} updated.",
+  "pasos.1": "Medication", "pasos.2": "Your data", "pasos.3": "Report",
+  "escuchar": "Listen", "escuchar.parar": "Stop",
+  "plan.calendario": "Add my plan to the calendar", "plan.aerobico": "Aerobic exercise (walking, cycling…)", "plan.fuerza": "Strength training", "plan.fuerza_eq": "Strength and balance", "plan.mas_eq": "Plus balance", "plan.pie": "Indicative plan generated with Medicación y Ejercicio; adapt it with your doctor or trainer.",
+  "plan.descargado": "Plan downloaded: 6 weekly sessions for 8 weeks at {h}, with a reminder 30 minutes before. Open it to add it to your calendar.",
+  "instalar": "Install", "instalar.ios": "On iPhone/iPad: tap Safari's Share button, then “Add to Home Screen”.", "instalar.otro": "In the browser menu (⋮) choose “Install app” or “Add to Home screen”.", "instalar.ok": "App installed.",
+  "tema.auto": "Theme: automatic (system)", "tema.light": "Theme: light", "tema.dark": "Theme: dark",
   "cab.acerca": "About", "cab.presentacion": "What is this?",
   "guia.1": "Add your medication (search, pasted list, PDF or photo).", "guia.2": "Enter your age and clinical situation.", "guia.3": "Read “The essentials” and take the PDF to your doctor or trainer.", "guia.cerrar": "Got it",
   "esencial.titulo": "The essentials", "esencial.nota": "The most important points for you, in five lines. The full detail is in the tabs below.",
@@ -160,6 +176,14 @@ const EN = {
 };
 
 const CA = {
+  "lista.pausado": "en pausa (no compta a l'informe)", "lista.pausar": "Pausar: veure l'informe sense aquest fàrmac", "lista.reanudar": "Tornar a comptar aquest fàrmac", "lista.editar_dosis": "Canviar la dosi", "lista.deshacer": "Desfer",
+  "lista.quitado": "{f} tret de la llista.", "lista.pausado_msg": "{f} en pausa: l'informe es calcula sense ell.", "lista.reanudado_msg": "{f} torna a comptar a l'informe.", "lista.actualizado": "Dosi de {f} actualitzada.",
+  "pasos.1": "Medicació", "pasos.2": "Les seves dades", "pasos.3": "Informe",
+  "escuchar": "Escoltar", "escuchar.parar": "Aturar",
+  "plan.calendario": "Afegir el meu pla al calendari", "plan.aerobico": "Exercici aeròbic (caminar, bici…)", "plan.fuerza": "Exercici de força", "plan.fuerza_eq": "Força i equilibri", "plan.mas_eq": "I equilibri", "plan.pie": "Pla orientatiu generat amb Medicació i Exercici; adapteu-lo amb el vostre metge o entrenador.",
+  "plan.descargado": "Pla descarregat: 6 sessions setmanals durant 8 setmanes, a les {h}, amb avís 30 minuts abans. Obriu-lo per afegir-lo al calendari.",
+  "instalar": "Instal·lar", "instalar.ios": "A iPhone/iPad: premeu el botó Compartir de Safari i després «Afegir a la pantalla d'inici».", "instalar.otro": "Al menú del navegador (⋮) trieu «Instal·lar aplicació» o «Afegir a la pantalla d'inici».", "instalar.ok": "Aplicació instal·lada.",
+  "tema.auto": "Tema: automàtic (segons el sistema)", "tema.light": "Tema: clar", "tema.dark": "Tema: fosc",
   "cab.acerca": "Quant a", "cab.presentacion": "Què és això?",
   "guia.1": "Afegiu la vostra medicació (cerca, llista enganxada, PDF o foto).", "guia.2": "Marqueu l'edat i la situació clínica.", "guia.3": "Llegiu «L'essencial» i porteu el PDF al metge o entrenador.", "guia.cerrar": "Entesos",
   "esencial.titulo": "L'essencial", "esencial.nota": "El més important per a vós, en cinc punts. El detall complet és a les pestanyes de sota.",
@@ -238,6 +262,14 @@ const CA = {
 };
 
 const GL = {
+  "lista.pausado": "en pausa (non conta no informe)", "lista.pausar": "Pausar: ver o informe sen este fármaco", "lista.reanudar": "Volver contar este fármaco", "lista.editar_dosis": "Cambiar a dose", "lista.deshacer": "Desfacer",
+  "lista.quitado": "{f} quitado da lista.", "lista.pausado_msg": "{f} en pausa: o informe calcúlase sen el.", "lista.reanudado_msg": "{f} volve contar no informe.", "lista.actualizado": "Dose de {f} actualizada.",
+  "pasos.1": "Medicación", "pasos.2": "Os seus datos", "pasos.3": "Informe",
+  "escuchar": "Escoitar", "escuchar.parar": "Parar",
+  "plan.calendario": "Engadir o meu plan ao calendario", "plan.aerobico": "Exercicio aeróbico (camiñar, bici…)", "plan.fuerza": "Exercicio de forza", "plan.fuerza_eq": "Forza e equilibrio", "plan.mas_eq": "E equilibrio", "plan.pie": "Plan orientativo xerado con Medicación e Exercicio; adápteo co seu médico ou adestrador.",
+  "plan.descargado": "Plan descargado: 6 sesións semanais durante 8 semanas, ás {h}, con aviso 30 minutos antes. Ábrao para engadilo ao seu calendario.",
+  "instalar": "Instalar", "instalar.ios": "En iPhone/iPad: prema o botón Compartir de Safari e despois «Engadir á pantalla de inicio».", "instalar.otro": "No menú do navegador (⋮) escolla «Instalar aplicación» ou «Engadir á pantalla de inicio».", "instalar.ok": "Aplicación instalada.",
+  "tema.auto": "Tema: automático (segundo o sistema)", "tema.light": "Tema: claro", "tema.dark": "Tema: escuro",
   "cab.acerca": "Acerca de", "cab.presentacion": "Que é isto?",
   "guia.1": "Engada a súa medicación (busca, lista pegada, PDF ou foto).", "guia.2": "Marque a súa idade e a súa situación clínica.", "guia.3": "Lea «O esencial» e leve o PDF ao seu médico ou adestrador.", "guia.cerrar": "Entendido",
   "esencial.titulo": "O esencial", "esencial.nota": "O máis importante para vostede, en cinco puntos. O detalle completo está nas lapelas de abaixo.",
@@ -344,7 +376,10 @@ export function aplicarIdioma(lang) {
   document.documentElement.lang = actual;
   for (const el of document.querySelectorAll("[data-i18n]")) {
     const k = el.dataset.i18n;
-    if (el.dataset.i18nHtml != null) el.innerHTML = t(k); else el.textContent = t(k);
+    if (el.dataset.i18nHtml != null) { el.innerHTML = t(k); continue; }
+    const svg = el.querySelector(":scope > svg");  // conservar el icono del botón
+    el.textContent = t(k);
+    if (svg) el.prepend(svg);
   }
   for (const el of document.querySelectorAll("[data-i18n-ph]")) el.placeholder = t(el.dataset.i18nPh);
   for (const el of document.querySelectorAll("[data-i18n-title]")) el.title = t(el.dataset.i18nTitle);
