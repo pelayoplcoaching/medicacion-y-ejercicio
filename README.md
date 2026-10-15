@@ -113,3 +113,16 @@ El selector "Soy paciente / Soy profesional sanitario" cambia qué datos se pide
 - Faltan clases: antibióticos distintos de quinolonas, antirretrovirales, quimioterapia oral, inmunosupresores (tacrolimus, ciclosporina), anticonceptivos/THS, antimigrañosos (triptanes), antiarrítmicos clase I, nuevos anticoagulantes en situaciones especiales, suplementos deportivos.
 - DDInter solo aporta nivel (mayor/moderada/menor); mecanismo y recomendación hay que añadirlos a mano en `ddi_curated.json` para los pares que se quieran explicar.
 - Variables de contexto que todavía no se piden: función renal, insuficiencia cardíaca, neuropatía, fragilidad (Vivifrail).
+
+## Revisión clínica de la base
+
+La base es un borrador hasta que un clínico la revise. Flujo:
+
+```bash
+python3 scripts/export_revision.py                       # → data/revision/revision_<fecha>.xlsx
+# el revisor rellena las columnas amarillas (ESTADO: OK / CAMBIAR / ELIMINAR, TEXTO NUEVO, COMENTARIO)
+python3 scripts/import_revision.py data/revision/revision_<fecha>.xlsx --simular   # muestra qué cambiaría
+python3 scripts/import_revision.py data/revision/revision_<fecha>.xlsx             # aplica en data/ext y kb.json, regenera la base
+```
+
+Los cambios se aplican en las **fuentes** (`data/ext/*.json`, `app/data/kb.json`, `app/data/ddi_curated.json`), no solo en la salida, y los comentarios se recogen en `data/revision/comentarios_<fecha>.md`. El archivo puede editarse en Excel o subirse a Google Drive (se convierte en Google Sheets); para importarlo, descargarlo de nuevo como Excel.
