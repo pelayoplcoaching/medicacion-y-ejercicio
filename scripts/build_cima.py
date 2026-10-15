@@ -75,6 +75,26 @@ def iter_local(el, tag):
             yield e
 
 
+ESTOP = {"terapia", "hormonal", "combinado", "menopausia", "cefalosporina", "progestageno", "estradiol", "estrogenos", "insulina", "heparina", "hierro", "calcio", "vitamina", "potasio", "magnesio", "regular", "basal", "rapida", "mezcla", "analogo", "humana", "otros", "otras", "sedante", "clasico", "depot", "colirio", "tratamiento"}
+
+
+UNIDADES = {"mg": "mg", "g": "g", "gramos": "g", "microgramos": "mcg", "microgramo": "mcg", "mcg": "mcg", "µg": "mcg", "ug": "mcg",
+            "ui": "UI", "u.i.": "UI", "unidades internacionales": "UI", "unidades": "UI", "u": "UI"}
+UNIDAD_KB = {}  # id de principio → unidad de kb.json (sin sufijo /semana…)
+
+
+def convertir(dosis, unidad_aemps: str, pid: str):
+    """Convierte la dosis a la unidad del principio en kb.json; None si no es comparable."""
+    if dosis is None:
+        return None
+    u = UNIDADES.get((unidad_aemps or "").strip().lower())
+    k = UNIDADES.get(UNIDAD_KB.get(pid, "mg").split("/")[0].strip().lower(), "mg")
+    if u == k:
+        return dosis
+    f = {("mcg", "mg"): 1e-3, ("g", "mg"): 1e3, ("mg", "mcg"): 1e3, ("mg", "g"): 1e-3, ("g", "mcg"): 1e6}.get((u, k))
+    return round(dosis * f, 4) if f else None
+
+
 def cargar_alias_kb():
     """Mapa de nombre de principio (sin acentos, minúsculas) → id de kb.json.
     Incluye el nombre, el id y sinónimos frecuentes del nomenclátor (sales, DCI)."""
@@ -82,9 +102,17 @@ def cargar_alias_kb():
     alias = {}
     for clase in kb["clases"]:
         for p in clase["principios"]:
+            UNIDAD_KB[p["id"]] = p.get("unidad") or "mg"
             alias[quitar_acentos(p["id"].replace("_", " "))] = p["id"]
             base = re.sub(r"\(.*?\)", "", p["nombre"]).strip()
             alias[quitar_acentos(base)] = p["id"]
+            # "Finasterida / dutasterida", "Cefalosporina oral (cefuroxima, cefixima)", "Doxiciclina / minociclina"…
+            for trozo in re.split(r"[(),/]| o | y |\+", p["nombre"]):
+                t = quitar_acentos(trozo.strip())
+                t = re.sub(r"\b(oral|orales|transdermico|inyectable|inhalado|con|sin|de|la|el|los|las|solo|sola)\b", "", t)
+                t = " ".join(t.split())
+                if len(t) >= 5 and " " not in t and not t.startswith("anti") and t not in ESTOP:
+                    alias.setdefault(t, p["id"])
             for s in p.get("sinonimos", []) or []:
                 alias[quitar_acentos(s)] = p["id"]
     # sinónimos manuales nomenclátor → id (None = componente que no interesa, p. ej. inhibidor de descarboxilasa)
@@ -109,13 +137,31 @@ def cargar_alias_kb():
         "alirocumab": "evolocumab", "inclisiran": "evolocumab",
         "icosapento de etilo": "omega3", "omega 3": "omega3",
         "naloxona": None, "paracetamol": "paracetamol",
+        # nomenclátor AEMPS: nombres invertidos y componentes que no interesan
+        "acetilsalicilico acido": "aas", "acetilsalicilico": "aas", "lisina acetilsalicilato": "aas",
+        "clavulanato potasio": None, "clavulanico acido": None, "clavulanato": None,
+        "etinilestradiol": "anticonceptivo_combinado", "estradiol": "ths_estrogenos", "estradiol valerato": "ths_estrogenos",
+        "drospirenona": None, "levonorgestrel": "progestageno_solo", "desogestrel": "progestageno_solo", "dienogest": None,
+        "gestodeno": None, "norgestimato": None, "noretisterona": None, "nomegestrol": None, "clormadinona": None, "ciproterona": None,
+        "potasio cloruro": "potasio_oral", "cloruro potasio": "potasio_oral", "potasio": "potasio_oral",
+        "magnesio": "magnesio_oral", "magnesio oxido": "magnesio_oral", "magnesio pidolato": "magnesio_oral",
+        "oxigeno": None, "oxido nitroso": None, "sodio cloruro": None, "sodio": None, "glucosa": None, "glucosa monohidrato": None,
+        "sodio bicarbonato": None, "agua": None, "agua para inyectables": None, "clorhexidina": None, "clorhexidina digluconato": None,
+        "inmunoglobulina humana normal": None, "albumina humana": None,
+        "cefuroxima": "cefalosporina", "cefixima": "cefalosporina", "cefadroxilo": "cefalosporina", "cefalexina": "cefalosporina", "cefditoreno": "cefalosporina",
+        "minociclina": "doxiciclina", "fosfomicina": "nitrofurantoina", "fosfomicina trometamol": "nitrofurantoina",
+        "trimetoprima": "cotrimoxazol", "sulfametoxazol": None,
+        "dutasterida": "finasterida", "vibegron": "mirabegron",
+        "cetirizina": "antihistaminico_no_sedante", "levocetirizina": "antihistaminico_no_sedante", "loratadina": "antihistaminico_no_sedante",
+        "desloratadina": "antihistaminico_no_sedante", "bilastina": "antihistaminico_no_sedante", "ebastina": "antihistaminico_no_sedante",
+        "fexofenadina": "antihistaminico_no_sedante", "rupatadina": "antihistaminico_no_sedante",
     }
     for k, v in extra.items():
         alias.setdefault(k, v)
     return alias
 
 
-SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|de)\b"
+SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|axetilo|pivoxilo|propanodiol|hemihidrato|sesquihidrato|hidrobromuro|bromhidrato|lactato|gluconato|carbonato|hidroxido|trometamol|dipropionato|furoato|propionato|valerato|cipionato|enantato|undecanoato|palmitato|pamoato|decanoato|hiclato|disodico|dipotasico|tosilato|camsilato|oxalato|benzoato|estearato|dihidrocloruro|monohidrocloruro)\b"
 
 
 def resolver(nombre_pa: str, alias: dict):
@@ -125,9 +171,11 @@ def resolver(nombre_pa: str, alias: dict):
     n = " ".join(n.split())
     if n in alias:
         return alias[n]
-    # por la primera palabra (p. ej. "metoprolol tartrato" → metoprolol)
+    # por la primera palabra (p. ej. "metoprolol tartrato" → metoprolol); la clave debe existir, aunque sea None
     primera = n.split(" ")[0] if n else ""
-    return alias.get(primera)
+    if primera in alias:
+        return alias[primera]
+    return "?"
 
 
 def descargar(url: str) -> bytes:
@@ -274,6 +322,31 @@ def inspeccionar(root):
         print(f"  {k}: {v}")
 
 
+ACORTAR = [
+    (r"\bCOMPRIMIDOS? (RECUBIERTOS? )?(CON PELICULA|CON CUBIERTA PELICULAR)\b", "COMPRIMIDOS"),
+    (r"\bCOMPRIMIDOS? (DE LIBERACION|DE LIBERACIÓN) (PROLONGADA|MODIFICADA|RETARDADA)\b", "COMP. LIB. PROLONGADA"),
+    (r"\bCAPSULAS? DURAS?( DE LIBERACION (PROLONGADA|MODIFICADA))?\b", "CAPSULAS"),
+    (r"\bCAPSULAS? BLANDAS?\b", "CAPSULAS"),
+    (r"\bCOMPRIMIDOS? BUCODISPERSABLES?\b", "COMP. BUCODISPERSABLE"),
+    (r"\bPOLVO (Y DISOLVENTE )?PARA (SOLUCION|SUSPENSION) (INYECTABLE|PARA PERFUSION)( Y PARA PERFUSION)?\b", "INYECTABLE"),
+    (r"\bSOLUCION INYECTABLE( Y PARA PERFUSION)?( EN (JERINGA|PLUMA) PRECARGADA)?\b", "INYECTABLE"),
+    (r"\bSOLUCION PARA PERFUSION\b", "PERFUSION"),
+    (r"\bPOLVO PARA INHALACION( EN CAPSULA DURA)?\b", "INHALADOR"),
+    (r"\bSUSPENSION PARA INHALACION EN ENVASE A PRESION\b", "INHALADOR"),
+    (r"\bSOLUCION ORAL EN (SOBRES?|FRASCO)\b", "SOLUCION ORAL"),
+    (r"\bSOLUCION ORAL EN GOTAS\b", "GOTAS ORALES"),
+    (r"\bEN (SOBRES?|FRASCO|ENVASE UNIDOSIS)\b", ""),
+    (r"\s{2,}", " "),
+]
+
+
+def acortar(nombre: str) -> str:
+    n = nombre.upper()
+    for pat, rep in ACORTAR:
+        n = re.sub(pat, rep, n)
+    return n.strip()
+
+
 def texto(el, tag):
     if not tag:
         return ""
@@ -317,6 +390,8 @@ def main(argv):
         com = texto(med, tags["comercializado"]).upper()
         if com not in ("S", "1", "TRUE", "SI", "SÍ", ""):
             continue
+        if texto(med, "sw_envase_clinico") == "1":  # envases clínicos de hospital: no los verá un paciente
+            continue
         n_comerc += 1
         nombre = texto(med, tags["nombre"]) or texto(med, tags["presentacion"])
         if not nombre:
@@ -325,24 +400,37 @@ def main(argv):
         for pa in iter_local(med, tags["pa"]):
             nom_pa = texto(pa, tags["pa_nombre"]) if tags.get("pa_nombre") else dicc.get(texto(pa, tags["pa_codigo"]), "")
             pid = resolver(nom_pa, alias)
-            if pid is None:
-                if nom_pa and quitar_acentos(nom_pa) not in alias:
+            if pid == "?":
+                if nom_pa:
                     sin_resolver[quitar_acentos(nom_pa)] += 1
+                continue
+            if pid is None:
                 continue
             pas.append(pid)
             try:
-                dosis.append(float(texto(pa, tags["pa_dosis"]).replace(",", ".")))
+                d = float(texto(pa, tags["pa_dosis"]).replace(",", "."))
             except ValueError:
-                dosis.append(None)
-            unidad = unidad or texto(pa, tags["pa_unidad"]).lower()
+                d = None
+            dosis.append(convertir(d, texto(pa, tags["pa_unidad"]), pid))
+            unidad = unidad or UNIDAD_KB.get(pid, "mg")
         if not pas:
             n_sin_pa += 1
             continue
+        if "anticonceptivo_combinado" in pas:  # etinilestradiol + progestágeno = un solo principio de la base
+            dosis = [d for p_, d in zip(pas, dosis) if p_ == "anticonceptivo_combinado"][:1]
+            pas = ["anticonceptivo_combinado"]
+        nombre = acortar(nombre)
+        dosis = [int(d) if d is not None and float(d).is_integer() else d for d in dosis]
+        if all(d is None for d in dosis):
+            dosis = []
         clave = (nombre.upper(), tuple(pas), tuple(dosis))
         if clave in vistos:
             continue
         vistos.add(clave)
-        salida.append({"nombre": nombre.upper(), "principios": pas, "dosis": dosis, "unidad": unidad or "mg"})
+        fila = {"nombre": nombre.upper(), "principios": pas}
+        if dosis:
+            fila["dosis"] = dosis
+        salida.append(fila)
 
     salida.sort(key=lambda x: x["nombre"])
     if not salida:
