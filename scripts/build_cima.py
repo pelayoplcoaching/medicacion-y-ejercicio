@@ -172,29 +172,50 @@ def leer_xml(origen: str | None):
 
 def cargar_diccionario_pa(data: bytes | None) -> dict:
     """Código de principio activo → nombre, leyendo el DICCIONARIO_PRINCIPIOS_ACTIVOS.xml de la AEMPS.
-    Detecta las etiquetas: el hijo más repetido de la raíz es la entrada; dentro, la etiqueta con "cod" es el código
-    y la primera etiqueta con texto no numérico es el nombre."""
+    Detecta la estructura: la "entrada" es la etiqueta más repetida cuyos hijos son hojas con texto; dentro,
+    el código es la etiqueta con "cod" (texto numérico) y el nombre la primera hoja con texto no numérico."""
     if not data:
         return {}
     root = ET.fromstring(data)
-    hijos = Counter(local(h.tag) for h in root)
-    if not hijos:
+
+    def es_num(t):
+        return t.replace(".", "").replace(",", "").isdigit()
+
+    # candidatos a entrada: elementos con ≥2 hijos hoja con texto
+    cand = Counter()
+    for e in root.iter():
+        hojas = [h for h in e if len(h) == 0 and (h.text or "").strip()]
+        if len(hojas) >= 2:
+            cand[local(e.tag)] += 1
+    if not cand:
+        print("  Diccionario: no se encontró ninguna entrada con varios campos")
         return {}
-    entrada = hijos.most_common(1)[0][0]
+    entrada = cand.most_common(1)[0][0]
     out = {}
     for e in iter_local(root, entrada):
         cod, nom = None, None
         for h in e:
+            if len(h):
+                continue
             tag, txt = local(h.tag).lower(), (h.text or "").strip()
             if not txt:
                 continue
-            if cod is None and "cod" in tag and txt.replace(".", "").isdigit():
+            if cod is None and "cod" in tag and es_num(txt):
                 cod = txt
-            elif nom is None and not txt.replace(".", "").isdigit() and "fecha" not in tag:
+            elif nom is None and not es_num(txt) and "fecha" not in tag and not re.fullmatch(r"[\d\-/: .]+", txt):
                 nom = txt
         if cod and nom:
             out[cod] = nom
-    print(f"Diccionario: {len(out):,} principios activos")
+    print(f"Diccionario: {len(out):,} principios activos (entrada <{entrada}>)")
+    if not out:
+        print("  Primeras entradas del diccionario, para ajustar el lector:")
+        n = 0
+        for e in root.iter():
+            if n > 40:
+                break
+            txt = (e.text or "").strip()
+            print(f"    {local(e.tag)}" + (f": {txt[:60]}" if txt else ""))
+            n += 1
     return out
 
 
