@@ -300,3 +300,31 @@ body[data-modo="paciente"] details.farmaco .fuentes { display: none; }
 .fila > label.check { display: flex; flex-direction: row; align-items: center; gap: 10px; font-size: .95rem; font-weight: 500; color: var(--fg); }
 .fila > label .unidad-mini { display: inline; }
 .fila > label > span.lbl { display: inline-flex; gap: 4px; align-items: baseline; }
+
+/* ---------- utilidades de cabecera, letra grande, bloques plegables, no reconocidos ---------- */
+.utiles { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.utiles small { margin-left: auto; }
+.utiles a.btn-sec { text-decoration: none; }
+#btn-letra { font-weight: 800; letter-spacing: -.02em; padding-inline: 11px; }
+#btn-letra .mas { font-size: .75em; vertical-align: super; }
+#btn-letra[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+@media (min-width: 640px) { .utiles { grid-column: 2 / -1; } .cabecera small#kb-version { grid-column: auto; grid-row: auto; text-align: left; } }
+html.letra-grande { font-size: 19px; }
+html.letra-grande body { line-height: 1.6; }
+html.letra-grande .tile .num { font-size: 2rem; }
+details.bloque { margin-top: 10px; }
+details.bloque > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: var(--tap); }
+details.bloque > summary::-webkit-details-marker { display: none; }
+details.bloque > summary .sub-label { margin: 0; }
+details.bloque > summary .flecha { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); background: var(--surface-2); transition: transform .2s; }
+details.bloque[open] > summary .flecha { transform: rotate(180deg); }
+details.bloque .condiciones, details.bloque .fila { margin-top: 4px; }
+.no-reconocidos { margin-top: 10px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--precaucion-soft); display: grid; gap: 8px; }
+.no-reconocidos p { font-size: .85rem; color: var(--precaucion-ink); font-weight: 600; }
+.no-reconocidos ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.no-reconocidos li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: .88rem; }
+.no-reconocidos li span { flex: 1 1 140px; min-width: 0; overflow-wrap: anywhere; }
+.no-reconocidos .btn-sec.sm { min-height: 32px; padding: 4px 10px; font-size: .8rem; }
+.enlace-ft { font-size: .78rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.enlace-ft:hover { text-decoration: underline; }
+body[data-modo="paciente"] .enlace-ft { display: none; }

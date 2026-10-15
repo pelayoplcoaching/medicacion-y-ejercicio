@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610150851">
+<link rel="stylesheet" href="css/style.css?v=202610150856">
 </head>
 <body>
 
@@ -71,7 +71,7 @@
     <p>El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
     <p>El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <small id="kb-version"></small>
+  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html">Novedades</a><small id="kb-version"></small></div>
 </header>
 
 <main class="contenedor">
@@ -87,7 +87,8 @@
         <label>Edad <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años"></label>
         <label class="check"><input type="checkbox" id="caidas"> Alguna caída en el último año</label>
       </div>
-      <p class="sub-label">Situación clínica (marque lo que tenga)</p>
+      <details class="bloque" id="bloque-situacion">
+      <summary><span class="sub-label">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="condiciones">
         <label class="check"><input type="checkbox" id="cond-diabetes"> Diabetes</label>
         <label class="check"><input type="checkbox" id="cond-insuficiencia_cardiaca"> Insuficiencia cardíaca</label>
@@ -98,18 +99,19 @@
         <label class="check"><input type="checkbox" id="cond-oxigeno"> Oxígeno en casa</label>
         <label class="check"><input type="checkbox" id="cond-embarazo"> Embarazo o lactancia</label>
       </div>
+      </details>
 
-      <div class="solo-paciente">
-        <p class="sub-label">Cómo se mueve ahora (marque solo si le ocurre)</p>
+      <details class="bloque solo-paciente" id="bloque-movilidad">
+        <summary><span class="sub-label">Cómo se mueve ahora (marque solo si le ocurre)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
         <div class="condiciones">
           <label class="check"><input type="checkbox" id="pac-silla"> Me cuesta levantarme de una silla sin usar las manos</label>
           <label class="check"><input type="checkbox" id="pac-caminar"> No puedo caminar 10 minutos seguidos sin parar</label>
           <label class="check"><input type="checkbox" id="pac-ayuda"> Uso bastón, andador o necesito ayuda para caminar</label>
         </div>
-      </div>
+      </details>
 
-      <div class="solo-pro">
-        <p class="sub-label">Datos clínicos (opcionales)</p>
+      <details class="bloque solo-pro" id="bloque-pro" open>
+        <summary><span class="sub-label">Datos clínicos (opcionales)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
         <div class="fila">
           <label><span class="lbl">FG estimado <span class="unidad-mini">mL/min</span></span><input type="number" id="pro-fg" min="5" max="150" inputmode="numeric" placeholder="CKD-EPI"></label>
           <label><span class="lbl">FEVI <span class="unidad-mini">%</span></span><input type="number" id="pro-fevi" min="10" max="80" inputmode="numeric"></label>
@@ -121,7 +123,7 @@
           <label><span class="lbl">FC detección DAI <span class="unidad-mini">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
         </div>
         <small>Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
-      </div>
+      </details>
     </div>
 
     <div class="panel">
@@ -158,6 +160,7 @@
         <div class="acciones"><button type="button" class="btn" id="btn-importar">Añadir estos medicamentos</button></div>
         </div>
       <small id="pegar-aviso" class="aviso-import"></small>
+      <div id="no-reconocidos" class="no-reconocidos" hidden></div>
 
       <div id="ejemplo-banner" class="banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
       <ul id="lista-meds"></ul>
@@ -168,7 +171,7 @@
   <section id="informe" hidden>
     <div class="cabecera-informe">
       <h2>Qué tener en cuenta</h2>
-      <button type="button" class="btn-sec sm" id="btn-copiar">Copiar informe</button>
+      <div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-copiar">Copiar informe</button></div>
     </div>
     <div class="contexto-chips" id="contexto"></div>
     <div id="resumen"></div>
@@ -204,6 +207,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="module" src="js/app.js?v=202610150851"></script>
+<script type="module" src="js/app.js?v=202610150856"></script>
 </body>
 </html>

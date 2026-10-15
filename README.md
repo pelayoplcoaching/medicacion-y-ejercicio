@@ -31,6 +31,12 @@ scripts/
 
 Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, carpeta `app/`). Dominio personalizado: `medicacionyejercicio.fuerzabasadaenevidencia.com` (registro CNAME en IONOS → `pelayoplcoaching.github.io`; configurado en Settings → Pages → Custom domain). Metaetiquetas SEO / Open Graph / Twitter y `manifest.webmanifest` (instalable como app) en `app/index.html`; imagen para redes en `app/assets/og.png`.
 
+## Pruebas
+
+```bash
+node scripts/test.mjs   # 34 comprobaciones de lector, búsqueda, motor y datos; ejecútelo antes de cada commit
+```
+
 ## Ejecutar en local
 
 ```bash

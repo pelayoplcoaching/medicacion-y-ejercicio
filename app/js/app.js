@@ -1,7 +1,7 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150851";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150851";
-import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150851";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150851";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL } from "./engine.js?v=202610150856";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610150856";
+import { pdfMedico, pdfPaciente } from "./informes.js?v=202610150856";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610150856";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -59,6 +59,8 @@ async function cargar() {
   $("#kb-version").textContent = `Base de conocimiento v${kb.version} · ${kb.clases.length} clases, ${indice.porId.size} principios activos`;
   $("#aviso").textContent = kb.aviso;
   restaurar();
+  const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
+  if (h && decodificarEstado(h[1])) { history.replaceState(null, "", location.pathname); $("#edad").value = estado.edad ?? ""; $("#caidas").checked = estado.caidas; for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); } for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; } for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; } aplicarModo(); guardar(); $("#pegar-aviso").textContent = "Lista cargada desde el enlace."; }
   render();
 }
 
@@ -84,6 +86,13 @@ function aplicarModo() {
   $("#btn-pdf-medico").textContent = estado.modo === "paciente" ? "Informe para su médico (PDF)" : "Informe clínico (PDF)";
   $("#btn-pdf-paciente").textContent = estado.modo === "paciente" ? "Su plan (PDF)" : "Plan para el paciente (PDF)";
 }
+$("#btn-letra").addEventListener("click", () => {
+  const on = !document.documentElement.classList.contains("letra-grande");
+  document.documentElement.classList.toggle("letra-grande", on);
+  $("#btn-letra").setAttribute("aria-pressed", String(on));
+  try { localStorage.setItem("medex.letra", on ? "1" : "0"); } catch {}
+});
+try { if (localStorage.getItem("medex.letra") === "1") { document.documentElement.classList.add("letra-grande"); $("#btn-letra").setAttribute("aria-pressed", "true"); } } catch {}
 $$(".modo button").forEach((b) => b.addEventListener("click", () => { estado.modo = b.dataset.modo; aplicarModo(); guardar(); render(); }));
 for (const k of PAC) $("#pac-" + k)?.addEventListener("change", () => { estado.pac[k] = $("#pac-" + k).checked; guardar(); render(); });
 for (const k of PRO) $("#pro-" + k)?.addEventListener("change", () => { const v = $("#pro-" + k).value; estado.pro[k] = v === "" ? null : (k === "vivifrail" ? v : parseFloat(v)); guardar(); render(); });
@@ -182,11 +191,56 @@ function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
   const partes = [];
   if (reconocidos.length) partes.push(`Reconocidos ${reconocidos.length} medicamentos de ${origen}${reemplazar && habia && !estado.ejemplo ? " (se ha sustituido la lista anterior)" : ""}; revise las dosis en la lista.`);
   else partes.push(`No se ha reconocido ningún medicamento en ${origen}.`);
-  if (noReconocidos.length) partes.push(`Sin reconocer: ${noReconocidos.slice(0, 6).join(" · ")}${noReconocidos.length > 6 ? " …" : ""}.`);
   $("#pegar-aviso").textContent = partes.join(" ");
+  mostrarNoReconocidos(noReconocidos);
   guardar(); render();
   return { reconocidos: reconocidos.length, noReconocidos: noReconocidos.length };
 }
+
+/** Líneas con pinta de medicamento que no se han reconocido: permitir buscarlas o avisar de que faltan. */
+function mostrarNoReconocidos(lineas) {
+  const box = $("#no-reconocidos");
+  box.innerHTML = ""; box.hidden = !lineas.length;
+  if (!lineas.length) return;
+  box.insertAdjacentHTML("beforeend", `<p>${lineas.length === 1 ? "Esta línea no se ha reconocido" : "Estas líneas no se han reconocido"}. Puede buscarlas a mano o avisar de que faltan en la base.</p><ul></ul>`);
+  const ul = box.querySelector("ul");
+  for (const l of lineas.slice(0, 10)) {
+    const li = document.createElement("li");
+    const nombre = l.replace(/\s+\d.*$/, "").trim().slice(0, 60);
+    li.innerHTML = `<span>${l.slice(0, 80)}</span><button type="button" class="btn-sec sm" data-accion="buscar">Buscar</button><button type="button" class="btn-sec sm" data-accion="avisar">Avisar de que falta</button>`;
+    li.querySelector('[data-accion="buscar"]').addEventListener("click", () => { inputBuscar.value = nombre.split(" ").slice(0, 2).join(" "); inputBuscar.dispatchEvent(new Event("input")); inputBuscar.focus(); inputBuscar.scrollIntoView({ block: "center" }); });
+    li.querySelector('[data-accion="avisar"]').addEventListener("click", () => {
+      const cuerpo = `Hola Pelayo,\n\nEste medicamento no lo reconoce la app:\n${l}\n\nVersión: ${datos.kb.version}`;
+      window.location.href = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent("Fármaco no reconocido · Medicación y Ejercicio")}&body=${encodeURIComponent(cuerpo)}`;
+      li.querySelector('[data-accion="avisar"]').textContent = "Gracias";
+    });
+    ul.append(li);
+  }
+}
+
+/* ---------- enlace con la lista (sin servidor: todo va en la URL) ---------- */
+function codificarEstado() {
+  const o = { m: estado.meds.map((m) => [m.pid, m.dosis, m.tomas, m.unidad || null, m.aDemanda ? 1 : 0]), e: estado.edad, c: estado.caidas ? 1 : 0, k: estado.condiciones, o: estado.modo, p: estado.pac, r: estado.pro };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodificarEstado(h) {
+  try {
+    const json = decodeURIComponent(escape(atob(h.replace(/-/g, "+").replace(/_/g, "/"))));
+    const o = JSON.parse(json);
+    if (!Array.isArray(o.m)) return false;
+    estado.meds = o.m.filter((x) => indice.porId.has(x[0])).map((x) => ({ pid: x[0], dosis: x[1], tomas: x[2] || 1, unidad: x[3] || undefined, aDemanda: !!x[4] }));
+    estado.edad = o.e ?? null; estado.caidas = !!o.c; estado.condiciones = Array.isArray(o.k) ? o.k.filter((c) => CONDICIONES.includes(c)) : [];
+    estado.modo = o.o === "profesional" ? "profesional" : "paciente"; estado.pac = o.p || {}; estado.pro = o.r || {}; estado.ejemplo = false;
+    return true;
+  } catch { return false; }
+}
+$("#btn-enlace").addEventListener("click", async () => {
+  const url = `${location.origin}${location.pathname}#lista=${codificarEstado()}`;
+  const btn = $("#btn-enlace");
+  try { await navigator.clipboard.writeText(url); btn.textContent = "Enlace copiado"; }
+  catch { const ta = $("#informe-texto"); ta.hidden = false; ta.value = url; ta.select(); btn.textContent = "Seleccione y copie"; }
+  setTimeout(() => (btn.textContent = "Copiar enlace con mi lista"), 2500);
+});
 
 /* ---------- PDF o foto de la medicación ---------- */
 $("#btn-pdf").addEventListener("click", () => $("#pdf-input").click());
@@ -426,7 +480,7 @@ function tarjetaFarmaco(g, amb, abierta) {
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${r.texto}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""}</span></li>`).join("")}</ul>
-          ${it.clase.fuentes?.length ? `<p class="fuentes">Fuentes: ${it.clase.fuentes.join(" · ")}</p>` : ""}
+          ${it.clase.fuentes?.length ? `<p class="fuentes">Fuentes: ${it.clase.fuentes.join(" · ")} · <a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">Ficha técnica (CIMA)</a></p>` : `<p class="fuentes"><a class="enlace-ft" href="https://cima.aemps.es/cima/publico/lista.html?nombre=${encodeURIComponent(it.principio.nombre.split(/[\s(\/]/)[0])}" target="_blank" rel="noopener">Ficha técnica (CIMA)</a></p>`}
         </div>
       </details>`;
   }
