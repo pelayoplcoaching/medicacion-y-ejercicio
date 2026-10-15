@@ -87,8 +87,12 @@ def convertir(dosis, unidad_aemps: str, pid: str):
     """Convierte la dosis a la unidad del principio en kb.json; None si no es comparable."""
     if dosis is None:
         return None
+    if "/" in (unidad_aemps or ""):  # concentraciones (mg/ml): no son dosis por toma
+        return None
     u = UNIDADES.get((unidad_aemps or "").strip().lower())
     k = UNIDADES.get(UNIDAD_KB.get(pid, "mg").split("/")[0].strip().lower(), "mg")
+    if k == "UI" or u == "UI":  # insulinas, heparinas, epoetina: la dosis la pone el paciente, nunca la presentación
+        return None
     if u == k:
         return dosis
     f = {("mcg", "mg"): 1e-3, ("g", "mg"): 1e3, ("mg", "mcg"): 1e3, ("mg", "g"): 1e-3, ("g", "mcg"): 1e6}.get((u, k))
@@ -190,6 +194,14 @@ def cargar_alias_kb():
 
 
 SALES = r"\b(hidrocloruro|clorhidrato|sodico|sodica|potasico|calcico|magnesico|mesilato|maleato|tartrato|succinato|besilato|hemifumarato|fumarato|bromuro|acetato|sulfato|fosfato|cilexetilo|medoxomilo|etexilato|citrato|monohidrato|dihidrato|trihidrato|anhidro|anhidra|micronizado|micronizada|axetilo|pivoxilo|propanodiol|hemihidrato|sesquihidrato|hidrobromuro|bromhidrato|lactato|gluconato|carbonato|hidroxido|trometamol|dipropionato|furoato|propionato|valerato|cipionato|enantato|undecanoato|palmitato|pamoato|decanoato|hiclato|disodico|dipotasico|tosilato|camsilato|oxalato|benzoato|estearato|dihidrocloruro|monohidrocloruro|de|del)\b"
+
+
+def limpiar_pa(nombre: str) -> str:
+    """Nombre de principio activo sin la sal, en mayúscula inicial: 'LURASIDONA HIDROCLORURO' → 'Lurasidona'."""
+    n = re.sub(r"[,;:()]", " ", nombre.lower())
+    n = re.sub(SALES, "", quitar_acentos(n))
+    n = " ".join(n.split()) or nombre.lower()
+    return n[:1].upper() + n[1:]
 
 
 def resolver(nombre_pa: str, alias: dict):
@@ -455,13 +467,15 @@ def main(argv):
             # sin principio en la base: clasificar por el código ATC (reglas del grupo, sin reglas específicas)
             clase = clase_por_atc(atc) if desconocidos else None
             if clase:
-                nombre_pa = " + ".join(dict.fromkeys(d[0].title() for d in desconocidos))
+                nombre_pa = " + ".join(dict.fromkeys(limpiar_pa(d[0]) for d in desconocidos))
                 d0 = desconocidos[0]
                 try:
                     dd = float(d0[1].replace(",", "."))
                 except ValueError:
                     dd = None
                 u = UNIDADES.get(d0[2].strip().lower())
+                if "/" in d0[2] or u == "UI":
+                    dd = None
                 dd = dd if u == "mg" else (round(dd / 1000, 4) if (u == "mcg" and dd is not None) else (dd * 1000 if (u == "g" and dd is not None) else None))
                 if dd is not None and float(dd).is_integer():
                     dd = int(dd)

@@ -9518,8 +9518,7 @@
           "marcas": [
             "Romilar",
             "Bisolvon Antitusivo",
-            "Iniston Antitusivo",
-            "Frenadol (componente)"
+            "Iniston Antitusivo"
           ],
           "senales_extra": [
             "sedacion",
@@ -9533,10 +9532,6 @@
           "id": "pseudoefedrina",
           "nombre": "Pseudoefedrina / fenilefrina (descongestivos)",
           "marcas": [
-            "Rinoebastel",
-            "Actifed",
-            "Frenadol Complex",
-            "Couldina",
             "Ilvico",
             "Vincigrip"
           ],
