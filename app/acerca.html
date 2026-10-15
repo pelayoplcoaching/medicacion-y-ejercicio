@@ -24,7 +24,7 @@
 </head>
 <body>
 <header class="cabecera">
-  <img src="assets/logo-app.png" alt="Pauta Activa" class="logo" width="76" height="76">
+  <img src="assets/logo-app-152.png" alt="Pauta Activa" class="logo" width="76" height="76" fetchpriority="high">
   <div class="titulo">
     <h1>Acerca de</h1>
     <p class="autor">Pauta Activa · Medicación y Ejercicio · versión alfa</p>
@@ -81,6 +81,13 @@
     <dl id="estado-kb"><dt>Cargando…</dt><dd></dd></dl>
   </section>
 
+  <section>
+    <h2>Validación</h2>
+    <p id="validacion-txt">Cargando…</p>
+    <ul id="validacion-lista"></ul>
+    <p><a href="legal.html#metodologia">Metodología y limitaciones</a> · <a href="legal.html#accesibilidad">Declaración de accesibilidad</a> · <a href="legal.html#regulatorio">Posicionamiento regulatorio</a></p>
+  </section>
+
   <p class="pie">La información es orientativa y no sustituye la valoración de su médico.</p>
 </main>
 <script type="module">
@@ -94,7 +101,17 @@
     const principios = r.clases.reduce((n, c) => n + c.principios.length, 0);
     const ddi = await fetch("data/ddi_curated.json").then((x) => x.json()).catch(() => ({ interacciones: [] }));
     const ddi2 = await fetch("data/ddi.json").then((x) => x.json()).catch(() => ({ pares: [] }));
-    document.getElementById("estado-version").textContent = `Versión alfa · base ${r.version}`;
+    const { APP_VERSION } = await import("./js/version.js");
+    document.getElementById("estado-version").textContent = `Versión ${APP_VERSION} · base ${r.version}`;
+    try {
+      const { construirIndice, comprobarCaso } = await import("./js/engine.js");
+      const casos = await fetch("data/casos.json").then((x) => x.json());
+      const datos = { kb: r, ddiCurado: ddi, ddi: ddi2, indice: construirIndice(r, []) };
+      const resultados = casos.casos.map((c) => ({ c, r: comprobarCaso(datos, c) }));
+      const ok = resultados.filter((x) => x.r.ok).length;
+      document.getElementById("validacion-txt").innerHTML = `La base actual se comprueba contra <strong>${casos.casos.length} casos clínicos de validación</strong> (viñetas anonimizadas con resultado esperado): <strong>${ok}</strong> superados en este dispositivo. Además, ${reglas} reglas con estado de revisión y nivel de evidencia visibles en la aplicación.`;
+      document.getElementById("validacion-lista").innerHTML = resultados.map(({ c, r }) => `<li>${r.ok ? "✔" : "✘"} <strong>${c.titulo}</strong> — ${c.descripcion}${r.ok ? "" : " <em>(" + r.fallos.join("; ") + ")</em>"}</li>`).join("");
+    } catch (e) { document.getElementById("validacion-txt").textContent = "No se han podido ejecutar los casos de validación en este navegador."; }
     dl.innerHTML = [
       ["Versión de la base", r.version],
       ["Grupos farmacológicos", r.clases.length],

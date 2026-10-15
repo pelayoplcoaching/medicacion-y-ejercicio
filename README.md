@@ -36,10 +36,14 @@ Sitio publicado con GitHub Pages (workflow en `.github/workflows/pages.yml`, car
 
 `app/sw.js` guarda la aplicación, la base de conocimiento y las librerías de CDN al primer uso. El nombre de la caché lleva el sello de versión (`bump_version.py`), así que cada despliegue descarga la versión nueva en segundo plano y muestra «Hay una versión nueva · Actualizar». Las librerías externas (pdf.js, jsPDF, Tesseract) se cargan bajo demanda desde `js/libs.js`.
 
-## Pruebas
+## Versión, pruebas y validación
+
+- Versión de la aplicación en `app/js/version.js` (semver, `0.15.0-alfa`) y registro de cambios en `CHANGELOG.md`; la base de conocimiento lleva su propia fecha de versión (`app/data/kb.json`). Cada versión publicada se etiqueta en git (`v0.15.0-alfa`).
+- `app/data/casos.json`: casos clínicos de validación (viñetas anonimizadas con el resultado esperado). Se ejecutan en `scripts/test.mjs` y en `acerca.html`; en modo profesional, «Guardar como caso de prueba» genera uno nuevo a partir de la lista actual.
+- Auditorías: `docs/lighthouse-2026-10-15.md` (rendimiento, accesibilidad, buenas prácticas, SEO) y axe-core (0 incidencias WCAG 2.1 AA en claro/oscuro × paciente/profesional).
 
 ```bash
-node scripts/test.mjs   # ~50 comprobaciones de lector, búsqueda, motor y datos; ejecútelo antes de cada commit
+node scripts/test.mjs   # motor, lector, datos, idiomas, cribado ACSM y casos de validación; ejecútelo antes de cada commit
 ```
 
 ## Ejecutar en local
@@ -72,9 +76,9 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 ## Pruebas
 
 ```bash
-node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas (67 comprobaciones)
+node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación (107 comprobaciones)
 npm i -D playwright && npx playwright install chromium
-node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (33 comprobaciones)
+node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (72 comprobaciones)
 ```
 Ambas se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 

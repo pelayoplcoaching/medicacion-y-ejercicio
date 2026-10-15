@@ -1,9 +1,13 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo } from "./engine.js?v=202610151302";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151302";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151302";
-import { cargarScript } from "./libs.js?v=202610151302";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151302";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151302";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso } from "./engine.js?v=202610151439";
+import { APP_VERSION } from "./version.js?v=202610151439";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151439";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151439";
+import { cargarScript } from "./libs.js?v=202610151439";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151439";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151439";
+
+// Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
+await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -121,10 +125,13 @@ function ponerIconos() {
 
 // Idioma de la interfaz (la base de conocimiento sigue en español)
 aplicarIdioma(detectarIdioma());
+ponerIconos(); // antes de la primera pintura: evita que los botones cambien de tamaño al cargar
 $("#idioma").value = idioma();
 $("#idioma").addEventListener("change", (e) => { aplicarIdioma(e.target.value); aplicarModo(); if (datos) { renderVersion(); render(); } });
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] } };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null };
+const sanearCribado = (c) => ({ regular: c?.regular === true ? true : c?.regular === false ? false : null, enfermedad: c?.enfermedad === true ? true : c?.enfermedad === false ? false : null, sintomas: Array.isArray(c?.sintomas) ? c.sintomas.filter((x) => SINTOMAS_ACSM.some((y) => y.id === x)) : [] });
+const sanearPrescrito = (p) => (p && Number.isFinite(Number(p.fecha)) ? { fecha: Number(p.fecha), semanas: [4, 6, 8, 12].includes(Number(p.semanas)) ? Number(p.semanas) : 6 } : null);
 /** Plan semanal vigente (día 0–6 → tipo), según los días elegidos por el usuario. */
 const planActual = () => planSemana(estado.plan?.dias);
 const sanearPlan = (p) => ({ dias: Array.isArray(p?.dias) && p.dias.length ? [...new Set(p.dias.map(Number).filter((d) => d >= 0 && d <= 6))] : [1, 2, 3, 4, 5, 6] });
@@ -173,7 +180,7 @@ const EJEMPLO = {
 };
 
 function renderVersion() {
-  $("#kb-version").textContent = t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size });
+  $("#kb-version").textContent = `v${APP_VERSION} · ` + t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size });
 }
 
 const cargarJson = (f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -185,8 +192,9 @@ async function cargar() {
   datos = { kb, ddiCurado: ddiCurado || { interacciones: [] }, ddi: { pares: [] }, fichas: {} };
   indice = construirIndice(kb, []);
   datos.indice = indice;
-  // Fase 2, en segundo plano: nomenclátor (1 MB), DDInter y fichas; se reconstruye el índice sin interrumpir
-  Promise.all([cargarJson("marcas.json"), cargarJson("ddi.json"), cargarJson("fichas.json")]).then(([marcas, ddi, fichas]) => {
+  // Fase 2, en segundo plano y cuando el hilo principal esté libre: nomenclátor (1 MB), DDInter y fichas; se reconstruye el índice sin interrumpir
+  const enIdle = (fn) => ("requestIdleCallback" in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 800));
+  new Promise((ok) => enIdle(ok)).then(() => Promise.all([cargarJson("marcas.json"), cargarJson("ddi.json"), cargarJson("fichas.json")])).then(([marcas, ddi, fichas]) => {
     if (ddi) datos.ddi = ddi;
     if (fichas) datos.fichas = fichas;
     if (marcas?.length) {
@@ -197,7 +205,6 @@ async function cargar() {
     renderVersion(); render();
   });
   renderVersion();
-  ponerIconos();
   document.body.classList.remove("cargando");
   $("#aviso").textContent = kb.aviso;
   restaurar();
@@ -208,7 +215,7 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, cribado: estado.cribado, prescrito: estado.prescrito })); } catch {}
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
 function numeroEntre(v, min, max) { if (v == null || v === "") return null; const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
@@ -227,13 +234,14 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan) });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito) });
   } catch {}
   $("#edad").value = estado.edad ?? "";
   $("#caidas").checked = estado.caidas;
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
+  pintarCribadoForm();
   aplicarModo();
 }
 function aplicarModo() {
@@ -469,7 +477,7 @@ function mostrarNoReconocidos(lineas) {
 
 /* ---------- enlace con la lista (sin servidor: todo va en la URL) ---------- */
 function codificarEstado() {
-  const o = { m: estado.meds.map((m) => [m.pid, m.dosis, m.tomas, m.unidad || null, m.aDemanda ? 1 : 0, (m.momentos || []).map((x) => x[0]).join("")]), e: estado.edad, c: estado.caidas ? 1 : 0, k: estado.condiciones, o: estado.modo, p: estado.pac, r: estado.pro };
+  const o = { m: estado.meds.map((m) => [m.pid, m.dosis, m.tomas, m.unidad || null, m.aDemanda ? 1 : 0, (m.momentos || []).map((x) => x[0]).join("")]), e: estado.edad, c: estado.caidas ? 1 : 0, k: estado.condiciones, o: estado.modo, p: estado.pac, r: estado.pro, q: estado.cribado, d: estado.plan?.dias };
   return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 function decodificarEstado(h) {
@@ -479,7 +487,7 @@ function decodificarEstado(h) {
     if (!Array.isArray(o.m)) return false;
     estado.meds = o.m.filter((x) => indice.porId.has(x[0])).map((x) => ({ pid: x[0], dosis: x[1], tomas: x[2] || 1, unidad: x[3] || undefined, aDemanda: !!x[4], momentos: x[5] ? MOMENTOS.filter((m) => x[5].includes(m[0])) : momentosPorDefecto(x[2] || 1) }));
     estado.edad = o.e ?? null; estado.caidas = !!o.c; estado.condiciones = Array.isArray(o.k) ? o.k.filter((c) => CONDICIONES.includes(c)) : [];
-    estado.modo = o.o === "profesional" ? "profesional" : "paciente"; estado.pac = o.p || {}; estado.pro = o.r || {}; estado.ejemplo = false;
+    estado.modo = o.o === "profesional" ? "profesional" : "paciente"; estado.pac = o.p || {}; estado.pro = o.r || {}; estado.ejemplo = false; estado.cribado = sanearCribado(o.q); if (o.d) estado.plan = sanearPlan({ dias: o.d });
     return true;
   } catch { return false; }
 }
@@ -537,7 +545,7 @@ function mostrarFicha(pid) {
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
-function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan) }; }
+function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito }; }
 function renderPerfiles() {
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
   const lista = leerPerfiles();
@@ -549,7 +557,7 @@ function renderPerfiles() {
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
       const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), ejemplo: false });
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
       mostrarCambios(previa);
@@ -573,6 +581,7 @@ function restaurarFormulario() {
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
+  pintarCribadoForm();
   aplicarModo();
 }
 
@@ -663,9 +672,10 @@ async function descargarPdf(tipo) {
   btn.disabled = true; btn.setAttribute("aria-busy", "true");
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
+    const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), cribado: cribadoActual(res), prescriptor: estado.modo === "profesional" ? prescriptorActual() : null, prescrito: estado.prescrito, appVersion: APP_VERSION, enlace: `${location.origin}${location.pathname}#lista=${codificarEstado()}`, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
     const doc = await (tipo === "medico" ? pdfMedico : pdfPaciente)(datos.kb, res, ctx);
     doc.save(`${tipo === "medico" ? "resumen-medico" : "resumen-paciente"}-${new Date().toISOString().slice(0, 10)}.pdf`);
+    if (estado.modo === "profesional" && !estado.prescrito) { estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision }; guardar(); pintarReeval(); }
     toast(t("pdf.generado"), { ms: 3000 });
     preguntarUtil();
   } catch (e) {
@@ -844,8 +854,9 @@ $("#btn-tema").addEventListener("click", () => { const act = document.documentEl
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
 
 $("#btn-historia").addEventListener("click", async () => {
-  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), diario: leerDiario(), libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
+  const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), diario: leerDiario(), prescriptor: prescriptorActual(), prescrito: estado.prescrito, appVersion: APP_VERSION, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
   const res = evaluar(datos, medsActivos(), ctx);
+  ctx.cribado = cribadoActual(res);
   const txt = textoHistoria(datos.kb, res, ctx);
   const btn = $("#btn-historia");
   try { await navigator.clipboard.writeText(txt); btn.textContent = "Copiado para la historia"; }
@@ -1081,7 +1092,7 @@ function render() {
   $("#sin-meds").hidden = estado.meds.length > 0;
   $("#informe").hidden = res.items.length === 0;
   $("#solo-libres").hidden = !(res.items.length === 0 && medsLibres().length);
-  if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; return; }
+  if (!res.items.length) { $("#barra-inferior").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); return; }
 
   // chips de contexto derivado
   const etiquetasCtx = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia" };
@@ -1097,11 +1108,16 @@ function render() {
   const { alerta: nA, precaucion: nP } = res.resumen;
   const mayores = res.interacciones.filter((x) => x.nivel === "mayor").length;
   const veredicto = nA || mayores ? t("veredicto.alerta", { a: nA + mayores }) : nP ? t("veredicto.precaucion", { p: nP }) : t("veredicto.ok");
+  const crib = cribadoActual(res);
+  renderCribado(res); pintarReeval();
   $("#veredicto").className = "veredicto " + (nA || mayores ? "v-alerta" : nP ? "v-precaucion" : "v-ok");
-  $("#veredicto").innerHTML = `<p>${veredicto}</p>`;
+  $("#veredicto").innerHTML = `<p>${veredicto}</p>${crib.clave !== "sin_datos" ? `<p class="veredicto-crib crib-${crib.nivel}"><b>${t("crib.chip." + crib.clave)}:</b> ${crib.texto} <small>(${t("crib.fuente")})</small></p>` : `<p class="veredicto-crib crib-pendiente"><button type="button" class="btn-sec sm" id="btn-ir-cribado">${t("crib.pendiente")}</button></p>`}`;
+  $("#btn-ir-cribado")?.addEventListener("click", () => { const d = $("#bloque-cribado"); d.open = true; d.scrollIntoView({ block: "center" }); });
+  $("#indice-informe").hidden = false;
   renderHoy();
   // lo esencial (3-5 puntos accionables) + señales de alarma
   const esencial = loEsencial(res, 5);
+  if (crib.nivel !== "info" && crib.clave !== "sin_datos") esencial.unshift({ nivel: crib.nivel, titulo: t("crib.chip." + crib.clave), texto: crib.texto });
   $("#esencial").innerHTML = (esencial.length ? `
     <section class="esencial">
       <div class="esencial-cab"><h3>${t("esencial.titulo")}</h3>${"speechSynthesis" in window ? `<button type="button" class="btn-sec sm" id="btn-escuchar">${icono(hablando ? "parar" : "escuchar")} ${hablando ? t("escuchar.parar") : t("escuchar")}</button>` : ""}</div>
@@ -1247,7 +1263,7 @@ function tarjetaFarmaco(g, amb, abierta) {
         <div class="cuerpo">
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
-          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span>${r.fuente ? ` <small class="fuente-regla">${r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
+          <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span> <span class="evidencia ev-${nivelEvidencia(r)}" title="${t("ev.titulo")}">${t("ev." + nivelEvidencia(r))}</span>${r.fuente ? ` <small class="fuente-regla">${seccionFT(r) && tieneFicha(it.principio) ? `<a href="${urlFicha(it.principio)}" target="_blank" rel="noopener">${r.fuente}</a>` : r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
           <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}${enlaceFicha(it.principio)}</p>
         </div>
       </details>`;
@@ -1558,6 +1574,127 @@ function informarError(msg) {
 }
 window.addEventListener("error", (e) => informarError(e.message));
 window.addEventListener("unhandledrejection", (e) => informarError(e.reason?.message || e.reason));
+
+/* ---------- cribado preparticipación (ACSM 2015) ---------- */
+const ETIQUETAS_CTX = { renal: "enfermedad renal", renal_grave: "FG < 30", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad", marcapasos: "marcapasos/DAI", diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno", embarazo: "embarazo/lactancia" };
+$("#crib-sintomas").innerHTML = SINTOMAS_ACSM.map((x) => `<label class="check"><input type="checkbox" data-crib-sint="${x.id}"> <span>${x.texto}</span></label>`).join("");
+function pintarCribadoForm() {
+  const c = estado.cribado || {};
+  $$('input[name="crib-regular"]').forEach((r) => { r.checked = c.regular != null && String(Number(c.regular)) === r.value; });
+  $$('input[name="crib-enfermedad"]').forEach((r) => { r.checked = c.enfermedad != null && String(Number(c.enfermedad)) === r.value; });
+  $$("[data-crib-sint]").forEach((x) => { x.checked = (c.sintomas || []).includes(x.dataset.cribSint); });
+}
+function leerCribadoForm() {
+  const v = (n) => { const r = $(`input[name="${n}"]:checked`); return r ? r.value === "1" : null; };
+  estado.cribado = { regular: v("crib-regular"), enfermedad: v("crib-enfermedad"), sintomas: $$("[data-crib-sint]:checked").map((x) => x.dataset.cribSint) };
+  guardar(); render();
+}
+$$('input[name="crib-regular"], input[name="crib-enfermedad"], [data-crib-sint]').forEach((el) => el.addEventListener("change", leerCribadoForm));
+/** Resultado del cribado para el estado actual (y sugerencia de enfermedad conocida a partir de la lista). */
+function cribadoActual(res) {
+  const sug = enfermedadSugerida(res, ctxActual());
+  const r = cribadoACSM(estado.cribado);
+  return { ...r, texto: CRIBADO_TXT[r.clave], sugerencia: sug };
+}
+function renderCribado(res) {
+  const c = cribadoActual(res);
+  const sug = $("#crib-sugerencia");
+  if (c.sugerencia.sugerida && estado.cribado.enfermedad == null) { sug.hidden = false; sug.textContent = t("crib.sugerencia", { q: [...c.sugerencia.porCond.map((k) => ETIQUETAS_CTX[k] || k), ...c.sugerencia.porMeds].slice(0, 4).join(", ") }); }
+  else sug.hidden = true;
+  const chip = $("#crib-estado"); const out = $("#crib-resultado");
+  if (c.clave === "sin_datos") { chip.hidden = true; out.hidden = true; return; }
+  chip.hidden = false; chip.className = "chip chip-crib crib-" + c.nivel; chip.textContent = t("crib.chip." + c.clave);
+  out.hidden = false; out.className = "crib-resultado nivel-" + c.nivel; out.textContent = c.texto;
+}
+
+/* ---------- prescriptor (solo en este dispositivo) y reevaluación ---------- */
+const PRESC = ["nombre", "especialidad", "centro", "colegiado", "revision"];
+function leerPrescriptor() { try { return JSON.parse(localStorage.getItem("medex.prescriptor") || "{}"); } catch { return {}; } }
+function escribirPrescriptor(p) { try { localStorage.setItem("medex.prescriptor", JSON.stringify(p)); } catch {} }
+function prescriptorActual() { const p = leerPrescriptor(); return { nombre: (p.nombre || "").slice(0, 60), especialidad: (p.especialidad || "").slice(0, 60), centro: (p.centro || "").slice(0, 80), colegiado: (p.colegiado || "").slice(0, 20), revision: [4, 6, 8, 12].includes(Number(p.revision)) ? Number(p.revision) : 6 }; }
+{
+  const p = prescriptorActual();
+  for (const k of PRESC) { const el = $("#presc-" + k); if (el) { el.value = p[k] ?? ""; el.addEventListener("change", () => { const q = prescriptorActual(); q[k] = k === "revision" ? Number(el.value) : el.value.trim(); escribirPrescriptor(q); }); } }
+}
+$("#btn-prescrito").addEventListener("click", () => { estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision }; guardar(); pintarReeval(); toast(t("presc.marcado", { d: fechaReeval().toLocaleDateString(idioma()) }), { ms: 5000 }); });
+function fechaReeval() { const d = new Date(estado.prescrito.fecha); d.setDate(d.getDate() + estado.prescrito.semanas * 7); return d; }
+function pintarReeval() {
+  const b = $("#aviso-reeval"); const e = $("#presc-estado");
+  if (!estado.prescrito) { b.hidden = true; if (e) e.textContent = ""; return; }
+  const f = fechaReeval(); const dias = Math.round((f - Date.now()) / 864e5);
+  if (e) e.textContent = t("presc.estado", { d: new Date(estado.prescrito.fecha).toLocaleDateString(idioma()), r: f.toLocaleDateString(idioma()) });
+  b.hidden = dias > 0;
+  if (dias <= 0) b.innerHTML = `${t("presc.toca", { d: f.toLocaleDateString(idioma()) })} <button type="button" class="btn-sec sm" id="btn-reeval-ok">${t("presc.reevaluado")}</button>`;
+  $("#btn-reeval-ok")?.addEventListener("click", () => { estado.prescrito = null; guardar(); pintarReeval(); });
+}
+
+/* ---------- casos: exportar / importar (JSON anonimizado con huella), lista en CSV, caso de prueba ---------- */
+async function huella(txt) { try { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("").slice(0, 16); } catch { return "sin-huella"; } }
+function casoActual() {
+  return { meds: estado.meds.map((m) => (m.libre ? { libre: true, nombre: m.nombre, dosis: m.dosis, tomas: m.tomas } : { pid: m.pid, dosis: m.dosis, tomas: m.tomas, unidad: m.unidad, momentos: m.momentos, aDemanda: !!m.aDemanda, pausado: !!m.pausado })),
+    edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), modo: estado.modo };
+}
+function descargarTexto(nombre, contenido, tipo) {
+  const blob = new Blob([contenido], { type: tipo }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nombre; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+$("#btn-caso-exportar").addEventListener("click", async () => {
+  if (!estado.meds.length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
+  const caso = casoActual(); const cuerpo = JSON.stringify(caso);
+  const doc = { app: "pauta-activa", formato: 1, version_app: APP_VERSION, version_base: datos.kb.version, fecha: new Date().toISOString().slice(0, 10), huella: await huella(cuerpo + datos.kb.version), caso };
+  descargarTexto(`caso-${doc.fecha}-${doc.huella.slice(0, 6)}.json`, JSON.stringify(doc, null, 1), "application/json");
+  toast(t("caso.exportado"), { ms: 4000 });
+});
+$("#btn-caso-importar").addEventListener("click", () => $("#caso-input").click());
+$("#caso-input").addEventListener("change", async (ev) => {
+  const f = ev.target.files?.[0]; ev.target.value = ""; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    const c = d.caso || d; if (!Array.isArray(c.meds)) throw new Error("formato");
+    const integra = d.huella ? (await huella(JSON.stringify(c) + d.version_base)) === d.huella : null;
+    const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
+    const meds = c.meds.map((m) => (m.libre ? { pid: "libre:" + String(m.nombre).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "_"), nombre: m.nombre, libre: true, dosis: m.dosis ?? null, tomas: m.tomas || 1, unidad: "mg", momentos: momentosPorDefecto(m.tomas || 1) } : m));
+    Object.assign(estado, { meds: sanearMeds(meds), edad: numeroEntre(c.edad, 1, 120), caidas: !!c.caidas, condiciones: (c.condiciones || []).filter((x) => CONDICIONES.includes(x)), pac: c.pac || {}, pro: c.pro || {}, horas: { ...HORA_MOMENTO, ...(c.horas || {}) }, plan: sanearPlan(c.plan), cribado: sanearCribado(c.cribado), ejemplo: false });
+    if (c.modo === "profesional" || c.modo === "paciente") estado.modo = c.modo;
+    restaurarFormulario(); guardar(); render(); mostrarCambios(previa);
+    toast(integra === false ? t("caso.importado_alterado") : t("caso.importado", { v: d.version_base || "?" }), { ms: 6000 });
+  } catch { toast(t("caso.error"), { ms: 5000 }); }
+});
+$("#btn-lista-csv").addEventListener("click", () => {
+  if (!estado.meds.length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
+  const res = evaluar(datos, estado.meds.filter((m) => !m.libre), ctxActual());
+  const filas = [["principio_activo", "grupo", "dosis_por_toma", "unidad", "tomas_dia", "dosis_diaria", "categoria_dosis", "momentos", "a_demanda", "en_pausa", "senales"]];
+  let k = 0;
+  for (const m of estado.meds) {
+    if (m.libre) { filas.push([m.nombre, "(sin información)", m.dosis ?? "", "mg", m.tomas || 1, "", "", "", "", "", ""]); continue; }
+    const it = res.items[k++]; if (!it) continue;
+    filas.push([it.principio.nombre, it.clase.nombre, it.dosisPorToma ?? "", it.unidad, it.tomas, it.dosisTotal ?? "", it.dosisCat, (m.momentos || []).join("|"), it.aDemanda ? "sí" : "no", m.pausado ? "sí" : "no", [...it.senales].join("|")]);
+  }
+  const csv = "﻿" + filas.map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+  descargarTexto(`medicacion-${hoyISO()}.csv`, csv, "text/csv;charset=utf-8");
+  toast(t("caso.csv_ok"), { ms: 3000 });
+});
+$("#btn-caso-prueba").addEventListener("click", () => {
+  if (!medsActivos().length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
+  const ctx = ctxActual(); const res = evaluar(datos, medsActivos(), ctx);
+  const senales = [...new Set(res.items.flatMap((it) => [...it.senales]))].filter((s) => !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s));
+  const caso = { id: "c" + Date.now().toString(36), titulo: prompt(t("caso.titulo_prompt"), "") || "Caso sin título", descripcion: `${ctx.edad ? ctx.edad + " años, " : ""}${res.items.map((i) => i.principio.nombre).join(" + ")}`,
+    meds: medsActivos().map((m) => ({ pid: m.pid, dosis: m.dosis, tomas: m.tomas, ...(m.unidad ? { unidad: m.unidad } : {}), ...(m.aDemanda ? { aDemanda: true } : {}) })),
+    ctx: { edad: ctx.edad, caidas: ctx.caidas, condiciones: [...ctx.condiciones], ...(ctx.fg != null ? { fg: ctx.fg } : {}), ...(ctx.fevi != null ? { fevi: ctx.fevi } : {}), ...(ctx.nyha != null ? { nyha: ctx.nyha } : {}) },
+    ...(estado.cribado.regular != null ? { cribado: sanearCribado(estado.cribado) } : {}),
+    esperado: { alerta_min: res.resumen.alerta, precaucion_min: res.resumen.precaucion, mayores_min: res.interacciones.filter((x) => x.nivel === "mayor").length, senales, combinadas_incluye: res.combinadas.map((c) => c.regla.titulo.toLowerCase()).slice(0, 4), ...(estado.cribado.regular != null ? { cribado: cribadoACSM(estado.cribado).clave } : {}) } };
+  const r = comprobarCaso(datos, caso);
+  descargarTexto(`caso-prueba-${caso.id}.json`, JSON.stringify(caso, null, 1), "application/json");
+  toast(r.ok ? t("caso.prueba_ok") : t("caso.prueba_fallo", { f: r.fallos.join("; ") }), { ms: 6000 });
+});
+
+/* ---------- índice lateral del informe (escritorio) y versión ---------- */
+$("#app-version").textContent = `v${APP_VERSION}`;
+$("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; render(); setTimeout(() => window.print(), 150); });
+{
+  const enlaces = $$("#indice-informe a");
+  const obs = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) enlaces.forEach((a) => a.classList.toggle("activo", a.getAttribute("href") === "#" + e.target.id)); }, { rootMargin: "-20% 0px -70% 0px" });
+  for (const a of enlaces) { const el = document.querySelector(a.getAttribute("href")); if (el) obs.observe(el); }
+}
 
 cargar();
 

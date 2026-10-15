@@ -111,7 +111,7 @@ def main(dry=False):
     print(f"Bloques: {len(EXT)} · clases añadidas/sustituidas: {n_cl} · reglas: {n_re}")
     print(f"Resultado: {len(kb['clases'])} clases · {n_p} principios activos · {len(kb['reglas_combinadas'])} reglas combinadas · {len(kb['senales'])} señales · {len(kb['combinaciones'])} combinaciones")
     if not dry:
-        KB.write_text(json.dumps(kb, ensure_ascii=False, indent=2), encoding="utf-8")
+        KB.write_text(json.dumps(kb, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")  # compacto: ~30 % menos de descarga
         print(f"Escrito {KB}")
 
 

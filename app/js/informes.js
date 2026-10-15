@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151302";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151302";
+import { jspdf, cargarScript } from "./libs.js?v=202610151439";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610151439";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -46,9 +46,9 @@ async function prepararFuentes(doc) {
 
 /* ---------- maquetador ---------- */
 class Doc {
-  constructor(doc, font, logo, { titulo, subtitulo, tipo, escala = 1 }) {
+  constructor(doc, font, logo, { titulo, subtitulo, tipo, escala = 1, numero = "", version = "", qr = null }) {
     this.d = doc; this.font = font; this.logo = logo; this.escala = escala;
-    this.titulo = titulo; this.subtitulo = subtitulo; this.tipo = tipo;
+    this.titulo = titulo; this.subtitulo = subtitulo; this.tipo = tipo; this.numero = numero; this.version = version; this.qr = qr;
     this.ml = 16; this.w = 210 - 32; this.bottom = 297 - 18; this.y = 0;
     this.cabecera();
   }
@@ -68,7 +68,38 @@ class Doc {
     d.text(`${NOMBRE} · Medicación y Ejercicio · ${WEB}`, x, 22);
     this.f("bold", 8, C.muted); d.text(new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" }), 210 - this.ml, 11.5, { align: "right" });
     this.f("normal", 7.5, C.muted); d.text(this.tipo, 210 - this.ml, 17, { align: "right" });
+    if (this.numero) { this.f("normal", 7, C.muted); d.text(`Nº ${this.numero}`, 210 - this.ml, 22, { align: "right" }); }
     this.y = 35;
+  }
+  /** Bloque de prescriptor: nombre, especialidad, centro, colegiado, fechas de prescripción y reevaluación. */
+  prescriptor(p, prescrito) {
+    if (!p || !(p.nombre || p.centro)) return;
+    const d = this.d, h = 17; this.salto(h + 2);
+    d.setFillColor(...C.purpleSoft); d.roundedRect(this.ml, this.y, this.w, h, 2, 2, "F");
+    this.f("bold", 6.5, C.muted); d.text("PRESCRIPTOR", this.ml + 3.5, this.y + 4.5);
+    this.f("bold", 9.5, C.ink); d.text([p.nombre, p.especialidad].filter(Boolean).join(" · ") || "—", this.ml + 3.5, this.y + 10);
+    this.f("normal", 7.5, C.muted); d.text([p.centro, p.colegiado ? "Nº colegiado " + p.colegiado : ""].filter(Boolean).join(" · "), this.ml + 3.5, this.y + 14.5);
+    if (prescrito) {
+      const f0 = new Date(prescrito.fecha), f1 = new Date(prescrito.fecha); f1.setDate(f1.getDate() + prescrito.semanas * 7);
+      this.f("bold", 6.5, C.muted); d.text("PRESCRITO · REEVALUAR", 210 - this.ml - 3.5, this.y + 4.5, { align: "right" });
+      this.f("bold", 9, C.purpleDeep); d.text(`${f0.toLocaleDateString("es-ES")} · ${f1.toLocaleDateString("es-ES")}`, 210 - this.ml - 3.5, this.y + 10, { align: "right" });
+    }
+    this.y += h + 4;
+  }
+  /** Bloque de firma al final del documento (con QR que reabre el plan, si lo hay). */
+  firma(p, prescrito) {
+    const d = this.d, h = 26; this.salto(h + 4);
+    this.y = Math.max(this.y + 2, this.bottom - h - 2); // al pie de la última página, como en una receta
+    d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(this.ml, this.y, this.ml + this.w, this.y); this.y += 4;
+    if (this.qr) { try { d.addImage(this.qr, "PNG", this.ml, this.y, 20, 20); } catch {} this.f("normal", 6.5, C.muted); d.text("Abre este plan", this.ml, this.y + 23); }
+    const x = this.ml + (this.qr ? 26 : 0);
+    const f1 = prescrito ? new Date(prescrito.fecha) : null; if (f1) f1.setDate(f1.getDate() + prescrito.semanas * 7);
+    this.f("normal", 8, C.ink);
+    const lineas = [p?.nombre ? `${p.nombre}${p.especialidad ? " · " + p.especialidad : ""}` : null, p?.centro ? p.centro : null, p?.colegiado ? `Nº colegiado ${p.colegiado}` : null, f1 ? `Reevaluación prevista: ${f1.toLocaleDateString("es-ES")}` : null].filter(Boolean);
+    lineas.forEach((l, i) => d.text(l, x, this.y + 4 + i * 4.2));
+    d.setDrawColor(...C.muted); d.setLineWidth(.3); d.line(210 - this.ml - 60, this.y + 16, 210 - this.ml, this.y + 16);
+    this.f("normal", 7, C.muted); d.text("Firma y sello", 210 - this.ml - 30, this.y + 20, { align: "center" });
+    this.y += h;
   }
   pie() {
     const d = this.d, n = d.internal.getNumberOfPages();
@@ -76,7 +107,7 @@ class Doc {
       d.setPage(i);
       d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(this.ml, 283, 210 - this.ml, 283);
       this.f("normal", 7, C.muted);
-      d.text(`${AUTOR} · ${MARCA}`, this.ml, 288);
+      d.text(`${AUTOR} · ${MARCA}${this.version ? " · Pauta Activa v" + this.version : ""}${this.numero ? " · Nº " + this.numero : ""}`, this.ml, 288);
       d.text(`${i} / ${n}`, 210 - this.ml, 288, { align: "right" });
     }
   }
@@ -197,6 +228,25 @@ class Doc {
   }
 }
 
+/* ---------- número de documento (fecha + huella corta de la lista) y QR del plan ---------- */
+function numeroDocumento(res, ctx) {
+  const base = res.items.map((it) => `${it.principio.id}:${it.dosisTotal ?? ""}`).join("|") + "|" + (ctx.edad ?? "") + "|" + [...(ctx.condiciones || [])].join(",");
+  let h = 0; for (let i = 0; i < base.length; i++) h = (h * 31 + base.charCodeAt(i)) >>> 0;
+  return `PA-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${h.toString(36).toUpperCase().padStart(6, "0").slice(-6)}`;
+}
+async function qrPng(url) {
+  if (!url) return null;
+  try {
+    if (!window.qrcode) await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js");
+    const q = window.qrcode(0, "M"); q.addData(url); q.make();
+    const n = q.getModuleCount(), cell = 4, c = document.createElement("canvas"); c.width = c.height = (n + 2) * cell;
+    const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.fillStyle = "#1c1830";
+    for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (q.isDark(r, k)) g.fillRect((k + 1) * cell, (r + 1) * cell, cell, cell);
+    return c.toDataURL("image/png");
+  } catch { return null; }
+}
+const CRIBADO_PDF = { empezar: ["info", "Cribado ACSM: puede empezar a intensidad ligera-moderada y progresar; no precisa valoración médica previa."], continuar: ["info", "Cribado ACSM: puede continuar con ejercicio moderado o vigoroso."], valoracion_vigoroso: ["precaucion", "Cribado ACSM: puede seguir con ejercicio moderado; valoración médica antes de pasar a intensidad vigorosa."], valoracion_antes: ["precaucion", "Cribado ACSM: valoración médica recomendada antes de empezar; mientras tanto, actividad ligera."], parar: ["alerta", "Cribado ACSM: síntomas sugestivos de enfermedad cardiovascular, metabólica o renal; suspender el ejercicio moderado o intenso hasta valoración médica."] };
+
 /* ---------- lógica de prescripción derivada del perfil ---------- */
 const AMBITOS = [["general", "Antes de empezar"], ["aerobico", "Ejercicio aeróbico"], ["fuerza", "Entrenamiento de fuerza"], ["equilibrio", "Equilibrio"]];
 const num = (x) => Number(x).toLocaleString("es-ES", { maximumFractionDigits: 3 });
@@ -276,7 +326,8 @@ export async function pdfMedico(kb, res, ctx) {
   const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo-app.png");
-  const pg = new Doc(doc, font, logo, { titulo: "Informe clínico: medicación y ejercicio", subtitulo: "Prescripción de ejercicio adaptada al tratamiento farmacológico", tipo: "Documento para el profesional sanitario" });
+  const pg = new Doc(doc, font, logo, { titulo: "Informe clínico: medicación y ejercicio", subtitulo: "Prescripción de ejercicio adaptada al tratamiento farmacológico", tipo: "Documento para el profesional sanitario", numero: numeroDocumento(res, ctx), version: ctx.appVersion, qr: await qrPng(ctx.enlace) });
+  pg.prescriptor(ctx.prescriptor, ctx.prescrito);
 
   const nAlerta = res.resumen.alerta, nPrec = res.resumen.precaucion, nDDI = res.interacciones.filter((x) => x.nivel !== "menor").length;
   const condTxt = { diabetes: "diabetes", insuficiencia_cardiaca: "insuficiencia cardíaca", renal: "ERC", renal_grave: "FG < 30", marcapasos: "marcapasos/DAI", osteoporosis: "osteoporosis", epoc_asma: "EPOC/asma", oxigeno: "oxígeno domiciliario", embarazo: "embarazo/lactancia", nyha34: "NYHA III–IV", fevi_baja: "FEVI reducida", fragil: "fragilidad", prefragil: "prefragilidad" };
@@ -295,6 +346,8 @@ export async function pdfMedico(kb, res, ctx) {
   ]);
 
   if (condiciones.length) pg.parrafo("Situación clínica referida: " + condiciones.join(", ") + ".", { size: 8.5, color: C.muted });
+  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Cribado preparticipación (ACSM 2015)", texto: txt + (ctx.cribado.sintomas ? " Síntomas referidos por el paciente." : ""), pie: `Ejercicio regular: ${ctx.cribado.regular ? "sí" : "no"} · enfermedad CV/metabólica/renal conocida: ${ctx.cribado.enfermedad ? "sí" : "no"}` }); }
+  else if (ctx.cribado) pg.parrafo("Cribado preparticipación (ACSM) no completado por el paciente.", { size: 8, color: C.muted });
   const P = prescripcion(res, ctx);
   pg.seccion("Prescripción de ejercicio propuesta", "formato FITT, adaptada a los fármacos y al perfil");
   pg.tabla(
@@ -383,7 +436,8 @@ export async function pdfMedico(kb, res, ctx) {
   }
 
   pg.seccion("Fuentes y alcance");
-  pg.parrafo("ACSM Guidelines for Exercise Testing and Prescription (11.ª ed., Apéndice A); OMS 2020 Physical activity guidelines; ADA Standards of Care; criterios Beers 2023 y STOPP/START v3; fichas técnicas AEMPS; DDInter 2.0 (CC BY-NC-SA 4.0) y revisión propia de interacciones. " + kb.aviso, { size: 7.5, color: C.muted });
+  pg.parrafo("ACSM Guidelines for Exercise Testing and Prescription (11.ª ed., Apéndice A) y algoritmo de preparticipación ACSM 2015; OMS 2020 Physical activity guidelines; ADA Standards of Care; criterios Beers 2023 y STOPP/START v3; fichas técnicas AEMPS; DDInter 2.0 (CC BY-NC-SA 4.0) y revisión propia de interacciones. " + kb.aviso, { size: 7.5, color: C.muted });
+  pg.firma(ctx.prescriptor, ctx.prescrito);
   pg.pie();
   return doc;
 }
@@ -394,10 +448,12 @@ export async function pdfPaciente(kb, res, ctx) {
   const font = await prepararFuentes(doc);
   const logo = await dataUrl("assets/logo-app.png");
   const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra mayor y solo lo esencial
-  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.12 : 1 });
+  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.12 : 1, numero: numeroDocumento(res, ctx), version: ctx.appVersion, qr: await qrPng(ctx.enlace) });
+  pg.prescriptor(ctx.prescriptor, ctx.prescrito);
 
   pg.parrafo("Este plan se ha preparado a partir de la medicación que usted ha introducido. Es información general para ayudarle a moverse con seguridad y a hablar con su médico; no sustituye a su consejo ni cambia ningún tratamiento.", { size: 9, color: C.muted });
 
+  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Antes de empezar", texto: txt.replace("Cribado ACSM: ", "").replace(/^./, (c) => c.toUpperCase()) }); }
   const P = prescripcion(res, ctx);
   const evite = [];
   if (tiene(res, "sangrado")) evite.push("Deportes de contacto o con riesgo de golpes y caídas a velocidad.");
@@ -500,6 +556,7 @@ export async function pdfPaciente(kb, res, ctx) {
   ].filter(Boolean)) pg.vineta("alerta", t, { size: 8.8 });
   if (compacto) pg.parrafo("Este documento recoge lo esencial. En la aplicación encontrará el detalle de cada medicamento para cada tipo de ejercicio y la lista completa de interacciones.", { size: 8, color: C.muted });
   pg.parrafo(kb.aviso, { size: 7.5, color: C.muted });
+  pg.firma(ctx.prescriptor, ctx.prescrito);
   pg.pie();
   return doc;
 }
@@ -515,6 +572,7 @@ export function textoHistoria(kb, res, ctx) {
   if (perfil.length) L.push("Perfil: " + perfil.join(", ") + ".");
   L.push(`Tratamiento considerado: ${res.items.map((it) => it.principio.nombre + (it.dosisTotal != null ? " " + dosisTxt(it) : "")).join("; ")}.`);
   if (ctx.libres?.length) L.push(`Otros referidos, no evaluados: ${ctx.libres.join("; ")}.`);
+  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) L.push(CRIBADO_PDF[ctx.cribado.clave][1] + ` (ejercicio regular: ${ctx.cribado.regular ? "sí" : "no"}; enfermedad CV/metabólica/renal: ${ctx.cribado.enfermedad ? "sí" : "no"}${ctx.cribado.sintomas ? "; síntomas referidos" : ""}).`);
   L.push("");
   L.push("Prescripción (FITT):");
   L.push(`- Aeróbico: ${P.aer.frec}. ${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}`);
@@ -543,6 +601,7 @@ export function textoHistoria(kb, res, ctx) {
     }
   }
   L.push("");
-  L.push("Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en 4-6 semanas. Generado con Pauta Activa · Medicación y Ejercicio (" + WEB + "), base de conocimiento v" + kb.version + "; recomendación orientativa que requiere valoración clínica individual.");
+  const sem = ctx.prescrito?.semanas || ctx.prescriptor?.revision || 6;
+  L.push(`Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en ${sem} semanas${ctx.prescrito ? " (" + (() => { const f = new Date(ctx.prescrito.fecha); f.setDate(f.getDate() + ctx.prescrito.semanas * 7); return f.toLocaleDateString("es-ES"); })() + ")" : ""}. Generado con Pauta Activa · Medicación y Ejercicio (${WEB})${ctx.appVersion ? " v" + ctx.appVersion : ""}, base de conocimiento v${kb.version}; recomendación orientativa que requiere valoración clínica individual.${ctx.prescriptor?.nombre ? " " + [ctx.prescriptor.nombre, ctx.prescriptor.especialidad, ctx.prescriptor.centro, ctx.prescriptor.colegiado ? "col. " + ctx.prescriptor.colegiado : ""].filter(Boolean).join(", ") + "." : ""}`);
   return L.join("\n");
 }

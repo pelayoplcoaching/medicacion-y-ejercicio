@@ -9,6 +9,7 @@ v = datetime.now(timezone.utc).strftime("%Y%m%d%H%M")
 s = p.read_text(encoding="utf-8")
 s = re.sub(r'(href="css/style\.css)(\?v=\d+)?"', rf'\1?v={v}"', s)
 s = re.sub(r'(src="js/app\.js)(\?v=\d+)?"', rf'\1?v={v}"', s)
+s = re.sub(r'(rel="modulepreload" href="js/[a-z0-9]+\.js)(\?v=\d+)?"', rf'\1?v={v}"', s)
 p.write_text(s, encoding="utf-8")
 sw = p.parent / "sw.js"
 if sw.exists():

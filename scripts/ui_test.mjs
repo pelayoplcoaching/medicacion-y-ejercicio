@@ -122,6 +122,19 @@ try {
   check("al cargar la lista guardada se muestran los cambios", await p.isVisible("#cambios") && (await p.textContent("#cambios")).includes("Nuevos"));
   await p.click('#cambios [data-a="cerrar"]'); await p.click("#btn-perfiles");
 
+  console.log("Cribado ACSM (alfa 15)");
+  check("sin cribado: el veredicto invita a completarlo", await p.isVisible("#btn-ir-cribado"));
+  await p.click("#bloque-cribado summary"); await p.waitForTimeout(150);
+  check("sugerencia de enfermedad conocida por la medicación/diabetes", await p.isVisible("#crib-sugerencia"));
+  await p.check('input[name="crib-regular"][value="0"]'); await p.check('input[name="crib-enfermedad"][value="1"]'); await p.waitForTimeout(200);
+  check("no regular + enfermedad → valoración médica antes de empezar", (await p.textContent("#crib-resultado")).includes("valoración médica") && (await p.textContent("#veredicto")).includes("valoración médica"));
+  check("el cribado entra en Lo esencial", (await p.textContent("#esencial .esencial li:first-child")).includes("Valoración"));
+  await p.check('[data-crib-sint="dolor_pecho"]'); await p.waitForTimeout(200);
+  check("síntomas → alerta en el chip", await p.$eval("#crib-estado", (e) => e.classList.contains("crib-alerta")));
+  await p.uncheck('[data-crib-sint="dolor_pecho"]'); await p.check('input[name="crib-regular"][value="1"]'); await p.waitForTimeout(200);
+  check("regular + enfermedad → valoración antes de intensidad alta", await p.$eval("#crib-estado", (e) => e.classList.contains("crib-precaucion")));
+  check("nivel de evidencia visible en las reglas", (await p.$$("#contenido-tab .evidencia")).length >= 1);
+
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
   check("acento del modo profesional", (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--accent").trim())) !== "#6b35c4");
@@ -131,6 +144,30 @@ try {
   const historia = await p.evaluate(() => navigator.clipboard.readText());
   check("texto para la historia clínica", historia.startsWith("RECOMENDACIÓN DE EJERCICIO") && historia.includes("NYHA"));
   check("la historia incluye el registro del paciente con constantes", historia.includes("Registro del paciente") && historia.includes("glucosa antes 140"));
+  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0.15"));
+  await p.click("#bloque-prescriptor summary"); await p.fill("#presc-nombre", "Dra. Prueba"); await p.fill("#presc-centro", "Centro de pruebas"); await p.$eval("#presc-centro", (e) => e.dispatchEvent(new Event("change"))); await p.$eval("#presc-nombre", (e) => e.dispatchEvent(new Event("change")));
+  await p.click("#btn-prescrito"); await p.waitForTimeout(200);
+  check("prescriptor guardado y prescripción marcada", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.prescriptor")).nombre)) === "Dra. Prueba" && (await p.textContent("#presc-estado")).includes("reevaluar"));
+  await p.click("#btn-historia"); await p.waitForTimeout(200);
+  check("la historia cita al prescriptor y la fecha de reevaluación", (await p.evaluate(() => navigator.clipboard.readText())).includes("Dra. Prueba"));
+  await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")); s.prescrito.fecha = Date.now() - 50 * 864e5; localStorage.setItem("medex.estado", JSON.stringify(s)); });
+  await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  check("aviso de reevaluación cuando vence el plazo", await p.isVisible("#aviso-reeval"));
+  await p.click("#btn-reeval-ok"); await p.waitForTimeout(100);
+  check("reevaluado → aviso oculto", !(await p.isVisible("#aviso-reeval")));
+  await p.click("#btn-perfiles"); await p.waitForTimeout(100);
+  const [dlCaso] = await Promise.all([p.waitForEvent("download"), p.click("#btn-caso-exportar")]);
+  check("caso exportado como JSON", dlCaso.suggestedFilename().startsWith("caso-") && dlCaso.suggestedFilename().endsWith(".json"));
+  const rutaCaso = await dlCaso.path();
+  const [dlCsv] = await Promise.all([p.waitForEvent("download"), p.click("#btn-lista-csv")]);
+  check("lista exportada en CSV", dlCsv.suggestedFilename().endsWith(".csv"));
+  await p.evaluate(() => { window.prompt = () => "Caso de prueba UI"; });
+  const [dlPrueba] = await Promise.all([p.waitForEvent("download"), p.click("#btn-caso-prueba")]);
+  check("caso de prueba generado", dlPrueba.suggestedFilename().startsWith("caso-prueba-"));
+  await p.click("#lista-meds li:nth-child(1) .quitar"); await p.waitForTimeout(400);
+  await p.setInputFiles("#caso-input", rutaCaso); await p.waitForTimeout(500);
+  check("caso importado: la lista vuelve y se muestran los cambios", (await p.$$("#lista-meds li")).length === 6 && await p.isVisible("#cambios"));
+  await p.click('#cambios [data-a="cerrar"]'); await p.click("#btn-perfiles");
   await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; navigator.share = undefined; });
   await p.click("#btn-whatsapp");
   check("texto de WhatsApp", decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").includes("Lo esencial"));
@@ -158,6 +195,15 @@ try {
   check("indicador de sin conexión", await p.isVisible("#conexion"));
   await ctx.setOffline(false); await p.evaluate(() => window.dispatchEvent(new Event("online"))); await p.waitForTimeout(100);
   check("indicador desaparece al volver la conexión", !(await p.isVisible("#conexion")));
+  await p.goto(`http://localhost:${PORT}/legal.html`, { waitUntil: "networkidle" }); await p.waitForTimeout(300);
+  check("legal.html con las cinco secciones y la versión", (await p.$$("#regulatorio, #aviso, #privacidad, #accesibilidad, #metodologia")).length === 5 && (await p.textContent("#app-version")).startsWith("v0."));
+  await p.goto(`http://localhost:${PORT}/acerca.html`, { waitUntil: "networkidle" }); await p.waitForFunction(() => /casos clínicos/.test(document.querySelector("#validacion-txt").textContent), null, { timeout: 15000 });
+  check("acerca.html ejecuta los casos de validación", (await p.$$("#validacion-lista li")).length >= 10 && !(await p.textContent("#validacion-lista")).includes("✘"));
+  const anchoCtx = await navegador.newContext({ viewport: { width: 1400, height: 900 }, locale: "es-ES" }); const pa = await anchoCtx.newPage();
+  await pa.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pa.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("principios"), null, { timeout: 15000 });
+  await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
+  check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 5);
+  await anchoCtx.close();
 } catch (e) {
   fallos++; console.log("  ✘ excepción en las pruebas:", e.message);
 }

@@ -48,6 +48,12 @@ def celdas(ws):
             yield d
 
 
+EVIDENCIAS = {"ft", "guia", "criterios", "base", "revision"}
+def evidencia_de(d):
+    v = (d.get("EVIDENCIA") or "").strip().lower()
+    return v if v in EVIDENCIAS else None
+
+
 def fuente_de(d):
     """Si el comentario empieza por 'Fuente:' o 'FT ...', se guarda como fuente de la regla (p. ej. 'FT 4.4', 'ACSM ap. A')."""
     c = d.get("COMENTARIO", "")
@@ -80,7 +86,7 @@ class Fuentes:
             for c in d.get("clases_parche", []):
                 yield p, c, "parche"
 
-    def regla(self, cid, amb, texto, nuevo=None, eliminar=False, revisado=None, fuente=None):
+    def regla(self, cid, amb, texto, nuevo=None, eliminar=False, revisado=None, fuente=None, evidencia=None):
         n = 0
         for p, c, tipo in self.clases():
             if c["id"] != cid:
@@ -97,6 +103,8 @@ class Fuentes:
                             r["revisado"] = True
                         if fuente:
                             r["fuente"] = fuente
+                        if evidencia:
+                            r["evidencia"] = evidencia
                     self.tocados.add(p)
                     n += 1
         return n
@@ -167,15 +175,17 @@ def main(xlsx: Path, simular: bool):
             n = F.regla(cid, amb, d["Texto actual"], eliminar=True)
             log.append(f"eliminar regla {cid}/{amb} ({n} fuentes): {d['Texto actual'][:60]}…")
         elif e == "CAMBIAR" and d.get("TEXTO NUEVO"):
-            n = F.regla(cid, amb, d["Texto actual"], nuevo=d["TEXTO NUEVO"], revisado=True, fuente=fuente_de(d))
+            n = F.regla(cid, amb, d["Texto actual"], nuevo=d["TEXTO NUEVO"], revisado=True, fuente=fuente_de(d), evidencia=evidencia_de(d))
             log.append(f"cambiar regla {cid}/{amb} ({n} fuentes): {d['TEXTO NUEVO'][:60]}…")
             if not n:
                 avisos.append(f"no encontrada la regla {cid}/{amb}: {d['Texto actual'][:60]}")
         elif e == "CAMBIAR":
             avisos.append(f"CAMBIAR sin TEXTO NUEVO en regla {cid}/{amb} (solo comentario)")
         elif d.get("ESTADO", "").upper() == "OK":
-            n = F.regla(cid, amb, d["Texto actual"], revisado=True, fuente=fuente_de(d))
+            n = F.regla(cid, amb, d["Texto actual"], revisado=True, fuente=fuente_de(d), evidencia=evidencia_de(d))
             revisadas[0] += n and 1
+        elif evidencia_de(d):
+            F.regla(cid, amb, d["Texto actual"], evidencia=evidencia_de(d))
 
     # Umbrales
     for d in celdas(wb["Umbrales"]):

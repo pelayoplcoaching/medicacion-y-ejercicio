@@ -58,13 +58,23 @@
 </script>
 <link rel="preload" href="assets/fonts/Manrope-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Manrope-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Manrope-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="modulepreload" href="js/version.js?v=202610151439">
+<link rel="modulepreload" href="js/libs.js?v=202610151439">
+<link rel="modulepreload" href="js/i18n.js?v=202610151439">
+<link rel="modulepreload" href="js/engine.js?v=202610151439">
+<link rel="modulepreload" href="js/parser.js?v=202610151439">
+<link rel="modulepreload" href="js/informes.js?v=202610151439">
+<link rel="modulepreload" href="js/ocr.js?v=202610151439">
+<link rel="preload" href="data/kb.json" as="fetch" crossorigin>
+<link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#6b35c4">
-<link rel="stylesheet" href="css/style.css?v=202610151302">
+<link rel="stylesheet" href="css/style.css?v=202610151439">
 </head>
-<body class="cargando">
+<body class="cargando" data-modo="paciente">
 
 <header class="cabecera">
-  <img src="assets/logo-app.png" alt="Pauta Activa" class="logo" width="76" height="76">
+  <img src="assets/logo-app-152.png" alt="Pauta Activa" class="logo" width="76" height="76" fetchpriority="high">
   <div class="titulo">
     <h1><span data-i18n="meta.titulo">Pauta Activa</span> <span class="badge-pro solo-pro" data-i18n="modo.badge">Profesional</span> <span class="badge-alfa" data-i18n="cab.alfa" data-i18n-title="cab.alfa.title" title="Versión en pruebas">alfa</span></h1>
     <p class="subtitulo" data-i18n="meta.subtitulo">Medicación y Ejercicio</p>
@@ -75,8 +85,10 @@
     <p data-i18n="cab.lema1">El ejercicio físico casi nunca está contraindicado: la medicación no lo impide, solo obliga a adaptarlo.</p>
     <p data-i18n="cab.lema2">El reposo no es un tratamiento neutro. En la mayoría de las enfermedades crónicas, moverse menos empeora el pronóstico más que cualquier fármaco de esta lista.</p>
   </blockquote>
-  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><button type="button" class="btn-sec sm btn-icono" id="btn-tema" aria-label="Tema"><span>A</span></button><button type="button" class="btn-sec sm" id="btn-instalar" hidden data-i18n="instalar">Instalar</button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label><small id="kb-version"></small></div>
+  <div class="utiles"><button type="button" class="btn-sec sm" id="btn-letra" aria-pressed="false" data-i18n-title="cab.letra" title="Letra más grande">A<span class="mas">+</span></button><a class="btn-sec sm" href="novedades.html" data-i18n="cab.novedades">Novedades</a><button type="button" class="btn-sec sm btn-sugerencia" data-i18n="cab.sugerencia">Sugerencias</button><a class="btn-sec sm" href="acerca.html" data-i18n="cab.acerca">Acerca de</a><a class="btn-sec sm" href="legal.html" data-i18n="cab.legal">Legal</a><button type="button" class="btn-sec sm solo-retorno" id="btn-presentacion" data-i18n="cab.presentacion">¿Qué es esto?</button><button type="button" class="btn-sec sm btn-icono" id="btn-tema" aria-label="Tema"><span>A</span></button><label class="idioma"><span class="sr-only" data-i18n="cab.idioma">Idioma</span><select id="idioma" aria-label="Idioma"><option value="es">ES</option><option value="en">EN</option><option value="ca">CA</option><option value="gl">GL</option></select></label></div>
+  <div class="estado-linea"><small id="kb-version"></small><button type="button" class="btn-sec sm" id="btn-instalar" hidden data-i18n="instalar">Instalar</button></div>
   <p class="banner" id="aviso-idioma" hidden></p>
+  <p class="banner banner-reeval" id="aviso-reeval" hidden></p>
   <p class="conexion" id="conexion" hidden role="status"><span aria-hidden="true">●</span> <span data-i18n="conexion.off">Sin conexión · la app funciona igual</span></p>
 </header>
 
@@ -115,6 +127,17 @@
       </div>
       </details>
 
+      <details class="bloque" id="bloque-cribado">
+        <summary><span class="sub-label"><span data-i18n="crib.titulo">Antes de empezar: cribado de seguridad</span> <span class="chip chip-crib" id="crib-estado" hidden></span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <small data-i18n="crib.intro">Tres preguntas del algoritmo de preparticipación del ACSM (2015) para saber si conviene una valoración médica antes de empezar o de subir la intensidad.</small>
+        <fieldset class="crib-preg"><legend data-i18n="crib.regular">¿Hace ejercicio con regularidad? (al menos 30 min de intensidad moderada, 3 días por semana, en los últimos 3 meses)</legend>
+          <label class="check"><input type="radio" name="crib-regular" value="1"> <span data-i18n="crib.si">Sí</span></label><label class="check"><input type="radio" name="crib-regular" value="0"> <span data-i18n="crib.no">No</span></label></fieldset>
+        <fieldset class="crib-preg"><legend data-i18n="crib.enfermedad">¿Tiene una enfermedad cardiovascular, metabólica (diabetes) o renal conocida?</legend>
+          <label class="check"><input type="radio" name="crib-enfermedad" value="1"> <span data-i18n="crib.si">Sí</span></label><label class="check"><input type="radio" name="crib-enfermedad" value="0"> <span data-i18n="crib.no">No</span></label><small id="crib-sugerencia" class="crib-sug" hidden></small></fieldset>
+        <fieldset class="crib-preg"><legend data-i18n="crib.sintomas">¿Nota alguno de estos síntomas? (marque los que tenga)</legend><div class="condiciones" id="crib-sintomas"></div></fieldset>
+        <p class="crib-resultado" id="crib-resultado" hidden></p>
+      </details>
+
       <details class="bloque solo-paciente" id="bloque-movilidad">
         <summary><span class="sub-label" data-i18n="mov.titulo">Cómo se mueve ahora (marque solo si le ocurre)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
         <div class="condiciones">
@@ -138,6 +161,20 @@
         </div>
         <small data-i18n="pro.nota">Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
       </details>
+      <details class="bloque solo-pro" id="bloque-prescriptor">
+        <summary><span class="sub-label" data-i18n="presc.titulo">Prescriptor y reevaluación</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+        <small data-i18n="presc.nota">Aparece en la cabecera y la firma de los PDF. Se guarda solo en este dispositivo (no viaja con las listas ni con los enlaces).</small>
+        <div class="fila">
+          <label style="flex:1 1 180px"><span data-i18n="presc.nombre">Nombre</span><input type="text" id="presc-nombre" maxlength="60" autocomplete="name" placeholder="Dra. / Dr. …"></label>
+          <label style="flex:1 1 160px"><span data-i18n="presc.especialidad">Especialidad</span><input type="text" id="presc-especialidad" maxlength="60" placeholder="Medicina Interna"></label>
+        </div>
+        <div class="fila">
+          <label style="flex:1 1 180px"><span data-i18n="presc.centro">Centro</span><input type="text" id="presc-centro" maxlength="80"></label>
+          <label><span data-i18n="presc.colegiado">Nº colegiado (opcional)</span><input type="text" id="presc-colegiado" maxlength="20" inputmode="numeric"></label>
+          <label><span data-i18n="presc.revision">Reevaluar en</span><select id="presc-revision"><option value="4">4 semanas</option><option value="6" selected>6 semanas</option><option value="8">8 semanas</option><option value="12">12 semanas</option></select></label>
+        </div>
+        <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-prescrito" data-i18n="presc.marcar">Marcar como prescrito hoy</button><small id="presc-estado"></small></div>
+      </details>
     </div>
 
     <div class="panel">
@@ -147,6 +184,8 @@
         <small data-i18n="perf.nota">Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
         <ul id="perfiles-lista"></ul>
         <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-exportar" data-i18n="perf.exportar">Guardar copia de las listas</button><button type="button" class="btn-sec sm" id="btn-importar-listas" data-i18n="perf.importar">Recuperar copia</button><input type="file" id="importar-listas-input" accept="application/json,.json" hidden></div>
+        <div class="acciones caso-acciones" style="margin-top:4px"><button type="button" class="btn-sec sm" id="btn-caso-exportar" data-i18n="caso.exportar">Exportar caso (JSON anonimizado)</button><button type="button" class="btn-sec sm" id="btn-caso-importar" data-i18n="caso.importar">Importar caso</button><button type="button" class="btn-sec sm" id="btn-lista-csv" data-i18n="caso.csv">Lista en CSV</button><button type="button" class="btn-sec sm solo-pro" id="btn-caso-prueba" data-i18n="caso.prueba">Guardar como caso de prueba</button><input type="file" id="caso-input" accept="application/json,.json" hidden></div>
+        <small class="solo-pro" data-i18n="caso.nota">El caso de prueba incluye el resultado actual como esperado; envíelo o añádalo a data/casos.json para que forme parte de la validación.</small>
       </div>
       <form id="form-med" autocomplete="off">
         <div class="buscador" style="margin-top:10px">
@@ -218,7 +257,7 @@
     <div id="contenido-tab" role="tabpanel"></div>
     <div id="perfil"></div>
     <textarea id="informe-texto" hidden readonly></textarea>
-    <div class="descargas">
+    <div class="descargas" id="descargas">
       <h3 data-i18n="desc.titulo">Llévese este informe</h3>
       <div class="acciones">
         <button type="button" class="btn" id="btn-pdf-medico" data-i18n="desc.medico">Resumen para su médico (PDF)</button>
@@ -231,8 +270,17 @@
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
-    <p class="firma"><img src="assets/logo.png" alt="" width="40" height="40"> <span data-i18n="firma">By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</span></p>
+    <p class="firma"><img src="assets/logo-80.png" alt="" width="40" height="40" loading="lazy"> <span data-i18n="firma">By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia</span></p>
+    <p class="pie-legal"><a href="legal.html#aviso" data-i18n="legal.aviso">Aviso legal</a> · <a href="legal.html#privacidad" data-i18n="legal.privacidad">Privacidad</a> · <a href="legal.html#accesibilidad" data-i18n="legal.accesibilidad">Accesibilidad</a> · <a href="legal.html#metodologia" data-i18n="legal.metodologia">Metodología y limitaciones</a> · <a href="legal.html#regulatorio" data-i18n="legal.regulatorio">No es un producto sanitario</a> · <span id="app-version"></span></p>
   </section>
+  <nav class="indice-informe" id="indice-informe" aria-label="Índice del informe" hidden>
+    <a href="#veredicto" data-i18n="idx.veredicto">Veredicto</a>
+    <a href="#hoy" data-i18n="idx.hoy">Hoy</a>
+    <a href="#esencial" data-i18n="idx.esencial">Lo esencial</a>
+    <a href="#contenido-tab" data-i18n="idx.detalle">Detalle por pestañas</a>
+    <a href="#descargas" data-i18n="idx.descargas">Informes y compartir</a>
+    <button type="button" class="btn-sec sm" id="btn-imprimir" data-i18n="idx.imprimir">Imprimir el plan</button>
+  </nav>
 </main>
 
 <dialog id="qr" class="ficha qr" aria-label="Código QR"><div class="ficha-cab"><p data-i18n="qr.texto">Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).</p><button type="button" class="btn-sec sm" id="qr-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="qr-cuerpo" class="qr-cuerpo"></div></dialog>
@@ -251,6 +299,6 @@
   <button type="button" class="btn" id="btn-ir-informe"><span data-i18n="barra.ver">Ver el informe</span> <span class="contador" id="barra-contador"></span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202610151302"></script>
+<script type="module" src="js/app.js?v=202610151439"></script>
 </body>
 </html>

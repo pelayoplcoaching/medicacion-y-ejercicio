@@ -2,10 +2,14 @@
    Layout: móvil primero, una columna (datos → medicación → informe) con barra inferior fija;
    desde 960px, dos columnas con la medicación fija a la izquierda y el informe a la derecha.
    Identidad: púrpura FBE como único acento; verde/ámbar/rojo solo para información clínica. */
-@font-face { font-family: "Manrope"; font-weight: 400; font-display: swap; src: url("../assets/fonts/Manrope-400.woff2") format("woff2"), url("../assets/fonts/Manrope-400.ttf") format("truetype"); }
-@font-face { font-family: "Manrope"; font-weight: 500 600; font-display: swap; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"); }
-@font-face { font-family: "Manrope"; font-weight: 700; font-display: swap; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"), url("../assets/fonts/Manrope-700.ttf") format("truetype"); }
-@font-face { font-family: "Manrope"; font-weight: 800; font-display: swap; src: url("../assets/fonts/Manrope-800.woff2") format("woff2"), url("../assets/fonts/Manrope-800.ttf") format("truetype"); }
+@font-face { font-family: "Manrope"; font-weight: 400; font-display: optional; src: url("../assets/fonts/Manrope-400.woff2") format("woff2"), url("../assets/fonts/Manrope-400.ttf") format("truetype"); }
+@font-face { font-family: "Manrope"; font-weight: 500 600; font-display: optional; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"); }
+@font-face { font-family: "Manrope"; font-weight: 700; font-display: optional; src: url("../assets/fonts/Manrope-700.woff2") format("woff2"), url("../assets/fonts/Manrope-700.ttf") format("truetype"); }
+@font-face { font-family: "Manrope"; font-weight: 800; font-display: optional; src: url("../assets/fonts/Manrope-800.woff2") format("woff2"), url("../assets/fonts/Manrope-800.ttf") format("truetype"); }
+/* fuente de reserva con las métricas de Manrope (size/ascent/descent-override): el texto no salta cuando llega la fuente real */
+@font-face { font-family: "Manrope Fallback"; font-weight: 400; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Arimo"); size-adjust: 102.9%; ascent-override: 103.6%; descent-override: 29.2%; line-gap-override: 0%; }
+@font-face { font-family: "Manrope Fallback"; font-weight: 500 700; src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold"), local("Arimo Bold"); size-adjust: 100.6%; ascent-override: 106%; descent-override: 29.8%; line-gap-override: 0%; }
+@font-face { font-family: "Manrope Fallback"; font-weight: 800; src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Liberation Sans Bold"), local("Arimo Bold"); size-adjust: 102.3%; ascent-override: 104.2%; descent-override: 29.3%; line-gap-override: 0%; }
 :root {
   --bg: #f7f6fb;
   --surface: #ffffff;
@@ -21,7 +25,7 @@
   --alerta: #c0271d;     --alerta-soft: #fdeceb;   --alerta-ink: #8f1a12;
   --precaucion: #b36400; --precaucion-soft: #fff1dd; --precaucion-ink: #7a4300;
   --info: #1d7a4d;       --info-soft: #e3f4ea;     --info-ink: #145637;
-  --font: "Manrope", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  --font: "Manrope", "Manrope Fallback", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
   --r-sm: 10px; --r-md: 14px; --r-lg: 20px;
   --shadow: 0 1px 2px rgba(28, 24, 48, .05), 0 10px 30px -18px rgba(74, 32, 152, .35);
   --tap: 44px;
@@ -711,3 +715,53 @@ details.farmaco summary .ic-grupo { width: 30px; height: 30px; padding: 5px; }
 .conexion span[aria-hidden] { font-size: .6rem; }
 @media print { .variantes, .dias-chips, .chequeo .acciones, .cambios .acciones { display: none !important; } }
 .dias-resumen { color: var(--accent-deep); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* ---------- alfa 15: cribado ACSM, prescriptor, evidencia, casos, índice lateral, legal ---------- */
+.crib-preg { border: 0; margin: 8px 0 0; padding: 0; }
+.crib-preg legend { font-size: .9rem; font-weight: 600; color: var(--fg); padding: 0; margin-bottom: 2px; }
+.crib-preg .check { display: inline-flex; margin-right: 14px; min-height: 36px; }
+.crib-sug { display: block; color: var(--accent-deep); font-weight: 600; margin-top: 2px; }
+.chip-crib { margin-left: 6px; }
+.chip-crib.crib-info { background: var(--info-soft); color: var(--info-ink); }
+.chip-crib.crib-precaucion { background: var(--precaucion-soft); color: var(--precaucion-ink); }
+.chip-crib.crib-alerta { background: var(--alerta-soft); color: var(--alerta-ink); }
+.crib-resultado { margin: 10px 0 2px; padding: 8px 12px; border-radius: var(--r-sm); font-size: .92rem; font-weight: 600; border-left: 4px solid var(--info); background: var(--info-soft); color: var(--info-ink); }
+.crib-resultado.nivel-precaucion { border-color: var(--precaucion); background: var(--precaucion-soft); color: var(--precaucion-ink); }
+.crib-resultado.nivel-alerta { border-color: var(--alerta); background: var(--alerta-soft); color: var(--alerta-ink); }
+.veredicto-crib { margin-top: 8px !important; padding-top: 8px; border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent); font-weight: 500; font-size: .92rem; }
+.veredicto-crib small { color: inherit; opacity: .75; }
+.veredicto-crib.crib-pendiente { font-weight: 500; }
+.banner-reeval { background: var(--precaucion-soft); color: var(--precaucion-ink); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+#bloque-prescriptor .fila > label { flex: 0 1 auto; }
+#bloque-prescriptor input[type=text] { width: 100%; min-width: 120px; }
+.caso-acciones { gap: 6px; }
+.evidencia { display: inline-block; font-size: .66rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; margin-left: 2px; vertical-align: middle; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.evidencia.ev-ft { background: var(--info-soft); color: var(--info-ink); border-color: transparent; }
+.evidencia.ev-guia, .evidencia.ev-criterios { background: var(--accent-soft); color: var(--accent-deep); border-color: transparent; }
+.evidencia.ev-base { background: var(--surface-2); color: var(--fg); }
+.fuente-regla a { color: var(--accent); }
+.pie-legal { margin-top: 10px; font-size: .78rem; color: var(--muted); }
+.pie-legal a { color: var(--muted); }
+.pie-legal a:hover { color: var(--accent); }
+/* índice lateral del informe: solo en pantallas anchas */
+.indice-informe { display: none; }
+@media (min-width: 1240px) {
+  .contenedor { grid-template-columns: minmax(320px, 400px) minmax(0, 1fr) 180px; }
+  .indice-informe { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 16px; align-self: start; padding: 10px 0 10px 12px; border-left: 1px solid var(--line); font-size: .86rem; }
+  .indice-informe a { color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: var(--r-sm); border-left: 3px solid transparent; }
+  .indice-informe a:hover { color: var(--accent); background: var(--accent-soft); }
+  .indice-informe a.activo { color: var(--accent-deep); border-left-color: var(--accent); font-weight: 700; }
+  .indice-informe .btn-sec { margin-top: 10px; align-self: flex-start; }
+  .indice-informe[hidden] { display: none; }
+}
+@media print {
+  .indice-informe, .veredicto-crib.crib-pendiente, #bloque-cribado, #bloque-prescriptor, .pie-legal, .caso-acciones, .banner-reeval, .conexion, .hoy-botones, .cambios, #no-reconocidos, .momentos, .med-acciones, .tabs, #perfil { display: none !important; }
+  #contenido-tab details.farmaco, details.seccion { break-inside: avoid; }
+  .contenedor { grid-template-columns: 1fr !important; }
+  body { font-size: 11pt; }
+}
+/* la línea de versión ocupa siempre una línea: sin saltos de maquetación al cargar */
+.estado-linea { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; min-height: 38px; }
+#kb-version { display: block; flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: 0; grid-column: auto; }
+.estado-linea #btn-instalar { flex: 0 0 auto; }
+@media (min-width: 640px) { .estado-linea { grid-column: 2 / -1; } }

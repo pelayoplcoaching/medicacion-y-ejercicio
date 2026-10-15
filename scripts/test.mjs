@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORDEN = { alerta: 3, precaucion: 2, info: 1 };
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo, cribadoACSM, enfermedadSugerida, nivelEvidencia, seccionFT, comprobarCaso } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
 const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -270,6 +270,29 @@ console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo pr
   const ses = sesionTipo("fuerza_eq", { fragil: false });
   check("cada ejercicio de fuerza tiene pictograma, clave y variantes", ses.bloques.slice(1).every((b) => b.pict && b.clave && b.facil && b.dificil));
   check("el calentamiento tiene pictograma", !!ses.bloques[0].pict);
+}
+
+console.log("\nCribado ACSM, evidencia y casos de validación (alfa 15)");
+{
+  check("cribado: sin datos", cribadoACSM({}).clave === "sin_datos");
+  check("cribado: no regular, sin enfermedad, sin síntomas → empezar", cribadoACSM({ regular: false, enfermedad: false, sintomas: [] }).clave === "empezar");
+  check("cribado: regular sin enfermedad → continuar", cribadoACSM({ regular: true, enfermedad: false, sintomas: [] }).clave === "continuar");
+  check("cribado: regular con enfermedad → valoración antes de vigoroso", cribadoACSM({ regular: true, enfermedad: true, sintomas: [] }).clave === "valoracion_vigoroso");
+  check("cribado: no regular con enfermedad → valoración antes", cribadoACSM({ regular: false, enfermedad: true, sintomas: [] }).clave === "valoracion_antes");
+  check("cribado: síntomas en activo → parar", cribadoACSM({ regular: true, enfermedad: false, sintomas: ["dolor_pecho"] }).clave === "parar" && cribadoACSM({ regular: true, enfermedad: false, sintomas: ["dolor_pecho"] }).nivel === "alerta");
+  check("cribado: síntomas en inactivo → valoración antes (alerta)", cribadoACSM({ regular: false, enfermedad: false, sintomas: ["disnea"] }).clave === "valoracion_antes");
+  const resIns = evaluar(datos, [{ pid: "insulina_basal", dosis: 20, tomas: 1 }], { condiciones: new Set() });
+  check("enfermedad sugerida por la medicación (insulina)", enfermedadSugerida(resIns, { condiciones: new Set() }).sugerida);
+  check("enfermedad no sugerida con paracetamol", !enfermedadSugerida(evaluar(datos, [{ pid: "paracetamol", dosis: 1000, tomas: 1 }], { condiciones: new Set() }), { condiciones: new Set() }).sugerida);
+  check("evidencia: FT 4.4 → ficha técnica y sección", nivelEvidencia({ fuente: "FT 4.4", revisado: true }) === "ft" && seccionFT({ fuente: "FT 4.4" }) === "4.4");
+  check("evidencia: ACSM → guía; Beers → criterios; Lexicomp → base", nivelEvidencia({ fuente: "ACSM ap. A" }) === "guia" && nivelEvidencia({ fuente: "Beers 2023" }) === "criterios" && nivelEvidencia({ fuente: "Lexicomp" }) === "base");
+  check("evidencia: revisada sin fuente → revisión; sin revisar → borrador; explícita manda", nivelEvidencia({ revisado: true }) === "revision" && nivelEvidencia({}) === "borrador" && nivelEvidencia({ evidencia: "guia", fuente: "FT 4.4" }) === "guia");
+  const casos = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/casos.json"), "utf8")).casos;
+  const ddiFull = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/ddi.json"), "utf8"));
+  const datosFull = { ...datos, ddi: ddiFull };
+  check("hay al menos 10 casos de validación con id único", casos.length >= 10 && new Set(casos.map((c) => c.id)).size === casos.length);
+  for (const c of casos) { const r = comprobarCaso(datosFull, c); check(`caso ${c.id}: ${c.titulo}`, r.ok, r.fallos.join("; ")); }
+  check("un caso con expectativa imposible falla", !comprobarCaso(datosFull, { meds: [{ pid: "paracetamol", dosis: 500, tomas: 1 }], ctx: {}, esperado: { alerta_min: 3 } }).ok);
 }
 
 console.log(`\n${total - fallos}/${total} pruebas correctas`);

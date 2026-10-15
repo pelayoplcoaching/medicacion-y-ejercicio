@@ -94,6 +94,11 @@ def hoja(wb, titulo, columnas, filas, anchos, rev_desde, ref_col=True):
     dv = DataValidation(type="list", formula1='"OK,CAMBIAR,ELIMINAR"', allow_blank=True)
     ws.add_data_validation(dv)
     dv.add(f"{get_column_letter(rev_desde)}2:{get_column_letter(rev_desde)}{max(ws.max_row, 2)}")
+    if "EVIDENCIA" in columnas:
+        col = get_column_letter(columnas.index("EVIDENCIA") + 1)
+        dv2 = DataValidation(type="list", formula1='"ft,guia,criterios,base,revision"', allow_blank=True)
+        ws.add_data_validation(dv2)
+        dv2.add(f"{col}2:{col}{max(ws.max_row, 2)}")
     return ws
 
 
@@ -113,6 +118,7 @@ def main(out: Path):
         ["Ámbitos", "Antes de empezar (general) · Aeróbico · Fuerza · Equilibrio."],
         ["Condición", "Cuándo se muestra la regla: 'dosis alta' (por encima del umbral de la hoja Umbrales), edad, situación clínica, solo un principio del grupo…"],
         ["Fuente", "Si en COMENTARIO escribe la fuente al principio (p. ej. «FT 4.4», «ACSM ap. A», «Lexicomp»), se guarda junto a la regla y se muestra en la aplicación."],
+        ["Evidencia", "En la hoja Reglas puede fijar EVIDENCIA: ft (ficha técnica), guia (guía/consenso), criterios (Beers, STOPP/START), base (base de interacciones), revision (revisión clínica sin fuente citada). Si se deja en blanco se deduce de la fuente."],
         ["Al terminar", "Guarde el archivo (si es Google Sheets: Archivo → Descargar → Excel) y envíelo; scripts/import_revision.py aplica los cambios y regenera la base."],
         ["Hojas", "Reglas (612) · Umbrales de dosis · Reglas combinadas (por varios fármacos o situación) · Interacciones revisadas · Clases (resumen y señales)."],
     ]
@@ -131,9 +137,9 @@ def main(out: Path):
         for amb, nom in AMBITOS.items():
             for i, r in enumerate(c.get(amb, [])):
                 fts = [FICHAS[p["id"]] for p in c["principios"] if p["id"] in FICHAS][:1]
-                filas.append([c["nombre"], nom, NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), r["texto"], "Sí" if r.get("revisado") else "", fts[0] if fts else "", "", "", "", f"regla|{c['id']}|{amb}|{i}"])
-    hoja(wb, "Reglas", ["Grupo", "Ámbito", "Nivel", "Condición", "Texto actual", "Revisada", "Ficha técnica (1.er principio)", "ESTADO", "TEXTO NUEVO", "COMENTARIO"], filas,
-         [30, 14, 11, 24, 80, 9, 24, 11, 60, 30], rev_desde=8)
+                filas.append([c["nombre"], nom, NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), r["texto"], "Sí" if r.get("revisado") else "", r.get("fuente", ""), fts[0] if fts else "", "", "", "", "", f"regla|{c['id']}|{amb}|{i}"])
+    hoja(wb, "Reglas", ["Grupo", "Ámbito", "Nivel", "Condición", "Texto actual", "Revisada", "Fuente", "Ficha técnica (1.er principio)", "ESTADO", "TEXTO NUEVO", "EVIDENCIA", "COMENTARIO"], filas,
+         [30, 14, 11, 24, 80, 9, 14, 24, 11, 60, 16, 30], rev_desde=9)
 
     # --- Umbrales y principios
     filas = []

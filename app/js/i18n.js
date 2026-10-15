@@ -4,6 +4,17 @@ const CLAVE = "medex.idioma";
 export const IDIOMAS = { es: "Español", en: "English", ca: "Català", gl: "Galego" };
 
 const ES = {
+  "crib.titulo": "Antes de empezar: cribado de seguridad", "crib.intro": "Tres preguntas del algoritmo de preparticipación del ACSM (2015) para saber si conviene una valoración médica antes de empezar o de subir la intensidad.",
+  "crib.regular": "¿Hace ejercicio con regularidad? (al menos 30 min de intensidad moderada, 3 días por semana, en los últimos 3 meses)", "crib.enfermedad": "¿Tiene una enfermedad cardiovascular, metabólica (diabetes) o renal conocida?", "crib.sintomas": "¿Nota alguno de estos síntomas? (marque los que tenga)", "crib.si": "Sí", "crib.no": "No",
+  "crib.sugerencia": "Por lo que ha indicado ({q}) parece que sí; confírmelo.", "crib.fuente": "algoritmo ACSM 2015", "crib.pendiente": "Completar el cribado de seguridad (3 preguntas)",
+  "crib.chip.empezar": "Puede empezar", "crib.chip.continuar": "Puede continuar", "crib.chip.valoracion_vigoroso": "Valoración antes de intensidad alta", "crib.chip.valoracion_antes": "Valoración médica antes de empezar", "crib.chip.parar": "Consulte antes de entrenar", "crib.chip.sin_datos": "Pendiente",
+  "presc.titulo": "Prescriptor y reevaluación", "presc.nota": "Aparece en la cabecera y la firma de los PDF. Se guarda solo en este dispositivo (no viaja con las listas ni con los enlaces).", "presc.nombre": "Nombre", "presc.especialidad": "Especialidad", "presc.centro": "Centro", "presc.colegiado": "Nº colegiado (opcional)", "presc.revision": "Reevaluar en",
+  "presc.marcar": "Marcar como prescrito hoy", "presc.marcado": "Prescripción registrada; reevaluación prevista el {d}.", "presc.estado": "Prescrito el {d} · reevaluar el {r}", "presc.toca": "Toca reevaluar este plan (prevista el {d}): tolerancia, progresión y cambios de medicación.", "presc.reevaluado": "Ya reevaluado",
+  "caso.exportar": "Exportar caso (JSON anonimizado)", "caso.importar": "Importar caso", "caso.csv": "Lista en CSV", "caso.prueba": "Guardar como caso de prueba", "caso.nota": "El caso de prueba incluye el resultado actual como esperado; envíelo o añádalo a data/casos.json para que forme parte de la validación.",
+  "caso.vacio": "No hay medicación que exportar.", "caso.exportado": "Caso exportado (sin datos personales, con huella de integridad).", "caso.importado": "Caso importado (base v{v}); revise los cambios.", "caso.importado_alterado": "Caso importado, pero la huella no coincide: el archivo se modificó después de exportarlo.", "caso.error": "El archivo no es un caso válido.", "caso.csv_ok": "Lista exportada en CSV.", "caso.titulo_prompt": "Título breve del caso de prueba (sin datos personales)", "caso.prueba_ok": "Caso de prueba guardado; pasa la comprobación con la base actual.", "caso.prueba_fallo": "Caso guardado, pero no pasa: {f}",
+  "ev.titulo": "Nivel de evidencia de la fuente", "ev.ft": "Ficha técnica", "ev.guia": "Guía / consenso", "ev.criterios": "Criterios explícitos", "ev.base": "Base de interacciones", "ev.revision": "Revisión clínica", "ev.borrador": "Sin fuente",
+  "cab.legal": "Legal", "legal.aviso": "Aviso legal", "legal.privacidad": "Privacidad", "legal.accesibilidad": "Accesibilidad", "legal.metodologia": "Metodología y limitaciones", "legal.regulatorio": "No es un producto sanitario",
+  "idx.veredicto": "Veredicto", "idx.hoy": "Hoy", "idx.esencial": "Lo esencial", "idx.detalle": "Detalle por pestañas", "idx.descargas": "Informes y compartir", "idx.imprimir": "Imprimir el plan",
   "cambios.titulo": "Cambios respecto a la lista anterior", "cambios.nuevos": "Nuevos", "cambios.retirados": "Retirados", "cambios.dosis": "Cambio de dosis", "cambios.ninguno": "La lista es igual que la anterior.", "cambios.deshacer": "Volver a la lista anterior", "cambios.deshecho": "Lista anterior recuperada.",
   "chequeo.titulo": "Antes de empezar", "chequeo.intro": "Marque lo que se cumple hoy. Lo que no marque convierte la sesión en suave o la deja para otro día.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar el chequeo", "chequeo.por": "por {f}",
   "chequeo.no": "Hoy mejor no entrenar.", "chequeo.suave": "Hoy, sesión suave:", "chequeo.seguir_suave": "Hacer la sesión suave", "chequeo.suave_banner": "Sesión suave: la mitad de series o de minutos, sin llegar a cansarse, y pare ante cualquier molestia.",
@@ -122,6 +133,17 @@ const ES = {
 };
 
 const EN = {
+  "crib.titulo": "Before you start: safety screening", "crib.intro": "Three questions from the ACSM pre-participation algorithm (2015) to know whether a medical check is advisable before starting or increasing intensity.",
+  "crib.regular": "Do you exercise regularly? (at least 30 min of moderate intensity, 3 days a week, over the last 3 months)", "crib.enfermedad": "Do you have known cardiovascular, metabolic (diabetes) or kidney disease?", "crib.sintomas": "Do you notice any of these symptoms? (tick those you have)", "crib.si": "Yes", "crib.no": "No",
+  "crib.sugerencia": "From what you entered ({q}) it looks like yes; please confirm.", "crib.fuente": "ACSM 2015 algorithm", "crib.pendiente": "Complete the safety screening (3 questions)",
+  "crib.chip.empezar": "You can start", "crib.chip.continuar": "You can continue", "crib.chip.valoracion_vigoroso": "Check before high intensity", "crib.chip.valoracion_antes": "Medical check before starting", "crib.chip.parar": "Seek advice before training", "crib.chip.sin_datos": "Pending",
+  "presc.titulo": "Prescriber and reassessment", "presc.nota": "Shown in the header and signature of the PDFs. Stored only on this device (not in lists or links).", "presc.nombre": "Name", "presc.especialidad": "Specialty", "presc.centro": "Centre", "presc.colegiado": "Registration no. (optional)", "presc.revision": "Reassess in",
+  "presc.marcar": "Mark as prescribed today", "presc.marcado": "Prescription recorded; reassessment due on {d}.", "presc.estado": "Prescribed on {d} · reassess on {r}", "presc.toca": "Time to reassess this plan (due {d}): tolerance, progression and medication changes.", "presc.reevaluado": "Reassessed",
+  "caso.exportar": "Export case (anonymised JSON)", "caso.importar": "Import case", "caso.csv": "List as CSV", "caso.prueba": "Save as test case", "caso.nota": "The test case stores the current result as expected; send it or add it to data/casos.json so it becomes part of the validation.",
+  "caso.vacio": "No medication to export.", "caso.exportado": "Case exported (no personal data, with integrity fingerprint).", "caso.importado": "Case imported (database v{v}); review the changes.", "caso.importado_alterado": "Case imported, but the fingerprint does not match: the file was modified after export.", "caso.error": "The file is not a valid case.", "caso.csv_ok": "List exported as CSV.", "caso.titulo_prompt": "Short title for the test case (no personal data)", "caso.prueba_ok": "Test case saved; it passes with the current database.", "caso.prueba_fallo": "Case saved, but it fails: {f}",
+  "ev.titulo": "Evidence level of the source", "ev.ft": "SmPC", "ev.guia": "Guideline / consensus", "ev.criterios": "Explicit criteria", "ev.base": "Interaction database", "ev.revision": "Clinical review", "ev.borrador": "No source",
+  "cab.legal": "Legal", "legal.aviso": "Legal notice", "legal.privacidad": "Privacy", "legal.accesibilidad": "Accessibility", "legal.metodologia": "Methodology and limitations", "legal.regulatorio": "Not a medical device",
+  "idx.veredicto": "Verdict", "idx.hoy": "Today", "idx.esencial": "The essentials", "idx.detalle": "Detail by tabs", "idx.descargas": "Reports and sharing", "idx.imprimir": "Print the plan",
   "cambios.titulo": "Changes from the previous list", "cambios.nuevos": "New", "cambios.retirados": "Removed", "cambios.dosis": "Dose change", "cambios.ninguno": "The list is the same as before.", "cambios.deshacer": "Restore the previous list", "cambios.deshecho": "Previous list restored.",
   "chequeo.titulo": "Before you start", "chequeo.intro": "Tick what is true today. Anything left unticked makes the session gentle or postpones it.", "chequeo.continuar": "Continue", "chequeo.saltar": "Skip the check", "chequeo.por": "because of {f}",
   "chequeo.no": "Better not to train today.", "chequeo.suave": "Today, a gentle session:", "chequeo.seguir_suave": "Do the gentle session", "chequeo.suave_banner": "Gentle session: half the sets or minutes, never to the point of tiredness, and stop at any discomfort.",
@@ -240,6 +262,17 @@ const EN = {
 };
 
 const CA = {
+  "crib.titulo": "Abans de començar: cribratge de seguretat", "crib.intro": "Tres preguntes de l'algorisme de preparticipació de l'ACSM (2015) per saber si convé una valoració mèdica abans de començar o d'apujar la intensitat.",
+  "crib.regular": "Fa exercici amb regularitat? (almenys 30 min d'intensitat moderada, 3 dies per setmana, els últims 3 mesos)", "crib.enfermedad": "Té una malaltia cardiovascular, metabòlica (diabetis) o renal coneguda?", "crib.sintomas": "Nota algun d'aquests símptomes? (marqui els que tingui)", "crib.si": "Sí", "crib.no": "No",
+  "crib.sugerencia": "Pel que ha indicat ({q}) sembla que sí; confirmi-ho.", "crib.fuente": "algorisme ACSM 2015", "crib.pendiente": "Completar el cribratge de seguretat (3 preguntes)",
+  "crib.chip.empezar": "Pot començar", "crib.chip.continuar": "Pot continuar", "crib.chip.valoracion_vigoroso": "Valoració abans d'intensitat alta", "crib.chip.valoracion_antes": "Valoració mèdica abans de començar", "crib.chip.parar": "Consulti abans d'entrenar", "crib.chip.sin_datos": "Pendent",
+  "presc.titulo": "Prescriptor i reavaluació", "presc.nota": "Apareix a la capçalera i la signatura dels PDF. Es desa només en aquest dispositiu (no viatja amb les llistes ni els enllaços).", "presc.nombre": "Nom", "presc.especialidad": "Especialitat", "presc.centro": "Centre", "presc.colegiado": "Núm. col·legiat (opcional)", "presc.revision": "Reavaluar en",
+  "presc.marcar": "Marcar com a prescrit avui", "presc.marcado": "Prescripció registrada; reavaluació prevista el {d}.", "presc.estado": "Prescrit el {d} · reavaluar el {r}", "presc.toca": "Toca reavaluar aquest pla (prevista el {d}): tolerància, progressió i canvis de medicació.", "presc.reevaluado": "Ja reavaluat",
+  "caso.exportar": "Exportar cas (JSON anonimitzat)", "caso.importar": "Importar cas", "caso.csv": "Llista en CSV", "caso.prueba": "Desar com a cas de prova", "caso.nota": "El cas de prova inclou el resultat actual com a esperat; envieu-lo o afegiu-lo a data/casos.json perquè formi part de la validació.",
+  "caso.vacio": "No hi ha medicació per exportar.", "caso.exportado": "Cas exportat (sense dades personals, amb empremta d'integritat).", "caso.importado": "Cas importat (base v{v}); reviseu els canvis.", "caso.importado_alterado": "Cas importat, però l'empremta no coincideix: el fitxer es va modificar després d'exportar-lo.", "caso.error": "El fitxer no és un cas vàlid.", "caso.csv_ok": "Llista exportada en CSV.", "caso.titulo_prompt": "Títol breu del cas de prova (sense dades personals)", "caso.prueba_ok": "Cas de prova desat; passa la comprovació amb la base actual.", "caso.prueba_fallo": "Cas desat, però no passa: {f}",
+  "ev.titulo": "Nivell d'evidència de la font", "ev.ft": "Fitxa tècnica", "ev.guia": "Guia / consens", "ev.criterios": "Criteris explícits", "ev.base": "Base d'interaccions", "ev.revision": "Revisió clínica", "ev.borrador": "Sense font",
+  "cab.legal": "Legal", "legal.aviso": "Avís legal", "legal.privacidad": "Privacitat", "legal.accesibilidad": "Accessibilitat", "legal.metodologia": "Metodologia i limitacions", "legal.regulatorio": "No és un producte sanitari",
+  "idx.veredicto": "Veredicte", "idx.hoy": "Avui", "idx.esencial": "L'essencial", "idx.detalle": "Detall per pestanyes", "idx.descargas": "Informes i compartir", "idx.imprimir": "Imprimir el pla",
   "cambios.titulo": "Canvis respecte a la llista anterior", "cambios.nuevos": "Nous", "cambios.retirados": "Retirats", "cambios.dosis": "Canvi de dosi", "cambios.ninguno": "La llista és igual que l'anterior.", "cambios.deshacer": "Tornar a la llista anterior", "cambios.deshecho": "Llista anterior recuperada.",
   "chequeo.titulo": "Abans de començar", "chequeo.intro": "Marqueu el que es compleix avui. El que no marqueu converteix la sessió en suau o la deixa per a un altre dia.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar la comprovació", "chequeo.por": "per {f}",
   "chequeo.no": "Avui és millor no entrenar.", "chequeo.suave": "Avui, sessió suau:", "chequeo.seguir_suave": "Fer la sessió suau", "chequeo.suave_banner": "Sessió suau: la meitat de sèries o de minuts, sense arribar a cansar-se, i atureu-vos davant qualsevol molèstia.",
@@ -358,6 +391,17 @@ const CA = {
 };
 
 const GL = {
+  "crib.titulo": "Antes de comezar: cribado de seguridade", "crib.intro": "Tres preguntas do algoritmo de preparticipación do ACSM (2015) para saber se convén unha valoración médica antes de comezar ou de subir a intensidade.",
+  "crib.regular": "Fai exercicio con regularidade? (polo menos 30 min de intensidade moderada, 3 días por semana, nos últimos 3 meses)", "crib.enfermedad": "Ten unha enfermidade cardiovascular, metabólica (diabetes) ou renal coñecida?", "crib.sintomas": "Nota algún destes síntomas? (marque os que teña)", "crib.si": "Si", "crib.no": "Non",
+  "crib.sugerencia": "Polo que indicou ({q}) parece que si; confírmeo.", "crib.fuente": "algoritmo ACSM 2015", "crib.pendiente": "Completar o cribado de seguridade (3 preguntas)",
+  "crib.chip.empezar": "Pode comezar", "crib.chip.continuar": "Pode continuar", "crib.chip.valoracion_vigoroso": "Valoración antes de intensidade alta", "crib.chip.valoracion_antes": "Valoración médica antes de comezar", "crib.chip.parar": "Consulte antes de adestrar", "crib.chip.sin_datos": "Pendente",
+  "presc.titulo": "Prescritor e reavaliación", "presc.nota": "Aparece na cabeceira e na sinatura dos PDF. Gárdase só neste dispositivo (non viaxa coas listas nin coas ligazóns).", "presc.nombre": "Nome", "presc.especialidad": "Especialidade", "presc.centro": "Centro", "presc.colegiado": "Nº colexiado (opcional)", "presc.revision": "Reavaliar en",
+  "presc.marcar": "Marcar como prescrito hoxe", "presc.marcado": "Prescrición rexistrada; reavaliación prevista o {d}.", "presc.estado": "Prescrito o {d} · reavaliar o {r}", "presc.toca": "Toca reavaliar este plan (prevista o {d}): tolerancia, progresión e cambios de medicación.", "presc.reevaluado": "Xa reavaliado",
+  "caso.exportar": "Exportar caso (JSON anonimizado)", "caso.importar": "Importar caso", "caso.csv": "Lista en CSV", "caso.prueba": "Gardar como caso de proba", "caso.nota": "O caso de proba inclúe o resultado actual como esperado; envíeo ou engádao a data/casos.json para que forme parte da validación.",
+  "caso.vacio": "Non hai medicación que exportar.", "caso.exportado": "Caso exportado (sen datos persoais, con pegada de integridade).", "caso.importado": "Caso importado (base v{v}); revise os cambios.", "caso.importado_alterado": "Caso importado, pero a pegada non coincide: o ficheiro modificouse despois de exportalo.", "caso.error": "O ficheiro non é un caso válido.", "caso.csv_ok": "Lista exportada en CSV.", "caso.titulo_prompt": "Título breve do caso de proba (sen datos persoais)", "caso.prueba_ok": "Caso de proba gardado; pasa a comprobación coa base actual.", "caso.prueba_fallo": "Caso gardado, pero non pasa: {f}",
+  "ev.titulo": "Nivel de evidencia da fonte", "ev.ft": "Ficha técnica", "ev.guia": "Guía / consenso", "ev.criterios": "Criterios explícitos", "ev.base": "Base de interaccións", "ev.revision": "Revisión clínica", "ev.borrador": "Sen fonte",
+  "cab.legal": "Legal", "legal.aviso": "Aviso legal", "legal.privacidad": "Privacidade", "legal.accesibilidad": "Accesibilidade", "legal.metodologia": "Metodoloxía e limitacións", "legal.regulatorio": "Non é un produto sanitario",
+  "idx.veredicto": "Veredicto", "idx.hoy": "Hoxe", "idx.esencial": "O esencial", "idx.detalle": "Detalle por lapelas", "idx.descargas": "Informes e compartir", "idx.imprimir": "Imprimir o plan",
   "cambios.titulo": "Cambios respecto á lista anterior", "cambios.nuevos": "Novos", "cambios.retirados": "Retirados", "cambios.dosis": "Cambio de dose", "cambios.ninguno": "A lista é igual que a anterior.", "cambios.deshacer": "Volver á lista anterior", "cambios.deshecho": "Lista anterior recuperada.",
   "chequeo.titulo": "Antes de comezar", "chequeo.intro": "Marque o que se cumpre hoxe. O que non marque converte a sesión en suave ou déixaa para outro día.", "chequeo.continuar": "Continuar", "chequeo.saltar": "Saltar a comprobación", "chequeo.por": "por {f}",
   "chequeo.no": "Hoxe mellor non adestrar.", "chequeo.suave": "Hoxe, sesión suave:", "chequeo.seguir_suave": "Facer a sesión suave", "chequeo.suave_banner": "Sesión suave: a metade de series ou de minutos, sen chegar a cansarse, e pare ante calquera molestia.",
@@ -503,15 +547,16 @@ export function aplicarIdioma(lang) {
   try { localStorage.setItem(CLAVE, actual); } catch {}
   document.documentElement.lang = actual;
   for (const el of document.querySelectorAll("[data-i18n]")) {
-    const k = el.dataset.i18n;
-    if (el.dataset.i18nHtml != null) { el.innerHTML = t(k); continue; }
+    const k = el.dataset.i18n, txt = t(k);
+    if (el.dataset.i18nHtml != null) { if (el.innerHTML !== txt) el.innerHTML = txt; continue; }
     const svg = el.querySelector(":scope > svg");  // conservar el icono del botón
-    el.textContent = t(k);
+    if ((svg ? el.textContent.trim() : el.textContent) === txt) continue; // sin cambios: no tocar el DOM (evita repintados y retrasos del LCP)
+    el.textContent = txt;
     if (svg) el.prepend(svg);
   }
-  for (const el of document.querySelectorAll("[data-i18n-ph]")) el.placeholder = t(el.dataset.i18nPh);
-  for (const el of document.querySelectorAll("[data-i18n-title]")) el.title = t(el.dataset.i18nTitle);
-  for (const el of document.querySelectorAll("[data-i18n-aria]")) el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  for (const el of document.querySelectorAll("[data-i18n-ph]")) { const v = t(el.dataset.i18nPh); if (el.placeholder !== v) el.placeholder = v; }
+  for (const el of document.querySelectorAll("[data-i18n-title]")) { const v = t(el.dataset.i18nTitle); if (el.title !== v) el.title = v; }
+  for (const el of document.querySelectorAll("[data-i18n-aria]")) { const v = t(el.dataset.i18nAria); if (el.getAttribute("aria-label") !== v) el.setAttribute("aria-label", v); }
   document.title = `${t("meta.titulo")} · ${t("meta.subtitulo")}`;
   const aviso = document.getElementById("aviso-idioma");
   if (aviso) { aviso.hidden = actual === "es"; aviso.textContent = t("aviso.idioma"); }

@@ -559,3 +559,87 @@ export function progresion(diario, ahora = Date.now()) {
   if (ult.length >= 6 && rpe <= 6) return { clave: "progresar", n: ult.length, rpe: rpe.toFixed(1) };
   return { clave: "mantener", n: ult.length, rpe: rpe.toFixed(1) };
 }
+
+/* ---------- Cribado preparticipación (algoritmo ACSM 2015, Riebe et al. MSSE 2015) ---------- */
+/** Síntomas o signos sugestivos de enfermedad cardiovascular, metabólica o renal (ACSM). */
+export const SINTOMAS_ACSM = [
+  { id: "dolor_pecho", texto: "Dolor, opresión o molestia en el pecho, cuello, mandíbula o brazos con el esfuerzo" },
+  { id: "disnea", texto: "Falta de aire en reposo o con esfuerzos pequeños" },
+  { id: "sincope", texto: "Mareos intensos o desmayos" },
+  { id: "ortopnea", texto: "Falta de aire al acostarse o que le despierta por la noche" },
+  { id: "edema", texto: "Hinchazón de los tobillos" },
+  { id: "palpitaciones", texto: "Palpitaciones o latidos rápidos o irregulares" },
+  { id: "claudicacion", texto: "Dolor en las piernas al caminar que cede al parar" },
+  { id: "soplo", texto: "Le han dicho que tiene un soplo cardíaco" },
+  { id: "fatiga", texto: "Cansancio o falta de aire inusuales con actividades normales" },
+];
+/** Clases cuya presencia sugiere enfermedad cardiovascular, metabólica o renal conocida (para prerrellenar la pregunta). */
+const CLASES_ENFERMEDAD = /^(nitratos|digoxina|amiodarona|antiarritmicos_ic|sotalol_dronedarona|antianginosos_otros|ic_nuevos|ivabradina|anticoagulantes|antiagregantes|antiagregantes_vasculares|insulina|sulfonilureas|metformina|isglt2|aglp1|idpp4|pioglitazona|antidiabeticos_otros|epo_hematinicos|potasio_magnesio)$/;
+export function enfermedadSugerida(res, ctx = {}) {
+  const cond = ctx.condiciones || new Set();
+  const porCond = ["diabetes", "insuficiencia_cardiaca", "renal", "renal_grave", "marcapasos", "nyha34", "fevi_baja"].filter((c) => cond.has(c));
+  const porMeds = [...new Set(res.items.filter((it) => CLASES_ENFERMEDAD.test(it.clase.id)).map((it) => it.clase.nombre))];
+  return { sugerida: porCond.length > 0 || porMeds.length > 0, porCond, porMeds };
+}
+/**
+ * @param r {regular: bool|null, enfermedad: bool|null, sintomas: string[]}
+ * @returns {clave: "sin_datos"|"empezar"|"continuar"|"valoracion_vigoroso"|"valoracion_antes"|"parar", ...}
+ * empezar: puede empezar a intensidad ligera-moderada y progresar; continuar: puede seguir a moderada o vigorosa;
+ * valoracion_vigoroso: sigue a moderada, valoración médica antes de vigorosa; valoracion_antes: valoración médica antes de empezar;
+ * parar: síntomas → deje de entrenar y consulte antes de retomar.
+ */
+export function cribadoACSM(r = {}) {
+  if (r.regular == null || r.enfermedad == null) return { clave: "sin_datos", nivel: "info" };
+  const sint = (r.sintomas || []).length > 0;
+  if (sint) return { clave: r.regular ? "parar" : "valoracion_antes", nivel: "alerta", sintomas: true };
+  if (!r.regular) return r.enfermedad ? { clave: "valoracion_antes", nivel: "precaucion" } : { clave: "empezar", nivel: "info" };
+  return r.enfermedad ? { clave: "valoracion_vigoroso", nivel: "precaucion" } : { clave: "continuar", nivel: "info" };
+}
+export const CRIBADO_TXT = {
+  sin_datos: "Cribado previo sin completar.",
+  empezar: "Puede empezar a intensidad ligera-moderada y aumentar poco a poco; no hace falta una valoración médica previa.",
+  continuar: "Puede continuar con ejercicio moderado o vigoroso y progresar como venía haciendo.",
+  valoracion_vigoroso: "Puede seguir con ejercicio moderado; antes de pasar a intensidad vigorosa conviene una valoración médica.",
+  valoracion_antes: "Conviene una valoración médica antes de empezar; mientras tanto, actividad ligera (caminar a paso cómodo).",
+  parar: "Tiene síntomas que hay que valorar: deje el ejercicio moderado o intenso y consulte antes de retomarlo.",
+};
+
+/* ---------- Nivel de evidencia de una regla, a partir de su fuente declarada ---------- */
+export const EVIDENCIA = {
+  ft: { etiqueta: "Ficha técnica", orden: 4 },
+  guia: { etiqueta: "Guía / consenso", orden: 3 },
+  criterios: { etiqueta: "Criterios explícitos", orden: 3 },
+  base: { etiqueta: "Base de interacciones", orden: 2 },
+  revision: { etiqueta: "Revisión clínica", orden: 1 },
+  borrador: { etiqueta: "Borrador", orden: 0 },
+};
+export function nivelEvidencia(regla) {
+  if (regla.evidencia && EVIDENCIA[regla.evidencia]) return regla.evidencia;
+  const f = (regla.fuente || "").toLowerCase();
+  if (/^ft\b|ficha t[eé]cnica|smpc|aemps/.test(f)) return "ft";
+  if (/beers|stopp|start|priscus/.test(f)) return "criterios";
+  if (/acsm|\besc\b|\bada\b|kdigo|\bgold\b|\bnice\b|\boms\b|\bwho\b|vivifrail|gu[ií]a|consenso|\bers\b|\beha\b/.test(f)) return "guia";
+  if (/lexicomp|micromedex|ddinter|bot\b|uptodate|stockley/.test(f)) return "base";
+  return regla.revisado ? "revision" : "borrador";
+}
+/** Sección de la ficha técnica citada en la fuente ("FT 4.4" → "4.4"), para el enlace. */
+export function seccionFT(regla) { const m = (regla.fuente || "").match(/\bFT\s*(\d\.\d+)/i); return m ? m[1] : null; }
+
+/* ---------- Casos de validación clínica (viñetas con resultado esperado) ---------- */
+/** Comprueba un caso: {meds, ctx, esperado:{alerta_min, precaucion_min, mayores_min, esencial_incluye[], senales[], sin_senales[], cribado}} → {ok, fallos[]} */
+export function comprobarCaso(datos, caso, utils = {}) {
+  const ctx = { ...caso.ctx, condiciones: new Set(caso.ctx?.condiciones || []) };
+  const res = evaluar(datos, caso.meds, ctx);
+  const e = caso.esperado || {};
+  const fallos = [];
+  if (e.alerta_min != null && res.resumen.alerta < e.alerta_min) fallos.push(`alertas ${res.resumen.alerta} < ${e.alerta_min}`);
+  if (e.precaucion_min != null && res.resumen.precaucion < e.precaucion_min) fallos.push(`precauciones ${res.resumen.precaucion} < ${e.precaucion_min}`);
+  if (e.mayores_min != null && res.interacciones.filter((x) => x.nivel === "mayor").length < e.mayores_min) fallos.push(`interacciones mayores < ${e.mayores_min}`);
+  const esencial = loEsencial(res, 5).map((p) => `${p.titulo} ${p.texto}`).join(" | ").toLowerCase();
+  for (const s of e.esencial_incluye || []) if (!esencial.includes(s.toLowerCase())) fallos.push(`lo esencial no menciona «${s}»`);
+  for (const s of e.senales || []) if (!res.items.some((it) => it.senales.has(s))) fallos.push(`falta la señal ${s}`);
+  for (const s of e.sin_senales || []) if (res.items.some((it) => it.senales.has(s))) fallos.push(`señal no esperada ${s}`);
+  if (e.cribado && caso.cribado) { const c = cribadoACSM(caso.cribado).clave; if (c !== e.cribado) fallos.push(`cribado ${c} ≠ ${e.cribado}`); }
+  if (e.combinadas_incluye) for (const s of e.combinadas_incluye) if (!res.combinadas.some((c) => c.regla.titulo.toLowerCase().includes(s.toLowerCase()))) fallos.push(`falta la regla combinada «${s}»`);
+  return { ok: !fallos.length, fallos, res };
+}

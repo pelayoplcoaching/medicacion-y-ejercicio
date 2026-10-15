@@ -1,0 +1,440 @@
+{
+ "version": 1,
+ "nota": "Casos de validación clínica: viñetas anonimizadas con el resultado que la aplicación debe producir. Se ejecutan como pruebas de regresión (scripts/test.mjs) y su número se muestra en acerca.html. Para añadir uno, use «Guardar como caso de prueba» en modo profesional y péguelo aquí.",
+ "casos": [
+  {
+   "id": "c01",
+   "titulo": "Anciano frágil con DM2 insulinizada, betabloqueante y anticoagulación",
+   "descripcion": "82 años, caída previa, fragilidad, insulina basal + gliclazida + bisoprolol + apixabán + furosemida.",
+   "meds": [
+    {
+     "pid": "insulina_basal",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "gliclazida",
+     "dosis": 60,
+     "tomas": 1
+    },
+    {
+     "pid": "bisoprolol",
+     "dosis": 5,
+     "tomas": 1
+    },
+    {
+     "pid": "apixaban",
+     "dosis": 5,
+     "tomas": 2
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 82,
+    "caidas": true,
+    "condiciones": [
+     "diabetes",
+     "insuficiencia_cardiaca",
+     "fragil"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "hipoglucemia",
+     "enmascara_hipoglucemia",
+     "sangrado",
+     "caidas",
+     "hipotension"
+    ],
+    "combinadas_incluye": [
+     "fragilidad",
+     "diabetes y betabloqueante"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c02",
+   "titulo": "Hipertenso joven sin comorbilidad, activo",
+   "descripcion": "48 años, enalapril + amlodipino, entrena 4 días/semana.",
+   "meds": [
+    {
+     "pid": "enalapril",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "amlodipino",
+     "dosis": 5,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 48,
+    "caidas": false,
+    "condiciones": []
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "senales": [
+     "hipotension"
+    ],
+    "sin_senales": [
+     "hipoglucemia",
+     "sangrado"
+    ],
+    "cribado": "continuar"
+   }
+  },
+  {
+   "id": "c03",
+   "titulo": "Estatina + fibrato: riesgo de miopatía",
+   "descripcion": "66 años, atorvastatina 80 + gemfibrozilo.",
+   "meds": [
+    {
+     "pid": "atorvastatina",
+     "dosis": 80,
+     "tomas": 1
+    },
+    {
+     "pid": "gemfibrozilo",
+     "dosis": 600,
+     "tomas": 2
+    }
+   ],
+   "ctx": {
+    "edad": 66,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "mayores_min": 1,
+    "senales": [
+     "miopatia"
+    ],
+    "esencial_incluye": [
+     "muscular"
+    ]
+   }
+  },
+  {
+   "id": "c04",
+   "titulo": "Insuficiencia cardíaca NYHA III con FEVI reducida",
+   "descripcion": "74 años, sacubitrilo/valsartán + bisoprolol + espironolactona + dapagliflozina + furosemida; NYHA III, FEVI 30 %.",
+   "meds": [
+    {
+     "pid": "sacubitrilo_valsartan",
+     "dosis": 97,
+     "tomas": 2
+    },
+    {
+     "pid": "bisoprolol",
+     "dosis": 2.5,
+     "tomas": 1
+    },
+    {
+     "pid": "espironolactona",
+     "dosis": 25,
+     "tomas": 1
+    },
+    {
+     "pid": "dapagliflozina",
+     "dosis": 10,
+     "tomas": 1
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 74,
+    "caidas": false,
+    "condiciones": [
+     "insuficiencia_cardiaca",
+     "nyha34",
+     "fevi_baja"
+    ],
+    "nyha": 3,
+    "fevi": 30
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": [
+     "disnea"
+    ]
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "hipotension",
+     "hiperpotasemia",
+     "deshidratacion",
+     "fc_no_valida"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c05",
+   "titulo": "Psicofármacos múltiples en mayor con caídas",
+   "descripcion": "79 años, lorazepam + quetiapina + mirtazapina + tramadol; caída en el último año.",
+   "meds": [
+    {
+     "pid": "lorazepam",
+     "dosis": 1,
+     "tomas": 2
+    },
+    {
+     "pid": "quetiapina",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "mirtazapina",
+     "dosis": 30,
+     "tomas": 1
+    },
+    {
+     "pid": "tramadol",
+     "dosis": 50,
+     "tomas": 3
+    }
+   ],
+   "ctx": {
+    "edad": 79,
+    "caidas": true,
+    "condiciones": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "sedacion",
+     "caidas",
+     "hipotension",
+     "serotoninergico"
+    ],
+    "combinadas_incluye": [
+     "caídas"
+    ]
+   }
+  },
+  {
+   "id": "c06",
+   "titulo": "Quinolona + corticoide: tendón",
+   "descripcion": "58 años, levofloxacino 500 + prednisona 30 (pauta corta).",
+   "meds": [
+    {
+     "pid": "levofloxacino",
+     "dosis": 500,
+     "tomas": 1
+    },
+    {
+     "pid": "prednisona",
+     "dosis": 30,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 58,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "senales": [
+     "tendon",
+     "corticoide"
+    ],
+    "esencial_incluye": [
+     "tend"
+    ],
+    "combinadas_incluye": [
+     "fluoroquinolona"
+    ]
+   }
+  },
+  {
+   "id": "c07",
+   "titulo": "ERC con IECA, diurético, AINE y potasio",
+   "descripcion": "71 años, FG 38: ramipril + furosemida + ibuprofeno + potasio oral.",
+   "meds": [
+    {
+     "pid": "ramipril",
+     "dosis": 10,
+     "tomas": 1
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "ibuprofeno",
+     "dosis": 600,
+     "tomas": 3
+    },
+    {
+     "pid": "potasio_oral",
+     "dosis": 25,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 71,
+    "caidas": false,
+    "condiciones": [
+     "renal"
+    ],
+    "fg": 38
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "hiperpotasemia",
+     "renal",
+     "deshidratacion"
+    ],
+    "combinadas_incluye": [
+     "potasio"
+    ]
+   }
+  },
+  {
+   "id": "c08",
+   "titulo": "EPOC con broncodilatadores y oxígeno",
+   "descripcion": "69 años, LABA/ICS + salbutamol a demanda; oxígeno domiciliario.",
+   "meds": [
+    {
+     "pid": "laba_ics",
+     "dosis": 2,
+     "tomas": 2
+    },
+    {
+     "pid": "salbutamol",
+     "dosis": 2,
+     "tomas": 2,
+     "aDemanda": true
+    }
+   ],
+   "ctx": {
+    "edad": 69,
+    "caidas": false,
+    "condiciones": [
+     "epoc_asma",
+     "oxigeno"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "taquicardia"
+    ],
+    "sin_senales": [
+     "hipoglucemia"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c09",
+   "titulo": "Litio y diurético tiazídico en verano",
+   "descripcion": "45 años, litio + hidroclorotiazida.",
+   "meds": [
+    {
+     "pid": "litio",
+     "dosis": 400,
+     "tomas": 2
+    },
+    {
+     "pid": "hidroclorotiazida",
+     "dosis": 25,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 45,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "mayores_min": 1,
+    "senales": [
+     "litio",
+     "deshidratacion",
+     "hiponatremia"
+    ],
+    "esencial_incluye": [
+     "litio"
+    ]
+   }
+  },
+  {
+   "id": "c10",
+   "titulo": "Polimedicado estable sin señales relevantes",
+   "descripcion": "63 años, levotiroxina + omeprazol + paracetamol + alopurinol; entrena regularmente, sin síntomas.",
+   "meds": [
+    {
+     "pid": "levotiroxina",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "omeprazol",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "paracetamol",
+     "dosis": 1000,
+     "tomas": 2
+    },
+    {
+     "pid": "alopurinol",
+     "dosis": 300,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 63,
+    "caidas": false,
+    "condiciones": []
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "hipoglucemia",
+     "sangrado",
+     "hipotension",
+     "sedacion"
+    ],
+    "cribado": "continuar"
+   }
+  }
+ ]
+}

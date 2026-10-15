@@ -21,7 +21,7 @@
 </head>
 <body>
 <header class="cabecera">
-  <img src="assets/logo-app.png" alt="Pauta Activa" class="logo" width="76" height="76">
+  <img src="assets/logo-app-152.png" alt="Pauta Activa" class="logo" width="76" height="76" fetchpriority="high">
   <div class="titulo">
     <h1>Novedades</h1>
     <p class="autor">Pauta Activa · Medicación y Ejercicio · versión alfa</p>
@@ -29,6 +29,20 @@
 </header>
 <main class="novedades">
   <a class="btn-sec sm volver" href="./">← Volver a la aplicación</a>
+
+  <article>
+    <h2>15 de octubre de 2026 <small>· alfa 15 (v0.15.0) · profesionalización</small></h2>
+    <ul>
+      <li><strong>Cribado de seguridad antes de empezar</strong> (algoritmo de preparticipación ACSM 2015): tres preguntas —ejercicio regular, enfermedad cardiovascular/metabólica/renal conocida (la app sugiere la respuesta por su medicación y situación) y síntomas— que indican si puede empezar, continuar, si conviene una valoración médica antes de subir la intensidad o antes de empezar, o si debe consultar antes de entrenar. Aparece en el veredicto, en Lo esencial, en los PDF y en el texto para la historia.</li>
+      <li><strong>Prescriptor y reevaluación</strong> (modo profesional): nombre, especialidad, centro y nº de colegiado, guardados solo en el dispositivo; cabecera y bloque de firma en los PDF, número de documento, QR que reabre el plan y fecha de reevaluación (4–12 semanas) con aviso cuando vence.</li>
+      <li><strong>Validación con casos clínicos</strong>: 10 viñetas anonimizadas con el resultado esperado se comprueban en cada versión y en «Acerca de»; en modo profesional, «Guardar como caso de prueba» genera uno a partir de la lista actual.</li>
+      <li><strong>Nivel de evidencia en cada regla</strong>: ficha técnica, guía/consenso, criterios explícitos (Beers, STOPP/START), base de interacciones, revisión clínica o sin fuente; nueva columna EVIDENCIA en la hoja de revisión.</li>
+      <li><strong>Exportar e importar casos</strong> anonimizados (JSON con huella de integridad) para llevarlos a otro dispositivo o a un revisor, y <strong>lista en CSV</strong> para la historia.</li>
+      <li><strong>Información legal</strong>: aviso legal, privacidad, declaración de accesibilidad, metodología y limitaciones y posicionamiento regulatorio (herramienta informativa, no producto sanitario).</li>
+      <li>Escritorio: índice lateral del informe e «Imprimir el plan». Versión de la aplicación visible (v0.15.0) con registro de cambios.</li>
+      <li>Rendimiento: carga más rápida y sin saltos de maquetación (Lighthouse móvil 92 · accesibilidad, buenas prácticas y SEO 100; escritorio 100 en todo).</li>
+    </ul>
+  </article>
 
   <article>
     <h2>15 de octubre de 2026 <small>· alfa 14</small></h2>
