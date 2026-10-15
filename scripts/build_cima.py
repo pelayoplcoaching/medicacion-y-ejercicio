@@ -193,17 +193,12 @@ def cargar_diccionario_pa(data: bytes | None) -> dict:
     entrada = cand.most_common(1)[0][0]
     out = {}
     for e in iter_local(root, entrada):
-        cod, nom = None, None
-        for h in e:
-            if len(h):
-                continue
-            tag, txt = local(h.tag).lower(), (h.text or "").strip()
-            if not txt:
-                continue
-            if cod is None and "cod" in tag and es_num(txt):
-                cod = txt
-            elif nom is None and not es_num(txt) and "fecha" not in tag and not re.fullmatch(r"[\d\-/: .]+", txt):
-                nom = txt
+        # Estructura AEMPS (2026): <principiosactivos><nroprincipioactivo>350</nroprincipioactivo>
+        #   <codigoprincipioactivo>12A</codigoprincipioactivo><principioactivo>PARACETAMOL</principioactivo>
+        # Prescripcion.xml referencia el NUMÉRICO (cod_principio_activo = nroprincipioactivo).
+        campos = {local(h.tag).lower(): (h.text or "").strip() for h in e if len(h) == 0 and (h.text or "").strip()}
+        cod = campos.get("nroprincipioactivo") or next((v for k, v in campos.items() if ("nro" in k or "cod" in k) and es_num(v)), None)
+        nom = campos.get("principioactivo") or next((v for k, v in campos.items() if v != cod and not es_num(v) and "fecha" not in k and not re.fullmatch(r"[\dA-Z]{1,6}", v)), None)
         if cod and nom:
             out[cod] = nom
     print(f"Diccionario: {len(out):,} principios activos (entrada <{entrada}>)")
