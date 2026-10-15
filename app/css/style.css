@@ -930,3 +930,11 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 /* insignias de la barra inferior: en oscuro los colores de aviso son claros, así que el número va en tinta oscura */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nav-badge { color: #1c1830; } }
 :root[data-theme="dark"] .nav-badge { color: #1c1830; }
+/* beta 2: copia cifrada, sincronización y feedback */
+.copia-bloque { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.copia-bloque .sub-label { display: flex; align-items: center; margin: 0 0 4px; font-weight: 700; }
+.copia-bloque small { display: block; color: var(--muted); margin-bottom: 6px; }
+.fb-contexto { white-space: pre-wrap; word-break: break-word; font-size: .78rem; line-height: 1.4; background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 10px; max-height: 180px; overflow: auto; margin: 6px 0; }
+#feedback-form textarea { width: 100%; min-height: 110px; }
+#copia-form label, #feedback-form > label { display: grid; gap: 4px; margin: 8px 0; }
+#copia-form input[type=password] { width: 100%; max-width: 320px; }

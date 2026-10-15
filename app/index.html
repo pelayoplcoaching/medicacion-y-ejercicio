@@ -217,6 +217,11 @@
         <small data-i18n="perf.nota">Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
         <ul id="perfiles-lista"></ul>
         <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-exportar" data-i18n="perf.exportar">Guardar copia de las listas</button><button type="button" class="btn-sec sm" id="btn-importar-listas" data-i18n="perf.importar">Recuperar copia</button><input type="file" id="importar-listas-input" accept="application/json,.json" hidden></div>
+        <div class="copia-bloque">
+          <p class="sub-label"><span data-i18n="copia.titulo">Copia de seguridad y otros dispositivos</span><button type="button" class="btn-ayuda" data-ayuda="copia" aria-label="Ayuda: copia de seguridad">?</button></p>
+          <small data-i18n="copia.nota">Todo (medicación, datos, listas, diario, cribado) en un archivo cifrado con una contraseña que solo usted conoce, o un código QR para pasarlo a su otro móvil u ordenador.</small>
+          <div class="acciones"><button type="button" class="btn-sec sm" id="btn-copia-crear" data-i18n="copia.crear">Crear copia cifrada</button><button type="button" class="btn-sec sm" id="btn-copia-restaurar" data-i18n="copia.restaurar">Restaurar copia cifrada</button><button type="button" class="btn-sec sm" id="btn-sync" data-i18n="sync.btn">Pasar a otro dispositivo (QR)</button><input type="file" id="copia-input" accept=".pauta,application/json,.json" hidden></div>
+        </div>
         <div class="acciones caso-acciones" style="margin-top:4px"><button type="button" class="btn-sec sm" id="btn-caso-exportar" data-i18n="caso.exportar">Exportar caso (JSON anonimizado)</button><button type="button" class="btn-sec sm" id="btn-caso-importar" data-i18n="caso.importar">Importar caso</button><button type="button" class="btn-sec sm" id="btn-lista-csv" data-i18n="caso.csv">Lista en CSV</button><button type="button" class="btn-sec sm solo-pro" id="btn-caso-prueba" data-i18n="caso.prueba">Guardar como caso de prueba</button><input type="file" id="caso-input" accept="application/json,.json" hidden></div>
         <small class="solo-pro" data-i18n="caso.nota">El caso de prueba incluye el resultado actual como esperado; envíelo o añádalo a data/casos.json para que forme parte de la validación.</small>
       </div>
@@ -318,6 +323,26 @@
 </main>
 
 <dialog id="barras" class="ficha" aria-labelledby="barras-titulo"><div class="ficha-cab"><p id="barras-titulo" data-i18n="barras.titulo">Apunte al código de barras de la caja</p><button type="button" class="btn-sec sm" id="barras-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div class="ficha-cuerpo"><video id="barras-video" playsinline muted autoplay style="width:100%;border-radius:12px;background:#000"></video><p id="barras-estado" class="muted" aria-live="polite"></p></div></dialog>
+<dialog id="copia" class="ficha" aria-labelledby="copia-titulo"><div class="ficha-cab"><p id="copia-titulo" data-i18n="copia.dlg">Contraseña de la copia</p><button type="button" class="btn-sec sm" id="copia-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
+  <form class="ficha-cuerpo" id="copia-form" autocomplete="off" novalidate>
+    <p class="muted" id="copia-texto"></p>
+    <label><span data-i18n="copia.pass">Contraseña (mínimo 8 caracteres)</span><input type="password" id="copia-pass" minlength="8" autocomplete="new-password" required></label>
+    <label id="copia-pass2-wrap"><span data-i18n="copia.pass2">Repita la contraseña</span><input type="password" id="copia-pass2" autocomplete="new-password"></label>
+    <small class="muted" data-i18n="copia.aviso">Si olvida la contraseña, la copia no se puede abrir: nadie, ni nosotros, puede recuperarla.</small>
+    <p class="aviso-import" id="copia-error" aria-live="polite"></p>
+    <div class="acciones"><button type="submit" class="btn" id="copia-ok" data-i18n="copia.continuar">Continuar</button></div>
+  </form></dialog>
+<dialog id="sync" class="ficha qr" aria-labelledby="sync-titulo"><div class="ficha-cab"><p id="sync-titulo" data-i18n="sync.titulo">Pasar a otro dispositivo</p><button type="button" class="btn-sec sm" id="sync-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
+  <div class="ficha-cuerpo"><p data-i18n="sync.texto">Escanee este código con la cámara del otro dispositivo (o pulse «Copiar enlace» y envíeselo, por ejemplo, por WhatsApp a usted mismo). Al abrirlo se copiarán su medicación, sus datos, el cribado, las listas guardadas y el diario. El enlace contiene esos datos: no lo comparta con nadie.</p><div id="sync-cuerpo" class="qr-cuerpo"></div><p class="muted" id="sync-nota"></p><div class="acciones"><button type="button" class="btn-sec sm" id="sync-copiar" data-i18n="sync.copiar">Copiar enlace</button><button type="button" class="btn-sec sm" id="sync-escanear" data-i18n="sync.escanear" hidden>Escanear un código de otro dispositivo</button></div></div></dialog>
+<dialog id="feedback" class="ficha" aria-labelledby="feedback-titulo"><div class="ficha-cab"><p id="feedback-titulo" data-i18n="fb.titulo">Enviar una sugerencia o un error</p><button type="button" class="btn-sec sm" id="feedback-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
+  <form class="ficha-cuerpo" id="feedback-form" autocomplete="off">
+    <fieldset class="crib-preg"><legend data-i18n="fb.tipo">¿De qué se trata?</legend><div class="condiciones" id="fb-tipos"></div></fieldset>
+    <label><span data-i18n="fb.texto">Cuéntenos qué esperaba y qué ha salido</span><textarea id="fb-texto" rows="4" required data-i18n-ph="fb.texto.ph" placeholder="Qué ha introducido, qué ha mostrado la app y qué debería haber mostrado (si puede, la fuente). Sin nombres ni datos de pacientes."></textarea></label>
+    <details class="bloque sub-bloque"><summary><span class="sub-label" data-i18n="fb.contexto">Datos técnicos que se adjuntan (sin datos personales)</span><span class="flecha" aria-hidden="true">⌄</span></summary><pre id="fb-contexto" class="fb-contexto"></pre></details>
+    <label class="check"><input type="checkbox" id="fb-adjuntar" checked> <span data-i18n="fb.adjuntar">Adjuntar los datos técnicos (ayudan a reproducir el problema)</span></label>
+    <div class="acciones"><button type="submit" class="btn" data-i18n="fb.enviar">Continuar al formulario</button><button type="button" class="btn-sec sm" id="fb-copiar" data-i18n="fb.copiar">Copiar informe</button><button type="button" class="btn-sec sm" id="fb-correo" data-i18n="fb.correo">Enviar por correo</button></div>
+    <small class="muted" data-i18n="fb.nota">El formulario se abre en una pestaña nueva con el texto y los datos ya rellenos; solo tiene que revisarlos y pulsar «Enviar».</small>
+  </form></dialog>
 <dialog id="qr" class="ficha qr" aria-label="Código QR"><div class="ficha-cab"><p data-i18n="qr.texto">Escanee este código con el móvil para abrir la lista (sin nombre ni datos personales).</p><button type="button" class="btn-sec sm" id="qr-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="qr-cuerpo" class="qr-cuerpo"></div></dialog>
 <dialog id="sppb" class="ficha sesion" aria-labelledby="sppb-titulo"><div class="ficha-cab"><p id="sppb-titulo" data-i18n="sppb.titulo">Forma física: SPPB guiado</p><button type="button" class="btn-sec sm" id="sppb-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="sppb-cuerpo" class="ficha-cuerpo"></div></dialog>
 <dialog id="sesion" class="ficha sesion" aria-label="Sesión"><div class="ficha-cab"><p data-i18n="sesion.cab">Sesión guiada</p><button type="button" class="btn-sec sm" id="sesion-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div><div id="sesion-cuerpo" class="ficha-cuerpo"></div></dialog>

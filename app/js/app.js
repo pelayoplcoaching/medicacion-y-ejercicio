@@ -220,6 +220,8 @@ async function cargar() {
   const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
   if (h && decodificarEstado(h[1])) { history.replaceState(null, "", location.pathname); restaurarFormulario(); guardar(); $("#pegar-aviso").textContent = "Lista cargada desde el enlace."; }
   render();
+  const hs = location.hash.match(/^#sync=([A-Za-z0-9_.-]+)/);
+  if (hs) { recibirSync(hs[1]); return; }
   // primera visita sin lista: recorrido guiado sobre los elementos reales
   try { if (localStorage.getItem("medex.guia") !== "1" && !estado.meds.length && !h) setTimeout(iniciarTour, 400); } catch {}
 }
@@ -747,13 +749,10 @@ function urlSugerencia(extra = {}) {
   const lista = estado.meds.map((m) => `${m.libre ? "LIBRE " + m.nombre : m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}`).join("; ");
   let sinRes = []; try { sinRes = JSON.parse(localStorage.getItem("medex.sinresultado") || "[]"); } catch {}
   const ctx = [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", ...estado.condiciones].filter(Boolean).join(", ");
-  const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300), util: extra.util || "" });
+  const q = new URLSearchParams({ version: `${datos?.kb?.version || "?"} · ${navigator.userAgent.slice(0, 60)}`, app: APP_VERSION, modo: estado.modo, idioma: idioma(), lista: (extra.lista ?? lista).slice(0, 400), contexto: ctx.slice(0, 200), sinresultado: sinRes.slice(-15).join("; ").slice(0, 300), util: extra.util || "", tipo: extra.tipo || "", texto: (extra.texto || "").slice(0, 1500), pantalla: (extra.pantalla || "").slice(0, 200), errores: (extra.errores || "").slice(0, 400), pasos: (extra.pasos || "").slice(0, 400), navegador: (extra.navegador || "").slice(0, 200) });
   return `${FORM_SUGERENCIAS}?${q}`;
 }
-$$(".btn-sugerencia").forEach((b) => b.addEventListener("click", () => {
-  window.open(urlSugerencia(), "_blank", "noopener");
-  $("#pdf-aviso").textContent = t("sug.abierto");
-}));
+$$(".btn-sugerencia").forEach((b) => b.addEventListener("click", () => abrirFeedback()));
 $("#btn-pdf-paciente").addEventListener("click", () => descargarPdf("paciente"));
 $("#btn-pdf-entrenador").addEventListener("click", () => descargarPdf("entrenador"));
 $("#btn-pdf-tarjeta").addEventListener("click", () => descargarPdf("tarjeta"));
@@ -1625,11 +1624,13 @@ inputBuscar.addEventListener("keydown", (ev) => {
 
 /* ---------- errores inesperados: aviso y botón para informar, nunca una pantalla en blanco ---------- */
 let ultimoError = 0;
+const erroresRecientes = [];
 function informarError(msg) {
   if (Date.now() - ultimoError < 5000) return; ultimoError = Date.now();
   const txt = String(msg || "").slice(0, 200);
   try { localStorage.setItem("medex.ultimoerror", `${new Date().toISOString()} ${txt}`); } catch {}
-  toast(t("error.inesperado"), { accion: t("error.informar"), onAccion: () => window.open(urlSugerencia({ lista: "ERROR: " + txt }), "_blank", "noopener"), ms: 12000 });
+  erroresRecientes.push(`${new Date().toISOString().slice(11, 19)} ${txt}`); if (erroresRecientes.length > 5) erroresRecientes.shift();
+  toast(t("error.inesperado"), { accion: t("error.informar"), onAccion: () => abrirFeedback({ tipo: "error", texto: "Error de la aplicación: " + txt }), ms: 12000 });
 }
 window.addEventListener("error", (e) => informarError(e.message));
 window.addEventListener("unhandledrejection", (e) => informarError(e.reason?.message || e.reason));
@@ -1951,6 +1952,181 @@ $(".tabs").addEventListener("keydown", (ev) => {
   const j = ev.key === "ArrowRight" ? (i + 1) % tabs.length : ev.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length : ev.key === "Home" ? 0 : ev.key === "End" ? tabs.length - 1 : -1;
   if (j < 0) return; ev.preventDefault(); tabs[j].focus(); tabs[j].click();
 });
+
+
+/* ---------- beta 2: feedback con contexto, copia cifrada y sincronización entre dispositivos ---------- */
+// miga de pan: últimas acciones del usuario (solo nombres de controles, nunca valores escritos)
+const pasosRecientes = [];
+document.addEventListener("click", (ev) => {
+  const el = ev.target.closest("button, a, summary, [role=tab], [role=radio]"); if (!el) return;
+  const nombre = el.id || el.dataset.tab || el.dataset.modo || el.dataset.ir || el.dataset.ayuda || el.dataset.a || el.dataset.i18n || el.querySelector("[data-i18n]")?.dataset.i18n || (el.closest("details")?.id ? "summary:" + el.closest("details").id : "") || el.className.split(" ")[0] || el.tagName.toLowerCase();
+  const ultimo = pasosRecientes[pasosRecientes.length - 1];
+  if (ultimo && ultimo.endsWith(nombre)) return;
+  pasosRecientes.push(`${new Date().toISOString().slice(11, 19)} ${nombre}`); if (pasosRecientes.length > 12) pasosRecientes.shift();
+}, true);
+const FB_TIPOS = [["farmaco", "fb.t.farmaco"], ["recomendacion", "fb.t.recomendacion"], ["interaccion", "fb.t.interaccion"], ["error", "fb.t.error"], ["idea", "fb.t.idea"], ["valoracion", "fb.t.valoracion"]];
+function pantallaActual() {
+  const tab = estado.tab || "general"; const vis = $("#informe") && !$("#informe").hidden;
+  const dlgs = $$("dialog[open]").map((d) => d.id).filter((id) => id && id !== "feedback");
+  return [`modo ${estado.modo}`, vis ? `pestaña ${tab}` : "sin informe", dlgs.length ? "diálogo " + dlgs.join("/") : "", document.documentElement.classList.contains("retorno") ? "visita repetida" : "primera visita"].filter(Boolean).join(" · ");
+}
+function contextoTecnico() {
+  const lista = estado.meds.map((m) => `${m.libre ? "LIBRE " + m.nombre : m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}${m.pausado ? " (pausado)" : ""}`).join("; ");
+  let ultimo = ""; try { ultimo = localStorage.getItem("medex.ultimoerror") || ""; } catch {}
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  return {
+    app: `v${APP_VERSION} · base ${datos?.kb?.version || "?"}`,
+    navegador: `${navigator.userAgent.slice(0, 90)} · ${screen.width}×${screen.height}@${devicePixelRatio} · ${standalone ? "instalada" : "navegador"} · ${navigator.onLine ? "con conexión" : "sin conexión"} · letra ${localStorage.getItem("medex.letra") || 0} · tema ${document.documentElement.dataset.theme || "auto"}`,
+    pantalla: pantallaActual(),
+    lista,
+    contexto: [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", estado.fcReposo ? "FC reposo " + estado.fcReposo : "", ...estado.condiciones, estado.sppb ? "SPPB " + estado.sppb.total : "", cribadoActual(evaluar(datos, medsActivos(), ctxActual())).clave].filter(Boolean).join(", "),
+    errores: [...erroresRecientes, ultimo ? "último guardado: " + ultimo : ""].filter(Boolean).join(" | "),
+    pasos: pasosRecientes.join(" → "),
+  };
+}
+function textoInforme(tipo, texto, c) {
+  return `${t("fb.titulo")} · Pauta Activa\n${t("fb.tipo")} ${t(FB_TIPOS.find((x) => x[0] === tipo)?.[1] || "fb.t.idea")}\n\n${texto}\n\n--- ${t("fb.contexto")} ---\n${["app", "navegador", "pantalla", "lista", "contexto", "errores", "pasos"].map((k) => `${k}: ${c[k] || "—"}`).join("\n")}`;
+}
+function abrirFeedback({ tipo = "", texto = "" } = {}) {
+  const dlg = $("#feedback");
+  $("#fb-tipos").innerHTML = FB_TIPOS.map(([id, k]) => `<label class="check"><input type="radio" name="fb-tipo" value="${id}"${id === tipo ? " checked" : ""}> <span>${t(k)}</span></label>`).join("");
+  $("#fb-texto").value = texto;
+  const c = contextoTecnico();
+  $("#fb-contexto").textContent = ["app", "navegador", "pantalla", "lista", "contexto", "errores", "pasos"].map((k) => `${k}: ${c[k] || "—"}`).join("\n");
+  dlg.showModal(); setTimeout(() => (tipo ? $("#fb-texto") : $("#fb-tipos input")).focus(), 50);
+}
+function datosFeedback() {
+  const tipo = $("#feedback input[name=fb-tipo]:checked")?.value || "";
+  const texto = $("#fb-texto").value.trim();
+  const c = $("#fb-adjuntar").checked ? contextoTecnico() : { pantalla: pantallaActual() };
+  return { tipo, texto, c };
+}
+$("#feedback-cerrar").addEventListener("click", () => $("#feedback").close());
+$("#feedback").addEventListener("click", (ev) => { if (ev.target === $("#feedback")) $("#feedback").close(); });
+$("#feedback-form").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const { tipo, texto, c } = datosFeedback();
+  if (!tipo) { toast(t("fb.falta_tipo"), { ms: 3000 }); return; }
+  window.open(urlSugerencia({ tipo: t(FB_TIPOS.find((x) => x[0] === tipo)[1]), texto, pantalla: c.pantalla, errores: c.errores, pasos: c.pasos, navegador: c.navegador, lista: $("#fb-adjuntar").checked ? undefined : "" }), "_blank", "noopener");
+  $("#feedback").close(); $("#pdf-aviso").textContent = t("sug.abierto");
+});
+$("#fb-copiar").addEventListener("click", async () => {
+  const { tipo, texto, c } = datosFeedback();
+  try { await navigator.clipboard.writeText(textoInforme(tipo, texto, c)); toast(t("fb.copiado"), { ms: 3000 }); } catch { toast(t("fb.copiar_error"), { ms: 4000 }); }
+});
+$("#fb-correo").addEventListener("click", () => {
+  const { tipo, texto, c } = datosFeedback();
+  const cuerpo = textoInforme(tipo, texto, c).slice(0, 1800);
+  location.href = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent("Pauta Activa · " + (t(FB_TIPOS.find((x) => x[0] === tipo)?.[1] || "fb.t.idea")))}&body=${encodeURIComponent(cuerpo)}`;
+});
+
+// --- copia cifrada (AES-GCM 256; clave derivada de la contraseña con PBKDF2-SHA-256, 250 000 iteraciones) ---
+const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes"];
+function empaquetarTodo() { const o = {}; for (const k of CLAVES_LOCALES) { try { const v = localStorage.getItem(k); if (v != null) o[k] = v; } catch {} } return { app: "pauta-activa", v: 1, fecha: new Date().toISOString(), version_app: APP_VERSION, datos: o }; }
+function aplicarTodo(paq, { fusionar = false } = {}) {
+  if (!paq || paq.app !== "pauta-activa" || !paq.datos || typeof paq.datos !== "object") throw new Error("formato");
+  for (const k of CLAVES_LOCALES) {
+    const v = paq.datos[k]; if (v == null) continue;
+    if (fusionar && (k === "medex.perfiles" || k === "medex.diario")) {
+      try { const act = JSON.parse(localStorage.getItem(k) || "[]"), nue = JSON.parse(v); const clave = (x) => JSON.stringify(k === "medex.diario" ? [x.fecha, x.tipo, x.min] : x.nombre); const vistos = new Set(act.map(clave)); localStorage.setItem(k, JSON.stringify([...act, ...nue.filter((x) => !vistos.has(clave(x)))])); continue; } catch {}
+    }
+    try { localStorage.setItem(k, v); } catch {}
+  }
+}
+const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+async function claveDe(pass, salt, it = 250000) {
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: it, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+async function cifrarCopia(pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await claveDe(pass, salt);
+  const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(empaquetarTodo())));
+  return JSON.stringify({ app: "pauta-activa", formato: "copia-cifrada", v: 1, fecha: new Date().toISOString(), kdf: { alg: "PBKDF2-SHA256", it: 250000 }, cifrado: "AES-GCM-256", salt: b64(salt), iv: b64(iv), data: b64(data) });
+}
+async function descifrarCopia(texto, pass) {
+  const f = JSON.parse(texto);
+  if (f.formato !== "copia-cifrada" || !f.data) throw new Error("formato");
+  const key = await claveDe(pass, unb64(f.salt), f.kdf?.it || 250000);
+  const plano = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(f.iv) }, key, unb64(f.data));
+  return JSON.parse(new TextDecoder().decode(plano));
+}
+function pedirPassword({ confirmar, texto }) {
+  return new Promise((ok) => {
+    const dlg = $("#copia"), form = $("#copia-form"), p1 = $("#copia-pass"), p2 = $("#copia-pass2"), err = $("#copia-error");
+    $("#copia-texto").textContent = texto; $("#copia-pass2-wrap").hidden = !confirmar; p2.required = !!confirmar; p1.value = p2.value = ""; err.textContent = "";
+    const fin = (v) => { form.onsubmit = null; $("#copia-cerrar").onclick = null; dlg.close(); ok(v); };
+    form.onsubmit = (ev) => { ev.preventDefault(); if (p1.value.length < 8) { err.textContent = t("copia.corta"); return; } if (confirmar && p1.value !== p2.value) { err.textContent = t("copia.distintas"); return; } fin(p1.value); };
+    $("#copia-cerrar").onclick = () => fin(null);
+    dlg.showModal(); setTimeout(() => p1.focus(), 50);
+  });
+}
+$("#btn-copia-crear").addEventListener("click", async () => {
+  if (!window.crypto?.subtle) { toast(t("copia.nocrypto"), { ms: 5000 }); return; }
+  const pass = await pedirPassword({ confirmar: true, texto: t("copia.crear_txt") }); if (!pass) return;
+  try {
+    const blob = new Blob([await cifrarCopia(pass)], { type: "application/json" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `pauta-activa-copia-${new Date().toISOString().slice(0, 10)}.pauta`; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast(t("copia.creada"), { ms: 5000 });
+  } catch (e) { toast(t("copia.error"), { ms: 5000 }); }
+});
+$("#btn-copia-restaurar").addEventListener("click", () => $("#copia-input").click());
+$("#copia-input").addEventListener("change", async (ev) => {
+  const f = ev.target.files?.[0]; ev.target.value = ""; if (!f) return;
+  const texto = await f.text();
+  const pass = await pedirPassword({ confirmar: false, texto: t("copia.restaurar_txt", { n: f.name }) }); if (!pass) return;
+  let paq; try { paq = await descifrarCopia(texto, pass); } catch { toast(t("copia.pass_mal"), { ms: 6000 }); return; }
+  const fusionar = !!estado.meds.length && window.confirm(t("copia.fusionar"));
+  if (!fusionar && estado.meds.length && !window.confirm(t("copia.sustituir"))) return;
+  try { aplicarTodo(paq, { fusionar }); } catch { toast(t("copia.error"), { ms: 5000 }); return; }
+  toast(t("copia.restaurada"), { ms: 3000 }); setTimeout(() => location.reload(), 600);
+});
+
+// --- pasar a otro dispositivo: enlace #sync= con todo comprimido (deflate) y codificado; QR si cabe ---
+const b64url = (buf) => b64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const unb64url = (s) => unb64(s.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - s.length % 4) % 4));
+async function comprimir(txt) { const bytes = new TextEncoder().encode(txt); if (!("CompressionStream" in window)) return "r." + b64url(bytes); const out = await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer(); return "z." + b64url(out); }
+async function descomprimir(s) { const [modo, cuerpo] = [s.slice(0, 2), s.slice(2)]; const bytes = unb64url(cuerpo); if (modo === "r.") return new TextDecoder().decode(bytes); if (!("DecompressionStream" in window)) throw new Error("sin DecompressionStream"); const out = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer(); return new TextDecoder().decode(out); }
+async function enlaceSync() {
+  const paq = empaquetarTodo();
+  try { const d = JSON.parse(paq.datos["medex.diario"] || "[]"); if (d.length > 120) paq.datos["medex.diario"] = JSON.stringify(d.slice(-120)); } catch {}
+  return `${location.origin}${location.pathname}#sync=${await comprimir(JSON.stringify(paq))}`;
+}
+$("#btn-sync").addEventListener("click", async () => {
+  const dlg = $("#sync"), cuerpo = $("#sync-cuerpo"), nota = $("#sync-nota");
+  cuerpo.innerHTML = ""; nota.textContent = "";
+  const url = await enlaceSync();
+  dlg.dataset.url = url;
+  if (url.length <= 2300) {
+    try {
+      if (!window.qrcode) await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js");
+      const q = window.qrcode(0, "L"); q.addData(url); q.make(); cuerpo.innerHTML = q.createSvgTag({ cellSize: 3, margin: 2, scalable: true });
+    } catch { nota.textContent = t("sync.sin_qr"); }
+  } else nota.textContent = t("sync.largo");
+  $("#sync-escanear").hidden = !("BarcodeDetector" in window);
+  dlg.showModal();
+});
+$("#sync-cerrar").addEventListener("click", () => $("#sync").close());
+$("#sync-copiar").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("#sync").dataset.url); toast(t("sync.copiado"), { ms: 4000 }); } catch { toast(t("fb.copiar_error"), { ms: 4000 }); } });
+$("#sync-escanear").addEventListener("click", async () => {
+  // en escritorio (Chromium): leer con la cámara el QR que muestra el móvil
+  const dlg = $("#barras"), video = $("#barras-video"), estadoEl = $("#barras-estado");
+  try {
+    barrasStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = barrasStream; $("#sync").close(); dlg.showModal(); estadoEl.textContent = t("sync.buscando");
+    const det = new window.BarcodeDetector({ formats: ["qr_code"] });
+    barrasTimer = setInterval(async () => { try { for (const c of await det.detect(video)) { const m = String(c.rawValue || "").match(/#sync=([A-Za-z0-9_.-]+)/); if (m) { cerrarBarras(); await recibirSync(m[1]); return; } } } catch {} }, 400);
+  } catch { toast(t("barras.error"), { ms: 5000 }); cerrarBarras(); }
+});
+async function recibirSync(cod) {
+  let paq; try { paq = JSON.parse(await descomprimir(cod)); } catch { toast(t("sync.error"), { ms: 6000 }); return false; }
+  if (paq.app !== "pauta-activa") { toast(t("sync.error"), { ms: 6000 }); return false; }
+  const hay = estado.meds.length || leerPerfiles().length || leerDiario().length;
+  if (hay && !window.confirm(t("sync.confirmar"))) return false;
+  try { aplicarTodo(paq); } catch { toast(t("sync.error"), { ms: 6000 }); return false; }
+  history.replaceState(null, "", location.pathname); toast(t("sync.hecho"), { ms: 3000 }); setTimeout(() => location.reload(), 500); return true;
+}
 
 cargar();
 

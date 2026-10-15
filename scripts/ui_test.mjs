@@ -211,6 +211,39 @@ try {
   check("guía rápida con seis pasos, capturas y preguntas frecuentes", (await p.$$(".paso-guia")).length === 6 && (await p.$$eval(".paso-guia img", (is) => Promise.all(is.map((i) => { i.loading = "eager"; return i.decode().then(() => i.naturalWidth > 0, () => false); })).then((r) => r.every(Boolean)))) && (await p.$$(".faq details")).length >= 5);
   await p.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
 
+  console.log("Beta 2: feedback con contexto, copia cifrada y sincronización por enlace");
+  await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; });
+  await p.click("#btn-sugerencia"); await p.waitForTimeout(200);
+  check("hoja de feedback con tipos, texto y datos técnicos", await p.isVisible("#feedback") && (await p.$$("#fb-tipos input")).length === 6 && /app: v0\.|pantalla:/.test(await p.textContent("#fb-contexto")));
+  await p.check('#fb-tipos input[value="idea"]'); await p.fill("#fb-texto", "Prueba de sugerencia desde la interfaz"); await p.click("#feedback-form button[type=submit]"); await p.waitForTimeout(200);
+  { const u = decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").replace(/\+/g, " "); check("el formulario se abre con texto, tipo, pantalla y pasos prerrellenados", u.includes("tally.so") && u.includes("texto=Prueba de sugerencia") && u.includes("tipo=Una idea") && u.includes("pantalla=modo") && u.includes("pasos=")); }
+  await p.click("#btn-perfiles"); await p.waitForTimeout(100);
+  check("bloque de copia de seguridad con tres acciones", await p.isVisible("#btn-copia-crear") && await p.isVisible("#btn-copia-restaurar") && await p.isVisible("#btn-sync"));
+  await p.click("#btn-copia-crear"); await p.waitForTimeout(150); await p.fill("#copia-pass", "corta"); await p.fill("#copia-pass2", "corta"); await p.click("#copia-ok"); await p.waitForTimeout(100);
+  check("contraseña corta rechazada", (await p.textContent("#copia-error")).length > 0 && await p.isVisible("#copia"));
+  await p.fill("#copia-pass", "contraseña-segura-1"); await p.fill("#copia-pass2", "contraseña-segura-1");
+  const [dlCopia] = await Promise.all([p.waitForEvent("download"), p.click("#copia-ok")]);
+  check("copia cifrada descargada como .pauta", dlCopia.suggestedFilename().endsWith(".pauta"));
+  const rutaCopia = await dlCopia.path();
+  { const txt = (await import("node:fs")).readFileSync(rutaCopia, "utf8"); const j = JSON.parse(txt); check("el archivo está cifrado (sin texto en claro) y declara AES-GCM/PBKDF2", j.formato === "copia-cifrada" && j.cifrado === "AES-GCM-256" && !txt.includes("bisoprolol") && !txt.includes("medex.estado")); }
+  const antes = await p.evaluate(() => localStorage.getItem("medex.estado"));
+  await p.evaluate(() => { localStorage.setItem("medex.diario", "[]"); });
+  await p.evaluate(() => { window.confirm = () => true; }); // fusionar listas y diario, sustituir el resto
+  await p.setInputFiles("#copia-input", rutaCopia); await p.waitForTimeout(200); await p.fill("#copia-pass", "mala-contraseña"); await p.click("#copia-ok"); await p.waitForTimeout(600);
+  check("contraseña incorrecta: aviso y nada restaurado", (await p.evaluate(() => localStorage.getItem("medex.diario"))) === "[]");
+  await p.setInputFiles("#copia-input", rutaCopia); await p.waitForTimeout(200); await p.fill("#copia-pass", "contraseña-segura-1"); await p.click("#copia-ok");
+  await p.waitForFunction(() => JSON.parse(localStorage.getItem("medex.diario") || "[]").length > 0, null, { timeout: 8000 }); await p.waitForTimeout(1200);
+  await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  check("copia restaurada con la contraseña correcta: diario y estado recuperados", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")).length)) > 0 && (await p.evaluate(() => localStorage.getItem("medex.estado"))) === antes);
+  await p.click("#btn-perfiles"); await p.waitForTimeout(100); await p.click("#btn-sync"); await p.waitForTimeout(600);
+  const urlSync = await p.getAttribute("#sync", "data-url");
+  check("enlace de sincronización #sync= comprimido (y QR si cabe)", /#sync=[rz]\./.test(urlSync) && (await p.isVisible("#sync-cuerpo svg") || (await p.textContent("#sync-nota")).length > 0));
+  await p.click("#sync-cerrar");
+  const sincCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" }); const ps = await sincCtx.newPage(); ps.on("dialog", (d) => d.accept());
+  await ps.goto(urlSync, { waitUntil: "networkidle" }); await ps.waitForTimeout(1500); await ps.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  check("al abrir el enlace en otro dispositivo se copian la lista y el diario", (await ps.$$("#lista-meds li")).length === 6 && (await ps.evaluate(() => JSON.parse(localStorage.getItem("medex.diario") || "[]").length)) > 0 && !ps.url().includes("#sync="));
+  await sincCtx.close();
+
   console.log("Modo profesional y textos");
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
   check("acento del modo profesional", (await p.$eval("body", (e) => getComputedStyle(e).getPropertyValue("--accent").trim())) !== "#6b35c4");
@@ -248,8 +281,9 @@ try {
   await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; navigator.share = undefined; });
   await p.click("#btn-whatsapp");
   check("texto de WhatsApp", decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").includes("Lo esencial"));
-  await p.click("#menu-mas summary"); await p.click(".menu-lista .btn-sugerencia");
-  check("formulario de sugerencias con campos ocultos", (await p.evaluate(() => window.__u[1])).includes("tally.so") && (await p.evaluate(() => window.__u[1])).includes("lista="));
+  await p.click("#menu-mas summary"); await p.click(".menu-lista .btn-sugerencia"); await p.waitForTimeout(150);
+  check("«Sugerencias» del menú abre la hoja de feedback con el contexto", await p.isVisible("#feedback") && (await p.textContent("#fb-contexto")).includes("lista:"));
+  await p.click("#feedback-cerrar");
 
   console.log("Persistencia e idiomas");
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
