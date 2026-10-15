@@ -1,6 +1,6 @@
 {
-  "name": "Medicación y Ejercicio",
-  "short_name": "MedEjercicio",
+  "name": "Pauta Activa · Medicación y Ejercicio",
+  "short_name": "Pauta Activa",
   "description": "Qué tener en cuenta al entrenar con tu medicación habitual.",
   "lang": "es",
   "start_url": "./",

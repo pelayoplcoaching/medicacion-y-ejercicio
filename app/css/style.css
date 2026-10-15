@@ -95,7 +95,8 @@ input[type="checkbox"] { width: 22px; height: 22px; min-height: 0; accent-color:
   display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 6px 14px;
   padding-block: 14px 16px; margin-bottom: 18px; border-bottom: 1px solid var(--line);
 }
-.cabecera .logo { width: 56px; height: 56px; max-width: 100%; }
+.cabecera .logo { width: 56px; height: 56px; max-width: 100%; object-fit: contain; }
+.cabecera .subtitulo { margin: 2px 0 4px; font-weight: 700; color: var(--accent-deep); font-size: 1rem; }
 .cabecera .titulo { min-width: 0; }
 .cabecera .autor { color: var(--accent); font-size: .88rem; margin-top: 2px; }
 .cabecera .intro { grid-column: 1 / -1; color: var(--muted); max-width: 62ch; font-size: .95rem; }

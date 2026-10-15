@@ -30,7 +30,7 @@ const ES = {
   "cab.sugerencia": "Sugerencias",
   "sug.abierto": "Se ha abierto el formulario en una pestaña nueva (un minuto; no incluya datos de ningún paciente). Si no se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para el paciente (PDF)", "desc.paciente.pac": "Su plan (PDF)",
-  "meta.titulo": "Medicación y Ejercicio",
+  "meta.titulo": "Pauta Activa", "meta.subtitulo": "Medicación y Ejercicio",
   "cab.alfa": "alfa", "cab.alfa.title": "Versión en pruebas",
   "cab.autor": "By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna y prescriptor de ejercicio físico.",
   "cab.intro": "Introduzca su medicación habitual con la dosis y obtenga qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre sus fármacos.",
@@ -122,7 +122,7 @@ const EN = {
   "cab.sugerencia": "Feedback",
   "sug.abierto": "The form opened in a new tab (one minute; do not include any patient data). If it did not open, write to pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan for the patient (PDF)", "desc.paciente.pac": "Your plan (PDF)",
-  "meta.titulo": "Medication and Exercise",
+  "meta.titulo": "Pauta Activa", "meta.subtitulo": "Medication and Exercise",
   "cab.alfa": "alpha", "cab.alfa.title": "Test version",
   "cab.autor": "By <strong>Pelayo Fdez. Cidón</strong>. Internal medicine specialist and exercise prescriber.",
   "cab.intro": "Enter your usual medication with its dose and find out what to bear in mind for aerobic, strength and balance exercise, plus the interactions between your drugs.",
@@ -214,7 +214,7 @@ const CA = {
   "cab.sugerencia": "Suggeriments",
   "sug.abierto": "S'ha obert el formulari en una pestanya nova (un minut; no inclogueu dades de cap pacient). Si no s'obre, escriviu a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Pla per al pacient (PDF)", "desc.paciente.pac": "El vostre pla (PDF)",
-  "meta.titulo": "Medicació i Exercici",
+  "meta.titulo": "Pauta Activa", "meta.subtitulo": "Medicació i Exercici",
   "cab.alfa": "alfa", "cab.alfa.title": "Versió en proves",
   "cab.autor": "By <strong>Pelayo Fdez. Cidón</strong>. Metge especialista en Medicina Interna i prescriptor d'exercici físic.",
   "cab.intro": "Introduïu la vostra medicació habitual amb la dosi i obtingueu què cal tenir en compte per fer exercici aeròbic, de força i d'equilibri, i les interaccions entre els vostres fàrmacs.",
@@ -306,7 +306,7 @@ const GL = {
   "cab.sugerencia": "Suxestións",
   "sug.abierto": "Abriuse o formulario nunha lapela nova (un minuto; non inclúa datos de ningún paciente). Se non se abre, escriba a pelayoplcoaching@gmail.com.",
   "desc.paciente.pro": "Plan para o paciente (PDF)", "desc.paciente.pac": "O seu plan (PDF)",
-  "meta.titulo": "Medicación e Exercicio",
+  "meta.titulo": "Pauta Activa", "meta.subtitulo": "Medicación e Exercicio",
   "cab.alfa": "alfa", "cab.alfa.title": "Versión en probas",
   "cab.autor": "By <strong>Pelayo Fdez. Cidón</strong>. Médico especialista en Medicina Interna e prescritor de exercicio físico.",
   "cab.intro": "Introduza a súa medicación habitual coa dose e obteña que ter en conta para facer exercicio aeróbico, de forza e de equilibrio, e as interaccións entre os seus fármacos.",
@@ -408,7 +408,7 @@ export function aplicarIdioma(lang) {
   for (const el of document.querySelectorAll("[data-i18n-ph]")) el.placeholder = t(el.dataset.i18nPh);
   for (const el of document.querySelectorAll("[data-i18n-title]")) el.title = t(el.dataset.i18nTitle);
   for (const el of document.querySelectorAll("[data-i18n-aria]")) el.setAttribute("aria-label", t(el.dataset.i18nAria));
-  document.title = t("meta.titulo");
+  document.title = `${t("meta.titulo")} · ${t("meta.subtitulo")}`;
   const aviso = document.getElementById("aviso-idioma");
   if (aviso) { aviso.hidden = actual === "es"; aviso.textContent = t("aviso.idioma"); }
   document.dispatchEvent(new CustomEvent("idioma", { detail: actual }));

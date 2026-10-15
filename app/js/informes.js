@@ -1,11 +1,12 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf } from "./libs.js?v=202610151053";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151053";
+import { jspdf } from "./libs.js?v=202610151100";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA } from "./engine.js?v=202610151100";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
+const NOMBRE = "Pauta Activa";
 const WEB = "medicacionyejercicio.fuerzabasadaenevidencia.com";
 
 const C = {
@@ -64,7 +65,7 @@ class Doc {
     const x = this.ml + (this.logo ? 25 : 0);
     this.f("black", 15, C.purpleDeep); d.text(this.titulo, x, 11.5);
     this.f("normal", 8.5, C.muted); d.text(this.subtitulo, x, 17);
-    d.text(`Medicación y Ejercicio · ${WEB}`, x, 22);
+    d.text(`${NOMBRE} · Medicación y Ejercicio · ${WEB}`, x, 22);
     this.f("bold", 8, C.muted); d.text(new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" }), 210 - this.ml, 11.5, { align: "right" });
     this.f("normal", 7.5, C.muted); d.text(this.tipo, 210 - this.ml, 17, { align: "right" });
     this.y = 35;
@@ -274,7 +275,7 @@ function seccionCuando(pg, ctx, { paciente = false } = {}) {
 export async function pdfMedico(kb, res, ctx) {
   const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
-  const logo = await dataUrl("assets/logo.png");
+  const logo = await dataUrl("assets/logo-app.png");
   const pg = new Doc(doc, font, logo, { titulo: "Informe clínico: medicación y ejercicio", subtitulo: "Prescripción de ejercicio adaptada al tratamiento farmacológico", tipo: "Documento para el profesional sanitario" });
 
   const nAlerta = res.resumen.alerta, nPrec = res.resumen.precaucion, nDDI = res.interacciones.filter((x) => x.nivel !== "menor").length;
@@ -364,7 +365,7 @@ export async function pdfMedico(kb, res, ctx) {
 export async function pdfPaciente(kb, res, ctx) {
   const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
   const font = await prepararFuentes(doc);
-  const logo = await dataUrl("assets/logo.png");
+  const logo = await dataUrl("assets/logo-app.png");
   const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra mayor y solo lo esencial
   const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.12 : 1 });
 
@@ -489,6 +490,6 @@ export function textoHistoria(kb, res, ctx) {
   for (const c of res.combinadas) if (c.regla.nivel === "precaucion") prec.push(`${c.regla.titulo}: ${c.texto}`);
   if (prec.length) { L.push(""); L.push("Otras consideraciones:"); for (const k of prec.slice(0, 6)) L.push("- " + k); }
   L.push("");
-  L.push("Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en 4-6 semanas. Generado con Medicación y Ejercicio (" + WEB + "), base de conocimiento v" + kb.version + "; recomendación orientativa que requiere valoración clínica individual.");
+  L.push("Se entrega al paciente plan de ejercicio por escrito. Reevaluar tolerancia y ajustar progresión en 4-6 semanas. Generado con Pauta Activa · Medicación y Ejercicio (" + WEB + "), base de conocimiento v" + kb.version + "; recomendación orientativa que requiere valoración clínica individual.");
   return L.join("\n");
 }

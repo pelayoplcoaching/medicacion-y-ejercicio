@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles } from "./engine.js?v=202610151053";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151053";
-import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151053";
-import { cargarScript } from "./libs.js?v=202610151053";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151053";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151053";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles } from "./engine.js?v=202610151100";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151100";
+import { pdfMedico, pdfPaciente, textoHistoria, prescripcion } from "./informes.js?v=202610151100";
+import { cargarScript } from "./libs.js?v=202610151100";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151100";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151100";
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -516,7 +516,7 @@ function preguntarUtil() {
 /** Texto breve para compartir (WhatsApp / correo): lo esencial + señales de alarma + enlace. */
 function textoCompartir() {
   const res = evaluar(datos, medsActivos(), ctxActual());
-  const L = [`*${t("meta.titulo")}* · ${t("compartir.cab")}`, ""];
+  const L = [`*${t("meta.titulo")}* (${t("meta.subtitulo")}) · ${t("compartir.cab")}`, ""];
   L.push(`${t("compartir.meds")}: ${res.items.map((i) => i.principio.nombre).join(", ")}.`, "");
   L.push(`*${t("esencial.titulo")}*`);
   for (const p of loEsencial(res, 5)) L.push(`• ${p.titulo}: ${p.texto}`);
@@ -604,7 +604,7 @@ function icsPlan() {
   const hoy = new Date(); const lunes = new Date(hoy); lunes.setDate(hoy.getDate() + ((8 - hoy.getDay()) % 7 || 7));
   const fmt = (d) => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Medicacion y Ejercicio//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
   const DIA = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
   for (const [dow, tipo, etiqueta] of DIAS_PLAN) {
     const d = new Date(lunes); d.setDate(lunes.getDate() + dow - 1);

@@ -1,4 +1,4 @@
-# Medicación y Ejercicio
+# Pauta Activa · Medicación y Ejercicio
 
 Aplicación web para introducir la medicación habitual (con dosis) y obtener:
 
