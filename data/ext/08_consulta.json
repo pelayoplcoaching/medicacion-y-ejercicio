@@ -79,39 +79,57 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "La regla del cuello: con síntomas solo por encima del cuello (mocos, estornudos, dolor de garganta leve) puede entrenar suave; con fiebre, tos con flemas, dolores musculares o malestar general, descanse y vuelva de forma progresiva cuando lleve 24–48 horas sin fiebre."
+          "texto": "La regla del cuello: con síntomas solo por encima del cuello (mocos, estornudos, dolor de garganta leve) puede entrenar suave; con fiebre, tos con flemas, dolores musculares o malestar general, descanse y vuelva de forma progresiva cuando lleve 24–48 horas sin fiebre.",
+          "fuente": "ACSM GETP 11.ª ed. (enfermedad aguda)",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "pseudoefedrina"
           },
-          "texto": "Los descongestivos suben el pulso y la tensión y dificultan disipar el calor: no entrene intenso ni con calor en las 4–6 horas siguientes a la toma. Si tiene hipertensión, arritmias o cardiopatía, mejor evitarlos (suero fisiológico o corticoide nasal como alternativa)."
+          "texto": "Los descongestivos suben el pulso y la tensión y dificultan disipar el calor: no entrene intenso ni con calor en las 4–6 horas siguientes a la toma. Si tiene hipertensión, arritmias o cardiopatía, mejor evitarlos (suero fisiológico o corticoide nasal como alternativa).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "dextrometorfano"
           },
-          "texto": "Puede dar somnolencia y mareo; a dosis altas o junto a antidepresivos (ISRS, tramadol) aumenta el riesgo de síndrome serotoninérgico. Respete la dosis del envase y no lo combine con otros antigripales."
+          "texto": "Puede dar somnolencia y mareo; a dosis altas o junto a antidepresivos (ISRS, tramadol) aumenta el riesgo de síndrome serotoninérgico. Respete la dosis del envase y no lo combine con otros antigripales.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "codeina_antitusiva"
           },
-          "texto": "La codeína da sueño y enlentece los reflejos: no entrene ni conduzca en las horas siguientes a la toma."
+          "texto": "La codeína da sueño y enlentece los reflejos: no entrene ni conduzca en las horas siguientes a la toma.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "acetilcisteina"
           },
-          "texto": "Los mucolíticos no afectan al ejercicio. Beba agua suficiente: ayudan más con buena hidratación."
+          "texto": "Los mucolíticos no afectan al ejercicio. Beba agua suficiente: ayudan más con buena hidratación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Muchos antigripales llevan paracetamol (650 mg por sobre) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar."
+          "texto": "Muchos antigripales llevan paracetamol (650 mg por sobre) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
@@ -120,17 +138,26 @@
           "si": {
             "principio": "pseudoefedrina"
           },
-          "texto": "El pulso sube más de lo normal con el esfuerzo mientras dura el efecto: no se guíe por el pulsómetro y evite sesiones intensas o con calor."
+          "texto": "El pulso sube más de lo normal con el esfuerzo mientras dura el efecto: no se guíe por el pulsómetro y evite sesiones intensas o con calor.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Caminar suave puede ayudar con la congestión; nada intenso hasta que desaparezcan los síntomas."
+          "texto": "Caminar suave puede ayudar con la congestión; nada intenso hasta que desaparezcan los síntomas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación propia del fármaco; posponga las sesiones exigentes hasta recuperarse de la infección."
+          "texto": "Sin limitación propia del fármaco; posponga las sesiones exigentes hasta recuperarse de la infección.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
@@ -139,7 +166,10 @@
           "si": {
             "edad_min": 65
           },
-          "texto": "Somnolencia y mareo (antitusivos, antihistamínicos de los antigripales) aumentan el riesgo de caída en mayores: haga el equilibrio con apoyo o pospóngalo mientras los tome."
+          "texto": "Somnolencia y mareo (antitusivos, antihistamínicos de los antigripales) aumentan el riesgo de caída en mayores: haga el equilibrio con apoyo o pospóngalo mientras los tome.",
+          "fuente": "Beers 2023",
+          "evidencia": "criterios",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -206,33 +236,51 @@
           "si": {
             "dosis": "alta"
           },
-          "texto": "A dosis de tratamiento (zóster, herpes genital) el fármaco se elimina por el riñón y puede dañarlo si se deshidrata: beba abundante agua y evite entrenar con calor mientras dure el tratamiento, sobre todo si es mayor o tiene la función renal reducida."
+          "texto": "A dosis de tratamiento (zóster, herpes genital) el fármaco se elimina por el riñón y puede dañarlo si se deshidrata: beba abundante agua y evite entrenar con calor mientras dure el tratamiento, sobre todo si es mayor o tiene la función renal reducida.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "En la fase aguda del zóster o de un brote con fiebre, descanso relativo; retome el ejercicio progresivamente cuando el dolor lo permita. El ejercicio regular se asocia a menos recurrencias de herpes."
+          "texto": "En la fase aguda del zóster o de un brote con fiebre, descanso relativo; retome el ejercicio progresivamente cuando el dolor lo permita. El ejercicio regular se asocia a menos recurrencias de herpes.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Con lesiones activas de herpes (labial o genital) evite deportes de contacto y compartir material o toallas hasta que estén secas."
+          "texto": "Con lesiones activas de herpes (labial o genital) evite deportes de contacto y compartir material o toallas hasta que estén secas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; hidratación extra a dosis altas."
+          "texto": "Sin limitación; hidratación extra a dosis altas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -293,7 +341,10 @@
           "si": {
             "principio": "ibandronato"
           },
-          "texto": "Con el comprimido mensual, permanezca erguido 60 minutos (no 30) antes de tumbarse o hacer ejercicio en el suelo."
+          "texto": "Con el comprimido mensual, permanezca erguido 60 minutos (no 30) antes de tumbarse o hacer ejercicio en el suelo.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "ft",
+          "revisado": true
         }
       ]
     },
@@ -318,7 +369,10 @@
           "si": {
             "principio": "progesterona"
           },
-          "texto": "La progesterona oral da somnolencia y algo de mareo: tómela al acostarse y no entrene en las 2–3 horas siguientes. Por vía vaginal este efecto es mínimo."
+          "texto": "La progesterona oral da somnolencia y algo de mareo: tómela al acostarse y no entrene en las 2–3 horas siguientes. Por vía vaginal este efecto es mínimo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ]
     },

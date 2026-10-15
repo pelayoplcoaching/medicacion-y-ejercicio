@@ -45,33 +45,51 @@
       "general": [
         {
           "nivel": "alerta",
-          "texto": "Con frecuencias cardíacas altas estos fármacos pueden volverse proarrítmicos. Pregunte a su cardiólogo hasta qué frecuencia o intensidad puede llegar; en general se recomienda ejercicio moderado, evitando esfuerzos máximos o sprints."
+          "texto": "Con frecuencias cardíacas altas estos fármacos pueden volverse proarrítmicos. Pregunte a su cardiólogo hasta qué frecuencia o intensidad puede llegar; en general se recomienda ejercicio moderado, evitando esfuerzos máximos o sprints.",
+          "fuente": "ESC 2020 cardiología del deporte",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Casi siempre se combinan con un betabloqueante o con verapamilo/diltiazem precisamente para proteger durante el esfuerzo: no deje de tomarlo los días de entrenamiento."
+          "texto": "Casi siempre se combinan con un betabloqueante o con verapamilo/diltiazem precisamente para proteger durante el esfuerzo: no deje de tomarlo los días de entrenamiento.",
+          "fuente": "ESC 2020 cardiología del deporte",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Palpitaciones rápidas y mantenidas, mareo o desmayo durante el ejercicio: pare y consulte de forma urgente."
+          "texto": "Palpitaciones rápidas y mantenidas, mareo o desmayo durante el ejercicio: pare y consulte de forma urgente.",
+          "fuente": "ESC 2020 cardiología del deporte",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Intensidad ligera-moderada (debe poder hablar). Evite el ejercicio de alta intensidad por intervalos salvo autorización expresa."
+          "texto": "Intensidad ligera-moderada (debe poder hablar). Evite el ejercicio de alta intensidad por intervalos salvo autorización expresa.",
+          "fuente": "ESC 2020 cardiología del deporte",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Seguro con cargas moderadas, repeticiones controladas y sin apnea."
+          "texto": "Seguro con cargas moderadas, repeticiones controladas y sin apnea.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica."
+          "texto": "Sin limitación específica.",
+          "fuente": "ESC 2020 cardiología del deporte",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -118,29 +136,44 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Hidrátese con bebidas que contengan sales en sesiones largas o con calor: la pérdida de potasio y magnesio favorece arritmias con este fármaco. Evite laxantes y diuréticos sin control."
+          "texto": "Hidrátese con bebidas que contengan sales en sesiones largas o con calor: la pérdida de potasio y magnesio favorece arritmias con este fármaco. Evite laxantes y diuréticos sin control.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "Palpitaciones, mareo brusco o desmayo durante o tras el ejercicio son motivo de consulta urgente."
+          "texto": "Palpitaciones, mareo brusco o desmayo durante o tras el ejercicio son motivo de consulta urgente.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Intensidad moderada guiada por la sensación de esfuerzo (sotalol frena el pulso). Evite esfuerzos máximos."
+          "texto": "Intensidad moderada guiada por la sensación de esfuerzo (sotalol frena el pulso). Evite esfuerzos máximos.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Seguro con cargas moderadas y respiración continua."
+          "texto": "Seguro con cargas moderadas y respiración continua.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Posible mareo postural; transiciones lentas."
+          "texto": "Posible mareo postural; transiciones lentas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -185,26 +218,38 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Si tiene angina de esfuerzo, el programa de ejercicio debe estar pautado por cardiología (rehabilitación cardíaca). Lleve siempre su nitroglicerina de rescate."
+          "texto": "Si tiene angina de esfuerzo, el programa de ejercicio debe estar pautado por cardiología (rehabilitación cardíaca). Lleve siempre su nitroglicerina de rescate.",
+          "fuente": "ESC/ERS: rehabilitación supervisada",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "trimetazidina"
           },
-          "texto": "Si aparece temblor, lentitud o inestabilidad, puede deberse al fármaco: coméntelo antes de atribuirlo a la edad."
+          "texto": "Si aparece temblor, lentitud o inestabilidad, puede deberse al fármaco: coméntelo antes de atribuirlo a la edad.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "El pulso responde con normalidad. Calentamiento largo (10 minutos) y progresión hasta el umbral que le hayan indicado."
+          "texto": "El pulso responde con normalidad. Calentamiento largo (10 minutos) y progresión hasta el umbral que le hayan indicado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Cargas moderadas, sin apnea ni esfuerzos isométricos mantenidos."
+          "texto": "Cargas moderadas, sin apnea ni esfuerzos isométricos mantenidos.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
@@ -213,7 +258,10 @@
           "si": {
             "principio": "trimetazidina"
           },
-          "texto": "Si hay rigidez o temblor, entrene el equilibrio con apoyo."
+          "texto": "Si hay rigidez o temblor, entrene el equilibrio con apoyo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -272,32 +320,47 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Somnolencia y mareo al ponerse de pie, sobre todo las primeras semanas. Entrene alejado de la toma y levántese despacio."
+          "texto": "Somnolencia y mareo al ponerse de pie, sobre todo las primeras semanas. Entrene alejado de la toma y levántese despacio.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "clonidina"
           },
-          "texto": "No olvide ninguna toma: la retirada brusca de clonidina produce subidas de tensión y taquicardia que se agravan con el ejercicio."
+          "texto": "No olvide ninguna toma: la retirada brusca de clonidina produce subidas de tensión y taquicardia que se agravan con el ejercicio.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad moderada; enfriamiento progresivo. Con clonidina, use la sensación de esfuerzo en vez del pulso."
+          "texto": "Indicado a intensidad moderada; enfriamiento progresivo. Con clonidina, use la sensación de esfuerzo en vez del pulso.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Seguro; incorpórese despacio tras ejercicios en el suelo."
+          "texto": "Seguro; incorpórese despacio tras ejercicios en el suelo.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Mareo postural y somnolencia: equilibrio con apoyo, sobre todo en mayores."
+          "texto": "Mareo postural y somnolencia: equilibrio con apoyo, sobre todo en mayores.",
+          "fuente": "Beers 2023",
+          "evidencia": "criterios",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -341,29 +404,44 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "El pulso en reposo y en esfuerzo está acelerado por el fármaco: no refleja bien la intensidad. Guíese por la sensación de esfuerzo."
+          "texto": "El pulso en reposo y en esfuerzo está acelerado por el fármaco: no refleja bien la intensidad. Guíese por la sensación de esfuerzo.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Hinchazón de tobillos y dolor de cabeza son efectos frecuentes, no signos de que el ejercicio vaya mal."
+          "texto": "Hinchazón de tobillos y dolor de cabeza son efectos frecuentes, no signos de que el ejercicio vaya mal.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Intensidad moderada, enfriamiento largo y evitar el calor: la vasodilatación favorece el mareo al terminar."
+          "texto": "Intensidad moderada, enfriamiento largo y evitar el calor: la vasodilatación favorece el mareo al terminar.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Seguro sin apneas; levántese despacio."
+          "texto": "Seguro sin apneas; levántese despacio.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Mareo postural frecuente; transiciones lentas con apoyo."
+          "texto": "Mareo postural frecuente; transiciones lentas con apoyo.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -412,32 +490,47 @@
           "si": {
             "principio": "finerenona"
           },
-          "texto": "No use suplementos ni bebidas ricas en potasio ni sal de régimen; si además toma IECA/ARA-II o espironolactona, el potasio se controla con análisis periódicos."
+          "texto": "No use suplementos ni bebidas ricas en potasio ni sal de régimen; si además toma IECA/ARA-II o espironolactona, el potasio se controla con análisis periódicos.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
           "si": {
             "principio": "vericiguat"
           },
-          "texto": "No combine con nitratos ni con fármacos para la disfunción eréctil: la bajada de tensión puede ser grave."
+          "texto": "No combine con nitratos ni con fármacos para la disfunción eréctil: la bajada de tensión puede ser grave.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado. En insuficiencia cardíaca, el programa ideal es el de rehabilitación cardíaca; en casa, caminar a ritmo que permita hablar y progresar poco a poco."
+          "texto": "Indicado. En insuficiencia cardíaca, el programa ideal es el de rehabilitación cardíaca; en casa, caminar a ritmo que permita hablar y progresar poco a poco.",
+          "fuente": "ESC/ERS: rehabilitación supervisada",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable en insuficiencia cardíaca: cargas ligeras-moderadas, muchas repeticiones, sin apnea."
+          "texto": "Muy recomendable en insuficiencia cardíaca: cargas ligeras-moderadas, muchas repeticiones, sin apnea.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Posible mareo postural con vericiguat; transiciones lentas."
+          "texto": "Posible mareo postural con vericiguat; transiciones lentas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -486,32 +579,47 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El programa de marcha supervisada (caminar hasta dolor moderado, descansar hasta que ceda y repetir, 30–45 minutos, 3 veces por semana) mejora la distancia de marcha más que cualquier fármaco. El dolor de claudicación durante la marcha es esperable y no peligroso; el dolor en reposo o una herida que no cura sí requieren consulta."
+          "texto": "El programa de marcha supervisada (caminar hasta dolor moderado, descansar hasta que ceda y repetir, 30–45 minutos, 3 veces por semana) mejora la distancia de marcha más que cualquier fármaco. El dolor de claudicación durante la marcha es esperable y no peligroso; el dolor en reposo o una herida que no cura sí requieren consulta.",
+          "fuente": "ESC/ERS: rehabilitación supervisada",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "cilostazol"
           },
-          "texto": "Cilostazol puede acelerar el pulso y dar palpitaciones o dolor de cabeza las primeras semanas."
+          "texto": "Cilostazol puede acelerar el pulso y dar palpitaciones o dolor de cabeza las primeras semanas.",
+          "fuente": "ESC 2017 arteriopatía periférica",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Caminar es el tratamiento. Si no tolera la marcha, bici o ergómetro de brazos como alternativa, pero la marcha es lo que más mejora."
+          "texto": "Caminar es el tratamiento. Si no tolera la marcha, bici o ergómetro de brazos como alternativa, pero la marcha es lo que más mejora.",
+          "fuente": "ESC 2017 arteriopatía periférica",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Recomendable, con énfasis en pantorrillas y piernas."
+          "texto": "Recomendable, con énfasis en pantorrillas y piernas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica."
+          "texto": "Sin limitación específica.",
+          "fuente": "ESC 2017 arteriopatía periférica",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -557,33 +665,51 @@
       "general": [
         {
           "nivel": "alerta",
-          "texto": "Para ejercicio prolongado o muy intenso (más de 60–90 minutos, competiciones, calor extremo) hable con su endocrinólogo sobre una dosis extra de hidrocortisona antes de la sesión (habitualmente 5–10 mg). Lleve siempre su tarjeta de insuficiencia suprarrenal e hidrocortisona de emergencia."
+          "texto": "Para ejercicio prolongado o muy intenso (más de 60–90 minutos, competiciones, calor extremo) hable con su endocrinólogo sobre una dosis extra de hidrocortisona antes de la sesión (habitualmente 5–10 mg). Lleve siempre su tarjeta de insuficiencia suprarrenal e hidrocortisona de emergencia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "Náuseas, vómitos, mareo intenso, debilidad extrema o confusión durante o tras el ejercicio pueden ser una crisis suprarrenal: tome la dosis de emergencia y llame al 112."
+          "texto": "Náuseas, vómitos, mareo intenso, debilidad extrema o confusión durante o tras el ejercicio pueden ser una crisis suprarrenal: tome la dosis de emergencia y llame al 112.",
+          "fuente": "Endocrine Society 2016 insuficiencia suprarrenal",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Beba agua con sal o bebidas isotónicas en sesiones con sudoración abundante: pierde más sodio de lo habitual (sobre todo si toma fludrocortisona)."
+          "texto": "Beba agua con sal o bebidas isotónicas en sesiones con sudoración abundante: pierde más sodio de lo habitual (sobre todo si toma fludrocortisona).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad moderada; progrese despacio y aprenda a reconocer la fatiga anormal."
+          "texto": "Indicado a intensidad moderada; progrese despacio y aprenda a reconocer la fatiga anormal.",
+          "fuente": "Endocrine Society 2016 insuficiencia suprarrenal",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Recomendable; protege músculo y hueso, que el tratamiento crónico puede debilitar."
+          "texto": "Recomendable; protege músculo y hueso, que el tratamiento crónico puede debilitar.",
+          "fuente": "Endocrine Society 2016 insuficiencia suprarrenal",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Posible mareo postural; transiciones lentas e hidratación."
+          "texto": "Posible mareo postural; transiciones lentas e hidratación.",
+          "fuente": "Endocrine Society 2016 insuficiencia suprarrenal",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -640,29 +766,44 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Hasta que su médico confirme que las hormonas tiroideas están en rango, limítese a ejercicio ligero-moderado: con hipertiroidismo activo el pulso, la temperatura y la fatiga muscular responden de forma exagerada."
+          "texto": "Hasta que su médico confirme que las hormonas tiroideas están en rango, limítese a ejercicio ligero-moderado: con hipertiroidismo activo el pulso, la temperatura y la fatiga muscular responden de forma exagerada.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "Fiebre, dolor de garganta o llagas en la boca con estos fármacos obligan a consultar de inmediato (bajada de defensas por el fármaco); no entrene con esos síntomas."
+          "texto": "Fiebre, dolor de garganta o llagas en la boca con estos fármacos obligan a consultar de inmediato (bajada de defensas por el fármaco); no entrene con esos síntomas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Mientras no esté controlado: intensidad ligera, ambiente fresco, pulso en reposo como referencia (si supera 100, consulte antes de aumentar)."
+          "texto": "Mientras no esté controlado: intensidad ligera, ambiente fresco, pulso en reposo como referencia (si supera 100, consulte antes de aumentar).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "El hipertiroidismo debilita el músculo (sobre todo muslos y hombros); una vez controlado, la fuerza ayuda a recuperarlo."
+          "texto": "El hipertiroidismo debilita el músculo (sobre todo muslos y hombros); una vez controlado, la fuerza ayuda a recuperarlo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica."
+          "texto": "Sin limitación específica.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -725,36 +866,54 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio regular reduce el riesgo de trombosis asociado a los estrógenos. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico."
+          "texto": "El ejercicio regular reduce el riesgo de trombosis asociado a los estrógenos. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Dolor e hinchazón en una sola pantorrilla, o falta de aire súbita con dolor en el pecho, no son agujetas: consulte de urgencia."
+          "texto": "Dolor e hinchazón en una sola pantorrilla, o falta de aire súbita con dolor en el pecho, no son agujetas: consulte de urgencia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "ths_estrogenos"
           },
-          "texto": "La vía transdérmica (parche o gel) tiene menos riesgo trombótico que la oral; es un tema a hablar con su ginecólogo si entrena mucho o viaja con frecuencia."
+          "texto": "La vía transdérmica (parche o gel) tiene menos riesgo trombótico que la oral; es un tema a hablar con su ginecólogo si entrena mucho o viaja con frecuencia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable en la menopausia para proteger hueso y masa muscular."
+          "texto": "Muy recomendable en la menopausia para proteger hueso y masa muscular.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -790,33 +949,51 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El entrenamiento de fuerza potencia el efecto del tratamiento sobre músculo y hueso."
+          "texto": "El entrenamiento de fuerza potencia el efecto del tratamiento sobre músculo y hueso.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "La testosterona sube el hematocrito y puede subir la tensión: controles analíticos periódicos y, si entrena en altitud o con deshidratación, hidratación cuidadosa."
+          "texto": "La testosterona sube el hematocrito y puede subir la tensión: controles analíticos periódicos y, si entrena en altitud o con deshidratación, hidratación cuidadosa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Con gel: lávese las manos tras aplicarlo y cubra la zona antes de entrenar con otras personas (se transfiere por contacto con la piel)."
+          "texto": "Con gel: lávese las manos tras aplicarlo y cubra la zona antes de entrenar con otras personas (se transfiere por contacto con la piel).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable: es donde más se nota el beneficio del tratamiento."
+          "texto": "Muy recomendable: es donde más se nota el beneficio del tratamiento.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -870,39 +1047,57 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Si tiene osteoporosis con fracturas, evite flexiones de columna con carga y giros bruscos del tronco; priorice extensores de espalda, fuerza de piernas y caminar."
+          "texto": "Si tiene osteoporosis con fracturas, evite flexiones de columna con carga y giros bruscos del tronco; priorice extensores de espalda, fuerza de piernas y caminar.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "teriparatida"
           },
-          "texto": "Teriparatida puede dar mareo o calambres en las piernas las primeras semanas, sobre todo tras la inyección: póngasela sentado y no justo antes de entrenar."
+          "texto": "Teriparatida puede dar mareo o calambres en las piernas las primeras semanas, sobre todo tras la inyección: póngasela sentado y no justo antes de entrenar.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "raloxifeno"
           },
-          "texto": "Raloxifeno aumenta el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pantorrilla."
+          "texto": "Raloxifeno aumenta el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pantorrilla.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Caminar rápido, escaleras, baile. Impacto moderado si su médico lo autoriza."
+          "texto": "Caminar rápido, escaleras, baile. Impacto moderado si su médico lo autoriza.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Prioritario: 2–3 sesiones semanales, cadera, columna (extensión) y piernas, con progresión."
+          "texto": "Prioritario: 2–3 sesiones semanales, cadera, columna (extensión) y piernas, con progresión.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "alerta",
-          "texto": "Prevenir caídas es parte del tratamiento: equilibrio 2–3 veces por semana, con apoyo si lo necesita."
+          "texto": "Prevenir caídas es parte del tratamiento: equilibrio 2–3 veces por semana, con apoyo si lo necesita.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -952,32 +1147,47 @@
           "si": {
             "principio": "repaglinida"
           },
-          "texto": "Tome repaglinida solo si va a comer; si entrena en las 2 horas siguientes a una comida con repaglinida, lleve azúcar y vigile síntomas de bajada."
+          "texto": "Tome repaglinida solo si va a comer; si entrena en las 2 horas siguientes a una comida con repaglinida, lleve azúcar y vigile síntomas de bajada.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "acarbosa"
           },
-          "texto": "Si toma acarbosa junto a insulina o sulfonilurea y tiene una bajada de azúcar, el azúcar de mesa no sirve (la acarbosa bloquea su absorción): use tabletas o gel de glucosa."
+          "texto": "Si toma acarbosa junto a insulina o sulfonilurea y tiene una bajada de azúcar, el azúcar de mesa no sirve (la acarbosa bloquea su absorción): use tabletas o gel de glucosa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; con repaglinida, precauciones de hipoglucemia."
+          "texto": "Sin limitación; con repaglinida, precauciones de hipoglucemia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1008,25 +1218,37 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Evite entrenar en las 2–3 horas siguientes a una comida con grasa si toma orlistat: la urgencia fecal es frecuente. Tome las vitaminas liposolubles (A, D, E, K) si se las han pautado, separadas del fármaco."
+          "texto": "Evite entrenar en las 2–3 horas siguientes a una comida con grasa si toma orlistat: la urgencia fecal es frecuente. Tome las vitaminas liposolubles (A, D, E, K) si se las han pautado, separadas del fármaco.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Recomendable para conservar músculo durante la pérdida de peso."
+          "texto": "Recomendable para conservar músculo durante la pérdida de peso.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1069,32 +1291,47 @@
           "si": {
             "principio": "potasio_oral"
           },
-          "texto": "Si además toma IECA/ARA-II, espironolactona o antiinflamatorios, el potasio puede subir demasiado: no añada bebidas o suplementos 'ricos en potasio' por su cuenta y siga los controles analíticos."
+          "texto": "Si además toma IECA/ARA-II, espironolactona o antiinflamatorios, el potasio puede subir demasiado: no añada bebidas o suplementos 'ricos en potasio' por su cuenta y siga los controles analíticos.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "magnesio_oral"
           },
-          "texto": "El magnesio puede dar diarrea a dosis altas; tómelo separado del ejercicio y de otros fármacos (levotiroxina, antibióticos) al menos 2 horas."
+          "texto": "El magnesio puede dar diarrea a dosis altas; tómelo separado del ejercicio y de otros fármacos (levotiroxina, antibióticos) al menos 2 horas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [],
@@ -1147,32 +1384,47 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Con anemia, la fatiga y la falta de aire con esfuerzos pequeños son esperables: entrene a intensidad baja y aumente conforme mejore el análisis."
+          "texto": "Con anemia, la fatiga y la falta de aire con esfuerzos pequeños son esperables: entrene a intensidad baja y aumente conforme mejore el análisis.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "epoetina"
           },
-          "texto": "La eritropoyetina sube la tensión arterial y, si el hematocrito sube en exceso, el riesgo de trombosis: hidrátese bien y controle la tensión en casa."
+          "texto": "La eritropoyetina sube la tensión arterial y, si el hematocrito sube en exceso, el riesgo de trombosis: hidrátese bien y controle la tensión en casa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Intensidad ajustada a la anemia (debe poder hablar). Progrese cuando la hemoglobina se normalice."
+          "texto": "Intensidad ajustada a la anemia (debe poder hablar). Progrese cuando la hemoglobina se normalice.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; cargas moderadas."
+          "texto": "Sin limitación; cargas moderadas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "La anemia puede dar mareo al incorporarse; transiciones lentas."
+          "texto": "La anemia puede dar mareo al incorporarse; transiciones lentas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1207,33 +1459,51 @@
       "general": [
         {
           "nivel": "alerta",
-          "texto": "Con el sudor se pierde sodio y el riñón retiene litio: en sesiones largas, con calor o con sudoración abundante beba agua con sales (bebida isotónica) y no restrinja la sal ese día. Temblor que empeora, diarrea, vómitos, torpeza al caminar o confusión son signos de intoxicación: pare y consulte de urgencia."
+          "texto": "Con el sudor se pierde sodio y el riñón retiene litio: en sesiones largas, con calor o con sudoración abundante beba agua con sales (bebida isotónica) y no restrinja la sal ese día. Temblor que empeora, diarrea, vómitos, torpeza al caminar o confusión son signos de intoxicación: pare y consulte de urgencia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "No tome antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: suben los niveles de litio. Use paracetamol. Lo mismo con diuréticos o IECA nuevos: siempre con control de niveles."
+          "texto": "No tome antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: suben los niveles de litio. Use paracetamol. Lo mismo con diuréticos o IECA nuevos: siempre con control de niveles.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Un temblor fino de manos es efecto habitual del litio y no empeora con el ejercicio moderado."
+          "texto": "Un temblor fino de manos es efecto habitual del litio y no empeora con el ejercicio moderado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Evite el ejercicio intenso con calor o humedad altos. Prefiera horas frescas e interiores climatizados en verano."
+          "texto": "Evite el ejercicio intenso con calor o humedad altos. Prefiera horas frescas e interiores climatizados en verano.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; hidratación normal."
+          "texto": "Sin limitación; hidratación normal.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Si nota inestabilidad o temblor marcado, consulte (puede ser nivel alto)."
+          "texto": "Si nota inestabilidad o temblor marcado, consulte (puede ser nivel alto).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1257,7 +1527,9 @@
       "ambitos": [
         "general",
         "aerobico"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "id": "litio_aine",
@@ -1272,7 +1544,9 @@
       "texto": "Los antiinflamatorios suben los niveles de litio hasta niveles tóxicos. Sustituya el antiinflamatorio por paracetamol y consulte.",
       "ambitos": [
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "id": "litio_ieca",
@@ -1287,7 +1561,9 @@
       "texto": "Los IECA y ARA-II pueden subir los niveles de litio. Control de niveles, sobre todo al iniciar el tratamiento o si se deshidrata entrenando.",
       "ambitos": [
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.5 (litio)",
+      "revisado": true
     },
     {
       "id": "hipopotasemia_multiple",
@@ -1301,7 +1577,9 @@
       "ambitos": [
         "aerobico",
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     },
     {
       "id": "hipopotasemia_qt",
@@ -1317,7 +1595,9 @@
       "ambitos": [
         "aerobico",
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.4 · CredibleMeds",
+      "revisado": true
     },
     {
       "id": "trombosis_multiple",
@@ -1330,7 +1610,9 @@
       "texto": "Toma {n} fármacos que aumentan el riesgo de trombosis venosa. El ejercicio regular lo reduce; evite periodos largos sentado o inmóvil y consulte ante dolor e hinchazón de una pierna o falta de aire súbita.",
       "ambitos": [
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.4",
+      "revisado": true
     },
     {
       "id": "hipertension_multiple",
@@ -1344,7 +1626,9 @@
       "ambitos": [
         "fuerza",
         "general"
-      ]
+      ],
+      "fuente": "ESC 2024 hipertensión",
+      "revisado": true
     },
     {
       "id": "fotosensibilidad_multiple",
@@ -1357,7 +1641,9 @@
       "texto": "Toma {n} fármacos que aumentan la sensibilidad al sol. Si entrena al aire libre: protección solar alta, ropa, gorra y evitar las horas centrales del día.",
       "ambitos": [
         "aerobico"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.8",
+      "revisado": true
     },
     {
       "id": "inmunosupresion_multiple",
@@ -1370,7 +1656,9 @@
       "texto": "Toma {n} fármacos que reducen las defensas. El ejercicio moderado las mejora; el muy intenso y prolongado las baja temporalmente. Evite entrenar con fiebre o infección activa, cuide la higiene en gimnasios y piscinas, y consulte ante heridas que no curan.",
       "ambitos": [
         "general"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.4",
+      "revisado": true
     },
     {
       "id": "fatiga_multiple",
@@ -1383,7 +1671,9 @@
       "texto": "Toma {n} fármacos que producen cansancio o reducen la tolerancia al esfuerzo. Empiece con sesiones cortas y frecuentes (10–20 minutos) y aumente antes la frecuencia que la intensidad.",
       "ambitos": [
         "aerobico"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.8",
+      "revisado": true
     }
   ]
 }

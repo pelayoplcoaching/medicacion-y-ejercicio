@@ -1,10 +1,10 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151843";
-import { APP_VERSION } from "./version.js?v=202610151843";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151843";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151843";
-import { cargarScript } from "./libs.js?v=202610151843";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151843";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151843";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610151920";
+import { APP_VERSION } from "./version.js?v=202610151920";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610151920";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610151920";
+import { cargarScript } from "./libs.js?v=202610151920";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610151920";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610151920";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -925,7 +925,15 @@ const GLOSARIO = {
   "NYHA": "Clase funcional de la insuficiencia cardíaca: I sin síntomas; II con esfuerzos normales; III con esfuerzos pequeños; IV en reposo.",
   "FEVI": "Fracción de eyección del ventrículo izquierdo: porcentaje de sangre que el corazón expulsa en cada latido (normal ≥ 50 %).",
   "FG": "Filtrado glomerular: medida de la función del riñón en mL/min (normal > 90; reducido < 60).",
-  "SPPB": "Short Physical Performance Battery: prueba de equilibrio, marcha y levantarse de la silla, de 0 a 12 puntos (≤ 9 indica fragilidad).",
+  "SPPB": "Short Physical Performance Battery: prueba de equilibrio, marcha de 4 m y levantarse de la silla 5 veces, de 0 a 12 puntos (≤ 6 fragilidad; 7–9 prefragilidad; ≥ 10 robusto).",
+  "Karvonen": "Método para calcular las pulsaciones objetivo a partir de la FC de reserva: reposo + (máxima − reposo) × porcentaje de intensidad.",
+  "FC de reserva": "Diferencia entre el pulso máximo y el pulso en reposo; sobre ella se calculan las zonas de intensidad (moderada = 40–59 %).",
+  "Tanaka": "Fórmula para estimar el pulso máximo: 208 − 0,7 × edad. Es orientativa; con betabloqueantes no sirve.",
+  "Vivifrail": "Programa de ejercicio multicomponente para mayores según su capacidad funcional (niveles A a D).",
+  "ACOD": "Anticoagulantes orales de acción directa (apixabán, rivaroxabán, edoxabán, dabigatrán); no requieren INR.",
+  "Beers": "Criterios Beers (Sociedad Americana de Geriatría, 2023): lista de fármacos potencialmente inapropiados en mayores de 65 años.",
+  "STOPP/START": "Criterios europeos de prescripción en mayores: STOPP señala fármacos a retirar y START, tratamientos que faltan.",
+  "lpm": "Latidos por minuto.",
   "DAI": "Desfibrilador automático implantable: dispositivo que detecta arritmias graves y da una descarga.",
   "Valsalva": "Aguantar la respiración haciendo fuerza: sube bruscamente la tensión. Al hacer fuerza, respire siempre.",
   "isométrico": "Ejercicio en el que el músculo trabaja sin moverse (sostener una posición). Sube más la tensión que el movimiento continuo.",

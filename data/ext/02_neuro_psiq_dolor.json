@@ -51,33 +51,51 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El pulso y la tensión están algo elevados mientras dura el efecto: use la sensación de esfuerzo para medir la intensidad. Palpitaciones intensas o dolor en el pecho con el esfuerzo: pare y consulte."
+          "texto": "El pulso y la tensión están algo elevados mientras dura el efecto: use la sensación de esfuerzo para medir la intensidad. Palpitaciones intensas o dolor en el pecho con el esfuerzo: pare y consulte.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Reducen la sensación de sed y de fatiga y favorecen el sobrecalentamiento: beba por horario (no por sed) y evite el ejercicio intenso con calor."
+          "texto": "Reducen la sensación de sed y de fatiga y favorecen el sobrecalentamiento: beba por horario (no por sed) y evite el ejercicio intenso con calor.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Si el apetito está reducido, asegúrese de comer antes de entrenar; muchos deportistas lo toman después del entrenamiento matinal."
+          "texto": "Si el apetito está reducido, asegúrese de comer antes de entrenar; muchos deportistas lo toman después del entrenamiento matinal.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado. En competición, consulte la normativa antidopaje (requieren autorización de uso terapéutico)."
+          "texto": "Indicado. En competición, consulte la normativa antidopaje (requieren autorización de uso terapéutico).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -146,29 +164,44 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Donepezilo, rivastigmina y galantamina pueden frenar el pulso y provocar mareo o desmayo, sobre todo combinados con betabloqueantes. Si hay desmayos, consulte antes de continuar el programa."
+          "texto": "Donepezilo, rivastigmina y galantamina pueden frenar el pulso y provocar mareo o desmayo, sobre todo combinados con betabloqueantes. Si hay desmayos, consulte antes de continuar el programa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El ejercicio debe hacerse acompañado y con instrucciones sencillas y repetidas. Caminar, ejercicios de fuerza sentado-de pie y equilibrio con apoyo son los más útiles."
+          "texto": "El ejercicio debe hacerse acompañado y con instrucciones sencillas y repetidas. Caminar, ejercicios de fuerza sentado-de pie y equilibrio con apoyo son los más útiles.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Caminar a diario, acompañado, en entornos conocidos. Intensidad por sensación de esfuerzo."
+          "texto": "Caminar a diario, acompañado, en entornos conocidos. Intensidad por sensación de esfuerzo.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Levantarse de la silla, subir escalones, ejercicios con bandas: 2–3 veces por semana con supervisión."
+          "texto": "Levantarse de la silla, subir escalones, ejercicios con bandas: 2–3 veces por semana con supervisión.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "alerta",
-          "texto": "Riesgo de caída alto: equilibrio siempre con apoyo y supervisión; revise calzado e iluminación de la casa."
+          "texto": "Riesgo de caída alto: equilibrio siempre con apoyo y supervisión; revise calzado e iluminación de la casa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -233,33 +266,51 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "No haga ejercicio intenso en las 2–3 horas siguientes a tomar un triptán: la combinación con el esfuerzo puede dar opresión en el pecho o subidas de tensión. Si aparece dolor torácico, consulte."
+          "texto": "No haga ejercicio intenso en las 2–3 horas siguientes a tomar un triptán: la combinación con el esfuerzo puede dar opresión en el pecho o subidas de tensión. Si aparece dolor torácico, consulte.",
+          "fuente": "FT AEMPS 4.3",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El ejercicio aeróbico regular reduce la frecuencia de las migrañas. Un calentamiento progresivo y una buena hidratación evitan que el propio esfuerzo desencadene crisis."
+          "texto": "El ejercicio aeróbico regular reduce la frecuencia de las migrañas. Un calentamiento progresivo y una buena hidratación evitan que el propio esfuerzo desencadene crisis.",
+          "fuente": "FT AEMPS 4.3",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "Si tiene angina, infarto previo o hipertensión no controlada, los triptanes están contraindicados: coméntelo con su médico."
+          "texto": "Si tiene angina, infarto previo o hipertensión no controlada, los triptanes están contraindicados: coméntelo con su médico.",
+          "fuente": "FT AEMPS 4.3",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado entre crisis, con calentamiento largo. Evite el esfuerzo máximo brusco, que es desencadenante de migraña en algunas personas."
+          "texto": "Indicado entre crisis, con calentamiento largo. Evite el esfuerzo máximo brusco, que es desencadenante de migraña en algunas personas.",
+          "fuente": "FT AEMPS 4.3",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación entre crisis; respiración continua (la apnea puede desencadenar cefalea)."
+          "texto": "Sin limitación entre crisis; respiración continua (la apnea puede desencadenar cefalea).",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.3",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -312,25 +363,37 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Sin limitación para el ejercicio. Con erenumab, controle la tensión de vez en cuando."
+          "texto": "Sin limitación para el ejercicio. Con erenumab, controle la tensión de vez en cuando.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; el aeróbico regular es por sí mismo preventivo de la migraña."
+          "texto": "Indicado; el aeróbico regular es por sí mismo preventivo de la migraña.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -400,36 +463,54 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Somnolencia, debilidad y mareo, más marcados las primeras horas tras la toma: entrene alejado de ella y evite actividades con riesgo de caída."
+          "texto": "Somnolencia, debilidad y mareo, más marcados las primeras horas tras la toma: entrene alejado de ella y evite actividades con riesgo de caída.",
+          "fuente": "FT AEMPS 4.7",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "En dolor lumbar o cervical, el movimiento y el ejercicio progresivo son el tratamiento con más evidencia; el relajante debe ser un apoyo breve, no una condición para moverse."
+          "texto": "En dolor lumbar o cervical, el movimiento y el ejercicio progresivo son el tratamiento con más evidencia; el relajante debe ser un apoyo breve, no una condición para moverse.",
+          "fuente": "FT AEMPS 4.7",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "baclofeno"
           },
-          "texto": "En espasticidad, programe las sesiones en el momento de mejor efecto del baclofeno y coordine el programa con su fisioterapeuta."
+          "texto": "En espasticidad, programe las sesiones en el momento de mejor efecto del baclofeno y coordine el programa con su fisioterapeuta.",
+          "fuente": "FT AEMPS 4.7",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad ligera-moderada, evitando el calor (tizanidina y ciclobenzaprina lo toleran peor)."
+          "texto": "Indicado a intensidad ligera-moderada, evitando el calor (tizanidina y ciclobenzaprina lo toleran peor).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Cargas ligeras-moderadas con técnica cuidada; la debilidad por el fármaco puede sobreestimar lo que puede levantar."
+          "texto": "Cargas ligeras-moderadas con técnica cuidada; la debilidad por el fármaco puede sobreestimar lo que puede levantar.",
+          "fuente": "FT AEMPS 4.7",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Riesgo de caída por somnolencia, debilidad e hipotensión: con apoyo."
+          "texto": "Riesgo de caída por somnolencia, debilidad e hipotensión: con apoyo.",
+          "fuente": "FT AEMPS 4.7",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -463,33 +544,51 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Puede producir mareo o bajada de tensión en la hora siguiente a la toma, más si está deshidratado: no lo tome justo antes de entrenar."
+          "texto": "Puede producir mareo o bajada de tensión en la hora siguiente a la toma, más si está deshidratado: no lo tome justo antes de entrenar.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
-          "texto": "Fiebre, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y consulte el mismo día (posible bajada de defensas). No entrene con esos síntomas."
+          "texto": "Fiebre, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y consulte el mismo día (posible bajada de defensas). No entrene con esos síntomas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Para dolor muscular tras el ejercicio, el paracetamol es la primera opción; el metamizol, para uso puntual y el menor tiempo posible."
+          "texto": "Para dolor muscular tras el ejercicio, el paracetamol es la primera opción; el metamizol, para uso puntual y el menor tiempo posible.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación alejado de la toma."
+          "texto": "Sin limitación alejado de la toma.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Posible mareo postural tras la toma."
+          "texto": "Posible mareo postural tras la toma.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -554,36 +653,54 @@
           "si": {
             "principio": "bupropion"
           },
-          "texto": "Bupropión puede subir la tensión y el pulso y dar insomnio: entrene por la mañana o a media tarde, no de noche, y controle la tensión de vez en cuando. Reduce el umbral de convulsiones: evite la deshidratación y el ejercicio extenuante en ayunas."
+          "texto": "Bupropión puede subir la tensión y el pulso y dar insomnio: entrene por la mañana o a media tarde, no de noche, y controle la tensión de vez en cuando. Reduce el umbral de convulsiones: evite la deshidratación y el ejercicio extenuante en ayunas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "moclobemida"
           },
-          "texto": "Con moclobemida evite suplementos deportivos con tiramina, efedrina, sinefrina o 'pre-entrenos' estimulantes y limite los quesos curados y embutidos: riesgo de subida brusca de tensión."
+          "texto": "Con moclobemida evite suplementos deportivos con tiramina, efedrina, sinefrina o 'pre-entrenos' estimulantes y limite los quesos curados y embutidos: riesgo de subida brusca de tensión.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El ejercicio regular potencia el efecto antidepresivo."
+          "texto": "El ejercicio regular potencia el efecto antidepresivo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado."
+          "texto": "Indicado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado."
+          "texto": "Indicado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -658,39 +775,57 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Entrene en el periodo de mejor movilidad (ON). Mareo al incorporarse frecuente: transiciones lentas e hidratación."
+          "texto": "Entrene en el periodo de mejor movilidad (ON). Mareo al incorporarse frecuente: transiciones lentas e hidratación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "rotigotina"
           },
-          "texto": "El parche de rotigotina no debe exponerse a calor directo (sauna, manta eléctrica); con sudoración abundante compruebe que sigue adherido."
+          "texto": "El parche de rotigotina no debe exponerse a calor directo (sauna, manta eléctrica); con sudoración abundante compruebe que sigue adherido.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "biperideno"
           },
-          "texto": "Biperideno reduce la sudoración y puede dar confusión en mayores: evite el calor."
+          "texto": "Biperideno reduce la sudoración y puede dar confusión en mayores: evite el calor.",
+          "fuente": "Beers 2023",
+          "evidencia": "criterios",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable (cinta, bici, caminar rápido) a intensidad moderada-alta si está en ON."
+          "texto": "Muy recomendable (cinta, bici, caminar rápido) a intensidad moderada-alta si está en ON.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado, con énfasis en piernas, extensores y amplitud de movimiento."
+          "texto": "Indicado, con énfasis en piernas, extensores y amplitud de movimiento.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "alerta",
-          "texto": "Prioritario por el riesgo de caída: equilibrio y marcha 3 veces por semana con apoyo o supervisión."
+          "texto": "Prioritario por el riesgo de caída: equilibrio y marcha 3 veces por semana con apoyo o supervisión.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -754,32 +889,47 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Los ejercicios de equilibrio y de habituación vestibular son el tratamiento con más evidencia para el vértigo crónico; los fármacos sedantes (cinarizina, sulpirida) usados de forma prolongada retrasan esa recuperación."
+          "texto": "Los ejercicios de equilibrio y de habituación vestibular son el tratamiento con más evidencia para el vértigo crónico; los fármacos sedantes (cinarizina, sulpirida) usados de forma prolongada retrasan esa recuperación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "sulpirida"
           },
-          "texto": "Sulpirida y cinarizina a largo plazo pueden producir temblor, rigidez o lentitud en mayores: si aparecen, consulte."
+          "texto": "Sulpirida y cinarizina a largo plazo pueden producir temblor, rigidez o lentitud en mayores: si aparecen, consulte.",
+          "fuente": "Beers 2023",
+          "evidencia": "criterios",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Caminar es seguro y útil; evite bici en tráfico o actividades con riesgo si tiene vértigo activo."
+          "texto": "Caminar es seguro y útil; evite bici en tráfico o actividades con riesgo si tiene vértigo activo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; evite cambios bruscos de posición de la cabeza al inicio."
+          "texto": "Sin limitación; evite cambios bruscos de posición de la cabeza al inicio.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Es el apartado más importante: ejercicios de giros de cabeza, fijación visual y marcha con giros, con apoyo cerca."
+          "texto": "Es el apartado más importante: ejercicios de giros de cabeza, fijación visual y marcha con giros, con apoyo cerca.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -863,46 +1013,67 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio aeróbico de 20–30 minutos reduce el deseo de fumar o beber durante horas: úselo como herramienta en los momentos de más craving."
+          "texto": "El ejercicio aeróbico de 20–30 minutos reduce el deseo de fumar o beber durante horas: úselo como herramienta en los momentos de más craving.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "nicotina_sustitutiva"
           },
-          "texto": "No fume con el parche puesto; el parche puede acelerar el pulso. Con sudoración abundante compruebe que sigue adherido."
+          "texto": "No fume con el parche puesto; el parche puede acelerar el pulso. Con sudoración abundante compruebe que sigue adherido.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "naltrexona"
           },
-          "texto": "Naltrexona bloquea los opioides: si sufre una lesión, avise de que lo toma (los analgésicos opioides no harán efecto)."
+          "texto": "Naltrexona bloquea los opioides: si sufre una lesión, avise de que lo toma (los analgésicos opioides no harán efecto).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "metadona"
           },
-          "texto": "Metadona alarga el QT y produce somnolencia: reponga electrolitos en sesiones largas, evite el ejercicio intenso con calor y las actividades con riesgo de caída tras la toma."
+          "texto": "Metadona alarga el QT y produce somnolencia: reponga electrolitos en sesiones largas, evite el ejercicio intenso con calor y las actividades con riesgo de caída tras la toma.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; la capacidad aeróbica mejora rápidamente al dejar de fumar."
+          "texto": "Indicado; la capacidad aeróbica mejora rápidamente al dejar de fumar.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado."
+          "texto": "Indicado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación (con metadona, apoyo si hay somnolencia)."
+          "texto": "Sin limitación (con metadona, apoyo si hay somnolencia).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -950,32 +1121,47 @@
           "si": {
             "principio": "melatonina"
           },
-          "texto": "Tómela 1–2 horas antes de acostarse; el ejercicio intenso en las 2 horas previas a dormir reduce su efecto."
+          "texto": "Tómela 1–2 horas antes de acostarse; el ejercicio intenso en las 2 horas previas a dormir reduce su efecto.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "antihistaminico_no_sedante"
           },
-          "texto": "Cetirizina puede dar algo de somnolencia en personas sensibles; bilastina y loratadina no. Útiles para la rinitis del ejercicio al aire libre."
+          "texto": "Cetirizina puede dar algo de somnolencia en personas sensibles; bilastina y loratadina no. Útiles para la rinitis del ejercicio al aire libre.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.2",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1022,39 +1208,57 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Los antiinflamatorios en gel son la opción recomendable para dolor localizado si toma anticoagulantes o medicación para la tensión o el riñón, porque casi no pasan a la sangre."
+          "texto": "Los antiinflamatorios en gel son la opción recomendable para dolor localizado si toma anticoagulantes o medicación para la tensión o el riñón, porque casi no pasan a la sangre.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "aine_topico"
           },
-          "texto": "Ketoprofeno en gel produce reacciones intensas con el sol: no entrene al aire libre con la zona descubierta hasta 2 semanas después de usarlo."
+          "texto": "Ketoprofeno en gel produce reacciones intensas con el sol: no entrene al aire libre con la zona descubierta hasta 2 semanas después de usarlo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "lidocaina_parche"
           },
-          "texto": "Retire el parche de lidocaína antes de entrenar si va a sudar mucho o aplicar calor sobre la zona."
+          "texto": "Retire el parche de lidocaína antes de entrenar si va a sudar mucho o aplicar calor sobre la zona.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1075,7 +1279,9 @@
       "texto": "Toma {n} fármacos que aceleran el pulso o dan temblor. El pulso no sirve para medir la intensidad; evite además 'pre-entrenos', cafeína en exceso y el calor intenso.",
       "ambitos": [
         "aerobico"
-      ]
+      ],
+      "fuente": "FT AEMPS 4.5",
+      "revisado": true
     }
   ]
 }

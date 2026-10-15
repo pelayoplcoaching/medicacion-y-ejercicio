@@ -1,152 +1,1462 @@
 {
   "combinaciones": [
-    {"nombre": "Enalapril/hidroclorotiazida", "marcas": ["Co-Renitec", "Acetensil Plus", "Crinoren Diu", "Baripril Diu"], "componentes": [{"pid": "enalapril", "dosis": 20}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Losartán/hidroclorotiazida", "marcas": ["Cozaar Plus", "Fortzaar"], "componentes": [{"pid": "losartan", "dosis": 100}, {"pid": "hidroclorotiazida", "dosis": 25}]},
-    {"nombre": "Valsartán/hidroclorotiazida", "marcas": ["Co-Diován", "Co-Vals", "Miten Plus"], "componentes": [{"pid": "valsartan", "dosis": 160}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Valsartán/amlodipino", "marcas": ["Exforge", "Copalia", "Dafiro"], "componentes": [{"pid": "valsartan", "dosis": 160}, {"pid": "amlodipino", "dosis": 5}]},
-    {"nombre": "Valsartán/amlodipino/hidroclorotiazida", "marcas": ["Exforge HCT", "Copalia HCT", "Dafiro HCT"], "componentes": [{"pid": "valsartan", "dosis": 160}, {"pid": "amlodipino", "dosis": 5}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Olmesartán/hidroclorotiazida", "marcas": ["Olmetec Plus", "Openvas Plus", "Ixia Plus"], "componentes": [{"pid": "olmesartan", "dosis": 20}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Olmesartán/amlodipino", "marcas": ["Sevikar", "Capenon", "Balzak"], "componentes": [{"pid": "olmesartan", "dosis": 20}, {"pid": "amlodipino", "dosis": 5}]},
-    {"nombre": "Olmesartán/amlodipino/hidroclorotiazida", "marcas": ["Sevikar HCT", "Capenon HCT", "Balzak Plus"], "componentes": [{"pid": "olmesartan", "dosis": 20}, {"pid": "amlodipino", "dosis": 5}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Candesartán/hidroclorotiazida", "marcas": ["Atacand Plus", "Parapres Plus"], "componentes": [{"pid": "candesartan", "dosis": 16}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Telmisartán/hidroclorotiazida", "marcas": ["Micardis Plus", "Pritor Plus"], "componentes": [{"pid": "telmisartan", "dosis": 80}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Telmisartán/amlodipino", "marcas": ["Twynsta"], "componentes": [{"pid": "telmisartan", "dosis": 80}, {"pid": "amlodipino", "dosis": 5}]},
-    {"nombre": "Irbesartán/hidroclorotiazida", "marcas": ["CoAprovel", "Karvezide"], "componentes": [{"pid": "irbesartan", "dosis": 300}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Perindopril/indapamida", "marcas": ["Preterax", "Bipreterax", "Noliprel"], "componentes": [{"pid": "perindopril", "dosis": 5}, {"pid": "indapamida", "dosis": 1.25}]},
-    {"nombre": "Perindopril/amlodipino", "marcas": ["Coveram", "Prelectal"], "componentes": [{"pid": "perindopril", "dosis": 5}, {"pid": "amlodipino", "dosis": 5}]},
-    {"nombre": "Perindopril/indapamida/amlodipino", "marcas": ["Triplixam", "Triveram (con atorvastatina)"], "componentes": [{"pid": "perindopril", "dosis": 5}, {"pid": "indapamida", "dosis": 1.25}, {"pid": "amlodipino", "dosis": 5}]},
-    {"nombre": "Ramipril/hidroclorotiazida", "marcas": ["Acovil Plus"], "componentes": [{"pid": "ramipril", "dosis": 5}, {"pid": "hidroclorotiazida", "dosis": 25}]},
-    {"nombre": "Lisinopril/hidroclorotiazida", "marcas": ["Zestoretic", "Prinivil Plus"], "componentes": [{"pid": "lisinopril", "dosis": 20}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Bisoprolol/hidroclorotiazida", "marcas": ["Emconcor Plus", "Ziak"], "componentes": [{"pid": "bisoprolol", "dosis": 5}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Nebivolol/hidroclorotiazida", "marcas": ["Lobivon Plus"], "componentes": [{"pid": "nebivolol", "dosis": 5}, {"pid": "hidroclorotiazida", "dosis": 12.5}]},
-    {"nombre": "Amlodipino/atorvastatina", "marcas": ["Caduet"], "componentes": [{"pid": "amlodipino", "dosis": 10}, {"pid": "atorvastatina", "dosis": 10}]},
-    {"nombre": "Atorvastatina/ezetimiba", "marcas": ["Atozet", "Orvatez"], "componentes": [{"pid": "atorvastatina", "dosis": 20}, {"pid": "ezetimiba", "dosis": 10}]},
-    {"nombre": "Simvastatina/ezetimiba", "marcas": ["Inegy", "Vytorin"], "componentes": [{"pid": "simvastatina", "dosis": 20}, {"pid": "ezetimiba", "dosis": 10}]},
-    {"nombre": "Rosuvastatina/ezetimiba", "marcas": ["Twicor", "Crestor Combi"], "componentes": [{"pid": "rosuvastatina", "dosis": 10}, {"pid": "ezetimiba", "dosis": 10}]},
-    {"nombre": "Metformina/sitagliptina", "marcas": ["Janumet", "Efficib", "Velmetia"], "componentes": [{"pid": "metformina", "dosis": 1000}, {"pid": "sitagliptina", "dosis": 50}]},
-    {"nombre": "Metformina/vildagliptina", "marcas": ["Eucreas", "Icandra", "Zomarist"], "componentes": [{"pid": "metformina", "dosis": 1000}, {"pid": "vildagliptina", "dosis": 50}]},
-    {"nombre": "Metformina/linagliptina", "marcas": ["Jentadueto"], "componentes": [{"pid": "metformina", "dosis": 1000}, {"pid": "linagliptina", "dosis": 2.5}]},
-    {"nombre": "Metformina/dapagliflozina", "marcas": ["Xigduo"], "componentes": [{"pid": "metformina", "dosis": 1000}, {"pid": "dapagliflozina", "dosis": 5}]},
-    {"nombre": "Metformina/empagliflozina", "marcas": ["Synjardy"], "componentes": [{"pid": "metformina", "dosis": 1000}, {"pid": "empagliflozina", "dosis": 5}]},
-    {"nombre": "Empagliflozina/linagliptina", "marcas": ["Glyxambi"], "componentes": [{"pid": "empagliflozina", "dosis": 10}, {"pid": "linagliptina", "dosis": 5}]},
-    {"nombre": "Dapagliflozina/saxagliptina", "marcas": ["Qtern"], "componentes": [{"pid": "dapagliflozina", "dosis": 10}, {"pid": "sitagliptina", "dosis": 5}]},
-    {"nombre": "Metformina/pioglitazona", "marcas": ["Competact", "Glubrava"], "componentes": [{"pid": "metformina", "dosis": 850}, {"pid": "pioglitazona", "dosis": 15}]},
-    {"nombre": "Insulina degludec/liraglutida", "marcas": ["Xultophy"], "componentes": [{"pid": "insulina_basal", "dosis": null}, {"pid": "liraglutida", "dosis": null}]},
-    {"nombre": "Insulina glargina/lixisenatida", "marcas": ["Suliqua"], "componentes": [{"pid": "insulina_basal", "dosis": null}, {"pid": "dulaglutida", "dosis": null}]},
-    {"nombre": "Paracetamol/tramadol", "marcas": ["Zaldiar", "Pazital", "Tramadol/Paracetamol"], "componentes": [{"pid": "paracetamol", "dosis": 325}, {"pid": "tramadol", "dosis": 37.5}]},
-    {"nombre": "Paracetamol/codeína", "marcas": ["Termalgin Codeína", "Cod-Efferalgan", "Dolocatil Codeína"], "componentes": [{"pid": "paracetamol", "dosis": 500}, {"pid": "codeina", "dosis": 30}]},
-    {"nombre": "Ibuprofeno/codeína", "marcas": ["Neobrufen Codeína"], "componentes": [{"pid": "ibuprofeno", "dosis": 400}, {"pid": "codeina", "dosis": 30}]},
-    {"nombre": "Oxicodona/naloxona", "marcas": ["Targin"], "componentes": [{"pid": "oxicodona", "dosis": 10}]},
-    {"nombre": "Tamsulosina/dutasterida", "marcas": ["Duodart"], "componentes": [{"pid": "tamsulosina", "dosis": 0.4}, {"pid": "finasterida", "dosis": 0.5}]},
-    {"nombre": "Tamsulosina/solifenacina", "marcas": ["Vesomni"], "componentes": [{"pid": "tamsulosina", "dosis": 0.4}, {"pid": "solifenacina", "dosis": 6}]},
-    {"nombre": "Levodopa/carbidopa/entacapona", "marcas": ["Stalevo"], "componentes": [{"pid": "levodopa", "dosis": 100}]},
-    {"nombre": "Salmeterol/fluticasona", "marcas": ["Seretide", "Plusvent", "Inaladuo", "Airflusal"], "componentes": [{"pid": "laba_ics", "dosis": null}]},
-    {"nombre": "Formoterol/budesonida", "marcas": ["Symbicort", "Rilast", "DuoResp", "Bufomix"], "componentes": [{"pid": "laba_ics", "dosis": null}]},
-    {"nombre": "Vilanterol/umeclidinio/fluticasona", "marcas": ["Trelegy"], "componentes": [{"pid": "laba_ics", "dosis": null}, {"pid": "lama", "dosis": null}]},
-    {"nombre": "Formoterol/glicopirronio/beclometasona", "marcas": ["Trimbow"], "componentes": [{"pid": "laba_ics", "dosis": null}, {"pid": "lama", "dosis": null}]},
-    {"nombre": "Indacaterol/glicopirronio", "marcas": ["Ultibro", "Ulunar", "Xoterna"], "componentes": [{"pid": "laba_ics", "dosis": null}, {"pid": "lama", "dosis": null}]},
-    {"nombre": "Vilanterol/umeclidinio", "marcas": ["Anoro"], "componentes": [{"pid": "laba_ics", "dosis": null}, {"pid": "lama", "dosis": null}]},
-    {"nombre": "Olodaterol/tiotropio", "marcas": ["Spiolto"], "componentes": [{"pid": "laba_ics", "dosis": null}, {"pid": "lama", "dosis": null}]},
-    {"nombre": "Dorzolamida/timolol colirio", "marcas": ["Cosopt"], "componentes": [{"pid": "timolol_colirio", "dosis": null}, {"pid": "brimonidina_dorzolamida", "dosis": null}]},
-    {"nombre": "Latanoprost/timolol colirio", "marcas": ["Xalacom", "Ganfort", "Duotrav"], "componentes": [{"pid": "timolol_colirio", "dosis": null}, {"pid": "prostaglandina_colirio", "dosis": null}]},
-    {"nombre": "Calcio/colecalciferol", "marcas": ["Natecal D", "Ideos", "Mastical D", "Calcio D Isdin", "Osvaren"], "componentes": [{"pid": "calcio_vitd", "dosis": null}]},
-    {"nombre": "Alendronato/colecalciferol", "marcas": ["Fosavance", "Adrovance"], "componentes": [{"pid": "alendronato", "dosis": 70}, {"pid": "vitamina_d", "dosis": null}]},
-    {"nombre": "Sacubitrilo/valsartán", "marcas": ["Entresto"], "componentes": [{"pid": "sacubitrilo_valsartan", "dosis": 97}]},
-    {"nombre": "Amoxicilina/clavulánico", "marcas": ["Augmentine", "Amoxicilina/Ácido clavulánico"], "componentes": [{"pid": "amoxicilina", "dosis": 875}]}
+    {
+      "nombre": "Enalapril/hidroclorotiazida",
+      "marcas": [
+        "Co-Renitec",
+        "Acetensil Plus",
+        "Crinoren Diu",
+        "Baripril Diu"
+      ],
+      "componentes": [
+        {
+          "pid": "enalapril",
+          "dosis": 20
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Losartán/hidroclorotiazida",
+      "marcas": [
+        "Cozaar Plus",
+        "Fortzaar"
+      ],
+      "componentes": [
+        {
+          "pid": "losartan",
+          "dosis": 100
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 25
+        }
+      ]
+    },
+    {
+      "nombre": "Valsartán/hidroclorotiazida",
+      "marcas": [
+        "Co-Diován",
+        "Co-Vals",
+        "Miten Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "valsartan",
+          "dosis": 160
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Valsartán/amlodipino",
+      "marcas": [
+        "Exforge",
+        "Copalia",
+        "Dafiro"
+      ],
+      "componentes": [
+        {
+          "pid": "valsartan",
+          "dosis": 160
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Valsartán/amlodipino/hidroclorotiazida",
+      "marcas": [
+        "Exforge HCT",
+        "Copalia HCT",
+        "Dafiro HCT"
+      ],
+      "componentes": [
+        {
+          "pid": "valsartan",
+          "dosis": 160
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Olmesartán/hidroclorotiazida",
+      "marcas": [
+        "Olmetec Plus",
+        "Openvas Plus",
+        "Ixia Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "olmesartan",
+          "dosis": 20
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Olmesartán/amlodipino",
+      "marcas": [
+        "Sevikar",
+        "Capenon",
+        "Balzak"
+      ],
+      "componentes": [
+        {
+          "pid": "olmesartan",
+          "dosis": 20
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Olmesartán/amlodipino/hidroclorotiazida",
+      "marcas": [
+        "Sevikar HCT",
+        "Capenon HCT",
+        "Balzak Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "olmesartan",
+          "dosis": 20
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Candesartán/hidroclorotiazida",
+      "marcas": [
+        "Atacand Plus",
+        "Parapres Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "candesartan",
+          "dosis": 16
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Telmisartán/hidroclorotiazida",
+      "marcas": [
+        "Micardis Plus",
+        "Pritor Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "telmisartan",
+          "dosis": 80
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Telmisartán/amlodipino",
+      "marcas": [
+        "Twynsta"
+      ],
+      "componentes": [
+        {
+          "pid": "telmisartan",
+          "dosis": 80
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Irbesartán/hidroclorotiazida",
+      "marcas": [
+        "CoAprovel",
+        "Karvezide"
+      ],
+      "componentes": [
+        {
+          "pid": "irbesartan",
+          "dosis": 300
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Perindopril/indapamida",
+      "marcas": [
+        "Preterax",
+        "Bipreterax",
+        "Noliprel"
+      ],
+      "componentes": [
+        {
+          "pid": "perindopril",
+          "dosis": 5
+        },
+        {
+          "pid": "indapamida",
+          "dosis": 1.25
+        }
+      ]
+    },
+    {
+      "nombre": "Perindopril/amlodipino",
+      "marcas": [
+        "Coveram",
+        "Prelectal"
+      ],
+      "componentes": [
+        {
+          "pid": "perindopril",
+          "dosis": 5
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Perindopril/indapamida/amlodipino",
+      "marcas": [
+        "Triplixam",
+        "Triveram (con atorvastatina)"
+      ],
+      "componentes": [
+        {
+          "pid": "perindopril",
+          "dosis": 5
+        },
+        {
+          "pid": "indapamida",
+          "dosis": 1.25
+        },
+        {
+          "pid": "amlodipino",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Ramipril/hidroclorotiazida",
+      "marcas": [
+        "Acovil Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "ramipril",
+          "dosis": 5
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 25
+        }
+      ]
+    },
+    {
+      "nombre": "Lisinopril/hidroclorotiazida",
+      "marcas": [
+        "Zestoretic",
+        "Prinivil Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "lisinopril",
+          "dosis": 20
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Bisoprolol/hidroclorotiazida",
+      "marcas": [
+        "Emconcor Plus",
+        "Ziak"
+      ],
+      "componentes": [
+        {
+          "pid": "bisoprolol",
+          "dosis": 5
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Nebivolol/hidroclorotiazida",
+      "marcas": [
+        "Lobivon Plus"
+      ],
+      "componentes": [
+        {
+          "pid": "nebivolol",
+          "dosis": 5
+        },
+        {
+          "pid": "hidroclorotiazida",
+          "dosis": 12.5
+        }
+      ]
+    },
+    {
+      "nombre": "Amlodipino/atorvastatina",
+      "marcas": [
+        "Caduet"
+      ],
+      "componentes": [
+        {
+          "pid": "amlodipino",
+          "dosis": 10
+        },
+        {
+          "pid": "atorvastatina",
+          "dosis": 10
+        }
+      ]
+    },
+    {
+      "nombre": "Atorvastatina/ezetimiba",
+      "marcas": [
+        "Atozet",
+        "Orvatez"
+      ],
+      "componentes": [
+        {
+          "pid": "atorvastatina",
+          "dosis": 20
+        },
+        {
+          "pid": "ezetimiba",
+          "dosis": 10
+        }
+      ]
+    },
+    {
+      "nombre": "Simvastatina/ezetimiba",
+      "marcas": [
+        "Inegy",
+        "Vytorin"
+      ],
+      "componentes": [
+        {
+          "pid": "simvastatina",
+          "dosis": 20
+        },
+        {
+          "pid": "ezetimiba",
+          "dosis": 10
+        }
+      ]
+    },
+    {
+      "nombre": "Rosuvastatina/ezetimiba",
+      "marcas": [
+        "Twicor",
+        "Crestor Combi"
+      ],
+      "componentes": [
+        {
+          "pid": "rosuvastatina",
+          "dosis": 10
+        },
+        {
+          "pid": "ezetimiba",
+          "dosis": 10
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/sitagliptina",
+      "marcas": [
+        "Janumet",
+        "Efficib",
+        "Velmetia"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 1000
+        },
+        {
+          "pid": "sitagliptina",
+          "dosis": 50
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/vildagliptina",
+      "marcas": [
+        "Eucreas",
+        "Icandra",
+        "Zomarist"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 1000
+        },
+        {
+          "pid": "vildagliptina",
+          "dosis": 50
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/linagliptina",
+      "marcas": [
+        "Jentadueto"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 1000
+        },
+        {
+          "pid": "linagliptina",
+          "dosis": 2.5
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/dapagliflozina",
+      "marcas": [
+        "Xigduo"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 1000
+        },
+        {
+          "pid": "dapagliflozina",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/empagliflozina",
+      "marcas": [
+        "Synjardy"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 1000
+        },
+        {
+          "pid": "empagliflozina",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Empagliflozina/linagliptina",
+      "marcas": [
+        "Glyxambi"
+      ],
+      "componentes": [
+        {
+          "pid": "empagliflozina",
+          "dosis": 10
+        },
+        {
+          "pid": "linagliptina",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Dapagliflozina/saxagliptina",
+      "marcas": [
+        "Qtern"
+      ],
+      "componentes": [
+        {
+          "pid": "dapagliflozina",
+          "dosis": 10
+        },
+        {
+          "pid": "sitagliptina",
+          "dosis": 5
+        }
+      ]
+    },
+    {
+      "nombre": "Metformina/pioglitazona",
+      "marcas": [
+        "Competact",
+        "Glubrava"
+      ],
+      "componentes": [
+        {
+          "pid": "metformina",
+          "dosis": 850
+        },
+        {
+          "pid": "pioglitazona",
+          "dosis": 15
+        }
+      ]
+    },
+    {
+      "nombre": "Insulina degludec/liraglutida",
+      "marcas": [
+        "Xultophy"
+      ],
+      "componentes": [
+        {
+          "pid": "insulina_basal",
+          "dosis": null
+        },
+        {
+          "pid": "liraglutida",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Insulina glargina/lixisenatida",
+      "marcas": [
+        "Suliqua"
+      ],
+      "componentes": [
+        {
+          "pid": "insulina_basal",
+          "dosis": null
+        },
+        {
+          "pid": "dulaglutida",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Paracetamol/tramadol",
+      "marcas": [
+        "Zaldiar",
+        "Pazital",
+        "Tramadol/Paracetamol"
+      ],
+      "componentes": [
+        {
+          "pid": "paracetamol",
+          "dosis": 325
+        },
+        {
+          "pid": "tramadol",
+          "dosis": 37.5
+        }
+      ]
+    },
+    {
+      "nombre": "Paracetamol/codeína",
+      "marcas": [
+        "Termalgin Codeína",
+        "Cod-Efferalgan",
+        "Dolocatil Codeína"
+      ],
+      "componentes": [
+        {
+          "pid": "paracetamol",
+          "dosis": 500
+        },
+        {
+          "pid": "codeina",
+          "dosis": 30
+        }
+      ]
+    },
+    {
+      "nombre": "Ibuprofeno/codeína",
+      "marcas": [
+        "Neobrufen Codeína"
+      ],
+      "componentes": [
+        {
+          "pid": "ibuprofeno",
+          "dosis": 400
+        },
+        {
+          "pid": "codeina",
+          "dosis": 30
+        }
+      ]
+    },
+    {
+      "nombre": "Oxicodona/naloxona",
+      "marcas": [
+        "Targin"
+      ],
+      "componentes": [
+        {
+          "pid": "oxicodona",
+          "dosis": 10
+        }
+      ]
+    },
+    {
+      "nombre": "Tamsulosina/dutasterida",
+      "marcas": [
+        "Duodart"
+      ],
+      "componentes": [
+        {
+          "pid": "tamsulosina",
+          "dosis": 0.4
+        },
+        {
+          "pid": "finasterida",
+          "dosis": 0.5
+        }
+      ]
+    },
+    {
+      "nombre": "Tamsulosina/solifenacina",
+      "marcas": [
+        "Vesomni"
+      ],
+      "componentes": [
+        {
+          "pid": "tamsulosina",
+          "dosis": 0.4
+        },
+        {
+          "pid": "solifenacina",
+          "dosis": 6
+        }
+      ]
+    },
+    {
+      "nombre": "Levodopa/carbidopa/entacapona",
+      "marcas": [
+        "Stalevo"
+      ],
+      "componentes": [
+        {
+          "pid": "levodopa",
+          "dosis": 100
+        }
+      ]
+    },
+    {
+      "nombre": "Salmeterol/fluticasona",
+      "marcas": [
+        "Seretide",
+        "Plusvent",
+        "Inaladuo",
+        "Airflusal"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Formoterol/budesonida",
+      "marcas": [
+        "Symbicort",
+        "Rilast",
+        "DuoResp",
+        "Bufomix"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Vilanterol/umeclidinio/fluticasona",
+      "marcas": [
+        "Trelegy"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        },
+        {
+          "pid": "lama",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Formoterol/glicopirronio/beclometasona",
+      "marcas": [
+        "Trimbow"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        },
+        {
+          "pid": "lama",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Indacaterol/glicopirronio",
+      "marcas": [
+        "Ultibro",
+        "Ulunar",
+        "Xoterna"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        },
+        {
+          "pid": "lama",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Vilanterol/umeclidinio",
+      "marcas": [
+        "Anoro"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        },
+        {
+          "pid": "lama",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Olodaterol/tiotropio",
+      "marcas": [
+        "Spiolto"
+      ],
+      "componentes": [
+        {
+          "pid": "laba_ics",
+          "dosis": null
+        },
+        {
+          "pid": "lama",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Dorzolamida/timolol colirio",
+      "marcas": [
+        "Cosopt"
+      ],
+      "componentes": [
+        {
+          "pid": "timolol_colirio",
+          "dosis": null
+        },
+        {
+          "pid": "brimonidina_dorzolamida",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Latanoprost/timolol colirio",
+      "marcas": [
+        "Xalacom",
+        "Ganfort",
+        "Duotrav"
+      ],
+      "componentes": [
+        {
+          "pid": "timolol_colirio",
+          "dosis": null
+        },
+        {
+          "pid": "prostaglandina_colirio",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Calcio/colecalciferol",
+      "marcas": [
+        "Natecal D",
+        "Ideos",
+        "Mastical D",
+        "Calcio D Isdin",
+        "Osvaren"
+      ],
+      "componentes": [
+        {
+          "pid": "calcio_vitd",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Alendronato/colecalciferol",
+      "marcas": [
+        "Fosavance",
+        "Adrovance"
+      ],
+      "componentes": [
+        {
+          "pid": "alendronato",
+          "dosis": 70
+        },
+        {
+          "pid": "vitamina_d",
+          "dosis": null
+        }
+      ]
+    },
+    {
+      "nombre": "Sacubitrilo/valsartán",
+      "marcas": [
+        "Entresto"
+      ],
+      "componentes": [
+        {
+          "pid": "sacubitrilo_valsartan",
+          "dosis": 97
+        }
+      ]
+    },
+    {
+      "nombre": "Amoxicilina/clavulánico",
+      "marcas": [
+        "Augmentine",
+        "Amoxicilina/Ácido clavulánico"
+      ],
+      "componentes": [
+        {
+          "pid": "amoxicilina",
+          "dosis": 875
+        }
+      ]
+    }
   ],
   "clases": [
     {
       "id": "antipsicoticos_clozapina",
       "nombre": "Clozapina",
-      "atc": ["N05AH02"],
-      "resumen": "Antipsicótico de uso restringido con controles de sangre. Produce sedación intensa, mareo al incorporarse, taquicardia, estreñimiento grave y, raramente, miocarditis. El ejercicio es seguro y muy recomendable para el peso y el metabolismo, con precauciones.",
-      "senales": ["sedacion", "hipotension", "taquicardia", "calor", "caidas", "anticolinergico", "qt", "fc_no_valida"],
-      "principios": [{"id": "clozapina", "nombre": "Clozapina", "marcas": ["Leponex", "Nemea"], "umbral_mg": {"alta": 300}}],
-      "general": [
-        {"nivel": "alerta", "texto": "Dolor torácico, falta de aire o palpitaciones con fiebre, sobre todo en las primeras 8 semanas de tratamiento, pueden ser una miocarditis: no entrene y consulte de urgencia."},
-        {"nivel": "precaucion", "texto": "El pulso en reposo suele estar acelerado por el fármaco y no sirve para medir la intensidad; use la sensación de esfuerzo. Mareo al incorporarse frecuente."},
-        {"nivel": "precaucion", "texto": "Dificulta la sudoración y la regulación de la temperatura: evite el calor. El estreñimiento puede ser grave: hidratación, fibra y movimiento diario."},
-        {"nivel": "alerta", "texto": "Fiebre o dolor de garganta: análisis urgente (bajada de defensas por el fármaco). No entrene con esos síntomas."}
+      "atc": [
+        "N05AH02"
       ],
-      "aerobico": [{"nivel": "precaucion", "texto": "Intensidad ligera-moderada, en ambiente fresco, con agua. Es el mejor tratamiento contra el aumento de peso que produce el fármaco."}],
-      "fuerza": [{"nivel": "info", "texto": "Muy recomendable; cargas moderadas y respiración continua."}],
-      "equilibrio": [{"nivel": "precaucion", "texto": "Sedación e hipotensión: con apoyo, alejado de la toma nocturna."}],
-      "fuentes": ["Ficha técnica AEMPS", "Criterios Beers 2023"]
+      "resumen": "Antipsicótico de uso restringido con controles de sangre. Produce sedación intensa, mareo al incorporarse, taquicardia, estreñimiento grave y, raramente, miocarditis. El ejercicio es seguro y muy recomendable para el peso y el metabolismo, con precauciones.",
+      "senales": [
+        "sedacion",
+        "hipotension",
+        "taquicardia",
+        "calor",
+        "caidas",
+        "anticolinergico",
+        "qt",
+        "fc_no_valida"
+      ],
+      "principios": [
+        {
+          "id": "clozapina",
+          "nombre": "Clozapina",
+          "marcas": [
+            "Leponex",
+            "Nemea"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "Dolor torácico, falta de aire o palpitaciones con fiebre, sobre todo en las primeras 8 semanas de tratamiento, pueden ser una miocarditis: no entrene y consulte de urgencia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El pulso en reposo suele estar acelerado por el fármaco y no sirve para medir la intensidad; use la sensación de esfuerzo. Mareo al incorporarse frecuente.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Dificulta la sudoración y la regulación de la temperatura: evite el calor. El estreñimiento puede ser grave: hidratación, fibra y movimiento diario.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Fiebre o dolor de garganta: análisis urgente (bajada de defensas por el fármaco). No entrene con esos síntomas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Intensidad ligera-moderada, en ambiente fresco, con agua. Es el mejor tratamiento contra el aumento de peso que produce el fármaco.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable; cargas moderadas y respiración continua.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Sedación e hipotensión: con apoyo, alejado de la toma nocturna.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS",
+        "Criterios Beers 2023"
+      ]
     },
     {
       "id": "respiratorio_otros",
       "nombre": "Teofilina, montelukast y roflumilast",
-      "atc": ["R03DA04", "R03DC03", "R03DX07"],
+      "atc": [
+        "R03DA04",
+        "R03DC03",
+        "R03DX07"
+      ],
       "resumen": "Otros fármacos respiratorios. Teofilina acelera el pulso y tiene margen estrecho (cafeína, infecciones y algunos antibióticos lo alteran); montelukast y roflumilast no afectan al ejercicio.",
       "senales": [],
       "principios": [
-        {"id": "teofilina", "nombre": "Teofilina", "marcas": ["Theo-Dur", "Teromol", "Elixifilin"], "umbral_mg": {"alta": 600}, "senales_extra": ["taquicardia", "fc_no_valida", "qt"]},
-        {"id": "montelukast", "nombre": "Montelukast", "marcas": ["Singulair"], "umbral_mg": {"alta": 10}},
-        {"id": "roflumilast", "nombre": "Roflumilast", "marcas": ["Daxas"], "umbral_mg": {"alta": 0.5}, "senales_extra": ["fatiga"]}
+        {
+          "id": "teofilina",
+          "nombre": "Teofilina",
+          "marcas": [
+            "Theo-Dur",
+            "Teromol",
+            "Elixifilin"
+          ],
+          "umbral_mg": {
+            "alta": 600
+          },
+          "senales_extra": [
+            "taquicardia",
+            "fc_no_valida",
+            "qt"
+          ]
+        },
+        {
+          "id": "montelukast",
+          "nombre": "Montelukast",
+          "marcas": [
+            "Singulair"
+          ],
+          "umbral_mg": {
+            "alta": 10
+          }
+        },
+        {
+          "id": "roflumilast",
+          "nombre": "Roflumilast",
+          "marcas": [
+            "Daxas"
+          ],
+          "umbral_mg": {
+            "alta": 0.5
+          },
+          "senales_extra": [
+            "fatiga"
+          ]
+        }
       ],
       "general": [
-        {"nivel": "precaucion", "si": {"principio": "teofilina"}, "texto": "Teofilina acelera el pulso y puede dar temblor y palpitaciones; evite cafeína en exceso y 'pre-entrenos'. Claritromicina, ciprofloxacino y la fiebre suben sus niveles: consulte ante náuseas, insomnio o palpitaciones."},
-        {"nivel": "info", "si": {"principio": "montelukast"}, "texto": "Montelukast ayuda a prevenir el broncoespasmo por ejercicio; sin precauciones específicas."},
-        {"nivel": "info", "si": {"principio": "roflumilast"}, "texto": "Roflumilast puede dar diarrea, pérdida de peso y cansancio: cuide la ingesta y la hidratación si entrena."}
+        {
+          "nivel": "precaucion",
+          "si": {
+            "principio": "teofilina"
+          },
+          "texto": "Teofilina acelera el pulso y puede dar temblor y palpitaciones; evite cafeína en exceso y 'pre-entrenos'. Claritromicina, ciprofloxacino y la fiebre suben sus niveles: consulte ante náuseas, insomnio o palpitaciones.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "montelukast"
+          },
+          "texto": "Montelukast ayuda a prevenir el broncoespasmo por ejercicio; sin precauciones específicas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        },
+        {
+          "nivel": "info",
+          "si": {
+            "principio": "roflumilast"
+          },
+          "texto": "Roflumilast puede dar diarrea, pérdida de peso y cansancio: cuide la ingesta y la hidratación si entrena.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
       ],
-      "aerobico": [{"nivel": "info", "texto": "Indicado (rehabilitación respiratoria). Calentamiento largo y progresivo."}],
-      "fuerza": [{"nivel": "info", "texto": "Muy recomendable en EPOC."}],
-      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
-      "fuentes": ["GOLD 2025", "Ficha técnica AEMPS"]
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Indicado (rehabilitación respiratoria). Calentamiento largo y progresivo.",
+          "fuente": "ESC/ERS: rehabilitación supervisada",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Muy recomendable en EPOC.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "GOLD 2025",
+        "Ficha técnica AEMPS"
+      ]
     },
     {
       "id": "antiemeticos",
       "nombre": "Antieméticos (ondansetrón, aprepitant)",
-      "atc": ["A04AA"],
-      "resumen": "Para náuseas, sobre todo en quimioterapia. Ondansetrón alarga el QT y estriñe; no limita el ejercicio.",
-      "senales": ["qt"],
-      "principios": [
-        {"id": "ondansetron", "nombre": "Ondansetrón / granisetrón", "marcas": ["Zofran", "Yatrox", "Kytril"], "umbral_mg": {"alta": 16}},
-        {"id": "aprepitant", "nombre": "Aprepitant / netupitant", "marcas": ["Emend", "Akynzeo"]}
+      "atc": [
+        "A04AA"
       ],
-      "general": [{"nivel": "info", "texto": "Reponga electrolitos si hay vómitos o diarrea antes de entrenar (QT y potasio). El ejercicio suave reduce las náuseas de la quimioterapia en muchas personas."}],
-      "aerobico": [{"nivel": "info", "texto": "Suave, según tolerancia."}],
-      "fuerza": [{"nivel": "info", "texto": "Sin limitación."}],
-      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
-      "fuentes": ["Ficha técnica AEMPS"]
+      "resumen": "Para náuseas, sobre todo en quimioterapia. Ondansetrón alarga el QT y estriñe; no limita el ejercicio.",
+      "senales": [
+        "qt"
+      ],
+      "principios": [
+        {
+          "id": "ondansetron",
+          "nombre": "Ondansetrón / granisetrón",
+          "marcas": [
+            "Zofran",
+            "Yatrox",
+            "Kytril"
+          ],
+          "umbral_mg": {
+            "alta": 16
+          }
+        },
+        {
+          "id": "aprepitant",
+          "nombre": "Aprepitant / netupitant",
+          "marcas": [
+            "Emend",
+            "Akynzeo"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Reponga electrolitos si hay vómitos o diarrea antes de entrenar (QT y potasio). El ejercicio suave reduce las náuseas de la quimioterapia en muchas personas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Suave, según tolerancia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ]
     },
     {
       "id": "bempedoico",
       "nombre": "Ácido bempedoico",
-      "atc": ["C10AX15"],
+      "atc": [
+        "C10AX15"
+      ],
       "resumen": "Hipolipemiante sin efecto muscular (alternativa para intolerantes a estatinas). Sube el ácido úrico y puede favorecer tendinopatías raras.",
       "senales": [],
-      "principios": [{"id": "bempedoico", "nombre": "Ácido bempedoico (solo o con ezetimiba)", "marcas": ["Nilemdo", "Nustendi"], "umbral_mg": {"alta": 180}, "senales_extra": ["tendon"]}],
-      "general": [{"nivel": "info", "texto": "No produce dolor muscular. Puede subir el ácido úrico (hidratación, cuidado si tiene gota) y, raramente, afectar a los tendones: ante dolor en el Aquiles o el hombro, consulte."}],
-      "aerobico": [{"nivel": "info", "texto": "Sin limitación."}],
-      "fuerza": [{"nivel": "info", "texto": "Sin limitación; progresión normal."}],
-      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
-      "fuentes": ["Ficha técnica AEMPS"]
+      "principios": [
+        {
+          "id": "bempedoico",
+          "nombre": "Ácido bempedoico (solo o con ezetimiba)",
+          "marcas": [
+            "Nilemdo",
+            "Nustendi"
+          ],
+          "umbral_mg": {
+            "alta": 180
+          },
+          "senales_extra": [
+            "tendon"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "No produce dolor muscular. Puede subir el ácido úrico (hidratación, cuidado si tiene gota) y, raramente, afectar a los tendones: ante dolor en el Aquiles o el hombro, consulte.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación; progresión normal.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ]
     },
     {
       "id": "acetazolamida",
       "nombre": "Acetazolamida",
-      "atc": ["S01EC01"],
+      "atc": [
+        "S01EC01"
+      ],
       "resumen": "Diurético usado en glaucoma, hipertensión intracraneal y mal de altura. Baja el potasio, acidifica la sangre y favorece cálculos renales y la deshidratación.",
-      "senales": ["hipopotasemia", "deshidratacion", "diuretico", "fatiga"],
-      "principios": [{"id": "acetazolamida", "nombre": "Acetazolamida", "marcas": ["Edemox"], "umbral_mg": {"alta": 500}}],
-      "general": [{"nivel": "precaucion", "texto": "Hormigueos, cansancio y falta de aire con esfuerzos leves son efectos frecuentes. Hidratación abundante (cálculos) y electrolitos en sesiones largas."}],
-      "aerobico": [{"nivel": "precaucion", "texto": "La capacidad de esfuerzo está reducida (acidosis): intensidad ligera-moderada."}],
-      "fuerza": [{"nivel": "info", "texto": "Sin limitación específica."}],
-      "equilibrio": [{"nivel": "info", "texto": "Sin limitación."}],
-      "fuentes": ["Ficha técnica AEMPS"]
+      "senales": [
+        "hipopotasemia",
+        "deshidratacion",
+        "diuretico",
+        "fatiga"
+      ],
+      "principios": [
+        {
+          "id": "acetazolamida",
+          "nombre": "Acetazolamida",
+          "marcas": [
+            "Edemox"
+          ],
+          "umbral_mg": {
+            "alta": 500
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Hormigueos, cansancio y falta de aire con esfuerzos leves son efectos frecuentes. Hidratación abundante (cálculos) y electrolitos en sesiones largas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "La capacidad de esfuerzo está reducida (acidosis): intensidad ligera-moderada.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación específica.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [
+        {
+          "nivel": "info",
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "Ficha técnica AEMPS"
+      ]
     }
   ],
   "reglas_combinadas": [
-    {"id": "renal_metformina", "si": {"condicion": "renal", "todas": ["renal"]}, "nivel": "alerta", "titulo": "Enfermedad renal y fármacos que dependen del riñón", "texto": "Con filtrado reducido, la deshidratación del ejercicio aumenta el riesgo de acumulación o daño renal con estos fármacos (metformina, SGLT2, IECA/ARA-II, diuréticos, AINE, litio…). Hidratación cuidadosa, evite el calor y los antiinflamatorios, y consulte si tiene vómitos o diarrea (algunos deben suspenderse temporalmente).", "ambitos": ["general", "aerobico"]},
-    {"id": "renal_hiperk", "si": {"condicion": "renal", "senal": "hiperpotasemia", "min": 1}, "nivel": "alerta", "titulo": "Enfermedad renal y fármacos que suben el potasio", "texto": "Con filtrado reducido, {n} fármaco(s) que retienen potasio pueden provocar hiperpotasemia, y el ejercicio intenso libera potasio del músculo. Nada de suplementos ni bebidas 'ricas en potasio'; consulte ante debilidad o palpitaciones tras entrenar.", "ambitos": ["general"]},
-    {"id": "ic_ejercicio", "si": {"condicion": "insuficiencia_cardiaca", "senal": "hipotension", "min": 1}, "nivel": "precaucion", "titulo": "Insuficiencia cardíaca", "texto": "En insuficiencia cardíaca el ejercicio es parte del tratamiento (rehabilitación cardíaca). Pésese cada mañana: una subida de 2 kg en 3 días o más falta de aire o hinchazón de piernas es motivo de consulta antes de seguir entrenando. Intensidad guiada por la sensación de esfuerzo (debe poder hablar).", "ambitos": ["general", "aerobico"]},
-    {"id": "marcapasos_fc", "si": {"condicion": "marcapasos"}, "nivel": "precaucion", "titulo": "Marcapasos o DAI", "texto": "Con marcapasos el pulso puede no subir con el esfuerzo (o subir hasta el límite programado): guíese por la sensación de esfuerzo. Con DAI, pregunte a su cardiólogo la frecuencia máxima programada y manténgase por debajo; evite deportes de contacto y los ejercicios que carguen o estiren intensamente el hombro del lado del dispositivo en las primeras 6–8 semanas tras el implante.", "ambitos": ["general", "aerobico", "fuerza"]},
-    {"id": "diabetes_bb", "si": {"condicion": "diabetes", "senal": "enmascara_hipoglucemia", "min": 1}, "nivel": "alerta", "titulo": "Diabetes y betabloqueante", "texto": "El betabloqueante oculta los avisos de hipoglucemia (palpitaciones, temblor). Si usa insulina o sulfonilureas, mida la glucosa antes y después de entrenar; si solo toma metformina u otros sin riesgo de hipoglucemia, la precaución es menor.", "ambitos": ["aerobico", "general"]},
-    {"id": "diabetes_pies", "si": {"condicion": "diabetes"}, "nivel": "info", "titulo": "Diabetes: cuidado de los pies", "texto": "Revise los pies tras cada sesión (rozaduras, ampollas), use calcetines sin costuras y calzado adecuado. Si tiene pérdida de sensibilidad, prefiera bici, natación o elíptica al correr, y trabaje el equilibrio.", "ambitos": ["general"]},
-    {"id": "osteoporosis_plan", "si": {"condicion": "osteoporosis"}, "nivel": "precaucion", "titulo": "Osteoporosis o fractura previa", "texto": "Evite flexiones de columna con carga (abdominales clásicos, tocar los pies con peso) y giros bruscos del tronco. Priorice fuerza de piernas y extensores de espalda, impacto moderado (caminar rápido, escaleras) y equilibrio para prevenir caídas.", "ambitos": ["fuerza", "equilibrio"]},
-    {"id": "osteoporosis_sedantes", "si": {"condicion": "osteoporosis", "senal": "caidas", "min": 1}, "nivel": "alerta", "titulo": "Osteoporosis y fármacos que aumentan las caídas", "texto": "Toma {n} fármaco(s) que aumentan el riesgo de caída y tiene fragilidad ósea: una caída puede significar una fractura. Equilibrio con apoyo y supervisión, revisión de la medicación con su médico y de la casa (alfombras, iluminación).", "ambitos": ["equilibrio", "general"]},
-    {"id": "epoc_bb", "si": {"condicion": "epoc_asma", "senal": "bradicardia", "min": 1}, "nivel": "info", "titulo": "EPOC/asma y betabloqueante", "texto": "Los betabloqueantes cardioselectivos (bisoprolol, nebivolol) se toleran bien en EPOC; propranolol o carvedilol pueden empeorar el broncoespasmo. Si nota más pitos o fatiga desde que lo toma, coméntelo. Calentamiento progresivo de 10–15 minutos.", "ambitos": ["aerobico"]},
-    {"id": "epoc_plan", "si": {"condicion": "epoc_asma"}, "nivel": "info", "titulo": "EPOC o asma", "texto": "Lleve el inhalador de rescate al entrenar. Use la escala de disnea (debe poder hablar frases cortas); el aire frío y seco empeora los síntomas (braga o bufanda). La fuerza de piernas es especialmente útil en EPOC.", "ambitos": ["general"]}
+    {
+      "id": "renal_metformina",
+      "si": {
+        "condicion": "renal",
+        "todas": [
+          "renal"
+        ]
+      },
+      "nivel": "alerta",
+      "titulo": "Enfermedad renal y fármacos que dependen del riñón",
+      "texto": "Con filtrado reducido, la deshidratación del ejercicio aumenta el riesgo de acumulación o daño renal con estos fármacos (metformina, SGLT2, IECA/ARA-II, diuréticos, AINE, litio…). Hidratación cuidadosa, evite el calor y los antiinflamatorios, y consulte si tiene vómitos o diarrea (algunos deben suspenderse temporalmente).",
+      "ambitos": [
+        "general",
+        "aerobico"
+      ],
+      "fuente": "FT AEMPS 4.2 (metformina) · KDIGO 2024",
+      "revisado": true
+    },
+    {
+      "id": "renal_hiperk",
+      "si": {
+        "condicion": "renal",
+        "senal": "hiperpotasemia",
+        "min": 1
+      },
+      "nivel": "alerta",
+      "titulo": "Enfermedad renal y fármacos que suben el potasio",
+      "texto": "Con filtrado reducido, {n} fármaco(s) que retienen potasio pueden provocar hiperpotasemia, y el ejercicio intenso libera potasio del músculo. Nada de suplementos ni bebidas 'ricas en potasio'; consulte ante debilidad o palpitaciones tras entrenar.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "KDIGO 2024 ERC",
+      "revisado": true
+    },
+    {
+      "id": "ic_ejercicio",
+      "si": {
+        "condicion": "insuficiencia_cardiaca",
+        "senal": "hipotension",
+        "min": 1
+      },
+      "nivel": "precaucion",
+      "titulo": "Insuficiencia cardíaca",
+      "texto": "En insuficiencia cardíaca el ejercicio es parte del tratamiento (rehabilitación cardíaca). Pésese cada mañana: una subida de 2 kg en 3 días o más falta de aire o hinchazón de piernas es motivo de consulta antes de seguir entrenando. Intensidad guiada por la sensación de esfuerzo (debe poder hablar).",
+      "ambitos": [
+        "general",
+        "aerobico"
+      ],
+      "fuente": "ESC 2021 insuficiencia cardíaca",
+      "revisado": true
+    },
+    {
+      "id": "marcapasos_fc",
+      "si": {
+        "condicion": "marcapasos"
+      },
+      "nivel": "precaucion",
+      "titulo": "Marcapasos o DAI",
+      "texto": "Con marcapasos el pulso puede no subir con el esfuerzo (o subir hasta el límite programado): guíese por la sensación de esfuerzo. Con DAI, pregunte a su cardiólogo la frecuencia máxima programada y manténgase por debajo; evite deportes de contacto y los ejercicios que carguen o estiren intensamente el hombro del lado del dispositivo en las primeras 6–8 semanas tras el implante.",
+      "ambitos": [
+        "general",
+        "aerobico",
+        "fuerza"
+      ],
+      "fuente": "ESC 2020 cardiología del deporte",
+      "revisado": true
+    },
+    {
+      "id": "diabetes_bb",
+      "si": {
+        "condicion": "diabetes",
+        "senal": "enmascara_hipoglucemia",
+        "min": 1
+      },
+      "nivel": "alerta",
+      "titulo": "Diabetes y betabloqueante",
+      "texto": "El betabloqueante oculta los avisos de hipoglucemia (palpitaciones, temblor). Si usa insulina o sulfonilureas, mida la glucosa antes y después de entrenar; si solo toma metformina u otros sin riesgo de hipoglucemia, la precaución es menor.",
+      "ambitos": [
+        "aerobico",
+        "general"
+      ],
+      "fuente": "ADA Standards of Care 2024",
+      "revisado": true
+    },
+    {
+      "id": "diabetes_pies",
+      "si": {
+        "condicion": "diabetes"
+      },
+      "nivel": "info",
+      "titulo": "Diabetes: cuidado de los pies",
+      "texto": "Revise los pies tras cada sesión (rozaduras, ampollas), use calcetines sin costuras y calzado adecuado. Si tiene pérdida de sensibilidad, prefiera bici, natación o elíptica al correr, y trabaje el equilibrio.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "ADA Standards of Care 2024 (pie diabético)",
+      "revisado": true
+    },
+    {
+      "id": "osteoporosis_plan",
+      "si": {
+        "condicion": "osteoporosis"
+      },
+      "nivel": "precaucion",
+      "titulo": "Osteoporosis o fractura previa",
+      "texto": "Evite flexiones de columna con carga (abdominales clásicos, tocar los pies con peso) y giros bruscos del tronco. Priorice fuerza de piernas y extensores de espalda, impacto moderado (caminar rápido, escaleras) y equilibrio para prevenir caídas.",
+      "ambitos": [
+        "fuerza",
+        "equilibrio"
+      ],
+      "fuente": "Beck 2017 (ESSA) ejercicio y osteoporosis",
+      "revisado": true
+    },
+    {
+      "id": "osteoporosis_sedantes",
+      "si": {
+        "condicion": "osteoporosis",
+        "senal": "caidas",
+        "min": 1
+      },
+      "nivel": "alerta",
+      "titulo": "Osteoporosis y fármacos que aumentan las caídas",
+      "texto": "Toma {n} fármaco(s) que aumentan el riesgo de caída y tiene fragilidad ósea: una caída puede significar una fractura. Equilibrio con apoyo y supervisión, revisión de la medicación con su médico y de la casa (alfombras, iluminación).",
+      "ambitos": [
+        "equilibrio",
+        "general"
+      ],
+      "fuente": "Beers 2023 · STOPP/START v3",
+      "revisado": true
+    },
+    {
+      "id": "epoc_bb",
+      "si": {
+        "condicion": "epoc_asma",
+        "senal": "bradicardia",
+        "min": 1
+      },
+      "nivel": "info",
+      "titulo": "EPOC/asma y betabloqueante",
+      "texto": "Los betabloqueantes cardioselectivos (bisoprolol, nebivolol) se toleran bien en EPOC; propranolol o carvedilol pueden empeorar el broncoespasmo. Si nota más pitos o fatiga desde que lo toma, coméntelo. Calentamiento progresivo de 10–15 minutos.",
+      "ambitos": [
+        "aerobico"
+      ],
+      "fuente": "GOLD 2024",
+      "revisado": true
+    },
+    {
+      "id": "epoc_plan",
+      "si": {
+        "condicion": "epoc_asma"
+      },
+      "nivel": "info",
+      "titulo": "EPOC o asma",
+      "texto": "Lleve el inhalador de rescate al entrenar. Use la escala de disnea (debe poder hablar frases cortas); el aire frío y seco empeora los síntomas (braga o bufanda). La fuerza de piernas es especialmente útil en EPOC.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "GOLD 2024 / GINA 2024",
+      "revisado": true
+    }
   ]
 }

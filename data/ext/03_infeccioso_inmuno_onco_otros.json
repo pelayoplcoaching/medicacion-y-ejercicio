@@ -85,46 +85,67 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Con infección activa y fiebre, no entrene: descanse hasta 24–48 h sin fiebre y retome a intensidad baja. Con síntomas solo 'del cuello para arriba' (resfriado sin fiebre) puede hacer ejercicio suave."
+          "texto": "Con infección activa y fiebre, no entrene: descanse hasta 24–48 h sin fiebre y retome a intensidad baja. Con síntomas solo 'del cuello para arriba' (resfriado sin fiebre) puede hacer ejercicio suave.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "doxiciclina"
           },
-          "texto": "Doxiciclina produce quemaduras solares intensas: protección alta o entrene a cubierto. Tómela con un vaso grande de agua y no se tumbe en la media hora siguiente."
+          "texto": "Doxiciclina produce quemaduras solares intensas: protección alta o entrene a cubierto. Tómela con un vaso grande de agua y no se tumbe en la media hora siguiente.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "cotrimoxazol"
           },
-          "texto": "Cotrimoxazol sube el potasio, sobre todo si además toma IECA/ARA-II o espironolactona: evite suplementos de potasio y consulte ante debilidad o palpitaciones."
+          "texto": "Cotrimoxazol sube el potasio, sobre todo si además toma IECA/ARA-II o espironolactona: evite suplementos de potasio y consulte ante debilidad o palpitaciones.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "metronidazol"
           },
-          "texto": "Metronidazol: nada de alcohol (incluidas bebidas 'sin' y geles) durante el tratamiento y 48 h después."
+          "texto": "Metronidazol: nada de alcohol (incluidas bebidas 'sin' y geles) durante el tratamiento y 48 h después.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación una vez sin fiebre; intensidad baja los primeros días."
+          "texto": "Sin limitación una vez sin fiebre; intensidad baja los primeros días.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -178,29 +199,44 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Si toma estatinas (sobre todo simvastatina o atorvastatina), claritromicina y eritromicina multiplican el riesgo de daño muscular: evite el ejercicio de fuerza intenso durante el tratamiento y consulte ante dolor muscular generalizado."
+          "texto": "Si toma estatinas (sobre todo simvastatina o atorvastatina), claritromicina y eritromicina multiplican el riesgo de daño muscular: evite el ejercicio de fuerza intenso durante el tratamiento y consulte ante dolor muscular generalizado.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Reponga electrolitos en sesiones largas (riesgo de arritmia por QT largo con potasio bajo). Palpitaciones o mareo brusco: consulte."
+          "texto": "Reponga electrolitos en sesiones largas (riesgo de arritmia por QT largo con potasio bajo). Palpitaciones o mareo brusco: consulte.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica más allá de la infección; intensidad moderada."
+          "texto": "Sin limitación específica más allá de la infección; intensidad moderada.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Si toma estatina, cargas ligeras durante el tratamiento con claritromicina/eritromicina."
+          "texto": "Si toma estatina, cargas ligeras durante el tratamiento con claritromicina/eritromicina.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -267,39 +303,57 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Con estatinas: itraconazol y los azoles potentes suben mucho sus niveles (riesgo de rabdomiólisis). A menudo se suspende la estatina durante el tratamiento; mientras tanto, evite la fuerza intensa y consulte ante dolor muscular generalizado."
+          "texto": "Con estatinas: itraconazol y los azoles potentes suben mucho sus niveles (riesgo de rabdomiólisis). A menudo se suspende la estatina durante el tratamiento; mientras tanto, evite la fuerza intensa y consulte ante dolor muscular generalizado.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "voriconazol"
           },
-          "texto": "Voriconazol produce fotosensibilidad intensa y alteraciones visuales transitorias: protección solar estricta y cuidado al entrenar al aire libre."
+          "texto": "Voriconazol produce fotosensibilidad intensa y alteraciones visuales transitorias: protección solar estricta y cuidado al entrenar al aire libre.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "itraconazol"
           },
-          "texto": "Itraconazol puede empeorar la insuficiencia cardíaca: si nota más falta de aire o hinchazón de piernas, consulte."
+          "texto": "Itraconazol puede empeorar la insuficiencia cardíaca: si nota más falta de aire o hinchazón de piernas, consulte.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica; reponga electrolitos en sesiones largas."
+          "texto": "Sin limitación específica; reponga electrolitos en sesiones largas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Si toma estatina, cargas ligeras durante el tratamiento."
+          "texto": "Si toma estatina, cargas ligeras durante el tratamiento.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -378,46 +432,67 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio de fuerza y aeróbico mejora la composición corporal, el colesterol y la salud cardiovascular, que son hoy las principales preocupaciones en VIH bien controlado. Sin restricciones por el virus."
+          "texto": "El ejercicio de fuerza y aeróbico mejora la composición corporal, el colesterol y la salud cardiovascular, que son hoy las principales preocupaciones en VIH bien controlado. Sin restricciones por el virus.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "alerta",
           "si": {
             "principio": "tar_potenciado"
           },
-          "texto": "Ritonavir y cobicistat bloquean el metabolismo de simvastatina y lovastatina (contraindicadas), atorvastatina (dosis baja), corticoides inhalados o intranasales como fluticasona y budesonida (síndrome de Cushing), y muchos otros. Cualquier fármaco nuevo, incluidos suplementos, debe revisarse con su médico de VIH."
+          "texto": "Ritonavir y cobicistat bloquean el metabolismo de simvastatina y lovastatina (contraindicadas), atorvastatina (dosis baja), corticoides inhalados o intranasales como fluticasona y budesonida (síndrome de Cushing), y muchos otros. Cualquier fármaco nuevo, incluidos suplementos, debe revisarse con su médico de VIH.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "tenofovir"
           },
-          "texto": "Tenofovir (sobre todo la forma TDF) puede afectar al riñón y al hueso: hidratación adecuada en sesiones largas y evite antiinflamatorios de forma habitual. El ejercicio de fuerza e impacto moderado protege el hueso."
+          "texto": "Tenofovir (sobre todo la forma TDF) puede afectar al riñón y al hueso: hidratación adecuada en sesiones largas y evite antiinflamatorios de forma habitual. El ejercicio de fuerza e impacto moderado protege el hueso.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "tar_nnrti"
           },
-          "texto": "Efavirenz da mareo y sensación de 'cabeza embotada' las primeras semanas, sobre todo por la mañana: entrene por la tarde hasta que se adapte."
+          "texto": "Efavirenz da mareo y sensación de 'cabeza embotada' las primeras semanas, sobre todo por la mañana: entrene por la tarde hasta que se adapte.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado sin limitación."
+          "texto": "Indicado sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable."
+          "texto": "Muy recomendable.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -484,36 +559,54 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "La rifampicina reduce el efecto de anticoagulantes, anticonceptivos, estatinas, antidiabéticos y muchos otros: no cambie ni añada ningún fármaco sin consultarlo."
+          "texto": "La rifampicina reduce el efecto de anticoagulantes, anticonceptivos, estatinas, antidiabéticos y muchos otros: no cambie ni añada ningún fármaco sin consultarlo.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Dolor articular (pirazinamida sube el ácido úrico), náuseas o cansancio marcado son frecuentes los primeros meses: entrene a intensidad baja-moderada y consulte ante orina muy oscura, ictericia o dolor abdominal (hígado)."
+          "texto": "Dolor articular (pirazinamida sube el ácido úrico), náuseas o cansancio marcado son frecuentes los primeros meses: entrene a intensidad baja-moderada y consulte ante orina muy oscura, ictericia o dolor abdominal (hígado).",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "etambutol"
           },
-          "texto": "Etambutol puede afectar a la visión de los colores: si nota cambios, consulte y evite actividades en tráfico."
+          "texto": "Etambutol puede afectar a la visión de los colores: si nota cambios, consulte y evite actividades en tráfico.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Una vez pasada la fase contagiosa, caminar y aeróbico suave ayudan a recuperar la capacidad pulmonar."
+          "texto": "Una vez pasada la fase contagiosa, caminar y aeróbico suave ayudan a recuperar la capacidad pulmonar.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado para recuperar la masa muscular perdida con la enfermedad."
+          "texto": "Indicado para recuperar la masa muscular perdida con la enfermedad.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -559,29 +652,44 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Protección solar alta si entrena al aire libre (el sol además puede activar el lupus)."
+          "texto": "Protección solar alta si entrena al aire libre (el sol además puede activar el lupus).",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Debilidad muscular progresiva, sobre todo de muslos, o cambios visuales son motivo de consulta (efectos raros pero importantes del fármaco)."
+          "texto": "Debilidad muscular progresiva, sobre todo de muslos, o cambios visuales son motivo de consulta (efectos raros pero importantes del fármaco).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; mejora la fatiga del lupus y la artritis. Reponga electrolitos en sesiones largas."
+          "texto": "Indicado; mejora la fatiga del lupus y la artritis. Reponga electrolitos en sesiones largas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado, respetando las articulaciones inflamadas."
+          "texto": "Indicado, respetando las articulaciones inflamadas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -660,40 +768,61 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio moderado y regular está indicado tras el trasplante (habitualmente desde las 6–12 semanas, según el equipo): mejora la tensión, la diabetes y la pérdida de músculo que provocan los inmunosupresores y los corticoides."
+          "texto": "El ejercicio moderado y regular está indicado tras el trasplante (habitualmente desde las 6–12 semanas, según el equipo): mejora la tensión, la diabetes y la pérdida de músculo que provocan los inmunosupresores y los corticoides.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Tacrolimus y ciclosporina tienen margen estrecho: deshidratación, antiinflamatorios, pomelo y muchos antibióticos o antifúngicos cambian sus niveles. Hidrátese bien, use paracetamol para el dolor y consulte cualquier fármaco o suplemento nuevo."
+          "texto": "Tacrolimus y ciclosporina tienen margen estrecho: deshidratación, antiinflamatorios, pomelo y muchos antibióticos o antifúngicos cambian sus niveles. Hidrátese bien, use paracetamol para el dolor y consulte cualquier fármaco o suplemento nuevo.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Mayor riesgo de infecciones y de cáncer de piel: protección solar alta, higiene en gimnasios y piscinas, y no entrene con fiebre."
+          "texto": "Mayor riesgo de infecciones y de cáncer de piel: protección solar alta, higiene en gimnasios y piscinas, y no entrene con fiebre.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "tacrolimus"
           },
-          "texto": "Tacrolimus puede dar temblor de manos y subir la glucosa y la tensión: controles periódicos; el ejercicio ayuda con los dos últimos."
+          "texto": "Tacrolimus puede dar temblor de manos y subir la glucosa y la tensión: controles periódicos; el ejercicio ayuda con los dos últimos.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad moderada, con progresión gradual. Evite aguas no tratadas (ríos, lagos) por el riesgo de infección."
+          "texto": "Indicado a intensidad moderada, con progresión gradual. Evite aguas no tratadas (ríos, lagos) por el riesgo de infección.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable: contrarresta la pérdida de masa muscular y ósea. Progresión gradual, especialmente si también toma corticoides."
+          "texto": "Muy recomendable: contrarresta la pérdida de masa muscular y ósea. Progresión gradual, especialmente si también toma corticoides.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica."
+          "texto": "Sin limitación específica.",
+          "fuente": "FT AEMPS 4.5",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -761,36 +890,54 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "No entrene con fiebre o infección activa; con un biológico la infección puede dar pocos síntomas al principio. Higiene cuidadosa de heridas y rozaduras."
+          "texto": "No entrene con fiebre o infección activa; con un biológico la infección puede dar pocos síntomas al principio. Higiene cuidadosa de heridas y rozaduras.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "No es necesario separar el ejercicio de la inyección; si la zona de inyección está dolorida, evite ejercicios que la rocen ese día."
+          "texto": "No es necesario separar el ejercicio de la inyección; si la zona de inyección está dolorida, evite ejercicios que la rocen ese día.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "inhibidor_jak"
           },
-          "texto": "Los inhibidores de JAK aumentan el riesgo de trombosis: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pierna o falta de aire súbita."
+          "texto": "Los inhibidores de JAK aumentan el riesgo de trombosis: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pierna o falta de aire súbita.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; reduce la fatiga de las enfermedades inflamatorias."
+          "texto": "Indicado; reduce la fatiga de las enfermedades inflamatorias.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado; en artritis, trabaje con amplitud sin dolor y respete las articulaciones inflamadas."
+          "texto": "Indicado; en artritis, trabaje con amplitud sin dolor y respete las articulaciones inflamadas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -844,32 +991,47 @@
           "si": {
             "principio": "leflunomida"
           },
-          "texto": "Leflunomida puede subir la tensión: controle en casa. Evite el alcohol (hígado)."
+          "texto": "Leflunomida puede subir la tensión: controle en casa. Evite el alcohol (hígado).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "sulfasalazina"
           },
-          "texto": "Sulfasalazina tiñe la orina y el sudor de naranja (puede manchar la ropa deportiva) y aumenta la sensibilidad al sol. Beba agua suficiente (cálculos renales)."
+          "texto": "Sulfasalazina tiñe la orina y el sudor de naranja (puede manchar la ropa deportiva) y aumenta la sensibilidad al sol. Beba agua suficiente (cálculos renales).",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado."
+          "texto": "Indicado.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado, respetando las articulaciones inflamadas."
+          "texto": "Indicado, respetando las articulaciones inflamadas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -920,46 +1082,67 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio regular tras el cáncer de mama se asocia a menor recaída y mortalidad y es la intervención más eficaz contra la fatiga y el dolor articular de la hormonoterapia. Objetivo: 150 min/semana de aeróbico + 2 sesiones de fuerza."
+          "texto": "El ejercicio regular tras el cáncer de mama se asocia a menor recaída y mortalidad y es la intervención más eficaz contra la fatiga y el dolor articular de la hormonoterapia. Objetivo: 150 min/semana de aeróbico + 2 sesiones de fuerza.",
+          "fuente": "OMS 2020 actividad física",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "tamoxifeno"
           },
-          "texto": "Tamoxifeno aumenta el riesgo de trombosis: evite la inmovilidad prolongada y consulte ante hinchazón o dolor de una pierna, o falta de aire súbita."
+          "texto": "Tamoxifeno aumenta el riesgo de trombosis: evite la inmovilidad prolongada y consulte ante hinchazón o dolor de una pierna, o falta de aire súbita.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "inhibidor_aromatasa"
           },
-          "texto": "El dolor y la rigidez articular, sobre todo de manos y por la mañana, mejoran con el ejercicio (el estudio HOPE lo demostró con fuerza + aeróbico). Empiece suave y sea constante; los primeros 15 minutos son los peores."
+          "texto": "El dolor y la rigidez articular, sobre todo de manos y por la mañana, mejoran con el ejercicio (el estudio HOPE lo demostró con fuerza + aeróbico). Empiece suave y sea constante; los primeros 15 minutos son los peores.",
+          "fuente": "Irwin 2015 J Clin Oncol (ensayo HOPE)",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "inhibidor_aromatasa"
           },
-          "texto": "Pérdida ósea acelerada: fuerza con cargas progresivas e impacto moderado, además del calcio, la vitamina D y el bifosfonato si lo tiene pautado."
+          "texto": "Pérdida ósea acelerada: fuerza con cargas progresivas e impacto moderado, además del calcio, la vitamina D y el bifosfonato si lo tiene pautado.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Caminar rápido, bici, nadar; 150 min/semana progresivos."
+          "texto": "Caminar rápido, bici, nadar; 150 min/semana progresivos.",
+          "fuente": "OMS 2020 actividad física",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "2–3 sesiones semanales. Si tiene linfedema o riesgo, la fuerza progresiva y supervisada es segura y lo mejora (no está contraindicada)."
+          "texto": "2–3 sesiones semanales. Si tiene linfedema o riesgo, la fuerza progresiva y supervisada es segura y lo mejora (no está contraindicada).",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Recomendable por la pérdida ósea (prevención de fracturas)."
+          "texto": "Recomendable por la pérdida ósea (prevención de fracturas).",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1036,43 +1219,64 @@
       "general": [
         {
           "nivel": "alerta",
-          "texto": "La fuerza es el tratamiento principal de los efectos de esta medicación: 2–3 sesiones semanales de cuerpo completo con cargas progresivas frenan la pérdida de músculo y hueso y reducen la fatiga. Pida un programa supervisado si es posible."
+          "texto": "La fuerza es el tratamiento principal de los efectos de esta medicación: 2–3 sesiones semanales de cuerpo completo con cargas progresivas frenan la pérdida de músculo y hueso y reducen la fatiga. Pida un programa supervisado si es posible.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El riesgo cardiovascular y de diabetes aumenta con la supresión hormonal: el aeróbico regular y el control de peso son parte del tratamiento."
+          "texto": "El riesgo cardiovascular y de diabetes aumenta con la supresión hormonal: el aeróbico regular y el control de peso son parte del tratamiento.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "abiraterona"
           },
-          "texto": "Abiraterona baja el potasio y sube la tensión: reponga electrolitos en sesiones largas, controle la tensión y consulte ante calambres, debilidad o palpitaciones."
+          "texto": "Abiraterona baja el potasio y sube la tensión: reponga electrolitos en sesiones largas, controle la tensión y consulte ante calambres, debilidad o palpitaciones.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "enzalutamida"
           },
-          "texto": "Enzalutamida y apalutamida aumentan el riesgo de caídas y fracturas: trabajo de equilibrio con apoyo y revisión de la casa."
+          "texto": "Enzalutamida y apalutamida aumentan el riesgo de caídas y fracturas: trabajo de equilibrio con apoyo y revisión de la casa.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "150 min/semana de intensidad moderada; combine con la fuerza."
+          "texto": "150 min/semana de intensidad moderada; combine con la fuerza.",
+          "fuente": "OMS 2020 actividad física",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "alerta",
-          "texto": "Prioritario. Si hay metástasis óseas, el programa debe adaptarse (evitar carga directa sobre las zonas afectadas) pero no suspenderse: consulte con oncología o un fisioterapeuta oncológico."
+          "texto": "Prioritario. Si hay metástasis óseas, el programa debe adaptarse (evitar carga directa sobre las zonas afectadas) pero no suspenderse: consulte con oncología o un fisioterapeuta oncológico.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Recomendable por la pérdida ósea y el riesgo de caída."
+          "texto": "Recomendable por la pérdida ósea y el riesgo de caída.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1158,43 +1362,64 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio durante el tratamiento oncológico es seguro y reduce la fatiga: sesiones cortas y frecuentes, adaptadas a cómo se encuentre cada día. En los días de más fatiga, caminar 10 minutos es mejor que nada."
+          "texto": "El ejercicio durante el tratamiento oncológico es seguro y reduce la fatiga: sesiones cortas y frecuentes, adaptadas a cómo se encuentre cada día. En los días de más fatiga, caminar 10 minutos es mejor que nada.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "capecitabina"
           },
-          "texto": "Síndrome mano-pie: evite el roce y el calor en palmas y plantas (calzado amortiguado, calcetines sin costuras, no correr en cinta caliente ni usar mancuernas sin guantes). Si aparece enrojecimiento doloroso, consulte: suele requerir ajustar la dosis."
+          "texto": "Síndrome mano-pie: evite el roce y el calor en palmas y plantas (calzado amortiguado, calcetines sin costuras, no correr en cinta caliente ni usar mancuernas sin guantes). Si aparece enrojecimiento doloroso, consulte: suele requerir ajustar la dosis.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "tki_antiangiogenico"
           },
-          "texto": "Estos fármacos suben la tensión: controle en casa y evite la apnea y el esfuerzo isométrico mantenido. Las heridas cicatrizan peor: cuidado con rozaduras."
+          "texto": "Estos fármacos suben la tensión: controle en casa y evite la apnea y el esfuerzo isométrico mantenido. Las heridas cicatrizan peor: cuidado con rozaduras.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Si el análisis muestra defensas (neutrófilos) o plaquetas bajas, pregunte a su oncólogo qué intensidad es segura esa semana; en general, con plaquetas muy bajas se evita el impacto y el riesgo de golpes."
+          "texto": "Si el análisis muestra defensas (neutrófilos) o plaquetas bajas, pregunte a su oncólogo qué intensidad es segura esa semana; en general, con plaquetas muy bajas se evita el impacto y el riesgo de golpes.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Intensidad ligera-moderada según el día; reponga electrolitos si hay diarrea."
+          "texto": "Intensidad ligera-moderada según el día; reponga electrolitos si hay diarrea.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Recomendable para conservar masa muscular; cargas moderadas."
+          "texto": "Recomendable para conservar masa muscular; cargas moderadas.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Si hay neuropatía (hormigueo en los pies), el trabajo de equilibrio es especialmente útil, con apoyo."
+          "texto": "Si hay neuropatía (hormigueo en los pies), el trabajo de equilibrio es especialmente útil, con apoyo.",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1228,25 +1453,37 @@
       "general": [
         {
           "nivel": "alerta",
-          "texto": "No beba grandes cantidades de agua en la hora anterior y las 8 horas siguientes a la toma: con desmopresina el riñón no puede eliminarla y el sodio baja (dolor de cabeza, náuseas, confusión). Si entrena por la tarde con mucha sudoración y toma la dosis por la noche, coméntelo con su médico."
+          "texto": "No beba grandes cantidades de agua en la hora anterior y las 8 horas siguientes a la toma: con desmopresina el riñón no puede eliminarla y el sodio baja (dolor de cabeza, náuseas, confusión). Si entrena por la tarde con mucha sudoración y toma la dosis por la noche, coméntelo con su médico.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Beba según la sed, no por encima; en sesiones largas use bebidas con sales en lugar de agua sola."
+          "texto": "Beba según la sed, no por encima; en sesiones largas use bebidas con sales en lugar de agua sola.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1293,29 +1530,44 @@
           "si": {
             "principio": "mirabegron"
           },
-          "texto": "Mirabegrón puede subir la tensión y el pulso: controle la tensión al inicio del tratamiento. No tiene los efectos de sequedad y calor de los anticolinérgicos."
+          "texto": "Mirabegrón puede subir la tensión y el pulso: controle la tensión al inicio del tratamiento. No tiene los efectos de sequedad y calor de los anticolinérgicos.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El entrenamiento del suelo pélvico y la pérdida de peso reducen los síntomas urinarios."
+          "texto": "El entrenamiento del suelo pélvico y la pérdida de peso reducen los síntomas urinarios.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; incluya suelo pélvico."
+          "texto": "Sin limitación; incluya suelo pélvico.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1381,36 +1633,54 @@
           "si": {
             "principio": "timolol_colirio"
           },
-          "texto": "El timolol en colirio frena el pulso igual que un betabloqueante oral: el pulso sube menos de lo esperado con el esfuerzo y no sirve para medir la intensidad. Use la sensación de esfuerzo. Si tiene asma o nota más fatiga desde que lo usa, coméntelo con su oftalmólogo (hay alternativas)."
+          "texto": "El timolol en colirio frena el pulso igual que un betabloqueante oral: el pulso sube menos de lo esperado con el esfuerzo y no sirve para medir la intensidad. Use la sensación de esfuerzo. Si tiene asma o nota más fatiga desde que lo usa, coméntelo con su oftalmólogo (hay alternativas).",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "timolol_colirio"
           },
-          "texto": "Tras ponerse el colirio, cierre el ojo y presione el lagrimal 1–2 minutos: pasa menos fármaco a la sangre."
+          "texto": "Tras ponerse el colirio, cierre el ojo y presione el lagrimal 1–2 minutos: pasa menos fármaco a la sangre.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El ejercicio aeróbico regular baja la presión intraocular. Evite posturas invertidas prolongadas (cabeza abajo en yoga) y el esfuerzo con apnea, que la suben."
+          "texto": "El ejercicio aeróbico regular baja la presión intraocular. Evite posturas invertidas prolongadas (cabeza abajo en yoga) y el esfuerzo con apnea, que la suben.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; beneficioso para la presión intraocular."
+          "texto": "Indicado; beneficioso para la presión intraocular.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Respiración continua, sin Valsalva; evite ejercicios con la cabeza por debajo del corazón."
+          "texto": "Respiración continua, sin Valsalva; evite ejercicios con la cabeza por debajo del corazón.",
+          "fuente": "ACSM GETP 11.ª ed., ap. A",
+          "evidencia": "guia",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Si tiene pérdida de campo visual, entrene el equilibrio con buena iluminación y apoyo."
+          "texto": "Si tiene pérdida de campo visual, entrene el equilibrio con buena iluminación y apoyo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1447,33 +1717,51 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Dolor muscular y articular con el ejercicio intenso es frecuente durante el tratamiento: reduzca el volumen de fuerza y el impacto si aparece. Si le hacen análisis, avise de que ha entrenado (la CK sube)."
+          "texto": "Dolor muscular y articular con el ejercicio intenso es frecuente durante el tratamiento: reduzca el volumen de fuerza y el impacto si aparece. Si le hacen análisis, avise de que ha entrenado (la CK sube).",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
-          "texto": "Fotosensibilidad y piel muy seca: protección solar alta, hidratación de la piel y evite deportes de contacto o con roce intenso (ampollas)."
+          "texto": "Fotosensibilidad y piel muy seca: protección solar alta, hidratación de la piel y evite deportes de contacto o con roce intenso (ampollas).",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "Las lentillas molestan más por la sequedad ocular: valore gafas para nadar o entrenar."
+          "texto": "Las lentillas molestan más por la sequedad ocular: valore gafas para nadar o entrenar.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación; con calor y sol, a cubierto o a primera hora."
+          "texto": "Sin limitación; con calor y sol, a cubierto o a primera hora.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "precaucion",
-          "texto": "Cargas moderadas y menos volumen si hay dolores musculares; evite el trabajo excéntrico intenso."
+          "texto": "Cargas moderadas y menos volumen si hay dolores musculares; evite el trabajo excéntrico intenso.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.8",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1554,43 +1842,64 @@
           "si": {
             "principio": "metoclopramida"
           },
-          "texto": "Metoclopramida da somnolencia y, en uso continuado, temblor o inquietud: use el menor tiempo posible y no entrene justo después de la toma."
+          "texto": "Metoclopramida da somnolencia y, en uso continuado, temblor o inquietud: use el menor tiempo posible y no entrene justo después de la toma.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "loperamida"
           },
-          "texto": "Con diarrea, lo importante para entrenar es la hidratación con sales; no use loperamida si hay fiebre o sangre en las heces."
+          "texto": "Con diarrea, lo importante para entrenar es la hidratación con sales; no use loperamida si hay fiebre o sangre en las heces.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "antiacido"
           },
-          "texto": "Los antiácidos reducen la absorción de muchos fármacos (hierro, levotiroxina, quinolonas, bifosfonatos): sepárelos 2–4 horas."
+          "texto": "Los antiácidos reducen la absorción de muchos fármacos (hierro, levotiroxina, quinolonas, bifosfonatos): sepárelos 2–4 horas.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
-          "texto": "El reflujo empeora con ejercicio intenso justo tras comer y con ejercicios abdominales o en flexión: deje 2–3 horas tras una comida copiosa."
+          "texto": "El reflujo empeora con ejercicio intenso justo tras comer y con ejercicios abdominales o en flexión: deje 2–3 horas tras una comida copiosa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1641,32 +1950,47 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio moderado mejora la fatiga y la densidad ósea en la enfermedad inflamatoria intestinal. En brote: intensidad baja, hidratación con sales y sesiones cerca de un baño."
+          "texto": "El ejercicio moderado mejora la fatiga y la densidad ósea en la enfermedad inflamatoria intestinal. En brote: intensidad baja, hidratación con sales y sesiones cerca de un baño.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "mesalazina"
           },
-          "texto": "Beba agua suficiente: mesalazina se tolera mejor bien hidratado y protege el riñón."
+          "texto": "Beba agua suficiente: mesalazina se tolera mejor bien hidratado y protege el riñón.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; en brote, suave."
+          "texto": "Indicado; en brote, suave.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado; importante para el hueso si ha tomado corticoides."
+          "texto": "Indicado; importante para el hueso si ha tomado corticoides.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1757,39 +2081,57 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Si tiene epilepsia: el ejercicio regular reduce las crisis en muchas personas. Evite desencadenantes (falta de sueño, deshidratación, saltarse tomas) y no nade ni haga actividades en altura sin compañía."
+          "texto": "Si tiene epilepsia: el ejercicio regular reduce las crisis en muchas personas. Evite desencadenantes (falta de sueño, deshidratación, saltarse tomas) y no nade ni haga actividades en altura sin compañía.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "zonisamida"
           },
-          "texto": "Zonisamida reduce la sudoración y favorece el golpe de calor y los cálculos renales: hidratación abundante y evite el calor."
+          "texto": "Zonisamida reduce la sudoración y favorece el golpe de calor y los cálculos renales: hidratación abundante y evite el calor.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "perampanel"
           },
-          "texto": "Perampanel produce mareo, somnolencia e irritabilidad, sobre todo al inicio: evite actividades con riesgo de caída hasta conocer su tolerancia."
+          "texto": "Perampanel produce mareo, somnolencia e irritabilidad, sobre todo al inicio: evite actividades con riesgo de caída hasta conocer su tolerancia.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; hidratación cuidadosa."
+          "texto": "Indicado; hidratación cuidadosa.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Indicado; fenitoína y fenobarbital a largo plazo debilitan el hueso, la fuerza lo protege."
+          "texto": "Indicado; fenitoína y fenobarbital a largo plazo debilitan el hueso, la fuerza lo protege.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Inestabilidad posible con lacosamida, perampanel y fenitoína: equilibrio con apoyo."
+          "texto": "Inestabilidad posible con lacosamida, perampanel y fenitoína: equilibrio con apoyo.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         }
       ],
       "fuentes": [
@@ -1842,46 +2184,67 @@
           "si": {
             "principio": "creatina"
           },
-          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes."
+          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "cafeina"
           },
-          "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros."
+          "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true
         },
         {
           "nivel": "info",
           "si": {
             "principio": "proteina_suplemento"
           },
-          "texto": "Con enfermedad renal avanzada, la proteína total diaria debe pactarse con su médico. Si toma levodopa, separe el batido de la toma."
+          "texto": "Con enfermedad renal avanzada, la proteína total diaria debe pactarse con su médico. Si toma levodopa, separe el batido de la toma.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         },
         {
           "nivel": "precaucion",
           "si": {
             "principio": "multivitaminico"
           },
-          "texto": "El hipérico (hierba de San Juan) anula el efecto de anticoagulantes, anticonceptivos, inmunosupresores y antirretrovirales. Ginkgo y ginseng aumentan el sangrado con anticoagulantes. Declare siempre las hierbas que toma."
+          "texto": "El hipérico (hierba de San Juan) anula el efecto de anticoagulantes, anticonceptivos, inmunosupresores y antirretrovirales. Ginkgo y ginseng aumentan el sangrado con anticoagulantes. Declare siempre las hierbas que toma.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "equilibrio": [
         {
           "nivel": "info",
-          "texto": "Sin limitación."
+          "texto": "Sin limitación.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true
         }
       ],
       "fuentes": [

@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 0.18.0-beta.2 · 2026-10-15 (beta 2 · validación)
+- Revisión clínica cerrada: las 617 reglas y las 60 reglas combinadas llevan fuente, nivel de evidencia y estado «revisada» (`docs/REVISION-CLINICA-2026-10-15.md`, `scripts/revision_beta2.py`); correcciones en insulina (umbrales de glucosa del consenso), benzodiacepinas en mayores y paracetamol; glosario ampliado y textos de ayuda revisados.
+- Feedback dentro de la app: hoja con tipo, texto y datos técnicos (versión, pantalla, pasos recientes, errores, navegador, lista anonimizada) que prerrellena el formulario; «copiar informe» y «enviar por correo». El aviso de error inesperado abre la hoja con el error ya escrito.
+- Copia de seguridad cifrada (`.pauta`, AES-GCM 256 con clave derivada por PBKDF2-SHA-256, 250 000 iteraciones) con restauración fusionando o sustituyendo; ayuda «?» explicando que nadie puede abrirla sin la contraseña.
+- «Pasar a otro dispositivo»: código QR o enlace `#sync=` con todos los datos comprimidos (deflate) y codificados; al abrirlo en el otro dispositivo se copian (con confirmación si ya había datos); lectura del QR con la cámara en escritorio.
+- Formulario de sugerencias (Tally) con campos ocultos nuevos (`app`, `pantalla`, `texto`, `tipo`, `errores`, `pasos`, `navegador`) y texto prerrellenado.
+- Pruebas de interfaz: 122.
+
 ## 0.17.0-beta.1 · 2026-10-15 (beta 1 · experiencia de uso)
 - Cabecera limpia: solo «¿Cómo funciona?», idioma y un menú «Más» (tamaño de letra en tres niveles, tema, glosario, guía rápida, novedades, sugerencias, acerca de, legal, instalar).
 - Recorrido en tres pasos (sus datos → su medicación → su plan) fijo en la parte superior en móvil, con estado y botón «Siguiente» que lleva al paso pendiente.

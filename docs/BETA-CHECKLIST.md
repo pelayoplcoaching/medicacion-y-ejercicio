@@ -3,7 +3,7 @@
 Estado al cierre de la última ronda alfa (v0.16.0-beta.0, 2026-10-15). Marcar al completar; lo pendiente es responsabilidad clínica o decisión de producto, no técnica.
 
 ## Contenido clínico
-- [ ] Revisión clínica completa de la base (hoja `export_revision.py`): todas las reglas con `revisado = sí`, fuente y nivel de evidencia. Prioridad: clases con más uso (cardiovascular, diabetes, anticoagulación, psicofármacos) y las 10 situaciones nuevas de beta 0.
+- [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Pendiente: muestreo del autor (10 % por grupo + todas las de nivel atención).
 - [ ] Revisión de las 209 interacciones curadas (`data/ddi_curated.json`) y criterio de inclusión de DDInter (solo mayores/moderadas).
 - [ ] Ampliar los casos de validación (`app/data/casos.json`) a ≥ 25 viñetas, incluyendo casos "negativos" (sin alertas esperadas) y una por situación clínica.
 - [ ] Umbrales de dosis alta (`umbral_mg`) revisados en los principios de riesgo (opioides, benzodiacepinas, diuréticos, insulina, corticoides).
@@ -17,7 +17,7 @@ Estado al cierre de la última ronda alfa (v0.16.0-beta.0, 2026-10-15). Marcar a
 - [ ] Política de versiones de la base: quién aprueba cada regeneración y cómo se comunica al usuario (hoy: fecha en `kb.version` y «Novedades»).
 
 ## Calidad técnica
-- [x] `scripts/test.mjs` 126/126 · `scripts/ui_test.mjs` 112/112 · axe 0 incidencias · Lighthouse móvil ≥ 90, escritorio 100.
+- [x] `scripts/test.mjs` 126/126 · `scripts/ui_test.mjs` 122/122 · axe 0 incidencias · Lighthouse móvil ≥ 90, escritorio 100.
 - [x] Sin conexión: precache de la app y de los datos; aviso de nueva versión.
 - [ ] Probar en dispositivos reales: iOS Safari (instalación, dictado, cámara), Android Chrome (BarcodeDetector), lectores de pantalla (VoiceOver/TalkBack) en el flujo de medicación y SPPB.
 - [ ] Prueba de carga con listas largas (≥ 20 fármacos) y nomenclátor completo en móviles de gama baja.
@@ -26,7 +26,7 @@ Estado al cierre de la última ronda alfa (v0.16.0-beta.0, 2026-10-15). Marcar a
 ## Experiencia de usuario
 - [ ] Prueba con 5–8 pacientes reales (mayores, polimedicados) y 3–5 profesionales (medicina interna, AP, fisioterapia, CAFD): tarea «introduce tu medicación y descarga tu plan» sin ayuda; medir tiempo, errores y comprensión de Lo esencial.
 - [ ] Revisar el texto de las reglas con criterio de lectura fácil (frases cortas, sin siglas sin explicar) en el modo paciente.
-- [ ] Decidir el canal de feedback definitivo (Tally actual vs. formulario propio) y el ritmo de respuesta.
+- [x] Canal de feedback: hoja dentro de la app con contexto técnico + formulario Tally prerrellenado (beta 2). Pendiente: ritmo de respuesta.
 
 ## Publicación
 - [ ] Etiqueta `v0.16.0-beta.0` en git y nota de versión en «Novedades» (hecho en el código; falta el push de la etiqueta).
