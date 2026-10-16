@@ -433,8 +433,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio de fuerza y aeróbico mejora la composición corporal, el colesterol y la salud cardiovascular, que son hoy las principales preocupaciones en VIH bien controlado. Sin restricciones por el virus.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "EACS 2023 (comorbilidades) · O'Brien 2016 Cochrane",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -472,8 +472,8 @@
         {
           "nivel": "info",
           "texto": "Indicado sin limitación.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "EACS 2023 (comorbilidades) · O'Brien 2016 Cochrane",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -481,8 +481,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "EACS 2023 (comorbilidades) · O'Brien 2016 Cochrane",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -595,8 +595,8 @@
         {
           "nivel": "info",
           "texto": "Indicado para recuperar la masa muscular perdida con la enfermedad.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "Revisión clínica (OMS 2020 actividad física)",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -669,8 +669,8 @@
         {
           "nivel": "info",
           "texto": "Indicado; mejora la fatiga del lupus y la artritis. Reponga electrolitos en sesiones largas.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "EULAR 2018 actividad física en artritis/espondiloartritis",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -769,8 +769,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio moderado y regular está indicado tras el trasplante (habitualmente desde las 6–12 semanas, según el equipo): mejora la tensión, la diabetes y la pérdida de músculo que provocan los inmunosupresores y los corticoides.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "KDIGO 2009 trasplante renal (actividad física) · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -802,8 +802,8 @@
         {
           "nivel": "info",
           "texto": "Indicado a intensidad moderada, con progresión gradual. Evite aguas no tratadas (ríos, lagos) por el riesgo de infección.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "KDIGO 2009 trasplante renal · FT AEMPS 4.4 (infecciones)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -811,8 +811,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable: contrarresta la pérdida de masa muscular y ósea. Progresión gradual, especialmente si también toma corticoides.",
-          "fuente": "FT AEMPS 4.5",
-          "evidencia": "ft",
+          "fuente": "KDIGO 2009 trasplante renal · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -917,8 +917,8 @@
         {
           "nivel": "info",
           "texto": "Indicado. Reduce el cansancio que producen las enfermedades inflamatorias.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "EULAR 2018 actividad física en artritis/espondiloartritis",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1218,7 +1218,7 @@
       ],
       "general": [
         {
-          "nivel": "alerta",
+          "nivel": "precaucion",
           "texto": "La fuerza es el tratamiento principal de los efectos de esta medicación: 2–3 sesiones semanales de cuerpo completo con cargas progresivas frenan la pérdida de músculo y hueso y reducen la fatiga. Pida un programa supervisado si es posible.",
           "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
           "evidencia": "guia",
@@ -1538,8 +1538,8 @@
         {
           "nivel": "info",
           "texto": "El entrenamiento del suelo pélvico y la pérdida de peso reducen los síntomas urinarios.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "EAU 2024 incontinencia (tratamiento conservador)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1660,8 +1660,8 @@
         {
           "nivel": "info",
           "texto": "Indicado; beneficioso para la presión intraocular.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Zhu 2018 (metaanálisis ejercicio y PIO) · criterio clínico",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1951,8 +1951,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio moderado mejora la fatiga y la densidad ósea en la enfermedad inflamatoria intestinal. En brote: intensidad baja, hidratación con sales y sesiones cerca de un baño.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ECCO 2023 (EII, manejo no farmacológico)",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -1979,8 +1979,8 @@
         {
           "nivel": "info",
           "texto": "Indicado; importante para el hueso si ha tomado corticoides.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ECCO 2023 · Beck 2017 (ESSA)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -2120,8 +2120,8 @@
         {
           "nivel": "info",
           "texto": "Indicado; fenitoína y fenobarbital a largo plazo debilitan el hueso, la fuerza lo protege.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "FT AEMPS 4.4 (osteomalacia) · Beck 2017 (ESSA)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],

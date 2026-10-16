@@ -172,8 +172,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio debe hacerse acompañado y con instrucciones sencillas y repetidas. Caminar, ejercicios de fuerza sentado-de pie y equilibrio con apoyo son los más útiles.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Forbes 2015 Cochrane (ejercicio y demencia) · criterio clínico",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -274,8 +274,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio aeróbico regular reduce la frecuencia de las migrañas. Un calentamiento progresivo y una buena hidratación evitan que el propio esfuerzo desencadene crisis.",
-          "fuente": "FT AEMPS 4.3",
-          "evidencia": "ft",
+          "fuente": "Varkey 2011 Cephalalgia; Amin 2018 J Headache Pain",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -373,8 +373,8 @@
         {
           "nivel": "info",
           "texto": "Indicado; el aeróbico regular es por sí mismo preventivo de la migraña.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Varkey 2011 Cephalalgia; Amin 2018 J Headache Pain",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -671,8 +671,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio regular potencia el efecto antidepresivo.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Schuch 2016 J Psychiatr Res; NICE NG222",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -805,8 +805,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable (cinta, bici, caminar rápido) a intensidad moderada-alta si está en ON.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Schenkman 2018 JAMA Neurol (SPARX); Osborne 2022 (APTA guía Parkinson)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -814,8 +814,8 @@
         {
           "nivel": "info",
           "texto": "Indicado, con énfasis en piernas, extensores y amplitud de movimiento.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Osborne 2022 (APTA guía Parkinson)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1013,9 +1013,9 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio aeróbico de 20–30 minutos reduce el deseo de fumar o beber durante horas: úselo como herramienta en los momentos de más craving.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "texto": "Un paseo rápido o 10–20 minutos de ejercicio aeróbico reducen el deseo de fumar durante un rato (hasta una hora): úselo como herramienta en los momentos de más ganas.",
+          "fuente": "Taylor 2007 Addiction (metaanálisis); Haasova 2013",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -1053,8 +1053,8 @@
         {
           "nivel": "info",
           "texto": "Indicado. Al dejar de fumar, la capacidad para el ejercicio mejora en pocas semanas.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
           "revisado": true
         }
       ],

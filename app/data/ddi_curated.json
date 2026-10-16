@@ -39,8 +39,8 @@
       "b": "clase:aines",
       "nivel": "mayor",
       "efecto": "Aumento del riesgo de sangrado digestivo; el ibuprofeno puede además anular el efecto protector de la aspirina.",
-      "accion": "Evitar. Paracetamol como alternativa. Si se usa ibuprofeno, tomarlo al menos 2 h después de la aspirina.",
-      "fuente": "FT AEMPS 4.5 · ESC 2020 fibrilación auricular (riesgo hemorrágico)",
+      "accion": "Evitar. Paracetamol como alternativa. Si se usa ibuprofeno, tomarlo al menos 30 minutos después de la aspirina (o 8 horas antes) para no anular su efecto.",
+      "fuente": "FT AEMPS 4.5 · FDA 2006 (ibuprofeno y aspirina) · ESC 2020 FA (riesgo hemorrágico)",
       "revisado": true
     },
     {
@@ -1513,10 +1513,10 @@
     {
       "a": "vericiguat",
       "b": "clase:nitratos",
-      "nivel": "mayor",
-      "efecto": "Hipotensión grave.",
-      "accion": "Contraindicado.",
-      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "nivel": "moderada",
+      "efecto": "Posible bajada de tensión adicional. Los nitratos de acción prolongada se usaron junto a vericiguat en el ensayo principal sin señal de riesgo; la nitroglicerina sublingual no está bien estudiada.",
+      "accion": "No es una contraindicación: su cardiólogo debe conocer la combinación. Tome la nitroglicerina de rescate sentado y levántese despacio.",
+      "fuente": "FT AEMPS 4.4/4.5 (vericiguat) · VICTORIA 2020",
       "revisado": true
     },
     {
@@ -1524,8 +1524,8 @@
       "b": "clase:pde5",
       "nivel": "mayor",
       "efecto": "Hipotensión grave.",
-      "accion": "Contraindicado.",
-      "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+      "accion": "No recomendado por el riesgo de hipotensión sintomática: evitar la combinación.",
+      "fuente": "FT AEMPS 4.4 (vericiguat)",
       "revisado": true
     },
     {

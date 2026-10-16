@@ -243,9 +243,9 @@
         },
         {
           "nivel": "info",
-          "texto": "En la fase aguda del zóster o de un brote con fiebre, descanso relativo; retome el ejercicio progresivamente cuando el dolor lo permita. El ejercicio regular se asocia a menos recurrencias de herpes.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "texto": "En la fase aguda del zóster o de un brote con fiebre, descanso relativo; retome el ejercicio progresivamente cuando el dolor lo permita.",
+          "fuente": "Revisión clínica (ACSM GETP 11.ª ed., enfermedad aguda)",
+          "evidencia": "revision",
           "revisado": true
         },
         {

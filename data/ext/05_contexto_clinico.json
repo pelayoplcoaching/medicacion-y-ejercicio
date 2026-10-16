@@ -91,8 +91,8 @@
         {
           "nivel": "info",
           "texto": "Recomendable, con apoyo si hay inmovilización reciente.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -174,8 +174,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio regular, fuerza incluida, es parte esencial del tratamiento para el aumento de peso y el riesgo metabólico.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -192,8 +192,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -263,8 +263,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio moderado es seguro y mejora la fatiga y la tolerancia al tratamiento; hay datos preliminares de que podría mejorar la respuesta. Adapte cada sesión a cómo se encuentre.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell) · ESMO 2020",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -288,8 +288,8 @@
         {
           "nivel": "info",
           "texto": "Recomendable: ayuda a conservar el músculo durante el tratamiento.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],

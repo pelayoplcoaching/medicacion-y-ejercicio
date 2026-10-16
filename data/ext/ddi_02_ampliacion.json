@@ -803,10 +803,10 @@
   {
     "a": "vericiguat",
     "b": "clase:nitratos",
-    "nivel": "mayor",
-    "efecto": "Hipotensión grave.",
-    "accion": "Contraindicado.",
-    "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+    "nivel": "moderada",
+    "efecto": "Posible bajada de tensión adicional. Los nitratos de acción prolongada se usaron junto a vericiguat en el ensayo principal sin señal de riesgo; la nitroglicerina sublingual no está bien estudiada.",
+    "accion": "No es una contraindicación: su cardiólogo debe conocer la combinación. Tome la nitroglicerina de rescate sentado y levántese despacio.",
+    "fuente": "FT AEMPS 4.4/4.5 (vericiguat) · VICTORIA 2020",
     "revisado": true
   },
   {
@@ -814,8 +814,8 @@
     "b": "clase:pde5",
     "nivel": "mayor",
     "efecto": "Hipotensión grave.",
-    "accion": "Contraindicado.",
-    "fuente": "FT AEMPS 4.3 (contraindicación nitratos / PDE5)",
+    "accion": "No recomendado por el riesgo de hipotensión sintomática: evitar la combinación.",
+    "fuente": "FT AEMPS 4.4 (vericiguat)",
     "revisado": true
   },
   {

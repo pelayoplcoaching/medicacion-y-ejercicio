@@ -960,8 +960,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable; cargas moderadas y respiración continua.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1076,8 +1076,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable en EPOC.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "GOLD 2024 (rehabilitación respiratoria)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],

@@ -500,8 +500,8 @@
           "si": {
             "principio": "vericiguat"
           },
-          "texto": "No combine con nitratos ni con fármacos para la disfunción eréctil: la bajada de tensión puede ser grave.",
-          "fuente": "FT AEMPS 4.4",
+          "texto": "No lo combine con fármacos para la disfunción eréctil (sildenafilo, tadalafilo) ni con riociguat: la bajada de tensión puede ser grave. Si usa nitroglicerina de rescate, tómela sentado y dígaselo a su cardiólogo: con vericiguat la tensión puede bajar más de lo habitual.",
+          "fuente": "FT AEMPS 4.3/4.4/4.5 (vericiguat)",
           "evidencia": "ft",
           "revisado": true
         }
@@ -608,8 +608,8 @@
         {
           "nivel": "info",
           "texto": "Recomendable, con énfasis en pantorrillas y piernas.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ESC 2017 arteriopatía periférica (ejercicio supervisado)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -867,8 +867,8 @@
         {
           "nivel": "info",
           "texto": "El ejercicio regular reduce el riesgo de trombosis asociado a los estrógenos. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "ESC 2019 embolia pulmonar (factores de riesgo) · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -902,8 +902,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable en la menopausia para proteger hueso y masa muscular.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Beck 2017 (ESSA) ejercicio y osteoporosis",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -950,8 +950,8 @@
         {
           "nivel": "info",
           "texto": "El entrenamiento de fuerza potencia el efecto del tratamiento sobre músculo y hueso.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Endocrine Society 2018 (hipogonadismo) · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -982,8 +982,8 @@
         {
           "nivel": "info",
           "texto": "Muy recomendable: es donde más se nota el beneficio del tratamiento.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Endocrine Society 2018 (hipogonadismo) · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -1093,7 +1093,7 @@
       ],
       "equilibrio": [
         {
-          "nivel": "alerta",
+          "nivel": "precaucion",
           "texto": "Prevenir caídas es parte del tratamiento: equilibrio 2–3 veces por semana, con apoyo si lo necesita.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
@@ -1237,8 +1237,8 @@
         {
           "nivel": "info",
           "texto": "Recomendable para conservar músculo durante la pérdida de peso.",
-          "fuente": "FT AEMPS 4.8",
-          "evidencia": "ft",
+          "fuente": "EASO 2024 · ACSM GETP 11.ª ed.",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
