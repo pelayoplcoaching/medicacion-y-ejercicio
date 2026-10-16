@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORDEN = { alerta: 3, precaucion: 2, info: 1 };
-const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo, cribadoACSM, enfermedadSugerida, nivelEvidencia, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+const { construirIndice, evaluar, buscar, ventanaEntrenamiento, loEsencial, ALARMA, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, sesionTipo, cribadoACSM, enfermedadSugerida, nivelEvidencia, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, evolucion, textoEvolucion } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
 const { extraerMedicacion } = await import(pathToFileURL(path.join(ROOT, "app/js/parser.js")).href);
 
 const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
@@ -217,6 +217,22 @@ console.log("\nLo esencial");
   check("frases accionables y cortas", e.every((p) => p.texto.length <= 190 && /[A-Za-zÁ-ú]/.test(p.texto)), e.map((p) => p.texto.length).join());
   check("sin títulos repetidos", new Set(e.map((p) => p.titulo)).size === e.length);
   check("señales de alarma definidas", ALARMA.length >= 5);
+}
+
+console.log("\nEvolución del plan (v1.0)");
+{
+  const dia = (n) => { const d = new Date(2026, 8, 1 + n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+  const ini = new Date(2026, 8, 1).getTime(), ahora = new Date(2026, 9, 13).getTime(); // 6 semanas
+  const diario = []; for (let i = 0; i < 42; i += 2) diario.push({ fecha: dia(i), tipo: i % 4 ? "aerobico" : "fuerza", min: 30, rpe: i % 4 ? 5 : 6, sintomas: i === 10 ? ["mareo"] : [], const: i % 6 === 0 ? { glucosa_antes: 120, glucosa_despues: i === 12 ? 65 : 110 } : undefined });
+  const prescrito = { fecha: ini, semanas: 6, base: { meds: [{ pid: "bisoprolol", dosis: 5, tomas: 1 }, { pid: "furosemida", dosis: 40, tomas: 1 }], sppb: 8, fcReposo: 72 } };
+  const evo = evolucion(diario, prescrito, { planDias: [1, 2, 3, 4, 5], actual: { meds: [{ pid: "bisoprolol", dosis: 2.5, tomas: 1 }, { pid: "apixaban", dosis: 5, tomas: 2 }], sppb: 10, fcReposo: 66 }, ahora });
+  check("evolución: 21 sesiones en 6 semanas, 630 min, 105 min/semana", evo.sesiones === 21 && evo.minutos === 630 && evo.minutosSemana === 105, JSON.stringify([evo.sesiones, evo.minutos, evo.minutosSemana]));
+  check("evolución: adherencia 70 % (21 de 30) → parcial", evo.adherencia === 70 && evo.valoracion === "parcial", String(evo.adherencia));
+  check("evolución: RPE medio, síntomas y glucemias (1 hipoglucemia)", evo.rpeMedio > 5 && evo.rpeMedio < 6 && evo.sintomas.mareo === 1 && evo.constantes.glucosa.hipos === 1);
+  check("evolución: SPPB +2, FC reposo −6, medicación (nuevo apixabán, retirada furosemida, dosis de bisoprolol)", evo.comp.sppb.delta === 2 && evo.comp.fcReposo.delta === -6 && evo.comp.medicacion.nuevos.length === 1 && evo.comp.medicacion.retirados.length === 1 && evo.comp.medicacion.cambios.length === 1);
+  check("evolución: vencida al llegar la fecha prevista; sin prescripción → null", evo.vencida === true && evolucion(diario, null) === null);
+  const txt = textoEvolucion(evo, { nombres: { apixaban: "Apixabán", furosemida: "Furosemida", bisoprolol: "Bisoprolol" } });
+  check("texto de evolución para la historia", txt.startsWith("EVOLUCIÓN DEL PLAN") && txt.includes("70 %") && txt.includes("SPPB 8 → 10 (+2") && txt.includes("nuevos: Apixabán") && txt.includes("1 valor(es) < 70"));
 }
 
 console.log("\nIdiomas");

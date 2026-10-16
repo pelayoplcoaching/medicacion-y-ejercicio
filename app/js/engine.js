@@ -387,6 +387,70 @@ export function loEsencial(res, max = 5) {
 }
 
 
+/** Evolución desde la prescripción (v1.0): adherencia frente al plan, carga semanal, RPE, síntomas y constantes del diario, y comparativa
+ *  de SPPB, FC en reposo y medicación entre la foto de la prescripción (`prescrito.base`) y el estado actual. Todo local, sin servidores. */
+export function evolucion(diario, prescrito, { planDias = [1, 2, 3, 4, 5, 6], actual = {}, ahora = Date.now() } = {}) {
+  if (!prescrito?.fecha) return null;
+  const desde = new Date(prescrito.fecha); desde.setHours(0, 0, 0, 0);
+  const hasta = new Date(ahora);
+  const prevista = new Date(prescrito.fecha); prevista.setDate(prevista.getDate() + (prescrito.semanas || 6) * 7);
+  const dias = Math.max(1, Math.round((hasta - desde) / 864e5));
+  const semanas = Math.max(1, dias / 7);
+  const enPeriodo = (diario || []).filter((x) => { const d = new Date(x.fecha + "T12:00"); return d >= desde && d <= hasta; });
+  const sesiones = enPeriodo.length;
+  const minutos = enPeriodo.reduce((n, x) => n + (x.min || 0), 0);
+  const previstas = Math.round((planDias?.length || 0) * semanas);
+  const adherencia = previstas ? Math.min(100, Math.round((sesiones / previstas) * 100)) : null;
+  const porTipo = {}; for (const x of enPeriodo) porTipo[x.tipo || "otro"] = (porTipo[x.tipo || "otro"] || 0) + 1;
+  const rpes = enPeriodo.map((x) => x.rpe).filter((r) => Number.isFinite(r));
+  const rpeMedio = rpes.length ? Math.round((rpes.reduce((a, b) => a + b, 0) / rpes.length) * 10) / 10 : null;
+  const sintomas = {}; for (const x of enPeriodo) for (const s of x.sintomas || []) sintomas[s] = (sintomas[s] || 0) + 1;
+  const chequeosNo = enPeriodo.filter((x) => x.chequeo && x.chequeo !== "sin" && x.chequeo !== "ok").length;
+  // constantes del diario
+  const glu = enPeriodo.flatMap((x) => [x.const?.glucosa_antes, x.const?.glucosa_despues]).map(Number).filter((v) => v > 0);
+  const hipos = glu.filter((v) => v < 70).length;
+  const tas = enPeriodo.map((x) => Number(x.const?.ta_sis)).filter((v) => v > 0);
+  const constantes = { glucosa: glu.length ? { n: glu.length, media: Math.round(glu.reduce((a, b) => a + b, 0) / glu.length), min: Math.min(...glu), max: Math.max(...glu), hipos } : null, ta: tas.length ? { n: tas.length, max: Math.max(...tas), media: Math.round(tas.reduce((a, b) => a + b, 0) / tas.length) } : null };
+  // semanas (desde la prescripción)
+  const nSem = Math.min(26, Math.ceil(semanas));
+  const porSemana = minutosPorSemana(enPeriodo, nSem, hasta);
+  // comparativa con la foto de la prescripción
+  const base = prescrito.base || null;
+  const comp = {
+    sppb: { antes: base?.sppb ?? null, ahora: actual.sppb ?? null },
+    fcReposo: { antes: base?.fcReposo ?? null, ahora: actual.fcReposo ?? null },
+    medicacion: base?.meds ? compararListas(base.meds, actual.meds || []) : null,
+  };
+  for (const k of ["sppb", "fcReposo"]) comp[k].delta = comp[k].antes != null && comp[k].ahora != null ? comp[k].ahora - comp[k].antes : null;
+  const valoracion = adherencia == null ? "sin_plan" : adherencia >= 80 ? "buena" : adherencia >= 50 ? "parcial" : "baja";
+  return { desde: desde.toISOString().slice(0, 10), hasta: hasta.toISOString().slice(0, 10), prevista: prevista.toISOString().slice(0, 10), vencida: hasta >= prevista, dias, semanas: Math.round(semanas * 10) / 10, sesiones, minutos, minutosSemana: Math.round(minutos / semanas), previstas, adherencia, porTipo, rpeMedio, sintomas, chequeosNo, constantes, porSemana, comp, valoracion, conBase: !!base };
+}
+
+/** Texto de la evolución para la historia clínica. */
+export function textoEvolucion(evo, { nombres = {} } = {}) {
+  if (!evo) return "";
+  const f = (iso) => { const [a, m, d] = iso.split("-"); return `${d}/${m}/${a}`; };
+  const L = [`EVOLUCIÓN DEL PLAN DE EJERCICIO · ${f(evo.desde)} → ${f(evo.hasta)} (${evo.semanas} semanas; reevaluación prevista ${f(evo.prevista)})`];
+  L.push(`Adherencia: ${evo.sesiones} sesiones registradas de ${evo.previstas} previstas${evo.adherencia != null ? ` (${evo.adherencia} %, ${{ buena: "buena", parcial: "parcial", baja: "baja", sin_plan: "sin plan de referencia" }[evo.valoracion]})` : ""}; ${evo.minutos} min en total, ${evo.minutosSemana} min/semana de media${evo.rpeMedio != null ? `; RPE medio ${evo.rpeMedio}/10` : ""}.`);
+  const tipos = Object.entries(evo.porTipo).map(([k, n]) => `${{ aerobico: "aeróbico", fuerza: "fuerza", fuerza_eq: "fuerza y equilibrio", equilibrio: "equilibrio" }[k] || k} ${n}`).join(", ");
+  if (tipos) L.push(`Por tipo: ${tipos}.`);
+  const sint = Object.entries(evo.sintomas).map(([k, n]) => `${k} (${n})`).join(", ");
+  L.push(`Síntomas durante las sesiones: ${sint || "ninguno registrado"}.${evo.chequeosNo ? ` Chequeo previo desfavorable en ${evo.chequeosNo} sesión(es).` : ""}`);
+  if (evo.constantes.glucosa) L.push(`Glucemias registradas (${evo.constantes.glucosa.n}): media ${evo.constantes.glucosa.media} mg/dL (${evo.constantes.glucosa.min}–${evo.constantes.glucosa.max}); ${evo.constantes.glucosa.hipos} valor(es) < 70 mg/dL.`);
+  if (evo.constantes.ta) L.push(`TA sistólica registrada (${evo.constantes.ta.n}): media ${evo.constantes.ta.media}, máxima ${evo.constantes.ta.max} mmHg.`);
+  const c = evo.comp;
+  const cmp = [];
+  if (c.sppb.antes != null || c.sppb.ahora != null) cmp.push(`SPPB ${c.sppb.antes ?? "—"} → ${c.sppb.ahora ?? "—"}${c.sppb.delta != null ? ` (${c.sppb.delta >= 0 ? "+" : ""}${c.sppb.delta}${Math.abs(c.sppb.delta) >= 1 ? ", cambio clínicamente relevante" : ""})` : ""}`);
+  if (c.fcReposo.antes != null || c.fcReposo.ahora != null) cmp.push(`FC en reposo ${c.fcReposo.antes ?? "—"} → ${c.fcReposo.ahora ?? "—"} lpm`);
+  if (cmp.length) L.push(`Comparativa: ${cmp.join("; ")}.`);
+  if (c.medicacion) {
+    const n = (m) => nombres[m.pid] || m.pid;
+    const partes = [c.medicacion.nuevos.length ? `nuevos: ${c.medicacion.nuevos.map(n).join(", ")}` : "", c.medicacion.retirados.length ? `retirados: ${c.medicacion.retirados.map(n).join(", ")}` : "", c.medicacion.cambios.length ? `dosis cambiada: ${c.medicacion.cambios.map(n).join(", ")}` : ""].filter(Boolean);
+    L.push(`Medicación respecto a la prescripción: ${partes.length ? partes.join("; ") : "sin cambios"}.`);
+  } else if (!evo.conBase) L.push("Sin foto de la medicación al prescribir (prescripción anterior a esta versión): la comparativa de medicación no está disponible.");
+  return L.join("\n");
+}
+
 /** Síntomas frecuentes al entrenar y las señales farmacológicas que pueden explicarlos. */
 export const SINTOMAS = [
   { id: "mareo", nombre: "Mareo al levantarme o al terminar", senales: ["hipotension", "bradicardia", "sedacion", "hipoglucemia", "deshidratacion"], consejo: "Termine siempre con 5–10 minutos suaves, levántese despacio, beba agua y no entrene en ayunas si toma medicación para el azúcar. Si se repite o llega a desmayarse, consulte: puede que haya que ajustar alguna dosis.", alarma: "Si el mareo va con dolor en el pecho, desmayo o palpitaciones, deje de entrenar y consulte hoy." },

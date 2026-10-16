@@ -2,7 +2,7 @@
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
 import { jspdf, cargarScript } from "./libs.js?v=202610161041";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610161041";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, textoEvolucion, SINTOMAS } from "./engine.js?v=202610161041";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -101,7 +101,7 @@ class Doc {
   }
   /** Bloque de firma al final del documento (con QR que reabre el plan, si lo hay). */
   firma(p, prescrito) {
-    const d = this.d, h = 26; this.salto(h + 4);
+    const d = this.d, h = this.qr ? 26 : 22; this.salto(h + 2);
     this.y = Math.max(this.y + 2, this.bottom - h - 2); // al pie de la última página, como en una receta
     d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(this.ml, this.y, this.ml + this.w, this.y); this.y += 4;
     if (this.qr) { try { d.addImage(this.qr, "PNG", this.ml, this.y, 20, 20); } catch {} this.f("normal", 6.5, C.muted); d.text("Abre este plan", this.ml, this.y + 23); }
@@ -680,6 +680,71 @@ function maquetarPaciente(doc, font, logo, qr, kb, res, ctx, detalle) {
   pg.parrafo("Este documento recoge lo esencial. En la aplicación encontrará el detalle de cada medicamento para cada tipo de ejercicio y la lista completa de interacciones. " + kb.aviso, { size: 7.3, color: C.muted });
   pg.firma(ctx.prescriptor, ctx.prescrito);
   pg.pie();
+}
+
+/* ---------- INFORME DE EVOLUCIÓN (reevaluación, una cara) ---------- */
+export async function pdfEvolucion(kb, res, ctx, evo) {
+  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
+  const font = await prepararFuentes(doc);
+  const logo = await dataUrl("assets/logo-app.png");
+  const pg = new Doc(doc, font, logo, { titulo: "Evolución del plan de ejercicio", subtitulo: "Informe de reevaluación · adherencia, carga y comparativa con la prescripción", tipo: "Informe clínico", numero: numeroDocumento(res, ctx), version: ctx.appVersion });
+  pg.prescriptor(ctx.prescriptor, ctx.prescrito);
+  const f = (iso) => { const [a, m, d] = iso.split("-"); return `${d}/${m}/${a}`; };
+  pg.parrafo(`Periodo: del ${f(evo.desde)} al ${f(evo.hasta)} (${evo.semanas} semanas; reevaluación prevista el ${f(evo.prevista)}). Datos del diario registrado por el paciente en la aplicación, sin servidores.`, { size: 8.3, color: C.muted, gap: 1 });
+  const nivelAdh = evo.valoracion === "buena" ? "info" : evo.valoracion === "parcial" ? "precaucion" : evo.valoracion === "baja" ? "alerta" : null;
+  pg.banda([
+    { k: "Adherencia", v: evo.adherencia != null ? `${evo.adherencia} %` : "—", nivel: nivelAdh },
+    { k: "Sesiones", v: `${evo.sesiones} / ${evo.previstas}` },
+    { k: "Minutos/semana", v: evo.minutosSemana },
+    { k: "RPE medio", v: evo.rpeMedio ?? "—" },
+    { k: "Síntomas", v: Object.values(evo.sintomas).reduce((a, b) => a + b, 0), nivel: Object.keys(evo.sintomas).length ? "precaucion" : null },
+  ]);
+  const VAL = { buena: "Buena adherencia: mantener el plan y progresar la carga (volumen antes que intensidad).", parcial: "Adherencia parcial: revisar barreras (dolor, miedo, horario, transporte) y simplificar el plan si hace falta.", baja: "Adherencia baja: renegociar objetivos más pequeños y concretos, y buscar apoyo (familia, grupo, fisioterapia, programa comunitario).", sin_plan: "Sin plan de referencia: no se puede calcular la adherencia." };
+  pg.tarjeta({ nivel: nivelAdh || "info", titulo: "Valoración", texto: VAL[evo.valoracion], size: 8.5 });
+
+  pg.seccion("Minutos por semana", "desde la prescripción");
+  { // gráfico de barras sencillo
+    const d = pg.d, n = evo.porSemana.length, w = pg.w, h = 20, x0 = pg.ml, maxMin = Math.max(1, ...evo.porSemana.map((s) => s.min)), obj = ctx.condiciones?.has?.("fragil") ? 90 : 150;
+    pg.salto(h + 14);
+    const yBase = pg.y + h; const bw = Math.min(14, (w / n) * 0.7), gap = w / n;
+    d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(x0, yBase, x0 + w, yBase);
+    const yObj = yBase - Math.min(1, obj / maxMin) * h; d.setDrawColor(...C.muted); d.setLineDashPattern([1, 1], 0); d.line(x0, yObj, x0 + w, yObj); d.setLineDashPattern([], 0);
+    pg.f("normal", 6.5, C.muted); d.text(`objetivo ${obj} min/semana`, x0 + w, yObj + 2.6, { align: "right" });
+    evo.porSemana.forEach((s, i) => {
+      const bh = (s.min / maxMin) * h, x = x0 + i * gap + (gap - bw) / 2;
+      d.setFillColor(...(s.min >= obj ? C.info : C.purple)); d.rect(x, yBase - bh, bw, bh, "F");
+      pg.f("bold", 6.5, C.ink); d.text(String(s.min), x + bw / 2, yBase - bh - 1, { align: "center" });
+      pg.f("normal", 6, C.muted); d.text(f(s.desde).slice(0, 5), x + bw / 2, yBase + 3.5, { align: "center" });
+    });
+    pg.y = yBase + 7;
+  }
+  const tipos = Object.entries(evo.porTipo).map(([k, n]) => `${{ aerobico: "aeróbico", fuerza: "fuerza", fuerza_eq: "fuerza y equilibrio", equilibrio: "equilibrio" }[k] || k} ${n}`).join(" · ");
+  if (tipos) pg.parrafo(`Sesiones por tipo: ${tipos}.`, { size: 8, color: C.muted, gap: 0 });
+
+  pg.seccion("Comparativa con la prescripción");
+  const c = evo.comp; const d_ = (x) => (x == null ? "" : ` (${x > 0 ? "+" : ""}${x})`);
+  const nom = (m) => ctx.nombres?.[m.pid] || m.pid;
+  const medsTxt = c.medicacion ? ([c.medicacion.nuevos.length ? `nuevos: ${c.medicacion.nuevos.map(nom).join(", ")}` : "", c.medicacion.retirados.length ? `retirados: ${c.medicacion.retirados.map(nom).join(", ")}` : "", c.medicacion.cambios.length ? `dosis cambiada: ${c.medicacion.cambios.map(nom).join(", ")}` : ""].filter(Boolean).join(" · ") || "sin cambios") : "no disponible (prescripción anterior a esta versión)";
+  pg.tabla([{ t: "", w: .3 }, { t: "Al prescribir", w: .25 }, { t: "Hoy", w: .45 }], [
+    [{ t: "SPPB (0–12)", bold: true }, String(c.sppb.antes ?? "—"), `${c.sppb.ahora ?? "—"}${d_(c.sppb.delta)}${c.sppb.delta != null && Math.abs(c.sppb.delta) >= 1 ? " · cambio clínicamente relevante" : ""}`],
+    [{ t: "FC en reposo (lpm)", bold: true }, String(c.fcReposo.antes ?? "—"), `${c.fcReposo.ahora ?? "—"}${d_(c.fcReposo.delta)}`],
+    [{ t: "Medicación", bold: true }, c.medicacion ? `${(ctx.prescrito?.base?.meds || []).length} fármacos` : "—", medsTxt],
+    [{ t: "Avisos del informe actual", bold: true }, "—", `${res.resumen.alerta} atención · ${res.resumen.precaucion} precaución · ${res.interacciones.filter((x) => x.nivel === "mayor").length} interacciones mayores`],
+  ], { size: 8.3 });
+
+  pg.seccion("Síntomas y constantes registrados");
+  const sint = Object.entries(evo.sintomas).map(([k, n]) => `${SINTOMAS.find((x) => x.id === k)?.nombre || k} (${n})`).join(", ");
+  pg.vineta(Object.keys(evo.sintomas).length ? "precaucion" : "info", `Síntomas durante las sesiones: ${sint || "ninguno registrado"}.${evo.chequeosNo ? ` Chequeo previo desfavorable en ${evo.chequeosNo} sesión(es).` : ""}`, { size: 8.5 });
+  if (evo.constantes.glucosa) pg.vineta(evo.constantes.glucosa.hipos ? "alerta" : "info", `Glucemias (${evo.constantes.glucosa.n}): media ${evo.constantes.glucosa.media} mg/dL (${evo.constantes.glucosa.min}–${evo.constantes.glucosa.max}); ${evo.constantes.glucosa.hipos} valor(es) < 70 mg/dL.`, { size: 8.5 });
+  if (evo.constantes.ta) pg.vineta(evo.constantes.ta.max >= 180 ? "alerta" : "info", `TA sistólica (${evo.constantes.ta.n}): media ${evo.constantes.ta.media}, máxima ${evo.constantes.ta.max} mmHg.`, { size: 8.5 });
+  if (!evo.constantes.glucosa && !evo.constantes.ta) pg.vineta("info", "Sin constantes registradas en el diario.", { size: 8.5 });
+
+  pg.seccion("Plan propuesto", "a cumplimentar por el prescriptor");
+  for (const l of ["Continuar / progresar (volumen antes que intensidad) / simplificar / derivar a programa supervisado.", "Objetivo próximo periodo: ____ sesiones y ____ min por semana; fuerza ____ días. Próxima reevaluación en ____ semanas (SPPB y FC en reposo el mismo día)."]) pg.vineta("info", l, { size: 8.3 });
+  pg.parrafo("Herramienta informativa: no sustituye la valoración individual ni modifica ningún tratamiento.", { size: 7.3, color: C.muted, gap: 0 });
+  pg.firma(ctx.prescriptor, ctx.prescrito);
+  pg.pie();
+  return doc;
 }
 
 /* ---------- FICHA PARA EL ENTRENADOR / FISIOTERAPEUTA ---------- */

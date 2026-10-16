@@ -267,6 +267,14 @@ try {
   await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")); s.prescrito.fecha = Date.now() - 50 * 864e5; localStorage.setItem("medex.estado", JSON.stringify(s)); });
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("aviso de reevaluación cuando vence el plazo", await p.isVisible("#aviso-reeval"));
+  await p.click("#btn-evolucion-aviso"); await p.waitForTimeout(300);
+  check("informe de evolución: diálogo con adherencia, sesiones, minutos/semana y comparativa", await p.isVisible("#evolucion") && (await p.$$("#evolucion .evo-tiles .tile")).length === 4 && (await p.textContent("#evolucion .evo-tabla")).includes("SPPB"));
+  await p.click("#evo-copiar"); await p.waitForTimeout(200);
+  check("texto de evolución copiado para la historia", (await p.evaluate(() => navigator.clipboard.readText())).startsWith("EVOLUCIÓN DEL PLAN"));
+  await p.click("#evo-renovar"); await p.waitForTimeout(300);
+  check("renovar la prescripción: nueva fecha, foto base y la anterior en el historial", await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")); return Date.now() - s.prescrito.fecha < 10000 && !!s.prescrito.base && s.historialPresc.length === 1; }) && !(await p.isVisible("#aviso-reeval")));
+  await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")); s.prescrito.fecha = Date.now() - 50 * 864e5; localStorage.setItem("medex.estado", JSON.stringify(s)); });
+  await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   await p.click("#btn-reeval-ok"); await p.waitForTimeout(100);
   check("reevaluado → aviso oculto", !(await p.isVisible("#aviso-reeval")));
   await p.click("#btn-perfiles"); await p.waitForTimeout(100);
