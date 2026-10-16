@@ -314,6 +314,14 @@ try {
   await p.click("#btn-consulta-siguiente"); await p.waitForTimeout(300);
   check("siguiente paciente vacía la lista y los datos", (await p.$$("#lista-meds li")).length === 0 && (await p.$eval("#edad", (e) => e.value)) === "" && (await p.$eval("#consulta-paciente", (s) => s.value)) === "");
   await p.selectOption("#consulta-paciente", { index: 1 }); await p.waitForTimeout(400);
+  await p.click("#btn-consulta-stats"); await p.waitForTimeout(300);
+  check("estadísticas de la consulta: tiles, listas y acciones con los pacientes guardados", await p.isVisible("#estadisticas") && Number((await p.textContent("#estadisticas .evo-tiles .tile:first-child .num")).trim()) >= 1 && (await p.$$("#estadisticas .stats-lista")).length >= 3);
+  const [dlCsvCons] = await Promise.all([p.waitForEvent("download"), p.click("#stats-csv")]);
+  const csvCons = (await import("node:fs")).readFileSync(await dlCsvCons.path(), "utf8");
+  check("CSV anonimizado de la consulta con cabecera y una fila", dlCsvCons.suggestedFilename().startsWith("consulta-") && csvCons.includes("n_farmacos") && csvCons.trim().split(/\r?\n/).length >= 2 && csvCons.includes("PAC-01"));
+  await p.click("#stats-resumen"); await p.waitForTimeout(200);
+  check("resumen de la consulta copiado", (await p.evaluate(() => navigator.clipboard.readText())).startsWith("PAUTA ACTIVA · RESUMEN DE LA CONSULTA"));
+  await p.click("#estadisticas-cerrar");
   check("cargar el paciente guardado restaura la lista y la edad", (await p.$$("#lista-meds li")).length === nMedsAntes && (await p.$eval("#edad", (e) => e.value)) === "78");
   await p.click('#cambios [data-a="cerrar"]').catch(() => {});
   await p.selectOption("#plantilla", "ic"); await p.click("#btn-plantilla"); await p.waitForTimeout(300);
