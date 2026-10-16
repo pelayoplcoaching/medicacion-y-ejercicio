@@ -265,7 +265,7 @@ try {
   const historia = await p.evaluate(() => navigator.clipboard.readText());
   check("texto para la historia clínica", historia.startsWith("RECOMENDACIÓN DE EJERCICIO") && historia.includes("NYHA"));
   check("la historia incluye el registro del paciente con constantes", historia.includes("Registro del paciente") && historia.includes("glucosa antes 140"));
-  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && historia.includes("v0."));
+  check("la historia incluye el cribado ACSM y la versión", historia.includes("Cribado ACSM") && /v\d+\.\d+/.test(historia));
   check("la historia incluye la valoración funcional (SPPB) y la zona de intensidad", historia.includes("SPPB 12/12") && historia.includes("Zona de intensidad"));
   await p.click("#bloque-prescriptor summary"); await p.fill("#presc-nombre", "Dra. Prueba"); await p.fill("#presc-centro", "Centro de pruebas"); await p.$eval("#presc-centro", (e) => e.dispatchEvent(new Event("change"))); await p.$eval("#presc-nombre", (e) => e.dispatchEvent(new Event("change")));
   await p.click("#btn-prescrito"); await p.waitForTimeout(200);
@@ -401,7 +401,7 @@ try {
   await ctx.setOffline(false); await p.evaluate(() => window.dispatchEvent(new Event("online"))); await p.waitForTimeout(100);
   check("indicador desaparece al volver la conexión", !(await p.isVisible("#conexion")));
   await p.goto(`http://localhost:${PORT}/legal.html`, { waitUntil: "networkidle" }); await p.waitForTimeout(300);
-  check("legal.html con las cinco secciones y la versión", (await p.$$("#regulatorio, #aviso, #privacidad, #accesibilidad, #metodologia")).length === 5 && (await p.textContent("#app-version")).startsWith("v0."));
+  check("legal.html con las cinco secciones y la versión", (await p.$$("#regulatorio, #aviso, #privacidad, #accesibilidad, #metodologia")).length === 5 && /^v\d+\.\d+/.test(await p.textContent("#app-version")));
   await p.goto(`http://localhost:${PORT}/acerca.html`, { waitUntil: "networkidle" }); await p.waitForFunction(() => /casos clínicos/.test(document.querySelector("#validacion-txt").textContent), null, { timeout: 15000 });
   check("acerca.html ejecuta los casos de validación", (await p.$$("#validacion-lista li")).length >= 10 && !(await p.textContent("#validacion-lista")).includes("✘"));
   const anchoCtx = await navegador.newContext({ viewport: { width: 1400, height: 900 }, locale: "es-ES" }); const pa = await anchoCtx.newPage();

@@ -1,6 +1,6 @@
 # Lista de comprobación para la beta · Pauta Activa
 
-Estado en la beta 3 (v0.19.0-beta.3, 2026-10-15). Marcar al completar; lo pendiente es responsabilidad clínica o decisión de producto, no técnica.
+Estado en la versión 1.0 (v1.0.0, 2026-10-16). Lo pendiente es responsabilidad clínica, jurídica o de difusión del autor. Marcar al completar; lo pendiente es responsabilidad clínica o decisión de producto, no técnica.
 
 ## Contenido clínico
 - [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Pendiente: muestreo del autor (10 % por grupo + todas las de nivel atención).
@@ -14,7 +14,7 @@ Estado en la beta 3 (v0.19.0-beta.3, 2026-10-15). Marcar al completar; lo pendie
 - [x] Formulario de sugerencias sin datos identificativos (lista de principios/dosis y versión).
 - [x] Páginas legales (aviso, privacidad, accesibilidad, metodología, regulatorio).
 - [ ] Revisión jurídica externa del posicionamiento regulatorio (herramienta informativa vs. producto sanitario según MDR 2017/745, regla 11) y del aviso legal.
-- [ ] Política de versiones de la base: quién aprueba cada regeneración y cómo se comunica al usuario (hoy: fecha en `kb.version` y «Novedades»).
+- [x] Política de versiones de la base: la app detecta la versión nueva y muestra al usuario qué avisos cambian en su informe y en sus pacientes guardados (v1.0); aprueba el autor.
 
 ## Calidad técnica
 - [x] `scripts/test.mjs` 126/126 · `scripts/ui_test.mjs` 122/122 · axe 0 incidencias · Lighthouse móvil ≥ 90, escritorio 100.
@@ -25,11 +25,11 @@ Estado en la beta 3 (v0.19.0-beta.3, 2026-10-15). Marcar al completar; lo pendie
 
 ## Experiencia de usuario
 - [ ] Prueba con 5–8 pacientes reales (mayores, polimedicados) y 3–5 profesionales (medicina interna, AP, fisioterapia, CAFD): tarea «introduce tu medicación y descarga tu plan» sin ayuda; medir tiempo, errores y comprensión de Lo esencial.
-- [ ] Revisar el texto de las reglas con criterio de lectura fácil (frases cortas, sin siglas sin explicar) en el modo paciente.
+- [x] Lectura fácil: índice INFLESZ medido en cada versión (`scripts/legibilidad.mjs`, umbral en `test.mjs`); 50 textos reescritos (v1.0).
 - [x] Canal de feedback: hoja dentro de la app con contexto técnico + formulario Tally prerrellenado (beta 2). Pendiente: ritmo de respuesta.
 
 ## Publicación
 - [x] Etiquetas `v0.16.0-beta.0` … `v0.18.0-beta.2` en git y notas de versión en «Novedades»; pendiente `v0.19.0-beta.3`.
 - [ ] Dominio definitivo y HTTPS verificados; `sitemap.xml` y `robots.txt` actualizados.
-- [ ] Página de presentación / difusión (FBE) con los límites de la herramienta claramente expuestos.
+- [x] Página de presentación (`presentacion.html`) con los límites de la herramienta claramente expuestos (v1.0).
 - [ ] Plan de mantenimiento: regeneración trimestral del nomenclátor, revisión anual de guías (ACSM, ESC, ADA), registro de incidencias.

@@ -84,9 +84,9 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 ## Pruebas
 
 ```bash
-node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB, fuentes de interacciones (128 comprobaciones)
+node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB, fuentes de interacciones, evolución, legibilidad (150 comprobaciones)
 npm i -D playwright && npx playwright install chromium
-node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (134 comprobaciones)
+node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (153 comprobaciones)
 ```
 Ambas se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 

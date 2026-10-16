@@ -2,6 +2,20 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.0.0 · 2026-10-16 (versión 1.0)
+Diez mejoras finales antes de la primera versión estable; sale la etiqueta «beta».
+- «De un vistazo» en la pantalla del informe con la misma jerarquía que la primera cara del PDF del paciente (puede hacer / con cuidado / evite, plan semanal, ritmo); listas, filas y ritmo compartidos entre app, PDF e historia.
+- Informe de evolución para la reevaluación (modo profesional): adherencia frente al plan, minutos y RPE por semana, síntomas y glucemias del diario, comparativa SPPB / FC en reposo / medicación con la foto tomada al prescribir; texto para la historia, PDF de una cara y «renovar la prescripción» con historial.
+- Aviso de cambios al actualizar la base: la app guarda una huella del informe (y de cada paciente guardado) y, cuando llega una base nueva, muestra qué avisos aparecen, desaparecen o cambian de texto.
+- Pantalla de consulta (≥ 960 px, modo profesional): dos columnas sin pestañas, con la columna de medicación y datos fija y el informe completo seguido.
+- Ilustraciones propias de los 18 ejercicios (`app/js/pictos.js`) en la sesión guiada y el plan; hoja «Mi sesión» imprimible desde el navegador sin librerías.
+- Lectura fácil: índice INFLESZ de los 685 textos que lee el paciente (`scripts/legibilidad.mjs`) con comprobación en `test.mjs`; 50 textos reescritos en las fuentes (media 55,8 → 57,8).
+- Estadísticas de la consulta: pacientes guardados, edad, fármacos y avisos por paciente, situaciones, grupos, principios, efectos, interacciones, cribado y prescripciones; CSV anonimizado y resumen para la memoria del servicio.
+- Base ampliada con la fábrica de contenido: 38 principios frecuentes del nomenclátor con reglas propias y ficha (`data/ext/10_v1_principios.json`; 354 → 392 principios); casos de validación 13 → 25 (negativos y uno por situación clínica).
+- Compartir y publicar: enlace de solo lectura (`#ver=`) con «hacer una copia», evento de reevaluación en el calendario, `scripts/dataset.py` (JSON + CSV + README + licencia) y `CITATION.cff` / `.zenodo.json` para el DOI.
+- Presentación: `presentacion.html` (qué es, para quién, qué hace, lo que no es, cómo empezar), capturas nuevas, versión 1.0 en acerca/legal, etiqueta «beta» retirada.
+- Pruebas: motor 150, interfaz 153; axe 0 incidencias en 9 páginas/escenarios.
+
 ## 0.19.1-beta.3 · 2026-10-16
 - PDF del paciente rediseñado tras la primera entrega a un paciente real: la primera cara concentra lo básico y lo más útil (prescriptor, cribado, puede/con cuidado/evite, lo esencial, plan semanal y ritmo); la segunda, su semana, cuándo entrenar y las señales de alarma; las siguientes, su medicación una por una (resumen + las reglas más relevantes), su situación e interacciones. Máximo 4 caras: si se exceden, el documento se vuelve a maquetar con menos detalle (3 → 0 reglas por fármaco). Eliminadas las secciones por tipo de ejercicio (todas las reglas de todos los fármacos) y la lista de alarmas duplicada; las interacciones de DDInter sin texto no se incluyen en el documento del paciente.
 - Pie de página de los PDF en dos líneas (no se solapa con el número de página); la cabecera no pisa el número de documento con letra grande.
