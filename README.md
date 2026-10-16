@@ -28,6 +28,8 @@ scripts/
   fuentes_ddi.py     ← asigna fuente por fila a las interacciones curadas (idempotente)
   propuesta_ia.py    ← fábrica de contenido: escribe el encargo para un modelo (grupo, principio o interacción)
   validar_bloque.py  ← valida un bloque propuesto (JSON) antes de fusionarlo con merge_kb.py
+  legibilidad.mjs    ← índice INFLESZ de los textos del paciente (informe y comprobación en test.mjs)
+  lectura_facil.py   ← reescrituras de lectura fácil aplicadas en las fuentes (idempotente)
   nombres_es_en.json ← mapa id ↔ nombre inglés para cruzar con DDInter
 ```
 

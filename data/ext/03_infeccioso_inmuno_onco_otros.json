@@ -160,7 +160,7 @@
       "atc": [
         "J01FA"
       ],
-      "resumen": "Antibióticos que alargan el QT e interfieren con muchos fármacos (estatinas, anticoagulantes, colchicina). En uso crónico (EPOC, bronquiectasias) conviene tenerlo presente.",
+      "resumen": "Antibióticos que alargan el QT y alteran el efecto de muchos fármacos, como estatinas, anticoagulantes o colchicina. Si los toma de forma crónica, por EPOC o bronquiectasias, conviene tenerlo presente.",
       "senales": [
         "qt"
       ],
@@ -199,7 +199,7 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "Si toma estatinas (sobre todo simvastatina o atorvastatina), claritromicina y eritromicina multiplican el riesgo de daño muscular: evite el ejercicio de fuerza intenso durante el tratamiento y consulte ante dolor muscular generalizado.",
+          "texto": "Si toma estatinas, sobre todo simvastatina o atorvastatina, la claritromicina y la eritromicina multiplican el riesgo de daño muscular. Mientras dure el tratamiento, evite la fuerza intensa. Consulte si nota dolor muscular por todo el cuerpo.",
           "fuente": "FT AEMPS 4.5",
           "evidencia": "ft",
           "revisado": true
@@ -224,7 +224,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Si toma estatina, cargas ligeras durante el tratamiento con claritromicina/eritromicina.",
+          "texto": "Si toma una estatina, use cargas ligeras mientras dure el tratamiento con claritromicina o eritromicina.",
           "fuente": "FT AEMPS 4.5",
           "evidencia": "ft",
           "revisado": true
@@ -313,7 +313,7 @@
           "si": {
             "principio": "voriconazol"
           },
-          "texto": "Voriconazol produce fotosensibilidad intensa y alteraciones visuales transitorias: protección solar estricta y cuidado al entrenar al aire libre.",
+          "texto": "El voriconazol hace la piel muy sensible al sol y puede alterar la vista unos minutos. Protéjase del sol y tenga cuidado al entrenar al aire libre.",
           "fuente": "FT AEMPS 4.8",
           "evidencia": "ft",
           "revisado": true
@@ -332,7 +332,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Sin limitación específica; reponga electrolitos en sesiones largas.",
+          "texto": "Sin limitación específica. En sesiones largas, reponga agua y sales.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -442,7 +442,7 @@
           "si": {
             "principio": "tar_potenciado"
           },
-          "texto": "Ritonavir y cobicistat bloquean el metabolismo de simvastatina y lovastatina (contraindicadas), atorvastatina (dosis baja), corticoides inhalados o intranasales como fluticasona y budesonida (síndrome de Cushing), y muchos otros. Cualquier fármaco nuevo, incluidos suplementos, debe revisarse con su médico de VIH.",
+          "texto": "Ritonavir y cobicistat frenan la eliminación de muchos fármacos. Simvastatina y lovastatina están contraindicadas; atorvastatina solo a dosis baja. Los corticoides inhalados o nasales, como fluticasona y budesonida, pueden causar síndrome de Cushing. Consulte con su médico de VIH cualquier fármaco o suplemento nuevo.",
           "fuente": "FT AEMPS 4.5",
           "evidencia": "ft",
           "revisado": true
@@ -507,7 +507,7 @@
       "atc": [
         "J04A"
       ],
-      "resumen": "La rifampicina acelera el metabolismo de muchos fármacos (anticoagulantes, anticonceptivos, estatinas, antidiabéticos). La pirazinamida sube el ácido úrico y la isoniazida puede dañar el hígado.",
+      "resumen": "La rifampicina hace que muchos fármacos pierdan efecto: anticoagulantes, anticonceptivos, estatinas y antidiabéticos. La pirazinamida sube el ácido úrico. La isoniazida puede dañar el hígado.",
       "senales": [
         "fatiga"
       ],
@@ -559,7 +559,7 @@
       "general": [
         {
           "nivel": "precaucion",
-          "texto": "La rifampicina reduce el efecto de anticoagulantes, anticonceptivos, estatinas, antidiabéticos y muchos otros: no cambie ni añada ningún fármaco sin consultarlo.",
+          "texto": "La rifampicina reduce el efecto de anticoagulantes, anticonceptivos, estatinas, antidiabéticos y muchos otros. No cambie ni añada ningún fármaco sin consultarlo.",
           "fuente": "FT AEMPS 4.5",
           "evidencia": "ft",
           "revisado": true
@@ -775,7 +775,7 @@
         },
         {
           "nivel": "precaucion",
-          "texto": "Tacrolimus y ciclosporina tienen margen estrecho: deshidratación, antiinflamatorios, pomelo y muchos antibióticos o antifúngicos cambian sus niveles. Hidrátese bien, use paracetamol para el dolor y consulte cualquier fármaco o suplemento nuevo.",
+          "texto": "Tacrolimus y ciclosporina tienen poco margen de seguridad. La deshidratación, los antiinflamatorios, el pomelo y muchos antibióticos o antifúngicos cambian sus niveles. Beba suficiente, use paracetamol para el dolor y consulte cualquier fármaco o suplemento nuevo.",
           "fuente": "FT AEMPS 4.5",
           "evidencia": "ft",
           "revisado": true
@@ -916,7 +916,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; reduce la fatiga de las enfermedades inflamatorias.",
+          "texto": "Indicado. Reduce el cansancio que producen las enfermedades inflamatorias.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -1777,7 +1777,7 @@
         "A07DA03",
         "A02A"
       ],
-      "resumen": "Fármacos digestivos de uso frecuente. Metoclopramida puede dar somnolencia y síntomas parkinsonianos; domperidona alarga el QT; loperamida no debe usarse para 'aguantar' una gastroenteritis con fiebre.",
+      "resumen": "Fármacos digestivos de uso frecuente. La metoclopramida puede dar sueño y temblor o rigidez. La domperidona alarga el QT. La loperamida no sirve para «aguantar» una gastroenteritis con fiebre.",
       "senales": [],
       "principios": [
         {
@@ -1862,7 +1862,7 @@
           "si": {
             "principio": "antiacido"
           },
-          "texto": "Los antiácidos reducen la absorción de muchos fármacos (hierro, levotiroxina, quinolonas, bifosfonatos): sepárelos 2–4 horas.",
+          "texto": "Los antiácidos impiden absorber bien muchos fármacos, como hierro, levotiroxina, quinolonas o bifosfonatos. Tómelos con 2–4 horas de separación.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -2006,7 +2006,7 @@
         "N03AB02",
         "N03AA02"
       ],
-      "resumen": "Complementan la lista de antiepilépticos. Zonisamida reduce la sudoración; perampanel y fenobarbital producen somnolencia y mareo; fenitoína y fenobarbital interfieren con muchos fármacos.",
+      "resumen": "Otros antiepilépticos. Zonisamida reduce el sudor. Perampanel y fenobarbital dan sueño y mareo. Fenitoína y fenobarbital alteran el efecto de muchos fármacos.",
       "senales": [
         "sedacion",
         "caidas"
@@ -2101,7 +2101,7 @@
           "si": {
             "principio": "perampanel"
           },
-          "texto": "Perampanel produce mareo, somnolencia e irritabilidad, sobre todo al inicio: evite actividades con riesgo de caída hasta conocer su tolerancia.",
+          "texto": "El perampanel da mareo, sueño e irritabilidad, sobre todo al principio. Hasta saber cómo le sienta, evite actividades con riesgo de caída.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -2128,7 +2128,7 @@
       "equilibrio": [
         {
           "nivel": "precaucion",
-          "texto": "Inestabilidad posible con lacosamida, perampanel y fenitoína: equilibrio con apoyo.",
+          "texto": "Lacosamida, perampanel y fenitoína pueden hacerle perder el equilibrio. Haga los ejercicios de equilibrio con un apoyo cerca.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true

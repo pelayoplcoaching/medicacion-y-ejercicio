@@ -68,7 +68,7 @@
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "Intensidad ligera-moderada (debe poder hablar). Evite el ejercicio de alta intensidad por intervalos salvo autorización expresa.",
+          "texto": "Intensidad ligera o moderada: debe poder hablar. No haga ejercicio de alta intensidad por intervalos salvo que su médico lo autorice.",
           "fuente": "ESC 2020 cardiología del deporte",
           "evidencia": "guia",
           "revisado": true
@@ -77,7 +77,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Seguro con cargas moderadas, repeticiones controladas y sin apnea.",
+          "texto": "Seguro con cargas moderadas y repeticiones controladas. No aguante la respiración.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
           "evidencia": "guia",
           "revisado": true
@@ -246,7 +246,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Cargas moderadas, sin apnea ni esfuerzos isométricos mantenidos.",
+          "texto": "Use cargas moderadas. No aguante la respiración ni haga fuerza mantenida sin moverse.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
           "evidencia": "guia",
           "revisado": true
@@ -518,7 +518,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Muy recomendable en insuficiencia cardíaca: cargas ligeras-moderadas, muchas repeticiones, sin apnea.",
+          "texto": "Muy recomendable en la insuficiencia cardíaca. Use cargas ligeras o moderadas, con muchas repeticiones y sin aguantar la respiración.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
           "evidencia": "guia",
           "revisado": true

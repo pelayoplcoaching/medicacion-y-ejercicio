@@ -74,7 +74,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado. En competición, consulte la normativa antidopaje (requieren autorización de uso terapéutico).",
+          "texto": "Puede hacer ejercicio aeróbico. Si compite, consulte la normativa antidopaje: estos fármacos necesitan una autorización de uso terapéutico.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -298,7 +298,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Sin limitación entre crisis; respiración continua (la apnea puede desencadenar cefalea).",
+          "texto": "Entre crisis no hay limitación. Respire de forma continua: aguantar el aire puede provocar dolor de cabeza.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
           "evidencia": "guia",
           "revisado": true
@@ -489,7 +489,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad ligera-moderada, evitando el calor (tizanidina y ciclobenzaprina lo toleran peor).",
+          "texto": "Puede hacer ejercicio aeróbico ligero o moderado. Evite el calor: con tizanidina y ciclobenzaprina se tolera peor.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -716,7 +716,7 @@
         "N04AA02",
         "N04BC09"
       ],
-      "resumen": "Complementos de la levodopa. Amantadina y biperideno tienen efectos anticolinérgicos (confusión, calor); rotigotina (parche) y safinamida se parecen a los agonistas dopaminérgicos.",
+      "resumen": "Complementan la levodopa. Amantadina y biperideno pueden dar confusión y calor. Rotigotina, en parche, y safinamida actúan como los agonistas dopaminérgicos.",
       "senales": [
         "hipotension",
         "caidas",
@@ -1052,7 +1052,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado; la capacidad aeróbica mejora rápidamente al dejar de fumar.",
+          "texto": "Indicado. Al dejar de fumar, la capacidad para el ejercicio mejora en pocas semanas.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -1089,7 +1089,7 @@
         "N05CH01",
         "R06AX"
       ],
-      "resumen": "Melatonina ayuda a regular el sueño sin efectos sobre el ejercicio; los antihistamínicos modernos (cetirizina, loratadina, bilastina, desloratadina) apenas dan sueño y son la opción para la alergia del deportista.",
+      "resumen": "La melatonina ayuda a regular el sueño y no afecta al ejercicio. Los antihistamínicos modernos, como cetirizina, loratadina, bilastina o desloratadina, apenas dan sueño: son la opción para la alergia si hace deporte.",
       "senales": [],
       "principios": [
         {

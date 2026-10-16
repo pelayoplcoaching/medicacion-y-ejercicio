@@ -235,6 +235,16 @@ console.log("\nEvolución del plan (v1.0)");
   check("texto de evolución para la historia", txt.startsWith("EVOLUCIÓN DEL PLAN") && txt.includes("70 %") && txt.includes("SPPB 8 → 10 (+2") && txt.includes("nuevos: Apixabán") && txt.includes("1 valor(es) < 70"));
 }
 
+console.log("\nLectura fácil (v1.0)");
+{
+  const { inflesz, informe, silabas } = await import(pathToFileURL(path.join(ROOT, "scripts/legibilidad.mjs")).href);
+  check("sílabas: camine → 3, hipoglucemia → 5, día → 2 (hiato), agua → 2 (diptongo)", silabas("camine") === 3 && silabas("hipoglucemia") === 5 && silabas("día") === 2 && silabas("agua") === 2);
+  check("INFLESZ: prosa sencilla puntúa «bastante fácil»; prosa técnica puntúa peor", inflesz("Camine cada día a un paso que le permita hablar. Beba agua antes y después. Pare si nota dolor en el pecho.") > 65 && inflesz("La administración concomitante de inhibidores potentes del citocromo incrementa significativamente la exposición plasmática del sustrato.") < 40);
+  const r = informe();
+  check(`legibilidad de los textos del paciente: media ≥ 55 (${r.media}) y como mucho 8 textos por debajo de 25 (${r.peores.filter((x) => x.v < 25).length})`, r.media >= 55 && r.peores.filter((x) => x.v < 25).length <= 8, r.peores.slice(0, 3).map((x) => `${x.v} ${x.donde}`).join(" | "));
+  check(`textos «muy difíciles» (< 40) acotados: ${r.muyDificiles.length} ≤ 85`, r.muyDificiles.length <= 85);
+}
+
 console.log("\nIdiomas");
 {
   // i18n.js usa document/localStorage solo dentro de funciones; aquí comprobamos los diccionarios

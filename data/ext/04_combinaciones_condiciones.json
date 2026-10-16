@@ -987,7 +987,7 @@
         "R03DC03",
         "R03DX07"
       ],
-      "resumen": "Otros fármacos respiratorios. Teofilina acelera el pulso y tiene margen estrecho (cafeína, infecciones y algunos antibióticos lo alteran); montelukast y roflumilast no afectan al ejercicio.",
+      "resumen": "Otros fármacos respiratorios. La teofilina acelera el pulso y tiene poco margen de seguridad: el café, las infecciones y algunos antibióticos la alteran. Montelukast y roflumilast no afectan al ejercicio.",
       "senales": [],
       "principios": [
         {
@@ -1047,7 +1047,7 @@
           "si": {
             "principio": "montelukast"
           },
-          "texto": "Montelukast ayuda a prevenir el broncoespasmo por ejercicio; sin precauciones específicas.",
+          "texto": "El montelukast ayuda a prevenir el broncoespasmo por ejercicio. No necesita precauciones especiales.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -1173,7 +1173,7 @@
       "atc": [
         "C10AX15"
       ],
-      "resumen": "Hipolipemiante sin efecto muscular (alternativa para intolerantes a estatinas). Sube el ácido úrico y puede favorecer tendinopatías raras.",
+      "resumen": "Baja el colesterol sin dañar el músculo; es una alternativa cuando las estatinas no se toleran. Sube el ácido úrico y, rara vez, puede dañar los tendones.",
       "senales": [],
       "principios": [
         {
@@ -1268,7 +1268,7 @@
       "aerobico": [
         {
           "nivel": "precaucion",
-          "texto": "La capacidad de esfuerzo está reducida (acidosis): intensidad ligera-moderada.",
+          "texto": "Con este fármaco se cansa antes, porque acidifica la sangre. Entrene a intensidad ligera o moderada.",
           "fuente": "FT AEMPS 4.8",
           "evidencia": "ft",
           "revisado": true

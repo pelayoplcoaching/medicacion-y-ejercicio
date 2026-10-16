@@ -278,7 +278,7 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Indicado a intensidad ligera-moderada, con progresión según tolerancia.",
+          "texto": "Puede hacer ejercicio aeróbico a intensidad ligera o moderada. Aumente poco a poco, según lo tolere.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -287,7 +287,7 @@
       "fuerza": [
         {
           "nivel": "info",
-          "texto": "Recomendable para conservar masa muscular durante el tratamiento.",
+          "texto": "Recomendable: ayuda a conservar el músculo durante el tratamiento.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
