@@ -69,6 +69,10 @@ try {
   await p.click("#btn-ir-informe"); await p.waitForTimeout(300);
   check("veredicto presente", (await p.textContent("#veredicto")).length > 20);
   check("lo esencial con 3–5 puntos", [3, 4, 5].includes((await p.$$("#esencial .esencial li")).length));
+  check("«De un vistazo»: semáforo de tres columnas, plan semanal de tres filas y ritmo", (await p.$$("#vistazo .semaforo-col")).length === 3 && (await p.$$("#vistazo .tabla-plan tbody tr")).length === 3 && (await p.textContent("#vistazo .ritmo")).includes("ritmo"));
+  await p.click("#btn-vistazo-semana"); await p.waitForTimeout(200);
+  check("«Ver mi semana» abre la pestaña Mi plan", (await p.$eval('[data-tab="plan"]', (b) => b.getAttribute("aria-selected"))) === "true");
+  await p.click('[data-tab="general"]'); await p.waitForTimeout(200);
   check("señales de alarma", (await p.$$("#alarma-card li")).length >= 5);
   check("tarjeta Hoy", await p.isVisible("#hoy"));
   check("glosario presente", (await p.$$("abbr.glos")).length >= 1);
@@ -352,7 +356,7 @@ try {
   const anchoCtx = await navegador.newContext({ viewport: { width: 1400, height: 900 }, locale: "es-ES" }); const pa = await anchoCtx.newPage();
   await pa.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pa.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("principios"), null, { timeout: 15000 });
   await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
-  check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 5);
+  check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 6);
   check("recorrido: con medicación y sin datos, el paso actual es «sus datos» y «Siguiente» lo indica", (await pa.$eval("#recorrido-pasos li[aria-current=step]", (e) => e.textContent)).includes("datos") && (await pa.textContent("#btn-siguiente")).includes("datos"));
   await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
   check("recorrido en escritorio: con datos y medicación el plan ya está a la vista, los tres pasos quedan hechos y «Siguiente» desaparece", (await pa.$$("#recorrido-pasos li.hecho")).length === 3 && await pa.$eval("#btn-siguiente", (b) => b.hidden) && (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);

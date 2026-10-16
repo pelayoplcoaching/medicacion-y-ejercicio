@@ -1,7 +1,7 @@
 import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB } from "./engine.js?v=202610161041";
 import { APP_VERSION } from "./version.js?v=202610161041";
 import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610161041";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion } from "./informes.js?v=202610161041";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202610161041";
 import { cargarScript } from "./libs.js?v=202610161041";
 import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610161041";
 import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610161041";
@@ -1099,6 +1099,26 @@ $("#btn-siguiente").addEventListener("click", () => {
   else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
 });
 
+/** «De un vistazo»: puede hacer / con cuidado / evite + plan semanal + ritmo. Misma jerarquía que la primera cara del PDF del paciente. */
+function renderVistazo(res, ctx) {
+  const cont = $("#vistazo"); if (!cont) return;
+  const { puede, cuidado, evite } = listasVistazo(res, ctx);
+  const col = (nivel, titulo, items) => `<div class="semaforo-col s-${nivel}"><h4>${titulo}</h4><ul>${items.slice(0, 4).map((x) => `<li>${glosar(x)}</li>`).join("")}</ul></div>`;
+  const filas = filasPlanPaciente(res, ctx);
+  const r = ritmoTexto(zonaIntensidad(res, ctx, { fcReposo: estado.fcReposo }));
+  cont.innerHTML = `
+    <section class="vistazo" aria-labelledby="vistazo-t">
+      <h3 id="vistazo-t">${t("vistazo.titulo")}</h3>
+      <div class="semaforo">${col("info", t("vistazo.puede"), puede)}${col("precaucion", t("vistazo.cuidado"), cuidado)}${col("alerta", t("vistazo.evite"), evite)}</div>
+      <h4 class="vistazo-plan-t">${t("vistazo.plan")}</h4>
+      <table class="tabla-plan"><thead><tr><th scope="col"><span class="sr-only">Tipo</span></th><th scope="col">${t("vistazo.veces")}</th><th scope="col">${t("vistazo.cuanto")}</th><th scope="col">${t("vistazo.como")}</th></tr></thead>
+      <tbody>${filas.map(([k, a, b, c]) => `<tr><th scope="row">${t("vistazo." + k)}</th><td data-l="${t("vistazo.veces")}">${a}</td><td data-l="${t("vistazo.cuanto")}">${b}</td><td data-l="${t("vistazo.como")}">${glosar(c)}</td></tr>`).join("")}</tbody></table>
+      ${r ? `<p class="ritmo"><b>${t("vistazo.ritmo")}:</b> ${glosar(r.linea)}${r.nota ? ` <small>${r.nota}</small>` : ""}</p>` : ""}
+      <div class="acciones"><button type="button" class="btn-sec sm" id="btn-vistazo-semana">${t("vistazo.semana")}</button><small class="muted">${t("vistazo.nota")}</small></div>
+    </section>`;
+  $("#btn-vistazo-semana").addEventListener("click", () => { estado.tab = "plan"; guardar(); render(); $("#contenido-tab").scrollIntoView({ behavior: "smooth", block: "start" }); });
+}
+
 function render() {
   const ctx = ctxActual();
   const resLista = evaluar(datos, estado.meds.filter((m) => !m.libre), ctx);     // todos los conocidos, para pintar la lista
@@ -1198,6 +1218,7 @@ function render() {
       <div id="sintoma-detalle">${sintomaDetalle(res)}</div>
     </details>`;
   $("#sintomas-card").querySelectorAll(".chips button").forEach((b) => b.addEventListener("click", () => { sintomaAbierto = sintomaAbierto === b.dataset.s ? null : b.dataset.s; render(); }));
+  renderVistazo(res, ctx);
 
   // tabs con recuento de avisos (precaución + atención)
   const cuenta = (amb) => {

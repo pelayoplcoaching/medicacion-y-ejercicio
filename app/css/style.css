@@ -945,3 +945,28 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .plantilla-fila { align-items: end; margin-top: 10px; }
 .aviso-plan { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); display: grid; gap: 6px; }
 .aviso-plan .aviso-hora { display: flex; align-items: center; gap: 8px; } .aviso-plan input[type=time] { max-width: 120px; }
+
+/* De un vistazo (v1.0): misma jerarquía que la primera cara del PDF del paciente */
+.vistazo { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; margin: 12px 0; }
+.vistazo h3 { margin: 0 0 10px; font-size: 1.05rem; color: var(--accent-deep); }
+.vistazo h4 { margin: 14px 0 6px; font-size: .95rem; }
+.semaforo { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.semaforo-col { border-radius: 12px; padding: 10px 12px 8px; border-top: 4px solid; }
+.semaforo-col h4 { margin: 0 0 6px; font-size: .95rem; }
+.semaforo-col ul { margin: 0; padding: 0 0 0 18px; display: grid; gap: 4px; font-size: .92rem; }
+.semaforo-col.s-info { background: var(--info-soft); border-color: var(--info); } .semaforo-col.s-info h4 { color: var(--info-ink); }
+.semaforo-col.s-precaucion { background: var(--precaucion-soft); border-color: var(--precaucion); } .semaforo-col.s-precaucion h4 { color: var(--precaucion-ink); }
+.semaforo-col.s-alerta { background: var(--alerta-soft); border-color: var(--alerta); } .semaforo-col.s-alerta h4 { color: var(--alerta-ink); }
+.tabla-plan { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tabla-plan th, .tabla-plan td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.tabla-plan thead th { font-size: .78rem; color: var(--muted); font-weight: 700; }
+.tabla-plan tbody th { white-space: nowrap; color: var(--accent-deep); }
+.vistazo .ritmo { margin: 10px 0 4px; font-size: .92rem; } .vistazo .ritmo small { display: block; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.vistazo .acciones { margin-top: 8px; align-items: center; gap: 10px; }
+.detalle-t { margin: 22px 0 8px; font-size: 1.05rem; color: var(--accent-deep); }
+@media (max-width: 560px) {
+  .tabla-plan thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tabla-plan tr { display: block; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .tabla-plan th, .tabla-plan td { display: block; border: 0; padding: 2px 0; }
+  .tabla-plan td::before { content: attr(data-l) ": "; color: var(--muted); font-size: .8rem; }
+}

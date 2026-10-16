@@ -508,6 +508,54 @@ export async function pdfMedico(kb, res, ctx) {
   return doc;
 }
 
+/** Listas «puede hacer / con cuidado / evite» en lenguaje del paciente (misma fuente para la app y el PDF). */
+export function listasVistazo(res, ctx) {
+  const cond0 = ctx.condiciones || new Set();
+  const evite = [];
+  if (tiene(res, "sangrado")) evite.push("Deportes de contacto o con riesgo de golpes y caídas a velocidad.");
+  if (tiene(res, "tendon")) evite.push("Saltos, carrera intensa y cargas máximas durante el tratamiento y el mes siguiente.");
+  if (cuenta(res, "hipotension") >= 2) evite.push("Parar de golpe tras el esfuerzo y las duchas muy calientes justo después.");
+  if (tiene(res, "calor") || tiene(res, "deshidratacion")) evite.push("Entrenar con calor intenso o sin agua a mano.");
+  if (tiene(res, "sedacion")) evite.push("Entrenar en las horas siguientes a una toma que da sueño.");
+  if (tiene(res, "renal") || tiene(res, "sangrado") || tiene(res, "litio")) evite.push("Antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: use paracetamol.");
+  if (tiene(res, "fc_no_valida") || tiene(res, "bradicardia")) evite.push("Guiarse por el pulso del reloj para medir la intensidad.");
+  if (cond0.has("aneurisma_aorta")) evite.push("Levantar cargas máximas o aguantar la respiración haciendo fuerza.");
+  if (cond0.has("osteoporosis")) evite.push("Doblar la espalda hacia delante con peso y los giros bruscos.");
+  if (!evite.length) evite.push("No hay actividades que deba evitar por su medicación; progrese poco a poco.");
+  const cuidado = [];
+  if (tiene(res, "hipoglucemia")) cuidado.push("Mida la glucosa antes y después y lleve azúcar.");
+  if (cuenta(res, "hipotension") >= 1) cuidado.push("Levántese despacio y termine cada sesión con 5–10 minutos suaves.");
+  if (tiene(res, "caidas") || ctx.caidas || ctx.edad >= 65) cuidado.push("Haga el equilibrio con un apoyo cerca.");
+  if (tiene(res, "miopatia")) cuidado.push("Dolor muscular que no encaja con lo entrenado: consulte.");
+  if (tiene(res, "hiperpotasemia")) cuidado.push("Sin suplementos ni bebidas «ricas en potasio».");
+  if (tiene(res, "deshidratacion") || tiene(res, "litio")) cuidado.push("Beba agua con sales en sesiones largas.");
+  if (tiene(res, "qt")) cuidado.push("Palpitaciones o mareo: pare y consulte.");
+  if (!cuidado.length) cuidado.push("Empiece suave y aumente cada semana un poco.");
+  const puede = ["Caminar a un paso que le permita hablar, casi todos los días.", "Ejercicios de fuerza 2–3 días por semana (levantarse de la silla, subir escalones, empujar y tirar).", "Ejercicios de equilibrio 2–3 días por semana."];
+  return { evite, cuidado, puede };
+}
+
+/** Texto breve del ritmo de intensidad para el paciente (una línea + nota). */
+export function ritmoTexto(zz) {
+  if (!zz) return null;
+  const linea = zz.metodo === "fc"
+    ? `ligera ${zz.zonas.ligera[0]}–${zz.zonas.ligera[1]} lpm · moderada ${zz.zonas.moderada[0]}–${zz.zonas.moderada[1]} lpm` + (zz.techo === "vigorosa" ? ` · vigorosa ${zz.zonas.vigorosa[0]}–${zz.zonas.vigorosa[1]} lpm` : "") + "."
+    : `no se guíe por el pulso (${zz.motivos.join(", ")}); moderado = ${zz.rpe.moderada}.`;
+  const nota = (zz.metodo === "fc" ? `Pulso máximo estimado ${zz.fcmax} lpm${zz.limiteDai ? `; con DAI, pulso < ${zz.limiteDai} lpm` : ""}. ` : "") + (zz.techo === "moderada" ? "No pase de intensidad moderada por su situación clínica. " : "") + (zz.habla || "");
+  return { linea, nota };
+}
+
+/** Filas del plan semanal FITT en lenguaje del paciente (app y PDF). */
+export function filasPlanPaciente(res, ctx) {
+  const P = prescripcion(res, ctx);
+  const fcNo = tiene(res, "fc_no_valida") || tiene(res, "bradicardia");
+  return [
+    ["aer", P.aer.frec.replace("/semana", " por semana").replace("mín.", "mínimo"), "Empiece con 10–20 min y suba poco a poco hasta 30–45", (fcNo ? "A un ritmo que le permita hablar con frases cortas (no mire el pulso). " : "A un ritmo que le permita hablar con frases cortas. ") + "Termine siempre despacio."],
+    ["fue", "2–3 días, no seguidos", "20–40 min", "8–15 repeticiones de cada ejercicio, 2–3 vueltas. Respire siempre; nunca aguante el aire."],
+    ["eq", P.eq.frec.replace(/\s*\(.*?\)/, ""), "10–15 min", P.eq.int + " Apoyo sobre un pie, caminar talón-punta, levantarse sin manos."],
+  ];
+}
+
 /* ---------- SU PLAN (paciente) ---------- */
 /** Recorta un texto al final de una frase, sin pasar de `max` caracteres. */
 function corta(t, max = 220) {
@@ -545,29 +593,7 @@ function maquetarPaciente(doc, font, logo, qr, kb, res, ctx, detalle) {
 
   /* ---- cara 1: lo que necesita saber ---- */
   if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Antes de empezar", texto: txt.replace("Cribado ACSM: ", "").replace(/^./, (c) => c.toUpperCase()), size: 8.6 }); }
-  const P = prescripcion(res, ctx);
-  const cond0 = ctx.condiciones || new Set();
-  const evite = [];
-  if (tiene(res, "sangrado")) evite.push("Deportes de contacto o con riesgo de golpes y caídas a velocidad.");
-  if (tiene(res, "tendon")) evite.push("Saltos, carrera intensa y cargas máximas durante el tratamiento y el mes siguiente.");
-  if (cuenta(res, "hipotension") >= 2) evite.push("Parar de golpe tras el esfuerzo y las duchas muy calientes justo después.");
-  if (tiene(res, "calor") || tiene(res, "deshidratacion")) evite.push("Entrenar con calor intenso o sin agua a mano.");
-  if (tiene(res, "sedacion")) evite.push("Entrenar en las horas siguientes a una toma que da sueño.");
-  if (tiene(res, "renal") || tiene(res, "sangrado") || tiene(res, "litio")) evite.push("Antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: use paracetamol.");
-  if (tiene(res, "fc_no_valida") || tiene(res, "bradicardia")) evite.push("Guiarse por el pulso del reloj para medir la intensidad.");
-  if (cond0.has("aneurisma_aorta")) evite.push("Levantar cargas máximas o aguantar la respiración haciendo fuerza.");
-  if (cond0.has("osteoporosis")) evite.push("Doblar la espalda hacia delante con peso y los giros bruscos.");
-  if (!evite.length) evite.push("No hay actividades que deba evitar por su medicación; progrese poco a poco.");
-  const cuidado = [];
-  if (tiene(res, "hipoglucemia")) cuidado.push("Mida la glucosa antes y después y lleve azúcar.");
-  if (cuenta(res, "hipotension") >= 1) cuidado.push("Levántese despacio y termine cada sesión con 5–10 minutos suaves.");
-  if (tiene(res, "caidas") || ctx.caidas || ctx.edad >= 65) cuidado.push("Haga el equilibrio con un apoyo cerca.");
-  if (tiene(res, "miopatia")) cuidado.push("Dolor muscular que no encaja con lo entrenado: consulte.");
-  if (tiene(res, "hiperpotasemia")) cuidado.push("Sin suplementos ni bebidas «ricas en potasio».");
-  if (tiene(res, "deshidratacion") || tiene(res, "litio")) cuidado.push("Beba agua con sales en sesiones largas.");
-  if (tiene(res, "qt")) cuidado.push("Palpitaciones o mareo: pare y consulte.");
-  if (!cuidado.length) cuidado.push("Empiece suave y aumente cada semana un poco.");
-  const puede = ["Caminar a un paso que le permita hablar, casi todos los días.", "Ejercicios de fuerza 2–3 días por semana (levantarse de la silla, subir escalones, empujar y tirar).", "Ejercicios de equilibrio 2–3 días por semana."];
+  const { evite, cuidado, puede } = listasVistazo(res, ctx);
   pg.columnasSemaforo([
     { nivel: "info", titulo: "Puede hacer", items: puede },
     { nivel: "precaucion", titulo: "Con cuidado", items: cuidado.slice(0, 4) },
@@ -582,23 +608,18 @@ function maquetarPaciente(doc, font, logo, qr, kb, res, ctx, detalle) {
   }
 
   pg.seccion("Su plan semanal");
-  const fcNo = tiene(res, "fc_no_valida") || tiene(res, "bradicardia");
+  const NOMBRE_FILA = { aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio" };
   pg.tabla(
     [{ t: "", w: .14 }, { t: "Cuántas veces", w: .2 }, { t: "Cuánto", w: .22 }, { t: "Cómo", w: .44 }],
-    [
-      [{ t: "Aeróbico", bold: true }, P.aer.frec.replace("/semana", " por semana").replace("mín.", "mínimo"), "Empiece con 10–20 min y suba poco a poco hasta 30–45", (fcNo ? "A un ritmo que le permita hablar con frases cortas (no mire el pulso). " : "A un ritmo que le permita hablar con frases cortas. ") + "Termine siempre despacio."],
-      [{ t: "Fuerza", bold: true }, "2–3 días, no seguidos", "20–40 min", "8–15 repeticiones de cada ejercicio, 2–3 vueltas. Respire siempre; nunca aguante el aire."],
-      [{ t: "Equilibrio", bold: true }, P.eq.frec.replace(/\s*\(.*?\)/, ""), "10–15 min", P.eq.int + " Apoyo sobre un pie, caminar talón-punta, levantarse sin manos."],
-    ],
+    filasPlanPaciente(res, ctx).map(([k, a, b, c]) => [{ t: NOMBRE_FILA[k], bold: true }, a, b, c]),
     { size: 8.1 }
   );
-  { // zona de intensidad en dos líneas (la tabla completa está en la app y en el informe clínico)
-    const zz = ctx.zona, z = zonaTxt(zz);
-    if (z) {
-      const ritmo = zz.metodo === "fc" ? `Su ritmo: ligera ${zz.zonas.ligera[0]}–${zz.zonas.ligera[1]} lpm · moderada ${zz.zonas.moderada[0]}–${zz.zonas.moderada[1]} lpm` + (zz.techo === "vigorosa" ? ` · vigorosa ${zz.zonas.vigorosa[0]}–${zz.zonas.vigorosa[1]} lpm` : "") + "." : `Su ritmo: no se guíe por el pulso (${zz.motivos.join(", ")}); moderado = ${zz.rpe.moderada}.`;
+  { // ritmo de intensidad en dos líneas (la tabla completa está en la app y en el informe clínico)
+    const r = ritmoTexto(ctx.zona);
+    if (r) {
       pg.salto(10); // las dos líneas del ritmo van juntas
-      pg.parrafo(ritmo, { size: 8.6, style: "bold", gap: 0.3 });
-      pg.parrafo((zz.metodo === "fc" ? `Pulso máximo estimado ${zz.fcmax} lpm${zz.limiteDai ? `; con DAI, pulso < ${zz.limiteDai} lpm` : ""}. ` : "") + (zz.techo === "moderada" ? "No pase de intensidad moderada por su situación clínica. " : "") + (zz.habla || ""), { size: 7.4, color: C.muted });
+      pg.parrafo("Su ritmo: " + r.linea, { size: 8.6, style: "bold", gap: 0.3 });
+      if (r.nota) pg.parrafo(r.nota, { size: 7.4, color: C.muted });
     }
   }
 
