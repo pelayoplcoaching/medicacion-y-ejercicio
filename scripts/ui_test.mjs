@@ -118,6 +118,14 @@ try {
   check("diario exportable en CSV", csv.suggestedFilename().endsWith(".csv"));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
 
+  console.log("Ilustraciones y hoja «Mi sesión» (v1.0)");
+  await p.click('[data-tab="plan"]'); await p.waitForTimeout(300);
+  check("los bloques de la sesión llevan ilustración propia (SVG 96×96 con figura y apoyo)", (await p.$$('#contenido-tab .bloques .picto[viewBox="0 0 96 96"] .fig')).length >= 3);
+  await p.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; setTimeout(() => window.dispatchEvent(new Event("afterprint")), 50); }; });
+  await p.click("#btn-hoja-sesion"); await p.waitForTimeout(400);
+  check("«Imprimir mi sesión» rellena la hoja con los ejercicios y llama a imprimir", (await p.evaluate(() => window.__printed)) === 1 && (await p.$$("#hoja-sesion .hoja-ej li")).length >= 3 && !(await p.$eval("body", (b) => b.classList.contains("imprimir-sesion"))));
+  await p.click('[data-tab="general"]'); await p.waitForTimeout(200);
+
   console.log("Conciliación (lista guardada)");
   await p.click("#btn-perfiles"); await p.fill("#perfil-nombre", "Prueba"); await p.click("#btn-perfil-guardar"); await p.waitForTimeout(150);
   await p.click("#lista-meds li:nth-child(1) .quitar"); await p.waitForTimeout(150); await p.click("#toast button").catch(() => {}); await p.waitForTimeout(100);

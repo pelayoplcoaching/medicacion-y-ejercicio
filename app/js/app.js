@@ -1,6 +1,7 @@
 import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, evolucion, textoEvolucion } from "./engine.js?v=202610161041";
 import { APP_VERSION } from "./version.js?v=202610161041";
 import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610161041";
+import { picto } from "./pictos.js?v=202610161041";
 import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202610161041";
 import { cargarScript } from "./libs.js?v=202610161041";
 import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610161041";
@@ -69,26 +70,7 @@ const ICONS = {
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
 
 /* ---------- pictogramas de ejercicios (figuras de trazo, 48×48) ---------- */
-const CAB = (x, y) => `<circle cx="${x}" cy="${y}" r="4"/>`;
-const PICTOS = {
-  silla: `${CAB(20, 9)}<path d="M20 13v12l-6 10M20 25l7 9M20 16l8 3M31 20v16h8M31 30h8M35 20v16"/>`,
-  talones: `${CAB(24, 8)}<path d="M24 12v16M24 28l-4 8M24 28l4 8M20 36l-2-2M28 36l2-2M24 17l8-3M24 17l-8-3M8 14v22M8 14h8"/>`,
-  rodilla: `${CAB(16, 9)}<path d="M16 13v13h12M28 26l12-2M16 26l-2 10M12 8v30M12 20h4"/>`,
-  brazo: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 16l-6 6 6 2M24 16l6 6-6 2M30 22v6"/><rect x="28" y="19" width="4" height="7" rx="1"/>`,
-  puente: `${CAB(8, 30)}<path d="M12 30l10-8 10 6 6-10M32 28l4 8M8 36h32"/>`,
-  sentadilla: `${CAB(24, 8)}<path d="M24 12v8l-6 6 2 10M24 20l6 6-2 10M24 14l-10 2M24 14l10 2M16 36h4M28 36h4"/>`,
-  pared: `${CAB(18, 10)}<path d="M18 14l6 12 6 10M24 26l-8 10M18 16l10-2M28 14l6-2M36 6v36"/>`,
-  remo: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 17l-8 5M24 17l8 5M16 22h-6M32 22h6M8 20v4M40 20v4"/>`,
-  bisagra: `${CAB(14, 14)}<path d="M18 16l10 6 4 14M32 36l-2-6M28 22l-8 8M20 30l-2 4M24 24h8"/>`,
-  hombro: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 15l-8-5V4M24 15l8-5V4M14 4h4M30 4h4"/>`,
-  unpie: `${CAB(24, 8)}<path d="M24 12v16M24 28l-2 10M24 28l8-2 2-8M24 16l-8 2M24 16l8 2M38 12v26"/>`,
-  talonpunta: `<path d="M24 6c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6zM24 20c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6zM24 34c3 0 4 3 4 6s-1 6-4 6-4-3-4-6 1-6 4-6z"/>`,
-  giro: `${CAB(24, 8)}<path d="M24 12v16M24 28l-5 10M24 28l5 10M24 16l-8 4M24 16l8 4M8 22a16 16 0 0 1 32 0M36 18l4 4-4 4"/>`,
-  marcha: `${CAB(26, 8)}<path d="M26 12l-2 14-6 12M24 26l8 8M24 16l-8 8M24 16l8 4 2 6"/>`,
-  bici: `<circle cx="12" cy="34" r="8"/><circle cx="36" cy="34" r="8"/><path d="M12 34l8-14h10l6 14M20 20l-4-6h-4M30 20l-2-8h4M22 34h8"/>${CAB(32, 8)}`,
-  estirar: `${CAB(24, 10)}<path d="M24 14v14M24 28l-5 10M24 28l5 10M24 18l-8-10M24 18l8-10"/>`,
-};
-const picto = (id) => PICTOS[id] ? `<svg class="picto" viewBox="0 0 48 48" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${PICTOS[id]}</svg>` : "";
+// ilustraciones de los ejercicios: app/js/pictos.js
 
 /* ---------- iconos por grupo terapéutico (según el código ATC de la clase) ---------- */
 const GRUPO_ICONS = {
@@ -1103,6 +1085,23 @@ $("#btn-siguiente").addEventListener("click", () => {
   else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
 });
 
+/* ---------- v1.0: hoja «Mi sesión» imprimible desde el navegador (sin librerías) ---------- */
+function imprimirSesion(tipo) {
+  const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 }); if (!ses) return;
+  const hoja = $("#hoja-sesion"); const variantes = leerVariantes();
+  const res = evaluar(datos, medsActivos(), ctxActual()); const esencial = loEsencial(res, 3);
+  hoja.innerHTML = `
+    <header class="hoja-cab"><div><h1>${t("hoja.titulo")} · ${ses.titulo}</h1><p>${ses.min} min · ${t("hoja.nombre")}: ____________________ · ${t("hoja.fecha")}: ____ / ____ / ______</p></div><img src="assets/logo-80.png" alt="" width="48" height="48"></header>
+    <ol class="hoja-ej">${ses.bloques.map((b) => { const v = variantes[b.nombre] || "normal"; const det = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; return `<li>${picto(b.pict, { clase: "picto picto-hoja" })}<div><b>${b.nombre}</b> <em>${b.min} min</em><p>${det}</p>${b.clave ? `<small>${t("ej.clave")}: ${b.clave}</small>` : ""}</div><span class="hoja-check" aria-hidden="true"><i></i>${t("hoja.hecho")}</span></li>`; }).join("")}</ol>
+    ${esencial.length ? `<ul class="hoja-esencial">${esencial.map((e) => `<li><b>${e.titulo}.</b> ${e.texto}</li>`).join("")}</ul>` : ""}
+    <p class="hoja-alarma">${t("hoja.alarma")}</p>
+    <footer><small>${t("hoja.nota")} · Pauta Activa v${APP_VERSION}</small></footer>`;
+  document.body.classList.add("imprimir-sesion");
+  const fin = () => { document.body.classList.remove("imprimir-sesion"); window.removeEventListener("afterprint", fin); };
+  window.addEventListener("afterprint", fin);
+  setTimeout(() => { try { window.print(); } catch { fin(); } }, 120);
+}
+
 /* ---------- v1.0: pantalla de consulta (dos columnas sin pestañas; modo profesional, ≥ 960 px) ---------- */
 function modoConsulta() { try { return estado.modo === "profesional" && localStorage.getItem("medex.consulta") === "1" && matchMedia("(min-width: 960px)").matches; } catch { return false; } }
 function aplicarConsulta() { document.body.classList.toggle("consulta-pantalla", modoConsulta()); const b = $("#btn-consulta-pantalla"); if (b) b.textContent = modoConsulta() ? t("consulta.normal") : t("consulta.pantalla"); }
@@ -1530,7 +1529,7 @@ function renderPlan(cont) {
         <p class="plan-dia-tit"><b>${ses.titulo}</b> · ${ses.min} min</p>
         <ol class="bloques con-picto">${ses.bloques.map((b, i) => bloqueHtml(b, i)).join("")}</ol>
         <p class="plan-fitt">${glosar(tipoSel === "aerobico" ? P.aer.int : P.fue.int)}</p>
-        <div class="acciones"><button type="button" class="btn" id="btn-sesion">${hoyISO(sel) === hoy ? t("plan.empezar") : t("plan.ver_sesion")}</button><button type="button" class="btn-sec" id="btn-marcar">${t("plan.marcar")}</button></div>`
+        <div class="acciones"><button type="button" class="btn" id="btn-sesion">${hoyISO(sel) === hoy ? t("plan.empezar") : t("plan.ver_sesion")}</button><button type="button" class="btn-sec" id="btn-marcar">${t("plan.marcar")}</button><button type="button" class="btn-sec" id="btn-hoja-sesion">${t("hoja.imprimir")}</button></div>`
       : `<p class="vacio">${t("plan.descanso_txt")}</p>`}
     </div>
     <div class="plan-prog ${prog.clave}"><b>${t("prog.titulo")}</b> ${t("prog." + prog.clave, { n: prog.n, r: prog.rpe || "" })}</div>
@@ -1553,6 +1552,7 @@ function renderPlan(cont) {
   sec.querySelector("#btn-diario-csv").addEventListener("click", exportarDiarioCsv);
   activarVariantes(sec);
   sec.querySelector("#btn-sesion")?.addEventListener("click", () => abrirSesion(tipoSel, hoyISO(sel)));
+  sec.querySelector("#btn-hoja-sesion")?.addEventListener("click", () => imprimirSesion(tipoSel));
   sec.querySelector("#btn-marcar")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(sel), tipo: tipoSel === "fuerza_eq" ? "fuerza" : tipoSel, min: ses.min, rpe: 5, sintomas: [] }); celebrar(); });
   sec.querySelector("#btn-cal2").addEventListener("click", () => $("#btn-calendario").click());
   sec.querySelector("#btn-semana-wa").addEventListener("click", async () => {

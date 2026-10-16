@@ -662,11 +662,12 @@ dialog.sesion h2 small { color: var(--muted); font-weight: 600; }
 .variantes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
 .bloques.grande .variantes button { font-size: .82rem; padding: 5px 12px; min-height: 34px; }
 /* pictogramas de ejercicio */
-.picto { width: 40px; height: 40px; flex: 0 0 40px; color: var(--accent); background: var(--accent-soft); border-radius: 12px; padding: 5px; }
-.bloques.con-picto li { grid-template-columns: 44px 40px 1fr; }
+.picto { width: 48px; height: 48px; flex: 0 0 48px; color: var(--fg); background: var(--accent-soft); border-radius: 12px; padding: 3px; }
+.picto .fig { stroke: currentColor; stroke-width: 3.6; } .picto .prop { stroke: currentColor; stroke-width: 2.2; opacity: .5; } .picto .mov { stroke: var(--accent); stroke-width: 2.6; }
+.bloques.con-picto li { grid-template-columns: 44px 48px 1fr; }
 .bloques.grande.con-picto li { grid-template-columns: 1fr; }
 .bloques.grande.con-picto label { align-items: flex-start; }
-.bloques.grande .picto { width: 48px; height: 48px; flex-basis: 48px; }
+.bloques.grande .picto { width: 72px; height: 72px; flex-basis: 72px; }
 /* iconos por grupo terapéutico */
 #lista-meds .med-nombre { display: flex; gap: 10px; align-items: flex-start; }
 #lista-meds .med-nombre > div { min-width: 0; display: grid; }
@@ -1004,4 +1005,22 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
   body.consulta-pantalla #contenido-tab { display: grid; gap: 18px; }
   .consulta-bloque { border-top: 2px solid var(--accent); padding-top: 6px; }
   .consulta-bloque-t { margin: 0 0 8px; font-size: 1.05rem; color: var(--accent-deep); }
+}
+
+/* Hoja «Mi sesión» imprimible (v1.0): solo existe al imprimir */
+.hoja-sesion { display: none; }
+@media print {
+  body.imprimir-sesion > *:not(#hoja-sesion) { display: none !important; }
+  body.imprimir-sesion #hoja-sesion { display: block; color: #000; font-size: 12pt; }
+  .hoja-cab { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #6b35c4; padding-bottom: 6px; margin-bottom: 10px; }
+  .hoja-cab h1 { margin: 0; font-size: 20pt; } .hoja-cab p { margin: 4px 0 0; font-size: 11pt; }
+  .hoja-ej { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+  .hoja-ej li { display: grid; grid-template-columns: 96px 1fr auto; gap: 10px; align-items: start; border: 1px solid #bbb; border-radius: 8px; padding: 8px; break-inside: avoid; }
+  .picto-hoja { width: 96px; height: 96px; background: none; padding: 0; color: #000; }
+  .picto-hoja .fig { stroke: #000; } .picto-hoja .prop { stroke: #555; opacity: 1; } .picto-hoja .mov { stroke: #6b35c4; }
+  .hoja-ej b { font-size: 12.5pt; } .hoja-ej em { font-style: normal; color: #444; } .hoja-ej p { margin: 3px 0; font-size: 10.5pt; line-height: 1.3; } .hoja-ej small { font-size: 9pt; color: #444; }
+  .hoja-check { display: grid; justify-items: center; font-size: 8pt; color: #444; } .hoja-check i { display: block; width: 18px; height: 18px; border: 1.5px solid #000; border-radius: 4px; }
+  .hoja-esencial { margin: 10px 0 0; padding-left: 18px; font-size: 10.5pt; }
+  .hoja-alarma { margin: 8px 0 0; padding: 8px 10px; border-left: 4px solid #c0271d; background: #fdecec; font-size: 10.5pt; }
+  #hoja-sesion footer { margin-top: 8px; color: #555; font-size: 8.5pt; }
 }
