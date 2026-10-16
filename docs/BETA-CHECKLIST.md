@@ -3,7 +3,7 @@
 Estado en la versión 1.0 (v1.0.0, 2026-10-16). Lo pendiente es responsabilidad clínica, jurídica o de difusión del autor. Marcar al completar; lo pendiente es responsabilidad clínica o decisión de producto, no técnica.
 
 ## Contenido clínico
-- [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Pendiente: muestreo del autor (10 % por grupo + todas las de nivel atención).
+- [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Muestreo sistemático realizado el 16/10 (349 textos, `docs/MUESTREO-CLINICO-2026-10-16.md`); pendiente: confirmación del autor de las 7 correcciones de contenido/nivel con la hoja de revisión.
 - [x] Revisión de las 209 interacciones curadas: fuente por fila (`scripts/fuentes_ddi.py`, beta 3) y criterio de inclusión de DDInter (solo mayores/moderadas). Pendiente: muestreo del autor de las de nivel mayor.
 - [x] Casos de validación ampliados a 25 (`app/data/casos.json`), con casos negativos y uno por situación clínica (v1.0).
 - [ ] Umbrales de dosis alta (`umbral_mg`) revisados en los principios de riesgo (opioides, benzodiacepinas, diuréticos, insulina, corticoides).
@@ -13,7 +13,7 @@ Estado en la versión 1.0 (v1.0.0, 2026-10-16). Lo pendiente es responsabilidad 
 - [x] Ningún dato sale del dispositivo (verificado: sin fetch/XHR a terceros salvo bibliotecas en cdnjs y Tally abierto por el usuario).
 - [x] Formulario de sugerencias sin datos identificativos (lista de principios/dosis y versión).
 - [x] Páginas legales (aviso, privacidad, accesibilidad, metodología, regulatorio).
-- [ ] Revisión jurídica externa del posicionamiento regulatorio (herramienta informativa vs. producto sanitario según MDR 2017/745, regla 11) y del aviso legal.
+- [x] Revisión jurídica interna del posicionamiento (MDR 2017/745 regla 11, RGPD, LSSI, RC, licencias, marca): `docs/REVISION-JURIDICA-2026-10-16.md`; textos legales y veredicto ajustados. Pendiente: NIF/domicilio en el aviso legal, consulta de calificación a la AEMPS, seguro de RC y registro de marca.
 - [x] Política de versiones de la base: la app detecta la versión nueva y muestra al usuario qué avisos cambian en su informe y en sus pacientes guardados (v1.0); aprueba el autor.
 
 ## Calidad técnica

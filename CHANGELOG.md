@@ -2,6 +2,10 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.0.1 · 2026-10-16
+- Muestreo clínico de la base (349 textos: todas las reglas de atención, el bloque 10, 10 % aleatorio por grupo, las 60 combinadas y las 99 interacciones mayores): vericiguat + nitratos deja de ser contraindicación (interacción moderada; regla reescrita), ibuprofeno al menos 30 min después de la aspirina, afirmaciones sin evidencia retiradas (craving «durante horas», recurrencias de herpes), 4 reglas de atención que eran recomendaciones pasan a precaución, 53 reglas de beneficio del ejercicio citan guías en vez de la ficha técnica. `docs/MUESTREO-CLINICO-2026-10-16.md`, `scripts/muestreo_v1.py`.
+- Revisión jurídica (`docs/REVISION-JURIDICA-2026-10-16.md`): el veredicto describe la medicación («Su medicación añade N puntos de atención…») en lugar de declarar la aptitud de la persona; `legal.html` con finalidad prevista y razonamiento MDCG 2019-11, identificación LSSI del prestador (colegiación), roles RGPD del modo profesional y del canal de sugerencias, cookies, derechos, atribución del nomenclátor.
+
 ## 1.0.0 · 2026-10-16 (versión 1.0)
 Diez mejoras finales antes de la primera versión estable; sale la etiqueta «beta».
 - «De un vistazo» en la pantalla del informe con la misma jerarquía que la primera cara del PDF del paciente (puede hacer / con cuidado / evite, plan semanal, ritmo); listas, filas y ritmo compartidos entre app, PDF e historia.
