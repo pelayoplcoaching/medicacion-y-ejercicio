@@ -2,3 +2,6 @@ dist/
 __pycache__/
 .DS_Store
 data/propuestas/*.json
+
+# Documentación legal privada (RGPD) — no publicar
+docs/legal/
