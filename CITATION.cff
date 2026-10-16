@@ -6,8 +6,13 @@ authors:
   - family-names: "Fernández Cidón"
     given-names: "Pelayo"
     affiliation: "Hospital Universitario La Paz (Medicina Interna); Fuerza Basada en Evidencia"
-version: "1.0.0"
+version: "1.0.2"
 date-released: "2026-10-16"
+doi: 10.5281/zenodo.23423114
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23423114
+    description: "Versión 1.0.2 archivada en Zenodo"
 license: MIT
 repository-code: "https://github.com/pelayoplcoaching/medicacion-y-ejercicio"
 url: "https://medicacionyejercicio.fuerzabasadaenevidencia.com"

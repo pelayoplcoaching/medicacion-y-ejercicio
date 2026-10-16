@@ -86,5 +86,6 @@ El Código de Deontología Médica (OMC, 2022) exige en la información sanitari
 2. Presentar consulta de calificación a la AEMPS con la finalidad prevista de `legal.html`; guardar la respuesta en `docs/`.
 3. Confirmar la cobertura del seguro de RC profesional para esta actividad.
 4. Búsqueda y registro de la marca «Pauta Activa» (OEPM, clases 9/41/44).
+   (DOI obtenido el 16/10: 10.5281/zenodo.23423114.)
 5. Aceptar y archivar el DPA de Tally; revisar anualmente la política de privacidad.
 6. Si la herramienta se adopta de forma institucional en un centro: acuerdo escrito con el servicio (uso, responsable de los datos, versión aprobada) y, según la respuesta de la AEMPS, plan de certificación.

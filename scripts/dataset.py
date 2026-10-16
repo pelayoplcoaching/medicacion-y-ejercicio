@@ -79,7 +79,7 @@ Herramienta informativa, no producto sanitario: no sustituye la valoración indi
 realizada por el autor con asistencia de un modelo de lenguaje; el muestreo de revisión y las correcciones constan en `docs/`.
 
 ## Cómo citar
-Fernández Cidón, P. ({date.today().year}). *Pauta Activa: base de conocimiento medicación–ejercicio* (versión {KB['version']}) [Conjunto de datos]. Zenodo. DOI: (pendiente de asignar en la primera publicación)
+Fernández Cidón, P. ({date.today().year}). *Pauta Activa: base de conocimiento medicación–ejercicio* (versión {KB['version']}) [Conjunto de datos]. Zenodo. https://doi.org/10.5281/zenodo.23423114
 
 ## Licencia
 Contenido: CC BY-NC-SA 4.0 · Código del motor: MIT. Autor: Pelayo Fernández Cidón (Medicina Interna; Fuerza Basada en Evidencia). Generado el {date.today().isoformat()}.

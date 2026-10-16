@@ -1,5 +1,7 @@
 # Pauta Activa · Medicación y Ejercicio
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23423114.svg)](https://doi.org/10.5281/zenodo.23423114)
+
 Aplicación web para introducir la medicación habitual (con dosis) y obtener:
 
 1. Qué tener en cuenta al hacer ejercicio **aeróbico, de fuerza y de equilibrio**, fármaco por fármaco y según la dosis.
@@ -138,7 +140,7 @@ El selector "Soy paciente / Soy profesional sanitario" cambia qué datos se pide
 
 ## Publicar la base como dataset (DOI)
 
-`python3 scripts/dataset.py` genera `dist/dataset/pauta-activa-dataset-<versión>.zip` con `kb.json`, `ddi_curated.json`, `casos.json`, las mismas tablas en CSV, un README con método, limitaciones y cita, y la licencia. Para obtener un DOI: (a) subir el zip a Zenodo («New upload», tipo *Dataset*, licencia CC BY-NC-SA 4.0), o (b) activar la integración GitHub–Zenodo del repositorio y crear una *release* en GitHub: Zenodo archiva automáticamente el código con los metadatos de `.zenodo.json` y `CITATION.cff` y asigna un DOI por versión. Después, copiar el DOI en `CITATION.cff`, en el README del dataset y en `acerca.html`.
+`python3 scripts/dataset.py` genera `dist/dataset/pauta-activa-dataset-<versión>.zip` con `kb.json`, `ddi_curated.json`, `casos.json`, las mismas tablas en CSV, un README con método, limitaciones y cita, y la licencia. Para obtener un DOI: (a) subir el zip a Zenodo («New upload», tipo *Dataset*, licencia CC BY-NC-SA 4.0), o (b) activar la integración GitHub–Zenodo del repositorio y crear una *release* en GitHub: Zenodo archiva automáticamente el código con los metadatos de `.zenodo.json` y `CITATION.cff` y asigna un DOI por versión. La versión 1.0.2 está archivada con DOI [10.5281/zenodo.23423114](https://doi.org/10.5281/zenodo.23423114); cada release nueva recibe un DOI propio bajo el mismo concepto.
 
 ## Revisión clínica de la base
 
