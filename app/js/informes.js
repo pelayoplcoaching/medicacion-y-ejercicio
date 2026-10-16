@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202610152001";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610152001";
+import { jspdf, cargarScript } from "./libs.js?v=202610160631";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610160631";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -113,8 +113,12 @@ class Doc {
       d.setPage(i);
       d.setDrawColor(...C.line); d.setLineWidth(.3); d.line(this.ml, 283, 210 - this.ml, 283);
       this.f("normal", 7, C.muted);
-      d.text(`${AUTOR} · ${MARCA}${this.version ? " · Pauta Activa v" + this.version : ""}${this.numero ? " · Nº " + this.numero : ""}`, this.ml, 288);
-      d.text(`${i} / ${n}`, 210 - this.ml, 288, { align: "right" });
+      const numPag = `${i} / ${n}`, anchoNum = d.getTextWidth(numPag) + 4, anchoTxt = 210 - 2 * this.ml - anchoNum;
+      const l1 = d.splitTextToSize(`${AUTOR} · ${MARCA}`, anchoTxt)[0];
+      const l2 = [this.version ? "Pauta Activa v" + this.version : "", this.numero ? "Nº " + this.numero : ""].filter(Boolean).join(" · ");
+      d.text(l1, this.ml, 287); // pie en dos líneas: nunca se solapa con el número de página
+      if (l2) d.text(d.splitTextToSize(l2, anchoTxt)[0], this.ml, 291);
+      d.text(numPag, 210 - this.ml, 287, { align: "right" });
     }
   }
   salto(h) { if (this.y + h > this.bottom) { this.d.addPage(); this.cabecera(); return true; } return false; }
