@@ -13,7 +13,7 @@ Estado en la versión 1.0 (v1.0.0, 2026-10-16). Lo pendiente es responsabilidad 
 - [x] Ningún dato sale del dispositivo (verificado: sin fetch/XHR a terceros salvo bibliotecas en cdnjs y Tally abierto por el usuario).
 - [x] Formulario de sugerencias sin datos identificativos (lista de principios/dosis y versión).
 - [x] Páginas legales (aviso, privacidad, accesibilidad, metodología, regulatorio).
-- [x] Revisión jurídica interna del posicionamiento (MDR 2017/745 regla 11, RGPD, LSSI, RC, licencias, marca): `docs/REVISION-JURIDICA-2026-10-16.md`; textos legales y veredicto ajustados. Pendiente: NIF/domicilio en el aviso legal, consulta de calificación a la AEMPS, seguro de RC y registro de marca.
+- [x] Revisión jurídica interna del posicionamiento (MDR 2017/745 regla 11, RGPD, LSSI, RC, licencias, marca): `docs/REVISION-JURIDICA-2026-10-16.md`; textos legales y veredicto ajustados. Pendiente: consulta de calificación a la AEMPS, seguro de RC y registro de marca.
 - [x] Política de versiones de la base: la app detecta la versión nueva y muestra al usuario qué avisos cambian en su informe y en sus pacientes guardados (v1.0); aprueba el autor.
 
 ## Calidad técnica

@@ -8,7 +8,7 @@
 |---|---|---|---|
 | 1 | Calificación como producto sanitario (MDR 2017/745, regla 11) | **Alto** — es el único punto que puede obligar a cambiar el producto | Mitigado en textos; **requiere consulta de calificación a la AEMPS** |
 | 2 | Protección de datos (RGPD / LOPDGDD) | Bajo — no hay tratamiento por el titular; quedan matices del modo profesional y del canal de sugerencias | Corregido en `legal.html` |
-| 3 | LSSI (identificación del prestador, profesión regulada) | Medio — faltaban datos obligatorios | Corregido parcialmente; **falta NIF y domicilio** |
+| 3 | LSSI (identificación del prestador, profesión regulada) | Medio — faltaban datos obligatorios | **Corregido** (colegiación, NIF y domicilio añadidos el 16/10) |
 | 4 | Responsabilidad civil y cláusulas de exoneración | Medio | Textos ajustados; **confirmar cobertura del seguro de RC profesional** |
 | 5 | Publicidad de medicamentos | Bajo | Sin cambios; criterio documentado |
 | 6 | Propiedad intelectual, licencias y datos reutilizados | Bajo | Correcto; añadida atribución explícita |
@@ -50,7 +50,7 @@ Matices que sí requieren texto, todos incorporados en `legal.html`:
 
 ## 3. LSSI (Ley 34/2002)
 
-Aunque la herramienta es gratuita, se ofrece bajo el dominio de una actividad económica (Fuerza Basada en Evidencia), por lo que aplica el deber de información del **artículo 10**: nombre o denominación, NIF, domicilio o dirección de contacto, correo electrónico y, por tratarse de una **profesión regulada**, colegio profesional, número de colegiado, título y Estado de expedición, y normas profesionales aplicables. `legal.html` incorpora ahora colegio y número (282875610, Ilustre Colegio Oficial de Médicos de Madrid), título y referencia al Código de Deontología Médica. **Faltan el NIF y el domicilio** (postal o de contacto), que el autor debe añadir; puede ser el domicilio profesional.
+Aunque la herramienta es gratuita, se ofrece bajo el dominio de una actividad económica (Fuerza Basada en Evidencia), por lo que aplica el deber de información del **artículo 10**: nombre o denominación, NIF, domicilio o dirección de contacto, correo electrónico y, por tratarse de una **profesión regulada**, colegio profesional, número de colegiado, título y Estado de expedición, y normas profesionales aplicables. `legal.html` incorpora ahora colegio y número (282875610, Ilustre Colegio Oficial de Médicos de Madrid), título y referencia al Código de Deontología Médica. El NIF y el domicilio de contacto se añadieron el mismo día, con lo que el artículo 10 queda cubierto.
 
 ## 4. Responsabilidad y cláusulas
 
@@ -82,7 +82,7 @@ El Código de Deontología Médica (OMC, 2022) exige en la información sanitari
 
 ## Lista de acciones para el autor (por prioridad)
 
-1. Añadir NIF y domicilio de contacto en el aviso legal (dato que no obra en esta revisión).
+1. ~~Añadir NIF y domicilio de contacto en el aviso legal~~ (hecho el 16/10).
 2. Presentar consulta de calificación a la AEMPS con la finalidad prevista de `legal.html`; guardar la respuesta en `docs/`.
 3. Confirmar la cobertura del seguro de RC profesional para esta actividad.
 4. Búsqueda y registro de la marca «Pauta Activa» (OEPM, clases 9/41/44).
