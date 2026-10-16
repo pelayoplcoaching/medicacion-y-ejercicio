@@ -352,6 +352,24 @@ try {
   check("barra de consulta oculta en modo paciente", !(await p.isVisible("#consulta")));
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
 
+  console.log("Enlace de solo lectura y reevaluación al calendario (v1.0)");
+  await p.click("#btn-ver-enlace"); await p.waitForTimeout(200);
+  const urlVer = await p.evaluate(() => navigator.clipboard.readText());
+  check("enlace de solo lectura generado (#ver=)", urlVer.includes("#ver="));
+  const nMedsPropios = (await p.$$("#lista-meds li")).length;
+  const verCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" }); const pv = await verCtx.newPage();
+  await pv.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pv.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 }); await pv.click("#guia-cerrar").catch(() => {});
+  await pv.goto(urlVer.replace(/^https?:\/\/[^/]+/, `http://localhost:${PORT}`), { waitUntil: "networkidle" }); await pv.reload({ waitUntil: "networkidle" }).catch(() => {});
+  await pv.goto(urlVer.replace(/^https?:\/\/[^/]+/, `http://localhost:${PORT}`)); await pv.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 }); await pv.waitForTimeout(400);
+  check("en otro dispositivo, #ver= muestra la lista en solo lectura: banner, sin acciones de edición y sin guardar", await pv.isVisible("#aviso-ver") && (await pv.$$("#lista-meds li")).length === nMedsPropios && !(await pv.isVisible("#lista-meds li .quitar")) && (await pv.$eval("#edad", (e) => e.disabled)) && (await pv.evaluate(() => localStorage.getItem("medex.estado"))) === null);
+  await pv.click("#btn-ver-copia"); await pv.waitForTimeout(200);
+  check("«Hacer una copia» convierte la vista en lista propia editable", !(await pv.isVisible("#aviso-ver")) && (await pv.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).meds.length)) === nMedsPropios && !(await pv.$eval("#edad", (e) => e.disabled)));
+  await verCtx.close();
+  await p.$eval("#bloque-prescriptor", (d) => { d.open = true; }); await p.click("#btn-prescrito"); await p.waitForTimeout(200);
+  const [dlIcs] = await Promise.all([p.waitForEvent("download"), p.click("#btn-reeval-ics")]);
+  const icsTxt = (await import("node:fs")).readFileSync(await dlIcs.path(), "utf8");
+  check("evento de reevaluación en .ics (todo el día, con alarma)", dlIcs.suggestedFilename().endsWith(".ics") && icsTxt.includes("DTSTART;VALUE=DATE:") && icsTxt.includes("Reevaluación del plan"));
+
   console.log("Aviso de cambios en la base (v1.0)");
   await p.evaluate(() => { const h = JSON.parse(localStorage.getItem("medex.huella")); h.kb = "2000.01.01"; h.items = h.items.slice(1).concat(["general|bisoprolol|info|Regla antigua que ya no existe."]); h.items[0] = h.items[0].replace(/\|[^|]*$/, "|Texto antiguo de prueba."); localStorage.setItem("medex.huella", JSON.stringify(h)); });
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });

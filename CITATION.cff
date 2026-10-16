@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "Si usa Pauta Activa o su base de conocimiento, cite este trabajo."
+title: "Pauta Activa · Medicación y Ejercicio"
+type: software
+authors:
+  - family-names: "Fernández Cidón"
+    given-names: "Pelayo"
+    affiliation: "Hospital Universitario La Paz (Medicina Interna); Fuerza Basada en Evidencia"
+version: "1.0.0"
+date-released: "2026-10-16"
+license: MIT
+repository-code: "https://github.com/pelayoplcoaching/medicacion-y-ejercicio"
+url: "https://medicacionyejercicio.fuerzabasadaenevidencia.com"
+abstract: "Aplicación web que, a partir de la medicación habitual de una persona y su situación clínica, genera precauciones para el ejercicio aeróbico, de fuerza y de equilibrio, detecta interacciones y produce una prescripción de ejercicio (FITT) con informes para el paciente, el médico y el entrenador. Todo el cálculo ocurre en el navegador; la base de conocimiento (CC BY-NC-SA 4.0) incluye grupos terapéuticos, principios activos, reglas con fuente y nivel de evidencia e interacciones revisadas."
+keywords:
+  - medicación
+  - ejercicio físico
+  - prescripción de ejercicio
+  - interacciones farmacológicas
+  - farmacología clínica
+  - salud digital

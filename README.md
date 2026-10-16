@@ -29,6 +29,7 @@ scripts/
   propuesta_ia.py    ← fábrica de contenido: escribe el encargo para un modelo (grupo, principio o interacción)
   validar_bloque.py  ← valida un bloque propuesto (JSON) antes de fusionarlo con merge_kb.py
   legibilidad.mjs    ← índice INFLESZ de los textos del paciente (informe y comprobación en test.mjs)
+  dataset.py         ← empaqueta la base (JSON + CSV + README + licencia) en dist/dataset/ para depositarla en Zenodo
   lectura_facil.py   ← reescrituras de lectura fácil aplicadas en las fuentes (idempotente)
   nombres_es_en.json ← mapa id ↔ nombre inglés para cruzar con DDInter
 ```
@@ -134,6 +135,10 @@ El selector "Soy paciente / Soy profesional sanitario" cambia qué datos se pide
 - Faltan clases: antibióticos distintos de quinolonas, antirretrovirales, quimioterapia oral, inmunosupresores (tacrolimus, ciclosporina), anticonceptivos/THS, antimigrañosos (triptanes), antiarrítmicos clase I, nuevos anticoagulantes en situaciones especiales, suplementos deportivos.
 - DDInter solo aporta nivel (mayor/moderada/menor); mecanismo y recomendación hay que añadirlos a mano en `ddi_curated.json` para los pares que se quieran explicar.
 - Variables de contexto que todavía no se piden: función renal, insuficiencia cardíaca, neuropatía, fragilidad (Vivifrail).
+
+## Publicar la base como dataset (DOI)
+
+`python3 scripts/dataset.py` genera `dist/dataset/pauta-activa-dataset-<versión>.zip` con `kb.json`, `ddi_curated.json`, `casos.json`, las mismas tablas en CSV, un README con método, limitaciones y cita, y la licencia. Para obtener un DOI: (a) subir el zip a Zenodo («New upload», tipo *Dataset*, licencia CC BY-NC-SA 4.0), o (b) activar la integración GitHub–Zenodo del repositorio y crear una *release* en GitHub: Zenodo archiva automáticamente el código con los metadatos de `.zenodo.json` y `CITATION.cff` y asigna un DOI por versión. Después, copiar el DOI en `CITATION.cff`, en el README del dataset y en `acerca.html`.
 
 ## Revisión clínica de la base
 

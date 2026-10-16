@@ -1032,3 +1032,8 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .stats-lista li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 3px 8px; border-radius: 6px; overflow: hidden; }
 .stats-lista li span { position: relative; z-index: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .stats-lista li b { position: relative; z-index: 1; }
 .stats-lista li i { position: absolute; inset: 0 auto 0 0; background: var(--accent-soft); z-index: 0; }
+
+/* vista de solo lectura (v1.0) */
+.banner-ver { background: var(--accent-soft); color: var(--accent-deep); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 30; }
+body.solo-lectura .med-acciones, body.solo-lectura .momentos, body.solo-lectura #rapido, body.solo-lectura #btn-vaciar, body.solo-lectura .hoja-anadir, body.solo-lectura #btn-anadir, body.solo-lectura #btn-primero, body.solo-lectura #btn-perfiles, body.solo-lectura #consulta, body.solo-lectura .plantilla-fila, body.solo-lectura #btn-prescrito, body.solo-lectura .med-dosis .editar .ic { display: none !important; }
+body.solo-lectura #lista-meds li .editar { pointer-events: none; }

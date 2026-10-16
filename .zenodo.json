@@ -1,0 +1,11 @@
+{
+  "title": "Pauta Activa · Medicación y Ejercicio: aplicación y base de conocimiento medicación–ejercicio",
+  "upload_type": "software",
+  "description": "<p>Aplicación web (todo en el navegador) que, a partir de la medicación habitual y la situación clínica, genera precauciones para el ejercicio aeróbico, de fuerza y de equilibrio, detecta interacciones y produce una prescripción de ejercicio FITT con informes para el paciente, el médico y el entrenador. Incluye la base de conocimiento en español (grupos terapéuticos, principios activos, reglas con fuente y nivel de evidencia, interacciones revisadas y casos de validación). Código MIT; contenido clínico CC BY-NC-SA 4.0. Herramienta informativa, no producto sanitario.</p>",
+  "creators": [{ "name": "Fernández Cidón, Pelayo", "affiliation": "Hospital Universitario La Paz (Medicina Interna); Fuerza Basada en Evidencia" }],
+  "keywords": ["medicación", "ejercicio físico", "prescripción de ejercicio", "interacciones farmacológicas", "farmacología clínica", "salud digital", "aplicación web"],
+  "license": "MIT",
+  "language": "spa",
+  "access_right": "open",
+  "related_identifiers": [{ "identifier": "https://medicacionyejercicio.fuerzabasadaenevidencia.com", "relation": "isSupplementTo", "scheme": "url" }]
+}

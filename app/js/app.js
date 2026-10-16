@@ -153,6 +153,7 @@ function ctxDe(e) {
   return { edad: e.edad, caidas: e.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, sppb, sppbGuiado: e.sppb, fcReposo: e.fcReposo, modo: e.modo };
 }
 let datos, indice;
+let soloLectura = false, estadoPropio = null; // v1.0: enlace de solo lectura
 let ultimoAnadido = null; // pid del último medicamento añadido, para resaltar su tarjeta
 
 const EJEMPLO = {
@@ -202,6 +203,8 @@ async function cargar() {
   restaurar();
   const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
   if (h && decodificarEstado(h[1])) { history.replaceState(null, "", location.pathname); restaurarFormulario(); guardar(); $("#pegar-aviso").textContent = "Lista cargada desde el enlace."; }
+  const hv = location.hash.match(/^#ver=([A-Za-z0-9_-]+)/);
+  if (hv) { estadoPropio = snapshot(); if (decodificarEstado(hv[1])) { history.replaceState(null, "", location.pathname); soloLectura = true; restaurarFormulario(); aplicarSoloLectura(); } else estadoPropio = null; }
   comprobarCambiosBase(); // antes del primer render: compara la huella guardada con la base nueva
   render();
   pintarAvisoKb();
@@ -213,6 +216,7 @@ async function cargar() {
 
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
+  if (soloLectura) return; // vista de solo lectura (#ver=): no pisa los datos propios
   try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, historialPresc: estado.historialPresc || [] })); } catch {}
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
@@ -484,7 +488,7 @@ function mostrarNoReconocidos(lineas) {
 
 /* ---------- enlace con la lista (sin servidor: todo va en la URL) ---------- */
 function codificarEstado() {
-  const o = { m: estado.meds.map((m) => [m.pid, m.dosis, m.tomas, m.unidad || null, m.aDemanda ? 1 : 0, (m.momentos || []).map((x) => x[0]).join("")]), e: estado.edad, c: estado.caidas ? 1 : 0, k: estado.condiciones, o: estado.modo, p: estado.pac, r: estado.pro, q: estado.cribado, d: estado.plan?.dias };
+  const o = { f: estado.prescrito ? [estado.prescrito.fecha, estado.prescrito.semanas] : null, m: estado.meds.map((m) => [m.pid, m.dosis, m.tomas, m.unidad || null, m.aDemanda ? 1 : 0, (m.momentos || []).map((x) => x[0]).join("")]), e: estado.edad, c: estado.caidas ? 1 : 0, k: estado.condiciones, o: estado.modo, p: estado.pac, r: estado.pro, q: estado.cribado, d: estado.plan?.dias };
   return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 function decodificarEstado(h) {
@@ -495,6 +499,7 @@ function decodificarEstado(h) {
     estado.meds = o.m.filter((x) => indice.porId.has(x[0])).map((x) => ({ pid: x[0], dosis: x[1], tomas: x[2] || 1, unidad: x[3] || undefined, aDemanda: !!x[4], momentos: x[5] ? MOMENTOS.filter((m) => x[5].includes(m[0])) : momentosPorDefecto(x[2] || 1) }));
     estado.edad = o.e ?? null; estado.caidas = !!o.c; estado.condiciones = Array.isArray(o.k) ? o.k.filter((c) => CONDICIONES.includes(c)) : [];
     estado.modo = o.o === "profesional" ? "profesional" : "paciente"; estado.pac = o.p || {}; estado.pro = o.r || {}; estado.ejemplo = false; estado.cribado = sanearCribado(o.q); if (o.d) estado.plan = sanearPlan({ dias: o.d });
+    if (Array.isArray(o.f)) estado.prescrito = sanearPrescrito({ fecha: o.f[0], semanas: o.f[1] });
     return true;
   } catch { return false; }
 }
@@ -828,6 +833,18 @@ function horaPlan() {
   const ok = v.horas.find((h) => h.nivel !== "rojo" && h.h >= 9 && h.h <= 19);
   return ok ? ok.h : 10;
 }
+function eventoReeval(stamp, esc, fmt) {
+  const f = fechaReeval(); const f2 = new Date(f); f2.setDate(f2.getDate() + 1);
+  return ["BEGIN:VEVENT", `UID:medex-reeval-${stamp}@fuerzabasadaenevidencia.com`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${fmt(f)}`, `DTEND;VALUE=DATE:${fmt(f2)}`, `SUMMARY:${esc(t("presc.ics_titulo"))}`, `DESCRIPTION:${esc(t("presc.estado", { d: new Date(estado.prescrito.fecha).toLocaleDateString("es-ES"), r: f.toLocaleDateString("es-ES") }))}`, "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", `DESCRIPTION:${esc(t("presc.ics_titulo"))}`, "END:VALARM", "END:VEVENT"];
+}
+$("#btn-reeval-ics")?.addEventListener("click", () => {
+  if (!estado.prescrito) return;
+  const esc = (x) => String(x).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  const fmt = (d) => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  descargarTexto("reevaluacion-pauta-activa.ics", ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", ...eventoReeval(stamp, esc, fmt), "END:VCALENDAR"].join("\r\n"), "text/calendar");
+});
+
 function icsPlan() {
   const res = evaluar(datos, medsActivos(), ctxActual());
   const P = prescripcion(res, ctxActual());
@@ -849,6 +866,7 @@ function icsPlan() {
       `RRULE:FREQ=WEEKLY;COUNT=8;BYDAY=${DIA[d.getDay()]}`, `SUMMARY:${esc(titulo)}`,
       `DESCRIPTION:${esc(detalle)}\\n\\n${esc(t("esencial.titulo"))}:\\n${esc(esencial)}\\n\\n${esc(t("plan.pie"))}`, "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", `DESCRIPTION:${esc(titulo)}`, "END:VALARM", "END:VEVENT");
   }
+  if (estado.prescrito) L.push(...eventoReeval(stamp, esc, fmt));
   L.push("END:VCALENDAR");
   return L.join("\r\n");
 }
@@ -1083,6 +1101,23 @@ $("#btn-siguiente").addEventListener("click", () => {
   if (pasoActual === 1) { desplazar($("#panel-datos")); setTimeout(() => $("#edad").focus({ preventScroll: true }), 400); }
   else if (pasoActual === 2) { desplazar($("#panel-medicacion")); setTimeout(() => $("#buscar").focus({ preventScroll: true }), 400); }
   else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
+});
+
+/* ---------- v1.0: enlace de solo lectura (#ver=): ver el plan de otra persona sin poder cambiarlo ni guardarlo ---------- */
+function aplicarSoloLectura() {
+  document.body.classList.toggle("solo-lectura", soloLectura);
+  const b = $("#aviso-ver"); if (!b) return;
+  b.hidden = !soloLectura;
+  if (soloLectura) {
+    b.innerHTML = `${t("ver.banner")} <button type="button" class="btn-sec sm" id="btn-ver-copia">${t("ver.copia")}</button> <button type="button" class="btn-sec sm" id="btn-ver-salir">${t("ver.salir")}</button>`;
+    $("#btn-ver-copia").addEventListener("click", () => { soloLectura = false; estadoPropio = null; aplicarSoloLectura(); guardar(); render(); toast(t("ver.copiado_ok"), { ms: 5000 }); });
+    $("#btn-ver-salir").addEventListener("click", () => { soloLectura = false; if (estadoPropio) { Object.assign(estado, { ...estadoPropio, meds: sanearMeds(estadoPropio.meds) }); } estadoPropio = null; aplicarSoloLectura(); restaurarFormulario(); render(); });
+  }
+  for (const el of $$("#panel-datos input, #panel-datos select, #form-med input, #form-med button, #form-med select")) el.disabled = soloLectura;
+}
+$("#btn-ver-enlace")?.addEventListener("click", async () => {
+  const url = `${location.origin}${location.pathname}#ver=${codificarEstado()}`;
+  try { await navigator.clipboard.writeText(url); toast(t("ver.copiado"), { ms: 5000 }); } catch { window.prompt(t("ver.enlace"), url); }
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo) ---------- */

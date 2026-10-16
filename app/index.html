@@ -109,6 +109,7 @@
   <p class="banner" id="aviso-idioma" hidden></p>
   <p class="banner banner-reeval" id="aviso-reeval" hidden></p>
   <p class="banner banner-kb" id="aviso-kb" hidden aria-live="polite"></p>
+  <p class="banner banner-ver" id="aviso-ver" hidden></p>
   <p class="conexion" id="conexion" hidden role="status"><span aria-hidden="true">●</span> <span data-i18n="conexion.off">Sin conexión · la app funciona igual</span></p>
 </header>
 
@@ -215,7 +216,7 @@
           <label><span data-i18n="presc.colegiado">Nº colegiado (opcional)</span><input type="text" id="presc-colegiado" maxlength="20" inputmode="numeric"></label>
           <label><span data-i18n="presc.revision">Reevaluar en</span><select id="presc-revision"><option value="4">4 semanas</option><option value="6" selected>6 semanas</option><option value="8">8 semanas</option><option value="12">12 semanas</option></select></label>
         </div>
-        <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-prescrito" data-i18n="presc.marcar">Marcar como prescrito hoy</button><small id="presc-estado"></small></div>
+        <div class="acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-prescrito" data-i18n="presc.marcar">Marcar como prescrito hoy</button><button type="button" class="btn-sec sm" id="btn-reeval-ics" data-i18n="presc.ics">Reevaluación al calendario</button><small id="presc-estado"></small></div>
       </details>
     </div>
 
@@ -316,7 +317,7 @@
       <small id="pdf-aviso" aria-live="polite"></small>
       <div class="util" id="util" hidden aria-live="polite"></div>
       <div class="acciones compartir"><button type="button" class="btn-sec sm" id="btn-whatsapp" data-i18n="compartir.whatsapp">Compartir por WhatsApp</button><button type="button" class="btn-sec sm" id="btn-email" data-i18n="compartir.email">Enviar a mi médico por correo</button><button type="button" class="btn-sec sm" id="btn-calendario" data-i18n="plan.calendario">Añadir mi plan al calendario</button></div>
-      <div class="acciones compartir-enlaces"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-qr" data-i18n="qr.btn">Código QR</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button><button type="button" class="btn-sec sm solo-pro" id="btn-fhir" data-i18n="inf.fhir">Exportar FHIR (JSON)</button><button type="button" class="btn-sec sm" id="btn-txt" data-i18n="inf.txt">Versión en texto accesible (.txt)</button></div>
+      <div class="acciones compartir-enlaces"><button type="button" class="btn-sec sm" id="btn-enlace" data-i18n="inf.enlace">Copiar enlace con mi lista</button><button type="button" class="btn-sec sm" id="btn-ver-enlace" data-i18n="ver.enlace">Enlace de solo lectura</button><button type="button" class="btn-sec sm" id="btn-qr" data-i18n="qr.btn">Código QR</button><button type="button" class="btn-sec sm" id="btn-copiar" data-i18n="inf.copiar">Copiar informe</button><button type="button" class="btn-sec sm solo-pro" id="btn-historia" data-i18n="inf.historia">Texto para la historia clínica</button><button type="button" class="btn-sec sm solo-pro" id="btn-fhir" data-i18n="inf.fhir">Exportar FHIR (JSON)</button><button type="button" class="btn-sec sm" id="btn-txt" data-i18n="inf.txt">Versión en texto accesible (.txt)</button></div>
       <button type="button" class="btn-sec sm btn-sugerencia" id="btn-sugerencia" data-i18n="desc.sugerencia">Enviar una sugerencia o error</button>
     </div>
     <p class="pie" id="aviso"></p>
