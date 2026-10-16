@@ -1,5 +1,5 @@
 /* OCR en el navegador con Tesseract.js (se carga bajo demanda; el modelo en español se descarga la primera vez). */
-import { tesseract, pdfjs } from "./libs.js?v=202610160631";
+import { tesseract, pdfjs } from "./libs.js?v=202610161041";
 const LANG_PATH = "https://tessdata.projectnaptha.com/4.0.0_fast";
 
 let worker = null;

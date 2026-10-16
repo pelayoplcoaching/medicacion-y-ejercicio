@@ -2,6 +2,10 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 0.19.1-beta.3 · 2026-10-16
+- PDF del paciente rediseñado tras la primera entrega a un paciente real: la primera cara concentra lo básico y lo más útil (prescriptor, cribado, puede/con cuidado/evite, lo esencial, plan semanal y ritmo); la segunda, su semana, cuándo entrenar y las señales de alarma; las siguientes, su medicación una por una (resumen + las reglas más relevantes), su situación e interacciones. Máximo 4 caras: si se exceden, el documento se vuelve a maquetar con menos detalle (3 → 0 reglas por fármaco). Eliminadas las secciones por tipo de ejercicio (todas las reglas de todos los fármacos) y la lista de alarmas duplicada; las interacciones de DDInter sin texto no se incluyen en el documento del paciente.
+- Pie de página de los PDF en dos líneas (no se solapa con el número de página); la cabecera no pisa el número de documento con letra grande.
+
 ## 0.19.0-beta.3 · 2026-10-15 (beta 3 · consulta y centros)
 - Consulta con varios pacientes por sesión (modo profesional): barra «Paciente en consulta» con guardar, cargar y «Siguiente paciente» (guarda y vacía); los pacientes se guardan como listas en el dispositivo, sin nombres reales.
 - Plantillas de prescripción por perfil (10: insuficiencia cardíaca, diabetes con insulina, mayor frágil y prefrágil, cardiopatía isquémica, oncológico, hipertenso activo, EPOC con oxígeno, osteoporosis, FA anticoagulada) que rellenan situación clínica, cribado, días de ejercicio, Vivifrail y plazo de reevaluación.

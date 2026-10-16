@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202610160631";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610160631";
+import { jspdf, cargarScript } from "./libs.js?v=202610161041";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana } from "./engine.js?v=202610161041";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -71,7 +71,14 @@ class Doc {
     const disp = 210 - this.ml - wTipo - 4 - x; // el subtítulo no invade el tipo de documento (derecha)
     let sub = this.subtitulo; if (d.getTextWidth(sub) > disp) { sub = d.splitTextToSize(sub, disp - 3)[0]; if (sub !== this.subtitulo) sub += "…"; }
     d.text(sub, x, 17);
-    d.text(`${NOMBRE} · Medicación y Ejercicio · ${WEB}`, x, 22);
+    { // tercera línea: no invade el número de documento (derecha)
+      let l3 = `${NOMBRE} · Medicación y Ejercicio · ${WEB}`;
+      this.f("normal", 7, C.muted); const wNum = this.numero ? d.getTextWidth(`Nº ${this.numero}`) + 4 : 0;
+      this.f("normal", 8.5, C.muted); const disp3 = 210 - this.ml - wNum - x;
+      if (d.getTextWidth(l3) > disp3) l3 = `${NOMBRE} · ${WEB}`;
+      if (d.getTextWidth(l3) > disp3) l3 = d.splitTextToSize(l3, disp3 - 3)[0] + "…";
+      d.text(l3, x, 22);
+    }
     this.f("bold", 8, C.muted); d.text(new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" }), 210 - this.ml, 11.5, { align: "right" });
     this.f("normal", 7.5, C.muted); d.text(this.tipo, 210 - this.ml, 17, { align: "right" });
     if (this.numero) { this.f("normal", 7, C.muted); d.text(`Nº ${this.numero}`, 210 - this.ml, 22, { align: "right" }); }
@@ -124,7 +131,7 @@ class Doc {
   salto(h) { if (this.y + h > this.bottom) { this.d.addPage(); this.cabecera(); return true; } return false; }
 
   seccion(titulo, nota) {
-    this.salto(16); this.y += 5;
+    this.salto(30); this.y += 5; // un título nunca queda huérfano al pie de la página
     this.f("black", 12, C.ink); this.d.text(titulo, this.ml, this.y);
     if (nota) { const w = this.d.getTextWidth(titulo); this.f("normal", 8, C.muted); this.d.text(nota, this.ml + w + 3, this.y); }
     this.y += 2.2; this.d.setDrawColor(...C.purple); this.d.setLineWidth(.6); this.d.line(this.ml, this.y, this.ml + 14, this.y);
@@ -163,6 +170,22 @@ class Doc {
     for (const l of d.splitTextToSize(texto, wi)) { d.text(l, this.ml + pad + 2, y); y += this.lh(size); }
     if (pie) { this.f("normal", 7.5, C.muted); d.text(pie, this.ml + pad + 2, y + 1.5); }
     this.y = y0 + h + 2.5;
+  }
+  /** Punto con título en negrita y texto a continuación (lo esencial del documento del paciente). */
+  puntoClave(nivel, titulo, texto, { size = 8.8 } = {}) {
+    const d = this.d, x = this.ml, lh = this.lh(size), wi = this.w - 6;
+    this.f("bold", size, C.ink); const wt = d.getTextWidth(titulo + " · ");
+    this.f("normal", size, C.ink);
+    let lines;
+    const resto = wi - wt;
+    if (resto > 30) { const first = d.splitTextToSize(texto, resto)[0]; const rest = texto.slice(first.length).trim(); lines = [first, ...(rest ? d.splitTextToSize(rest, wi) : [])]; }
+    else lines = [null, ...d.splitTextToSize(texto, wi)];
+    if (this.salto(lines.length * lh + 1.5)) this.f("normal", size, C.ink);
+    d.setFillColor(...(C[nivel] || C.muted)); d.circle(x + 1.3, this.y - 1.1, 1.1, "F");
+    this.f("bold", size, C.ink); d.text(titulo + " · ", x + 5, this.y);
+    this.f("normal", size, C.ink);
+    lines.forEach((l, i) => { if (l) d.text(l, i === 0 ? x + 5 + wt : x + 5, this.y); this.y += lh; });
+    this.y += 1.5;
   }
   vineta(nivel, texto, { size = 9, indent = 0 } = {}) {
     const x = this.ml + indent, wi = this.w - indent - 6, lh = this.lh(size);
@@ -218,7 +241,7 @@ class Doc {
     this.y += h + 4;
   }
   columnasSemaforo(bloques) {
-    const d = this.d, gap = 4, n = bloques.length, wi = (this.w - gap * (n - 1)) / n, pad = 3.5, size = 8.6;
+    const d = this.d, gap = 4, n = bloques.length, wi = (this.w - gap * (n - 1)) / n, pad = 3.2, size = 8.4;
     const alt = bloques.map((b) => { let h = this.lh(10) + 2; for (const t of b.items) h += this.alturaTexto(t, size, wi - 2 * pad - 4) + 1.2; return h + 2 * pad + 3; });
     const h = Math.max(...alt);
     this.salto(h + 2);
@@ -486,18 +509,44 @@ export async function pdfMedico(kb, res, ctx) {
 }
 
 /* ---------- SU PLAN (paciente) ---------- */
+/** Recorta un texto al final de una frase, sin pasar de `max` caracteres. */
+function corta(t, max = 220) {
+  t = String(t || "").trim(); if (t.length <= max) return t;
+  const i = t.slice(0, max).lastIndexOf(". ");
+  if (i > 60) return t.slice(0, i + 1);
+  const j = t.slice(0, max - 1).lastIndexOf(" ");
+  return t.slice(0, j > 40 ? j : max - 1).replace(/[,;:(]$/, "").trim() + "…";
+}
+const AMB_TAG = { general: "", aerobico: "Aeróbico: ", fuerza: "Fuerza: ", equilibrio: "Equilibrio: " };
+const NIVEL_TAG = { alerta: "Atención: ", precaucion: "Precaución: ", info: "" };
+const MAX_CARAS_PACIENTE = 4;
+
+/** Documento para el paciente: primera cara con lo esencial y lo más útil; máximo 4 caras.
+ *  Se maqueta con un nivel de detalle (3 → 0) y, si se pasa de 4 páginas, se vuelve a maquetar con menos detalle. */
 export async function pdfPaciente(kb, res, ctx) {
-  const doc = new (await jspdf()).jsPDF({ unit: "mm", format: "a4", compress: true });
-  const font = await prepararFuentes(doc);
+  const jsPDF = (await jspdf()).jsPDF;
   const logo = await dataUrl("assets/logo-app.png");
-  const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra mayor y solo lo esencial
-  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.12 : 1, numero: numeroDocumento(res, ctx), version: ctx.appVersion, qr: await qrPng(ctx.enlace) });
+  const qr = await qrPng(ctx.enlace);
+  let doc = null;
+  for (let detalle = 3; detalle >= 0; detalle--) {
+    doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
+    const font = await prepararFuentes(doc);
+    maquetarPaciente(doc, font, logo, qr, kb, res, ctx, detalle);
+    if (doc.internal.getNumberOfPages() <= MAX_CARAS_PACIENTE) break;
+  }
+  return doc;
+}
+
+function maquetarPaciente(doc, font, logo, qr, kb, res, ctx, detalle) {
+  const compacto = ctx.modo === "paciente"; // versión para el propio paciente: letra algo mayor
+  const pg = new Doc(doc, font, logo, { titulo: "Su medicación y el ejercicio", subtitulo: compacto ? "Su plan para entrenar con seguridad" : "Un plan sencillo para entrenar con seguridad con su tratamiento", tipo: "Documento para el paciente", escala: compacto ? 1.08 : 1, numero: numeroDocumento(res, ctx), version: ctx.appVersion, qr });
   pg.prescriptor(ctx.prescriptor, ctx.prescrito);
+  pg.parrafo("Preparado a partir de su medicación. Información general para moverse con seguridad y hablar con su médico; no sustituye su consejo ni cambia ningún tratamiento.", { size: 7.6, color: C.muted, gap: 1 });
 
-  pg.parrafo("Este plan se ha preparado a partir de la medicación que usted ha introducido. Es información general para ayudarle a moverse con seguridad y a hablar con su médico; no sustituye a su consejo ni cambia ningún tratamiento.", { size: 9, color: C.muted });
-
-  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Antes de empezar", texto: txt.replace("Cribado ACSM: ", "").replace(/^./, (c) => c.toUpperCase()) }); }
+  /* ---- cara 1: lo que necesita saber ---- */
+  if (ctx.cribado && CRIBADO_PDF[ctx.cribado.clave]) { const [niv, txt] = CRIBADO_PDF[ctx.cribado.clave]; pg.tarjeta({ nivel: niv, titulo: "Antes de empezar", texto: txt.replace("Cribado ACSM: ", "").replace(/^./, (c) => c.toUpperCase()), size: 8.6 }); }
   const P = prescripcion(res, ctx);
+  const cond0 = ctx.condiciones || new Set();
   const evite = [];
   if (tiene(res, "sangrado")) evite.push("Deportes de contacto o con riesgo de golpes y caídas a velocidad.");
   if (tiene(res, "tendon")) evite.push("Saltos, carrera intensa y cargas máximas durante el tratamiento y el mes siguiente.");
@@ -506,103 +555,110 @@ export async function pdfPaciente(kb, res, ctx) {
   if (tiene(res, "sedacion")) evite.push("Entrenar en las horas siguientes a una toma que da sueño.");
   if (tiene(res, "renal") || tiene(res, "sangrado") || tiene(res, "litio")) evite.push("Antiinflamatorios (ibuprofeno, naproxeno) para las agujetas: use paracetamol.");
   if (tiene(res, "fc_no_valida") || tiene(res, "bradicardia")) evite.push("Guiarse por el pulso del reloj para medir la intensidad.");
+  if (cond0.has("aneurisma_aorta")) evite.push("Levantar cargas máximas o aguantar la respiración haciendo fuerza.");
+  if (cond0.has("osteoporosis")) evite.push("Doblar la espalda hacia delante con peso y los giros bruscos.");
   if (!evite.length) evite.push("No hay actividades que deba evitar por su medicación; progrese poco a poco.");
   const cuidado = [];
   if (tiene(res, "hipoglucemia")) cuidado.push("Mida la glucosa antes y después y lleve azúcar.");
   if (cuenta(res, "hipotension") >= 1) cuidado.push("Levántese despacio y termine cada sesión con 5–10 minutos suaves.");
   if (tiene(res, "caidas") || ctx.caidas || ctx.edad >= 65) cuidado.push("Haga el equilibrio con un apoyo cerca.");
   if (tiene(res, "miopatia")) cuidado.push("Dolor muscular que no encaja con lo entrenado: consulte.");
-  if (tiene(res, "hiperpotasemia")) cuidado.push("Sin suplementos ni bebidas 'ricas en potasio'.");
+  if (tiene(res, "hiperpotasemia")) cuidado.push("Sin suplementos ni bebidas «ricas en potasio».");
   if (tiene(res, "deshidratacion") || tiene(res, "litio")) cuidado.push("Beba agua con sales en sesiones largas.");
+  if (tiene(res, "qt")) cuidado.push("Palpitaciones o mareo: pare y consulte.");
   if (!cuidado.length) cuidado.push("Empiece suave y aumente cada semana un poco.");
-  const puede = [
-    "Caminar a un paso que le permita hablar, casi todos los días.",
-    "Ejercicios de fuerza 2–3 días por semana (levantarse de la silla, subir escalones, empujar y tirar).",
-    "Ejercicios de equilibrio 2–3 días por semana.",
-  ];
+  const puede = ["Caminar a un paso que le permita hablar, casi todos los días.", "Ejercicios de fuerza 2–3 días por semana (levantarse de la silla, subir escalones, empujar y tirar).", "Ejercicios de equilibrio 2–3 días por semana."];
   pg.columnasSemaforo([
     { nivel: "info", titulo: "Puede hacer", items: puede },
-    { nivel: "precaucion", titulo: "Con cuidado", items: cuidado.slice(0, 5) },
-    { nivel: "alerta", titulo: "Evite", items: evite.slice(0, 5) },
+    { nivel: "precaucion", titulo: "Con cuidado", items: cuidado.slice(0, 4) },
+    { nivel: "alerta", titulo: "Evite", items: evite.slice(0, 4) },
   ]);
 
+  const esencial = loEsencial(res, 5);
+  const usadas = new Set(esencial.map((e) => e.texto));
+  if (esencial.length) {
+    pg.seccion("Lo esencial", "lo más importante de su medicación para el ejercicio");
+    for (const a of esencial) pg.puntoClave(a.nivel, a.titulo, a.texto, { size: 8.6 });
+  }
+
   pg.seccion("Su plan semanal");
-  const fcTxt = tiene(res, "fc_no_valida") || tiene(res, "bradicardia") ? "A un ritmo que le permita hablar con frases cortas (no mire el pulso). " : "A un ritmo que le permita hablar con frases cortas. ";
+  const fcNo = tiene(res, "fc_no_valida") || tiene(res, "bradicardia");
   pg.tabla(
-    [{ t: "", w: .15 }, { t: "Cuántas veces", w: .2 }, { t: "Cuánto", w: .22 }, { t: "Cómo", w: .43 }],
+    [{ t: "", w: .14 }, { t: "Cuántas veces", w: .2 }, { t: "Cuánto", w: .22 }, { t: "Cómo", w: .44 }],
     [
-      [{ t: "Aeróbico", bold: true }, "5 días por semana (mínimo 3)", "Empiece con 10–20 min y suba poco a poco hasta 30–45", fcTxt + "Termine siempre despacio."],
-      [{ t: "Fuerza", bold: true }, "2–3 días, no seguidos", "20–40 min", "8–15 repeticiones de cada ejercicio, 2–3 vueltas. Respire siempre; nunca aguante el aire. Suba la carga cuando le resulte fácil."],
+      [{ t: "Aeróbico", bold: true }, P.aer.frec.replace("/semana", " por semana").replace("mín.", "mínimo"), "Empiece con 10–20 min y suba poco a poco hasta 30–45", (fcNo ? "A un ritmo que le permita hablar con frases cortas (no mire el pulso). " : "A un ritmo que le permita hablar con frases cortas. ") + "Termine siempre despacio."],
+      [{ t: "Fuerza", bold: true }, "2–3 días, no seguidos", "20–40 min", "8–15 repeticiones de cada ejercicio, 2–3 vueltas. Respire siempre; nunca aguante el aire."],
       [{ t: "Equilibrio", bold: true }, P.eq.frec.replace(/\s*\(.*?\)/, ""), "10–15 min", P.eq.int + " Apoyo sobre un pie, caminar talón-punta, levantarse sin manos."],
     ],
-    { size: 8.5 }
+    { size: 8.1 }
   );
+  { // zona de intensidad en dos líneas (la tabla completa está en la app y en el informe clínico)
+    const zz = ctx.zona, z = zonaTxt(zz);
+    if (z) {
+      const ritmo = zz.metodo === "fc" ? `Su ritmo: ligera ${zz.zonas.ligera[0]}–${zz.zonas.ligera[1]} lpm · moderada ${zz.zonas.moderada[0]}–${zz.zonas.moderada[1]} lpm` + (zz.techo === "vigorosa" ? ` · vigorosa ${zz.zonas.vigorosa[0]}–${zz.zonas.vigorosa[1]} lpm` : "") + "." : `Su ritmo: no se guíe por el pulso (${zz.motivos.join(", ")}); moderado = ${zz.rpe.moderada}.`;
+      pg.salto(10); // las dos líneas del ritmo van juntas
+      pg.parrafo(ritmo, { size: 8.6, style: "bold", gap: 0.3 });
+      pg.parrafo((zz.metodo === "fc" ? `Pulso máximo estimado ${zz.fcmax} lpm${zz.limiteDai ? `; con DAI, pulso < ${zz.limiteDai} lpm` : ""}. ` : "") + (zz.techo === "moderada" ? "No pase de intensidad moderada por su situación clínica. " : "") + (zz.habla || ""), { size: 7.4, color: C.muted });
+    }
+  }
 
-  seccionZona(pg, ctx, { paciente: true });
+  /* ---- cara 2: su semana, cuándo entrenar y señales de alarma ---- */
   {
-    const fragil = (ctx.condiciones || new Set()).has("fragil") || (ctx.condiciones || new Set()).has("nyha34");
+    const cond = ctx.condiciones || new Set();
+    const fragil = cond.has("fragil") || cond.has("nyha34");
     const nombres = { fuerza_eq: "Fuerza y equilibrio", aerobico: "Aeróbico (caminar, bici…)", fuerza: "Fuerza", descanso: "Descanso o paseo suave" };
     const dias = [["Lunes", 1], ["Martes", 2], ["Miércoles", 3], ["Jueves", 4], ["Viernes", 5], ["Sábado", 6], ["Domingo", 0]];
     pg.seccion("Su semana", `plan tipo: ${fragil ? "sesiones cortas, varias veces al día si hace falta" : "unos 150 minutos y 5 sesiones a la semana"}; ajústelo con su médico o entrenador`);
     pg.tabla(
-      [{ t: "Día", w: .16 }, { t: "Sesión", w: .3 }, { t: "Qué hacer", w: .54 }],
+      [{ t: "Día", w: .15 }, { t: "Sesión", w: .3 }, { t: "Qué hacer", w: .55 }],
       dias.map(([d, n]) => { const tipo = (ctx.plan ? planSemana(ctx.plan.dias) : PLAN_SEMANA)[n]; const s = tipo === "descanso" ? null : sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }); return [{ t: d, bold: true }, s ? `${nombres[tipo]} · ${s.min} min` : nombres[tipo], s ? s.bloques.map((b) => `${b.nombre} (${b.min}′)`).join(" · ") : "Si le apetece, 20–30 minutos caminando cuentan."]; }),
-      { size: 8 }
+      { size: 7.9 }
     );
   }
   seccionCuando(pg, ctx, { paciente: true });
 
-  const esencial = loEsencial(res, 5);
-  if (esencial.length) {
-    pg.seccion("Lo esencial", `${esencial.length} puntos; el detalle, más abajo y en la aplicación`);
-    for (const a of esencial) pg.tarjeta({ nivel: a.nivel, titulo: a.titulo, texto: a.texto });
-  }
   pg.seccion("Pare y consulte si nota…", "señales de alarma durante o después del ejercicio");
-  for (const a of ALARMA) pg.vineta("alerta", a, { size: 8.8 });
-  pg.parrafo("Ante cualquiera de ellas deje de hacer ejercicio y consulte; si el dolor en el pecho o la falta de aire no ceden en pocos minutos, llame al 112.", { size: 8, color: C.muted });
+  const alarmas = [...ALARMA];
+  if (tiene(res, "miopatia") || tiene(res, "hipopotasemia")) alarmas.push("Dolor muscular generalizado, debilidad u orina oscura en los días siguientes.");
+  if (tiene(res, "sangrado")) alarmas.push("Cualquier golpe en la cabeza, aunque se encuentre bien, o hematomas grandes sin golpe.");
+  for (const a of alarmas) pg.vineta("alerta", a, { size: 8.6 });
+  pg.parrafo("Ante cualquiera de ellas deje de hacer ejercicio y consulte; si el dolor en el pecho o la falta de aire no ceden en pocos minutos, llame al 112.", { size: 7.8, color: C.muted });
 
-  pg.seccion("Su medicación", "y lo esencial de cada una para el ejercicio");
+  /* ---- caras 3–4: su medicación, una por una ---- */
+  pg.seccion("Su medicación", detalle ? "qué tener en cuenta con cada una" : "lo esencial de cada una");
+  const reglasDe = (it) => {
+    const out = [];
+    for (const amb of ["general", "aerobico", "fuerza", "equilibrio"]) for (const g of res.ambitos[amb]) if (g.item.principio.id === it.principio.id) for (const r of g.reglas) out.push({ amb, r });
+    return out.sort((a, b) => ORDEN_NIVEL[b.r.nivel] - ORDEN_NIVEL[a.r.nivel] || (a.amb === "general" ? -1 : 1)).filter((x) => !usadas.has(corta(x.r.texto, 190)) && !usadas.has(x.r.texto)).slice(0, detalle);
+  };
   pg.tabla(
-    [{ t: "Medicamento", w: .24 }, { t: "Dosis", w: .21 }, { t: "Lo esencial", w: .55 }],
-    res.items.map((it) => [{ t: it.principio.nombre, bold: true }, dosisTxt(it).replace(" · dosis alta", " (dosis alta)"), it.clase.resumen]),
-    { size: 8.3 }
+    [{ t: "Medicamento", w: .22 }, { t: "Dosis", w: .16 }, { t: detalle ? "Qué tener en cuenta" : "Lo esencial", w: .62 }],
+    res.items.map((it) => {
+      const extra = reglasDe(it).map((x) => `• ${NIVEL_TAG[x.r.nivel]}${AMB_TAG[x.amb]}${corta(x.r.texto, detalle >= 3 ? 230 : 170)}`);
+      return [{ t: it.principio.nombre, bold: true }, dosisTxt(it).replace(" · dosis alta", " (dosis alta)"), [corta(it.clase.resumen, detalle ? 200 : 260), ...extra].join("\n")];
+    }),
+    { size: 8 }
   );
-  if (ctx.libres?.length) pg.parrafo(`También toma: ${ctx.libres.join(", ")}. No están en nuestra base, así que no hay recomendaciones sobre ellos; coméntelos con su médico o farmacéutico.`, { size: 8.5, color: C.muted });
+  if (ctx.libres?.length) pg.parrafo(`También toma: ${ctx.libres.join(", ")}. No están en nuestra base, así que no hay recomendaciones sobre ellos; coméntelos con su médico o farmacéutico.`, { size: 8, color: C.muted });
 
-  for (const [amb, titulo] of AMBITOS) {
-    if (compacto && amb !== "general") continue; // en la versión para el paciente solo "antes de empezar"; el detalle está en la app
-    const grupos = res.ambitos[amb].map((g) => ({ it: g.item, reglas: g.reglas.filter((r) => r.nivel !== "alerta" && (!compacto || r.nivel === "precaucion")) })).filter((g) => g.reglas.length);
-    const comb = res.combinadas.filter((c) => (c.regla.ambitos || []).includes(amb) && c.regla.nivel !== "alerta");
-    if (!grupos.length && !comb.length) continue;
-    pg.seccion(titulo);
-    for (const c of comb) pg.tarjeta({ nivel: c.regla.nivel, titulo: c.regla.titulo, texto: c.texto, size: 8.6 });
-    for (const g of grupos.sort((a, b) => Math.max(...b.reglas.map((r) => ORDEN_NIVEL[r.nivel])) - Math.max(...a.reglas.map((r) => ORDEN_NIVEL[r.nivel])))) {
-      pg.salto(10); pg.f("bold", 9.3, C.ink); pg.d.text(g.it.principio.nombre, pg.ml, pg.y); pg.y += 4.5;
-      for (const r of g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel])) pg.vineta(r.nivel, r.texto, { size: 8.6, indent: 2 });
-      pg.y += 1;
+  if (detalle) {
+    const titulos = new Set(esencial.map((e) => e.titulo));
+    const comb = res.combinadas.filter((c) => !titulos.has(c.regla.titulo) && (detalle >= 2 ? c.regla.nivel !== "info" || c.regla.ambitos?.includes("general") : c.regla.nivel === "precaucion"));
+    if (comb.length) {
+      pg.seccion("Por su situación", "consejos que dependen de sus enfermedades y de la combinación de fármacos");
+      for (const c of comb.slice(0, detalle >= 2 ? 8 : 4)) pg.puntoClave(c.regla.nivel, c.regla.titulo, corta(c.texto, detalle >= 3 ? 320 : 220), { size: 8.4 });
     }
   }
 
-  const ddi = res.interacciones.filter((x) => ORDEN_DDI[x.nivel] >= (compacto ? 3 : 2));
+  const ddi = res.interacciones.filter((x) => x.fuente !== "ddinter" && ORDEN_DDI[x.nivel] >= (detalle ? 2 : 3)).slice(0, 6);
   if (ddi.length) {
-    pg.seccion("Medicamentos que se afectan entre sí");
-    pg.parrafo("No significa que la combinación sea incorrecta (muchas veces es necesaria), sino que conviene conocerla y que su médico la tenga en cuenta.", { size: 8.3, color: C.muted });
-    pg.tabla([{ t: "Combinación", w: .3 }, { t: "Qué puede pasar", w: .38 }, { t: "Qué hacer", w: .32 }], ddi.map((x) => [{ t: `${x.a.principio.nombre} + ${x.b.principio.nombre}`, bold: true }, x.efecto, x.accion || "—"]), { size: 8 });
+    pg.seccion("Medicamentos que se afectan entre sí", "no significa que la combinación sea incorrecta; conviene conocerla");
+    pg.tabla([{ t: "Combinación", w: .3 }, { t: "Qué puede pasar", w: .36 }, { t: "Qué hacer", w: .34 }], ddi.map((x) => [{ t: `${x.a.principio.nombre} + ${x.b.principio.nombre}`, bold: true }, corta(x.efecto, 160), corta(x.accion || "—", 160)]), { size: 7.8 });
   }
 
-  pg.seccion("Cuándo parar y consultar");
-  for (const t of [
-    "Dolor o presión en el pecho, falta de aire desproporcionada, mareo intenso o desmayo: pare y busque ayuda (112 si no cede).",
-    "Palpitaciones fuertes o irregulares que no se calman al parar.",
-    tiene(res, "hipoglucemia") ? "Sudor frío, temblor o confusión: mida la glucosa y tome azúcar." : null,
-    "Dolor muscular generalizado, debilidad u orina oscura en los días siguientes.",
-    tiene(res, "sangrado") ? "Cualquier golpe en la cabeza, aunque se encuentre bien." : null,
-  ].filter(Boolean)) pg.vineta("alerta", t, { size: 8.8 });
-  if (compacto) pg.parrafo("Este documento recoge lo esencial. En la aplicación encontrará el detalle de cada medicamento para cada tipo de ejercicio y la lista completa de interacciones.", { size: 8, color: C.muted });
-  pg.parrafo(kb.aviso, { size: 7.5, color: C.muted });
+  pg.parrafo("Este documento recoge lo esencial. En la aplicación encontrará el detalle de cada medicamento para cada tipo de ejercicio y la lista completa de interacciones. " + kb.aviso, { size: 7.3, color: C.muted });
   pg.firma(ctx.prescriptor, ctx.prescrito);
   pg.pie();
-  return doc;
 }
 
 /* ---------- FICHA PARA EL ENTRENADOR / FISIOTERAPEUTA ---------- */
