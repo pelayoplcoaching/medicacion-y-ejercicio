@@ -3,7 +3,7 @@
 Estado en la versión 1.0 (v1.0.0, 2026-10-16). Lo pendiente es responsabilidad clínica, jurídica o de difusión del autor. Marcar al completar; lo pendiente es responsabilidad clínica o decisión de producto, no técnica.
 
 ## Contenido clínico
-- [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Muestreo sistemático realizado el 16/10 (349 textos, `docs/MUESTREO-CLINICO-2026-10-16.md`); pendiente: confirmación del autor de las 7 correcciones de contenido/nivel con la hoja de revisión.
+- [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Muestreo sistemático realizado el 16/10 (349 textos, `docs/MUESTREO-CLINICO-2026-10-16.md`); las 7 correcciones de contenido/nivel, confirmadas por el autor el 16/10 con la hoja de revisión (`import_revision.py`, comentarios en `data/revision/comentarios_20261016.md`).
 - [x] Revisión de las 209 interacciones curadas: fuente por fila (`scripts/fuentes_ddi.py`, beta 3) y criterio de inclusión de DDInter (solo mayores/moderadas). Pendiente: muestreo del autor de las de nivel mayor.
 - [x] Casos de validación ampliados a 25 (`app/data/casos.json`), con casos negativos y uno por situación clínica (v1.0).
 - [ ] Umbrales de dosis alta (`umbral_mg`) revisados en los principios de riesgo (opioides, benzodiacepinas, diuréticos, insulina, corticoides).

@@ -34,7 +34,7 @@ Hallazgo sistemático: **62 reglas** que afirman un beneficio del ejercicio («m
 - **Interacciones mayores (99)**: 96 correctas en mecanismo, nivel y acción (dabigatrán 2 h antes del verapamilo; sildenafilo ≤ 25 mg/48 h con potenciadores; azatioprina al 25 % con alopurinol; simvastatina ≤ 20 mg con amiodarona/verapamilo/diltiazem; colchicina con macrólidos y azoles; domperidona contraindicada con macrólidos/azoles; rifampicina e inductores; hipérico). Las 3 restantes son las corregidas en A.
 
 ## Qué queda para el autor
-- Confirmar (o revertir) con la hoja de revisión las 4 bajadas de nivel y las 3 reescrituras de texto: todas están en `data/revision/` tras regenerar la hoja con `export_revision.py`.
+- ~~Confirmar (o revertir) con la hoja de revisión las 4 bajadas de nivel y las 3 reescrituras de texto.~~ Confirmadas por el autor el 16/10/2026 (`revision_20261016.xlsx`, ESTADO = OK).
 - Decidir si las reglas «Sin limitación específica» con evidencia `revision` (≈ 100) deben llevar fuente ACSM genérica o seguir como criterio clínico; no afectan al informe.
 - Muestreo propio del 10 % de las reglas no leídas aquí (≈ 350) a lo largo de la 1.x; la app ya avisa de cualquier cambio en la base a cada usuario.
 - Mantener la regla de la casa: una ficha técnica solo se cita para efectos adversos, dosis e interacciones; los beneficios del ejercicio se citan por guía o revisión.
