@@ -378,6 +378,10 @@ try {
   await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
   check("recorrido en escritorio: con datos y medicación el plan ya está a la vista, los tres pasos quedan hechos y «Siguiente» desaparece", (await pa.$$("#recorrido-pasos li.hecho")).length === 3 && await pa.$eval("#btn-siguiente", (b) => b.hidden) && (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
   check("barra inferior oculta en escritorio", !(await pa.isVisible("#barra-inferior")));
+  await pa.click('[data-modo="profesional"]'); await pa.waitForTimeout(200); await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(400);
+  check("pantalla de consulta: siete bloques seguidos, sin pestañas, columna izquierda fija", (await pa.$$("#contenido-tab .consulta-bloque")).length === 7 && !(await pa.isVisible(".tabs")) && (await pa.$eval("main > aside", (e) => getComputedStyle(e).position)) === "sticky");
+  await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(300);
+  check("vuelta a la vista normal con pestañas", await pa.isVisible(".tabs") && (await pa.$$("#contenido-tab .consulta-bloque")).length === 0);
   await anchoCtx.close();
   const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();
   await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });

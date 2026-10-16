@@ -991,3 +991,17 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .lista-cambios li.nivel-alerta .punto { background: var(--alerta); } .lista-cambios li.nivel-precaucion .punto { background: var(--precaucion); } .lista-cambios li.nivel-info .punto { background: var(--info); }
 .lista-cambios.eliminados li { text-decoration: line-through; color: var(--muted); }
 #kbcambios h4 { margin: 14px 0 4px; }
+
+/* Pantalla de consulta (v1.0): dos columnas sin pestañas, columna izquierda fija con su propio desplazamiento */
+.solo-ancho { display: none; }
+@media (min-width: 960px) {
+  .solo-ancho { display: inline-flex; }
+  body.consulta-pantalla .contenedor { grid-template-columns: minmax(380px, 440px) minmax(0, 1fr); gap: 24px; max-width: 1400px; }
+  body.consulta-pantalla .contenedor > aside { position: sticky; top: 8px; max-height: calc(100dvh - 16px); overflow: auto; padding-right: 6px; scrollbar-width: thin; }
+  body.consulta-pantalla .tabs, body.consulta-pantalla #hoy, body.consulta-pantalla .indice-informe, body.consulta-pantalla #completitud, body.consulta-pantalla .recorrido, body.consulta-pantalla .lema, body.consulta-pantalla .detalle-t { display: none !important; }
+  body.consulta-pantalla .cabecera { padding-block: 10px 8px; }
+  body.consulta-pantalla .panel { padding: 12px 14px; }
+  body.consulta-pantalla #contenido-tab { display: grid; gap: 18px; }
+  .consulta-bloque { border-top: 2px solid var(--accent); padding-top: 6px; }
+  .consulta-bloque-t { margin: 0 0 8px; font-size: 1.05rem; color: var(--accent-deep); }
+}

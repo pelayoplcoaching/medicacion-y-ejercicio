@@ -263,6 +263,7 @@ function restaurar() {
 }
 function aplicarModo() {
   document.body.dataset.modo = estado.modo;
+  aplicarConsulta();
   $$(".modo button").forEach((b) => b.setAttribute("aria-checked", b.dataset.modo === estado.modo));
   const conIcono = (el, txt) => { const svg = el.querySelector(":scope > svg"); el.textContent = txt; if (svg) el.prepend(svg); };
   conIcono($("#btn-pdf-medico"), estado.modo === "paciente" ? t("desc.medico") : t("desc.medico.pro"));
@@ -1102,6 +1103,12 @@ $("#btn-siguiente").addEventListener("click", () => {
   else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
 });
 
+/* ---------- v1.0: pantalla de consulta (dos columnas sin pestañas; modo profesional, ≥ 960 px) ---------- */
+function modoConsulta() { try { return estado.modo === "profesional" && localStorage.getItem("medex.consulta") === "1" && matchMedia("(min-width: 960px)").matches; } catch { return false; } }
+function aplicarConsulta() { document.body.classList.toggle("consulta-pantalla", modoConsulta()); const b = $("#btn-consulta-pantalla"); if (b) b.textContent = modoConsulta() ? t("consulta.normal") : t("consulta.pantalla"); }
+$("#btn-consulta-pantalla")?.addEventListener("click", () => { try { localStorage.setItem("medex.consulta", modoConsulta() ? "0" : "1"); } catch {} aplicarConsulta(); render(); });
+matchMedia("(min-width: 960px)").addEventListener?.("change", () => { aplicarConsulta(); render(); });
+
 /* ---------- v1.0: huella del informe y aviso de cambios al actualizar la base de conocimiento ---------- */
 function huellaInforme(res) {
   const items = [];
@@ -1168,6 +1175,37 @@ function pintarAvisoKb() {
   });
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
+
+function renderTab(cont, res, tab) {
+  if (tab === "general") {
+    const imp = seccionImpacto(res); if (imp) cont.append(imp);
+    if (res.combinadas.length) {
+      const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
+      const sec = seccion(t("inf.combinacion"), { clave: "combinadas", resumen: `${res.combinadas.length} ${t("inf.avisos")} · ${resumenNiveles(na, np, 0)}` });
+      const cuerpo = sec.querySelector(".cuerpo-sec");
+      for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
+        cuerpo.insertAdjacentHTML("beforeend", `
+          <article class="regla nivel-${c.regla.nivel}">
+            <header><h4>${c.regla.titulo}</h4><span class="nivel">${etiqueta(c.regla.nivel)}</span></header>
+            <p>${glosar(c.texto)}</p>
+            <footer>${c.implicados.map((it) => `<span class="chip">${it.principio.nombre}</span>`).join("")}</footer>
+          </article>`);
+      }
+      cont.append(sec);
+    }
+    renderAmbito(cont, res.ambitos.general, null);
+  } else if (tab === "interacciones") {
+    renderInteracciones(cont, res);
+  } else if (tab === "cuando") {
+    renderCuando(cont);
+  } else if (tab === "plan") {
+    renderPlan(cont);
+  } else {
+    if (tab === "aerobico") cont.insertAdjacentHTML("beforeend", tarjetaZona(res));
+    if ("speechSynthesis" in window) { cont.insertAdjacentHTML("afterbegin", `<div class="escuchar-tab"><button type="button" class="btn-sec sm" data-escuchar-tab>${icono("escuchar")} ${t("escuchar.apartado")}</button></div>`); cont.querySelector("[data-escuchar-tab]").addEventListener("click", () => escuchar(cont.innerText)); }
+    renderAmbito(cont, res.ambitos[tab], null, tab);
+  }
+}
 
 /** «De un vistazo»: puede hacer / con cuidado / evite + plan semanal + ritmo. Misma jerarquía que la primera cara del PDF del paciente. */
 function renderVistazo(res, ctx) {
@@ -1311,35 +1349,13 @@ function render() {
   guardarHuella(res);
   const cont = $("#contenido-tab");
   cont.innerHTML = "";
-
-  if (estado.tab === "general") {
-    const imp = seccionImpacto(res); if (imp) cont.append(imp);
-    if (res.combinadas.length) {
-      const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
-      const sec = seccion(t("inf.combinacion"), { clave: "combinadas", resumen: `${res.combinadas.length} ${t("inf.avisos")} · ${resumenNiveles(na, np, 0)}` });
-      const cuerpo = sec.querySelector(".cuerpo-sec");
-      for (const c of [...res.combinadas].sort((a, b) => ORDEN_NIVEL[b.regla.nivel] - ORDEN_NIVEL[a.regla.nivel])) {
-        cuerpo.insertAdjacentHTML("beforeend", `
-          <article class="regla nivel-${c.regla.nivel}">
-            <header><h4>${c.regla.titulo}</h4><span class="nivel">${etiqueta(c.regla.nivel)}</span></header>
-            <p>${glosar(c.texto)}</p>
-            <footer>${c.implicados.map((it) => `<span class="chip">${it.principio.nombre}</span>`).join("")}</footer>
-          </article>`);
-      }
-      cont.append(sec);
+  if (modoConsulta()) { // pantalla de consulta: todas las secciones seguidas, sin pestañas
+    for (const tab of ["general", "aerobico", "fuerza", "equilibrio", "interacciones", "cuando", "plan"]) {
+      const bloque = document.createElement("section"); bloque.className = "consulta-bloque"; bloque.id = "consulta-" + tab;
+      bloque.innerHTML = `<h3 class="consulta-bloque-t">${t("tab." + tab)}</h3>`;
+      renderTab(bloque, res, tab); cont.append(bloque);
     }
-    renderAmbito(cont, res.ambitos.general, null);
-  } else if (estado.tab === "interacciones") {
-    renderInteracciones(cont, res);
-  } else if (estado.tab === "cuando") {
-    renderCuando(cont);
-  } else if (estado.tab === "plan") {
-    renderPlan(cont);
-  } else {
-    if (estado.tab === "aerobico") cont.insertAdjacentHTML("beforeend", tarjetaZona(res));
-    if ("speechSynthesis" in window) { cont.insertAdjacentHTML("afterbegin", `<div class="escuchar-tab"><button type="button" class="btn-sec sm" data-escuchar-tab>${icono("escuchar")} ${t("escuchar.apartado")}</button></div>`); cont.querySelector("[data-escuchar-tab]").addEventListener("click", () => escuchar(cont.innerText)); }
-    renderAmbito(cont, res.ambitos[estado.tab], null, estado.tab);
-  }
+  } else renderTab(cont, res, estado.tab);
   // perfil de señales
   const perfil = Object.entries(res.perfil).filter(([s]) => datos.kb.senales[s] && !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s)).sort((a, b) => b[1].length - a[1].length);
   $("#perfil").innerHTML = "";
@@ -2395,7 +2411,7 @@ const PLANTILLAS = [
 ];
 function pintarPlantillas() { const sel = $("#plantilla"); if (!sel) return; const v = sel.value; sel.innerHTML = `<option value="">${t("plantilla.ninguna")}</option>` + PLANTILLAS.map((p) => `<option value="${p.id}">${t("plantilla." + p.id)}</option>`).join(""); sel.value = v; }
 pintarPlantillas();
-document.addEventListener("idioma", () => { pintarPlantillas(); pintarConsulta(); });
+document.addEventListener("idioma", () => { pintarPlantillas(); pintarConsulta(); aplicarConsulta(); });
 $("#btn-plantilla")?.addEventListener("click", () => {
   const p = PLANTILLAS.find((x) => x.id === $("#plantilla").value); if (!p) return;
   const cond = new Set(estado.condiciones); for (const c of p.condiciones) cond.add(c); estado.condiciones = [...cond];
