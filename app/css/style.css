@@ -727,6 +727,7 @@ details.farmaco summary .ic-grupo { width: 30px; height: 30px; padding: 5px; }
 .veredicto-crib { margin-top: 8px !important; padding-top: 8px; border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent); font-weight: 500; font-size: .92rem; }
 .veredicto-crib small { color: inherit; opacity: .75; }
 .veredicto-crib.crib-pendiente { font-weight: 500; }
+.banner-kb { background: var(--accent-soft, var(--info-soft)); color: var(--accent-deep); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .banner-reeval { background: var(--precaucion-soft); color: var(--precaucion-ink); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 #bloque-prescriptor .fila > label { flex: 0 1 auto; }
 #bloque-prescriptor input[type=text] { width: 100%; min-width: 120px; }
@@ -983,3 +984,10 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .evo-barra small { position: absolute; bottom: -16px; font-size: .68rem; color: var(--muted); }
 .evo-tabla { margin-top: 4px; } .delta { font-weight: 800; } .delta.up { color: var(--info); } .delta.down { color: var(--precaucion); }
 #evolucion h4 { margin: 14px 0 6px; font-size: .95rem; }
+
+/* aviso de cambios en la base (v1.0) */
+.lista-cambios { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; font-size: .92rem; }
+.lista-cambios li { display: flex; gap: 8px; align-items: flex-start; } .lista-cambios .punto { flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; background: var(--muted); }
+.lista-cambios li.nivel-alerta .punto { background: var(--alerta); } .lista-cambios li.nivel-precaucion .punto { background: var(--precaucion); } .lista-cambios li.nivel-info .punto { background: var(--info); }
+.lista-cambios.eliminados li { text-decoration: line-through; color: var(--muted); }
+#kbcambios h4 { margin: 14px 0 4px; }

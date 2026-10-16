@@ -149,17 +149,18 @@ const PAC = ["silla", "caminar", "ayuda"];
 const PRO = ["fg", "fevi", "nyha", "sppb", "vivifrail", "dai"];
 
 /** Contexto para el motor: condiciones marcadas + las derivadas de los datos numéricos o de las preguntas sencillas. */
-function ctxActual() {
-  const cond = new Set(estado.condiciones);
-  const p = estado.modo === "profesional" ? estado.pro : {};
-  const q = estado.modo === "paciente" ? estado.pac : {};
+function ctxActual() { return ctxDe(estado); }
+function ctxDe(e) {
+  const cond = new Set(e.condiciones);
+  const p = e.modo === "profesional" ? e.pro : {};
+  const q = e.modo === "paciente" ? e.pac : {};
   if (p.fg != null) { if (p.fg < 45) cond.add("renal"); if (p.fg < 30) cond.add("renal_grave"); }
   if (p.nyha != null && p.nyha >= 3) { cond.add("nyha34"); cond.add("insuficiencia_cardiaca"); }
   if (p.fevi != null && p.fevi < 40) { cond.add("fevi_baja"); cond.add("insuficiencia_cardiaca"); }
   if (p.dai != null) cond.add("marcapasos");
   // fragilidad: SPPB > Vivifrail > preguntas del paciente
   let frag = null;
-  const sppb = p.sppb ?? estado.sppb?.total ?? null;
+  const sppb = p.sppb ?? e.sppb?.total ?? null;
   if (sppb != null) frag = sppb <= 6 ? "fragil" : sppb <= 9 ? "prefragil" : "robusto";
   else if (p.vivifrail) frag = p.vivifrail === "A" || p.vivifrail === "B" ? "fragil" : p.vivifrail === "C" ? "prefragil" : "robusto";
   else {
@@ -167,7 +168,7 @@ function ctxActual() {
     if (malas) frag = malas >= 2 ? "fragil" : "prefragil"; // sin marcas no se infiere nada
   }
   if (frag && frag !== "robusto") cond.add(frag);
-  return { edad: estado.edad, caidas: estado.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, sppb, sppbGuiado: estado.sppb, fcReposo: estado.fcReposo, modo: estado.modo };
+  return { edad: e.edad, caidas: e.caidas, condiciones: cond, fragilidad: frag, daiFc: p.dai ?? null, fg: p.fg ?? null, fevi: p.fevi ?? null, nyha: p.nyha ?? null, sppb, sppbGuiado: e.sppb, fcReposo: e.fcReposo, modo: e.modo };
 }
 let datos, indice;
 let ultimoAnadido = null; // pid del último medicamento añadido, para resaltar su tarjeta
@@ -219,7 +220,9 @@ async function cargar() {
   restaurar();
   const h = location.hash.match(/^#lista=([A-Za-z0-9_-]+)/);
   if (h && decodificarEstado(h[1])) { history.replaceState(null, "", location.pathname); restaurarFormulario(); guardar(); $("#pegar-aviso").textContent = "Lista cargada desde el enlace."; }
+  comprobarCambiosBase(); // antes del primer render: compara la huella guardada con la base nueva
   render();
+  pintarAvisoKb();
   const hs = location.hash.match(/^#sync=([A-Za-z0-9_.-]+)/);
   if (hs) { recibirSync(hs[1]); return; }
   // primera visita sin lista: recorrido guiado sobre los elementos reales
@@ -595,7 +598,7 @@ $("#btn-perfiles").addEventListener("click", () => { const w = $("#perfiles"); w
 $("#btn-perfil-guardar").addEventListener("click", () => {
   const nombre = $("#perfil-nombre").value.trim() || `Lista ${leerPerfiles().length + 1}`;
   if (!estado.meds.length) { $("#pegar-aviso").textContent = "No hay medicamentos que guardar."; return; }
-  const lista = leerPerfiles(); lista.unshift({ id: Date.now().toString(36), nombre, fecha: Date.now(), estado: snapshot() }); escribirPerfiles(lista.slice(0, 20));
+  const lista = leerPerfiles(); lista.unshift({ id: Date.now().toString(36), nombre, fecha: Date.now(), estado: snapshot(), huella: { kb: datos.kb.version, items: huellaInforme(evaluar(datos, medsActivos(), ctxActual())) } }); escribirPerfiles(lista.slice(0, 20));
   $("#perfil-nombre").value = ""; renderPerfiles();
 });
 function restaurarFormulario() {
@@ -1099,6 +1102,73 @@ $("#btn-siguiente").addEventListener("click", () => {
   else { estado.informeVisto = true; guardar(); desplazar($("#informe")); pintarPasos(); }
 });
 
+/* ---------- v1.0: huella del informe y aviso de cambios al actualizar la base de conocimiento ---------- */
+function huellaInforme(res) {
+  const items = [];
+  for (const amb of ["general", "aerobico", "fuerza", "equilibrio"]) for (const g of res.ambitos[amb]) for (const r of g.reglas) items.push(`${amb}|${g.item.principio.id}|${r.nivel}|${r.texto}`);
+  for (const c of res.combinadas) items.push(`comb|${c.regla.id}|${c.regla.nivel}|${c.texto}`);
+  for (const x of res.interacciones) items.push(`ddi|${[x.a.principio.id, x.b.principio.id].sort().join("+")}|${x.nivel}|${x.efecto}`);
+  return items;
+}
+function diffHuella(antes, ahora) {
+  const A = new Set(antes || []), B = new Set(ahora || []);
+  const quitados = [...A].filter((x) => !B.has(x)), anadidos = [...B].filter((x) => !A.has(x));
+  const clave = (x) => x.split("|").slice(0, 2).join("|");
+  const palabras = (x) => new Set(x.split("|").slice(3).join("|").toLowerCase().match(/[a-záéíóúñü0-9]{4,}/g) || []);
+  const parecido = (a, b) => { const A = palabras(a), B = palabras(b); if (!A.size || !B.size) return 0; let n = 0; for (const w of A) if (B.has(w)) n++; return n / Math.max(A.size, B.size); };
+  const pendientes = [...quitados]; const modificados = [], nuevos = [];
+  for (const x of anadidos) { // un aviso «modificado» es el mismo fármaco/ámbito con un texto parecido (mismo nivel o distinto)
+    let mejor = -1, mejorS = 0.45;
+    pendientes.forEach((q, i) => { if (clave(q) === clave(x)) { const sc = parecido(q, x); if (sc > mejorS) { mejorS = sc; mejor = i; } } });
+    if (mejor >= 0) { modificados.push({ antes: pendientes[mejor], ahora: x }); pendientes.splice(mejor, 1); } else nuevos.push(x);
+  }
+  const eliminados = pendientes;
+  return { nuevos, eliminados, modificados, total: nuevos.length + eliminados.length + modificados.length };
+}
+function firmaLista() { return JSON.stringify([medsActivos().map((m) => [m.pid, m.dosis, m.tomas]), estado.edad, [...ctxActual().condiciones].sort()]); }
+function guardarHuella(res) { try { localStorage.setItem("medex.huella", JSON.stringify({ kb: datos.kb.version, lista: firmaLista(), items: huellaInforme(res) })); } catch {} }
+function evaluarEstado(e) { return evaluar(datos, (e.meds || []).filter((m) => !m.pausado && !m.libre), ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} })); }
+function comprobarCambiosBase() {
+  let h = null; try { h = JSON.parse(localStorage.getItem("medex.huella") || "null"); } catch {}
+  if (!h || h.kb === datos.kb.version) return;
+  const cambios = [];
+  if (estado.meds.length && h.lista === firmaLista() && Array.isArray(h.items)) { const d = diffHuella(h.items, huellaInforme(evaluar(datos, medsActivos(), ctxActual()))); if (d.total) cambios.push({ nombre: t("kbcambio.actual"), d }); }
+  const perfiles = leerPerfiles(); let tocados = 0;
+  for (const pf of perfiles) {
+    try {
+      const items = huellaInforme(evaluarEstado(pf.estado));
+      if (pf.huella?.items && pf.huella.kb !== datos.kb.version) { const d = diffHuella(pf.huella.items, items); if (d.total) { cambios.push({ nombre: pf.nombre, d }); tocados++; } }
+      pf.huella = { kb: datos.kb.version, items };
+    } catch {}
+  }
+  escribirPerfiles(perfiles);
+  try { localStorage.setItem("medex.kbcambios", JSON.stringify({ fecha: Date.now(), de: h.kb, a: datos.kb.version, cambios: cambios.map((c) => ({ nombre: c.nombre, nuevos: c.d.nuevos, eliminados: c.d.eliminados, modificados: c.d.modificados })), tocados })); } catch {}
+  try { localStorage.setItem("medex.huella", JSON.stringify({ ...h, kb: datos.kb.version })); } catch {}
+  pintarAvisoKb();
+}
+function pintarAvisoKb() {
+  const b = $("#aviso-kb"); if (!b) return;
+  let k = null; try { k = JSON.parse(localStorage.getItem("medex.kbcambios") || "null"); } catch {}
+  if (!k) { b.hidden = true; return; }
+  const propios = k.cambios.find((c) => c.nombre === t("kbcambio.actual"));
+  const nProp = propios ? propios.nuevos.length + propios.eliminados.length + propios.modificados.length : 0;
+  b.hidden = false;
+  b.innerHTML = `${k.cambios.length ? t("kbcambio.banner", { v: k.a, n: nProp, p: k.tocados ? t("kbcambio.pacientes", { n: k.tocados }) : "" }) : t("kbcambio.sin", { v: k.a })} ${k.cambios.length ? `<button type="button" class="btn-sec sm" id="btn-kb-ver">${t("kbcambio.ver")}</button>` : ""} <button type="button" class="btn-sec sm" id="btn-kb-ok">${t("kbcambio.ok")}</button>`;
+  $("#btn-kb-ok").addEventListener("click", () => { try { localStorage.removeItem("medex.kbcambios"); } catch {} b.hidden = true; });
+  $("#btn-kb-ver")?.addEventListener("click", () => {
+    const nombres = nombresPids();
+    const nom = (x) => { const [tipo, id] = x.split("|"); return tipo === "comb" ? id.replace(/_/g, " ") : tipo === "ddi" ? id.split("+").map((p) => nombres[p] || p).join(" + ") : `${nombres[id] || id} · ${t("tab." + tipo)}`; };
+    const linea = (x) => { const [, , nivel, ...resto] = x.split("|"); return `<li class="nivel-${nivel === "mayor" ? "alerta" : nivel === "moderada" ? "precaucion" : nivel === "menor" ? "info" : nivel}"><span class="punto"></span><span><b>${nom(x)}.</b> ${resto.join("|")}</span></li>`; };
+    $("#kbcambios-cuerpo").innerHTML = `<p class="muted">${t("kbcambio.de", { a: k.de, b: k.a, f: new Date(k.fecha).toLocaleDateString(idioma()) })}</p>` + k.cambios.map((c) => `
+      <h4>${c.nombre}</h4>
+      ${c.nuevos.length ? `<p class="sub-label">${t("kbcambio.nuevos")} (${c.nuevos.length})</p><ul class="lista-cambios">${c.nuevos.map(linea).join("")}</ul>` : ""}
+      ${c.eliminados.length ? `<p class="sub-label">${t("kbcambio.eliminados")} (${c.eliminados.length})</p><ul class="lista-cambios eliminados">${c.eliminados.map(linea).join("")}</ul>` : ""}
+      ${c.modificados.length ? `<p class="sub-label">${t("kbcambio.modificados")} (${c.modificados.length})</p><ul class="lista-cambios">${c.modificados.map((m) => linea(m.ahora).replace("</span></li>", ` <s class="muted">${m.antes.split("|").slice(3).join("|")}</s></span></li>`)).join("")}</ul>` : ""}`).join("") + `<p class="muted"><small>${t("kbcambio.nota")}</small></p>`;
+    $("#kbcambios").showModal();
+  });
+}
+$("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
+
 /** «De un vistazo»: puede hacer / con cuidado / evite + plan semanal + ritmo. Misma jerarquía que la primera cara del PDF del paciente. */
 function renderVistazo(res, ctx) {
   const cont = $("#vistazo"); if (!cont) return;
@@ -1238,6 +1308,7 @@ function render() {
   $("#barra-inferior").hidden = false;
   { const bc = $("#barra-contador"); const n = res.resumen.alerta + res.resumen.precaucion; bc.textContent = n || ""; bc.hidden = !n; bc.className = "nav-badge" + (res.resumen.alerta ? " alerta" : ""); const bp = $('#barra-inferior [data-ir="plan"] .nav-badge'); if (bp) { const d = leerDiario().filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; bp.textContent = d || ""; bp.hidden = !d; } }
   pintarCompletitud(res);
+  guardarHuella(res);
   const cont = $("#contenido-tab");
   cont.innerHTML = "";
 
@@ -2291,11 +2362,12 @@ function cargarPaciente(id) {
 function guardarPaciente() {
   const lista = leerPerfiles();
   const act = lista.find((p) => p.id === pacienteActual);
-  if (act) { act.estado = snapshot(); act.fecha = Date.now(); escribirPerfiles(lista); toast(t("cons.guardado", { n: act.nombre }), { ms: 3000 }); }
+  const huellaAhora = { kb: datos.kb.version, items: huellaInforme(evaluar(datos, medsActivos(), ctxActual())) };
+  if (act) { act.estado = snapshot(); act.fecha = Date.now(); act.huella = huellaAhora; escribirPerfiles(lista); toast(t("cons.guardado", { n: act.nombre }), { ms: 3000 }); }
   else {
     if (!estado.meds.length) { toast(t("cons.sin_meds"), { ms: 3000 }); return false; }
     const nombre = window.prompt(t("cons.nombre_prompt"), `Paciente ${lista.length + 1}`); if (nombre == null) return false;
-    const pf = { id: Date.now().toString(36), nombre: nombre.trim().slice(0, 30) || `Paciente ${lista.length + 1}`, fecha: Date.now(), estado: snapshot() };
+    const pf = { id: Date.now().toString(36), nombre: nombre.trim().slice(0, 30) || `Paciente ${lista.length + 1}`, fecha: Date.now(), estado: snapshot(), huella: huellaAhora };
     lista.unshift(pf); escribirPerfiles(lista.slice(0, 50)); pacienteActual = pf.id; toast(t("cons.guardado", { n: pf.nombre }), { ms: 3000 });
   }
   pintarConsulta(); renderPerfiles(); return true;

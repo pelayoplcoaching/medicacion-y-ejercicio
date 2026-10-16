@@ -336,6 +336,15 @@ try {
   check("barra de consulta oculta en modo paciente", !(await p.isVisible("#consulta")));
   await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
 
+  console.log("Aviso de cambios en la base (v1.0)");
+  await p.evaluate(() => { const h = JSON.parse(localStorage.getItem("medex.huella")); h.kb = "2000.01.01"; h.items = h.items.slice(1).concat(["general|bisoprolol|info|Regla antigua que ya no existe."]); h.items[0] = h.items[0].replace(/\|[^|]*$/, "|Texto antiguo de prueba."); localStorage.setItem("medex.huella", JSON.stringify(h)); });
+  await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+  check("al cambiar la versión de la base aparece el aviso con el número de cambios", await p.isVisible("#aviso-kb") && /\d+ cambio/.test(await p.textContent("#aviso-kb")));
+  await p.click("#btn-kb-ver"); await p.waitForTimeout(200);
+  check("diálogo de cambios: nuevos, eliminados y modificados", await p.isVisible("#kbcambios") && (await p.$$("#kbcambios .lista-cambios")).length >= 2 && (await p.textContent("#kbcambios")).includes("Regla antigua"));
+  await p.click("#kbcambios-cerrar"); await p.click("#btn-kb-ok"); await p.waitForTimeout(100);
+  check("«Entendido» retira el aviso y la huella queda en la versión actual", !(await p.isVisible("#aviso-kb")) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.huella")).kb !== "2000.01.01")));
+
   console.log("Persistencia e idiomas");
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("lista restaurada tras recargar", (await p.$$("#lista-meds li")).length === 6);
