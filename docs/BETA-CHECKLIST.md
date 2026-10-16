@@ -5,7 +5,7 @@ Estado en la beta 3 (v0.19.0-beta.3, 2026-10-15). Marcar al completar; lo pendie
 ## Contenido clínico
 - [x] Revisión clínica completa de la base: todas las reglas con `revisado = sí`, fuente y nivel de evidencia (`docs/REVISION-CLINICA-2026-10-15.md`). Pendiente: muestreo del autor (10 % por grupo + todas las de nivel atención).
 - [x] Revisión de las 209 interacciones curadas: fuente por fila (`scripts/fuentes_ddi.py`, beta 3) y criterio de inclusión de DDInter (solo mayores/moderadas). Pendiente: muestreo del autor de las de nivel mayor.
-- [ ] Ampliar los casos de validación (`app/data/casos.json`) a ≥ 25 viñetas, incluyendo casos "negativos" (sin alertas esperadas) y una por situación clínica.
+- [x] Casos de validación ampliados a 25 (`app/data/casos.json`), con casos negativos y uno por situación clínica (v1.0).
 - [ ] Umbrales de dosis alta (`umbral_mg`) revisados en los principios de riesgo (opioides, benzodiacepinas, diuréticos, insulina, corticoides).
 - [x] Regenerar el nomenclátor (`scripts/build_cima.py`) con el XML más reciente de AEMPS; `marcas.json` incluye `cn` (11 102 presentaciones) y el escáner está activo (beta 2).
 

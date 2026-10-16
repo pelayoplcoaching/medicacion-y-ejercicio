@@ -1,0 +1,841 @@
+{
+ "clases_parche": [
+  {
+   "id": "estatinas",
+   "principios_add": [
+    {
+     "id": "fluvastatina",
+     "nombre": "Fluvastatina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 80
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/64692/64692_ft.pdf"
+    },
+    {
+     "id": "lovastatina",
+     "nombre": "Lovastatina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 40
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/63361/63361_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "La fluvastatina es de las estatinas con menos riesgo de daño muscular y con menos interacciones. Las señales de alarma son las mismas: dolor muscular por todo el cuerpo, debilidad u orina oscura.",
+     "si": {
+      "principio": "fluvastatina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "No la combine con claritromicina, itraconazol, ciclosporina ni con mucho zumo de pomelo: el riesgo de daño muscular sube mucho. Consulte antes de añadir cualquier fármaco nuevo.",
+     "si": {
+      "principio": "lovastatina"
+     },
+     "fuente": "FT AEMPS 4.3/4.5",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antipsicoticos",
+   "principios_add": [
+    {
+     "id": "ziprasidona",
+     "nombre": "Ziprasidona",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 160
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/64851/64851_ft.pdf"
+    },
+    {
+     "id": "lurasidona",
+     "nombre": "Lurasidona",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 120
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/114913002/114913002_ft.pdf"
+    },
+    {
+     "id": "amisulprida",
+     "nombre": "Amisulprida",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 800
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/82057/82057_ft.pdf"
+    },
+    {
+     "id": "brexpiprazol",
+     "nombre": "Brexpiprazol",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 4
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1181294002/1181294002_ft.pdf"
+    },
+    {
+     "id": "zuclopentixol",
+     "nombre": "Zuclopentixol",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 50
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/60872/60872_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Alarga el QT. Si nota palpitaciones o un mareo brusco durante el esfuerzo, pare y consulte. Evite la deshidratación y las pérdidas de potasio (vómitos, diarrea, diuréticos).",
+     "si": {
+      "principio": "ziprasidona"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "info",
+     "texto": "Da menos sueño y engorda menos que otros antipsicóticos. La inquietud en las piernas (acatisia) suele mejorar con actividad suave; si es intensa, coméntelo con su psiquiatra.",
+     "si": {
+      "principio": "lurasidona"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Alarga el QT y se elimina por el riñón: con la función renal reducida la dosis debe ser menor. Palpitaciones o mareo brusco con el esfuerzo: pare y consulte.",
+     "si": {
+      "principio": "amisulprida"
+     },
+     "fuente": "FT AEMPS 4.2/4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Produce sueño y rigidez o lentitud de movimientos, sobre todo al subir la dosis o tras la inyección de depósito. Entrene en el momento del día en que esté más despejado y evite actividades con riesgo de caída.",
+     "si": {
+      "principio": "zuclopentixol"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ],
+   "equilibrio_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Puede dar mareo al levantarse e inquietud. Haga las transiciones despacio y el equilibrio con un apoyo cerca las primeras semanas.",
+     "si": {
+      "principio": "brexpiprazol"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antiepilepticos",
+   "principios_add": [
+    {
+     "id": "eslicarbazepina",
+     "nombre": "Eslicarbazepina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 1200
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/85897/85897_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Puede bajar el sodio en sangre, sobre todo en mayores y si toma diuréticos. Beba según la sed, sin excesos. Si nota mareo, confusión o calambres, consulte: puede hacer falta un análisis.",
+     "si": {
+      "principio": "eslicarbazepina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antiepilepticos_otros",
+   "principios_add": [
+    {
+     "id": "cenobamato",
+     "nombre": "Cenobamato",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 400
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1211530005/1211530005_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Al empezar y en cada subida de dosis produce sueño, mareo y cansancio. Evite actividades con riesgo de caída hasta saber cómo le sienta. Reduce el efecto de los anticonceptivos hormonales.",
+     "si": {
+      "principio": "cenobamato"
+     },
+     "fuente": "FT AEMPS 4.4/4.5",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "quimio_oral_tki",
+   "principios_add": [
+    {
+     "id": "nintedanib_esilato",
+     "nombre": "Nintedanib",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1241803005/1241803005_ft.pdf"
+    },
+    {
+     "id": "bosutinib",
+     "nombre": "Bosutinib",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/113818009/113818009_ft.pdf"
+    },
+    {
+     "id": "erlotinib",
+     "nombre": "Erlotinib",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/83325/83325_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "La diarrea es muy frecuente: beba más de lo habitual y pida tratamiento si dura más de un día. Avise si aparecen hematomas o sangrados.",
+     "si": {
+      "principio": "nintedanib_esilato"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Diarrea y náuseas son frecuentes al inicio: hidrátese bien y entrene a intensidad suave esos días. Puede retener líquido; si aumenta de peso de golpe o le falta el aire, consulte.",
+     "si": {
+      "principio": "bosutinib"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "La piel se irrita y se quema con facilidad: protección solar alta, ropa que cubra y evite las horas centrales del día. La diarrea obliga a beber más.",
+     "si": {
+      "principio": "erlotinib"
+     },
+     "fuente": "FT AEMPS 4.4/4.8",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ],
+   "aerobico_add": [
+    {
+     "nivel": "info",
+     "texto": "Si lo toma por fibrosis pulmonar, la rehabilitación respiratoria y el ejercicio aeróbico suave mejoran la capacidad y el ánimo. Si usa oxígeno, entrene con él puesto y controle la saturación.",
+     "si": {
+      "principio": "nintedanib_esilato"
+     },
+     "fuente": "ATS/ERS 2022 fibrosis pulmonar idiopática",
+     "evidencia": "guia",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "biologicos_jak",
+   "principios_add": [
+    {
+     "id": "apremilast",
+     "nombre": "Apremilast",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1241796001/1241796001_ft.pdf"
+    },
+    {
+     "id": "guselkumab",
+     "nombre": "Guselkumab",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1171234005/1171234005_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Las primeras semanas puede dar diarrea, náuseas y algo de pérdida de peso; después suele tolerarse bien. No baja las defensas de forma importante: el ejercicio no necesita precauciones especiales.",
+     "si": {
+      "principio": "apremilast"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "info",
+     "texto": "Sin limitación para el ejercicio. Si tiene fiebre o una infección, no entrene hasta recuperarse.",
+     "si": {
+      "principio": "guselkumab"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antihipertensivos_centrales",
+   "principios_add": [
+    {
+     "id": "guanfacina",
+     "nombre": "Guanfacina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 4
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1151040002/1151040002_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Baja la tensión y el pulso y puede dar sueño, sobre todo al principio. Levántese despacio y termine las sesiones suavemente. No la deje de golpe: la tensión puede subir de rebote.",
+     "si": {
+      "principio": "guanfacina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "alfabloqueantes",
+   "principios_add": [
+    {
+     "id": "terazosina",
+     "nombre": "Terazosina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 10
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/65141/65141_ft.pdf"
+    },
+    {
+     "id": "alfuzosina",
+     "nombre": "Alfuzosina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 10
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/78895/78895_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "La primera dosis y cada subida pueden provocar un bajón de tensión al levantarse. Tómela al acostarse y no entrene en las horas siguientes a un cambio de dosis.",
+     "si": {
+      "principio": "terazosina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "info",
+     "texto": "Baja menos la tensión que otros fármacos de su grupo. Aun así, levántese despacio después de los ejercicios tumbado.",
+     "si": {
+      "principio": "alfuzosina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "aines",
+   "principios_add": [
+    {
+     "id": "meloxicam",
+     "nombre": "Meloxicam",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 15
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/69094/69094_ft.pdf"
+    },
+    {
+     "id": "aceclofenaco",
+     "nombre": "Aceclofenaco",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 200
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/69223/69223_ft.pdf"
+    },
+    {
+     "id": "indometacina",
+     "nombre": "Indometacina",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 150
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/45894/45894_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Molesta menos al estómago que otros antiinflamatorios, pero afecta igual al riñón y a la tensión. No lo tome de forma habitual para las agujetas ni si va a sudar mucho.",
+     "si": {
+      "principio": "meloxicam"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Tiene el mismo riesgo cardiovascular que el diclofenaco: evítelo si ha tenido un infarto, angina, ictus o insuficiencia cardíaca. Para el dolor muscular, prefiera el paracetamol.",
+     "si": {
+      "principio": "aceclofenaco"
+     },
+     "fuente": "FT AEMPS 4.3/4.4 · EMA 2013 (diclofenaco)",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Es el antiinflamatorio con más efectos sobre el sistema nervioso: dolor de cabeza, mareo y somnolencia. En mayores se desaconseja. Evite entrenar con mareo y no lo use de forma habitual para las agujetas.",
+     "si": {
+      "principio": "indometacina"
+     },
+     "fuente": "FT AEMPS 4.4 · Beers 2023",
+     "evidencia": "criterios",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "opioides",
+   "principios_add": [
+    {
+     "id": "hidromorfona",
+     "nombre": "Hidromorfona",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 16
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/86200/86200_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Es un opioide potente: sueño, mareo y estreñimiento son frecuentes. No entrene en las horas siguientes a una subida de dosis y evite actividades con riesgo de caída.",
+     "si": {
+      "principio": "hidromorfona"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "estimulantes_tdah",
+   "principios_add": [
+    {
+     "id": "modafinilo",
+     "nombre": "Modafinilo",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 400
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/84141/84141_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Sube algo la tensión y el pulso y puede dar insomnio: tómelo por la mañana y no entrene a última hora. Está prohibido en competición (lista de la AMA).",
+     "si": {
+      "principio": "modafinilo"
+     },
+     "fuente": "FT AEMPS 4.4 · Lista AMA",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "colirios_glaucoma",
+   "principios_add": [
+    {
+     "id": "carteolol",
+     "nombre": "Carteolol",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/66383/66383_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Aunque sea un colirio, parte pasa a la sangre: puede frenar el pulso y cerrar los bronquios. El pulso puede no subir con el esfuerzo; guíese por la sensación de esfuerzo. Tras ponerlo, presione el lagrimal un minuto.",
+     "si": {
+      "principio": "carteolol"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antiagregantes",
+   "principios_add": [
+    {
+     "id": "triflusal",
+     "nombre": "Triflusal",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 900
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/65248/65248_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Actúa como la aspirina: facilita los hematomas y el sangrado. Evite golpes y no añada antiinflamatorios para el dolor muscular.",
+     "si": {
+      "principio": "triflusal"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "epo_hematinicos",
+   "principios_add": [
+    {
+     "id": "roxadustat",
+     "nombre": "Roxadustat",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/1211574004/1211574004_ft.pdf"
+    },
+    {
+     "id": "metoxi_polietilenglicol_epoetina_beta",
+     "nombre": "Metoxi-polietilenglicol-epoetina beta (Mircera)",
+     "marcas": []
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Puede subir la tensión y el potasio y aumenta el riesgo de trombosis. Controle la tensión, hidrátese y consulte ante dolor o hinchazón de una pierna o dolor en el pecho.",
+     "si": {
+      "principio": "roxadustat"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    },
+    {
+     "nivel": "precaucion",
+     "texto": "Puede subir la tensión, sobre todo al corregir la anemia. Tómese la tensión antes de entrenar las primeras semanas y consulte si está alta.",
+     "si": {
+      "principio": "metoxi_polietilenglicol_epoetina_beta"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "ieca_ara2",
+   "principios_add": [
+    {
+     "id": "captopril",
+     "nombre": "Captopril",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 150
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/62318/62318_ft.pdf"
+    },
+    {
+     "id": "imidapril",
+     "nombre": "Imidapril",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 20
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/63426/63426_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Actúa rápido y poco tiempo: la bajada de tensión es mayor 1–2 horas después de la toma. Evite entrenar justo en ese tramo y tómelo con el estómago vacío.",
+     "si": {
+      "principio": "captopril"
+     },
+     "fuente": "FT AEMPS 4.2/4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "broncodilatadores",
+   "principios_add": [
+    {
+     "id": "indacaterol",
+     "nombre": "Indacaterol",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/09594002/09594002_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Es un broncodilatador de 24 horas: no sirve como rescate. Lleve siempre el inhalador de rescate (salbutamol) cuando haga ejercicio.",
+     "si": {
+      "principio": "indacaterol"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "calcioantagonistas_dhp",
+   "principios_add": [
+    {
+     "id": "nicardipino",
+     "nombre": "Nicardipino",
+     "marcas": [],
+     "umbral_mg": {
+      "alta": 90
+     },
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/56464/56464_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Puede acelerar algo el pulso y dar dolor de cabeza o hinchazón de tobillos. No es motivo para dejar de entrenar; termine las sesiones despacio.",
+     "si": {
+      "principio": "nicardipino"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "fluoroquinolonas",
+   "principios_add": [
+    {
+     "id": "norfloxacino",
+     "nombre": "Norfloxacino",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/68627/68627_ft.pdf"
+    }
+   ]
+  },
+  {
+   "id": "levodopa",
+   "principios_add": [
+    {
+     "id": "apomorfina",
+     "nombre": "Apomorfina",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/74401/74401_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Tras una inyección de apomorfina espere 30–60 minutos antes de hacer ejercicio: puede dar náuseas, bajón de tensión y sueño repentino. Levántese despacio.",
+     "si": {
+      "principio": "apomorfina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antirretrovirales",
+   "principios_add": [
+    {
+     "id": "nevirapina",
+     "nombre": "Nevirapina",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/85896/85896_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "No frena la eliminación de otros fármacos como los potenciados con ritonavir, así que tiene menos interacciones. Las primeras semanas vigile erupciones en la piel y fiebre.",
+     "si": {
+      "principio": "nevirapina"
+     },
+     "fuente": "FT AEMPS 4.4/4.5",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antivirales_herpes",
+   "principios_add": [
+    {
+     "id": "valganciclovir",
+     "nombre": "Valganciclovir",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/69760/69760_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "precaucion",
+     "texto": "Baja las defensas y los glóbulos rojos: cansancio y más infecciones. Entrene a intensidad suave, no vaya al gimnasio con fiebre y mantenga las analíticas de control.",
+     "si": {
+      "principio": "valganciclovir"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "laxantes",
+   "principios_add": [
+    {
+     "id": "glicerol",
+     "nombre": "Glicerol",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/62476/62476_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Sin limitación específica para el ejercicio.",
+     "si": {
+      "principio": "glicerol"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "analgesicos_topicos",
+   "principios_add": [
+    {
+     "id": "lidocaina",
+     "nombre": "Lidocaína (parche)",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/83398/83398_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "El parche apenas pasa a la sangre. No aplique calor (manta eléctrica, sauna) sobre la zona del parche y retírelo si se despega con el sudor.",
+     "si": {
+      "principio": "lidocaina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "antibioticos_comunes",
+   "principios_add": [
+    {
+     "id": "ampicilina",
+     "nombre": "Ampicilina",
+     "marcas": [],
+     "ficha": "No Disponible"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Sin limitación específica. Si da diarrea, beba más y entrene suave hasta que pase.",
+     "si": {
+      "principio": "ampicilina"
+     },
+     "fuente": "FT AEMPS 4.8",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  },
+  {
+   "id": "hierro_vitd",
+   "principios_add": [
+    {
+     "id": "ferrimanitol_ovoalbumina",
+     "nombre": "Ferrimanitol ovoalbúmina (hierro oral)",
+     "marcas": [],
+     "ficha": "https://cima.aemps.es/cima/pdfs/es/ft/74011/74011_ft.pdf"
+    }
+   ],
+   "general_add": [
+    {
+     "nivel": "info",
+     "texto": "Hierro oral: puede dar molestias de estómago y heces oscuras, que son normales. Sepárelo del café, el té y los lácteos para que se absorba mejor.",
+     "si": {
+      "principio": "ferrimanitol_ovoalbumina"
+     },
+     "fuente": "FT AEMPS 4.4",
+     "evidencia": "ft",
+     "revisado": true
+    }
+   ]
+  }
+ ]
+}

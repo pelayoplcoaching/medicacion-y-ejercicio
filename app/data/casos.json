@@ -579,6 +579,580 @@
     ],
     "cribado": "continuar"
    }
+  },
+  {
+   "id": "c14",
+   "titulo": "Cardiopatía isquémica con stent reciente: doble antiagregación, betabloqueante y estatina",
+   "descripcion": "66 años, infarto hace 4 meses, AAS + clopidogrel + bisoprolol + atorvastatina + ramipril; fase III de rehabilitación.",
+   "meds": [
+    {
+     "pid": "aas",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "clopidogrel",
+     "dosis": 75,
+     "tomas": 1
+    },
+    {
+     "pid": "bisoprolol",
+     "dosis": 5,
+     "tomas": 1
+    },
+    {
+     "pid": "atorvastatina",
+     "dosis": 80,
+     "tomas": 1
+    },
+    {
+     "pid": "ramipril",
+     "dosis": 5,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 66,
+    "caidas": false,
+    "condiciones": [
+     "cardiopatia_isquemica",
+     "hipertension"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "sangrado",
+     "fc_no_valida",
+     "hipotension"
+    ],
+    "combinadas_incluye": [
+     "cardiopatía isquémica"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c15",
+   "titulo": "Ictus previo con anticoagulación y antidepresivo",
+   "descripcion": "74 años, ictus isquémico hace un año, rivaroxabán + sertralina + atorvastatina + amlodipino.",
+   "meds": [
+    {
+     "pid": "rivaroxaban",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "sertralina",
+     "dosis": 50,
+     "tomas": 1
+    },
+    {
+     "pid": "atorvastatina",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "amlodipino",
+     "dosis": 10,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 74,
+    "caidas": false,
+    "condiciones": [
+     "ictus",
+     "hipertension"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "sangrado",
+     "hipotension"
+    ],
+    "combinadas_incluye": [
+     "ictus",
+     "sangrado"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c16",
+   "titulo": "Artrosis de rodilla con antiinflamatorio crónico e hipertensión",
+   "descripcion": "69 años, ibuprofeno a diario + losartán + hidroclorotiazida: triple whammy. Entrena, con enfermedad conocida: puede seguir moderado; valoración antes de vigoroso.",
+   "meds": [
+    {
+     "pid": "ibuprofeno",
+     "dosis": 600,
+     "tomas": 3
+    },
+    {
+     "pid": "losartan",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "hidroclorotiazida",
+     "dosis": 25,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 69,
+    "caidas": false,
+    "condiciones": [
+     "artrosis",
+     "hipertension"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "aine",
+     "ieca_ara",
+     "diuretico",
+     "renal"
+    ],
+    "combinadas_incluye": [
+     "antiinflamatorio",
+     "artrosis"
+    ],
+    "esencial_incluye": [
+     "antiinflamatorio"
+    ],
+    "cribado": "valoracion_vigoroso"
+   }
+  },
+  {
+   "id": "c17",
+   "titulo": "Epilepsia controlada en adulto joven activo",
+   "descripcion": "34 años, levetiracetam + lamotrigina; sin otras enfermedades.",
+   "meds": [
+    {
+     "pid": "levetiracetam",
+     "dosis": 1000,
+     "tomas": 2
+    },
+    {
+     "pid": "lamotrigina",
+     "dosis": 200,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 34,
+    "caidas": false,
+    "condiciones": [
+     "epilepsia"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "hipoglucemia",
+     "sangrado",
+     "hipotension"
+    ],
+    "combinadas_incluye": [
+     "epilepsia"
+    ],
+    "cribado": "continuar"
+   }
+  },
+  {
+   "id": "c18",
+   "titulo": "Cirrosis con betabloqueante no selectivo y diuréticos",
+   "descripcion": "61 años, propranolol + espironolactona + furosemida + lactulosa; sarcopenia.",
+   "meds": [
+    {
+     "pid": "propranolol",
+     "dosis": 40,
+     "tomas": 2
+    },
+    {
+     "pid": "espironolactona",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "lactulosa",
+     "dosis": 20,
+     "tomas": 2
+    }
+   ],
+   "ctx": {
+    "edad": 61,
+    "caidas": false,
+    "condiciones": [
+     "hepatopatia"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "fc_no_valida",
+     "hipotension",
+     "deshidratacion",
+     "hiperpotasemia"
+    ],
+    "combinadas_incluye": [
+     "hepatopatía",
+     "bajan la tensión"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c19",
+   "titulo": "Obesidad con semaglutida y metformina, sin otras enfermedades",
+   "descripcion": "52 años, IMC 36, semaglutida semanal + metformina; sedentaria.",
+   "meds": [
+    {
+     "pid": "semaglutida",
+     "dosis": 1,
+     "tomas": 1
+    },
+    {
+     "pid": "metformina",
+     "dosis": 1000,
+     "tomas": 2
+    }
+   ],
+   "ctx": {
+    "edad": 52,
+    "caidas": false,
+    "condiciones": [
+     "obesidad",
+     "diabetes"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "sangrado",
+     "sedacion"
+    ],
+    "combinadas_incluye": [
+     "obesidad",
+     "pies"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c20",
+   "titulo": "Marcapasos con betabloqueante y anticoagulante",
+   "descripcion": "80 años, marcapasos por bloqueo AV, bisoprolol + apixabán + furosemida.",
+   "meds": [
+    {
+     "pid": "bisoprolol",
+     "dosis": 2.5,
+     "tomas": 1
+    },
+    {
+     "pid": "apixaban",
+     "dosis": 5,
+     "tomas": 2
+    },
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 80,
+    "caidas": false,
+    "condiciones": [
+     "marcapasos",
+     "fibrilacion_auricular"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "fc_no_valida",
+     "sangrado"
+    ],
+    "combinadas_incluye": [
+     "marcapasos",
+     "fibrilación auricular"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c21",
+   "titulo": "Embarazo con hipotiroidismo y hierro",
+   "descripcion": "31 años, segundo trimestre, levotiroxina + hierro oral; activa antes del embarazo.",
+   "meds": [
+    {
+     "pid": "levotiroxina",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "hierro_oral",
+     "dosis": 100,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 31,
+    "caidas": false,
+    "condiciones": [
+     "embarazo"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "hipoglucemia",
+     "sangrado",
+     "hipotension",
+     "sedacion"
+    ],
+    "combinadas_incluye": [
+     "embarazo"
+    ],
+    "cribado": "continuar"
+   }
+  },
+  {
+   "id": "c22",
+   "titulo": "Enfermedad renal grave con antidiabéticos y anticoagulante",
+   "descripcion": "77 años, FG 25, metformina (debería suspenderse) + dapagliflozina + apixabán + atenolol.",
+   "meds": [
+    {
+     "pid": "metformina",
+     "dosis": 850,
+     "tomas": 2
+    },
+    {
+     "pid": "dapagliflozina",
+     "dosis": 10,
+     "tomas": 1
+    },
+    {
+     "pid": "apixaban",
+     "dosis": 5,
+     "tomas": 2
+    },
+    {
+     "pid": "atenolol",
+     "dosis": 50,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 77,
+    "caidas": false,
+    "condiciones": [
+     "renal",
+     "renal_grave",
+     "diabetes"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 2,
+    "senales": [
+     "renal",
+     "deshidratacion",
+     "sangrado"
+    ],
+    "combinadas_incluye": [
+     "filtrado glomerular",
+     "enfermedad renal"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c23",
+   "titulo": "Mayor prefrágil con hipnótico y antihistamínico sedante",
+   "descripcion": "79 años, SPPB 8, lorazepam nocturno + hidroxizina + omeprazol; una caída.",
+   "meds": [
+    {
+     "pid": "lorazepam",
+     "dosis": 1,
+     "tomas": 1
+    },
+    {
+     "pid": "hidroxizina",
+     "dosis": 25,
+     "tomas": 1
+    },
+    {
+     "pid": "omeprazol",
+     "dosis": 20,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 79,
+    "caidas": true,
+    "condiciones": [
+     "prefragil"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": false,
+    "sintomas": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "sedacion",
+     "caidas",
+     "anticolinergico"
+    ],
+    "combinadas_incluye": [
+     "prefragilidad",
+     "sedantes",
+     "caídas"
+    ],
+    "cribado": "empezar"
+   }
+  },
+  {
+   "id": "c24",
+   "titulo": "Paciente oncológico con inmunoterapia y corticoide",
+   "descripcion": "58 años, cáncer de pulmón, pembrolizumab (anti-PD-1) + prednisona 20 mg + omeprazol + enoxaparina.",
+   "meds": [
+    {
+     "pid": "anti_pd1",
+     "dosis": 200,
+     "tomas": 1
+    },
+    {
+     "pid": "prednisona",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "omeprazol",
+     "dosis": 20,
+     "tomas": 1
+    },
+    {
+     "pid": "enoxaparina",
+     "dosis": 40,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 58,
+    "caidas": false,
+    "condiciones": [
+     "cancer"
+    ]
+   },
+   "cribado": {
+    "regular": false,
+    "enfermedad": true,
+    "sintomas": []
+   },
+   "esperado": {
+    "senales": [
+     "sangrado",
+     "corticoide"
+    ],
+    "combinadas_incluye": [
+     "cáncer"
+    ],
+    "cribado": "valoracion_antes"
+   }
+  },
+  {
+   "id": "c25",
+   "titulo": "Cribado positivo por síntomas: dolor torácico de esfuerzo",
+   "descripcion": "59 años, refiere opresión en el pecho al subir cuestas; metformina + simvastatina; entrena regularmente.",
+   "meds": [
+    {
+     "pid": "metformina",
+     "dosis": 850,
+     "tomas": 2
+    },
+    {
+     "pid": "simvastatina",
+     "dosis": 20,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 59,
+    "caidas": false,
+    "condiciones": [
+     "diabetes"
+    ]
+   },
+   "cribado": {
+    "regular": true,
+    "enfermedad": true,
+    "sintomas": [
+     "dolor_toracico"
+    ]
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "sangrado",
+     "hipotension"
+    ],
+    "cribado": "parar"
+   }
   }
  ]
 }
