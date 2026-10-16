@@ -1037,3 +1037,9 @@ html.letra-xl .recorrido li span { display: none; } html.letra-xl .recorrido li.
 .banner-ver { background: var(--accent-soft); color: var(--accent-deep); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 30; }
 body.solo-lectura .med-acciones, body.solo-lectura .momentos, body.solo-lectura #rapido, body.solo-lectura #btn-vaciar, body.solo-lectura .hoja-anadir, body.solo-lectura #btn-anadir, body.solo-lectura #btn-primero, body.solo-lectura #btn-perfiles, body.solo-lectura #consulta, body.solo-lectura .plantilla-fila, body.solo-lectura #btn-prescrito, body.solo-lectura .med-dosis .editar .ic { display: none !important; }
 body.solo-lectura #lista-meds li .editar { pointer-events: none; }
+
+/* combinaciones a dosis fijas (v1.0.2): cabecera con la marca y componentes debajo */
+#lista-meds li.combo-cab { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--accent-soft); border-color: var(--accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 8px 6px 8px 14px; margin-bottom: -6px; }
+#lista-meds li.combo-cab small { display: block; color: var(--muted); font-size: .78rem; }
+#lista-meds li.en-combo { margin-left: 10px; border-left: 3px solid var(--accent); border-top-left-radius: 0; }
+#lista-meds li.en-combo + li.en-combo { margin-top: -4px; }

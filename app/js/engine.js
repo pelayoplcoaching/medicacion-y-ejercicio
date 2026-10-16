@@ -50,7 +50,9 @@ export function construirIndice(kb, marcas = []) {
       entradas.push({ texto: m.nombre, tipo: "marca", pid, dosis: m.dosis?.[0] ?? null, cn: m.cn });
       continue;
     }
-    const comps = m.principios.filter((x) => porId.has(x)).map((x, i) => ({ pid: x, dosis: m.dosis?.[m.principios.indexOf(x)] ?? null }));
+    let comps = m.principios.filter((x) => porId.has(x)).map((x, i) => ({ pid: x, dosis: m.dosis?.[m.principios.indexOf(x)] ?? null }));
+    // un principio «combinado» de la base (p. ej. sacubitrilo_valsartan) ya incluye al componente suelto (valsartan): no se añade dos veces
+    comps = comps.filter((c) => !comps.some((o) => o.pid !== c.pid && o.pid.split("_").includes(c.pid)));
     if (!comps.length) continue;
     if (comps.length === 1) entradas.push({ texto: m.nombre, tipo: "marca", pid: comps[0].pid, dosis: comps[0].dosis, unidad: m.unidad, cn: m.cn });
     else entradas.push({ texto: m.nombre, tipo: "combo", pid: comps[0].pid, componentes: comps, cn: m.cn });
@@ -751,6 +753,9 @@ export function impactoPorFarmaco(res) {
 
 /* ---------- SPPB (Short Physical Performance Battery, Guralnik 1994) ---------- */
 /** @param r {lado: seg, semitandem: seg, tandem: seg, marcha: seg (4 m, mejor de dos), silla: seg (5 levantadas) | null si no puede} */
+/** Nivel Vivifrail a partir del SPPB: A (0–3), B (4–6), C (7–9), D (10–12). */
+export function vivifrailDeSppb(total) { const n = Number(total); if (!Number.isFinite(n)) return null; return n <= 3 ? "A" : n <= 6 ? "B" : n <= 9 ? "C" : "D"; }
+
 export function puntuarSPPB(r = {}) {
   const seg = (v) => (v == null || v === "" ? null : Number(v));
   const lado = seg(r.lado), semi = seg(r.semitandem), tandem = seg(r.tandem), marcha = seg(r.marcha), silla = seg(r.silla);

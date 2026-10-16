@@ -118,6 +118,19 @@ try {
   check("diario exportable en CSV", csv.suggestedFilename().endsWith(".csv"));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
 
+  console.log("Combinaciones y Vivifrail automático (v1.0.2)");
+  await p.fill("#buscar", "entresto"); await p.waitForSelector("#sugerencias li"); await p.click("#sugerencias li"); await p.click("#form-med button[type=submit]"); await p.waitForTimeout(300);
+  check("Entresto añade un solo principio (sacubitrilo/valsartán), sin duplicar el valsartán", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).meds.filter((m) => /valsartan/.test(m.pid)).map((m) => m.pid).join())) === "sacubitrilo_valsartan");
+  await p.fill("#buscar", "exforge"); await p.waitForSelector("#sugerencias li"); await p.click("#sugerencias li"); await p.click("#form-med button[type=submit]"); await p.waitForTimeout(300);
+  check("una combinación a dosis fijas se muestra con cabecera de marca y sus componentes debajo", (await p.$$("#lista-meds li.combo-cab")).length === 1 && (await p.$$("#lista-meds li.en-combo")).length === 2 && (await p.textContent("#lista-meds li.combo-cab")).includes("Exforge"));
+  await p.click("#lista-meds li.combo-cab .quitar"); await p.waitForTimeout(300);
+  check("la × de la cabecera quita la combinación entera", (await p.$$("#lista-meds li.en-combo")).length === 0);
+  await p.click("#lista-meds li:last-child .quitar"); await p.waitForTimeout(300); // quitar sacubitrilo/valsartán
+  await p.click('[data-modo="profesional"]'); await p.waitForTimeout(150);
+  await p.fill("#pro-sppb", "8"); await p.$eval("#pro-sppb", (e) => e.dispatchEvent(new Event("change"))); await p.waitForTimeout(200);
+  check("SPPB 8 → Vivifrail C calculado automáticamente (editable)", (await p.$eval("#pro-vivifrail", (e) => e.value)) === "C" && await p.isVisible("#vivifrail-auto"));
+  await p.fill("#pro-sppb", ""); await p.$eval("#pro-sppb", (e) => e.dispatchEvent(new Event("change"))); await p.selectOption("#pro-vivifrail", ""); await p.$eval("#pro-vivifrail", (e) => e.dispatchEvent(new Event("change"))); await p.click('[data-modo="paciente"]'); await p.waitForTimeout(150);
+
   console.log("Ilustraciones y hoja «Mi sesión» (v1.0)");
   await p.click('[data-tab="plan"]'); await p.waitForTimeout(300);
   check("los bloques de la sesión llevan ilustración propia (SVG 96×96 con figura y apoyo)", (await p.$$('#contenido-tab .bloques .picto[viewBox="0 0 96 96"] .fig')).length >= 3);

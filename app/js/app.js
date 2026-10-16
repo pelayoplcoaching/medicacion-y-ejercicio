@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, evolucion, textoEvolucion } from "./engine.js?v=202610161327";
-import { APP_VERSION } from "./version.js?v=202610161327";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610161327";
-import { picto } from "./pictos.js?v=202610161327";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202610161327";
-import { cargarScript } from "./libs.js?v=202610161327";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610161327";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610161327";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202610161629";
+import { APP_VERSION } from "./version.js?v=202610161629";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202610161629";
+import { picto } from "./pictos.js?v=202610161629";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202610161629";
+import { cargarScript } from "./libs.js?v=202610161629";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202610161629";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202610161629";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -244,6 +244,7 @@ function restaurar() {
   if (estado.condiciones.some((c) => CONDICIONES.indexOf(c) >= 8)) $("#bloque-situacion-mas").open = true;
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
+  { const nota = $("#vivifrail-auto"); const total = estado.pro.sppb ?? estado.sppb?.total ?? null; if (nota) { nota.hidden = !(total != null && estado.pro.vivifrail === vivifrailDeSppb(total)); if (!nota.hidden) nota.textContent = t("pro.vivi_auto", { n: total }); } }
   pintarCribadoForm();
   aplicarModo();
 }
@@ -278,7 +279,13 @@ document.addEventListener("click", (ev) => { const m = $("#menu-mas"); if (m.ope
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && $("#menu-mas").open) $("#menu-mas").open = false; });
 $$(".modo button").forEach((b) => b.addEventListener("click", () => { estado.modo = b.dataset.modo; aplicarModo(); guardar(); render(); }));
 for (const k of PAC) $("#pac-" + k)?.addEventListener("change", () => { estado.pac[k] = $("#pac-" + k).checked; guardar(); render(); });
-for (const k of PRO) $("#pro-" + k)?.addEventListener("change", () => { const v = $("#pro-" + k).value; estado.pro[k] = v === "" ? null : (k === "vivifrail" ? v : parseFloat(v)); guardar(); render(); });
+for (const k of PRO) $("#pro-" + k)?.addEventListener("change", () => { const v = $("#pro-" + k).value; estado.pro[k] = v === "" ? null : (k === "vivifrail" ? v : parseFloat(v)); if (k === "sppb") aplicarVivifrailAuto(); guardar(); render(); });
+/** El nivel Vivifrail se deduce del SPPB (A 0–3 · B 4–6 · C 7–9 · D 10–12); el profesional puede cambiarlo a mano. */
+function aplicarVivifrailAuto() {
+  const total = estado.pro.sppb ?? estado.sppb?.total ?? null; const v = vivifrailDeSppb(total); const sel = $("#pro-vivifrail"); const nota = $("#vivifrail-auto");
+  if (v) { estado.pro.vivifrail = v; if (sel) sel.value = v; if (nota) { nota.hidden = false; nota.textContent = t("pro.vivi_auto", { n: total }); } }
+  else if (nota) nota.hidden = true;
+}
 
 /* ---------- búsqueda ---------- */
 const inputBuscar = $("#buscar");
@@ -1360,6 +1367,14 @@ function render() {
     }
     const it = resLista.items[k++];
     if (!it) return;
+    if (m.combo && (i === 0 || estado.meds[i - 1].combo !== m.combo)) { // cabecera de la combinación a dosis fijas: la marca y, debajo, cada principio por separado
+      const n = estado.meds.filter((x) => x.combo === m.combo).length;
+      const cab = document.createElement("li"); cab.className = "combo-cab";
+      cab.innerHTML = `<div><strong>${t("lista.combo_cab", { m: m.combo })}</strong><small>${t("lista.combo_nota", { n })}</small></div><button type="button" class="quitar" aria-label="${t("lista.quitar_combo")} ${m.combo}" title="${t("lista.quitar_combo")}">×</button>`;
+      cab.querySelector(".quitar").addEventListener("click", () => { const quitados = estado.meds.filter((x) => x.combo === m.combo); estado.meds = estado.meds.filter((x) => x.combo !== m.combo); guardar(); render(); toast(t("lista.quitado", { f: m.combo }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds.push(...quitados); guardar(); render(); } }); });
+      ul.append(cab);
+    }
+    if (m.combo) li.classList.add("en-combo");
     if (m.pausado) li.classList.add("pausado");
     if (ultimoAnadido && m.pid === ultimoAnadido) { li.classList.add("nuevo"); ultimoAnadido = null; }
     const dosis = it.dosisTotal != null
@@ -2075,11 +2090,11 @@ function abrirSppb() {
     const p = puntuarSPPB(r);
     cuerpo.innerHTML = `
       <h2>${t("sppb.resultado")}: <b>${p.total}</b> / 12</h2>
-      <p class="crib-resultado nivel-${p.categoria === "fragil" ? "alerta" : p.categoria === "prefragil" ? "precaucion" : "info"}">${t("sppb.cat." + p.categoria)}</p>
+      <p class="crib-resultado nivel-${p.categoria === "fragil" ? "alerta" : p.categoria === "prefragil" ? "precaucion" : "info"}">${t("sppb.cat." + p.categoria)} · ${t("sppb.vivifrail", { v: ({ A: t("pro.vA"), B: t("pro.vB"), C: t("pro.vC"), D: t("pro.vD") })[vivifrailDeSppb(p.total)] })}</p>
       <ul class="bloques"><li><span class="min">${p.equilibrio}/4</span><span>${t("sppb.equilibrio")}</span></li><li><span class="min">${p.marcha}/4</span><span>${t("sppb.marcha")}${p.velocidad ? ` · ${p.velocidad.toLocaleString(idioma())} m/s` : ""}</span></li><li><span class="min">${p.silla}/4</span><span>${t("sppb.silla")}</span></li></ul>
       <p class="muted">${t("sppb.nota")}</p>
       <div class="acciones"><button type="button" class="btn" id="sppb-guardar">${t("sppb.guardar")}</button><button type="button" class="btn-sec sm" id="sppb-repetir">${t("sppb.repetir")}</button></div>`;
-    $("#sppb-guardar").addEventListener("click", () => { estado.sppb = { total: p.total, fecha: Date.now(), partes: r, velocidad: p.velocidad }; if (estado.modo === "profesional") { estado.pro.sppb = p.total; $("#pro-sppb").value = p.total; } guardar(); render(); dlg.close(); toast(t("sppb.guardado", { n: p.total }), { ms: 6000 }); vibrar([20, 60, 20]); });
+    $("#sppb-guardar").addEventListener("click", () => { estado.sppb = { total: p.total, fecha: Date.now(), partes: r, velocidad: p.velocidad }; estado.pro.sppb = p.total; $("#pro-sppb").value = p.total; aplicarVivifrailAuto(); guardar(); render(); dlg.close(); toast(t("sppb.guardado", { n: p.total }) + " · " + t("sppb.vivifrail", { v: vivifrailDeSppb(p.total) }), { ms: 6000 }); vibrar([20, 60, 20]); });
     $("#sppb-repetir").addEventListener("click", () => { i = 0; for (const k of Object.keys(r)) delete r[k]; pintar(); });
   };
   pintar(); dlg.showModal();

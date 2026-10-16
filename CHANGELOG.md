@@ -2,6 +2,10 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.0.2 · 2026-10-16
+- Combinaciones a dosis fijas: una presentación del nomenclátor cuyo componente suelto ya está incluido en un principio combinado de la base (Entresto → sacubitrilo/valsartán + valsartán; inhaladores LABA/ICS + ICS) ya no añade el componente dos veces (75 presentaciones afectadas). En la lista, las combinaciones se muestran con una cabecera con la marca y cada principio debajo, con una × que quita la combinación entera.
+- Vivifrail automático: el nivel (A 0–3 · B 4–6 · C 7–9 · D 10–12) se calcula del SPPB, tanto del test guiado como del campo manual, y se puede cambiar a mano; el resultado del SPPB lo muestra.
+
 ## 1.0.1 · 2026-10-16
 - Muestreo clínico de la base (349 textos: todas las reglas de atención, el bloque 10, 10 % aleatorio por grupo, las 60 combinadas y las 99 interacciones mayores): vericiguat + nitratos deja de ser contraindicación (interacción moderada; regla reescrita), ibuprofeno al menos 30 min después de la aspirina, afirmaciones sin evidencia retiradas (craving «durante horas», recurrencias de herpes), 4 reglas de atención que eran recomendaciones pasan a precaución, 53 reglas de beneficio del ejercicio citan guías en vez de la ficha técnica. `docs/MUESTREO-CLINICO-2026-10-16.md`, `scripts/muestreo_v1.py`.
 - Revisión jurídica (`docs/REVISION-JURIDICA-2026-10-16.md`): el veredicto describe la medicación («Su medicación añade N puntos de atención…») en lugar de declarar la aptitud de la persona; `legal.html` con finalidad prevista y razonamiento MDCG 2019-11, identificación LSSI del prestador (colegiación), roles RGPD del modo profesional y del canal de sugerencias, cookies, derechos, atribución del nomenclátor.
