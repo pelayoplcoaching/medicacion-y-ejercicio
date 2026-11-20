@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202610161721";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, textoEvolucion, SINTOMAS } from "./engine.js?v=202610161721";
+import { jspdf, cargarScript } from "./libs.js?v=202611202320";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, textoEvolucion, SINTOMAS } from "./engine.js?v=202611202320";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -10,8 +10,8 @@ const NOMBRE = "Pauta Activa";
 const WEB = "medicacionyejercicio.fuerzabasadaenevidencia.com";
 
 const C = {
-  ink: [28, 24, 48], muted: [104, 96, 127], line: [222, 218, 236], soft: [245, 243, 250], white: [255, 255, 255],
-  purple: [107, 53, 196], purpleDeep: [74, 32, 152], purpleSoft: [239, 232, 251],
+  ink: [21, 20, 35], muted: [85, 84, 106], line: [221, 220, 230], soft: [246, 246, 249], white: [255, 255, 255],
+  purple: [89, 62, 222], purpleDeep: [20, 11, 58], purpleSoft: [238, 236, 255],
   alerta: [192, 39, 29], alertaSoft: [253, 236, 235], alertaInk: [143, 26, 18],
   precaucion: [179, 100, 0], precaucionSoft: [255, 241, 221], precaucionInk: [122, 67, 0],
   info: [29, 122, 77], infoSoft: [227, 244, 234], infoInk: [20, 86, 55],

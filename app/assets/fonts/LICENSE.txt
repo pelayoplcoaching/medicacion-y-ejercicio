@@ -1,3 +1,7 @@
 Manrope — Copyright 2018 The Manrope Project Authors (https://github.com/sharanda/manrope)
 Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL).
 Subconjunto latino obtenido del paquete @fontsource/manrope 5.1.0 y convertido a TTF para incrustar en los PDF generados por la aplicación.
+
+Archivo — Copyright 2016 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
+Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL).
+Fuente de la interfaz desde el 21/11/2026 (estilo FBE). Subconjuntos latino y latino ampliado de @fontsource-variable/archivo 5, con los ejes de peso (400-800) y anchura (75-125) recortados.
