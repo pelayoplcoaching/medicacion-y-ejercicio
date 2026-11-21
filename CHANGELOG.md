@@ -2,6 +2,11 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.1.1 · 2026-11-21 · Tres tandas de 50 mejoras visuales (231-380)
+- CSS al final de `app/css/style.css` (bloque «TRES TANDAS DE 50 MEJORAS VISUALES Y DE BELLEZA», sin color-mix, ASCII) y JS: grupo no repetido (`grupoVisible`), clases `sin-dosis` y `data-tipo` en la lista, buscador sin duplicados con resaltado e icono (`sinRepetidos`, `resaltar`), flecha de «Siguiente».
+- Arreglos: horas de las tomas que se salían en el móvil (305), índice de Legal que tapaba el texto (352), botones-enlace subrayados (353), momentos cortados (238).
+- Presupuestos de `test.mjs`: CSS ≤ 280 KB, precarga ≤ 3760 KB. Lista completa en el proyecto («claude/pauta-activa-mejoras-visuales-150.md»).
+
 ## 1.1.0 · 2026-11-21 · Suplementos y plantas medicinales
 - Base: 15 grupos con `tipo` («suplemento» | «planta»; el principio puede precisarlo) y 53 productos (`data/ext/11_suplementos_plantas.json`, generado por `scripts/gen_suplementos_plantas.py`): suplementos deportivos (sustituye a la clase anterior; el id `multivitaminico` se conserva para las listas guardadas y deja de agrupar hierbas), vitaminas y minerales sueltos (zinc, E, K, B6), hipérico, plantas sedantes, CBD, plantas que suman sangrado (ginkgo, ajo, jengibre, cúrcuma, sauce, harpagofito), regaliz y laxantes de plantas, plantas diuréticas, suplementos para el azúcar, adaptógenas, menopausia, equinácea/propóleo, productos para adelgazar, prohormonas/SARMs/tribulus, levadura roja y Q10. 71 reglas por ámbito, señales nuevas `dopaje` y `hepatotoxico`, 3 reglas combinadas (antidopaje, hepatopatía + producto hepatotóxico, varios hepatotóxicos), alias de búsqueda en español e inglés (`alias`) y dosis habituales (`presets`).
 - Interacciones: 114 nuevas (`data/ext/ddi_04_suplementos_plantas.json`, `scripts/gen_ddi_suplementos_plantas.py`); las 5 del hipérico que colgaban de «multivitamínico» pasan al hipérico. `ddi_curated.json` se publica compacto (−21 KB) y `add_ddi.py` lo escribe así.

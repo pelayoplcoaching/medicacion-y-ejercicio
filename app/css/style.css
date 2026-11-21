@@ -2306,3 +2306,341 @@ details.seccion[data-sec="impacto"] { --ic: url("data:image/svg+xml;utf8,<svg xm
 :root[data-theme="contrast"] .sup-rapido { border-style: solid; }
 @media (forced-colors: active) { .etq-tipo, .sup-cuenta { border: 1px solid CanvasText; } .sup-rapido > summary::before { background: CanvasText; } }
 @media print { .sup-rapido { display: none !important; } }
+
+/* ==========================================================================
+   TRES TANDAS DE 50 MEJORAS VISUALES Y DE BELLEZA (231-380) - 21/11/2026
+   Sin color-mix (no necesitan reservas para Safari antiguo), solo ASCII,
+   sin animaciones continuas; cada mejora numerada.
+   ========================================================================== */
+
+/* ---------- TANDA 10 (231-280): datos, medicacion, buscador y lista ---------- */
+/* 231. Edad y pulso en reposo: las dos etiquetas ocupan lo mismo y los campos quedan a la misma altura */
+label[for="edad"] > .lbl, label[for="fc-reposo"] > .lbl { min-height: 2.9em; align-items: flex-start; align-content: flex-start; flex-wrap: wrap; }
+/* 232. "lpm, opcional" como texto suave de terminal, sin pildora */
+label[for="fc-reposo"] .unidad-mini { padding: 0; border: 0; background: none; font-family: var(--mono); font-size: .66rem; letter-spacing: .04em; color: var(--muted); }
+/* 233. Cabecera de los plegables de datos: el texto se parte bien y "N marcadas" no se rompe */
+details.bloque > summary .sub-label { flex: 1 1 auto; min-width: 0; }
+details.bloque > summary .marcadas { flex: 0 0 auto; align-self: center; }
+/* 234. Situacion marcada: la fila entera se ilumina */
+.condiciones .check { padding-inline: 8px; margin-inline: -8px; border-radius: var(--r-sm); transition: background-color .15s; }
+.condiciones .check:has(input:checked) { background: var(--accent-soft); color: var(--accent-deep); font-weight: 600; }
+/* 235. Separador fino entre situaciones en el movil */
+@media (max-width: 479px) { .condiciones .check + .check { box-shadow: 0 -1px 0 var(--line); } }
+/* 236. "Medir la forma fisica (SPPB)" ocupa la fila en el movil */
+@media (max-width: 479px) { .sppb-acciones { flex-wrap: nowrap; align-items: center; } #btn-sppb { flex: 1 1 auto; justify-content: center; } }
+/* 237. Lista: si el grupo repite el nombre del producto no se escribe (y no queda una linea vacia) */
+#lista-meds .med-nombre small:empty { display: none; }
+/* 238. Momentos de la toma enteros en el movil ("Desayuno", no "Desay...") */
+@media (max-width: 479px) {
+  #lista-meds .momentos { gap: 4px; }
+  #lista-meds .momentos .mom { flex: 1 1 0; min-width: 0; padding-inline: 2px; font-size: .74rem; letter-spacing: -.01em; }
+  #lista-meds .momentos .mom[aria-pressed="true"]::before { display: none; }
+  #lista-meds .momentos .mom[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+}
+/* 239. "sin dosis" en ambar con borde discontinuo: invita a completarla */
+#lista-meds li.sin-dosis .med-dosis .editar { border-style: dashed; border-color: var(--precaucion); background: var(--precaucion-soft); color: var(--precaucion-ink); }
+/* 240. Suplementos y plantas con su filo de color en la lista */
+#lista-meds li[data-tipo="planta"] { border-left: 3px solid #2e7d32; }
+#lista-meds li[data-tipo="suplemento"] { border-left: 3px solid #64748b; }
+/* 241. Nombres largos en dos lineas como maximo */
+#lista-meds .med-nombre strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* 242. Pausar y quitar, discretos hasta pasar el raton por la tarjeta */
+@media (hover: hover) { #lista-meds .med-acciones button { opacity: .62; transition: opacity .15s, background-color .15s; } #lista-meds li:hover .med-acciones button, #lista-meds .med-acciones button:focus-visible { opacity: 1; } }
+/* 244. Lo escrito, resaltado en cada resultado del buscador */
+:is(#sugerencias, #ficha-sugerencias) mark { background: var(--accent-soft); color: var(--accent-deep); border-radius: 3px; padding: 0 1px; font-weight: 800; }
+/* 245. El grupo de cada resultado, en dos lineas como maximo */
+:is(#sugerencias, #ficha-sugerencias) li small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* 246. Icono del grupo delante de cada resultado */
+:is(#sugerencias, #ficha-sugerencias) li.con-ic { grid-template-columns: 28px minmax(0, 1fr); column-gap: 10px; align-items: center; }
+:is(#sugerencias, #ficha-sugerencias) li.con-ic > .ic-grupo { grid-row: 1 / span 2; width: 28px; height: 28px; flex-basis: 28px; padding: 5px; border-radius: 8px; }
+:is(#sugerencias, #ficha-sugerencias) li.con-ic > :not(.ic-grupo) { grid-column: 2; }
+/* 247. Resultado elegido con el teclado: anillo por dentro, que no se corta */
+:is(#sugerencias, #ficha-sugerencias) li:focus-visible { outline-offset: -3px; background: var(--accent-soft); }
+/* 248. Dosis habituales en cifras de terminal y con ancho minimo */
+#dosis-presets .chip-btn { min-width: 46px; font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: center; }
+/* 249. El formulario de dosis, con filo de acento: se ve que es el paso siguiente */
+#dosis-wrap { border-left: 3px solid var(--accent); }
+/* 250. Plegable de suplementos: abierto, con un velo verde muy suave */
+.sup-rapido[open] { border-style: solid; border-color: var(--line-strong); background: linear-gradient(180deg, rgba(46, 125, 50, .07), rgba(46, 125, 50, 0) 70%), var(--surface); }
+.sup-rapido > summary:hover { color: var(--accent); }
+/* 251. Botones rapidos de suplementos en tres columnas iguales en el movil */
+@media (max-width: 479px) {
+  .sup-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sup-chips .chip-btn { display: block; min-width: 0; padding-inline: 8px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+/* 252. "Anadir rapido": rotulo de terminal */
+#rapido > small { font-family: var(--mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; }
+/* 253. "Recomendado" en oro en la hoja de anadir */
+.hoja-opciones .recomendado { background: var(--oro); color: var(--noche); }
+/* 254. Opciones de la hoja de anadir: el icono crece un poco al pasar */
+.hoja-opciones button .ic, .hoja-opciones button svg { transition: transform .15s; }
+@media (hover: hover) { .hoja-opciones button:hover .ic, .hoja-opciones button:hover svg { transform: scale(1.08); } }
+/* 255. Contador de la lista en terminal */
+.cuenta-meds { font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; }
+/* 256. Banda de ejemplo: borde discontinuo para que se lea como "de prueba" */
+.banner-ejemplo { border: 1px dashed var(--accent); }
+/* 257. Aviso de privacidad mas pequeno y con mas aire */
+.privacidad { font-size: .78rem; line-height: 1.45; }
+/* 258. Ilustracion del estado vacio con un halo suave */
+.ilustracion img { border-radius: 50%; background: radial-gradient(circle, var(--accent-soft) 0, transparent 70%); }
+/* 259. Tarjetas de la lista con un poco mas de aire entre ellas en pantallas grandes */
+@media (min-width: 960px) { #lista-meds { gap: 10px; } }
+/* 260. Cabecera de las combinaciones de marca en terminal */
+#lista-meds li.combo-cab strong { font-family: var(--mono); font-size: .78rem; letter-spacing: .03em; text-transform: uppercase; }
+/* 261. Paso a paso: el paso actual con un halo */
+#recorrido-pasos .paso.actual b { box-shadow: 0 0 0 4px var(--accent-soft); }
+/* 262. Boton "Siguiente": la flecha avanza un poco al pasar */
+#btn-siguiente .flecha { display: inline-block; transition: transform .15s; }
+@media (hover: hover) { #btn-siguiente:hover .flecha { transform: translateX(3px); } }
+/* 263. Botones de ayuda "?" con borde fino y del color del acento al pasar */
+.btn-ayuda { border: 1px solid var(--line-strong); }
+@media (hover: hover) { .btn-ayuda:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); } }
+/* 264. "Alguna caida en el ultimo ano" marcada como tarjeta */
+label.check:has(#caidas:checked) { background: var(--accent-soft); border-radius: var(--r-sm); padding-inline: 8px; margin-inline: -8px; }
+/* 265. Campos numericos de datos: cifra grande y centrada */
+#edad, #fc-reposo { font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+/* 266. Plegables de datos abiertos con fondo suave en la cabecera */
+details.bloque[open] > summary { border-radius: var(--r-sm); }
+/* 267. Listas guardadas: cada lista como tarjeta con filo */
+.perfiles li { border-left: 3px solid var(--accent); }
+/* 268. "Consultar un farmaco" y "Listas guardadas" del mismo alto */
+.cab-panel .btn-sec.sm { min-height: 38px; }
+/* 269. Medicamento anadido tal cual (sin informacion): rayado suave */
+#lista-meds li.libre { background: repeating-linear-gradient(135deg, var(--surface) 0 10px, var(--surface-2) 10px 20px); }
+/* 270. Nombre del producto un poco mas grande en la lista */
+#lista-meds .med-nombre strong { font-size: 1.04rem; letter-spacing: -.01em; }
+/* 271. Etiqueta Planta/Suplemento separada del grupo con un punto de aire */
+#lista-meds .etq-tipo { margin-right: 4px; }
+/* 272. Pildora de dosis alta junto a la dosis, sin saltar de linea */
+#lista-meds .med-dosis .chip-alta { white-space: nowrap; }
+/* 273. Lista pausada: el nombre tachado suave */
+#lista-meds li.pausado .med-nombre strong { text-decoration: line-through; text-decoration-color: var(--muted); text-decoration-thickness: 1px; }
+/* 274. Buscador: icono de lupa del color del acento al escribir */
+.buscador input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+/* 275. Resultados del buscador con separador entre ellos */
+:is(#sugerencias, #ficha-sugerencias) li + li { box-shadow: 0 -1px 0 var(--line); }
+/* 276. "Anadir tal cual" con borde discontinuo y texto en cursiva suave */
+#sugerencias li.libre-op span { font-style: italic; }
+/* 277. Plegable de suplementos: contador de "N en su lista" con punto verde */
+.sup-cuenta::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 5px; border-radius: 50%; background: currentColor; vertical-align: 1px; }
+/* 278. Mas formas de anadir y Vaciar en la misma fila desde 420 px */
+@media (min-width: 420px) { .acciones-anadir { flex-wrap: nowrap; align-items: stretch; } .acciones-anadir #btn-vaciar { flex: 0 0 auto; } }
+/* 279. Modo paciente/profesional: el inactivo atenua su icono */
+.modo button[aria-checked="false"] svg { opacity: .55; }
+/* 280. Datos basicos: la nota "Rellene solo lo que sepa" con ancho de lectura comodo */
+.modo-nota { max-width: 52ch; line-height: 1.5; }
+
+/* ---------- TANDA 11 (281-330): el informe ---------- */
+/* 281. Veredicto con el titular equilibrado en sus lineas */
+.veredicto > p:first-of-type { text-wrap: balance; }
+/* 282. Boton del cribado del veredicto a todo el ancho en el movil */
+@media (max-width: 479px) { .veredicto-crib .btn-sec { width: 100%; justify-content: center; } }
+/* 283. Ver mi plan, Descargar y Compartir del mismo ancho en el movil */
+@media (max-width: 479px) {
+  .veredicto-acciones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 6px; align-items: center; }
+  .veredicto-acciones > .btn, .veredicto-acciones > .btn-sec { min-width: 0; padding-inline: 6px; justify-content: center; }
+}
+/* 284. Completitud del plan con filo del acento */
+.completitud { border-left: 3px solid var(--accent); }
+/* 285. Lo que falta, con vinetas del acento */
+.comp-lista li::marker { color: var(--accent); }
+/* 286. "Que tener en cuenta" equilibrado */
+.cabecera-informe h2 { text-wrap: balance; }
+/* 287. Botones de "Hoy" con sombra del acento */
+.hoy-botones .btn { box-shadow: 0 .55rem 1.2rem -.85rem var(--accent); }
+/* 288. Cifras de la semana de "Hoy" alineadas */
+.hoy-resumen, .hoy-resumen b { font-variant-numeric: tabular-nums; }
+/* 289. Lo esencial: el arranque en negrita, con el color del texto */
+.esencial li b, .esencial li strong { color: var(--fg); }
+/* 290. Nota de "Lo esencial" en cursiva suave */
+.esencial-nota { font-style: italic; }
+/* 291. "Pare y consulte": vinetas rojas */
+details.alarma ul li::marker { color: var(--alerta); }
+/* 292. "Si nota algo": sintomas con mas aire */
+details.sintomas .chips { gap: 8px; }
+/* 293. De un vistazo: la fila del plan que se senala, resaltada */
+@media (hover: hover) { .vistazo .tabla-plan tbody tr:hover { background: var(--surface-2); } }
+/* 294. El ritmo del paciente en una caja suave */
+.vistazo .ritmo { padding: 10px 12px; border-radius: var(--r-sm); background: var(--surface-2); }
+/* 295. Cifras del resumen con interletraje apretado */
+#resumen .tile .num { letter-spacing: -.02em; }
+/* 296. Pestanas elegidas con el teclado: anillo por dentro */
+.tabs button:focus-visible { outline-offset: -3px; }
+/* 297. Contadores de las secciones en cifras de terminal */
+details.seccion > summary .resumen-sec b { font-family: var(--mono); }
+/* 298. Linea del grupo de cada farmaco mas legible */
+details.farmaco summary small { line-height: 1.35; }
+/* 299. La frase de aviso de cada farmaco cerrado, en dos lineas como maximo */
+.una-frase { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* 300. Reglas del farmaco con interlineado comodo */
+details.farmaco ul li { line-height: 1.5; }
+/* 301. Fuente de cada interaccion: las palabras largas no desbordan */
+article.ddi footer { overflow-wrap: anywhere; }
+/* 302. "Que hacer" de cada interaccion en una caja */
+article.ddi .accion { padding: 8px 10px; border-radius: var(--r-sm); background: var(--surface-2); }
+/* 303. Interacciones mayores con un velo rojo muy suave */
+article.ddi.ddi-mayor { background: linear-gradient(90deg, var(--alerta-soft), var(--surface) 45%); }
+/* 304. Nota de fuentes al pie mas pequena */
+.nota-fuentes { font-size: .78rem; }
+/* 305. "Hora de sus tomas": los cuatro campos caben en el movil (antes se salian por la derecha) */
+.fila.horas-tomas input[type="number"] { width: 100%; min-width: 0; }
+/* 306. Mejores momentos un poco mas grandes */
+.mejores b { font-size: 1.02rem; }
+/* 307. Por que: la franja horaria en terminal */
+ul.motivos li b { font-family: var(--mono); font-weight: 600; }
+/* 308. Efectos que se acumulan: cifra en terminal */
+#perfil li .num { font-family: var(--mono); }
+/* 309. Cada documento con una flecha de descarga discreta en la esquina (blanca en el principal) */
+.docs .btn-doc { position: relative; }
+.docs .btn-doc::after { content: "\2193"; position: absolute; top: 8px; right: 12px; font: 700 .8rem/1 var(--mono); color: var(--muted); opacity: .75; }
+body[data-modo="paciente"] #btn-pdf-paciente::after, body[data-modo="profesional"] #btn-pdf-medico::after { color: var(--accent-fg); }
+/* 310. Compartir: el boton que queda solo al final ocupa toda la fila */
+.descargas .acciones.compartir > :last-child:nth-child(odd), .descargas .compartir-enlaces > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+/* 311. Notas de descargas con ancho de lectura */
+.descargas small { max-width: 60ch; }
+/* 312. Ficha: el nombre del producto equilibrado */
+.ficha-titulo span { text-wrap: balance; }
+/* 313. Ficha: la linea del grupo con interlineado comodo */
+.ficha-cuerpo .clase-nombre { line-height: 1.5; }
+/* 314. Ficha: "Anadir a mi lista" siempre a mano al final de la ventana */
+.ficha-cuerpo #ficha-anadir { position: sticky; bottom: 0; box-shadow: 0 -10px 18px -6px var(--surface); }
+/* 315. Rotulos de las cifras del resumen mas pequenos */
+#resumen .tile span:not(.num) { font-size: .78rem; }
+/* 316. Titulos de las secciones plegables equilibrados */
+details.seccion > summary h3 { text-wrap: balance; }
+/* 317. Sello "revisada/borrador" mas discreto */
+.estado-regla { font-size: .6rem; }
+/* 318. Nivel de evidencia sin partirse */
+.evidencia { white-space: nowrap; }
+/* 319. Terminos del glosario con subrayado punteado fino y separado */
+abbr.glos { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* 320. "Detalle por pestanas" con hilo inferior */
+.detalle-t { padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+/* 321. La ayuda "?" de las acciones del veredicto, centrada */
+.veredicto-acciones .btn-ayuda { align-self: center; justify-self: end; }
+/* 322. Al saltar a "Hoy" no queda pegado al borde */
+.hoy, #esencial, #vistazo, #descargas { scroll-margin-top: 72px; }
+/* 323. Nombres de cada interaccion equilibrados */
+article.ddi header h4 { text-wrap: balance; }
+/* 324. Tarjeta de farmaco abierta con algo mas de sombra */
+details.farmaco[open] { box-shadow: 0 12px 28px -22px rgba(20, 11, 58, .5); }
+/* 325. Titulos de los avisos por combinacion equilibrados */
+article.regla header h4 { text-wrap: balance; }
+/* 326. Farmacos implicados en cada aviso en terminal */
+article.regla .chip { font-family: var(--mono); font-size: .7rem; }
+/* 327. Indice del informe en escritorio: el enlace al pasar, del color del acento */
+#indice-informe a:hover { color: var(--accent); }
+/* 328. Texto del informe con interlineado de lectura */
+#informe-texto { line-height: 1.55; }
+/* 329. Logo de la firma con esquinas redondeadas */
+.firma img { border-radius: 10px; }
+/* 330. Enlaces del pie con subrayado separado */
+.pie-legal a, .pie a { text-underline-offset: 3px; }
+
+/* ---------- TANDA 12 (331-380): mi plan, sesiones, ventanas, paginas y detalles ---------- */
+/* 331. Objetivo semanal: la cifra del anillo en terminal */
+.plan-cab svg text { font-family: var(--mono); }
+/* 332. Racha en negrita */
+.plan-racha { font-weight: 700; }
+/* 333. Mis dias: botones de dia del mismo tamano */
+.dias-chips .chip-btn { min-width: 36px; justify-content: center; text-align: center; }
+/* 334. Tira de dias: los pasados, mas atenuados */
+.tira .dia.pasado { opacity: .6; }
+/* 335. Tira de dias: el descanso con rayado suave */
+.tira .dia.descanso { background: repeating-linear-gradient(135deg, var(--surface) 0 6px, var(--surface-2) 6px 12px); }
+/* 336. Banda del dia con las esquinas de arriba redondeadas */
+.plan-dia .plan-banda { border-radius: var(--r-md) var(--r-md) 0 0; }
+/* 337. Bloques de la sesion separados por una linea discontinua */
+.bloques.con-picto > li + li { border-top: 1px dashed var(--line); }
+/* 338. Intensidad y tiempo (FITT) en una caja suave */
+.plan-fitt { padding: 10px 12px; border-radius: var(--r-sm); background: var(--surface-2); }
+/* 339. "Empezar sesion" a todo el ancho en el movil */
+@media (max-width: 479px) { #btn-sesion { width: 100%; justify-content: center; } }
+/* 340. Progreso sin datos: mensaje centrado */
+.plan-prog.pocos_datos { text-align: center; }
+/* 341. Imagenes de la sesion guiada con esquinas redondeadas */
+.ses-img, .sppb-img { border-radius: var(--r-md); }
+/* 342. Cronometros con cifras que no bailan */
+.crono, .crono-seg { font-variant-numeric: tabular-nums; }
+/* 343. Pasos del SPPB con su progreso en terminal */
+.sppb-progreso { font-family: var(--mono); letter-spacing: .04em; }
+/* 344. Chequeo previo: lo marcado, iluminado */
+.chequeo label.check:has(input:checked) { background: var(--accent-soft); border-radius: var(--r-sm); }
+/* 345. Cierre de la sesion con titular equilibrado */
+.sesion-fin h3, .sesion-fin h2 { text-wrap: balance; }
+/* 346. Recorrido guiado: la caja con sombra mas profunda */
+.tour-caja { box-shadow: 0 24px 60px -24px rgba(20, 11, 58, .6); }
+/* 347. Avisos breves (toast) en seminegrita */
+.toast { font-weight: 600; }
+/* 348. Menu "Mas": cada opcion separada por un hilo */
+.menu-lista > a + a, .menu-lista > button + a, .menu-lista > a + button { border-top: 1px solid var(--line); }
+/* 349. Menu "Mas" abierto con sombra profunda */
+.menu-mas[open] .menu-lista { box-shadow: 0 22px 50px -24px rgba(20, 11, 58, .55); }
+/* 350. Titulos de las hojas inferiores equilibrados */
+.hoja-cab h2, .hoja-cab h3 { text-wrap: balance; }
+/* 351. Ficha: lista de interacciones con interlineado comodo */
+.ficha-cuerpo .ddi-mini li { line-height: 1.45; }
+/* 352. Legal: en el movil el indice va en una fila que se desliza (antes tapaba el texto al bajar) */
+@media (max-width: 719px) { main.legal .toc { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; } }
+/* 353. Enlaces con forma de boton, sin subrayado (presentacion, guia, paginas) */
+a.btn, a.btn-sec { text-decoration: none; }
+/* 354. "Volver a la aplicacion" flotante con fondo y sombra: no se mezcla con el texto */
+.volver { background: var(--surface); box-shadow: 0 6px 18px -10px rgba(20, 11, 58, .45); }
+/* 355. Novedades: la entrada al pasar el raton, con el filo del acento */
+@media (hover: hover) { main.novedades article:hover h2 { color: var(--accent-deep); } }
+/* 356. Acerca de: cifras de la base grandes y alineadas */
+#estado-kb dd { font-variant-numeric: tabular-nums; }
+/* 357. Acerca de: lista de casos de validacion mas compacta */
+#validacion-lista { font-size: .9rem; line-height: 1.5; }
+/* 358. Presentacion: cifras alineadas */
+.pres .cifras b { font-variant-numeric: tabular-nums; }
+/* 359. Presentacion: capturas de cada funcion con esquinas redondeadas */
+.pres .funcion img { border-radius: var(--r-md); }
+/* 360. Escritorio: al volver a la app, cabecera compacta (sin la introduccion ni el lema) */
+@media (min-width: 640px) { html.retorno .cabecera .intro, html.retorno .cabecera .lema { display: none; } }
+/* 361. Linea de version: las cifras largas se parten sin desbordar */
+.estado-linea small { overflow-wrap: anywhere; }
+/* 362. Insignias de la barra inferior con cifras alineadas */
+.nav-badge { font-variant-numeric: tabular-nums; }
+/* 363. Oscuro: filo de suplementos y plantas mas claro */
+:root[data-theme="dark"] #lista-meds li[data-tipo="planta"] { border-left-color: #8fd694; }
+:root[data-theme="dark"] #lista-meds li[data-tipo="suplemento"] { border-left-color: #b6c2d2; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) #lista-meds li[data-tipo="planta"] { border-left-color: #8fd694; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) #lista-meds li[data-tipo="suplemento"] { border-left-color: #b6c2d2; }
+}
+/* 364. Alto contraste: el filo de suplementos en el color del texto */
+:root[data-theme="contrast"] #lista-meds li[data-tipo] { border-left-color: currentColor; }
+/* 365. Impresion: sin resaltados ni filos de color */
+@media print { mark { background: none; color: inherit; } #lista-meds li[data-tipo] { border-left-width: 1px; } .docs .btn-doc::after { display: none; } }
+/* 366. Dias de la tira elegidos con el teclado: anillo separado */
+.tira .dia:focus-visible { outline-offset: 2px; }
+/* 367. Diario: caja de notas mas comoda */
+.registro textarea { min-height: 72px; }
+/* 368. Tendencia del plan con rotulos de terminal */
+.tendencia small { font-family: var(--mono); font-size: .68rem; }
+/* 369. Recordatorio de los dias de ejercicio en una caja suave */
+.aviso-plan { padding: 10px 12px; border-radius: var(--r-sm); background: var(--surface-2); }
+/* 370. De un vistazo: rotulos de las tres columnas con aire */
+.semaforo-col h4 { letter-spacing: .04em; }
+/* 371. Aviso de reevaluacion con filo dorado */
+.banner-reeval { border-left: 3px solid var(--oro); }
+/* 372. Glosario: los terminos del color del acento */
+.glosario dt { color: var(--accent-deep); }
+/* 373. Estadisticas de la consulta con filas redondeadas */
+.stats-lista li { border-radius: var(--r-sm); }
+/* 374. Efectos que se acumulan: los farmacos de cada efecto con interlineado comodo */
+#perfil li small { line-height: 1.35; }
+/* 375. Aviso de datos guardados con filo ambar */
+#aviso-datos { border-left: 3px solid var(--precaucion); }
+/* 376. Botones desactivados con cursor de "no disponible" */
+.btn:disabled, .btn-sec:disabled { cursor: not-allowed; }
+/* 377. Texto seleccionado con los colores de la marca */
+::selection { background: var(--marca-clara); color: var(--noche); }
+/* 378. Escritorio: barra de desplazamiento fina del color de la marca */
+@media (hover: hover) and (pointer: fine) { html { scrollbar-width: thin; scrollbar-color: var(--marca-clara) transparent; } }
+/* 379. Titulos de las paginas secundarias equilibrados */
+:is(main.acerca, main.legal, main.novedades, .guia-pag, .pres) :is(h2, h3) { text-wrap: balance; }
+/* 380. Alto contraste: sin velos ni rayados de esta ronda */
+:root[data-theme="contrast"] :is(article.ddi.ddi-mayor, .tira .dia.descanso, #lista-meds li.libre, .sup-rapido[open]) { background: var(--surface); }
+:root[data-theme="contrast"] :is(.hoy-botones .btn, details.farmaco[open], .tour-caja, .volver, .menu-mas[open] .menu-lista) { box-shadow: none; }

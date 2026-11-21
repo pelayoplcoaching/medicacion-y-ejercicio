@@ -421,7 +421,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check("los módulos con sello de versión están todos en la precarga", fs.readdirSync(path.join(APP, "js")).filter((f) => f.endsWith(".js")).every((f) => sw.SELLADOS.includes("js/" + f)) && ["en", "ca", "gl", "eu"].every((l) => sw.SELLADOS.includes(`js/i18n/${l}.js`)));
   check("las capturas de la guía y la presentación no se precargan (se guardan al visitarlas)", !lista.some((f) => /assets\/(guia|presentacion)\//.test(f)) && !lista.includes("assets/logo-app.png") && !lista.includes("assets/icon-512.png"));
   const totalPrecarga = lista.reduce((s, f) => s + kbs(f), 0);
-  check(`precarga total ≤ 3700 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3700);
+  // 3760 desde la v1.1 (21/11/2026): base con 53 suplementos y plantas (+41 KB) y tres tandas de mejoras visuales 231-380 (+24 KB de CSS, +6 KB comprimidos)
+  check(`precarga total ≤ 3760 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3760);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
@@ -429,7 +430,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check(`JavaScript inicial ≤ 420 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 420);
   check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
   check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
-  check(`hoja de estilos ≤ 250 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 250);
+  // 280 KB desde las mejoras 231-380 (21/11/2026): 57 KB comprimida con gzip
+  check(`hoja de estilos ≤ 280 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 280);
   const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
   const tabla = css.slice(css.indexOf("/* OP3."));
   const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));

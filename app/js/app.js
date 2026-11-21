@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma } from "./engine.js?v=202611211655";
-import { APP_VERSION } from "./version.js?v=202611211655";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211655";
-import { picto } from "./pictos.js?v=202611211655";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211655";
-import { cargarScript } from "./libs.js?v=202611211655";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211655";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211655";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211717";
+import { APP_VERSION } from "./version.js?v=202611211717";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211717";
+import { picto } from "./pictos.js?v=202611211717";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211717";
+import { cargarScript } from "./libs.js?v=202611211717";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211717";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211717";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -131,6 +131,8 @@ function grupoClase(clase) {
   return "pastilla";
 }
 const iconoGrupo = (clase) => `<svg class="ic-grupo g-${grupoClase(clase)}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${GRUPO_ICONS[grupoClase(clase)]}"/></svg>`;
+/** Mejora 237: el nombre del grupo no se repite cuando es el mismo que el del producto (Metformina · Metformina, Hipérico · Hipérico). */
+const grupoVisible = (p, c) => (normalizar(c.nombre) === normalizar(p.nombre) ? "" : c.nombre);
 /** Etiqueta «Suplemento» / «Planta» delante del grupo, para distinguirlos de los medicamentos. */
 const etqTipo = (p, c) => { const tp = tipoProducto(p, c); return tp ? `<span class="etq-tipo etq-${tp}">${t("tipo." + tp)}</span> ` : ""; };
 function ponerIconos() {
@@ -354,17 +356,29 @@ inputBuscar.addEventListener("input", () => {
     li.addEventListener("click", () => anadirLibre(q));
     lista.append(li);
   }
-  for (const e of res) {
+  for (const e of sinRepetidos(res)) {
     const ref = indice.porId.get(e.pid);
     const li = document.createElement("li");
     li.setAttribute("role", "option"); li.tabIndex = 0;
+    li.className = "con-ic";
     li.innerHTML = e.tipo === "combo"
-      ? `<span>${e.texto}</span><small>${t("buscar.combo")}: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
-      : `<span>${e.texto}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${etqTipo(ref.principio, ref.clase)}${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+      ? `${iconoGrupo(ref.clase)}<span>${resaltar(e.texto, q)}</span><small>${t("buscar.combo")}: ${e.componentes.map((c) => indice.porId.get(c.pid).principio.nombre).join(" + ")}</small>`
+      : `${iconoGrupo(ref.clase)}<span>${resaltar(e.texto, q)}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${etqTipo(ref.principio, ref.clase)}${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
     li.addEventListener("click", () => elegir(e));
     lista.append(li);
   }
 });
+/** Mejora 243: un solo resultado por producto entre su nombre y sus nombres alternativos (las presentaciones del nomenclátor y las marcas sí se muestran todas). */
+function sinRepetidos(res) {
+  const vistos = new Set();
+  return res.filter((e) => { if (e.tipo !== "principio" && !e.alias) return true; if (vistos.has(e.pid)) return false; vistos.add(e.pid); return true; });
+}
+/** Mejora 244: resalta en el resultado lo que se ha escrito (sin distinguir tildes ni mayúsculas). */
+function resaltar(texto, q) {
+  const n = normalizar(texto), m = normalizar(q);
+  const i = m.length >= 2 ? n.indexOf(m) : -1;
+  return i < 0 || n.length !== texto.length ? texto : `${texto.slice(0, i)}<mark>${texto.slice(i, i + m.length)}</mark>${texto.slice(i + m.length)}`;
+}
 inputBuscar.addEventListener("keydown", (ev) => {
   if (ev.key === "Enter") { ev.preventDefault(); const first = lista.querySelector("li"); if (first && !lista.hidden) first.click(); }
   if (ev.key === "Escape") lista.hidden = true;
@@ -584,12 +598,12 @@ $("#btn-consultar").addEventListener("click", () => { ficha.showModal(); fichaIn
 $("#ficha-cerrar").addEventListener("click", () => ficha.close());
 ficha.addEventListener("click", (ev) => { if (ev.target === ficha) ficha.close(); });
 fichaInput.addEventListener("input", () => {
-  const res = buscar(indice, fichaInput.value).filter((e) => e.tipo !== "combo");
+  const res = sinRepetidos(buscar(indice, fichaInput.value).filter((e) => e.tipo !== "combo"));
   fichaLista.innerHTML = ""; fichaLista.hidden = !res.length;
   for (const e of res) {
     const ref = indice.porId.get(e.pid);
-    const li = document.createElement("li"); li.setAttribute("role", "option"); li.tabIndex = 0;
-    li.innerHTML = `<span>${e.texto}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${etqTipo(ref.principio, ref.clase)}${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
+    const li = document.createElement("li"); li.setAttribute("role", "option"); li.tabIndex = 0; li.className = "con-ic";
+    li.innerHTML = `${iconoGrupo(ref.clase)}<span>${resaltar(e.texto, fichaInput.value.trim())}${e.aproximado ? ` <em class="aprox">${t("buscar.quiso")}</em>` : ""}</span><small>${etqTipo(ref.principio, ref.clase)}${e.tipo === "marca" ? ref.principio.nombre + " · " : ""}${ref.clase.nombre}</small>`;
     li.addEventListener("click", () => { fichaLista.hidden = true; fichaInput.value = e.texto; mostrarFicha(e.pid); });
     fichaLista.append(li);
   }
@@ -610,7 +624,7 @@ function mostrarFicha(pid) {
   const ddiOrden = { mayor: 0, moderada: 1, menor: 2 };
   fichaCuerpo.innerHTML = `
     <h2 id="ficha-titulo" class="ficha-titulo">${iconoGrupo(c)}<span>${p.nombre}</span></h2>
-    <p class="clase-nombre">${etqTipo(p, c)}${c.nombre}${p.marcas?.length ? " · " + p.marcas.slice(0, 6).join(", ") : ""}${p.alias?.length ? ` · ${t("ficha.alias")} ${p.alias.slice(0, 4).join(", ")}` : ""}${p.umbral_mg?.alta != null ? ` · dosis alta a partir de ${p.umbral_mg.alta.toLocaleString("es-ES")} ${unidadPorDia(p.unidad || "mg")}` : ""}</p>
+    <p class="clase-nombre">${etqTipo(p, c)}${[grupoVisible(p, c), p.marcas?.length ? p.marcas.slice(0, 6).join(", ") : "", p.alias?.length ? `${t("ficha.alias")} ${p.alias.slice(0, 4).join(", ")}` : "", p.umbral_mg?.alta != null ? `dosis alta a partir de ${p.umbral_mg.alta.toLocaleString("es-ES")} ${unidadPorDia(p.unidad || "mg")}` : ""].filter(Boolean).join(" · ")}</p>
     <p>${c.resumen}</p>
     ${p.nota ? `<p><em>${p.nota}</em></p>` : ""}
     ${senales.length ? `<ul class="senales-lista">${senales.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
@@ -750,7 +764,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211655").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211717").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1176,7 +1190,7 @@ function pintarPasos() {
   $("#recorrido-pasos").innerHTML = pasos.map(([ok, txt], i) => `<li class="paso${ok ? " hecho" : ""}${pasoActual === i + 1 ? " actual" : ""}"${pasoActual === i + 1 ? ' aria-current="step"' : ""}><b>${ok ? "✓" : i + 1}</b><span>${txt}</span></li>`).join("");
   const b = $("#btn-siguiente"); b.hidden = pasoActual === 0;
   const listo = $("#rec-listo"); if (listo) listo.hidden = pasoActual !== 0; // mejora 199: con los tres pasos hechos, «Todo listo» en lugar de una barra vacía
-  b.innerHTML = `<span class="largo">${t(pasoActual === 1 ? "rec.ir_datos" : pasoActual === 2 ? "rec.ir_meds" : "rec.ir_plan")}</span><span class="corto">${t("rec.siguiente")}</span> →`;
+  b.innerHTML = `<span class="largo">${t(pasoActual === 1 ? "rec.ir_datos" : pasoActual === 2 ? "rec.ir_meds" : "rec.ir_plan")}</span><span class="corto">${t("rec.siguiente")}</span> <span class="flecha" aria-hidden="true">→</span>`; // mejora 262
   // barra inferior (móvil): insignias
   const nMeds = estado.meds.length; const bm = $('#barra-inferior [data-ir="medicacion"] .nav-badge'); if (bm) { bm.textContent = nMeds || ""; bm.hidden = !nMeds; }
 }
@@ -1477,6 +1491,8 @@ function render() {
     }
     if (m.combo) li.classList.add("en-combo");
     if (m.pausado) li.classList.add("pausado");
+    li.classList.toggle("sin-dosis", it.dosisTotal == null);                         // mejora 239
+    const tipoIt = tipoProducto(it.principio, it.clase); if (tipoIt) li.dataset.tipo = tipoIt; // mejora 240
     if (ultimoAnadido && m.pid === ultimoAnadido) { li.classList.add("nuevo"); ultimoAnadido = null; }
     const dosis = it.dosisTotal != null
       ? (it.esDiaria && it.tomas > 1
@@ -1484,7 +1500,7 @@ function render() {
         : `${it.dosisPorToma.toLocaleString("es-ES")} ${it.esDiaria ? unidadPorDia(it.unidad) : it.unidad}`) + (it.aDemanda ? " · si precisa" : "")
       : t("lista.sin_dosis");
     li.innerHTML = `
-      <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small title="${it.clase.nombre.replace(/"/g, "&quot;")}">${etqTipo(it.principio, it.clase)}${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
+      <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small title="${it.clase.nombre.replace(/"/g, "&quot;")}">${etqTipo(it.principio, it.clase)}${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${grupoVisible(it.principio, it.clase)}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
       <div class="med-dosis"><button type="button" class="editar" title="${t("lista.editar_dosis")}">${dosis}${it.dosisCat === "alta" && !m.pausado ? ` <span class="chip chip-alta">${t("inf.dosis_alta")}</span>` : ""} ${icono("editar", "ic ic-sm")}</button></div>
       <div class="momentos" role="group" aria-label="${t("mom.grupo")}">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${momTxt(mm)}">${mm === "noche" ? t("mom.noche_corto") : momTxt(mm)}</button>`).join("")}</div>
       <div class="med-acciones"><button type="button" class="pausar" title="${m.pausado ? t("lista.reanudar") : t("lista.pausar")}" aria-label="${m.pausado ? t("lista.reanudar") : t("lista.pausar")} ${it.principio.nombre}">${icono(m.pausado ? "reanudar" : "pausa")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${it.principio.nombre}">×</button></div>`;
@@ -1661,7 +1677,7 @@ function tarjetaFarmaco(g, amb, abierta) {
         <summary>
           <span class="barra"></span>
           ${iconoGrupo(it.clase)}
-          <span class="txt"><h4>${it.principio.nombre}</h4><small>${etqTipo(it.principio, it.clase)}${it.clase.nombre}${dosis ? " · " + dosis : ""}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small>${max !== "info" ? `<span class="una-frase">${fraseCorta(g.reglas.find((r) => r.nivel === max)?.texto)}</span>` : ""}</span>
+          <span class="txt"><h4>${it.principio.nombre}</h4><small>${etqTipo(it.principio, it.clase)}${[grupoVisible(it.principio, it.clase), dosis].filter(Boolean).join(" · ")}${it.dosisCat === "alta" ? ` · <b>${t("inf.dosis_alta")}</b>` : ""}</small>${max !== "info" ? `<span class="una-frase">${fraseCorta(g.reglas.find((r) => r.nivel === max)?.texto)}</span>` : ""}</span>
           <span class="nivel">${etiqueta(max)}</span>
           <span class="flecha" aria-hidden="true">⌄</span>
         </summary>
