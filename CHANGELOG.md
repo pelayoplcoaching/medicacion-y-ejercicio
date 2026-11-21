@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.3 · 2026-11-21 · Mejoras grandes (4): «Hoy» de un vistazo y modo sencillo
+- Tarjeta «Hoy»: «Hoy, con cuidado» con hasta 3 cuidados según su medicación y la sesión del día (`datosHoy`, prioridades `CUID_PRIO` por tipo de sesión; textos `cuid.*` en cinco idiomas), cada uno con su «¿Por qué?».
+- Modo sencillo (menú «Más» o «Solo lo de hoy, en grande»; se recuerda en `medex.sencillo`): una sola pantalla con la fecha, la ilustración del día, qué toca, cuánto y a qué hora, un botón grande para empezar la sesión, «Escuchar» (lee lo de hoy con la voz del dispositivo), «Ya lo he hecho», los cuidados, los anillos de la semana y las señales de alarma. El resto de la aplicación queda oculto hasta «Ver todo». Sin medicación, invita a añadirla.
+- Presupuesto de JavaScript inicial: ≤ 440 KB (lo que tiene que estar al abrir; lo demás, en módulos bajo demanda).
+- Pruebas: 3 nuevas en `ui_test.mjs`; accesibilidad del modo sencillo en claro, oscuro y alto contraste.
+
 ## 1.2.2 · 2026-11-21 · Mejoras grandes (3): «¿Por qué?» animado en cada aviso
 - 15 explicadores (`js/porque.js`, bajo demanda): el pulso que no sirve para medir el esfuerzo, las bajadas de azúcar, los golpes y el sangrado, el mareo al levantarse, el agua y las sales, el calor, las caídas, el dolor muscular, los tendones, el QT, el corazón acelerado, el músculo y el hueso, el sol, la tensión alta al hacer fuerza y el cansancio. Cada uno: escena SVG en cuatro pasos (piezas que aparecen, agujas y niveles que se mueven; se avanza con «Siguiente», los puntos o las flechas del teclado; movimiento de una vez, apagado con «reducir movimiento»), qué hacer, fuentes (las mismas de las reglas de esas señales) y los otros porqués de su lista.
 - Enlaces: «Entender por qué» en cada tarjeta de medicamento (según sus señales, `PQ_SENAL` en `app.js`) y botón «¿Por qué?» en los efectos a vigilar. Textos de la interfaz en los cinco idiomas (`pq.*`); el contenido, en español como el resto de la base.

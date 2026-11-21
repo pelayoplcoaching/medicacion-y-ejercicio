@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212122";
-import { APP_VERSION } from "./version.js?v=202611212122";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212122";
-import { picto } from "./pictos.js?v=202611212122";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212122";
-import { cargarScript } from "./libs.js?v=202611212122";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212122";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212122";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212131";
+import { APP_VERSION } from "./version.js?v=202611212131";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212131";
+import { picto } from "./pictos.js?v=202611212131";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212131";
+import { cargarScript } from "./libs.js?v=202611212131";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212131";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212131";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,8 +32,8 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212122"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212122"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212131"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212131"));
 /** «¿Por qué?» (mejora grande 1): explicador animado de cada mecanismo, por señal de la base (el contenido está en js/porque.js). */
 const PQ_SENAL = { fc_no_valida: "pulso", bradicardia: "pulso", hipoglucemia: "azucar", enmascara_hipoglucemia: "azucar", sangrado: "sangrado", hipotension: "tension", deshidratacion: "agua", hipopotasemia: "agua", hiponatremia: "agua", renal: "agua", litio: "agua", calor: "calor", anticolinergico: "calor", sedacion: "equilibrio", caidas: "equilibrio", miopatia: "musculo", tendon: "tendon", qt: "ritmo", taquicardia: "acelera", perdida_muscular: "fuerza_hueso", hueso: "fuerza_hueso", fotosensibilidad: "sol", hipertension: "tension_alta", fatiga: "cansancio" };
 const PQ_ORDEN = ["pulso", "azucar", "sangrado", "tension", "agua", "calor", "equilibrio", "musculo", "tendon", "ritmo", "acelera", "fuerza_hueso", "sol", "tension_alta", "cansancio"];
@@ -789,7 +789,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212122").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212131").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1143,6 +1143,80 @@ function barrasSemana(diario) {
     return `<span class="sem-dia${iso === hoy ? " hoy" : ""}${min[i] ? " con" : ""}${tipo === "descanso" ? " descanso" : ""}"><span class="sem-barra"><i style="height:${Math.max(min[i] ? 18 : 0, Math.round((min[i] / max) * 100))}%"></i>${min[i] ? `<b>${min[i]}</b>` : ""}</span><span class="sem-ini">${d.toLocaleDateString(idioma(), { weekday: "narrow" })}</span>${icono(IC[tipo] || "fuerza", "ic sem-ic")}</span>`;
   }).join("")}</div>`;
 }
+/* ---------- «Hoy» de un vistazo y modo sencillo (mejora grande 19) ---------- */
+/** Qué cuidados se dicen primero según la sesión del día (de los mecanismos de su lista, los 3 primeros). */
+const CUID_PRIO = {
+  aerobico: ["azucar", "pulso", "acelera", "tension", "calor", "agua", "ritmo", "sangrado", "equilibrio", "tendon", "sol", "cansancio", "musculo", "tension_alta", "fuerza_hueso"],
+  fuerza: ["azucar", "tension_alta", "musculo", "tendon", "tension", "sangrado", "pulso", "equilibrio", "fuerza_hueso", "agua", "calor", "ritmo", "acelera", "cansancio", "sol"],
+  fuerza_eq: ["azucar", "equilibrio", "sangrado", "tension", "tension_alta", "musculo", "tendon", "pulso", "fuerza_hueso", "agua", "calor", "ritmo", "acelera", "cansancio", "sol"],
+  descanso: ["azucar", "sol", "calor", "equilibrio", "sangrado", "tension"],
+};
+/** Lo de hoy: tipo de sesión, minutos, mejor franja, 3 cuidados según su medicación y lo ya hecho. */
+function datosHoy() {
+  const plan = planDeHoy(), franja = franjaHoy();
+  const ses = plan.tipo === "descanso" ? null : sesionTipo(plan.tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
+  const res = evaluar(datos, medsActivos(), ctxActual());
+  const presentes = new Set(porquesDe(res.items.flatMap((it) => [...it.senales])));
+  const cuidados = (CUID_PRIO[plan.tipo] || CUID_PRIO.aerobico).filter((id) => presentes.has(id)).slice(0, 3);
+  const hecho = leerDiario().filter((x) => x.fecha === hoyISO()).reduce((n, x) => n + (x.min || 0), 0);
+  return { plan, franja, ses, cuidados, hecho };
+}
+const listaCuidados = (ids, clase) => ids.length ? `<ul class="${clase}">${ids.map((id) => `<li><span>${t("cuid." + id)}</span><button type="button" class="pq-mini" data-porque="${id}" aria-label="${t("pq.titulo")} ${t("pq.b." + id)}">${t("pq.titulo")}</button></li>`).join("")}</ul>` : "";
+/** Lo de hoy para leerlo en voz alta. */
+function lecturaHoy(d) {
+  if (!d.ses) return t("sen.lectura_descanso");
+  return [t("sen.lectura", { s: d.plan.etiqueta, m: d.ses.min }), d.franja ? t("sen.lectura_mejor", { f: d.franja.replace("–", " - ") }) : "", d.cuidados.length ? `${t("sen.lectura_cuidado")} ${d.cuidados.map((id) => t("cuid." + id)).join(" ")}` : ""].filter(Boolean).join(" ");
+}
+let sencillo = (() => { try { return localStorage.getItem("medex.sencillo") === "1"; } catch { return false; } })();
+function ponerSencillo(on, { avisar = true } = {}) {
+  sencillo = on;
+  try { localStorage.setItem("medex.sencillo", on ? "1" : "0"); } catch {}
+  document.body.classList.toggle("sencillo", on);
+  $("#btn-sencillo")?.setAttribute("aria-pressed", String(on));
+  renderSencillo();
+  window.scrollTo({ top: 0 });
+  if (on && avisar) toast(t("sen.activado"), { ms: 5000 });
+}
+/** Modo sencillo: una sola pantalla con lo de hoy, en grande y con voz; el resto de la aplicación queda oculto hasta «Ver todo». */
+function renderSencillo() {
+  let box = $("#sencillo");
+  if (!sencillo) { box?.remove(); return; } // fuera del modo sencillo no queda nada suyo en la página (ni ids ni anillos repetidos)
+  if (!box) { box = document.createElement("section"); box.id = "sencillo"; box.className = "sencillo-vista"; box.setAttribute("aria-labelledby", "sen-tit"); $("main.contenedor").prepend(box); }
+  box.hidden = false;
+  const fecha = new Date().toLocaleDateString(idioma(), { weekday: "long", day: "numeric", month: "long" });
+  const cab = `<div class="sen-cab"><p class="sen-fecha">${fecha}</p><button type="button" class="btn-sec sm" data-sen-salir>${t("sen.salir")}</button></div>`;
+  if (!datos) box.innerHTML = `${cab}<p class="sen-dur" id="sen-tit">…</p>`; // la base aún se está cargando
+  else if (!medsActivos().length) {
+    box.innerHTML = `${cab}<h2 id="sen-tit">${t("sen.sin_meds")}</h2><button type="button" class="btn sen-empezar" data-sen-salir>${t("sen.ir")}</button>`;
+  } else {
+    const d = datosHoy();
+    const img = { aerobico: "plan-aerobico", fuerza: "plan-fuerza", fuerza_eq: "plan-equilibrio" }[d.plan.tipo] || "plan-paseo";
+    box.innerHTML = `${cab}
+      <img class="sen-img" src="assets/img/${img}.webp" alt="" width="960" height="480" decoding="async">
+      <h2 id="sen-tit">${d.ses ? `${t("sen.toca")}: <b>${d.plan.etiqueta}</b>` : t("sen.descanso")}</h2>
+      <p class="sen-dur">${d.ses ? `${t("sen.dur", { m: d.ses.min })}${d.franja ? ` · ${t("sen.mejor", { f: d.franja })}` : ""}` : t("plan.descanso_txt")}</p>
+      ${d.hecho ? `<p class="sen-hecho-ok"><span aria-hidden="true">✓</span> ${t("sen.hecho_ok", { m: d.hecho })}</p>` : ""}
+      ${d.ses ? `<button type="button" class="btn sen-empezar" id="sen-empezar">${icono("reanudar")} ${t("sen.empezar")}</button>` : ""}
+      <div class="sen-botones">${"speechSynthesis" in window ? `<button type="button" class="btn-sec" id="sen-escuchar">${icono("escuchar")} ${t("sen.escuchar")}</button>` : ""}${d.ses && !d.hecho ? `<button type="button" class="btn-sec" id="sen-hecho"><span aria-hidden="true">✓</span> ${t("sen.hecho")}</button>` : ""}</div>
+      ${d.cuidados.length ? `<h3>${t("sen.cuidado")}</h3>${listaCuidados(d.cuidados, "sen-cuidados")}` : ""}
+      <div class="sen-semana" hidden></div>
+      <details class="alarma sen-alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>`;
+    $("#sen-empezar")?.addEventListener("click", () => abrirSesion(d.plan.tipo));
+    $("#sen-hecho")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(), tipo: d.plan.tipo, min: d.ses.min, rpe: 5, sintomas: [] }); celebrar(); });
+    $("#sen-escuchar")?.addEventListener("click", () => escuchar(lecturaHoy(d)));
+    cargarSemana().then((S) => {
+      const sem = box.querySelector(".sen-semana"); if (!sem) return;
+      const diario = leerDiario(), l = S.lunesDe(), r = S.resumen(diario, l, new Date(l.getFullYear(), l.getMonth(), l.getDate() + 7));
+      const o = S.objetivos({ fragil: esFragil(), eq: prescripcion(evaluar(datos, medsActivos(), ctxActual()), ctxActual()).eq.n });
+      sem.innerHTML = `${S.htmlAnillos(r, o)}<div><h3>${t("sen.semana")}</h3>${S.htmlLeyenda(r, o)}</div>`; sem.hidden = false;
+    }).catch(() => { cargarSemana.p = null; });
+  }
+  box.querySelectorAll("[data-sen-salir]").forEach((b) => b.addEventListener("click", () => ponerSencillo(false)));
+}
+document.body.classList.toggle("sencillo", sencillo);
+$("#btn-sencillo")?.setAttribute("aria-pressed", String(sencillo));
+$("#btn-sencillo")?.addEventListener("click", () => { $("#menu-mas").open = false; ponerSencillo(!sencillo); });
+
 let diarioAbierto = false;
 /** Palabras bajo la barra de esfuerzo (mejora 209): el número solo no dice nada a quien no conoce la escala. */
 const escalaRpe = () => `<span class="rpe-escala" aria-hidden="true"><span>${t("rpe.suave")}</span><span>${t("rpe.moderado")}</span><span>${t("rpe.duro")}</span></span>`;
@@ -1158,7 +1232,9 @@ function renderHoy() {
       <div><small>${t("hoy.titulo")}</small><h3>${plan.etiqueta}${franja ? ` <span class="hoy-franja">${t("hoy.mejor", { f: franja })}</span>` : ""}</h3></div>
       <div class="hoy-botones"><button type="button" class="btn sm" id="btn-empezar-hoy"${plan.tipo === "descanso" ? " hidden" : ""}>${t("plan.empezar")}</button><button type="button" class="btn-sec sm" id="btn-registrar">${diarioAbierto ? t("ficha.cerrar") : t("hoy.registrar")}</button><button type="button" class="btn-sec sm" id="btn-ver-plan">${t("plan.ver")}</button></div>
     </div>
+    ${(() => { const c = datosHoy().cuidados; return c.length ? `<div class="hoy-cuid"><small>${t("hoy.cuidado")}</small>${listaCuidados(c, "hoy-cuidados")}</div>` : ""; })()}
     <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
+    <p class="hoy-sencillo"><button type="button" class="btn-sec sm" id="btn-sencillo-hoy">${icono("ojo")} ${t("hoy.sencillo")}</button></p>
     ${diarioAbierto ? `<form class="registro" id="form-registro">
       <div class="chips">${TIPOS_SESION.map((x) => `<label class="chip chip-btn"><input type="radio" name="tipo" value="${x}"${x === (plan.tipo === "descanso" ? "paseo" : plan.tipo) ? " checked" : ""}> ${t("sesion." + x)}</label>`).join("")}</div>
       <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label class="rpe-campo">${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5"><output>5</output>${escalaRpe()}</label></div>
@@ -1169,6 +1245,7 @@ function renderHoy() {
     </form>` : ""}
     ${ultimas.length ? `<ul class="diario-lista">${ultimas.map((x) => `<li><span>${new Date(x.fecha + "T12:00").toLocaleDateString(idioma(), { weekday: "short", day: "numeric", month: "short" })}</span><span>${t("sesion." + x.tipo)} · ${x.min} min · RPE ${x.rpe}${x.sintomas?.length ? ` · <em>${x.sintomas.map((id) => SINTOMAS.find((y) => y.id === id)?.nombre.split(" ")[0]).join(", ")}</em>` : ""}${textoConstantes(x.const)}</span><button type="button" class="quitar" data-id="${x.id}" aria-label="${t("lista.quitar")}">×</button></li>`).join("")}</ul>` : ""}`;
   $("#btn-registrar").addEventListener("click", () => { diarioAbierto = !diarioAbierto; renderHoy(); });
+  $("#btn-sencillo-hoy")?.addEventListener("click", () => ponerSencillo(true));
   $("#btn-ver-plan").addEventListener("click", () => { estado.tab = "plan"; render(); $(".tabs")?.scrollIntoView({ block: "start" }); });
   $("#btn-empezar-hoy")?.addEventListener("click", () => abrirSesion(plan.tipo));
   box.querySelector("input[name=rpe]")?.addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
@@ -1561,6 +1638,7 @@ function render() {
   const resLista = evaluar(datos, estado.meds.filter((m) => !m.libre), ctx);     // todos los conocidos, para pintar la lista
   const res = evaluar(datos, medsActivos(), ctx);        // solo los activos, para el informe
   document.body.classList.toggle("sin-meds", !estado.meds.length);
+  renderSencillo(); // mejora grande 19: si está activo, la pantalla de hoy se pinta antes que nada
   pintarPasos();
   renderRapido();
   renderSupRapido();
@@ -1939,7 +2017,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212122").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212131").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
