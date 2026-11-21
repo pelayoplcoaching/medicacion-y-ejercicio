@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611210540";
-import { APP_VERSION } from "./version.js?v=202611210540";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611210540";
-import { picto } from "./pictos.js?v=202611210540";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611210540";
-import { cargarScript } from "./libs.js?v=202611210540";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611210540";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611210540";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611210913";
+import { APP_VERSION } from "./version.js?v=202611210913";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611210913";
+import { picto } from "./pictos.js?v=202611210913";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611210913";
+import { cargarScript } from "./libs.js?v=202611210913";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611210913";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611210913";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -803,12 +803,13 @@ new IntersectionObserver(([e]) => {
 // qué sección está a la vista → pestaña activa en la barra inferior
 {
   const vis = new Map();
+  // la sección que cruza una franja en el centro de la pantalla (la proporción visible engañaba con el informe, mucho más alto)
   const obs = new IntersectionObserver((es) => {
-    for (const e of es) vis.set(e.target.id, e.intersectionRatio);
-    const ordenado = [...vis.entries()].sort((a, b) => b[1] - a[1])[0];
-    if (!ordenado || !ordenado[1]) return;
-    marcarNav({ "panel-datos": "datos", "panel-medicacion": "medicacion", informe: estado.tab === "plan" && enInforme ? "plan" : "informe" }[ordenado[0]]);
-  }, { threshold: [0, .25, .5, .75, 1] });
+    for (const e of es) vis.set(e.target.id, e.isIntersecting);
+    const activa = ["informe", "panel-medicacion", "panel-datos"].find((id) => vis.get(id));
+    if (!activa) return;
+    marcarNav({ "panel-datos": "datos", "panel-medicacion": "medicacion", informe: estado.tab === "plan" && enInforme ? "plan" : "informe" }[activa]);
+  }, { rootMargin: "-45% 0px -50% 0px" });
   for (const id of ["panel-datos", "panel-medicacion", "informe"]) { const el = document.getElementById(id); if (el) obs.observe(el); }
 }
 
