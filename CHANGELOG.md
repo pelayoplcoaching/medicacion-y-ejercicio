@@ -2,6 +2,13 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.1.2 · 2026-11-21 · Tres tandas más: belleza, luz y movimiento futurista (381-530)
+- CSS al final de `app/css/style.css` (bloque «TRES TANDAS MAS: BELLEZA, VISUAL Y MOVIMIENTO FUTURISTA», ASCII, sin color-mix): tanda 13, sistema de movimiento (tokens `--ease-salida`, `--ease-muelle`, fotogramas `pa-*` con `translate`/`scale`/`rotate` sueltos para no pisar los `transform`; entradas al cargar, hojas y ventanas con muelle o enfoque, menú en cascada, entradas ligadas al desplazamiento con `animation-timeline: view()` y tope de distancia `entry min(100%, Npx)`, barra de lectura con `scroll(root)`); tanda 14, luz, cristal y neón; tanda 15, detalles por pantalla.
+- Todo movimiento es de una vez: se apaga con «reducir movimiento», al imprimir (solo `@media screen`) y en las pruebas automáticas (`html.pa-quieto`, que `app.js` pone si `navigator.webdriver`).
+- JS: `contarCifra` (cifras del resumen y de la completitud), `latirSiCambia` (insignias, contador de la lista y casillas marcadas), luz que sigue al ratón (`--mx`/`--my`, clase `con-luz`, `@property --luz`), línea de tiempo del aviso (`--toast-ms`, clase `cuenta`).
+- Arreglo: en alto contraste la barra de completitud se quedaba sin relleno.
+- Presupuestos de `test.mjs`: CSS ≤ 325 KB (314 KB; 67 KB con gzip), precarga ≤ 3800 KB. Lista completa en el proyecto («claude/pauta-activa-mejoras-visuales-381-530.md»).
+
 ## 1.1.1 · 2026-11-21 · Tres tandas de 50 mejoras visuales (231-380)
 - CSS al final de `app/css/style.css` (bloque «TRES TANDAS DE 50 MEJORAS VISUALES Y DE BELLEZA», sin color-mix, ASCII) y JS: grupo no repetido (`grupoVisible`), clases `sin-dosis` y `data-tipo` en la lista, buscador sin duplicados con resaltado e icono (`sinRepetidos`, `resaltar`), flecha de «Siguiente».
 - Arreglos: horas de las tomas que se salían en el móvil (305), índice de Legal que tapaba el texto (352), botones-enlace subrayados (353), momentos cortados (238).

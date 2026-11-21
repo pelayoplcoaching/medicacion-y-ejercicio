@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211717";
-import { APP_VERSION } from "./version.js?v=202611211717";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211717";
-import { picto } from "./pictos.js?v=202611211717";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211717";
-import { cargarScript } from "./libs.js?v=202611211717";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211717";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211717";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211800";
+import { APP_VERSION } from "./version.js?v=202611211800";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211800";
+import { picto } from "./pictos.js?v=202611211800";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211800";
+import { cargarScript } from "./libs.js?v=202611211800";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211800";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211800";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -26,6 +26,9 @@ if (typeof HTMLDialogElement !== "function") {
 const momTxt = (m) => t("mom." + m) || MOMENTO_TXT[m];
 
 /** Medicación que entra en el informe (los fármacos "pausados" se quedan en la lista pero no cuentan). */
+/** Movimiento futurista (mejoras 381-530): permitido salvo «reducir movimiento» y pruebas automáticas; últimas cifras mostradas. */
+const MOV = { ok: () => !matchMedia("(prefers-reduced-motion: reduce)").matches && !navigator.webdriver, cifras: new Map() };
+if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); // las pruebas automáticas ven cada pantalla en su estado final
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 
@@ -36,6 +39,7 @@ function toast(msg, { accion, onAccion, ms = 6000 } = {}) {
   el.innerHTML = `<span>${msg}</span>${accion ? `<button type="button" class="btn-sec sm">${accion}</button>` : ""}`;
   el.hidden = false;
   el.classList.add("visible");
+  el.style.setProperty("--toast-ms", ms + "ms"); el.classList.remove("cuenta"); void el.offsetWidth; el.classList.add("cuenta"); // mejora 419: línea que se vacía mientras dura el aviso
   if (accion) el.querySelector("button").addEventListener("click", () => { onAccion?.(); ocultarToast(); });
   clearTimeout(toastTimer); toastTimer = setTimeout(ocultarToast, ms);
 }
@@ -764,7 +768,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211717").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211800").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1192,7 +1196,7 @@ function pintarPasos() {
   const listo = $("#rec-listo"); if (listo) listo.hidden = pasoActual !== 0; // mejora 199: con los tres pasos hechos, «Todo listo» en lugar de una barra vacía
   b.innerHTML = `<span class="largo">${t(pasoActual === 1 ? "rec.ir_datos" : pasoActual === 2 ? "rec.ir_meds" : "rec.ir_plan")}</span><span class="corto">${t("rec.siguiente")}</span> <span class="flecha" aria-hidden="true">→</span>`; // mejora 262
   // barra inferior (móvil): insignias
-  const nMeds = estado.meds.length; const bm = $('#barra-inferior [data-ir="medicacion"] .nav-badge'); if (bm) { bm.textContent = nMeds || ""; bm.hidden = !nMeds; }
+  const nMeds = estado.meds.length; const bm = $('#barra-inferior [data-ir="medicacion"] .nav-badge'); if (bm) { latirSiCambia(bm, nMeds || ""); bm.hidden = !nMeds; }
 }
 $("#btn-siguiente").addEventListener("click", () => {
   if (pasoActual === 1) { desplazar($("#panel-datos")); setTimeout(() => $("#edad").focus({ preventScroll: true }), 400); }
@@ -1436,9 +1440,51 @@ function pintarMarcadas() {
     let b = sum.querySelector(".marcadas");
     if (!b) { b = document.createElement("span"); b.className = "marcadas"; sum.querySelector(".sub-label")?.after(b); }
     const n = d.querySelectorAll("input[type=checkbox]:checked").length;
-    b.hidden = !n; b.textContent = n ? t(n === 1 ? "datos.marcada1" : "datos.marcadas", { n }) : "";
+    b.hidden = !n; latirSiCambia(b, n ? t(n === 1 ? "datos.marcada1" : "datos.marcadas", { n }) : ""); // mejora 481: late al cambiar
   }
 }
+/* ---------- movimiento futurista (mejoras 381-530): siempre de una vez, nunca continuo ----------
+   Se apaga con «reducir movimiento» y en las pruebas automáticas (navigator.webdriver), para que las cifras se lean al momento. */
+/** Mejora 392: la cifra cuenta desde la anterior (o desde 0 la primera vez) hasta la nueva, en medio segundo. */
+function contarCifra(el, clave) {
+  if (!el) return;
+  const fin = parseInt(el.textContent, 10);
+  const ini = MOV.cifras.has(clave) ? MOV.cifras.get(clave) : 0;
+  MOV.cifras.set(clave, fin);
+  if (!Number.isFinite(fin) || ini === fin || !MOV.ok()) return;
+  const texto = el.textContent, t0 = performance.now(), dur = 520;
+  el.classList.add("contando");
+  const paso = (ahora) => {
+    if (!el.isConnected) return;
+    const k = Math.min(1, (ahora - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = k < 1 ? String(Math.round(ini + (fin - ini) * e)) : texto;
+    if (k < 1) requestAnimationFrame(paso); else el.classList.remove("contando");
+  };
+  requestAnimationFrame(paso);
+}
+/** Mejora 408: la insignia late una vez cuando cambia su número. */
+function latirSiCambia(el, valor) {
+  const nuevo = String(valor), antes = el.textContent;
+  el.textContent = nuevo;
+  if (antes !== nuevo && nuevo && antes !== "" && MOV.ok()) { el.classList.remove("late"); void el.offsetWidth; el.classList.add("late"); }
+}
+/** Mejora 418: luz que sigue al ratón sobre las tarjetas (solo con ratón; no se mueve sola). */
+if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+  const SEL = "details.farmaco, .btn-doc, #lista-meds li:not(.libre):not(.pausado):not(.combo-cab), .completitud, .vistazo, .tile, .veredicto, .hoy";
+  let ev = null, raf = 0, previo = null;
+  document.addEventListener("pointermove", (e) => {
+    ev = e; if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      const el = MOV.ok() ? ev.target.closest?.(SEL) : null;
+      if (previo && previo !== el) previo.classList.remove("con-luz"); // la luz se apaga despacio donde estaba el ratón
+      previo = el; if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${Math.round(ev.clientX - r.left)}px`); el.style.setProperty("--my", `${Math.round(ev.clientY - r.top)}px`); el.classList.add("con-luz");
+    });
+  }, { passive: true });
+}
+
 /** Difuminado en los bordes de una fila que se desplaza en horizontal (pestañas, tira de días): indica que hay más. */
 function bordesDesplazables(el) {
   if (!el) return;
@@ -1521,7 +1567,7 @@ function render() {
   $("#sin-meds").hidden = estado.meds.length > 0;
   { // contador de la lista (mejora 186) y casillas marcadas en cada plegable de datos (mejora 188)
     const cm = $("#cuenta-meds"), n = estado.meds.length, np = estado.meds.filter((m) => m.pausado).length;
-    if (cm) { cm.hidden = !n; cm.textContent = n ? t(n === 1 ? "lista.cuenta1" : "lista.cuenta", { n }) + (np ? t("lista.cuenta_pausa", { n: np }) : "") : ""; }
+    if (cm) { cm.hidden = !n; latirSiCambia(cm, n ? t(n === 1 ? "lista.cuenta1" : "lista.cuenta", { n }) + (np ? t("lista.cuenta_pausa", { n: np }) : "") : ""); } // mejora 482: late al cambiar
     pintarMarcadas();
   }
   $("#informe").hidden = res.items.length === 0;
@@ -1538,6 +1584,7 @@ function render() {
   $("#resumen").innerHTML = ["alerta", "precaucion", "info"]
     .map((n) => `<div class="tile tile-${n}"><span class="num">${res.resumen[n]}</span><span>${etiqueta(n)}</span></div>`).join("") +
     `<div class="tile tile-ddi"><span class="num">${res.interacciones.length}</span><span>${t("tab.interacciones")}</span></div>`;
+  $$("#resumen .tile").forEach((tl, i) => contarCifra(tl.querySelector(".num"), "resumen" + i)); // mejora 392
   // veredicto en lenguaje claro
   const { alerta: nA, precaucion: nP } = res.resumen;
   const mayores = res.interacciones.filter((x) => x.nivel === "mayor").length;
@@ -1589,7 +1636,7 @@ function render() {
   });
   centrarEnFila($(".tabs"), $('.tabs [aria-selected="true"]')); bordesDesplazables($(".tabs"));
   $("#barra-inferior").hidden = false;
-  { const bc = $("#barra-contador"); const n = res.resumen.alerta + res.resumen.precaucion; bc.textContent = n || ""; bc.hidden = !n; bc.className = "nav-badge" + (res.resumen.alerta ? " alerta" : ""); const bp = $('#barra-inferior [data-ir="plan"] .nav-badge'); if (bp) { const d = leerDiario().filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; bp.textContent = d || ""; bp.hidden = !d; } }
+  { const bc = $("#barra-contador"); const n = res.resumen.alerta + res.resumen.precaucion; bc.className = "nav-badge" + (res.resumen.alerta ? " alerta" : ""); latirSiCambia(bc, n || ""); bc.hidden = !n; const bp = $('#barra-inferior [data-ir="plan"] .nav-badge'); if (bp) { const d = leerDiario().filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; bp.textContent = d || ""; bp.hidden = !d; } }
   pintarCompletitud(res);
   guardarHuella(res);
   const cont = $("#contenido-tab");
@@ -2398,6 +2445,9 @@ function pintarCompletitud(res) {
     <p>${t("comp.sig")} <b>${t("comp." + sig.id)}</b> <small>· ${t("comp." + sig.id + ".por")}</small></p>
     <div class="acciones"><button type="button" class="btn sm" id="comp-ir">${t("comp.ir")}</button>${falta.length > 1 ? `<button type="button" class="btn-sec sm" id="comp-todo" aria-expanded="false">${t("comp.todo", { n: falta.length })}</button>` : ""}</div>
     <ul class="comp-lista" id="comp-lista" hidden>${falta.map((x) => `<li><button type="button" data-comp="${x.id}">${t("comp." + x.id)}</button></li>`).join("")}</ul>`;
+  contarCifra(box.querySelector(".comp-num"), "completitud"); // mejora 392
+  if (MOV.cifras.has("completitud-barra") && MOV.cifras.get("completitud-barra") !== pct && MOV.ok()) box.querySelector(".comp-barra")?.classList.add("rellena"); // mejora 391
+  MOV.cifras.set("completitud-barra", pct);
   $("#comp-ir").addEventListener("click", sig.ir);
   $("#comp-todo")?.addEventListener("click", () => { const l = $("#comp-lista"); l.hidden = !l.hidden; $("#comp-todo").setAttribute("aria-expanded", String(!l.hidden)); });
   box.querySelectorAll("[data-comp]").forEach((b) => b.addEventListener("click", () => items.find((x) => x.id === b.dataset.comp).ir()));

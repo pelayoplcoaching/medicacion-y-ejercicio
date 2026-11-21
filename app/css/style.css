@@ -2644,3 +2644,491 @@ a.btn, a.btn-sec { text-decoration: none; }
 /* 380. Alto contraste: sin velos ni rayados de esta ronda */
 :root[data-theme="contrast"] :is(article.ddi.ddi-mayor, .tira .dia.descanso, #lista-meds li.libre, .sup-rapido[open]) { background: var(--surface); }
 :root[data-theme="contrast"] :is(.hoy-botones .btn, details.farmaco[open], .tour-caja, .volver, .menu-mas[open] .menu-lista) { box-shadow: none; }
+
+/* =====================================================================
+   TRES TANDAS MAS: BELLEZA, VISUAL Y MOVIMIENTO FUTURISTA (381-530)
+   Todo movimiento es de una vez (al cargar, al abrir, al aparecer en
+   pantalla, al pasar el raton o al cambiar un dato), nunca en bucle.
+   Se apaga con "reducir movimiento" (regla global del principio), en las
+   pruebas automaticas (html.pa-quieto) y al imprimir (solo @media screen).
+   Los fotogramas usan translate/scale/rotate sueltos para no pisar los
+   transform que ya tienen los elementos.
+   ===================================================================== */
+
+/* ---------- Tanda 13 (381-430): sistema de movimiento y entradas ---------- */
+/* 381. Tokens de movimiento: curva de salida, curva de muelle y tres duraciones */
+:root { --ease-salida: cubic-bezier(.16, 1, .3, 1); --ease-muelle: cubic-bezier(.34, 1.56, .64, 1); --dur-corta: .18s; --dur-media: .34s; --dur-larga: .6s; --pa-d: 14px; }
+/* 382. Fotogramas propios (pa-*) */
+@keyframes pa-entra { from { opacity: 0; translate: 0 var(--pa-d); } to { opacity: 1; translate: none; } }
+@keyframes pa-enfoca { from { opacity: 0; filter: blur(4px); translate: 0 8px; } to { opacity: 1; filter: none; translate: none; } }
+@keyframes pa-escala { from { opacity: 0; scale: .94; } to { opacity: 1; scale: none; } }
+@keyframes pa-revela { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes pa-hoja { 0% { opacity: 0; translate: 0 64px; } 70% { opacity: 1; translate: 0 -4px; } 100% { opacity: 1; translate: none; } }
+@keyframes pa-zoom { from { opacity: 0; scale: .96; filter: blur(4px); } to { opacity: 1; scale: none; filter: none; } }
+@keyframes pa-late { 0% { scale: 1; } 35% { scale: 1.28; } 100% { scale: 1; } }
+@keyframes pa-destello { from { box-shadow: 0 0 0 0 rgba(164, 156, 255, .6); } to { box-shadow: 0 0 0 12px rgba(164, 156, 255, 0); } }
+@keyframes pa-barrido { from { background-position: 130% 0; } to { background-position: -30% 0; } }
+@keyframes pa-rellena { from { scale: 0 1; } to { scale: 1 1; } }
+@keyframes pa-crece { from { scale: 1 0; } to { scale: 1 1; } }
+@keyframes pa-gira { from { opacity: 0; rotate: -120deg; scale: .9; } to { opacity: 1; rotate: none; scale: none; } }
+@keyframes pa-desliza { from { opacity: 0; translate: -18px 0; } to { opacity: 1; translate: none; } }
+@keyframes pa-cae { from { opacity: 0; translate: 0 -10px; } to { opacity: 1; translate: none; } }
+@keyframes pa-despliega { from { opacity: 0; translate: 0 -6px; scale: 1 .97; } to { opacity: 1; translate: none; scale: none; } }
+@keyframes pa-fundido { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pa-vacia { from { scale: 1 1; } to { scale: 0 1; } }
+@keyframes pa-menu { from { opacity: 0; scale: .96 .9; translate: 0 -6px; } to { opacity: 1; scale: none; translate: none; } }
+@keyframes pa-luz { from { --luz: 0%; } }
+@keyframes pa-aclara { from { opacity: .2; scale: 1.05; } to { opacity: 1; scale: none; } }
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 383. Al cargar, la cabecera se enfoca: aparece con un leve desenfoque que se aclara */
+  html:not(.pa-quieto) .cabecera { animation: pa-enfoca .7s var(--ease-salida) both; }
+  /* 384. El logo entra con un giro corto y un rebote */
+  html:not(.pa-quieto) .cabecera .logo { animation: pa-gira .8s var(--ease-muelle) .1s both; }
+  /* 385. El titulo se revela de izquierda a derecha */
+  html:not(.pa-quieto) .cabecera h1 { animation: pa-revela .9s var(--ease-salida) .2s both; }
+  /* 386. Lema, subtitulo y autor llegan detras */
+  html:not(.pa-quieto) :is(.cabecera .subtitulo, .cabecera .autor, .cabecera .intro, .cabecera .lema) { animation: pa-entra .6s var(--ease-salida) .35s both; }
+  /* 387. Los paneles de la columna suben en cascada al abrir la app */
+  html:not(.pa-quieto) .contenedor > aside > .panel { animation: pa-entra .6s var(--ease-salida) .25s both; }
+  html:not(.pa-quieto) .contenedor > aside > .panel + .panel { animation-delay: .38s; }
+  /* 388. La barra inferior sube desde el borde al aparecer */
+  html:not(.pa-quieto) .barra-inferior:not([hidden]) { animation: pa-hoja .55s var(--ease-salida) .2s both; }
+  /* 391. Barra de "su plan esta al N %": se rellena y la cruza un destello cuando cambia */
+  html:not(.pa-quieto) .comp-barra.rellena span { transform-origin: left center; background-image: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, .6) 50%, transparent 65%), linear-gradient(90deg, var(--accent), var(--marca-clara)); background-size: 250% 100%, 100% 100%; background-repeat: no-repeat; animation: pa-rellena .8s var(--ease-salida) both, pa-barrido 1.1s ease-out .35s both; }
+  /* 394. El contenido de cada pestana entra con un enfoque corto */
+  html:not(.pa-quieto) #contenido-tab.entra { animation: pa-enfoca .36s var(--ease-salida) both; }
+  /* 401. Veredicto: un barrido de luz lo recorre al aparecer el informe */
+  .veredicto::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(100deg, transparent 30%, rgba(164, 156, 255, .28) 50%, transparent 70%) no-repeat; background-size: 260% 100%; background-position: -30% 0; }
+  html:not(.pa-quieto) .veredicto::before { animation: pa-barrido 1.2s var(--ease-salida) .3s both; }
+  /* 403. El medicamento recien anadido entra deslizando ademas de iluminarse */
+  html:not(.pa-quieto) #lista-meds li.nuevo { animation: aparecer .6s ease-out, pa-desliza .45s var(--ease-salida) both; }
+  /* 408. Las insignias de la barra inferior laten una vez cuando cambia su numero */
+  html:not(.pa-quieto) .nav-badge.late { animation: pa-late .45s var(--ease-muelle); }
+  /* 409. Hoja de anadir: sube con muelle en el movil y se acerca en escritorio */
+  html:not(.pa-quieto) dialog.hoja[open] { animation: pa-hoja .45s var(--ease-salida) both; }
+  /* 410. Sus opciones entran en cascada cada vez que se abre */
+  html:not(.pa-quieto) .hoja-opciones button { animation: pa-entra .42s var(--ease-salida) both; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(2) { animation-delay: .04s; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(3) { animation-delay: .08s; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(4) { animation-delay: .12s; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(5) { animation-delay: .16s; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(6) { animation-delay: .2s; }
+  html:not(.pa-quieto) .hoja-opciones button:nth-child(7) { animation-delay: .24s; }
+  /* 413. Ventanas en el movil: suben con muelle */
+  html:not(.pa-quieto) dialog.ficha[open] { animation: pa-hoja .45s var(--ease-salida) both; }
+  /* 414. El velo de detras de las ventanas se funde */
+  html:not(.pa-quieto) dialog[open]::backdrop { animation: pa-fundido .3s ease-out both; }
+  /* 415. Menu "Mas": se despliega desde su esquina */
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista { transform-origin: top right; animation: pa-menu .28s var(--ease-salida) both; }
+  /* 416. Y sus opciones caen en cascada */
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > * { animation: pa-cae .3s var(--ease-salida) both; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(2) { animation-delay: .03s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(3) { animation-delay: .06s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(4) { animation-delay: .09s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(5) { animation-delay: .12s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(6) { animation-delay: .15s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(7) { animation-delay: .18s; }
+  html:not(.pa-quieto) .menu-mas[open] .menu-lista > :nth-child(n+8) { animation-delay: .21s; }
+  /* 418. Luz que sigue al raton: se enciende suave */
+  html:not(.pa-quieto) .con-luz { animation: pa-luz .35s ease-out; }
+  /* 419. Aviso breve: una linea fina se vacia mientras dura */
+  .toast::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--marca-clara), var(--oro)); transform-origin: left center; opacity: .85; }
+  html:not(.pa-quieto) .toast.cuenta::after { animation: pa-vacia var(--toast-ms, 6s) linear both; }
+  /* 421. Casillas de Datos: la marca da un pequeno salto al marcarla */
+  html:not(.pa-quieto) .condiciones input[type="checkbox"]:checked { animation: pa-late .35s var(--ease-muelle); }
+  /* 423. Plegables: lo de dentro cae desde arriba con mas suavidad al abrir */
+  html:not(.pa-quieto) :is(details.farmaco[open] > .cuerpo, details.alarma[open] > ul, details.sintomas[open] > .chips, details.seccion[open] > .cuerpo-sec, #panel-datos details.bloque[open] > :not(summary)) { transform-origin: top center; animation: pa-despliega .3s var(--ease-salida) both; }
+  /* 425. Recorrido guiado: la caja entra subiendo */
+  html:not(.pa-quieto) .tour:not([hidden]) .tour-caja { animation: pa-entra .5s var(--ease-salida) .1s both; }
+  /* 426. Y la flecha cae y rebota una vez */
+  html:not(.pa-quieto) .tour-flecha:not([hidden]) { animation: pa-cae .5s var(--ease-muelle) .25s both; }
+  /* 427. Imagenes de las ventanas (sesion, SPPB, cribado) se enfocan al abrir */
+  html:not(.pa-quieto) :is(dialog[open] .ses-img, dialog[open] .sppb-img img, dialog[open] .dlg-img, .crib-img) { animation: pa-enfoca .6s var(--ease-salida) .1s both; }
+  /* 428. El aviso de version nueva cae desde arriba */
+  html:not(.pa-quieto) .aviso-actualizar:not([hidden]) { animation: pa-cae .5s var(--ease-muelle) both; }
+  /* 429. Los avisos de la cabecera aparecen con un fundido */
+  html:not(.pa-quieto) .cabecera :is(.banner, .conexion):not([hidden]) { animation: pa-entra .45s var(--ease-salida) both; }
+  /* 430. Hoja de ayuda: el texto aparece tras la hoja */
+  html:not(.pa-quieto) #ayuda[open] .hoja-cuerpo { animation: pa-fundido .35s ease-out .12s both; }
+}
+@media screen and (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+  /* 409 (escritorio) y 412. Ventanas en escritorio: se acercan con un enfoque */
+  html:not(.pa-quieto) :is(dialog.ficha[open], dialog.hoja[open]) { animation: pa-zoom .32s var(--ease-salida) both; }
+}
+
+/* 389. Barra inferior: la pastilla del apartado activo crece desde el centro */
+.barra-inferior button { isolation: isolate; }
+.barra-inferior button.activo { background: none; }
+.barra-inferior button::after { content: ""; position: absolute; inset: 2px 6%; z-index: -1; border-radius: var(--r-sm); background: var(--accent-soft); opacity: 0; scale: .6; transition: opacity var(--dur-corta), scale .4s var(--ease-muelle); }
+.barra-inferior button.activo::after { opacity: 1; scale: 1; }
+/* 390. Y su linea de luz superior se abre desde el centro */
+.barra-inferior button::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--marca-clara)); box-shadow: 0 0 10px var(--marca-clara); scale: 0 1; transition: scale .4s var(--ease-salida); }
+.barra-inferior button.activo::before { scale: 1 1; }
+/* 392. Cifras que cuentan (resumen y "su plan esta al N %"): brillan mientras cuentan */
+.tile .num, .comp-num { transition: text-shadow .5s ease-out; }
+.contando { text-shadow: 0 0 16px currentColor; }
+/* 393. Barra inferior: el icono del apartado activo sube un poco con muelle */
+.barra-inferior button svg { transition: translate .4s var(--ease-muelle), filter .3s; }
+.barra-inferior button.activo svg { translate: 0 -2px; }
+/* 395. Pestanas: color, fondo y anillo cambian con transicion */
+.tabs button { transition: background-color .25s, color .25s, box-shadow .3s; }
+/* 396. Y el icono de la elegida se agranda con muelle */
+.tabs button svg { transition: scale .35s var(--ease-muelle); }
+.tabs button[aria-selected="true"] svg { scale: 1.12; }
+/* 402. Veredicto: al cambiar de nivel, los colores se funden en vez de saltar */
+.veredicto { transition: background-color .45s, border-color .45s, box-shadow .45s; }
+/* 404. Boton principal: un destello lo cruza al pasar el raton (una vez por pasada) */
+.btn { position: relative; isolation: isolate; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .3) 50%, transparent 62%) no-repeat; background-size: 260% 100%; background-position: 130% 0; transition: background-position 0s; }
+@media (hover: hover) { .btn:hover::before { background-position: -30% 0; transition: background-position .7s var(--ease-salida); } }
+/* 405. Boton principal: su halo crece suave al pasar el raton */
+.btn { transition: background-color .15s, border-color .15s, transform .08s, box-shadow .3s ease-out; }
+/* 406. Boton secundario: su anillo aparece suave */
+.btn-sec { transition: background-color .15s, border-color .15s, transform .08s, box-shadow .25s ease-out, color .15s; }
+/* 407. Boton de ayuda "?": anillo de luz con transicion */
+.btn-ayuda { transition: background-color .2s, border-color .2s, box-shadow .25s; }
+.btn-ayuda:hover, .btn-ayuda:focus-visible { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 12px -4px var(--accent); }
+/* 411. Hoja de anadir: el icono de cada opcion gira un poco al pasar el raton */
+.hoja-opciones button svg { transition: rotate .35s var(--ease-muelle), scale .35s var(--ease-muelle); }
+@media (hover: hover) { .hoja-opciones button:hover svg { rotate: -8deg; scale: 1.06; } }
+/* 417. Menu "Mas": la opcion bajo el raton lleva un filo de luz */
+.menu-lista [role=menuitem] { transition: background-color .18s, color .18s, box-shadow .2s; }
+.menu-lista [role=menuitem]:hover, .menu-lista [role=menuitem]:focus-visible { box-shadow: inset 3px 0 0 var(--accent); }
+/* 418. Luz que sigue al raton sobre tarjetas, documentos y cifras (solo con raton; no se mueve sola) */
+@property --luz { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+@media (hover: hover) and (pointer: fine) {
+  :is(details.farmaco, .btn-doc, #lista-meds li, .completitud, .vistazo, .tile, .veredicto, .hoy).con-luz { background-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(164, 156, 255, var(--luz)), transparent 70%); }
+  .con-luz { --luz: 13%; }
+  :root[data-theme="dark"] .con-luz { --luz: 17%; }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .con-luz { --luz: 17%; } }
+/* 420. Aviso breve: entra con un pequeno muelle */
+.toast { transition: opacity .2s, transform .45s var(--ease-muelle); }
+/* 422. Chips: se hunden con muelle al pulsarlos y cambian de color con transicion */
+.chip-btn { transition: background-color .2s, color .2s, border-color .2s, box-shadow .25s, scale .3s var(--ease-muelle); }
+.chip-btn:active { scale: .94; }
+/* 424. Flechas de los plegables: giran con muelle */
+:is(details.farmaco summary, details.seccion > summary, details.bloque > summary) .flecha { transition: transform .45s var(--ease-muelle), background-color .2s, color .2s; }
+
+/* Entradas al aparecer en pantalla (animaciones ligadas al desplazamiento; solo opacidad y desplazamiento) */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (animation-range: entry 0% entry min(100%, 1px)) {
+    /* 397. Tarjetas del informe y filas de la lista entran al aparecer */
+    html:not(.pa-quieto) :where(details.seccion, details.farmaco, article.ddi, article.regla, #lista-meds > li:not(.nuevo), .tabla-plan tbody tr) { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 90px); }
+    /* 398. Los bloques grandes entran al llegar a ellos */
+    html:not(.pa-quieto) :where(.esencial, .vistazo, .hoy, .completitud, .descargas, .plan-dia, .plan-cab, #perfil > details) { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 100px); }
+    /* 399. Paginas secundarias: cada seccion entra al llegar a ella */
+    html:not(.pa-quieto) :where(main.acerca section, main.legal section, .paso-guia, .guia-pag .faq, .pres .sec, main.novedades article) { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 100px); }
+  }
+}
+/* 400. Barra de progreso de lectura en lo alto (solo si el navegador sabe ligarla al desplazamiento) */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    html:not(.pa-quieto) body::before { content: ""; position: fixed; z-index: 80; left: 0; right: 0; top: 0; height: 2px; pointer-events: none; transform-origin: left center; animation: pa-rellena linear both; animation-timeline: scroll(root); }
+  }
+}
+
+/* ---------- Tanda 14 (431-480): luz, cristal y neon ---------- */
+/* 431. Barra inferior: cristal mas hondo, con algo mas de color detras */
+.barra-inferior { -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
+/* 432. Barra inferior en oscuro: resplandor morado bajo su linea de luz */
+:root[data-theme="dark"] .barra-inferior { box-shadow: 0 -12px 30px -22px var(--marca-clara); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .barra-inferior { box-shadow: 0 -12px 30px -22px var(--marca-clara); } }
+/* 433. Cifras del resumen: esquinas de visor, como un panel de mando */
+.tile::after { content: ""; position: absolute; inset: 6px; pointer-events: none; opacity: .55; background: linear-gradient(var(--marca-clara), var(--marca-clara)) left top / 8px 1px no-repeat, linear-gradient(var(--marca-clara), var(--marca-clara)) left top / 1px 8px no-repeat, linear-gradient(var(--marca-clara), var(--marca-clara)) right bottom / 8px 1px no-repeat, linear-gradient(var(--marca-clara), var(--marca-clara)) right bottom / 1px 8px no-repeat; }
+/* 434. Cifras del resumen en oscuro: resplandor tenue */
+:root[data-theme="dark"] .tile .num { text-shadow: 0 0 18px rgba(164, 156, 255, .35); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .tile .num { text-shadow: 0 0 18px rgba(164, 156, 255, .35); } }
+/* 435. Veredicto: halo del color de su nivel (con filtro, para conservar su filo interior) */
+.veredicto.v-alerta { filter: drop-shadow(0 10px 16px rgba(180, 35, 60, .2)); }
+.veredicto.v-precaucion { filter: drop-shadow(0 10px 16px rgba(154, 106, 18, .2)); }
+.veredicto.v-ok { filter: drop-shadow(0 10px 16px rgba(31, 138, 91, .18)); }
+/* 436. Campos: al escribir, el anillo de foco suma un resplandor */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(124, 108, 240, .2), 0 0 22px -8px var(--accent); }
+/* 437. Buscador: el mismo resplandor, algo mas amplio */
+.buscador input:focus { box-shadow: 0 0 0 4px var(--accent-soft), 0 0 28px -8px var(--accent); }
+/* 438. Campos numericos (edad, dosis, tomas, constantes): digitos de ancho fijo */
+input[type="number"] { font-variant-numeric: tabular-nums; }
+/* 439. Resultados de la busqueda: filo de luz a la izquierda al pasar o elegir */
+#sugerencias li { transition: background-color .15s, box-shadow .2s; }
+#sugerencias li:hover, #sugerencias li:focus-visible, #sugerencias li[aria-selected="true"] { box-shadow: inset 3px 0 0 var(--accent); }
+/* 440. Palabras del glosario: se iluminan al pasar el raton */
+abbr.glos { border-radius: 4px; transition: background-color .2s, color .2s; }
+@media (hover: hover) { abbr.glos:hover { background: var(--accent-soft); color: var(--accent-deep); } }
+/* 441. Barra de "su plan esta al N %": cabeza de luz al final del relleno */
+.comp-barra span { position: relative; }
+.comp-barra span::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 6px; border-radius: 6px; background: #fff; opacity: .7; box-shadow: 0 0 8px 2px var(--marca-clara); }
+/* 442. Pestana elegida: su contador con resplandor */
+.tabs button[aria-selected="true"] .cnt { box-shadow: 0 0 10px -2px var(--marca-clara); }
+/* 443. Ventanas: brillo superior de cristal */
+dialog.ficha, dialog.hoja { box-shadow: 0 30px 80px -30px rgba(20, 11, 58, .7), 0 0 0 1px rgba(164, 156, 255, .22), inset 0 1px 0 rgba(255, 255, 255, .08); }
+/* 444. Ventanas en oscuro: borde de luz mas visible */
+:root[data-theme="dark"] :is(dialog.ficha, dialog.hoja) { box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .8), 0 0 0 1px rgba(164, 156, 255, .34), inset 0 1px 0 rgba(255, 255, 255, .07); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) :is(dialog.ficha, dialog.hoja) { box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .8), 0 0 0 1px rgba(164, 156, 255, .34), inset 0 1px 0 rgba(255, 255, 255, .07); } }
+/* 445. Lo esencial y fichas: el punto de precaucion tambien con halo */
+.esencial li.nivel-precaucion .punto, details.farmaco ul li.nivel-precaucion .punto { box-shadow: 0 0 8px -2px var(--precaucion); }
+/* 446. Interacciones importantes: halo rojo tenue */
+article.ddi.ddi-mayor { box-shadow: 0 14px 30px -24px var(--alerta); }
+/* 447. Semana de "hoy": las barras con un brillo suave */
+.sem-barra i { box-shadow: 0 0 10px -3px var(--marca-clara); }
+/* 448. Y la barra del dia de hoy, mas luminosa */
+.sem-dia.hoy .sem-barra { box-shadow: inset 0 0 0 1px var(--accent), 0 0 14px -4px var(--marca-clara); }
+/* 449. Resumen en oscuro: la rejilla entre cifras con un hilo de luz */
+:root[data-theme="dark"] #resumen { background: linear-gradient(90deg, var(--line), rgba(164, 156, 255, .4), var(--line)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) #resumen { background: linear-gradient(90deg, var(--line), rgba(164, 156, 255, .4), var(--line)); } }
+/* 450. Lo esencial: hilo de luz bajo su cabecera */
+.esencial-cab { padding-bottom: 8px; background: var(--hilo) left bottom / 100% 1px no-repeat; }
+/* 451. De un vistazo: al pasar el raton, el resplandor de cada columna crece */
+.semaforo-col { transition: box-shadow .3s; }
+@media (hover: hover) {
+  .semaforo-col.s-info:hover { box-shadow: 0 -8px 22px -10px var(--info); }
+  .semaforo-col.s-precaucion:hover { box-shadow: 0 -8px 22px -10px var(--precaucion); }
+  .semaforo-col.s-alerta:hover { box-shadow: 0 -8px 22px -10px var(--alerta); }
+}
+/* 452. Safari de escritorio: barra de desplazamiento fina con el degradado de la marca */
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { border: 3px solid transparent; border-radius: 999px; background: linear-gradient(var(--marca-clara), var(--accent)) padding-box; }
+}
+/* 453. Imagenes en oscuro: un punto menos de brillo para no deslumbrar */
+:root[data-theme="dark"] :is(.plan-banda, .ses-img, .sppb-img img, .crib-img, .paso-guia img, .tour-img) { filter: brightness(.9); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) :is(.plan-banda, .ses-img, .sppb-img img, .crib-img, .paso-guia img, .tour-img) { filter: brightness(.9); } }
+/* 454. Fondo en oscuro: aurora fija muy tenue en lo alto (quieta) */
+:root[data-theme="dark"] body::after { content: ""; position: fixed; z-index: -1; inset: 0 0 auto; height: 70vh; pointer-events: none; background: radial-gradient(60% 50% at 15% 0%, rgba(89, 62, 222, .16), transparent 70%), radial-gradient(50% 40% at 90% 5%, rgba(164, 156, 255, .1), transparent 70%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) body::after { content: ""; position: fixed; z-index: -1; inset: 0 0 auto; height: 70vh; pointer-events: none; background: radial-gradient(60% 50% at 15% 0%, rgba(89, 62, 222, .16), transparent 70%), radial-gradient(50% 40% at 90% 5%, rgba(164, 156, 255, .1), transparent 70%); } }
+/* 455. Barra de progreso de lectura: degradado de la marca al oro, con brillo */
+body::before { background: linear-gradient(90deg, var(--accent), var(--marca-clara) 70%, var(--oro)); box-shadow: 0 0 10px rgba(164, 156, 255, .7); }
+/* 456. Aviso de version nueva: borde de luz y sombra mas honda */
+.aviso-actualizar { box-shadow: 0 12px 30px -16px rgba(20, 11, 58, .55), 0 0 0 1px rgba(164, 156, 255, .3); }
+/* 457. Insignias de la barra inferior: halo del color de aviso */
+.nav-badge { box-shadow: 0 0 0 2px var(--surface), 0 0 10px -2px var(--precaucion); }
+/* 458. Nivel de evidencia: su punto con halo */
+.evidencia::before { box-shadow: 0 0 5px currentColor; }
+/* 459. Regla revisada: la marca de visto con brillo en oscuro */
+:root[data-theme="dark"] .estado-regla.ok { text-shadow: 0 0 8px rgba(120, 220, 160, .45); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .estado-regla.ok { text-shadow: 0 0 8px rgba(120, 220, 160, .45); } }
+/* 460. Tira de dias: el dia elegido con resplandor */
+.tira .dia.sel { box-shadow: 0 .6rem 1.4rem -1rem var(--accent), 0 0 16px -8px var(--marca-clara); }
+.tira .dia.hoy.sel { box-shadow: 0 0 0 2px var(--accent), 0 .6rem 1.4rem -.9rem var(--accent), 0 0 18px -6px var(--marca-clara); }
+/* 461. Datos del contexto (chips del informe): brillo superior de cristal */
+.contexto-chips .chip { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55); }
+:root[data-theme="dark"] .contexto-chips .chip { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .contexto-chips .chip { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); } }
+/* 462. Documentos para descargar: anillo de la marca al pasar el raton */
+.btn-doc { transition: border-color .2s, box-shadow .25s, translate .25s var(--ease-salida); }
+.btn-doc:hover, .btn-doc:focus-visible { box-shadow: var(--shadow), 0 0 0 3px var(--accent-soft); }
+@media (hover: hover) { .btn-doc:hover { translate: 0 -2px; } }
+/* 463. Hoja de anadir: el circulo del icono se ilumina al pasar el raton */
+.hoja-opciones button svg { transition: rotate .35s var(--ease-muelle), scale .35s var(--ease-muelle), box-shadow .25s; }
+.hoja-opciones button:hover svg, .hoja-opciones button:focus-visible svg { box-shadow: 0 0 0 3px var(--surface), 0 0 14px -2px var(--marca-clara); }
+/* 464. Recorrido guiado: el numero de paso con brillo de terminal */
+.tour-paso { text-shadow: 0 0 10px rgba(164, 156, 255, .45); }
+/* 465. Logo de la cabecera: su brillo se intensifica al pasar el raton */
+.cabecera .logo { transition: box-shadow .3s, scale .35s var(--ease-muelle); }
+@media (hover: hover) { .cabecera .logo:hover { scale: 1.04; box-shadow: 0 .6rem 1.8rem -.3rem rgba(89, 62, 222, .85), 0 0 0 1px rgba(164, 156, 255, .6); } }
+/* 466. Paginas secundarias: los enlaces del texto con un subrayado que crece al pasar */
+:is(main.acerca, main.legal, .guia-pag, main.novedades) :is(p, li, dd) a:not(.btn):not(.btn-sec) { text-decoration: none; background: linear-gradient(currentColor, currentColor) left bottom / 100% 1px no-repeat; transition: background-size .3s var(--ease-salida); }
+@media (hover: hover) { :is(main.acerca, main.legal, .guia-pag, main.novedades) :is(p, li, dd) a:not(.btn):not(.btn-sec):hover { background-size: 100% 2px; } }
+/* 467. Selector de idioma de la cabecera: anillo de luz al pasar el raton */
+.cabecera .utiles .idioma select { transition: border-color .2s, box-shadow .25s; }
+.cabecera .utiles .idioma select:hover { border-color: #a49cff; box-shadow: 0 0 0 3px rgba(164, 156, 255, .18); }
+/* 468. Presentacion en oscuro: las cifras con resplandor */
+:root[data-theme="dark"] .pres .cifras b { text-shadow: 0 0 18px rgba(164, 156, 255, .4); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .pres .cifras b { text-shadow: 0 0 18px rgba(164, 156, 255, .4); } }
+/* 469. Guia: las capturas con un marco de luz al pasar el raton */
+.paso-guia img { transition: outline-color .25s, box-shadow .3s; }
+@media (hover: hover) { .paso-guia img:hover { outline-color: var(--marca-clara); box-shadow: 0 0 24px -8px var(--marca-clara); } }
+/* 470. Legal: las pildoras del indice se iluminan con transicion */
+main.legal .toc a { transition: background-color .2s, border-color .2s, box-shadow .25s; }
+main.legal .toc a:hover { box-shadow: 0 0 0 3px var(--accent-soft); }
+/* 471. Acerca: cada seccion con un borde de luz al pasar el raton */
+main.acerca section { transition: border-color .25s, box-shadow .3s; }
+@media (hover: hover) { main.acerca section:hover { border-color: var(--marca-clara); } }
+/* 472. Presentacion: las funciones se elevan con luz al pasar el raton */
+.pres .funcion { transition: translate .3s var(--ease-salida), box-shadow .3s; }
+@media (hover: hover) { .pres .funcion:hover { translate: 0 -3px; box-shadow: 0 18px 40px -26px var(--accent); } }
+/* 473. Hojas inferiores del movil: el asa de arrastre con brillo */
+@media (max-width: 639px) { dialog.hoja::before, dialog.ficha::before { box-shadow: 0 0 10px rgba(164, 156, 255, .6); } }
+/* 474. Botones desactivados: sin halo ni brillo */
+.btn:disabled { box-shadow: none; background-image: none; }
+.btn:disabled::before { display: none; }
+/* 475. Pie de las interacciones: hilo de luz encima de las fuentes */
+p.nota-fuentes { padding-top: 8px; background: var(--hilo) left top / 100% 1px no-repeat; }
+/* 476. SPPB: la pildora de "paso N de M" con resplandor */
+.sppb-progreso { box-shadow: 0 0 14px -6px var(--marca-clara); }
+/* 477. Resumen de hoy: las cifras con digitos de ancho fijo */
+.hoy-resumen b { font-variant-numeric: tabular-nums; }
+/* 478. Imagen de cada dia del plan: se funde por abajo con la tarjeta */
+.plan-dia > .plan-banda { -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
+/* 479. Alto contraste: sin luces, halos, cristal ni esquinas de esta ronda */
+:root[data-theme="contrast"] :is(article.ddi.ddi-mayor, .tira .dia.sel, .tira .dia.hoy.sel, .nav-badge, .sem-barra i, .sem-dia.hoy .sem-barra, .sppb-progreso, .contexto-chips .chip, .aviso-actualizar, .btn-doc:hover, .tabs button[aria-selected="true"] .cnt, .esencial li.nivel-precaucion .punto) { box-shadow: none; }
+:root[data-theme="contrast"] :is(dialog.ficha, dialog.hoja) { box-shadow: 0 0 0 2px #000; }
+:root[data-theme="contrast"] .barra-inferior { -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root[data-theme="contrast"] :is(.veredicto, .plan-banda, .ses-img, .sppb-img img, .crib-img, .paso-guia img, .tour-img) { filter: none; }
+:root[data-theme="contrast"] :is(dialog.hoja, dialog.ficha)::before { box-shadow: none; }
+:root[data-theme="contrast"] .tile::after, :root[data-theme="contrast"] .comp-barra span::after, :root[data-theme="contrast"] .veredicto::before, :root[data-theme="contrast"] .btn::before, :root[data-theme="contrast"] .toast::after, :root[data-theme="contrast"] body::before { display: none; }
+:root[data-theme="contrast"] .con-luz { background-image: none !important; }
+:root[data-theme="contrast"] :is(.esencial-cab, p.nota-fuentes) { background: none; }
+:root[data-theme="contrast"] .plan-dia > .plan-banda { -webkit-mask-image: none; mask-image: none; }
+:root[data-theme="contrast"] .comp-barra span { background-color: var(--accent); } /* el relleno se quedaba sin color al quitar el degradado */
+/* 480. Impresion: nada de lo nuevo (ni luces, ni barra de lectura, ni mascaras) */
+@media print {
+  body::before, body::after, .tile::after, .comp-barra span::after, .veredicto::before, .btn::before, .toast::after { display: none !important; }
+  .plan-dia > .plan-banda { -webkit-mask-image: none; mask-image: none; }
+  article.ddi.ddi-mayor { box-shadow: none !important; }
+  .veredicto { filter: none !important; }
+  :is(main.acerca, main.legal, .guia-pag, main.novedades) a { text-decoration: underline; background: none !important; }
+}
+
+/* ---------- Tanda 15 (481-530): pantalla a pantalla, con movimiento ---------- */
+/* 483. Datos: la fila de una casilla marcada se tine con transicion */
+.condiciones .check { transition: background-color .25s, color .25s; }
+/* 484. Medicacion: el icono de "Mas formas de anadir" sube un poco al pasar el raton */
+#btn-anadir svg { transition: translate .35s var(--ease-muelle); }
+@media (hover: hover) { #btn-anadir:hover svg { translate: 0 -2px; } }
+/* 486. Lista: el lapiz de editar la dosis se inclina al pasar el raton */
+#lista-meds .med-dosis .editar svg { transition: rotate .3s var(--ease-muelle); }
+@media (hover: hover) { #lista-meds .med-dosis .editar:hover svg { rotate: -14deg; } }
+/* 494. Descargas: la flecha de cada documento baja al pasar el raton */
+.docs .btn-doc::after { transition: translate .3s var(--ease-muelle), color .2s, opacity .2s; }
+@media (hover: hover) { .docs .btn-doc:hover::after { translate: 0 3px; color: var(--accent); opacity: 1; } }
+/* 510. Menu "Mas": los tres puntos giran al abrirlo */
+.menu-mas > summary > span[aria-hidden="true"] { display: inline-block; transition: rotate .35s var(--ease-muelle); }
+.menu-mas[open] > summary > span[aria-hidden="true"] { rotate: 90deg; }
+/* 528. Paciente / profesional: la opcion elegida cambia con transicion */
+.modo button { transition: background-color .25s, color .25s, box-shadow .3s; }
+/* 529. Pantallas pequenas: las entradas recorren menos distancia */
+@media (max-width: 360px) { :root { --pa-d: 8px; } }
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 481. Datos: la cuenta de casillas marcadas late al cambiar */
+  /* 482. Medicacion: el contador de la lista late al cambiar */
+  html:not(.pa-quieto) :is(.marcadas, .cuenta-meds).late { animation: pa-late .45s var(--ease-muelle); }
+  /* 485. Buscador: la lista de resultados se despliega desde el campo al aparecer */
+  html:not(.pa-quieto) #sugerencias:not([hidden]) { transform-origin: top center; animation: pa-despliega .22s var(--ease-salida) both; }
+  /* 487. Suplementos y plantas: al abrir el plegable, las fichas se despliegan */
+  html:not(.pa-quieto) .sup-rapido[open] .sup-chips { transform-origin: top center; animation: pa-despliega .3s var(--ease-salida) both; }
+  /* 488. Informe: los botones del veredicto entran en cascada al aparecer el informe */
+  html:not(.pa-quieto) #veredicto-acciones > * { animation: pa-entra .45s var(--ease-salida) .25s both; }
+  html:not(.pa-quieto) #veredicto-acciones > :nth-child(2) { animation-delay: .3s; }
+  html:not(.pa-quieto) #veredicto-acciones > :nth-child(3) { animation-delay: .35s; }
+  html:not(.pa-quieto) #veredicto-acciones > :nth-child(4) { animation-delay: .4s; }
+  /* 489. Informe: el titulo se revela de izquierda a derecha */
+  html:not(.pa-quieto) .cabecera-informe h2 { animation: pa-revela .8s var(--ease-salida) .1s both; }
+  /* 492. Pestanas: el contador de la elegida late al elegirla */
+  html:not(.pa-quieto) .tabs button[aria-selected="true"] .cnt { animation: pa-late .4s var(--ease-muelle); }
+  /* 503. Sesion: la lista de comprobacion entra en cascada al abrirla */
+  html:not(.pa-quieto) #chequeo li { animation: pa-entra .4s var(--ease-salida) .1s both; }
+  html:not(.pa-quieto) #chequeo li:nth-child(2) { animation-delay: .16s; }
+  html:not(.pa-quieto) #chequeo li:nth-child(3) { animation-delay: .22s; }
+  html:not(.pa-quieto) #chequeo li:nth-child(n+4) { animation-delay: .28s; }
+  /* 504. Cronometro de la sesion y del SPPB: el anillo entra girando */
+  html:not(.pa-quieto) .crono > svg { animation: pa-gira .7s var(--ease-salida) both; }
+  /* 505. SPPB: el titulo de cada prueba se revela al cambiar de paso */
+  html:not(.pa-quieto) #sppb-cuerpo h2 { animation: pa-revela .6s var(--ease-salida) .05s both; }
+  /* 506. SPPB: la pildora de "paso N de M" cae al cambiar de paso */
+  html:not(.pa-quieto) #sppb-cuerpo .sppb-progreso { animation: pa-cae .4s var(--ease-muelle) both; }
+  /* 507. Ficha de consulta: las partes del farmaco entran en cascada al elegirlo */
+  html:not(.pa-quieto) #ficha-cuerpo > * { animation: pa-entra .4s var(--ease-salida) both; }
+  html:not(.pa-quieto) #ficha-cuerpo > :nth-child(2) { animation-delay: .05s; }
+  html:not(.pa-quieto) #ficha-cuerpo > :nth-child(3) { animation-delay: .1s; }
+  html:not(.pa-quieto) #ficha-cuerpo > :nth-child(4) { animation-delay: .15s; }
+  html:not(.pa-quieto) #ficha-cuerpo > :nth-child(n+5) { animation-delay: .2s; }
+  /* 508. Recorrido guiado: el anillo del paso se cierra sobre lo que senala */
+  html:not(.pa-quieto) .tour-foco { animation: pa-foco .5s var(--ease-salida); }
+  /* 509. Codigo QR: aparece con un pequeno rebote */
+  html:not(.pa-quieto) dialog.qr[open] .qr-cuerpo :is(img, canvas, svg) { animation: pa-escala .45s var(--ease-muelle) .1s both; }
+  /* 511. Cabecera: los botones de arriba llegan en cascada al abrir la app */
+  html:not(.pa-quieto) .utiles > * { animation: pa-cae .45s var(--ease-salida) .45s both; }
+  html:not(.pa-quieto) .utiles > :nth-child(2) { animation-delay: .5s; }
+  html:not(.pa-quieto) .utiles > :nth-child(3) { animation-delay: .55s; }
+  /* 512. La linea de estado de la base aparece despues */
+  html:not(.pa-quieto) #kb-version { animation: pa-fundido .6s ease-out .6s both; }
+  /* 517. Guia: las respuestas frecuentes caen al abrirlas */
+  html:not(.pa-quieto) .guia-pag .faq details[open] > :not(summary) { transform-origin: top center; animation: pa-despliega .3s var(--ease-salida) both; }
+  /* 519. Legal: las pildoras del indice llegan en cascada */
+  html:not(.pa-quieto) main.legal .toc a { animation: pa-cae .4s var(--ease-salida) .2s both; }
+  html:not(.pa-quieto) main.legal .toc a:nth-child(2) { animation-delay: .25s; }
+  html:not(.pa-quieto) main.legal .toc a:nth-child(3) { animation-delay: .3s; }
+  html:not(.pa-quieto) main.legal .toc a:nth-child(4) { animation-delay: .35s; }
+  html:not(.pa-quieto) main.legal .toc a:nth-child(n+5) { animation-delay: .4s; }
+  /* 521. Presentacion: el titular se revela */
+  html:not(.pa-quieto) .pres .hero h1 { animation: pa-revela .9s var(--ease-salida) .15s both; }
+  /* 522. Presentacion: las cifras llegan en cascada */
+  html:not(.pa-quieto) .pres .cifras > * { animation: pa-entra .5s var(--ease-salida) .4s both; }
+  html:not(.pa-quieto) .pres .cifras > :nth-child(2) { animation-delay: .46s; }
+  html:not(.pa-quieto) .pres .cifras > :nth-child(3) { animation-delay: .52s; }
+  html:not(.pa-quieto) .pres .cifras > :nth-child(4) { animation-delay: .58s; }
+  html:not(.pa-quieto) .pres .cifras > :nth-child(5) { animation-delay: .64s; }
+  html:not(.pa-quieto) .pres .cifras > :nth-child(n+6) { animation-delay: .7s; }
+  /* 523. Presentacion: las capturas del principio se enfocan */
+  html:not(.pa-quieto) .pres .hero figure img { animation: pa-enfoca .8s var(--ease-salida) .3s both; }
+  /* 527. Paginas secundarias: el boton "Volver" entra desde la izquierda */
+  html:not(.pa-quieto) .volver { animation: pa-desliza .5s var(--ease-salida) .2s both; }
+  /* 530. A quien vuelve a la app, la cabecera no le repite toda la entrada: solo un fundido */
+  html.retorno:not(.pa-quieto) :is(.cabecera, .cabecera .logo, .cabecera h1, .utiles > *) { animation: pa-fundido .4s ease-out both; }
+}
+@keyframes pa-foco { from { outline-offset: 16px; outline-color: transparent; } }
+
+/* Entradas ligadas al desplazamiento, pantalla a pantalla */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (animation-range: entry 0% entry min(100%, 1px)) {
+    #hoy { view-timeline: --pa-hoy block; }
+    .descargas { view-timeline: --pa-desc block; }
+    .plan-cab { view-timeline: --pa-plan block; }
+    .plan-dia { view-timeline: --pa-dia block; }
+    /* 490. De un vistazo: las tres columnas entran escalonadas */
+    html:not(.pa-quieto) .semaforo-col { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 90px); }
+    html:not(.pa-quieto) .semaforo-col:nth-child(2) { animation-range: entry 20px entry min(100%, 110px); }
+    html:not(.pa-quieto) .semaforo-col:nth-child(3) { animation-range: entry 40px entry min(100%, 130px); }
+    /* 491. Lo esencial: cada punto entra uno a uno */
+    html:not(.pa-quieto) .esencial ol > li { animation: pa-desliza linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 60px); }
+    /* 493. Pestanas en el movil: las que estaban fuera entran al desplazar la fila */
+    html:not(.pa-quieto) .tabs button { animation: pa-escala linear both; animation-timeline: view(inline); animation-range: entry 0% entry min(100%, 40px); }
+    /* 495. Descargas: los cuatro documentos llegan escalonados */
+    html:not(.pa-quieto) .docs .btn-doc { animation: pa-entra linear both; animation-timeline: --pa-desc; animation-range: entry 20px entry min(100%, 120px); }
+    html:not(.pa-quieto) .docs .btn-doc:nth-child(2) { animation-range: entry 45px entry min(100%, 145px); }
+    html:not(.pa-quieto) .docs .btn-doc:nth-child(3) { animation-range: entry 70px entry min(100%, 170px); }
+    html:not(.pa-quieto) .docs .btn-doc:nth-child(4) { animation-range: entry 95px entry min(100%, 195px); }
+    /* 496. Hoy: las barras de la semana crecen desde abajo */
+    html:not(.pa-quieto) .sem-barra i { transform-origin: center bottom; animation: pa-crece linear both; animation-timeline: --pa-hoy; animation-range: entry 30px entry min(100%, 150px); }
+    /* 497. Hoy: los dias de la semana aparecen en cascada */
+    html:not(.pa-quieto) .semana > * { animation: pa-entra linear both; animation-timeline: --pa-hoy; animation-range: entry 0% entry min(100%, 110px); }
+    html:not(.pa-quieto) .semana > :nth-child(n+3) { animation-range: entry 10px entry min(100%, 120px); }
+    html:not(.pa-quieto) .semana > :nth-child(n+5) { animation-range: entry 20px entry min(100%, 130px); }
+    html:not(.pa-quieto) .semana > :nth-child(n+7) { animation-range: entry 30px entry min(100%, 140px); }
+    /* 498. Mi plan: el anillo crece al llegar */
+    html:not(.pa-quieto) .plan-cab .anillo { animation: pa-escala linear both; animation-timeline: --pa-plan; animation-range: entry 0% entry min(100%, 110px); }
+    /* 499. Mi plan: la racha llega tras el anillo */
+    html:not(.pa-quieto) .plan-cab .plan-racha { animation: pa-desliza linear both; animation-timeline: --pa-plan; animation-range: entry 30px entry min(100%, 140px); }
+    /* 500. Mi plan: los dias de la tira entran al desplazarla */
+    html:not(.pa-quieto) .tira .dia { animation: pa-escala linear both; animation-timeline: view(inline); animation-range: entry 0% entry min(100%, 40px); }
+    /* 501. Mi plan: los bloques de la sesion del dia, uno a uno */
+    html:not(.pa-quieto) .plan-dia ol.bloques > li { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 70px); }
+    /* 502. Mi plan: la imagen del dia se aclara al llegar */
+    html:not(.pa-quieto) .plan-dia > .plan-banda { animation: pa-aclara linear both; animation-timeline: --pa-dia; animation-range: entry 0% entry min(100%, 120px); }
+    /* 513. Pie: la firma aparece al llegar al final */
+    html:not(.pa-quieto) :is(.pie, p.pie, .pie-legal) { animation: pa-fundido linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 60px); }
+    /* 514. Acerca: los datos de la base llegan uno a uno */
+    html:not(.pa-quieto) #estado-kb > div { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    /* 515. Guia: las capturas se aclaran al llegar */
+    html:not(.pa-quieto) .paso-guia img { animation: pa-aclara linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    /* 516. Guia: el numero de cada paso salta al llegar */
+    html:not(.pa-quieto) .paso-guia h2 b { animation: pa-escala linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    /* 518. Novedades: el punto dorado de cada version se enciende al llegar */
+    html:not(.pa-quieto) main.novedades article::after { animation: pa-escala linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    /* 520. Legal: los titulos se revelan al llegar */
+    html:not(.pa-quieto) main.legal h2 { animation: pa-revela linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 60px); }
+    /* 524. Presentacion: las tarjetas de "Para quien" llegan escalonadas */
+    html:not(.pa-quieto) .pres .tarjetas .tarjeta { animation: pa-entra linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 90px); }
+    html:not(.pa-quieto) .pres .tarjetas .tarjeta:nth-child(2) { animation-range: entry 20px entry min(100%, 110px); }
+    html:not(.pa-quieto) .pres .tarjetas .tarjeta:nth-child(3) { animation-range: entry 40px entry min(100%, 130px); }
+    /* 525. Presentacion: los pasos para empezar, uno a uno */
+    html:not(.pa-quieto) .pres ol.pasos3 > li { animation: pa-desliza linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    /* 526. Presentacion: los enlaces del autor llegan en cascada */
+    html:not(.pa-quieto) .pres .firma-pres .enlaces > * { animation: pa-escala linear both; animation-timeline: view(); animation-range: entry 0% entry min(100%, 80px); }
+    html:not(.pa-quieto) .pres .firma-pres .enlaces > :nth-child(even) { animation-range: entry 10px entry min(100%, 60px); }
+  }
+}
