@@ -314,6 +314,16 @@ console.log("\n«¿Por qué?»: explicadores animados de los mecanismos (mejora 
   check("las fuentes de los explicadores son las de las reglas de la base", PQ.PQ_IDS.every((id) => PQ.PORQUE[id].fuentes.every(enKb)), PQ.PQ_IDS.flatMap((id) => PQ.PORQUE[id].fuentes.filter((f) => !enKb(f))).join(" | "));
 }
 
+console.log("\n«Aprende»: lecciones de 2 minutos con preguntas (mejora grande 2)");
+{
+  const A = await import(pathToFileURL(path.join(ROOT, "app/js/aprende.js")).href);
+  check("diez lecciones con identificador único", A.LECCIONES.length === 10 && new Set(A.LECCIONES.map((l) => l.id)).size === 10);
+  check("cada lección: título, 4 tarjetas y 3 preguntas de 3 opciones con la buena dentro y su explicación", A.LECCIONES.every((l) => l.titulo && l.tarjetas.length === 4 && l.preguntas.length === 3 && l.preguntas.every((q) => q.p && q.o.length === 3 && Number.isInteger(q.ok) && q.ok >= 0 && q.ok < 3 && q.x)));
+  check("la respuesta buena no está siempre en el mismo sitio", new Set(A.LECCIONES.flatMap((l) => l.preguntas.map((q) => q.ok))).size === 3);
+  check("cada lección cita sus fuentes; las de estudios, con DOI", A.LECCIONES.every((l) => l.fuentes.length >= 1 && l.fuentes.every((f) => f.txt && (!/\b(19|20)\d\d\b.*(J |Med|Rev|Care|Pract|Lancet|Cochrane)/.test(f.txt) || f.doi))));
+  check("recomendadas según la lista: azúcar, intensidad, tensión, caídas y medicación", JSON.stringify(A.recomendadas({ presentes: ["azucar", "pulso", "tension", "equilibrio"], edad: 70 })) === JSON.stringify(["azucar", "intensidad", "tension", "caidas", "medicacion"]) && A.recomendadas({}).length === 0);
+}
+
 console.log("\nEjercicios animados (mejora grande 7)");
 {
   const M = await import(pathToFileURL(path.join(ROOT, "app/js/movimiento.js")).href);
@@ -480,8 +490,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 3760 desde la v1.1 (21/11/2026): base con 53 suplementos y plantas (+41 KB) y tres tandas de mejoras visuales 231-380 (+24 KB de CSS, +6 KB comprimidos)
   // 3800 desde las mejoras 381-530 (21/11/2026): +45 KB de CSS (+10 KB comprimidos) de movimiento, luz y cristal
   // 3850 desde las mejoras 531-680 (21/11/2026): +41 KB de CSS (+9 KB comprimidos)
-  // 3950 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda semana.js, voz.js y porque.js (explicadores con sus escenas), que se precargan para usarse sin conexión
-  check(`precarga total ≤ 3950 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3950);
+  // 4100 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda (semana, voz, porque, movimiento, aprende…), que se precargan para usarse sin conexión
+  check(`precarga total ≤ 4100 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 4100);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
@@ -489,7 +499,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 440 KB desde las 20 mejoras grandes (v1.2): lo que tiene que estar al abrir (pantalla «Hoy», modo sencillo, enlaces a los explicadores); lo demás va en módulos bajo demanda
   check(`JavaScript inicial ≤ 440 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 440);
   check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
-  check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
+  // 70 KB desde las 20 mejoras grandes (v1.2): textos de la interfaz de la voz, la semana, los «¿Por qué?», «Hoy», los ejercicios y «Aprende» (el contenido largo va en sus módulos)
+  check(`i18n.js ≤ 70 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 70);
   // 325 KB desde las mejoras 381-530 (21/11/2026): movimiento futurista de una vez, luz y cristal; 67 KB comprimida con gzip
   // 370 KB desde las mejoras 531-680 (21/11/2026): transiciones nativas, tacto, profundidad y detalles; 75 KB comprimida
   // 345 KB desde la limpieza y las mejoras 681-830 (21/11/2026): 327 KB, 62 KB comprimida; las descripciones de las mejoras viven en docs/ESTILOS-MEJORAS.md

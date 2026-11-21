@@ -2,7 +2,7 @@
    Contenido de la base de conocimiento (en español, como las reglas), coherente con los textos de las reglas de esas señales
    y con sus mismas fuentes. Cada explicador: escena SVG en cuatro pasos (se avanza a mano; el movimiento es de una vez y se
    apaga con «reducir movimiento»), qué hacer y fuentes. Se carga al pulsar un «¿Por qué?», no al abrir la aplicación. */
-import { t } from "./i18n.js?v=202611212136";
+import { t } from "./i18n.js?v=202611212144";
 
 /* ---------- piezas de dibujo (trazo lineal como los pictogramas de los ejercicios) ---------- */
 const P = (d, c = "q-l", extra = "") => `<path class="${c}" d="${d}"${extra}/>`;
@@ -364,6 +364,8 @@ export const PORQUE = {
     fuentes: ["FT AEMPS 4.4", "ACSM 2019 ejercicio y cáncer (Campbell)"] },
 };
 export const PQ_IDS = Object.keys(PORQUE);
+/** Lección de «Aprende» relacionada con cada explicador (js/aprende.js). */
+const LECCION = { pulso: "intensidad", acelera: "intensidad", azucar: "azucar", tension: "tension", tension_alta: "tension", equilibrio: "caidas", sangrado: "caidas", fuerza_hueso: "fuerza", musculo: "fuerza", agua: "medicacion", calor: "medicacion", ritmo: "alarma", cansancio: "constancia" };
 
 /** HTML de la escena de un explicador en un paso (1–4). */
 export function escena(id, paso = 1) {
@@ -406,6 +408,7 @@ function pintar() {
     <ul class="pq-hacer">${e.hacer.map((x) => `<li>${x}</li>`).join("")}</ul>
     <p class="pq-fuentes">${t("pq.fuentes")}: ${e.fuentes.join(" · ")}</p>
     <p class="pq-nota">${t("pq.nota")}</p>
+    ${LECCION[actual] ? `<p class="pq-leccion"><button type="button" class="btn-sec sm" data-aprende="${LECCION[actual]}">${t("apr.relacionada")}</button></p>` : ""}
     ${otros.length ? `<h3>${t("pq.otros")}</h3><div class="pq-otros">${otros.map((x) => `<button type="button" class="chip chip-btn" data-pq-otro="${x}">${t("pq.b." + x)}</button>`).join("")}</div>` : ""}`;
   cuerpo.querySelector('[data-pq="ant"]').addEventListener("click", () => ir(paso - 1));
   cuerpo.querySelector('[data-pq="sig"]').addEventListener("click", () => ir(paso === n ? 1 : paso + 1));

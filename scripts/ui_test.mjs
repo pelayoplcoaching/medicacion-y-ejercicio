@@ -142,6 +142,12 @@ try {
   check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && !/^0\//.test((await p.textContent(".plan-cab .anillos-ley li.a1 b")) || "0/"));
   { const tipoReg = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario"))[0].tipo); const f = ["fuerza", "fuerza_eq"].includes(tipoReg) ? 1 : 0, e = ["fuerza_eq", "equilibrio"].includes(tipoReg) ? 1 : 0;
     check(`tres anillos (moverse, fuerza, equilibrio) con la sesión de ${tipoReg} donde toca`, (await p.$$(".plan-cab .anillos circle.v")).length === 3 && (await p.textContent(".plan-cab .anillos-ley li.a2 b")).startsWith(f + "/") && (await p.textContent(".plan-cab .anillos-ley li.a3 b")).startsWith(e + "/")); }
+  await p.click(".aprende-tile [data-aprende]"); await p.waitForSelector("#aprende[open]", { timeout: 5000 }).catch(() => {});
+  check("«Aprende»: diez lecciones, las recomendadas primero", (await p.$$("#aprende .apr-lista button")).length === 10 && (await p.$$("#aprende .apr-lista .apr-chip")).length >= 1);
+  await p.click("#aprende .apr-lista button >> nth=0"); for (let i = 0; i < 4; i++) { await p.click("#aprende [data-sig]"); await p.waitForTimeout(60); }
+  await p.click("#aprende [data-o] >> nth=0"); await p.waitForTimeout(100);
+  check("tras las 4 tarjetas, preguntas con la respuesta buena marcada y su explicación", (await p.$$("#aprende .apr-opciones .bien")).length === 1 && await p.isVisible("#aprende .apr-expl"));
+  await p.click("#apr-cerrar"); await p.waitForTimeout(150);
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
   const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));

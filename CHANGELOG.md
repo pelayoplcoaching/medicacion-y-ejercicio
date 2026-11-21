@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.5 · 2026-11-21 · Mejoras grandes (6): «Aprende», diez lecciones de 2 minutos
+- `js/aprende.js` (bajo demanda): moverse como tratamiento, cuánto hace falta, el esfuerzo sin reloj, fuerza a cualquier edad, el equilibrio se entrena, cuándo parar, medicación y ejercicio, azúcar y ejercicio, la tensión y el ejercicio, y cómo convertirlo en costumbre. Cada una: 4 tarjetas, 3 preguntas de 3 opciones con explicación al responder y fuentes (con DOI las de estudios).
+- Cifras comprobadas en PubMed el 21/11/2026: OMS 2020 (Bull, Br J Sports Med, doi:10.1136/bjsports-2020-102955), Arem 2015 (JAMA Intern Med, doi:10.1001/jamainternmed.2015.0533: 20 %, 31 % y 39 % menos mortalidad), Sherrington 2019 (Cochrane, doi:10.1002/14651858.CD012424.pub2: 23 % menos caídas), Fragala 2019 (NSCA, doi:10.1519/JSC.0000000000003230), Colberg 2016 (ADA, doi:10.2337/dc16-1728) y Gardner 2012 (Br J Gen Pract, doi:10.3399/bjgp12X659466); lo demás, de las mismas guías que citan las reglas (ACSM GETP 11, ESC 2024).
+- Recomendadas según su lista (azúcar, intensidad, tensión, caídas, medicación), su edad y si es hipertenso; progreso en este dispositivo (`medex.aprende`). Accesos: menú «Más», tarjeta en «Mi plan» y «Aprenda más en 2 minutos» al pie de cada «¿Por qué?».
+- Presupuestos: `i18n.js` ≤ 70 KB y precarga ≤ 4100 KB. Pruebas: 5 nuevas en `test.mjs` y 2 en `ui_test.mjs`; accesibilidad en claro, oscuro y alto contraste.
+
 ## 1.2.4 · 2026-11-21 · Mejoras grandes (5): ejercicios animados paso a paso
 - Los 17 pictogramas de los ejercicios son botones (con una marca de «reproducir») que abren la ficha del ejercicio (`js/movimiento.js`, bajo demanda): el dibujo se mueve entre la postura de partida y la de llegada (animación SVG con `begin="indefinite"`, también en Safari; arranca al abrir y con «Ver el movimiento otra vez»), cómo se hace con su clave, versión más fácil y más difícil (marcada la elegida), tres errores frecuentes por ejercicio y, según su medicación, dos cuidados con su «¿Por qué?».
 - Con «reducir movimiento» (y en las pruebas automáticas) se ven las dos posturas quietas, una junto a otra («Empiece así» / «Llegue hasta aquí»; en marcha y bici, «Un lado» / «Y el otro»).

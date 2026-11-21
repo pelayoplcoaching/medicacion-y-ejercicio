@@ -31,6 +31,7 @@ app/
     voz.js              entrenador por voz de la sesión guiada (síntesis del navegador, bajo demanda, v1.2)
     porque.js           «¿Por qué?»: 15 explicadores animados de mecanismos (escenas SVG con sus estilos, contenido en español con fuentes de la base; bajo demanda, v1.2)
     movimiento.js       ejercicios animados: dos posturas por pictograma que se alternan (SMIL), errores frecuentes y cuidados por ejercicio (bajo demanda, v1.2)
+    aprende.js          «Aprende»: 10 lecciones de 2 minutos con 3 preguntas, fuentes con DOI y progreso local (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
