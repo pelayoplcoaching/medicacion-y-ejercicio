@@ -361,6 +361,27 @@ console.log("\nPruebas de forma física: Senior Fitness Test con baremos por eda
   check("cuidados de cada prueba con explicador; fuentes de estudios con DOI", Object.values(S.PRUEBAS).every((x) => x.cuida.every((m) => PQ.PQ_IDS.includes(m)) && x.pasos.length === 4) && S.FUENTES.filter((f) => /J Aging|Gerontologist|Res Q/.test(f.txt)).every((f) => f.doi));
 }
 
+console.log("\nMetas de la vida diaria (mejora grande 9)");
+{
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/metas.js")).href);
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/pruebas.js")).href);
+  const fuenteApp = fs.readFileSync(path.join(ROOT, "app/js", "app.js"), "utf8");
+  const idsApp = JSON.parse(fuenteApp.match(/const METAS_IDS = (\[[^\]]+\]);/)[1]);
+  check("ocho metas con identificador único (las mismas que sanea app.js), título, para qué y cuatro hitos", M.METAS.length === 8 && new Set(M.METAS.map((m) => m.id)).size === 8 && JSON.stringify(M.METAS.map((m) => m.id)) === JSON.stringify(idsApp) && M.METAS.every((m) => m.titulo && m.por && m.corto && m.icono && m.hitos.length === 4));
+  const nombres = new Set(); for (const tipo of ["aerobico", "fuerza", "fuerza_eq", "equilibrio"]) for (const fragil of [false, true]) for (const b of sesionTipo(tipo, { fragil }).bloques) nombres.add(b.nombre);
+  check("cada meta: ejercicios que existen en las sesiones y pruebas de forma física que la miden", M.METAS.every((m) => m.ej.length >= 3 && m.ej.every((e) => nombres.has(e)) && m.pruebas.length >= 1 && m.pruebas.every((p) => S.ORDEN.includes(p))), M.METAS.flatMap((m) => m.ej.filter((e) => !nombres.has(e))).join());
+  check("cada sesión del plan (fuerza, fuerza y equilibrio, aeróbica) trabaja la meta de las escaleras", ["fuerza", "fuerza_eq", "aerobico"].every((tipo) => sesionTipo(tipo, {}).bloques.some((b) => M.POR_ID.escaleras.ej.includes(b.nombre))));
+  const e0 = M.sanear({ ids: ["escaleras", "nada", "compra", "caminar", "suelo"], hitos: { escaleras: [5, "x", -1] } });
+  check("saneado: como mucho 3 metas conocidas y 4 fechas por meta", JSON.stringify(e0) === JSON.stringify({ ids: ["escaleras", "compra", "caminar"], hitos: { escaleras: [5, null, null, null], compra: [null, null, null, null], caminar: [null, null, null, null] } }) && M.sanear(null) === null);
+  const e1 = M.marcar(e0, "compra", 2, true, 100), e2 = M.marcar(e1, "compra", 1, false);
+  check("marcar un hito marca los anteriores; desmarcar quita los siguientes", JSON.stringify(e1.hitos.compra) === "[100,100,100,null]" && M.progreso(e1, "compra").n === 3 && JSON.stringify(e2.hitos.compra) === "[100,null,null,null]" && M.progreso(e2, "compra").n === 1);
+  const e3 = M.alternar(e0, "nietos"), e4 = M.alternar(e0, "compra");
+  check("elegir y quitar metas, sin pasar de 3", e3.ids.length === 3 && !e3.ids.includes("nietos") && e4.ids.join() === "escaleras,caminar" && !e4.hitos.compra && M.alternar(e4, "nietos").ids.join() === "escaleras,caminar,nietos");
+  check("tarjeta de Mi plan: sin metas invita con cuatro atajos; con metas, sus hitos y el siguiente", (M.tarjeta({ metas: null }).match(/data-meta-elegir=/g) || []).length === 4 && /data-meta-hito="compra" data-k="3"/.test(M.tarjeta({ metas: e1 })) && /3\/4/.test(M.tarjeta({ metas: e1 })));
+  const ks = Object.keys(M.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(M.TXT[l]).length === ks.length && ks.every((k) => M.TXT[l][k] && vars(M.TXT[l][k]) === vars(M.TXT.es[k]))));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

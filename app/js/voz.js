@@ -1,7 +1,7 @@
 /* Entrenador por voz de la sesión guiada (mejora grande 6). Se carga al abrir la sesión, no al arrancar la aplicación.
    Usa la síntesis de voz del propio navegador (nada sale del dispositivo). Las frases de la interfaz van en el idioma
    elegido; el contenido de la sesión está en español y se lee con voz española. Sin voz para el idioma elegido, todo en español. */
-import { t, tEs, idioma } from "./i18n.js?v=202611212226";
+import { t, tEs, idioma } from "./i18n.js?v=202611212234";
 
 const VOZ_LANG = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES", eu: "eu-ES" };
 export const VOZ = {

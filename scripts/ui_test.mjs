@@ -163,7 +163,17 @@ try {
   await p.fill('#pruebas [data-int="1"]', "6.4"); await p.click("#pruebas [data-sig]"); await p.waitForSelector("#pruebas .sft-res", { timeout: 5000 }).catch(() => {});
   check("resultados: cada prueba con su chip, su rango habitual, su escala y la meta de autonomía", (await p.$$("#pruebas .sft-res > li")).length === 2 && (await p.$$("#pruebas .sft-escala")).length === 2 && (await p.$$("#pruebas .sft-chip.n-normal, #pruebas .sft-chip.n-bajo, #pruebas .sft-chip.n-alto")).length === 2 && /Habitual a su edad: \d+–\d+/.test(await p.textContent("#pruebas .sft-res")) && /Meta para mantener la autonomía: \d+/.test(await p.textContent("#pruebas .sft-res")));
   await p.click("#pruebas [data-guardar]"); await p.waitForTimeout(200); await p.click("#sft-cerrar"); await p.waitForTimeout(250);
-  check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue", await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
+  await p.waitForSelector(".metas-plan:not([hidden])", { timeout: 5000 }).catch(() => {});
+  check("«Mis metas» sin elegir: invita con cuatro atajos", (await p.$$(".metas-plan [data-meta-elegir]")).length === 4);
+  await p.click('.metas-plan [data-meta-elegir="escaleras"]'); await p.waitForSelector('.mt-card[data-meta="escaleras"]', { timeout: 5000 }).catch(() => {});
+  await p.click('[data-meta-hito="escaleras"]'); await p.waitForTimeout(400);
+  check("elegir una meta con un toque y marcar su primer hito (con «Deshacer»)", /1\/4/.test(await p.textContent('.mt-card[data-meta="escaleras"] .mt-n')) && /Hito conseguido/.test(await p.textContent("#toast")) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).metas.hitos.escaleras.filter(Boolean).length)) === 1);
+  if ((await p.$$(".plan-dia .bloques li")).length) check("los ejercicios del día que trabajan la meta llevan su insignia", (await p.$$(".plan-dia .bloques .meta-badge")).length >= 1);
+  await p.click('[data-meta-ver="escaleras"]'); await p.waitForSelector("#metas[open] .mt-hitos", { timeout: 5000 }).catch(() => {});
+  await p.check('#metas .mt-hitos input[data-k="2"]'); await p.waitForTimeout(200);
+  check("en la meta: marcar el tercer hito marca los anteriores; se ve la prueba que la mide y los ejercicios", (await p.$$("#metas .mt-hitos li.on")).length === 3 && /Piernas: 12/.test(await p.textContent("#metas .mt-medidas")) && (await p.$$("#metas .mt-ejs [data-ejercicio]")).length >= 3);
+  await p.click("#mt-cerrar"); await p.waitForTimeout(200);
+  check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue",await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
   const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));

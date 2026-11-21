@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.7 · 2026-11-21 · Mejoras grandes (8): metas de la vida diaria
+- `js/metas.js` (bajo demanda): ocho metas del día a día (subir escaleras sin pararse, levantarse del suelo, llevar la compra, caminar 30 minutos seguidos, jugar con los nietos, andar seguro sin miedo a caerse, vestirse y calzarse con facilidad, viajar y hacer excursiones). Se eligen hasta 3.
+- Cada meta tiene cuatro hitos funcionales seguidos (marcar uno marca los anteriores; desmarcar quita los siguientes), las pruebas de forma física que la miden (último resultado, su nivel para la edad y si ha subido o bajado) y los ejercicios de las sesiones que la trabajan (abren su ficha animada).
+- «Mi plan» se ordena alrededor de ellas: tarjeta «Mis metas» bajo los anillos, con barra de cuatro tramos, el próximo hito y «Lo he conseguido» (con «Deshacer»); sin metas, una invitación con cuatro atajos de un toque. Los ejercicios del día que trabajan una meta llevan su insignia.
+- Ventana para elegir (máximo 3, el resto se desactiva) y para ver cada meta con sus hitos fechados. Entrada en el menú «Más».
+- Guardado en el estado (`estado.metas`), así que va con cada paciente y con la copia cifrada. Los hitos son pasos de la vida diaria, no cifras clínicas.
+- Textos de la interfaz en los cinco idiomas dentro del módulo; el contenido, en español.
+- Pruebas: 8 nuevas en `test.mjs` (mismas metas que sanea `app.js`, ejercicios y pruebas que existen, saneado, hitos seguidos, máximo de 3, tarjeta, idiomas) y 4 en `ui_test.mjs`; accesibilidad (axe) de la tarjeta, la elección y el detalle en claro, oscuro y alto contraste.
+
 ## 1.2.6 · 2026-11-21 · Mejoras grandes (7): pruebas de forma física (Senior Fitness Test)
 - `js/pruebas.js` (bajo demanda): la batería de Rikli y Jones guiada paso a paso: levantarse de la silla 30 s, flexión de brazo 30 s, marcha en el sitio 2 min o andar 6 min (a elegir), flexibilidad sentado, rascarse la espalda y levantarse-andar 2,44 m-volver, en el orden del manual. Cada una con su dibujo animado (dos posturas quietas con «reducir movimiento»), cómo se hace, qué hace falta y, según su medicación, dos cuidados con su «¿Por qué?».
 - Medida en la propia pantalla: cuenta atrás con anillo y botón grande «+1» (silla, brazo, marcha), cronómetro con dos intentos (se queda el mejor), «Me faltan / Llego justo / Me paso» en centímetros (sin el signo menos, que el teclado del móvil no siempre tiene) y vueltas × metros por vuelta + metros de la última (6 min, con el rectángulo de 45,7 m del original como valor de partida). Avisos de voz y pitidos («¡Ya!», mitad, quedan 30 s / 2 min / 1 min, «Tiempo»), pantalla encendida en las de 2 y 6 minutos y sin cerrarse por error mientras corre el reloj.
