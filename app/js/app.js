@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611210913";
-import { APP_VERSION } from "./version.js?v=202611210913";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611210913";
-import { picto } from "./pictos.js?v=202611210913";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611210913";
-import { cargarScript } from "./libs.js?v=202611210913";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611210913";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611210913";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211009";
+import { APP_VERSION } from "./version.js?v=202611211009";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211009";
+import { picto } from "./pictos.js?v=202611211009";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211009";
+import { cargarScript } from "./libs.js?v=202611211009";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211009";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211009";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -803,14 +803,14 @@ new IntersectionObserver(([e]) => {
 // qué sección está a la vista → pestaña activa en la barra inferior
 {
   const vis = new Map();
-  // la sección que cruza una franja en el centro de la pantalla (la proporción visible engañaba con el informe, mucho más alto)
+  // la sección que cruza una franja en el centro de la pantalla (la proporción visible engañaba con el informe, mucho más alto);
+  // dentro del informe, «Mi plan» solo cuando lo que cruza la franja es el contenido de la pestaña del plan
   const obs = new IntersectionObserver((es) => {
     for (const e of es) vis.set(e.target.id, e.isIntersecting);
-    const activa = ["informe", "panel-medicacion", "panel-datos"].find((id) => vis.get(id));
-    if (!activa) return;
-    marcarNav({ "panel-datos": "datos", "panel-medicacion": "medicacion", informe: estado.tab === "plan" && enInforme ? "plan" : "informe" }[activa]);
+    const activa = vis.get("contenido-tab") && estado.tab === "plan" ? "plan" : vis.get("informe") ? "informe" : vis.get("panel-medicacion") ? "medicacion" : vis.get("panel-datos") ? "datos" : null;
+    if (activa) marcarNav(activa);
   }, { rootMargin: "-45% 0px -50% 0px" });
-  for (const id of ["panel-datos", "panel-medicacion", "informe"]) { const el = document.getElementById(id); if (el) obs.observe(el); }
+  for (const id of ["panel-datos", "panel-medicacion", "informe", "contenido-tab"]) { const el = document.getElementById(id); if (el) obs.observe(el); }
 }
 
 /* ---------- escuchar «Lo esencial» (síntesis de voz del navegador) ---------- */
@@ -1774,7 +1774,7 @@ function renderCuando(cont) {
   const conInfo = v.motivos.length || v.avisos.length;
   sec.innerHTML = `
     <p class="intro-cuando">${conInfo ? t("cuando.intro") : "Ninguno de sus fármacos condiciona la hora de entrenar. Elija el momento del día que mejor le encaje; lo importante es la constancia."}</p>
-    <div class="timeline" role="img" aria-label=t("cuando.titulo")>${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
+    <div class="timeline" role="img" aria-label="${t("cuando.titulo")}">${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
     ${v.mejores.length ? `<p class="mejores">Mejores momentos: ${v.mejores.map((f) => `<b>${hh(f.desde)}–${hh(f.hasta)}</b>`).join(" y ")}</p>` : ""}
     <details class="bloque" open><summary><span class="sub-label">Hora de sus tomas</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="fila horas-tomas">${MOMENTOS.map((m) => `<label>${MOMENTO_TXT[m]} <input type="number" min="0" max="23" inputmode="numeric" data-hora="${m}" value="${estado.horas[m]}"></label>`).join("")}</div>
