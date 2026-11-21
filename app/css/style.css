@@ -1388,3 +1388,92 @@ body.sin-meds .ilustracion::before { content: ""; pointer-events: none; position
   .esencial { background: #fff !important; border-color: #593ede !important; box-shadow: none !important; }
   .descargas { background: none !important; border-color: #ddd !important; }
 }
+
+/* ==========================================================================
+   TANDAS DE BELLEZA FBE 4-6 (mejoras 61-120) - 21/11/2026
+   Misma linea que las tandas 1-3: rejilla, hilos de luz, letra de terminal.
+   Sin animaciones continuas nuevas; las de un solo golpe se anulan con
+   "reducir movimiento" (regla base). Alto contraste, colores forzados e
+   impresion se limpian al final de este bloque.
+   ========================================================================== */
+:root { --marca-check: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3.4 8.6l3 3 6.2-7.2' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
+:root[data-theme="dark"] { --marca-check: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3.4 8.6l3 3 6.2-7.2' fill='none' stroke='%23140b3a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) { --marca-check: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3.4 8.6l3 3 6.2-7.2' fill='none' stroke='%23140b3a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"); } }
+
+/* ---------- TANDA 4: cabecera, recorrido, formularios y medicacion ---------- */
+/* 61. Cabecera en el movil: logo alineado arriba con el titulo y lema mas compacto */
+@media (max-width: 639px) {
+  .cabecera { gap: 6px 12px; padding: 16px 16px 14px; }
+  .cabecera .logo { align-self: start; width: 52px; height: 52px; margin-top: 3px; }
+  .cabecera .lema { padding: 10px 12px; }
+  .cabecera .lema p { font-size: .92rem; }
+  .cabecera .lema p + p { font-size: .84rem; }
+}
+/* 62. Nombre de la app con brillo: degradado de blanco a lavanda */
+.cabecera h1 > span[data-i18n="meta.titulo"], .cabecera h1:not(:has(span)) { background: linear-gradient(100deg, #fff 35%, #d4d0f5 72%, #a49cff); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* 63. Recorrido: en la columna de escritorio las etiquetas ya no se cortan ("Su medic...") */
+@media (min-width: 960px) { .recorrido:has(#btn-siguiente[hidden]) li { padding: 5px 8px; } .recorrido:has(#btn-siguiente[hidden]) li span { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.15; } }
+/* 64. Recorrido: hilo que une los pasos y se vuelve verde al completarlos */
+.recorrido li { position: relative; }
+.recorrido li + li::before { content: ""; position: absolute; left: -5px; top: 50%; width: 6px; height: 2px; margin-top: -1px; border-radius: 2px; background: var(--line-strong); }
+.recorrido li.hecho + li::before { background: var(--info); }
+/* 65. Numeracion de los tres bloques (01 datos, 02 medicacion, 03 informe), como en la web */
+#panel-datos > h2.h-ayuda { flex-wrap: wrap; }
+#panel-datos > h2.h-ayuda::before, #panel-medicacion .cab-panel > h2::before, .cabecera-informe h2::before { display: block; flex: 0 0 100%; margin-bottom: 3px; font-family: var(--mono); font-size: .66rem; font-weight: 600; font-stretch: 100%; letter-spacing: .16em; color: var(--accent); }
+#panel-datos > h2.h-ayuda::before { content: "01 / 03"; content: "01 / 03" / ""; }
+#panel-medicacion .cab-panel > h2::before { content: "02 / 03"; content: "02 / 03" / ""; }
+.cabecera-informe h2::before { content: "03 / 03"; content: "03 / 03" / ""; }
+/* 66. Menu "Mas": columna de iconos alineada y separadores entre grupos */
+.menu-lista [role=menuitem]:not(:has(.ic-menu, svg)) { padding-left: 48px; }
+.menu-lista a[href="guia.html"], .menu-lista a[href="acerca.html"] { position: relative; margin-top: 7px; }
+.menu-lista a[href="guia.html"]::before, .menu-lista a[href="acerca.html"]::before { content: ""; position: absolute; left: 12px; right: 12px; top: -4px; height: 1px; background: var(--line); }
+/* 67. Campos numericos sin flechas: mas limpios (teclado y rueda siguen sirviendo) */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+/* 68. Casillas propias: esquinas suaves, borde lila al pasar y marca dibujada al elegir */
+:root:not([data-theme="contrast"]) input[type="checkbox"]:not(.chip-btn input) { -webkit-appearance: none; appearance: none; display: inline-grid; place-content: center; border: 2px solid var(--line-strong); border-radius: 7px; background: var(--surface) center / 72% auto no-repeat; cursor: pointer; transition: background-color .15s, border-color .15s, box-shadow .15s; }
+:root:not([data-theme="contrast"]) input[type="checkbox"]:not(.chip-btn input):hover { border-color: color-mix(in srgb, var(--accent) 65%, var(--line-strong)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent); }
+:root:not([data-theme="contrast"]) input[type="checkbox"]:not(.chip-btn input):checked { background-color: var(--accent); border-color: var(--accent); background-image: var(--marca-check); }
+:root:not([data-theme="contrast"]) input[type="checkbox"]:not(.chip-btn input):disabled { opacity: .5; cursor: default; }
+/* 69. Bloques plegables de datos: fila que se ilumina al pasar y flecha en acento al abrir */
+details.bloque > summary { border-radius: var(--r-sm); padding-inline: 6px; margin-inline: -6px; transition: background-color .15s; }
+details.bloque > summary:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+details.bloque[open] > summary .flecha { background: var(--accent-soft); color: var(--accent); }
+/* 70. Anadir rapido: signo + delante de cada farmaco frecuente */
+.rapido .chip-btn::before { content: "+"; margin-right: 5px; font-weight: 700; color: var(--accent); opacity: .65; transition: opacity .15s; }
+.rapido .chip-btn:hover::before, .rapido .chip-btn:focus-visible::before { opacity: 1; }
+/* 71. Pildora de dosis: si no cabe en una linea pasa a rectangulo alineado a la izquierda */
+#lista-meds .med-dosis .editar { max-width: 100%; border-radius: 14px; text-align: left; justify-content: flex-start; flex-wrap: wrap; row-gap: 2px; }
+/* 72. Sello "dosis alta": triangulo de aviso y borde del color de precaucion */
+.chip-alta { border-color: color-mix(in srgb, var(--precaucion) 45%, transparent); }
+.chip-alta::before { content: "\25B2"; display: inline-block; margin-right: 4px; font-size: .62em; vertical-align: .12em; }
+/* 73. Iconos de grupo: anillo fino y, en modo oscuro, fondos tintados en lugar de pastel claro */
+.ic-grupo { box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 16%, transparent); }
+:root[data-theme="dark"] .ic-grupo { background: color-mix(in srgb, currentColor 15%, transparent); }
+:root[data-theme="dark"] .ic-grupo.g-corazon { color: #ff9e93; } :root[data-theme="dark"] .ic-grupo.g-sangre { color: #f59ccd; } :root[data-theme="dark"] .ic-grupo.g-azucar { color: #f0c674; } :root[data-theme="dark"] .ic-grupo.g-cerebro { color: #b8b1ff; } :root[data-theme="dark"] .ic-grupo.g-pulmon { color: #7cc8ef; }
+:root[data-theme="dark"] .ic-grupo.g-hueso { color: #c5d68c; } :root[data-theme="dark"] .ic-grupo.g-hormona { color: #f6a983; } :root[data-theme="dark"] .ic-grupo.g-escudo { color: #6fdcc9; } :root[data-theme="dark"] .ic-grupo.g-ojo { color: #93bfe8; } :root[data-theme="dark"] .ic-grupo.g-rinon { color: #dcb79c; } :root[data-theme="dark"] .ic-grupo.g-libre { color: var(--muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo { background: color-mix(in srgb, currentColor 15%, transparent); }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-corazon { color: #ff9e93; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-sangre { color: #f59ccd; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-azucar { color: #f0c674; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-cerebro { color: #b8b1ff; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-pulmon { color: #7cc8ef; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-hueso { color: #c5d68c; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-hormona { color: #f6a983; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-escudo { color: #6fdcc9; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-ojo { color: #93bfe8; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-rinon { color: #dcb79c; } :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-libre { color: var(--muted); } }
+/* 74. Momentos de toma: el elegido lleva marca y texto mas firme */
+.momentos .mom[aria-pressed="true"] { font-weight: 800; box-shadow: 0 .3rem .8rem -.5rem color-mix(in srgb, var(--accent) 80%, transparent); }
+.momentos .mom[aria-pressed="true"]::before { content: "\2713"; margin-right: 3px; }
+/* 75. Boton "Mas formas de anadir": degradado de marca con rejilla en la esquina */
+.btn-anadir { position: relative; overflow: hidden; background: linear-gradient(120deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 78%, var(--marca-clara)) 100%); }
+.btn-anadir::after { content: ""; position: absolute; right: 0; top: 0; width: 45%; height: 100%; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 14px), repeating-linear-gradient(90deg, rgba(255, 255, 255, .12) 0 1px, transparent 1px 14px); -webkit-mask-image: linear-gradient(90deg, transparent, #000); mask-image: linear-gradient(90deg, transparent, #000); }
+.btn-anadir > * { position: relative; z-index: 1; }
+/* 76. Medicamento en pausa: rayado diagonal suave, se ve de un vistazo que no cuenta */
+#lista-meds li.pausado { background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--line-strong) 26%, transparent) 0 6px, transparent 6px 14px); }
+#lista-meds li.pausado .med-nombre em { font-family: var(--mono); font-style: normal; font-size: .74rem; letter-spacing: .01em; color: var(--fg); }
+/* 77. Cabecera de combinacion (Entresto...): velo de marca y rotulo de terminal */
+#lista-meds li.combo-cab { background: linear-gradient(90deg, var(--accent-soft), color-mix(in srgb, var(--accent-soft) 35%, var(--surface))); box-shadow: inset 3px 0 0 var(--accent); }
+#lista-meds li.combo-cab strong { font-stretch: 108%; }
+#lista-meds li.combo-cab small { font-family: var(--mono); font-size: .7rem; letter-spacing: .04em; }
+/* 78. Estado vacio: tarjeta de inicio con borde discontinuo y rejilla */
+#sin-meds:not([hidden]) { margin-top: 12px; padding: 16px; border: 1.5px dashed color-mix(in srgb, var(--accent) 38%, var(--line-strong)); border-radius: var(--r-md); background: var(--rejilla), color-mix(in srgb, var(--accent-soft) 50%, transparent); }
+/* 79. Nota de privacidad: candado y tono de sello de confianza */
+.privacidad { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border-radius: var(--r-sm); background: color-mix(in srgb, var(--info) 7%, transparent); color: var(--info-ink); font-size: .8rem; line-height: 1.4; }
+.privacidad::before { content: ""; flex: 0 0 14px; height: 14px; margin-top: 1px; background: currentColor; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z'/></svg>") center / contain no-repeat; }
+/* 80. Aviso "sin conexion": pildora de estado con punto, en letra de terminal */
+.conexion { font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; border: 1px solid color-mix(in srgb, var(--precaucion) 40%, transparent); }
+.conexion span[aria-hidden] { color: var(--precaucion); text-shadow: 0 0 6px var(--precaucion); }
