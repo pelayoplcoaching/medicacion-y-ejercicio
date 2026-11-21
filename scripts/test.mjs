@@ -407,6 +407,28 @@ console.log("\nResumen del mes con imagen para compartir (mejora grande 12)");
   check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(Mm.TXT[l]).length === ks2.length && ks2.every((k) => Mm.TXT[l][k] && vars2(Mm.TXT[l][k]) === vars2(Mm.TXT.es[k]))));
 }
 
+console.log("\nMis constantes: gráficas con las franjas de su situación (mejora grande 13)");
+{
+  const K = await import(pathToFileURL(path.join(ROOT, "app/js/constantes.js")).href);
+  const kbTxt = fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8");
+  const d = [
+    { fecha: "2026-11-10", const: { glucosa_antes: 64, glucosa_despues: 90, ta: 182, fc: 100 } }, { fecha: "2026-11-03", const: { glucosa_antes: 140, ta: 150 } },
+    { fecha: "2026-11-12", const: { glucosa_antes: 262, fc: 170 } }, { fecha: "2026-11-14", tipo: "aerobico" }, { fecha: "2026-11-15", const: { ta: 165, fc: null } },
+  ];
+  const S = K.series(d);
+  check("constantes del diario en orden de fecha (glucosa antes y después, tensión y pulso); sin constantes no hay datos", S.glucosa.map((x) => x.fecha).join() === "2026-11-03,2026-11-10,2026-11-12" && S.ta.length === 3 && S.fc.length === 2 && K.hayDatos(d) && !K.hayDatos([{ fecha: "2026-11-01" }]));
+  check("franjas con las cifras de las reglas de la base (glucosa 70/90/250 de la ADA; tensión 160 y 180 de ESC y ACSM)", JSON.stringify(K.franjas("glucosa").map((f) => f[1])) === "[70,90,250,600]" && JSON.stringify(K.franjas("ta").map((f) => f[0])) === "[0,90,160,180]" && /Por debajo de 90 mg\/dL/.test(kbTxt) && /Entre 126 y 250/.test(kbTxt) && /180\/110/.test(kbTxt) && /160\/100/.test(kbTxt));
+  check("pulso: máximo de Tanaka (208 − 0,7 × edad) y zonas del ACSM; sin franjas sin edad o con fármacos que invalidan el pulso", K.fcMax(72) === 158 && JSON.stringify(K.franjas("fc", { edad: 72 })) === JSON.stringify([[101, 122, "info", "f_moderada"], [122, 152, "precaucion", "f_vigorosa"]]) && K.franjas("fc", { edad: 72, fcNoValida: true }).length === 0 && K.franjas("fc").length === 0);
+  const A = K.avisos(S, { edad: 72 });
+  check("valores para comentar (sin diagnosticar): bajadas y subidas de azúcar, tensiones altas y pulso por encima del máximo", A.map((a) => `${a.clave}:${a.n}`).join() === "a_g_baja:1,a_g_alta:1,a_t_alta:1,a_t_media:1,a_f_alta:1");
+  const g = K.grafica("glucosa", S, { edad: 72 });
+  check("gráfica: un punto por medición (antes y después), franjas, rejilla fina y lectura accesible", (g.svg.match(/class="ct-p /g) || []).length === 4 && g.pts.length === 4 && (g.svg.match(/class="ct-b /g) || []).length >= 3 && /role="img" aria-label="Glucosa · 4 mediciones/.test(g.svg));
+  const txt = K.textoMedico(S, { edad: 72 });
+  check("texto para el médico con rangos, último valor y avisos, sin plurales rotos", /Glucosa: 4 mediciones/.test(txt) && /Tensión de 180 mmHg o más: 1/.test(txt) && !/\{n\}/.test(txt) && K.tx("n_med1") === "1 medición");
+  const ks = Object.keys(K.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas con las mismas variables; fuentes con DOI las de estudios", ["en", "ca", "gl", "eu"].every((l) => Object.keys(K.TXT[l]).length === ks.length && ks.every((x) => K.TXT[l][x] && vars(K.TXT[l][x]) === vars(K.TXT.es[x]))) && K.FUENTES.filter((f) => /J Am Coll|Med Sci/.test(f.txt)).every((f) => f.doi));
+}
+
 console.log("\n«Hoy hace calor»: calor y medicación (mejora grande 10)");
 {
   const C = await import(pathToFileURL(path.join(ROOT, "app/js/calor.js")).href);

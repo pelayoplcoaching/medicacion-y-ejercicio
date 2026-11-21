@@ -36,6 +36,7 @@ app/
     metas.js            Metas de la vida diaria: 8 metas, 4 hitos cada una, pruebas que las miden e insignias en los ejercicios; textos en 5 idiomas (bajo demanda, v1.2)
     mes.js              Resumen del mes: cálculo comparado con el mes anterior e imagen 1080 × 1350 en canvas para compartir (familia o médico); textos en 5 idiomas (bajo demanda, v1.2)
     calor.js            «Hoy hace calor»: consejo por nivel de calor elegido por la persona (sin ubicación), agua, ropa, fármacos con calor y señales de alarma (bajo demanda, v1.2)
+    constantes.js       Mis constantes: gráficas SVG de glucosa, tensión y pulso del diario con franjas, lectura al pasar y tabla; valores para comentar con el médico (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

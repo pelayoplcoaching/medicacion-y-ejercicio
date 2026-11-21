@@ -178,6 +178,11 @@ try {
   await p.check('#mes input[name="mes-para"][value="medico"]', { force: true }); await p.waitForSelector("#mes-sin", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(300);
   check("para el médico: esfuerzo y síntomas; los nombres de los fármacos, solo si se desmarca la casilla", /Esfuerzo medio/.test(await p.textContent("#mes .mes-texto pre")) && !/Medicación:/.test(await p.textContent("#mes .mes-texto pre")) && await p.$eval("#mes-sin", (c) => c.checked));
   await p.click("#mes-cerrar"); await p.waitForTimeout(150);
+  await p.click("#btn-constantes"); await p.waitForSelector("#constantes[open] .ct-svg", { timeout: 8000 }).catch(() => {});
+  check("mis constantes: gráfica de la glucosa y del pulso de la sesión, con franjas, tabla y nada fuera de rango que comentar", (await p.$$("#constantes .ct-svg")).length >= 2 && (await p.$$('#constantes [data-ct="glucosa"] .ct-b')).length >= 3 && (await p.$$("#constantes .ct-tabla table")).length >= 2 && /Ningún valor fuera/.test(await p.textContent("#constantes .ct-avisos")) && /no sirve para medir el esfuerzo/.test(await p.textContent('#constantes [data-ct="fc"]')));
+  { const bb = await p.locator('#constantes [data-ct="glucosa"] .ct-svg').boundingBox(); await p.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2); await p.waitForTimeout(150); }
+  check("al pasar el ratón por la gráfica se lee el valor y la fecha", /140 mg\/dL/.test(await p.textContent('#constantes [data-ct="glucosa"] .ct-tip')) && await p.isVisible('#constantes [data-ct="glucosa"] .ct-tip'));
+  await p.click("#ct-cerrar"); await p.waitForTimeout(150);
   await p.click("#menu-mas > summary"); await p.click("#menu-mas [data-calor-ver]"); await p.waitForSelector("#calor[open] .cal-chips", { timeout: 5000 }).catch(() => {});
   await p.click('#calor [data-nivel="2"]'); await p.waitForSelector("#calor .cal-cab.n2", { timeout: 5000 }).catch(() => {});
   check("calor y medicación: sin ubicación, consejo por nivel, líquidos limitados por la insuficiencia cardiaca y sus fármacos con calor", /no se usa su ubicación/.test(await p.textContent("#calor .cal-priv")) && /primera hora/.test(await p.textContent("#calor .cal-cab")) && (await p.$$("#calor .cal-lista li.fuerte")).length === 1 && (await p.$$("#calor .cal-meds li")).length >= 1 && /112/.test(await p.textContent("#calor .cal-parar")));
