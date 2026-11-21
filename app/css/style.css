@@ -1156,3 +1156,235 @@ body.consulta-pantalla .cabecera { max-width: 1400px; background-image: none; ba
   .cabecera h1, .cabecera .autor, .cabecera .autor strong, .cabecera .subtitulo, .cabecera .intro, .cabecera small { color: #000; }
   .cabecera .logo { box-shadow: none; padding: 0; }
 }
+
+/* ==========================================================================
+   TANDAS DE BELLEZA FBE 1-3 (60 mejoras) - 21/11/2026
+   Estilo tecnologico de fuerzabasadaenevidencia.com: rejilla, hilos de luz,
+   letra de terminal, esquinas de visor y brillos de neon. Sin animaciones
+   continuas nuevas; con "reducir movimiento" no hay transiciones (regla base).
+   El tema de alto contraste se limpia al final (sin degradados ni brillos).
+   ========================================================================== */
+
+/* ---------- TANDA 1: base, formularios y medicacion ---------- */
+/* 1. Radio comun que faltaba (guia, lo esencial, de un vistazo) y brillo de neon */
+:root { --r: var(--r-md); --neon: 0 0 0 1px color-mix(in srgb, var(--marca-clara) 55%, transparent), 0 0 1.8rem -.5rem color-mix(in srgb, var(--marca) 70%, transparent); }
+/* 2. Papel tecnico muy tenue en modo claro */
+:root:not([data-theme="dark"]):not([data-theme="contrast"]) body { background-image: repeating-linear-gradient(0deg, rgba(89, 62, 222, .028) 0 1px, transparent 1px 64px), repeating-linear-gradient(90deg, rgba(89, 62, 222, .028) 0 1px, transparent 1px 64px); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) body { background-image: repeating-linear-gradient(0deg, rgba(164, 156, 255, .035) 0 1px, transparent 1px 64px), repeating-linear-gradient(90deg, rgba(164, 156, 255, .035) 0 1px, transparent 1px 64px); } }
+/* 3. Esquinas de visor en los paneles (la cabecera queda por encima para que el menu "Mas" no se tape) */
+.cabecera { z-index: 20; }
+.panel { position: relative; }
+.panel::before { content: ""; position: absolute; inset: -1px; pointer-events: none; border-radius: inherit; opacity: .6; transition: opacity .25s, inset .25s;
+  --e: color-mix(in srgb, var(--marca-clara) 85%, transparent);
+  background: linear-gradient(var(--e), var(--e)) top left / 16px 2px no-repeat, linear-gradient(var(--e), var(--e)) top left / 2px 16px no-repeat, linear-gradient(var(--e), var(--e)) bottom right / 16px 2px no-repeat, linear-gradient(var(--e), var(--e)) bottom right / 2px 16px no-repeat; }
+.panel:hover::before, .panel:focus-within::before { opacity: 1; }
+/* 4. Titulos de panel: linea fina con nodo de luz */
+.panel > h2 { padding-bottom: 9px; background: linear-gradient(90deg, var(--marca), var(--marca-clara) 70%, var(--oro)) left bottom / 3.2rem 2px no-repeat; }
+/* 5. Etiquetas de campo con mas aire y unidades en letra de terminal */
+.fila > label small, #dosis-wrap .unidad { font-family: var(--mono); font-size: .74rem; letter-spacing: .03em; }
+/* 6. Boton principal: filo interior y brillo de neon al pasar */
+.btn { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14), 0 .6rem 1.4rem -.7rem color-mix(in srgb, var(--accent) 85%, transparent); }
+.btn:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22), 0 .9rem 2rem -.6rem color-mix(in srgb, var(--accent) 95%, transparent); }
+/* 7. Boton secundario: borde que se enciende al pasar */
+.btn-sec:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent); }
+/* 8. Foco: anillo de luz con halo */
+:root:not([data-theme="contrast"]) :is(a, button, summary, input, select, textarea):focus-visible { box-shadow: 0 0 0 6px color-mix(in srgb, var(--marca-clara) 22%, transparent); }
+/* 9. Barra de desplazamiento fina en el color de marca */
+html, .contenedor > aside, .hoja-cuerpo, .hoja-opciones { scrollbar-color: color-mix(in srgb, var(--accent) 55%, transparent) transparent; }
+/* 10. Campos: borde que se ilumina al pasar y al escribir */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line-strong)); }
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); outline: none; }
+/* 11. Desplegables con flecha propia en lila */
+select:not([multiple]) { -webkit-appearance: none; appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1.5l5 5 5-5' fill='none' stroke='%237c69f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 13px center; }
+.utiles .idioma select, .cabecera .utiles .idioma select { padding-right: 26px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1.5l5 5 5-5' fill='none' stroke='%23a49cff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 9px center; background-size: 10px auto; }
+/* 12. Casillas: la fila marcada se nota (fondo y texto en acento) */
+.check { border-radius: var(--r-sm); transition: background-color .15s; }
+.check:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.check:has(input:checked) { color: var(--accent-deep); font-weight: 650; }
+/* 13. Lupa del buscador en el morado de FBE */
+.buscador input { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%237c69f0' stroke-width='2.4' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>"); }
+/* 14. Sugerencias: cristal y barra de luz en la elegida */
+#sugerencias { background: color-mix(in srgb, var(--surface) 94%, transparent); -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3); box-shadow: 0 18px 44px -20px rgba(20, 11, 58, .45), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
+#sugerencias li { position: relative; }
+#sugerencias li:hover::before, #sugerencias li.activa::before, #sugerencias li:focus-visible::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 3px; background: linear-gradient(var(--accent), var(--marca-clara)); }
+#sugerencias li small { font-family: var(--mono); font-size: .72rem; letter-spacing: .02em; }
+/* 15. Medicamentos de la lista: rail de luz a la izquierda y elevacion al pasar */
+#lista-meds li { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--accent) 75%, transparent); }
+#lista-meds li:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); box-shadow: inset 3px 0 0 var(--accent), var(--shadow); }
+#lista-meds li.pausado { box-shadow: inset 3px 0 0 var(--line-strong); }
+/* 16. Dosis en cifras de terminal */
+#lista-meds .med-dosis, .editor input, #dosis { font-variant-numeric: tabular-nums; }
+#lista-meds .med-dosis .editar { font-family: var(--mono); font-size: .8rem; letter-spacing: .01em; }
+/* 17. Chips de datos: rectangulos tecnicos */
+.chip { border-radius: 6px; font-family: var(--mono); font-weight: 600; letter-spacing: .02em; border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent); }
+/* 18. Botones-chip: brillo suave al pasar y al estar activos */
+.chip-btn:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent); }
+.chip-btn.activo, .registro .chip-btn:has(input:checked) { box-shadow: 0 .4rem 1rem -.5rem color-mix(in srgb, var(--accent) 80%, transparent); }
+/* 19. Paciente / profesional: la opcion elegida con filo de luz */
+.modo { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent); }
+.modo button[aria-checked="true"] { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent), 0 .5rem 1.2rem -.7rem color-mix(in srgb, var(--accent) 80%, transparent); }
+/* 20. Pestanas fijas: cristal, hilo de luz debajo y la activa con nodo */
+.tabs { background: color-mix(in srgb, var(--surface-2) 86%, transparent); -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent); }
+.tabs button[aria-selected="true"] { background-image: linear-gradient(90deg, transparent 20%, var(--marca-clara), transparent 80%); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; }
+
+/* ---------- TANDA 2: informe ---------- */
+/* 21. Veredicto: brillo del color del nivel en la esquina y filo interior */
+.veredicto { position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 14%, transparent); }
+.veredicto::after { content: ""; position: absolute; right: 0; top: 0; width: 180px; height: 100%; pointer-events: none; background-image: var(--rejilla); -webkit-mask-image: radial-gradient(90% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(90% 100% at 100% 0%, #000, transparent 70%); opacity: .8; }
+.veredicto > * { position: relative; }
+/* 22. Franja resumen: cifras de terminal y un hilo del color de cada nivel */
+.tile { position: relative; font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+.tile .num { font-family: var(--font); font-stretch: 112%; text-transform: none; letter-spacing: -.03em; }
+.tile::before { content: ""; position: absolute; left: 12px; right: 12px; top: 0; height: 2px; background: linear-gradient(90deg, currentColor, transparent); opacity: .7; }
+/* 23. Lo esencial: borde de degradado de marca */
+.esencial { border: 2px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(135deg, var(--accent), var(--marca-clara) 55%, var(--oro)) border-box; box-shadow: 0 .8rem 2rem -1.2rem color-mix(in srgb, var(--accent) 70%, transparent); }
+.esencial h3 { font-stretch: 110%; }
+/* 24. Puntos de lo esencial con halo */
+.esencial li .punto, details.farmaco ul li.nivel-precaucion .punto, .lista-cambios li.nivel-precaucion .punto { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--precaucion) 70%, transparent); }
+.esencial li.nivel-alerta .punto, details.farmaco ul li.nivel-alerta .punto { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--alerta) 75%, transparent); }
+/* 25. De un vistazo: rotulos de terminal y filo de luz arriba */
+.vistazo h3 { font-stretch: 110%; }
+.semaforo-col { border-top-width: 3px; box-shadow: 0 -6px 14px -10px currentColor; }
+.semaforo-col h4 { font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; }
+.semaforo-col.s-info { color: var(--info); } .semaforo-col.s-precaucion { color: var(--precaucion); } .semaforo-col.s-alerta { color: var(--alerta); }
+.semaforo-col ul { color: var(--fg); }
+/* 26. Tabla del plan: cabecera de terminal y fila resaltada al pasar */
+.tabla-plan thead th { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; border-bottom: 1px solid transparent; background: linear-gradient(90deg, var(--marca-clara), transparent) left bottom / 100% 1px no-repeat; }
+.tabla-plan tbody tr:hover > * { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+/* 27. Secciones plegables: barra de luz a la izquierda al abrirlas */
+details.seccion > summary { position: relative; }
+details.seccion[open] > summary::before { content: ""; position: absolute; left: -10px; top: 50%; height: 26px; margin-top: -13px; width: 3px; border-radius: 3px; background: linear-gradient(var(--accent), var(--marca-clara)); box-shadow: 0 0 10px -2px var(--accent); }
+details.seccion[open] > summary .flecha, details.farmaco[open] summary .flecha { background: var(--accent-soft); color: var(--accent); }
+/* 28. Tarjeta de farmaco: barra del nivel con brillo y anillo al abrir */
+details.farmaco summary .barra { box-shadow: 0 0 10px -2px currentColor; }
+details.farmaco.nivel-alerta summary .barra { color: var(--alerta); } details.farmaco.nivel-precaucion summary .barra { color: var(--precaucion); } details.farmaco.nivel-info summary .barra { color: var(--info); }
+details.farmaco summary:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+details.farmaco[open] { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); box-shadow: var(--shadow); }
+/* 29. Reglas e interacciones: un velo del color del nivel desde el borde */
+article.regla, article.ddi { background: linear-gradient(90deg, color-mix(in srgb, var(--line-strong) 10%, transparent), transparent 40%), var(--surface); }
+article.nivel-alerta, article.ddi-mayor { background: linear-gradient(90deg, color-mix(in srgb, var(--alerta) 7%, transparent), transparent 40%), var(--surface); }
+article.nivel-precaucion, article.ddi-moderada { background: linear-gradient(90deg, color-mix(in srgb, var(--precaucion) 8%, transparent), transparent 40%), var(--surface); }
+article.nivel-info { background: linear-gradient(90deg, color-mix(in srgb, var(--info) 7%, transparent), transparent 40%), var(--surface); }
+/* 30. Sellos de nivel: rectangulos de terminal */
+.nivel { border-radius: 6px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .68rem; }
+/* 31. Fuentes y pies de tarjeta en letra de terminal */
+article footer, details.farmaco .fuentes, .fuente-regla { font-family: var(--mono); font-size: .72rem; letter-spacing: .01em; }
+/* 32. Indice lateral: carril de luz en la seccion activa */
+@media (min-width: 1240px) {
+  .indice-informe { border-left: 0; background: linear-gradient(var(--marca-clara), transparent) left top / 1px 100% no-repeat; }
+  .indice-informe a.activo { border-left-color: transparent; background: linear-gradient(90deg, var(--accent-soft), transparent); box-shadow: inset 3px 0 0 var(--accent), -6px 0 14px -10px var(--accent); }
+  .indice-informe a.activo::before { content: "> "; font-family: var(--mono); color: var(--oro); }
+}
+/* 33. Hoy: hilo de luz arriba y rejilla en la esquina */
+.hoy, .plan-dia, .completitud { position: relative; overflow: hidden; }
+.hoy::before, .plan-dia::before { content: ""; position: absolute; left: 10%; right: 10%; top: 0; height: 1px; background: var(--hilo); pointer-events: none; }
+.hoy::after { content: ""; position: absolute; right: 0; top: 0; width: 160px; height: 100%; pointer-events: none; background-image: var(--rejilla); -webkit-mask-image: radial-gradient(80% 90% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(80% 90% at 100% 0%, #000, transparent 70%); }
+.hoy > * { position: relative; }
+/* 34. Cifras del dia y de la semana alineadas, en terminal */
+.hoy-resumen b, .plan-obj p, .evo-tiles .num, .delta { font-variant-numeric: tabular-nums; }
+.hoy-resumen b { font-family: var(--mono); }
+/* 35. Barra de "su plan esta al N %": degradado con nodo de luz al final */
+.comp-barra { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
+.comp-barra span { background: linear-gradient(90deg, var(--accent), var(--marca-clara)); box-shadow: 0 0 10px -1px color-mix(in srgb, var(--marca-clara) 80%, transparent); }
+/* 36. Descargas: panel de terminal con rejilla y borde de degradado */
+.descargas { position: relative; overflow: hidden; border: 1px solid transparent; background: linear-gradient(var(--accent-soft), var(--accent-soft)) padding-box, linear-gradient(135deg, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--marca-clara) 30%, transparent), color-mix(in srgb, var(--oro) 50%, transparent)) border-box; }
+.descargas::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: var(--rejilla); -webkit-mask-image: radial-gradient(70% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(70% 100% at 100% 0%, #000, transparent 70%); }
+.descargas > * { position: relative; z-index: 1; }
+.descargas h3 { font-stretch: 110%; }
+/* 37. Senales de alarma: carril rojo con brillo */
+details.alarma { box-shadow: inset 4px 0 0 var(--alerta), 0 0 0 0 transparent; }
+details.alarma[open] { box-shadow: inset 4px 0 0 var(--alerta), 0 .6rem 1.6rem -1.2rem color-mix(in srgb, var(--alerta) 70%, transparent); }
+/* 38. "Si nota algo": acento a la izquierda al abrir */
+details.sintomas[open] { box-shadow: inset 3px 0 0 var(--accent); }
+/* 39. El signo + de las interacciones, en terminal */
+.ddi .mas { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+/* 40. Avisos: carril de acento a la izquierda */
+.banner, .aviso-import, .util, .plan-prog { box-shadow: inset 3px 0 0 color-mix(in srgb, currentColor 55%, transparent); }
+
+/* ---------- TANDA 3: mi plan, hojas, navegacion y detalles ---------- */
+/* 41. Anillo del objetivo semanal: valor con halo y cifra de terminal */
+.anillo .valor, .anillo-crono .valor { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 55%, transparent)); }
+.anillo .num { font-family: var(--mono); font-weight: 700; }
+/* 42. Tira de dias: hoy con anillo de luz, el elegido con borde de degradado */
+.tira .dia { position: relative; transition: border-color .2s, box-shadow .2s; }
+.tira .dia.hoy { box-shadow: 0 0 0 1px var(--accent), 0 0 14px -4px var(--accent); }
+.tira .dia.sel { border-color: transparent; background: linear-gradient(var(--accent-soft), var(--accent-soft)) padding-box, linear-gradient(160deg, var(--accent), var(--marca-clara)) border-box; }
+.tira .dia .n { font-family: var(--mono); font-weight: 700; }
+/* 43. Bloques de la sesion: minutos en terminal y separadores punteados */
+.bloques .min { font-family: var(--mono); font-weight: 700; }
+.bloques li { border-top-style: dashed; }
+/* 44. Dia del plan: esquinas de visor */
+.plan-dia::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; --e: color-mix(in srgb, var(--marca-clara) 80%, transparent);
+  background: linear-gradient(var(--e), var(--e)) top left / 12px 2px no-repeat, linear-gradient(var(--e), var(--e)) top left / 2px 12px no-repeat, linear-gradient(var(--e), var(--e)) bottom right / 12px 2px no-repeat, linear-gradient(var(--e), var(--e)) bottom right / 2px 12px no-repeat; opacity: .7; }
+.plan-dia > * { position: relative; }
+/* 45. Cronometro de la sesion: cifras de terminal con halo */
+.crono #crono { font-family: var(--mono); font-weight: 700; text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent); }
+/* 46. Ejercicios de la sesion guiada: casilla marcada con brillo */
+.bloques.grande label:has(input:checked) { color: var(--muted); }
+.bloques.grande input:checked { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 60%, transparent)); }
+/* 47. Hojas y fichas: fondo noche con desenfoque y hilo de luz arriba */
+dialog.hoja::backdrop, dialog.ficha::backdrop { background: rgba(20, 11, 58, .5); -webkit-backdrop-filter: blur(4px) saturate(1.2); backdrop-filter: blur(4px) saturate(1.2); }
+dialog.hoja, dialog.ficha { box-shadow: 0 30px 80px -30px rgba(20, 11, 58, .7), 0 0 0 1px color-mix(in srgb, var(--marca-clara) 22%, transparent); }
+.hoja-cab, .ficha-cab { background: var(--hilo) bottom / 100% 1px no-repeat, var(--surface); border-bottom-color: transparent; }
+.hoja-cab p { font-stretch: 110%; }
+@media (max-width: 639px) { dialog.ficha::before { background: linear-gradient(90deg, var(--marca), var(--marca-clara)); } }
+/* 48. Opciones para anadir: icono con anillo de luz y elevacion al pasar */
+.hoja-opciones button { transition: border-color .15s, background-color .15s, box-shadow .2s; }
+.hoja-opciones button svg { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent), 0 0 14px -6px var(--accent); }
+.hoja-opciones button:hover, .hoja-opciones button:focus-visible { box-shadow: 0 .6rem 1.4rem -1rem color-mix(in srgb, var(--accent) 80%, transparent); }
+/* 49. Menu "Mas": cristal y hilo de luz */
+.menu-lista { background: var(--hilo) top / 100% 1px no-repeat, color-mix(in srgb, var(--surface) 94%, transparent); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); box-shadow: 0 20px 50px -20px rgba(20, 11, 58, .55), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
+.menu-lista .ic-menu { background: var(--accent-soft); color: var(--accent); }
+.cabecera .menu-lista small { font-family: var(--font); font-size: .8rem; letter-spacing: 0; color: var(--muted); }
+/* 50. Barra inferior del movil: hilo de luz arriba e indicador de luz en la activa */
+.barra-inferior { border-top-color: transparent; background: var(--hilo) top / 100% 1px no-repeat, color-mix(in srgb, var(--surface) 86%, transparent); }
+.barra-inferior button.activo::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--marca-clara)); box-shadow: 0 0 10px var(--marca-clara); }
+.barra-inferior button.activo svg { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 55%, transparent)); }
+/* 51. Insignias numericas en terminal con aro de separacion */
+.nav-badge, .tabs .cnt, .chip-btn b { font-family: var(--mono); font-weight: 700; }
+.nav-badge { box-shadow: 0 0 0 2px var(--surface); }
+/* 52. Recorrido en tres pasos: el actual con luz, los hechos con brillo verde */
+.recorrido li.actual b { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent), 0 0 12px -2px var(--accent); }
+.recorrido li.hecho b, .pasos .paso.hecho b { box-shadow: 0 0 10px -3px var(--info); }
+.recorrido li b, .pasos .paso b { font-family: var(--mono); }
+/* 53. Avisos flotantes: cristal noche con filo lila */
+.toast { background: rgba(20, 11, 58, .92); color: #fff; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .5), 0 0 0 1px rgba(164, 156, 255, .35); }
+.toast .btn-sec { color: #fff; border-color: rgba(164, 156, 255, .5); }
+/* 54. Visita guiada: caja con borde de degradado y foco con halo */
+.tour-caja { border: 1px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(135deg, var(--accent), var(--marca-clara), var(--oro)) border-box; }
+.tour-fondo { background: rgba(20, 11, 58, .55); }
+.tour-foco { box-shadow: 0 0 0 10px color-mix(in srgb, var(--marca-clara) 20%, transparent); }
+/* 55. Boton de ayuda "?": letra de terminal y brillo al pasar */
+.btn-ayuda { font-family: var(--mono); font-weight: 700; }
+.btn-ayuda:hover, .btn-ayuda:focus-visible { box-shadow: 0 0 10px -2px var(--accent); }
+/* 56. Palabras del glosario: subrayado de puntos en lila */
+abbr.glos { text-decoration-color: var(--marca-clara); text-decoration-thickness: 2px; }
+/* 57. Carga de la base: barrido de luz lila (solo mientras carga) */
+body.cargando aside .panel::after { background-image: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--marca-clara) 16%, transparent) 50%, transparent 80%); }
+/* 58. Estado vacio: ilustracion sobre un circulo de rejilla con halo */
+.ilustracion { position: relative; isolation: isolate; pointer-events: none; }
+body.sin-meds .ilustracion::before { content: ""; pointer-events: none; position: absolute; left: 50%; top: 50%; width: 180px; height: 130px; margin: -65px 0 0 -90px; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--marca-clara) 24%, transparent), transparent 70%), var(--rejilla); -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent); mask-image: radial-gradient(closest-side, #000 45%, transparent); }
+/* 59. Pie y firma: hilo de luz y enlaces en terminal */
+.pie { border-top: 0; background: var(--hilo) top / 100% 1px no-repeat; }
+.pie-legal a { font-family: var(--mono); font-size: .72rem; letter-spacing: .02em; }
+/* 60. Consulta del profesional: panel tecnico con rotulo de terminal */
+.consulta { border-style: solid; border-color: color-mix(in srgb, var(--accent) 22%, var(--line)); background: linear-gradient(var(--surface-2), var(--surface-2)); box-shadow: inset 3px 0 0 var(--accent); }
+.consulta .consulta-sel { font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; }
+.consulta .consulta-sel select { font-family: var(--font); font-size: 1rem; letter-spacing: 0; text-transform: none; }
+@media (min-width: 960px) { .consulta-bloque { border-top: 0; background: linear-gradient(90deg, var(--accent), var(--marca-clara) 60%, transparent) top / 100% 2px no-repeat; } .consulta-bloque-t { font-stretch: 110%; } }
+
+/* ---------- Limpieza: alto contraste, impresion ---------- */
+:root[data-theme="contrast"] .panel::before, :root[data-theme="contrast"] .veredicto::after, :root[data-theme="contrast"] .tile::before, :root[data-theme="contrast"] .hoy::before, :root[data-theme="contrast"] .hoy::after, :root[data-theme="contrast"] .plan-dia::before, :root[data-theme="contrast"] .plan-dia::after, :root[data-theme="contrast"] .descargas::after, :root[data-theme="contrast"] details.seccion[open] > summary::before, :root[data-theme="contrast"] .ilustracion::before, :root[data-theme="contrast"] .barra-inferior button.activo::before { display: none; }
+:root[data-theme="contrast"] :is(.esencial, .descargas, .tour-caja) { background: var(--surface); border-color: var(--accent); }
+:root[data-theme="contrast"] :is(article.regla, article.ddi, .consulta, .tira .dia.sel) { background: var(--surface); }
+:root[data-theme="contrast"] :is(#lista-meds li, .btn, .btn-sec, .esencial, .modo button, .tabs, .chip-btn, .tira .dia.hoy, details.farmaco, .semaforo-col, details.alarma, details.sintomas, .banner, .aviso-import, .util, .plan-prog, .veredicto, .consulta, #sugerencias, .menu-lista, .toast, .hoja-opciones button, .nav-badge) { box-shadow: none; }
+:root[data-theme="contrast"] :is(.panel > h2, .pie, .barra-inferior, .menu-lista, .hoja-cab, .ficha-cab, .tabla-plan thead th, .comp-barra span) { background-image: none; }
+:root[data-theme="contrast"] :is(.anillo .valor, .anillo-crono .valor, .barra-inferior button.activo svg, .bloques.grande input:checked) { filter: none; }
+:root[data-theme="contrast"] .crono #crono { text-shadow: none; }
+:root[data-theme="contrast"] .toast { background: var(--fg); color: var(--bg); }
+@media print {
+  body { background-image: none !important; }
+  .panel::before, .veredicto::after, .tile::before, .hoy::before, .hoy::after, .plan-dia::before, .plan-dia::after, .descargas::after, details.seccion > summary::before, .ilustracion::before { display: none !important; }
+  .esencial { background: #fff !important; border-color: #593ede !important; box-shadow: none !important; }
+  .descargas { background: none !important; border-color: #ddd !important; }
+}
