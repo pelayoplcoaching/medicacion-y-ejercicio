@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211022";
-import { APP_VERSION } from "./version.js?v=202611211022";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211022";
-import { picto } from "./pictos.js?v=202611211022";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211022";
-import { cargarScript } from "./libs.js?v=202611211022";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211022";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211022";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211158";
+import { APP_VERSION } from "./version.js?v=202611211158";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211158";
+import { picto } from "./pictos.js?v=202611211158";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211158";
+import { cargarScript } from "./libs.js?v=202611211158";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211158";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211158";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -1706,6 +1706,7 @@ function abrirSesion(tipo, fecha = hoyISO()) {
   cuerpo.innerHTML = `
     <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
     <section class="chequeo" id="chequeo">
+      <img class="ses-img" src="assets/img/sesion-antes.webp" alt="" width="104" height="104" decoding="async">
       <h3>${t("chequeo.titulo")}</h3>
       <p class="muted">${t("chequeo.intro")}</p>
       <ul>${chequeo.map((c) => `<li class="nivel-${c.nivel === "rojo" ? "alerta" : "precaucion"}"><label><input type="checkbox" data-id="${c.id}"><span>${c.texto}${c.farmacos.length ? ` <small>(${t("chequeo.por", { f: c.farmacos.join(", ") })})</small>` : ""}</span></label></li>`).join("")}</ul>
@@ -1720,6 +1721,7 @@ function abrirSesion(tipo, fecha = hoyISO()) {
       <ol class="bloques grande con-picto" data-sesion='${JSON.stringify(ses.bloques.map((b) => ({ nombre: b.nombre, detalle: b.detalle, facil: b.facil, dificil: b.dificil }))).replace(/'/g, "&#39;")}'>${ses.bloques.map((b, i) => bloqueHtml(b, i, { grande: true })).join("")}</ol>
       <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
       <div class="sesion-fin">
+        <img class="ses-img" src="assets/img/sesion-fin.webp" alt="" width="104" height="104" loading="lazy" decoding="async">
         <label>${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output></label>
         ${cs.length ? `<form id="sesion-const" class="registro">${camposConstantes()}</form>` : ""}
         <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
@@ -2060,11 +2062,11 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
 
 /* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
 const SPPB_PASOS = [
-  { id: "lado", max: 10, pict: "unpie" },
-  { id: "semitandem", max: 10, pict: "unpie" },
-  { id: "tandem", max: 10, pict: "talonpunta" },
-  { id: "marcha", pict: "marcha" },
-  { id: "silla", pict: "silla" },
+  { id: "lado", max: 10, pict: "unpie", img: true },
+  { id: "semitandem", max: 10, pict: "unpie", img: true },
+  { id: "tandem", max: 10, pict: "talonpunta", img: true },
+  { id: "marcha", pict: "marcha", img: true },
+  { id: "silla", pict: "silla", img: true },
 ];
 let sppbCrono = null, sppbInicio = 0;
 function abrirSppb() {
@@ -2076,7 +2078,8 @@ function abrirSppb() {
     const paso = SPPB_PASOS[i];
     cuerpo.innerHTML = `
       <p class="muted sppb-progreso">${t("sppb.paso", { n: i + 1, t: SPPB_PASOS.length })}</p>
-      <h2>${picto(paso.pict)} ${t("sppb.t." + paso.id)}</h2>
+      <h2>${paso.img ? "" : picto(paso.pict)} ${t("sppb.t." + paso.id)}</h2>
+      ${paso.img ? `<figure class="sppb-img"><img src="assets/img/sppb-${paso.id}.webp" alt="" width="320" height="320" decoding="async"></figure>` : ""}
       <p>${t("sppb.x." + paso.id)}</p>
       <p class="muted">${t("sppb.seguridad")}</p>
       <div class="crono">${anilloCrono(0)}<span id="sppb-crono">0,0 s</span><button type="button" class="btn sm" id="sppb-ini">${t("sesion.iniciar")}</button></div>
@@ -2193,6 +2196,8 @@ const TOUR = [
   { sel: "#barra-inferior", clave: "barra", opcional: true },
   { sel: "#menu-mas", clave: "mas" },
 ];
+/** Ilustración de cada paso del recorrido (assets/img); los pasos sin imagen la ocultan. */
+const TOUR_IMG = { datos: "tour-datos", buscar: "tour-medicacion", anadir: "inicio-vacio", informe: "tour-informe", barra: "tour-plan" };
 let tourI = -1;
 function iniciarTour() { tourI = -1; $("#tour").hidden = false; document.documentElement.classList.remove("retorno"); tourPaso(1); }
 function tourPaso(dir) {
@@ -2205,6 +2210,7 @@ function tourPaso(dir) {
   el.classList.add("tour-foco");
   el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   const visibles = TOUR.filter((p) => !p.opcional || ($(p.sel) && !$(p.sel).hidden && (p.sel !== "#barra-inferior" || matchMedia("(max-width: 959px)").matches)));
+  { const img = $("#tour-img"), f = TOUR_IMG[paso.clave]; img.hidden = !f; if (f) img.src = `assets/img/${f}.webp`; }
   $("#tour-paso").textContent = t("tour.paso", { n: visibles.indexOf(paso) + 1, t: visibles.length });
   $("#tour-titulo").textContent = t("tour." + paso.clave + ".t");
   $("#tour-texto").textContent = t("tour." + paso.clave + ".x");

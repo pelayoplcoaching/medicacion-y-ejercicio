@@ -1886,3 +1886,39 @@ small[data-i18n="pro.nota"]::before { content: "i"; flex: 0 0 18px; height: 18px
   input[type="radio"] { -webkit-appearance: radio !important; appearance: auto !important; background: none !important; }
   .ficha-cuerpo, .hoja-cuerpo { background: none !important; }
 }
+
+/* ==========================================================================
+   IMAGENES DE LA APP (bloque PA1) - 21/11/2026
+   Ilustraciones en tarjetas oscuras redondeadas: su borde se funde en el
+   color noche, asi que valen igual en tema claro y oscuro. Decorativas
+   (alt vacio), ligeras (WebP) y con carga diferida.
+   ========================================================================== */
+/* Estado vacio de la lista: la ilustracion de inicio en lugar del dibujo */
+body.sin-meds .ilustracion::before { display: none; }
+.ilustracion img { display: block; width: min(240px, 72%); height: auto; border-radius: 22px; box-shadow: 0 1rem 2.4rem -1.4rem rgba(20, 11, 58, .6); }
+/* Escritorio sin medicacion: la ilustracion grande en la columna del informe (sustituye al boceto) */
+@media (min-width: 960px) {
+  body.sin-meds .contenedor::after { content: ""; min-height: 0; aspect-ratio: 16 / 9; padding: 0; border: 1px solid rgba(164, 156, 255, .28); background: url("../assets/img/inicio-escritorio.webp") center / cover no-repeat, #140b3a; -webkit-mask-image: none; mask-image: none; box-shadow: var(--shadow); }
+  :root[data-theme="contrast"] body.sin-meds .contenedor::after { background: url("../assets/img/inicio-escritorio.webp") center / cover no-repeat, #140b3a; box-shadow: none; }
+}
+/* Recorrido guiado: ilustracion pequena de cada paso a la izquierda del titulo */
+.tour-img { float: left; width: 88px; height: 88px; margin: 2px 14px 6px 0; border-radius: 18px; box-shadow: 0 .6rem 1.4rem -.8rem rgba(20, 11, 58, .6); }
+.tour-img[hidden] { display: none; }
+.tour-caja .acciones { clear: both; }
+/* Test SPPB: la persona en cada posicion, grande y centrada */
+.sppb-img { margin: 4px 0 12px; }
+.sppb-img img { display: block; width: min(300px, 100%); height: auto; margin-inline: auto; border-radius: 22px; box-shadow: 0 1rem 2.4rem -1.4rem rgba(20, 11, 58, .6); }
+/* Copia cifrada: ilustracion arriba de la ventana */
+.dlg-img { display: block; width: 132px; height: auto; margin: 2px auto 10px; border-radius: 20px; }
+:root[data-theme="contrast"] :is(.ilustracion img, .tour-img, .sppb-img img) { box-shadow: none; }
+@media print { .tour-img, .sppb-img, .dlg-img { display: none !important; } }
+/* Sesion guiada: ilustracion pequena del chequeo previo y del final, a la derecha */
+.ses-img { float: right; width: 104px; height: 104px; margin: 0 0 8px 14px; border-radius: 18px; box-shadow: 0 .6rem 1.4rem -.8rem rgba(20, 11, 58, .6); }
+.sesion-fin { display: flow-root; }
+.sesion-fin > .ses-img { margin-top: -2px; }
+#chequeo > ul, #chequeo > .acciones, #chequeo > .chequeo-resultado { clear: both; }
+/* Cribado: ilustracion a la derecha del texto de ayuda */
+.crib-img { float: right; width: 96px; height: 96px; margin: 6px 0 8px 12px; border-radius: 16px; box-shadow: 0 .6rem 1.4rem -.8rem rgba(20, 11, 58, .6); }
+#bloque-cribado fieldset.crib-preg { clear: both; }
+:root[data-theme="contrast"] :is(.ses-img, .crib-img) { box-shadow: none; }
+@media print { .ses-img, .crib-img { display: none !important; } }
