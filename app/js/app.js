@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211925";
-import { APP_VERSION } from "./version.js?v=202611211925";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211925";
-import { picto } from "./pictos.js?v=202611211925";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211925";
-import { cargarScript } from "./libs.js?v=202611211925";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211925";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211925";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211952";
+import { APP_VERSION } from "./version.js?v=202611211952";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211952";
+import { picto } from "./pictos.js?v=202611211952";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211952";
+import { cargarScript } from "./libs.js?v=202611211952";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211952";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211952";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -772,7 +772,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211925").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211952").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1478,6 +1478,14 @@ function contarCifra(el, clave) {
   };
   requestAnimationFrame(paso);
 }
+/** Mejoras 689-696: aplica un cambio con una transición de vista (lista, día del plan, recorrido) si el navegador sabe y se permite el movimiento.
+ *  La clase en <html> dice al CSS qué piezas se animan y apaga el fundido general de la página. */
+function conTransicion(clase, fn) {
+  if (!document.startViewTransition || !MOV.ok()) { fn(); return; }
+  const raiz = document.documentElement; raiz.classList.add(clase);
+  const vt = document.startViewTransition(fn);
+  vt.finished.finally(() => raiz.classList.remove(clase));
+}
 /** Mejora 408: la insignia late una vez cuando cambia su número. */
 function latirSiCambia(el, valor) {
   const nuevo = String(valor), antes = el.textContent;
@@ -1547,6 +1555,7 @@ function render() {
   let k = 0;
   estado.meds.forEach((m, i) => {
     const li = document.createElement("li");
+    li.style.setProperty("--vtn", "med-" + String(m.pid || m.nombre || i).toLowerCase().replace(/[^a-z0-9-]+/g, "-")); // mejora 689: nombre estable para la transición de la lista
     if (m.libre) {
       li.classList.add("libre");
       li.innerHTML = `
@@ -1554,7 +1563,7 @@ function render() {
         <div class="med-dosis">${m.dosis != null ? `${m.dosis.toLocaleString("es-ES")} mg${m.tomas > 1 ? ` × ${m.tomas}/día` : ""}` : t("lista.sin_dosis")}</div>
         <div class="med-acciones"><button type="button" class="pausar" title="${t("pegar.avisar")}" aria-label="${t("pegar.avisar")} ${m.nombre}">${icono("correo")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${m.nombre}">×</button></div>`;
       li.querySelector(".pausar").addEventListener("click", () => window.open(urlSugerencia({ lista: "No reconocido: " + m.nombre }), "_blank", "noopener"));
-      li.querySelector(".quitar").addEventListener("click", () => { const q = estado.meds.splice(i, 1)[0]; guardar(); render(); toast(t("lista.quitado", { f: m.nombre }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds.splice(Math.min(i, estado.meds.length), 0, q); guardar(); render(); } }); });
+      li.querySelector(".quitar").addEventListener("click", () => { const q = estado.meds[i]; conTransicion("vt-lista", () => { estado.meds.splice(i, 1); guardar(); render(); }); toast(t("lista.quitado", { f: m.nombre }), { accion: t("lista.deshacer"), onAccion: () => conTransicion("vt-lista", () => { estado.meds.splice(Math.min(i, estado.meds.length), 0, q); guardar(); render(); }) }); });
       ul.append(li);
       return;
     }
@@ -1562,9 +1571,9 @@ function render() {
     if (!it) return;
     if (m.combo && (i === 0 || estado.meds[i - 1].combo !== m.combo)) { // cabecera de la combinación a dosis fijas: la marca y, debajo, cada principio por separado
       const n = estado.meds.filter((x) => x.combo === m.combo).length;
-      const cab = document.createElement("li"); cab.className = "combo-cab";
+      const cab = document.createElement("li"); cab.className = "combo-cab"; cab.style.setProperty("--vtn", "combo-" + String(m.combo).toLowerCase().replace(/[^a-z0-9-]+/g, "-"));
       cab.innerHTML = `<div><strong>${t("lista.combo_cab", { m: m.combo })}</strong><small>${t("lista.combo_nota", { n })}</small></div><button type="button" class="quitar" aria-label="${t("lista.quitar_combo")} ${m.combo}" title="${t("lista.quitar_combo")}">×</button>`;
-      cab.querySelector(".quitar").addEventListener("click", () => { const quitados = estado.meds.filter((x) => x.combo === m.combo); estado.meds = estado.meds.filter((x) => x.combo !== m.combo); guardar(); render(); toast(t("lista.quitado", { f: m.combo }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds.push(...quitados); guardar(); render(); } }); });
+      cab.querySelector(".quitar").addEventListener("click", () => { const quitados = estado.meds.filter((x) => x.combo === m.combo); conTransicion("vt-lista", () => { estado.meds = estado.meds.filter((x) => x.combo !== m.combo); guardar(); render(); }); toast(t("lista.quitado", { f: m.combo }), { accion: t("lista.deshacer"), onAccion: () => conTransicion("vt-lista", () => { estado.meds.push(...quitados); guardar(); render(); }) }); });
       ul.append(cab);
     }
     if (m.combo) li.classList.add("en-combo");
@@ -1588,10 +1597,10 @@ function render() {
       m.momentos = MOMENTOS.filter((x) => set.has(x)); if (m.momentos.length) m.tomas = m.momentos.length;
       guardar(); render();
     }));
-    li.querySelector(".pausar").addEventListener("click", () => { m.pausado = !m.pausado; guardar(); render(); toast(m.pausado ? t("lista.pausado_msg", { f: it.principio.nombre }) : t("lista.reanudado_msg", { f: it.principio.nombre }), { ms: 3500 }); });
+    li.querySelector(".pausar").addEventListener("click", () => { const nuevo = !m.pausado; conTransicion("vt-lista", () => { m.pausado = nuevo; guardar(); render(); }); toast(nuevo ? t("lista.pausado_msg", { f: it.principio.nombre }) : t("lista.reanudado_msg", { f: it.principio.nombre }), { ms: 3500 }); });
     li.querySelector(".quitar").addEventListener("click", () => {
-      const quitado = estado.meds.splice(i, 1)[0]; estado.ejemplo = false; guardar(); render();
-      toast(t("lista.quitado", { f: it.principio.nombre }), { accion: t("lista.deshacer"), onAccion: () => { estado.meds.splice(Math.min(i, estado.meds.length), 0, quitado); guardar(); render(); } });
+      const quitado = estado.meds[i]; conTransicion("vt-lista", () => { estado.meds.splice(i, 1); estado.ejemplo = false; guardar(); render(); });
+      toast(t("lista.quitado", { f: it.principio.nombre }), { accion: t("lista.deshacer"), onAccion: () => conTransicion("vt-lista", () => { estado.meds.splice(Math.min(i, estado.meds.length), 0, quitado); guardar(); render(); }) });
     });
     li.querySelector(".editar").addEventListener("click", () => editarEnSitio(li, m, it));
     ul.append(li);
@@ -1864,7 +1873,7 @@ function renderPlan(cont) {
     <p class="esencial-nota">${t("plan.nota")}</p>`;
   cont.append(sec);
   { const tira = sec.querySelector(".tira"); centrarEnFila(tira, tira.querySelector(".dia.sel") || tira.querySelector(".dia.hoy")); bordesDesplazables(tira); } // mejora 201
-  sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { diaPlan = b.dataset.iso; render(); }));
+  sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { if (diaPlan === b.dataset.iso) return; conTransicion("vt-dia", () => { diaPlan = b.dataset.iso; render(); }); })); // mejoras 693-694
   sec.querySelectorAll(".dias-chips [data-dia]").forEach((b) => b.addEventListener("click", () => {
     const d = Number(b.dataset.dia); const set = new Set(estado.plan.dias);
     if (set.has(d)) { if (set.size === 1) { toast(t("plan.dias_min"), { ms: 3000 }); return; } set.delete(d); } else set.add(d);
@@ -2405,6 +2414,7 @@ const TOUR_IMG = { datos: "tour-datos", buscar: "tour-medicacion", anadir: "inic
 let tourI = -1;
 function iniciarTour() { tourI = -1; $("#tour").hidden = false; document.documentElement.classList.remove("retorno"); tourPaso(1); }
 function tourPaso(dir) {
+  const habia = tourI >= 0 && !$("#tour").hidden; // mejora 695: si ya había caja, se desliza al sitio nuevo
   let i = tourI + dir;
   while (TOUR[i] && TOUR[i].opcional && (!$(TOUR[i].sel) || $(TOUR[i].sel).hidden || (TOUR[i].sel === "#barra-inferior" && !matchMedia("(max-width: 959px)").matches))) i += dir;
   if (!TOUR[i]) return cerrarTour();
@@ -2420,8 +2430,10 @@ function tourPaso(dir) {
   $("#tour-texto").textContent = t("tour." + paso.clave + ".x");
   $("#tour-sig").textContent = visibles.indexOf(paso) === visibles.length - 1 ? t("tour.fin") : t("tour.sig");
   setTimeout(() => $("#tour-sig").focus({ preventScroll: true }), 50);
-  colocarTour(null); clearTimeout(tourTimer);
-  tourTimer = setTimeout(() => colocarTour(el), matchMedia("(prefers-reduced-motion: reduce)").matches ? 30 : 480); // tras el desplazamiento suave
+  const deslizar = habia && document.startViewTransition && MOV.ok();
+  if (deslizar) $("#tour-flecha").hidden = true; else colocarTour(null);
+  clearTimeout(tourTimer);
+  tourTimer = setTimeout(() => (deslizar ? conTransicion("vt-tour", () => colocarTour(el)) : colocarTour(el)), matchMedia("(prefers-reduced-motion: reduce)").matches ? 30 : 480); // tras el desplazamiento suave
 }
 /** Mejora 217: la caja del recorrido junto a lo que explica, con una flecha hacia ello. Sin sitio, se queda donde la pone el CSS. */
 let tourTimer = null;

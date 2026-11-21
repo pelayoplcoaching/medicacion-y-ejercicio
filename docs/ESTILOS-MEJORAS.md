@@ -708,3 +708,159 @@ Este documento se generó en la limpieza del 21/11/2026 a partir de los comentar
 | 678 | Ficha de consulta: los resultados con el filo de luz de la busqueda | `#ficha-sugerencias li` |
 | 679 | Alto contraste: sin luces, anillos, rejillas ni mascaras de esta ronda | `:root[data-theme="contrast"] :is(#perfil li .num, .glosario dt, .ddi .mas, .timeline .hora` |
 | 680 | Impresion: nada de lo nuevo | `.contenedor > aside` |
+
+## TRES TANDAS 681-830: SALIDAS Y TRANSICIONES DE VISTA, ADAPTACION AL DISPOSITIVO Y DETALLES Mismas reglas: una vez y nunc
+
+| N.º | Qué hace | Selector |
+|---|---|---|
+| 681 | Ventanas en el movil: se cierran bajando | `html:not(.pa-quieto) :is(dialog.ficha, dialog.hoja)` |
+| 683 | Hojas (anadir, ayuda): tambien se cierran bajando | `html:not(.pa-quieto) dialog.hoja:not([open])` |
+| 684 | El velo de detras de las ventanas se desvanece al cerrar | `html:not(.pa-quieto) dialog::backdrop` |
+| 685 | Menu "Mas": se desvanece al cerrarse | `html:not(.pa-quieto) details.menu-mas::details-content` |
+| 686 | Resultados del buscador: se desvanecen al cerrarse | `html:not(.pa-quieto) :is(#sugerencias, #ficha-sugerencias)` |
+| 687 | Y los de la ficha de consulta | `html:not(.pa-quieto) :is(#sugerencias, #ficha-sugerencias)` |
+| 688 | Aviso breve: entra desde un leve desenfoque | `html:not(.pa-quieto) .toast` |
+| 699 | El titulo "Pauta Activa" se despliega a lo ancho al abrir | `html:not(.pa-quieto) .cabecera h1` |
+| 717 | Sesion: la casilla de cada bloque salta al marcarla | `` |
+| 727 | Chequeo antes de la sesion: la casilla salta al marcarla | `html:not(.pa-quieto) :is(.bloques.grande input, #chequeo input, #fb-tipos input, .crib-pre` |
+| 728 | Sugerencias: la casilla de cada tipo salta al marcarla | `html:not(.pa-quieto) :is(.bloques.grande input, #chequeo input, #fb-tipos input, .crib-pre` |
+| 729 | Cribado de seguridad: la respuesta elegida salta | `html:not(.pa-quieto) :is(.bloques.grande input, #chequeo input, #fb-tipos input, .crib-pre` |
+| 723 | Paginas: al saltar a un apartado desde un enlace, su titulo destella | `html:not(.pa-quieto) :is(main.legal, main.acerca, .pres) section:target > h2` |
+| 724 | Informe: al saltar desde el indice, el apartado destella | `html:not(.pa-quieto) :is(#veredicto, #hoy, #esencial, #vistazo, #detalle-t, #descargas):ta` |
+| 682 | Ventanas y hojas en escritorio: se cierran alejandose | `html:not(.pa-quieto) :is(dialog.ficha, dialog.hoja):not([open])` |
+| 710 | Ventanas largas: la linea de lectura se vuelve dorada al final | `html:not(.pa-quieto) :is(.ficha-cab, .hoja-cab)::after` |
+| 711 | Y en las hojas | `html:not(.pa-quieto) :is(.ficha-cab, .hoja-cab)::after` |
+| 702 | Titulos de los paneles de datos y medicacion: se despliegan a lo ancho al llegar | `html:not(.pa-quieto) :is(#panel-datos > h2, #panel-medicacion .cab-panel > h2)` |
+| 689-696 | Transiciones de vista de la lista, del plan y del recorrido (las lanza app.js con conTransicion) | `html.vt-lista #lista-meds > li` |
+| 689 | Lista: al quitar un medicamento, el resto se recoloca deslizandose | `html.vt-lista #lista-meds > li` |
+| 690 | Lista: el que se quita sale hacia la izquierda encogiendose | `::view-transition-old(*.pa-med):only-child` |
+| 692 | Lista: al deshacer, vuelve a aparecer en su sitio | `::view-transition-new(*.pa-med):only-child` |
+| 691 | Lista: al pausar o reanudar, la fila cambia con un fundido (grupo propio) | `html.vt-dia .plan-dia` |
+| 696 | Combinaciones a dosis fijas: al quitarlas, su cabecera sale con sus filas | `html.vt-dia .plan-dia` |
+| 693 | Mi plan: al elegir otro dia, la tarjeta del dia cambia con un fundido que sube | `html.vt-dia .plan-dia` |
+| 694 | Mi plan: el dia elegido vuela de su sitio al nuevo en la tira | `html.vt-dia .tira .dia.sel` |
+| 695 | Recorrido guiado: la caja se desliza de un paso al siguiente | `html.vt-tour .tour-caja` |
+| 697 | Pestanas: al quedarse fijas arriba, una linea de luz las subraya | `.tabs` |
+| 698 | Y la elegida brilla un poco mas | `.tabs` |
+| 700 | Cifras del resumen: se ensanchan al pasar el raton | `.tile .num` |
+| 701 | Cifras que cuentan: se ensanchan mientras cuentan | `.comp-num` |
+| 703 | Barra inferior: la etiqueta del apartado activo se ensancha | `.barra-inferior button span` |
+| 704 | Menu: el texto de la opcion se ensancha al pasar | `.menu-lista [role=menuitem] > span:not(.ic-menu)` |
+| 705 | Situaciones marcadas: el texto gana peso con transicion | `.condiciones .check` |
+| 706 | Buscadores: al enfocarlos se encienden con un destello que se recoge | `html:not(.pa-quieto) .buscador input:focus` |
+| 707 | La caja de sugerencias crece con lo que escribes | `#fb-texto, .registro textarea` |
+| 708 | Y las notas del diario | `#fb-texto, .registro textarea` |
+| 709 | Pildoras de altura fija con el texto centrado opticamente | `.nav-badge, #perfil li .num, .rpe-campo output` |
+| 712 | Dias de la tira: se elevan al pasar el raton | `.tira .dia` |
+| 713 | Dias de la semana de Hoy: crecen al pasar el raton | `.semana > *` |
+| 714 | Pestanas: el icono se inclina al pasar el raton | `.tabs button svg` |
+| 715 | Plegables: la flecha da un saltito al pasar el raton | `:is(details.farmaco summary, details.seccion > summary, details.bloque > summary) .flecha` |
+| 719 | Compartir y botones del veredicto: el icono sube al pasar el raton | `:is(.compartir, .compartir-enlaces, #veredicto-acciones) button svg` |
+| 720 | Presentacion: el icono de cada tarjeta de "Para quien" sube al pasar | `.pres .tarjeta .ic-big` |
+| 721 | Guia: el numero de cada paso gira al pasar | `.paso-guia h2 b` |
+| 722 | Novedades: el punto dorado brilla mas al pasar por su version | `main.novedades article::after` |
+| 725 | Glosario: el termino se ilumina al pasar el raton | `.glosario dt` |
+| 716 | Esfuerzo: el pulgar del control crece al arrastrarlo | `input[type="range"]::-webkit-slider-thumb` |
+| 718 | Contador de cada pestana: cambia de color con transicion | `.tabs .cnt` |
+| 726 | Sesion: al terminar un bloque, su dibujo gira un poco | `.bloques.grande .picto` |
+| 730 | Boton de ayuda "?": se hunde al pulsarlo | `.btn-ayuda:active` |
+| 731 | Contraste alto del sistema: bordes mas marcados en tarjetas, paneles y campos | `:is(.panel, details.farmaco, article.ddi, .semaforo-col, .tile, .btn-doc, .hoja-opciones b` |
+| 732 | Contraste alto: el texto secundario mas oscuro (tema claro) | `:root[data-theme="light"]` |
+| 733 | Contraste alto: sin resplandores decorativos en cifras y titulos | `:is(.tile .num, .tour-paso, .pres .cifras b, .crono #crono, .estado-regla.ok)` |
+| 734 | Contraste alto: barras y ventanas sin cristal | `:is(.barra-inferior, .tabs, .toast)` |
+| 735 | Contraste alto: todos los enlaces subrayados | `a:not(.btn):not(.btn-sec):not([role="menuitem"])` |
+| 736 | Contraste alto: anillo de foco mas grueso | `:focus-visible` |
+| 737 | Contraste alto: la pestana elegida con borde | `.tabs button[aria-selected="true"]` |
+| 738 | Contraste alto: chips con borde del color del texto | `.chip-btn` |
+| 739 | Contraste alto: sin luz que sigue al raton ni ondas | `.con-luz, .onda` |
+| 740 | Colores forzados (Windows): pastillas, insignias y contadores con borde visible | `:is(.nav-badge, .tabs .cnt, .marcadas, .cuenta-meds, .sup-cuenta, .badge-pro, .recomendado` |
+| 741 | Colores forzados: el apartado activo de la barra inferior con contorno | `.barra-inferior button.activo` |
+| 742 | Colores forzados: barras de progreso y de la semana visibles | `:is(.comp-barra span, .barra-imp span, .sem-barra i, body::before)` |
+| 743 | Colores forzados: puntos de nivel visibles | `.punto` |
+| 744 | Colores forzados: sin mascaras que oculten texto o imagenes | `:is(.contenedor > aside, .plan-dia > .plan-banda)` |
+| 745 | Colores forzados: la pestana elegida con borde | `.tabs button[aria-selected="true"]` |
+| 746 | Colores forzados: botones desactivados en gris del sistema | `:is(.btn, .btn-sec):disabled` |
+| 747 | Colores forzados: el foco del recorrido con contorno | `.tour-foco` |
+| 748 | Transparencia reducida: barras, pestanas y avisos opacos | `:is(.barra-inferior, .tabs)` |
+| 749 | Transparencia reducida: el velo de las ventanas sin desenfoque y mas opaco | `dialog::backdrop` |
+| 750 | Transparencia reducida: sin aurora ni textura de fondo | `body::after` |
+| 751 | Pantallas de color amplio: la linea de lectura y el apartado activo, en un neon mas vivo | `body::before` |
+| 752 | Pantallas de color amplio: el resplandor de las cifras en oscuro, mas vivo | `:root[data-theme="dark"] .tile .num` |
+| 753 | Movil en horizontal: barra inferior mas baja | `.barra-inferior button` |
+| 754 | Movil en horizontal: cabecera con menos aire | `.cabecera` |
+| 755 | Movil en horizontal: ventanas a casi toda la altura | `dialog.ficha, dialog.hoja` |
+| 756 | Movil en horizontal: pestanas mas bajas | `.tabs button` |
+| 757 | Movil en horizontal: la imagen del dia del plan mas baja | `.plan-dia > .plan-banda` |
+| 758 | Movil en horizontal: el contenido respeta la muesca de la camara | `.contenedor` |
+| 759 | App instalada: la cabecera respeta la zona de la camara | `.cabecera` |
+| 760 | App instalada: sin seleccionar texto por error en la barra y las pestanas | `:is(.barra-inferior, .tabs, .tira)` |
+| 761 | App instalada: sin el estirado al desplazar mas alla del final | `html` |
+| 762 | App instalada: sin el boton de instalar en el menu | `#btn-instalar` |
+| 763 | Teclado: la tarjeta plegable con el foco en su titulo muestra su borde de luz | `details:has(> summary:focus-visible)` |
+| 764 | Teclado: la fila de la lista con el foco dentro se ilumina | `#lista-meds > li:has(:focus-visible)` |
+| 765 | Teclado: el dia de la tira con el foco sube un poco | `.tira .dia:focus-visible` |
+| 766 | Letra grande: las pildoras de numero crecen en proporcion | `html.letra-grande :is(#perfil li .num, .rpe-campo output)` |
+| 767 | Letra grande: etiquetas de la barra inferior mayores | `html.letra-grande .barra-inferior button` |
+| 768 | Pantallas de alta densidad: separadores de bloques mas finos y nitidos | `.bloques li` |
+| 769 | Pantallas muy pequenas: etiquetas de la barra inferior mas pequenas | `.barra-inferior button` |
+| 770 | Pantallas muy pequenas: pestanas con menos relleno | `.tabs button` |
+| 771 | Tabletas: la barra inferior flota como una pastilla centrada | `.barra-inferior` |
+| 772 | Escritorio con poca altura: la tarjeta del recorrido mas compacta | `.tour-caja` |
+| 773 | Pantallas de tinta electronica: sin animaciones ni transiciones | `*, *::before, *::after` |
+| 774 | Colores invertidos del sistema: las fotos y dibujos se ven bien | `img, .picto` |
+| 775 | Oscuro: textura de grano finisima y quieta sobre el fondo, en toda la pantalla | `:root[data-theme="dark"] body::after` |
+| 776 | Contraste alto de la app: el buscador sin destello, las pestanas sin linea de luz y sin transiciones de vista de la lista | `:root[data-theme="contrast"] .tabs::after` |
+| 777 | Contraste alto de la app: los dias de la tira y de la semana sin crecer ni elevarse | `:root[data-theme="contrast"] :is(.tira .dia, .semana > *)` |
+| 778 | Contraste alto de la app: el titulo sin desplegarse a lo ancho | `:root[data-theme="contrast"] :is(.cabecera h1, #panel-datos > h2, #panel-medicacion .cab-p` |
+| 779 | Impresion: sin el grano del fondo | `body::after` |
+| 780 | Impresion: las pildoras de numero con borde, para que se lean en blanco y negro | `:is(#perfil li .num, .rpe-campo output)` |
+| 781 | "Su plan esta al N %": esquinas de visor | `` |
+| 782 | De un vistazo: esquinas de visor | `` |
+| 783 | Cabecera de Mi plan: esquinas de visor | `.vistazo, .semaforo-col, .crono` |
+| 784 | Columnas del semaforo: esquinas de visor | `.vistazo, .semaforo-col, .crono` |
+| 809 | Cronometro de la sesion y del SPPB: esquinas de visor | `.vistazo, .semaforo-col, .crono` |
+| 785 | Semana de Hoy: las barras vacias con un rayado suave | `.sem-barra` |
+| 786 | Tira de dias: el numero de hoy mas ancho | `.tira .dia.hoy .n` |
+| 787 | Veredicto: el icono del nivel con un anillo de neon de su color | `.veredicto.v-alerta > p:first-of-type::before` |
+| 788 | Resumen en claro: separadores con un hilo de luz | `:root[data-theme="light"] #resumen` |
+| 789 | Pestanas: el contador de las no elegidas con un borde fino | `.tabs button:not([aria-selected="true"]) .cnt` |
+| 790 | Fichas de farmaco abiertas: el icono del grupo con anillo de su color | `details.farmaco[open] .ic-grupo` |
+| 791 | Interacciones importantes: la etiqueta de nivel con resplandor rojo | `article.ddi.ddi-mayor .nivel` |
+| 792 | Interacciones: hilo de luz antes de las fuentes | `article.ddi footer` |
+| 793 | Cuando: las horas de cada toma en letra de terminal y centradas | `.fila.horas-tomas input[type="number"]` |
+| 794 | Legal: cada apartado con su numero de terminal | `main.legal` |
+| 795 | Guia: cada captura con esquinas de visor | `:is(.paso-guia figure, .pres .hero figure)` |
+| 796 | Presentacion: la captura principal con esquinas de visor | `:is(.paso-guia figure, .pres .hero figure)` |
+| 797 | Paginas secundarias: "Volver" de cristal (claro) | `:is(main.acerca, main.novedades, .guia-pag) > .volver` |
+| 798 | Y en oscuro | `:root[data-theme="dark"] :is(main.acerca, main.novedades, .guia-pag) > .volver` |
+| 799 | Menu "Mas": las iniciales de cada icono en letra de terminal | `.menu-lista .ic-menu` |
+| 800 | Cabecera: punto verde de "listo" delante de la version de la base | `#kb-version:not(:empty)::before` |
+| 801 | Lista: los momentos de la toma elegidos con un brillo | `.momentos .mom[aria-pressed="true"]` |
+| 802 | Lista: la etiqueta de dosis alta con resplandor ambar | `.chip-alta` |
+| 803 | Buscador: lo escrito, resaltado con un subrayado de luz | `:is(#sugerencias, #ficha-sugerencias) mark` |
+| 804 | Suplementos y plantas: el plegable abierto con borde de luz | `.sup-rapido[open]` |
+| 805 | Hoy: las cifras de la semana en neon | `.hoy-resumen b` |
+| 806 | Mi plan: los dias de ejercicio elegidos, con brillo | `.dias-resumen b.on` |
+| 807 | Mi plan: la variante elegida (mas facil, normal, mas dificil) con resplandor | `.variantes button[aria-pressed="true"]` |
+| 808 | Sesion: la tarjeta de cierre con un hilo de luz arriba | `.sesion-fin` |
+| 810 | SPPB: la imagen de cada prueba con esquinas de visor | `.sppb-img` |
+| 811 | Chequeo antes de la sesion: la imagen con un halo | `.chequeo .ses-img` |
+| 812 | Aviso de version nueva: un punto dorado de novedad | `.aviso-actualizar::before` |
+| 813 | Recorrido: la flecha con resplandor | `.tour-flecha` |
+| 814 | Ventanas: el boton Cerrar con borde de luz | `:is(.ficha-cab, .hoja-cab) > .btn-sec` |
+| 815 | Escritorio: un hilo de luz vertical separa la columna de la medicacion | `.contenedor > aside` |
+| 816 | Oscuro: los documentos con borde de luz | `` |
+| 817 | Oscuro: las tarjetas de interaccion con borde de luz | `:root[data-theme="dark"] :is(.btn-doc, article.ddi, .tira .dia:not(.sel))` |
+| 818 | Oscuro: los dias de la tira con borde de luz | `:root[data-theme="dark"] :is(.btn-doc, article.ddi, .tira .dia:not(.sel))` |
+| 819 | Oscuro: la barra de "su plan" con un filo de luz | `:root[data-theme="dark"] :is(.btn-doc, article.ddi, .tira .dia:not(.sel))` |
+| 820 | Claro: los documentos con un degradado muy suave | `:root[data-theme="light"] .btn-doc` |
+| 821 | Claro: las columnas del semaforo sobre la rejilla tecnica | `:root[data-theme="light"] .semaforo-col` |
+| 822 | Glosario: la definicion con interlineado de lectura | `.glosario dd` |
+| 823 | Plegables de Datos: el contador de marcadas en letra de terminal | `.marcadas` |
+| 824 | Toda la app: las cifras de los chips de dias de la semana en terminal | `.dias-chips .chip-btn` |
+| 825 | Documentos: el nombre del documento en seminegrita ancha | `.btn-doc b` |
+| 826 | Alto contraste: sin esquinas de visor, rayados, cristal ni puntos de estado | `:root[data-theme="contrast"] :is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono,` |
+| 827 | Alto contraste: "Volver" opaco y sin desenfoque | `:root[data-theme="contrast"] :is(main.acerca, main.novedades, .guia-pag) > .volver` |
+| 828 | Alto contraste: sin halos ni anillos nuevos | `:root[data-theme="contrast"] :is(.veredicto > p:first-of-type)::before` |
+| 829 | Impresion: sin esquinas de visor, puntos de estado ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |
+| 830 | Colores forzados: sin esquinas de visor ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |

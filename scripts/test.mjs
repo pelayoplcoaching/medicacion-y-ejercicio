@@ -434,7 +434,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
   // 325 KB desde las mejoras 381-530 (21/11/2026): movimiento futurista de una vez, luz y cristal; 67 KB comprimida con gzip
   // 370 KB desde las mejoras 531-680 (21/11/2026): transiciones nativas, tacto, profundidad y detalles; 75 KB comprimida
-  check(`hoja de estilos ≤ 370 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 370);
+  // 345 KB desde la limpieza y las mejoras 681-830 (21/11/2026): 327 KB, 62 KB comprimida; las descripciones de las mejoras viven en docs/ESTILOS-MEJORAS.md
+  check(`hoja de estilos ≤ 345 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 345);
   const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
   const tabla = css.slice(css.indexOf("/* OP3."));
   const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));

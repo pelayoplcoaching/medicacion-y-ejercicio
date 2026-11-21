@@ -19,6 +19,7 @@ app/
   novedades.html        registro de cambios para usuarios
   manifest.webmanifest, sw.js, robots.txt, sitemap.xml
   css/style.css         sistema de diseño (tokens en :root, claro/oscuro/alto contraste, modo paciente/profesional)
+                        (cada mejora numerada lleva solo su número; qué hace cada una, en docs/ESTILOS-MEJORAS.md)
   js/
     version.js          APP_VERSION (semver)
     engine.js           motor puro (sin DOM): índice, búsqueda, evaluación, reglas, ventana horaria, plan, SPPB, zona…
