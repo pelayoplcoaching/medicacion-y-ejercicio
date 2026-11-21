@@ -143,7 +143,7 @@ try {
   check("el botón rápido desaparece y el contador cuenta 1", !(await p.$('#sup-chips button[data-pid="hiperico"]')) && (await p.textContent("#sup-cuenta")).includes("1"));
   await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(250);
   const ddiTxt = await p.textContent("#contenido-tab");
-  check("hipérico + Sintrom: interacción mayor, señalada como borrador pendiente de revisión", /Hipérico[^]*Acenocumarol|Acenocumarol[^]*Hipérico/.test(ddiTxt) && /pendiente de revisión clínica/.test(ddiTxt) && /pendientes de revisión clínica/.test(ddiTxt));
+  check("hipérico + Sintrom: interacción mayor revisada, sin borradores en el pie", /Hipérico[^]*Acenocumarol|Acenocumarol[^]*Hipérico/.test(ddiTxt) && /Revisión clínica propia/.test(ddiTxt) && !/pendientes? de revisión clínica/.test(ddiTxt));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
   await p.click("#lista-meds li:last-child .quitar"); await p.waitForTimeout(250);
   check("quitar el suplemento devuelve la lista a como estaba", (await p.$$("#lista-meds li")).length === nSup0 && await p.isVisible('#sup-chips button[data-pid="hiperico"]'));

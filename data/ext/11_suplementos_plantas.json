@@ -1,1760 +1,1760 @@
 {
- "nota": "Suplementos y plantas medicinales (v1.1). Reglas nuevas pendientes de revisión clínica (revisado=false).",
- "senales_nuevas": {
-  "dopaje": "Riesgo de positivo en un control antidopaje (si compite con licencia)",
-  "hepatotoxico": "Se ha relacionado con casos de daño en el hígado"
- },
- "clases": [
-  {
-   "id": "suplementos_deportivos",
-   "tipo": "suplemento",
-   "nombre": "Suplementos deportivos (creatina, cafeína, proteína, beta-alanina, nitratos…)",
-   "atc": [],
-   "resumen": "No son fármacos, pero pueden interactuar con ellos. Con buena evidencia en el deporte hay pocos: creatina, cafeína, beta-alanina, bicarbonato y nitratos de la remolacha. Si compite, use productos con control de calidad por lotes.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "creatina",
-     "nombre": "Creatina monohidrato",
-     "marcas": [],
-     "alias": [
-      "Creatine"
-     ],
-     "unidad": "g/día",
-     "presets": [
-      3,
-      5
-     ]
-    },
-    {
-     "id": "cafeina",
-     "nombre": "Cafeína / pre-entrenos",
-     "marcas": [],
-     "alias": [
-      "Pre-entreno",
-      "Guaraná",
-      "Bebida energética",
-      "Cafeína anhidra",
-      "Caffeine"
-     ],
-     "unidad": "mg/día",
-     "presets": [
-      100,
-      200,
-      300
-     ],
-     "senales_extra": [
-      "taquicardia",
-      "hipertension"
-     ]
-    },
-    {
-     "id": "proteina_suplemento",
-     "nombre": "Proteína en polvo (suero, caseína, vegetal)",
-     "marcas": [],
-     "alias": [
-      "Whey",
-      "Proteína de suero",
-      "Batido de proteínas",
-      "Protein powder"
-     ],
-     "unidad": "g/día",
-     "presets": [
-      20,
-      25,
-      30,
-      40
-     ]
-    },
-    {
-     "id": "multivitaminico",
-     "nombre": "Multivitamínico y minerales",
-     "marcas": [
-      "Supradyn",
-      "Multicentrum"
-     ],
-     "alias": [
-      "Multivitaminas",
-      "Complejo vitamínico"
-     ]
-    },
-    {
-     "id": "beta_alanina",
-     "nombre": "Beta-alanina",
-     "marcas": [],
-     "unidad": "g/día",
-     "presets": [
-      3.2,
-      4,
-      6.4
-     ]
-    },
-    {
-     "id": "bicarbonato_ergogenico",
-     "nombre": "Bicarbonato sódico (como suplemento deportivo)",
-     "marcas": [],
-     "alias": [
-      "Bicarbonato (deporte)"
-     ],
-     "unidad": "g/día"
-    },
-    {
-     "id": "nitrato_remolacha",
-     "nombre": "Nitratos de la remolacha (zumo o concentrado)",
-     "marcas": [],
-     "alias": [
-      "Zumo de remolacha",
-      "Remolacha (concentrado)",
-      "Beetroot",
-      "Beet juice"
-     ]
-    },
-    {
-     "id": "hmb",
-     "nombre": "HMB (hidroximetilbutirato)",
-     "marcas": [],
-     "unidad": "g/día",
-     "presets": [
-      3
-     ]
-    },
-    {
-     "id": "aminoacidos",
-     "nombre": "Aminoácidos (BCAA, EAA, leucina, glutamina)",
-     "marcas": [],
-     "alias": [
-      "BCAA",
-      "Aminoácidos ramificados",
-      "Leucina",
-      "Glutamina",
-      "EAA"
-     ],
-     "unidad": "g/día"
-    },
-    {
-     "id": "colageno",
-     "nombre": "Colágeno hidrolizado / gelatina",
-     "marcas": [],
-     "alias": [
-      "Colágeno",
-      "Collagen"
-     ],
-     "unidad": "g/día",
-     "presets": [
-      10,
-      15
-     ]
-    },
-    {
-     "id": "carnitina",
-     "nombre": "L-carnitina",
-     "marcas": [],
-     "alias": [
-      "Carnitina"
-     ],
-     "unidad": "g/día"
-    },
-    {
-     "id": "arginina_citrulina",
-     "nombre": "Arginina / citrulina (óxido nítrico)",
-     "marcas": [],
-     "alias": [
-      "L-arginina",
-      "Citrulina",
-      "Citrulina malato",
-      "Óxido nítrico"
-     ],
-     "unidad": "g/día"
-    }
-   ],
-   "general": [
-    {
-     "nivel": "info",
-     "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes.",
-     "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
-     "evidencia": "revision",
-     "revisado": true,
-     "si": {
-      "principio": "creatina"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Tiene una enfermedad del riñón: no tome creatina sin consultarlo. La creatinina de los análisis deja de servir para vigilar el riñón y no hay estudios suficientes de seguridad en su caso.",
-     "fuente": "ISSN position stand creatina 2017",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "creatina",
-      "condicion": "renal"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros.",
-     "fuente": "FT AEMPS 4.4",
-     "evidencia": "ft",
-     "revisado": true,
-     "si": {
-      "principio": "cafeina"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Para rendir basta con unos 3 mg de cafeína por kilo, entre 30 y 60 minutos antes. Más cantidad no rinde más y da temblor, nervios y palpitaciones. No la tome por la tarde si duerme mal. Hay cafeína en el guaraná, el mate, la cola y las bebidas energéticas.",
-     "fuente": "ISSN cafeína 2021 · IOC consensus 2018 (suplementos)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "cafeina"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Con enfermedad renal avanzada, la proteína total diaria debe pactarse con su médico. Si toma levodopa, separe el batido de la toma.",
-     "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
-     "evidencia": "revision",
-     "revisado": true,
-     "si": {
-      "principio": "proteina_suplemento"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Para ganar músculo basta con llegar a unos 1,6 g de proteína por kilo y día, sumando la comida; más no aporta. Repártala en 3 o 4 tomas de 20 a 40 g. El batido es comida, no medicina: no es imprescindible.",
-     "fuente": "ISSN proteína 2017 · Morton 2018 (metaanálisis)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "proteina_suplemento"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Un multivitamínico no mejora el rendimiento si come variado. Si toma acenocumarol (Sintrom), elija uno sin vitamina K o tómelo siempre igual. Sepárelo 2 a 4 horas de la levotiroxina, de antibióticos como ciprofloxacino o doxiciclina y de los fármacos para el hueso: el calcio, el hierro y el magnesio que lleva impiden que se absorban.",
-     "fuente": "FT AEMPS 4.5 (acenocumarol, levotiroxina, quinolonas, bifosfonatos)",
-     "evidencia": "ft",
-     "revisado": false,
-     "si": {
-      "principio": "multivitaminico"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Si además toma plantas (hipérico, ginkgo, ginseng, valeriana…), añádalas una a una a la lista: la aplicación las reconoce por separado y avisa de sus interacciones.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "multivitaminico"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La beta-alanina da un hormigueo en la piel de la cara y las manos durante unos minutos. Es inofensivo y se evita repartiendo la dosis en tomas pequeñas (de 0,8 a 1,6 g) o con la forma de liberación lenta.",
-     "fuente": "ISSN beta-alanina 2015 · AIS Sports Supplement Framework (grupo A)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "beta_alanina"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "El bicarbonato como suplemento (unos 0,2 a 0,3 g por kilo, de 1 a 3 horas antes) suele dar diarrea y dolor de tripa. Aporta mucha sal: no lo use si tiene hipertensión, insuficiencia cardíaca o enfermedad del riñón.",
-     "fuente": "ISSN bicarbonato 2021 · AIS Sports Supplement Framework (grupo A)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "bicarbonato_ergogenico"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La remolacha puede teñir de rojo la orina y las heces: es inofensivo. Pero si tras un esfuerzo muy duro la orina sale oscura, como el café, no es la remolacha: consulte. Los nitratos bajan un poco la tensión y los colutorios antisépticos anulan su efecto.",
-     "fuente": "AIS Sports Supplement Framework (grupo A) · IOC consensus 2018 (suplementos)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "nitrato_remolacha"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "El HMB es seguro a 3 g al día. En quien ya entrena su efecto es pequeño; puede ayudar a conservar músculo en mayores o tras un encamamiento, siempre junto con proteína y ejercicio de fuerza.",
-     "fuente": "ISSN HMB 2013",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "hmb"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Si ya toma suficiente proteína, los aminoácidos sueltos (BCAA, glutamina) no añaden nada. Si toma levodopa, sepárelos de la toma: compiten con ella y le quitan efecto.",
-     "fuente": "FT AEMPS 4.5 (levodopa) · ISSN proteína 2017",
-     "evidencia": "ft",
-     "revisado": false,
-     "si": {
-      "principio": "aminoacidos"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "El colágeno es seguro y no tiene interacciones relevantes. Su beneficio en tendones y articulaciones es pequeño y poco probado; lo que de verdad ayuda al tendón es la carga progresiva con ejercicio.",
-     "fuente": "Revisión clínica (IOC consensus 2018 (suplementos))",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "colageno"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "La L-carnitina apenas mejora el rendimiento. Si toma acenocumarol (Sintrom) o warfarina, puede subir el INR: avise y adelante el siguiente control.",
-     "fuente": "Revisión clínica (casos publicados con acenocumarol)",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "carnitina"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Arginina y citrulina dilatan los vasos y bajan algo la tensión. No las combine con nitratos para el corazón ni con sildenafilo o tadalafilo sin consultar. Tras un infarto, la arginina no se recomienda.",
-     "fuente": "Revisión clínica (ensayo VINTAGE MI 2006)",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "arginina_citrulina"
-     }
-    }
-   ],
-   "aerobico": [
-    {
-     "nivel": "info",
-     "texto": "La cafeína sube un poco el pulso en reposo y en esfuerzo: si se guía por pulsómetro, sus zonas saldrán algo más altas. Con calor, baje la dosis y beba más agua.",
-     "fuente": "ISSN cafeína 2021",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "cafeina"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Pruebe el bicarbonato primero en un entrenamiento, nunca el día de una competición: las molestias de tripa pueden obligarle a parar.",
-     "fuente": "ISSN bicarbonato 2021",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "bicarbonato_ergogenico"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Los nitratos de la remolacha ayudan algo en esfuerzos de resistencia de 10 a 40 minutos. Tómelos 2 o 3 horas antes; el efecto es mayor en personas poco entrenadas.",
-     "fuente": "AIS Sports Supplement Framework (grupo A)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "nitrato_remolacha"
-     }
-    }
-   ],
-   "fuerza": [
-    {
-     "nivel": "info",
-     "texto": "La creatina ayuda a ganar fuerza y músculo cuando se combina con entrenamiento de fuerza, también en mayores. Es normal ganar 1 o 2 kg de agua en el músculo las primeras semanas.",
-     "fuente": "ISSN position stand creatina 2017",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "creatina"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Tras la sesión de fuerza, una toma de 20 a 40 g de proteína (comida o batido) ayuda a recuperar. En mayores conviene la parte alta.",
-     "fuente": "ISSN proteína 2017",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "proteina_suplemento"
-     }
-    }
-   ],
-   "equilibrio": [],
-   "fuentes": [
-    "ISSN position stand creatine 2017",
-    "ISSN caffeine 2021",
-    "ISSN protein 2017",
-    "ISSN beta-alanine 2015",
-    "ISSN sodium bicarbonate 2021",
-    "ISSN HMB 2013",
-    "AIS Sports Supplement Framework",
-    "IOC consensus 2018 (suplementos)"
-   ],
-   "combinable": true
+  "nota": "Suplementos y plantas medicinales (v1.1). Reglas nuevas pendientes de revisión clínica (revisado=false).",
+  "senales_nuevas": {
+    "dopaje": "Riesgo de positivo en un control antidopaje (si compite con licencia)",
+    "hepatotoxico": "Se ha relacionado con casos de daño en el hígado"
   },
-  {
-   "id": "vitaminas_minerales_sueltos",
-   "tipo": "suplemento",
-   "nombre": "Vitaminas y minerales sueltos (zinc, vitamina E, vitamina K, vitamina B6)",
-   "atc": [],
-   "resumen": "Son útiles si hay una carencia. A dosis altas o durante meses pueden dar problemas: la vitamina K anula el efecto del acenocumarol, la vitamina E suma sangrado, el zinc hace perder cobre y el exceso de vitamina B6 daña los nervios.",
-   "senales": [],
-   "principios": [
+  "clases": [
     {
-     "id": "zinc",
-     "nombre": "Zinc",
-     "marcas": [],
-     "presets": [
-      10,
-      15,
-      25
-     ],
-     "umbral_mg": {
-      "alta": 25
-     }
+      "id": "suplementos_deportivos",
+      "tipo": "suplemento",
+      "nombre": "Suplementos deportivos (creatina, cafeína, proteína, beta-alanina, nitratos…)",
+      "atc": [],
+      "resumen": "No son fármacos, pero pueden interactuar con ellos. Con buena evidencia en el deporte hay pocos: creatina, cafeína, beta-alanina, bicarbonato y nitratos de la remolacha. Si compite, use productos con control de calidad por lotes.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "creatina",
+          "nombre": "Creatina monohidrato",
+          "marcas": [],
+          "alias": [
+            "Creatine"
+          ],
+          "unidad": "g/día",
+          "presets": [
+            3,
+            5
+          ]
+        },
+        {
+          "id": "cafeina",
+          "nombre": "Cafeína / pre-entrenos",
+          "marcas": [],
+          "alias": [
+            "Pre-entreno",
+            "Guaraná",
+            "Bebida energética",
+            "Cafeína anhidra",
+            "Caffeine"
+          ],
+          "unidad": "mg/día",
+          "presets": [
+            100,
+            200,
+            300
+          ],
+          "senales_extra": [
+            "taquicardia",
+            "hipertension"
+          ]
+        },
+        {
+          "id": "proteina_suplemento",
+          "nombre": "Proteína en polvo (suero, caseína, vegetal)",
+          "marcas": [],
+          "alias": [
+            "Whey",
+            "Proteína de suero",
+            "Batido de proteínas",
+            "Protein powder"
+          ],
+          "unidad": "g/día",
+          "presets": [
+            20,
+            25,
+            30,
+            40
+          ]
+        },
+        {
+          "id": "multivitaminico",
+          "nombre": "Multivitamínico y minerales",
+          "marcas": [
+            "Supradyn",
+            "Multicentrum"
+          ],
+          "alias": [
+            "Multivitaminas",
+            "Complejo vitamínico"
+          ]
+        },
+        {
+          "id": "beta_alanina",
+          "nombre": "Beta-alanina",
+          "marcas": [],
+          "unidad": "g/día",
+          "presets": [
+            3.2,
+            4,
+            6.4
+          ]
+        },
+        {
+          "id": "bicarbonato_ergogenico",
+          "nombre": "Bicarbonato sódico (como suplemento deportivo)",
+          "marcas": [],
+          "alias": [
+            "Bicarbonato (deporte)"
+          ],
+          "unidad": "g/día"
+        },
+        {
+          "id": "nitrato_remolacha",
+          "nombre": "Nitratos de la remolacha (zumo o concentrado)",
+          "marcas": [],
+          "alias": [
+            "Zumo de remolacha",
+            "Remolacha (concentrado)",
+            "Beetroot",
+            "Beet juice"
+          ]
+        },
+        {
+          "id": "hmb",
+          "nombre": "HMB (hidroximetilbutirato)",
+          "marcas": [],
+          "unidad": "g/día",
+          "presets": [
+            3
+          ]
+        },
+        {
+          "id": "aminoacidos",
+          "nombre": "Aminoácidos (BCAA, EAA, leucina, glutamina)",
+          "marcas": [],
+          "alias": [
+            "BCAA",
+            "Aminoácidos ramificados",
+            "Leucina",
+            "Glutamina",
+            "EAA"
+          ],
+          "unidad": "g/día"
+        },
+        {
+          "id": "colageno",
+          "nombre": "Colágeno hidrolizado / gelatina",
+          "marcas": [],
+          "alias": [
+            "Colágeno",
+            "Collagen"
+          ],
+          "unidad": "g/día",
+          "presets": [
+            10,
+            15
+          ]
+        },
+        {
+          "id": "carnitina",
+          "nombre": "L-carnitina",
+          "marcas": [],
+          "alias": [
+            "Carnitina"
+          ],
+          "unidad": "g/día"
+        },
+        {
+          "id": "arginina_citrulina",
+          "nombre": "Arginina / citrulina (óxido nítrico)",
+          "marcas": [],
+          "alias": [
+            "L-arginina",
+            "Citrulina",
+            "Citrulina malato",
+            "Óxido nítrico"
+          ],
+          "unidad": "g/día"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "creatina"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Tiene una enfermedad del riñón: no tome creatina sin consultarlo. La creatinina de los análisis deja de servir para vigilar el riñón y no hay estudios suficientes de seguridad en su caso.",
+          "fuente": "ISSN position stand creatina 2017",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "creatina",
+            "condicion": "renal"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros.",
+          "fuente": "FT AEMPS 4.4",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "cafeina"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Para rendir basta con unos 3 mg de cafeína por kilo, entre 30 y 60 minutos antes. Más cantidad no rinde más y da temblor, nervios y palpitaciones. No la tome por la tarde si duerme mal. Hay cafeína en el guaraná, el mate, la cola y las bebidas energéticas.",
+          "fuente": "ISSN cafeína 2021 · IOC consensus 2018 (suplementos)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "cafeina"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Con enfermedad renal avanzada, la proteína total diaria debe pactarse con su médico. Si toma levodopa, separe el batido de la toma.",
+          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "proteina_suplemento"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Para ganar músculo basta con llegar a unos 1,6 g de proteína por kilo y día, sumando la comida; más no aporta. Repártala en 3 o 4 tomas de 20 a 40 g. El batido es comida, no medicina: no es imprescindible.",
+          "fuente": "ISSN proteína 2017 · Morton 2018 (metaanálisis)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "proteina_suplemento"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Un multivitamínico no mejora el rendimiento si come variado. Si toma acenocumarol (Sintrom), elija uno sin vitamina K o tómelo siempre igual. Sepárelo 2 a 4 horas de la levotiroxina, de antibióticos como ciprofloxacino o doxiciclina y de los fármacos para el hueso: el calcio, el hierro y el magnesio que lleva impiden que se absorban.",
+          "fuente": "FT AEMPS 4.5 (acenocumarol, levotiroxina, quinolonas, bifosfonatos)",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "multivitaminico"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Si además toma plantas (hipérico, ginkgo, ginseng, valeriana…), añádalas una a una a la lista: la aplicación las reconoce por separado y avisa de sus interacciones.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "multivitaminico"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La beta-alanina da un hormigueo en la piel de la cara y las manos durante unos minutos. Es inofensivo y se evita repartiendo la dosis en tomas pequeñas (de 0,8 a 1,6 g) o con la forma de liberación lenta.",
+          "fuente": "ISSN beta-alanina 2015 · AIS Sports Supplement Framework (grupo A)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "beta_alanina"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El bicarbonato como suplemento (unos 0,2 a 0,3 g por kilo, de 1 a 3 horas antes) suele dar diarrea y dolor de tripa. Aporta mucha sal: no lo use si tiene hipertensión, insuficiencia cardíaca o enfermedad del riñón.",
+          "fuente": "ISSN bicarbonato 2021 · AIS Sports Supplement Framework (grupo A)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "bicarbonato_ergogenico"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La remolacha puede teñir de rojo la orina y las heces: es inofensivo. Pero si tras un esfuerzo muy duro la orina sale oscura, como el café, no es la remolacha: consulte. Los nitratos bajan un poco la tensión y los colutorios antisépticos anulan su efecto.",
+          "fuente": "AIS Sports Supplement Framework (grupo A) · IOC consensus 2018 (suplementos)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "nitrato_remolacha"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "El HMB es seguro a 3 g al día. En quien ya entrena su efecto es pequeño; puede ayudar a conservar músculo en mayores o tras un encamamiento, siempre junto con proteína y ejercicio de fuerza.",
+          "fuente": "ISSN HMB 2013",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "hmb"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Si ya toma suficiente proteína, los aminoácidos sueltos (BCAA, glutamina) no añaden nada. Si toma levodopa, sepárelos de la toma: compiten con ella y le quitan efecto.",
+          "fuente": "FT AEMPS 4.5 (levodopa) · ISSN proteína 2017",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "aminoacidos"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "El colágeno es seguro y no tiene interacciones relevantes. Su beneficio en tendones y articulaciones es pequeño y poco probado; lo que de verdad ayuda al tendón es la carga progresiva con ejercicio.",
+          "fuente": "Revisión clínica (IOC consensus 2018 (suplementos))",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "colageno"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La L-carnitina apenas mejora el rendimiento. Si toma acenocumarol (Sintrom) o warfarina, puede subir el INR: avise y adelante el siguiente control.",
+          "fuente": "Revisión clínica (casos publicados con acenocumarol)",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "carnitina"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Arginina y citrulina dilatan los vasos y bajan algo la tensión. No las combine con nitratos para el corazón ni con sildenafilo o tadalafilo sin consultar. Tras un infarto, la arginina no se recomienda.",
+          "fuente": "Revisión clínica (ensayo VINTAGE MI 2006)",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "arginina_citrulina"
+          }
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "La cafeína sube un poco el pulso en reposo y en esfuerzo: si se guía por pulsómetro, sus zonas saldrán algo más altas. Con calor, baje la dosis y beba más agua.",
+          "fuente": "ISSN cafeína 2021",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "cafeina"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Pruebe el bicarbonato primero en un entrenamiento, nunca el día de una competición: las molestias de tripa pueden obligarle a parar.",
+          "fuente": "ISSN bicarbonato 2021",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "bicarbonato_ergogenico"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Los nitratos de la remolacha ayudan algo en esfuerzos de resistencia de 10 a 40 minutos. Tómelos 2 o 3 horas antes; el efecto es mayor en personas poco entrenadas.",
+          "fuente": "AIS Sports Supplement Framework (grupo A)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "nitrato_remolacha"
+          }
+        }
+      ],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "La creatina ayuda a ganar fuerza y músculo cuando se combina con entrenamiento de fuerza, también en mayores. Es normal ganar 1 o 2 kg de agua en el músculo las primeras semanas.",
+          "fuente": "ISSN position stand creatina 2017",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "creatina"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Tras la sesión de fuerza, una toma de 20 a 40 g de proteína (comida o batido) ayuda a recuperar. En mayores conviene la parte alta.",
+          "fuente": "ISSN proteína 2017",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "proteina_suplemento"
+          }
+        }
+      ],
+      "equilibrio": [],
+      "fuentes": [
+        "ISSN position stand creatine 2017",
+        "ISSN caffeine 2021",
+        "ISSN protein 2017",
+        "ISSN beta-alanine 2015",
+        "ISSN sodium bicarbonate 2021",
+        "ISSN HMB 2013",
+        "AIS Sports Supplement Framework",
+        "IOC consensus 2018 (suplementos)"
+      ],
+      "combinable": true
     },
     {
-     "id": "vitamina_e",
-     "nombre": "Vitamina E (tocoferol)",
-     "marcas": [],
-     "alias": [
-      "Tocoferol",
-      "Vitamin E"
-     ],
-     "umbral_mg": {
-      "alta": 300
-     }
+      "id": "vitaminas_minerales_sueltos",
+      "tipo": "suplemento",
+      "nombre": "Vitaminas y minerales sueltos (zinc, vitamina E, vitamina K, vitamina B6)",
+      "atc": [],
+      "resumen": "Son útiles si hay una carencia. A dosis altas o durante meses pueden dar problemas: la vitamina K anula el efecto del acenocumarol, la vitamina E suma sangrado, el zinc hace perder cobre y el exceso de vitamina B6 daña los nervios.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "zinc",
+          "nombre": "Zinc",
+          "marcas": [],
+          "presets": [
+            10,
+            15,
+            25
+          ],
+          "umbral_mg": {
+            "alta": 25
+          }
+        },
+        {
+          "id": "vitamina_e",
+          "nombre": "Vitamina E (tocoferol)",
+          "marcas": [],
+          "alias": [
+            "Tocoferol",
+            "Vitamin E"
+          ],
+          "umbral_mg": {
+            "alta": 300
+          }
+        },
+        {
+          "id": "vitamina_k",
+          "nombre": "Vitamina K (K1 o K2, menaquinona)",
+          "marcas": [],
+          "alias": [
+            "Vitamina K2",
+            "Menaquinona",
+            "MK-7",
+            "Vitamin K"
+          ]
+        },
+        {
+          "id": "vitamina_b6",
+          "nombre": "Vitamina B6 (piridoxina)",
+          "marcas": [],
+          "alias": [
+            "Piridoxina",
+            "Pyridoxine",
+            "Vitamin B6"
+          ],
+          "umbral_mg": {
+            "alta": 12
+          }
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "El zinc impide que se absorban algunos antibióticos (ciprofloxacino, levofloxacino, doxiciclina): tómelo al menos 2 horas antes o de 4 a 6 horas después. Tomado durante meses por encima de 25 mg al día hace perder cobre, con anemia y hormigueos.",
+          "fuente": "FT AEMPS 4.5 (quinolonas, tetraciclinas) · EFSA (nivel máximo de zinc)",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "zinc"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Por encima de 300 mg al día (unas 450 UI), la vitamina E puede aumentar el sangrado si toma anticoagulantes o antiagregantes. No ha demostrado proteger el corazón ni mejorar el rendimiento.",
+          "fuente": "EFSA (nivel máximo de vitamina E) · NIH ODS (vitamina E)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "vitamina_e"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Si toma acenocumarol (Sintrom) o warfarina, no empiece ni deje la vitamina K por su cuenta: anula su efecto y el INR baja. Muchos productos para los huesos llevan vitamina K2. Con apixabán, rivaroxabán, edoxabán o dabigatrán no interfiere.",
+          "fuente": "FT AEMPS 4.5 (acenocumarol)",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "vitamina_k"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La vitamina B6 en dosis altas durante meses (por encima de 12 mg al día) puede dañar los nervios: hormigueo, entumecimiento y peor equilibrio. Revise la etiqueta: algunos complejos vitamínicos llevan mucho más.",
+          "fuente": "EFSA 2023 (nivel máximo de vitamina B6)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "vitamina_b6"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Con dosis altas de vitamina B6, vigile hormigueos o torpeza en pies y manos. Si aparecen, déjela y consulte; mientras tanto, haga los ejercicios de equilibrio con un apoyo cerca.",
+          "fuente": "EFSA 2023 (nivel máximo de vitamina B6)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "vitamina_b6",
+            "dosis": "alta"
+          }
+        }
+      ],
+      "fuentes": [
+        "EFSA, niveles máximos tolerables de vitaminas y minerales",
+        "NIH Office of Dietary Supplements"
+      ],
+      "combinable": true
     },
     {
-     "id": "vitamina_k",
-     "nombre": "Vitamina K (K1 o K2, menaquinona)",
-     "marcas": [],
-     "alias": [
-      "Vitamina K2",
-      "Menaquinona",
-      "MK-7",
-      "Vitamin K"
-     ]
+      "id": "hiperico",
+      "tipo": "planta",
+      "nombre": "Hipérico (hierba de San Juan)",
+      "atc": [],
+      "resumen": "Planta para el ánimo con muchas interacciones. Hace que el cuerpo elimine antes muchos fármacos, que así pierden efecto: por ejemplo, los anticoagulantes y los anticonceptivos. Con antidepresivos puede dar un exceso de serotonina.",
+      "senales": [
+        "serotoninergico",
+        "fotosensibilidad"
+      ],
+      "principios": [
+        {
+          "id": "hiperico",
+          "nombre": "Hipérico (hierba de San Juan)",
+          "marcas": [],
+          "alias": [
+            "Hierba de San Juan",
+            "Hypericum",
+            "Corazoncillo",
+            "St John's wort"
+          ],
+          "sinonimos": [
+            "hypericum perforatum"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "El hipérico reduce el efecto de muchos fármacos: anticoagulantes, anticonceptivos (riesgo de embarazo), inmunosupresores de trasplante, antivirales, digoxina y algunos fármacos del cáncer y del corazón. Antes de tomarlo, consulte. Si ya lo toma, no lo deje de golpe sin avisar: los niveles de sus otros fármacos subirían.",
+          "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.5",
+          "evidencia": "guia",
+          "revisado": true
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Con antidepresivos como la sertralina, con triptanes o con tramadol puede dar un exceso de serotonina. Los signos son temblor, sudor, fiebre y agitación. No los mezcle sin que se lo indique su médico.",
+          "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.5",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "info",
+          "texto": "El hipérico aumenta la sensibilidad de la piel al sol. Si entrena al aire libre, use protector solar alto y ropa que cubra, sobre todo en las horas centrales del día.",
+          "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.4",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Hypericum perforatum L., herba)"
+      ],
+      "combinable": true
     },
     {
-     "id": "vitamina_b6",
-     "nombre": "Vitamina B6 (piridoxina)",
-     "marcas": [],
-     "alias": [
-      "Piridoxina",
-      "Pyridoxine",
-      "Vitamin B6"
-     ],
-     "umbral_mg": {
-      "alta": 12
-     }
+      "id": "plantas_sedantes",
+      "tipo": "planta",
+      "nombre": "Plantas para dormir o calmar (valeriana, pasiflora, melisa, tila, lúpulo, amapola de California)",
+      "atc": [],
+      "resumen": "Dan una sedación leve que se suma a la de los fármacos para dormir, la ansiedad o el dolor, y a la del alcohol. Lo importante es no mezclarlas con otros sedantes sin consultar y cuidar el equilibrio por la mañana.",
+      "senales": [
+        "sedacion"
+      ],
+      "principios": [
+        {
+          "id": "valeriana",
+          "nombre": "Valeriana",
+          "marcas": [],
+          "alias": [
+            "Valeriana officinalis",
+            "Valerian"
+          ],
+          "sinonimos": [
+            "valeriana officinalis"
+          ]
+        },
+        {
+          "id": "pasiflora",
+          "nombre": "Pasiflora",
+          "marcas": [],
+          "alias": [
+            "Passiflora",
+            "Flor de la pasión",
+            "Passionflower"
+          ],
+          "sinonimos": [
+            "passiflora incarnata"
+          ]
+        },
+        {
+          "id": "melisa",
+          "nombre": "Melisa (toronjil)",
+          "marcas": [],
+          "alias": [
+            "Toronjil",
+            "Melissa",
+            "Lemon balm"
+          ],
+          "sinonimos": [
+            "melissa officinalis"
+          ]
+        },
+        {
+          "id": "tila",
+          "nombre": "Tila (tilo)",
+          "marcas": [],
+          "alias": [
+            "Tilo",
+            "Infusión de tila",
+            "Linden"
+          ]
+        },
+        {
+          "id": "lupulo",
+          "nombre": "Lúpulo",
+          "marcas": [],
+          "alias": [
+            "Humulus lupulus",
+            "Hops"
+          ]
+        },
+        {
+          "id": "amapola_california",
+          "nombre": "Amapola de California (eschscholzia)",
+          "marcas": [],
+          "alias": [
+            "Eschscholzia"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Estas plantas suman su efecto al de los fármacos para dormir o para la ansiedad (lorazepam, zolpidem…), los antihistamínicos que dan sueño, los opioides, los antiepilépticos y el alcohol. No las añada a esos fármacos sin consultar. Si las toma de noche, compruebe que por la mañana está despejado antes de conducir o entrenar.",
+          "fuente": "EMA HMPC, monografía de la UE (valeriana, pasiflora, melisa) 4.5/4.7",
+          "evidencia": "guia",
+          "revisado": true
+        },
+        {
+          "nivel": "info",
+          "texto": "Son de las plantas más seguras. La valeriana puede tardar unas semanas en notarse. Una infusión de tila o melisa por la noche no suele dar problemas.",
+          "fuente": "EMA HMPC, monografía de la UE (valeriana, tila, melisa)",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si las toma por la noche, evite los ejercicios de equilibrio exigentes a primera hora de la mañana y hágalos con un apoyo cerca. En mayores, sumadas a otros sedantes aumentan las caídas.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Valerianae radix, Passiflorae herba, Melissae folium, Tiliae flos, Lupuli flos)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "cbd",
+      "tipo": "planta",
+      "nombre": "CBD de venta libre (aceites y cápsulas de cannabidiol)",
+      "atc": [],
+      "resumen": "El CBD de venta libre no es inocuo: da somnolencia, puede alterar las enzimas del hígado y cambia los niveles de varios fármacos. Los productos no siempre llevan lo que dice la etiqueta y algunos contienen THC.",
+      "senales": [
+        "sedacion",
+        "dopaje",
+        "hepatotoxico"
+      ],
+      "principios": [
+        {
+          "id": "cbd",
+          "nombre": "CBD (aceite de cannabidiol de venta libre)",
+          "marcas": [],
+          "alias": [
+            "Aceite de CBD",
+            "CBD",
+            "Cannabidiol (venta libre)"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "El CBD aumenta el efecto de los sedantes, los opioides y el alcohol. Sube los niveles de tacrolimus y everolimus, puede subir el INR con acenocumarol o warfarina y, con valproato, aumenta el riesgo de daño en el hígado. Si toma alguno de ellos, consulte antes.",
+          "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.4/4.5 · casos publicados (warfarina)",
+          "evidencia": "ft",
+          "revisado": true
+        },
+        {
+          "nivel": "info",
+          "texto": "El CBD de venta libre no se controla como un medicamento: la cantidad real puede ser distinta de la etiqueta y algunos productos llevan THC, que da positivo en un control antidopaje y afecta a la conducción.",
+          "fuente": "AMA/WADA, lista de prohibiciones (S8 cannabinoides)",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "Ficha técnica de Epidyolex (cannabidiol)",
+        "AMA/WADA, lista de prohibiciones"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_antiagregantes",
+      "tipo": "planta",
+      "nombre": "Plantas que pueden sumar sangrado (ginkgo, ajo, jengibre, cúrcuma, sauce, harpagofito)",
+      "atc": [],
+      "resumen": "Pueden frenar un poco las plaquetas. Solas apenas tienen importancia, pero junto a un anticoagulante, un antiagregante o un antiinflamatorio aumentan los hematomas y el sangrado.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "ginkgo",
+          "nombre": "Ginkgo biloba",
+          "marcas": [],
+          "alias": [
+            "Ginkgo"
+          ],
+          "senales_extra": [
+            "sangrado"
+          ],
+          "sinonimos": [
+            "ginkgo biloba"
+          ]
+        },
+        {
+          "id": "ajo_suplemento",
+          "nombre": "Ajo en cápsulas o extracto",
+          "marcas": [],
+          "alias": [
+            "Ajo negro",
+            "Aceite de ajo",
+            "Allium sativum",
+            "Garlic"
+          ]
+        },
+        {
+          "id": "jengibre",
+          "nombre": "Jengibre (cápsulas o extracto)",
+          "marcas": [],
+          "alias": [
+            "Zingiber",
+            "Ginger"
+          ]
+        },
+        {
+          "id": "curcuma",
+          "nombre": "Cúrcuma / curcumina",
+          "marcas": [],
+          "alias": [
+            "Curcumina",
+            "Turmeric"
+          ],
+          "senales_extra": [
+            "hepatotoxico"
+          ]
+        },
+        {
+          "id": "sauce",
+          "nombre": "Corteza de sauce (salicina)",
+          "marcas": [],
+          "alias": [
+            "Sauce blanco",
+            "Salicina",
+            "Salix",
+            "Willow bark"
+          ]
+        },
+        {
+          "id": "harpagofito",
+          "nombre": "Harpagofito (garra del diablo)",
+          "marcas": [],
+          "alias": [
+            "Garra del diablo",
+            "Harpagophytum",
+            "Devil's claw"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si toma anticoagulantes (Sintrom, apixabán, rivaroxabán…), antiagregantes (aspirina, clopidogrel) o antiinflamatorios, consulte antes de tomar estas plantas en cápsulas o extractos. Avise si va a operarse o a sacarse una muela: suele indicarse dejarlas unas 2 semanas antes. Como condimento en la comida no hay problema.",
+          "fuente": "EMA HMPC, monografía de la UE (ginkgo, ajo, jengibre, cúrcuma, sauce) 4.4/4.5 · ASA (suplementos antes de la cirugía)",
+          "evidencia": "guia",
+          "revisado": true
+        },
+        {
+          "nivel": "info",
+          "texto": "El ginkgo no ha demostrado mejorar la memoria ni prevenir la demencia en personas sanas. Si tiene epilepsia, consulte antes de tomarlo.",
+          "fuente": "EMA HMPC, monografía de la UE (ginkgo) 4.4 · ensayo GEM 2008",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "ginkgo"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Se han descrito casos de daño en el hígado con cápsulas de cúrcuma, sobre todo las de alta absorción (con piperina o pimienta negra). Si nota cansancio intenso, orina oscura o color amarillo en la piel o los ojos, déjela y consulte.",
+          "fuente": "LiverTox (NIH), cúrcuma · notificaciones de hepatitis (Italia, 2019)",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "curcuma"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La corteza de sauce contiene salicilatos, parientes de la aspirina. No la tome si es alérgico a la aspirina o tiene asma que empeora con antiinflamatorios, ni junto con aspirina, otros antiinflamatorios o anticoagulantes.",
+          "fuente": "EMA HMPC, monografía de la UE (corteza de sauce) 4.3/4.5",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "sauce"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El harpagofito puede irritar el estómago: no lo tome si tiene úlcera o mucha acidez, ni junto con antiinflamatorios o corticoides sin consultar. Con anticoagulantes se han descrito hematomas.",
+          "fuente": "EMA HMPC, monografía de la UE (harpagofito) 4.3/4.4",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "harpagofito"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Ginkgo folium, Allii sativi bulbus, Zingiberis rhizoma, Curcumae longae rhizoma, Salicis cortex, Harpagophyti radix)",
+        "LiverTox (NIH)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_potasio",
+      "tipo": "planta",
+      "nombre": "Regaliz y laxantes de plantas (sen, cáscara sagrada, frángula, aloe)",
+      "atc": [],
+      "resumen": "Hacen perder potasio. Con diuréticos, corticoides o digoxina el potasio puede bajar tanto que aparezcan calambres, debilidad o arritmias, más aún si suda mucho al hacer ejercicio. El regaliz además sube la tensión.",
+      "senales": [
+        "hipopotasemia"
+      ],
+      "principios": [
+        {
+          "id": "regaliz",
+          "nombre": "Regaliz (raíz, extracto o regaliz negro)",
+          "marcas": [],
+          "alias": [
+            "Regaliz de palo",
+            "Palo dulce",
+            "Orozuz",
+            "Glycyrrhiza",
+            "Licorice",
+            "Liquorice"
+          ],
+          "senales_extra": [
+            "hipertension"
+          ],
+          "sinonimos": [
+            "glycyrrhiza glabra"
+          ]
+        },
+        {
+          "id": "laxantes_plantas",
+          "nombre": "Laxantes de plantas (sen, cáscara sagrada, frángula, aloe)",
+          "marcas": [],
+          "alias": [
+            "Sen",
+            "Sena",
+            "Hojas de sen",
+            "Cáscara sagrada",
+            "Frángula",
+            "Aloe (látex)",
+            "Senna"
+          ],
+          "senales_extra": [
+            "deshidratacion"
+          ],
+          "sinonimos": [
+            "cassia angustifolia",
+            "rhamnus frangula",
+            "rhamnus frangula l",
+            "rhamnus purshiana",
+            "rhamnus purshiana dc",
+            "cascara sagrada",
+            "aloe ferox",
+            "senosidos"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "El regaliz retiene sal y agua, sube la tensión y baja el potasio, incluso a dosis moderadas si se toma a diario. No lo tome si tiene hipertensión o enfermedad del corazón o del riñón, ni junto con diuréticos, corticoides o digoxina. No pase de 4 semanas seguidas.",
+          "fuente": "EMA HMPC, monografía de la UE (raíz de regaliz) 4.3/4.4/4.5 · SCF 2003 (ácido glicirrícico)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "regaliz"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Use los laxantes de plantas solo unos días (no más de 1 o 2 semanas) y no a diario. Tomados de forma continuada bajan el potasio, sobre todo con diuréticos, corticoides o regaliz, y son peligrosos si toma digoxina o fármacos para el ritmo del corazón. Si necesita un laxante a menudo, mejor fibra, agua y movimiento.",
+          "fuente": "EMA HMPC, monografía de la UE (sen, frángula, cáscara sagrada) 4.2/4.4/4.5",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "laxantes_plantas"
+          }
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si suda mucho (calor, sesiones largas), la pérdida de potasio se suma. Si tiene calambres que no ceden, debilidad o palpitaciones, pare y consulte: puede ser el potasio bajo.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Liquiritiae radix, Sennae folium, Frangulae cortex, Rhamni purshianae cortex, Aloe)",
+        "SCF 2003, ácido glicirrícico"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_diureticas",
+      "tipo": "planta",
+      "nombre": "Plantas diuréticas (cola de caballo, diente de león, abedul, ortosifón)",
+      "atc": [],
+      "resumen": "Aumentan la orina. Con calor y ejercicio favorecen la deshidratación, suman su efecto al de los diuréticos y pueden subir el litio en sangre.",
+      "senales": [
+        "deshidratacion"
+      ],
+      "principios": [
+        {
+          "id": "plantas_diureticas",
+          "nombre": "Planta diurética (cola de caballo, diente de león, abedul, ortosifón)",
+          "marcas": [],
+          "alias": [
+            "Cola de caballo",
+            "Diente de león",
+            "Abedul",
+            "Ortosifón",
+            "Té de Java",
+            "Equisetum",
+            "Drenante",
+            "Horsetail",
+            "Dandelion"
+          ],
+          "sinonimos": [
+            "equisetum arvense",
+            "taraxacum officinale",
+            "betula pendula",
+            "orthosiphon stamineus"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "No las tome si tiene edemas por enfermedad del corazón o del riñón, ni junto con litio (puede subir hasta niveles tóxicos) o con diuréticos sin consultar. Los 'drenantes' para adelgazar solo hacen perder agua, no grasa.",
+          "fuente": "EMA HMPC, monografía de la UE (cola de caballo, abedul, ortosifón) 4.3/4.4 · casos publicados con litio",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Beba antes, durante y después del ejercicio, sobre todo con calor. Si la orina es muy oscura o escasa, o se marea al levantarse, está deshidratado.",
+          "fuente": "ACSM 2007 (reposición de líquidos en el ejercicio)",
+          "evidencia": "guia",
+          "revisado": true
+        }
+      ],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Equiseti herba, Taraxaci folium, Betulae folium, Orthosiphonis folium)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "suplementos_glucosa",
+      "tipo": "planta",
+      "nombre": "Suplementos para el azúcar (berberina, canela, cromo)",
+      "atc": [],
+      "resumen": "Se venden para bajar el azúcar. Si ya toma fármacos para la diabetes pueden sumar su efecto y provocar bajadas, más aún al hacer ejercicio. No sustituyen al tratamiento.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "berberina",
+          "nombre": "Berberina",
+          "marcas": [],
+          "alias": [
+            "Berberis"
+          ]
+        },
+        {
+          "id": "canela",
+          "nombre": "Canela en cápsulas (cassia)",
+          "marcas": [],
+          "alias": [
+            "Canela de China",
+            "Cinnamomum cassia",
+            "Cinnamon"
+          ]
+        },
+        {
+          "id": "cromo",
+          "nombre": "Cromo (picolinato de cromo)",
+          "marcas": [],
+          "alias": [
+            "Picolinato de cromo",
+            "Chromium"
+          ],
+          "tipo": "suplemento"
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si se inyecta insulina o toma gliclazida, glimepirida o repaglinida, estos suplementos pueden sumar su efecto. Mida la glucosa más a menudo las primeras semanas y lleve azúcar cuando entrene. No deje su tratamiento por ellos.",
+          "fuente": "NIH ODS (cromo) · NCCIH (canela, berberina)",
+          "evidencia": "base",
+          "revisado": true
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La berberina hace que algunos fármacos se acumulen, como la ciclosporina o el tacrolimus. Da molestias de estómago y estreñimiento. Consulte antes si toma medicación a diario.",
+          "fuente": "Revisión clínica (estudios con ciclosporina) · NCCIH",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "berberina"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La canela cassia en cápsulas lleva cumarina, que a dosis altas puede dañar el hígado. Como especia en la comida no hay problema; si toma cápsulas, mejor canela de Ceilán.",
+          "fuente": "EFSA 2008 (cumarina)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "canela"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "El cromo puede reducir la absorción de la levotiroxina: sepárelos 3 o 4 horas.",
+          "fuente": "NIH ODS (cromo)",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "cromo"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "NIH Office of Dietary Supplements",
+        "NCCIH",
+        "EFSA 2008, cumarina"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_adaptogenas",
+      "tipo": "planta",
+      "nombre": "Plantas energizantes y adaptógenas (ginseng, rhodiola, ashwagandha)",
+      "atc": [],
+      "resumen": "Se venden contra el cansancio o el estrés. El ginseng puede acelerar el pulso y quitar el sueño; la ashwagandha da sueño, puede alterar el tiroides y se ha relacionado con casos de daño en el hígado.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "ginseng",
+          "nombre": "Ginseng (Panax)",
+          "marcas": [],
+          "alias": [
+            "Ginseng coreano",
+            "Ginseng rojo",
+            "Panax ginseng",
+            "Ginseng siberiano (eleuterococo)"
+          ],
+          "senales_extra": [
+            "taquicardia"
+          ],
+          "sinonimos": [
+            "panax ginseng"
+          ]
+        },
+        {
+          "id": "rhodiola",
+          "nombre": "Rhodiola rosea",
+          "marcas": [],
+          "alias": [
+            "Rodiola",
+            "Rhodiola"
+          ]
+        },
+        {
+          "id": "ashwagandha",
+          "nombre": "Ashwagandha (withania)",
+          "marcas": [],
+          "alias": [
+            "Withania somnifera",
+            "Ginseng indio"
+          ],
+          "senales_extra": [
+            "sedacion",
+            "hepatotoxico"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "El ginseng puede dar nerviosismo, insomnio y palpitaciones, sobre todo con café, pre-entrenos u otros estimulantes. Puede bajar el azúcar si toma fármacos para la diabetes y restar efecto a la warfarina o el acenocumarol. No lo tome por la tarde.",
+          "fuente": "EMA HMPC, monografía de la UE (ginseng) 4.4/4.5 · NCCIH",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "ginseng"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La rhodiola se tolera bien y no tiene interacciones relevantes conocidas; su efecto sobre el cansancio es modesto. Puede dar algo de nerviosismo o insomnio si se toma por la tarde.",
+          "fuente": "EMA HMPC, monografía de la UE (rhodiola)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "rhodiola"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La ashwagandha da sueño y se suma a otros sedantes. Puede subir las hormonas del tiroides: no la tome con levotiroxina o fármacos para el tiroides sin control. Se han descrito casos de daño en el hígado. No la tome en el embarazo ni con inmunosupresores.",
+          "fuente": "LiverTox (NIH), ashwagandha · NIH ODS",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "ashwagandha"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Ginseng radix, Rhodiolae roseae rhizoma)",
+        "LiverTox (NIH)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_menopausia",
+      "tipo": "planta",
+      "nombre": "Plantas para la menopausia (isoflavonas de soja, trébol rojo, cimicífuga)",
+      "atc": [],
+      "resumen": "Tienen un efecto hormonal suave. Las isoflavonas pueden restar absorción a la levotiroxina y no se recomiendan tras un cáncer de mama sin consultar; la cimicífuga se ha relacionado con casos de daño en el hígado.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "isoflavonas",
+          "nombre": "Isoflavonas de soja o trébol rojo",
+          "marcas": [],
+          "alias": [
+            "Soja (isoflavonas)",
+            "Trébol rojo",
+            "Fitoestrógenos",
+            "Genisteína",
+            "Soy isoflavones",
+            "Red clover"
+          ]
+        },
+        {
+          "id": "cimicifuga",
+          "nombre": "Cimicífuga (black cohosh)",
+          "marcas": [],
+          "alias": [
+            "Black cohosh",
+            "Actaea racemosa",
+            "Cimicifuga racemosa"
+          ],
+          "senales_extra": [
+            "hepatotoxico"
+          ],
+          "sinonimos": [
+            "cimicifuga racemosa"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "Si toma levotiroxina, separe las isoflavonas al menos 4 horas. Si ha tenido cáncer de mama o toma tamoxifeno o un inhibidor de la aromatasa, no las tome sin consultarlo con su oncólogo.",
+          "fuente": "EFSA 2015 (isoflavonas en la posmenopausia) · FT AEMPS 4.5 (levotiroxina)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "isoflavonas"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Se han descrito casos de daño en el hígado. No la tome si tiene una enfermedad del hígado; déjela y consulte si nota cansancio intenso, orina oscura o piel u ojos amarillos. Tras un cáncer de mama, consulte antes.",
+          "fuente": "EMA HMPC, monografía de la UE (cimicífuga) 4.4",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "cimicifuga"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [
+        {
+          "nivel": "info",
+          "texto": "Ninguna de estas plantas protege el hueso. En la menopausia, lo que lo fortalece es el ejercicio de fuerza y de impacto, con calcio y vitamina D suficientes.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true
+        }
+      ],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Cimicifugae rhizoma)",
+        "EFSA 2015, isoflavonas"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "plantas_inmunes",
+      "tipo": "planta",
+      "nombre": "Equinácea, propóleo y jalea real",
+      "atc": [],
+      "resumen": "Se toman 'para las defensas'. La equinácea no conviene con enfermedades autoinmunes ni con fármacos que bajan las defensas; el propóleo y la jalea real pueden dar alergias graves, sobre todo con asma.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "equinacea",
+          "nombre": "Equinácea",
+          "marcas": [],
+          "alias": [
+            "Echinacea"
+          ],
+          "sinonimos": [
+            "echinacea purpurea",
+            "echinacea purpurea tintura parte aerea",
+            "echinacea purpurea tintura raiz"
+          ]
+        },
+        {
+          "id": "propoleo_jalea",
+          "nombre": "Propóleo / jalea real",
+          "marcas": [],
+          "alias": [
+            "Propóleo",
+            "Própolis",
+            "Jalea real",
+            "Propolis",
+            "Royal jelly"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "No tome equinácea si tiene una enfermedad de las defensas, como artritis reumatoide, lupus o esclerosis múltiple. Tampoco si toma fármacos que bajan las defensas o si es alérgico a la margarita o la manzanilla. No pase de 10 días seguidos.",
+          "fuente": "EMA HMPC, monografía de la UE (equinácea) 4.2/4.3/4.4",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "equinacea"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El propóleo y la jalea real pueden provocar alergias e incluso crisis de asma graves. Si tiene alergia al polen, a las picaduras de abeja o a la miel, no los tome.",
+          "fuente": "NCCIH (propóleo, jalea real) · casos de anafilaxia publicados",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "propoleo_jalea"
+          }
+        },
+        {
+          "nivel": "alerta",
+          "texto": "Tiene asma o EPOC: evite el propóleo y la jalea real. Se han descrito crisis de asma graves con ellos.",
+          "fuente": "NCCIH (jalea real) · casos de anafilaxia publicados",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "propoleo_jalea",
+            "condicion": "epoc_asma"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EMA HMPC, monografía de la UE (Echinaceae purpureae herba)",
+        "NCCIH"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "productos_adelgazantes",
+      "tipo": "suplemento",
+      "nombre": "Productos para adelgazar y quemagrasas (sinefrina, té verde concentrado, fucus, glucomanano, garcinia, yohimbina)",
+      "atc": [],
+      "resumen": "Su eficacia es escasa y algunos no son seguros. Los estimulantes (sinefrina, yohimbina) suben el pulso y la tensión; el té verde concentrado y la garcinia pueden dañar el hígado; el fucus lleva mucho yodo.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "sinefrina",
+          "nombre": "Sinefrina (naranja amarga)",
+          "marcas": [],
+          "alias": [
+            "Naranja amarga",
+            "Citrus aurantium",
+            "Quemagrasas",
+            "Termogénico",
+            "Bitter orange",
+            "Fat burner"
+          ],
+          "senales_extra": [
+            "taquicardia",
+            "hipertension"
+          ]
+        },
+        {
+          "id": "te_verde_extracto",
+          "nombre": "Extracto de té verde (EGCG)",
+          "marcas": [],
+          "alias": [
+            "Té verde en cápsulas",
+            "EGCG",
+            "Camellia sinensis",
+            "Green tea extract"
+          ],
+          "senales_extra": [
+            "hepatotoxico"
+          ]
+        },
+        {
+          "id": "fucus",
+          "nombre": "Fucus y algas ricas en yodo (kelp)",
+          "marcas": [],
+          "alias": [
+            "Fucus vesiculosus",
+            "Kelp",
+            "Alga kombu",
+            "Bladderwrack"
+          ],
+          "sinonimos": [
+            "fucus vesiculosus",
+            "fucus vesiculosus exto seco"
+          ]
+        },
+        {
+          "id": "glucomanano",
+          "nombre": "Glucomanano y fibras saciantes",
+          "marcas": [],
+          "alias": [
+            "Konjac",
+            "Goma guar"
+          ]
+        },
+        {
+          "id": "garcinia",
+          "nombre": "Garcinia cambogia",
+          "marcas": [],
+          "alias": [
+            "Garcinia"
+          ],
+          "senales_extra": [
+            "hepatotoxico"
+          ]
+        },
+        {
+          "id": "yohimbina",
+          "nombre": "Yohimbina (yohimbe)",
+          "marcas": [],
+          "alias": [
+            "Yohimbe"
+          ],
+          "senales_extra": [
+            "taquicardia",
+            "hipertension"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "info",
+          "texto": "La AEMPS detecta a menudo productos 'naturales' para adelgazar con fármacos ocultos (sibutramina, diuréticos, laxantes…). Desconfíe de los que prometen resultados rápidos y compre en farmacia o marcas con control de calidad.",
+          "fuente": "AEMPS (alertas de productos ilegales)",
+          "evidencia": "guia",
+          "revisado": true
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "La sinefrina sube el pulso y la tensión, más aún con cafeína. No la tome si tiene hipertensión, arritmias o enfermedad del corazón, ni con antidepresivos IMAO, estimulantes o descongestionantes. Se han descrito infartos e ictus en personas jóvenes.",
+          "fuente": "Revisión clínica (casos publicados)",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "sinefrina"
+          }
+        },
+        {
+          "nivel": "alerta",
+          "texto": "La yohimbina está prohibida en los alimentos y complementos de la UE por sus riesgos: sube la tensión y el pulso, da ansiedad y se suma a antidepresivos y estimulantes. No la tome.",
+          "fuente": "Reglamento (UE) 2019/650 (yohimbe)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "yohimbina"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "En cápsulas o extractos concentrados, el té verde puede dañar el hígado, sobre todo en ayunas o por encima de 800 mg de EGCG al día. También lleva cafeína. Como bebida, unas tazas al día no plantean problema.",
+          "fuente": "EFSA 2018 (catequinas del té verde) · Reglamento (UE) 2022/2340",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "te_verde_extracto"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Se han descrito casos de daño grave en el hígado con garcinia, y su efecto sobre el peso es mínimo. No la tome si tiene una enfermedad del hígado o toma fármacos que lo cargan.",
+          "fuente": "LiverTox (NIH), garcinia",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "garcinia"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El fucus y algas como el kelp llevan mucho yodo y pueden alterar el tiroides (por exceso o por defecto). No los tome si tiene problemas de tiroides o toma levotiroxina, amiodarona o litio.",
+          "fuente": "NIH ODS (yodo)",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "fucus"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "Tome el glucomanano con un vaso grande de agua: en seco puede atascarse en la garganta. Retrasa la absorción de otros fármacos; sepárelo al menos 2 horas, sobre todo de la levotiroxina, la digoxina y los fármacos para la diabetes.",
+          "fuente": "Reglamento (UE) 432/2012 (advertencia del glucomanano) · Revisión clínica",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "glucomanano"
+          }
+        }
+      ],
+      "aerobico": [
+        {
+          "nivel": "precaucion",
+          "texto": "Con estimulantes para adelgazar, evite el ejercicio intenso y con calor: el pulso y la tensión suben más de lo normal. Si nota palpitaciones, dolor en el pecho o mareo, pare.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "sinefrina"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "Con estimulantes para adelgazar, evite el ejercicio intenso y con calor: el pulso y la tensión suben más de lo normal. Si nota palpitaciones, dolor en el pecho o mareo, pare.",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
+          "revisado": true,
+          "si": {
+            "principio": "yohimbina"
+          }
+        }
+      ],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "EFSA 2018, catequinas del té verde",
+        "Reglamento (UE) 2019/650",
+        "Reglamento (UE) 2022/2340",
+        "Reglamento (UE) 432/2012",
+        "LiverTox (NIH)",
+        "NIH ODS"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "suplementos_hormonales",
+      "tipo": "suplemento",
+      "nombre": "Prohormonas y potenciadores de testosterona (DHEA, SARMs, tribulus)",
+      "atc": [],
+      "resumen": "Riesgo real de positivo en un control antidopaje y de efectos sobre las hormonas, el hígado y el corazón. Muchos productos llevan anabolizantes que no figuran en la etiqueta.",
+      "senales": [
+        "dopaje"
+      ],
+      "principios": [
+        {
+          "id": "prohormonas_dhea",
+          "nombre": "DHEA, prohormonas y SARMs",
+          "marcas": [],
+          "alias": [
+            "DHEA",
+            "Prohormonas",
+            "Androstenediona",
+            "SARMs",
+            "Ostarina"
+          ],
+          "senales_extra": [
+            "hepatotoxico",
+            "hipertension"
+          ]
+        },
+        {
+          "id": "tribulus",
+          "nombre": "Tribulus terrestris y boosters de testosterona",
+          "marcas": [],
+          "alias": [
+            "Tribulus",
+            "Booster de testosterona",
+            "Testosterone booster"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "alerta",
+          "texto": "DHEA, prohormonas y SARMs están prohibidos en el deporte con licencia, en cualquier momento. Pueden dañar el hígado, subir la tensión y el colesterol, frenar sus propias hormonas y aumentar el riesgo de trombosis. No los tome; si ya lo hace, dígaselo a su médico para controlarlo.",
+          "fuente": "AMA/WADA, lista de prohibiciones (S1 anabolizantes) · AIS Sports Supplement Framework (grupo D)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "prohormonas_dhea"
+          }
+        },
+        {
+          "nivel": "precaucion",
+          "texto": "El tribulus y los 'boosters' no suben la testosterona de forma útil y están entre los productos con más riesgo de llevar anabolizantes ocultos. Si compite, evítelos.",
+          "fuente": "AIS Sports Supplement Framework (grupo D) · IOC consensus 2018 (suplementos)",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "tribulus"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [],
+      "equilibrio": [],
+      "fuentes": [
+        "AMA/WADA, lista de prohibiciones",
+        "AIS Sports Supplement Framework",
+        "IOC consensus 2018 (suplementos)"
+      ],
+      "combinable": true
+    },
+    {
+      "id": "suplementos_colesterol",
+      "tipo": "suplemento",
+      "nombre": "Levadura roja de arroz y coenzima Q10",
+      "atc": [],
+      "resumen": "La levadura roja contiene monacolina K, la misma molécula que la lovastatina: es una estatina 'natural' con sus mismos riesgos. La coenzima Q10 es segura, aunque no ha demostrado evitar el dolor muscular de las estatinas.",
+      "senales": [],
+      "principios": [
+        {
+          "id": "levadura_roja",
+          "nombre": "Levadura roja de arroz (monacolina K)",
+          "marcas": [],
+          "alias": [
+            "Monacolina",
+            "Arroz de levadura roja",
+            "Red yeast rice"
+          ],
+          "senales_extra": [
+            "miopatia",
+            "estatina"
+          ]
+        },
+        {
+          "id": "coenzima_q10",
+          "nombre": "Coenzima Q10 (ubiquinona, ubiquinol)",
+          "marcas": [],
+          "alias": [
+            "CoQ10",
+            "Q10",
+            "Ubiquinol",
+            "Ubidecarenona"
+          ]
+        }
+      ],
+      "general": [
+        {
+          "nivel": "precaucion",
+          "texto": "No tome levadura roja junto con una estatina: sería duplicar el mismo fármaco. Tiene sus mismos riesgos (daño muscular y del hígado) y sus mismas interacciones (claritromicina, antifúngicos, pomelo, fibratos). En la UE no puede pasar de 3 mg de monacolinas al día.",
+          "fuente": "Reglamento (UE) 2022/860 (monacolinas) · EFSA 2018",
+          "evidencia": "guia",
+          "revisado": true,
+          "si": {
+            "principio": "levadura_roja"
+          }
+        },
+        {
+          "nivel": "info",
+          "texto": "La coenzima Q10 se tolera bien. Puede bajar un poco la tensión y restar efecto al acenocumarol o la warfarina: si los toma, avise y adelante el control del INR.",
+          "fuente": "NCCIH (coenzima Q10) · casos publicados con warfarina",
+          "evidencia": "base",
+          "revisado": true,
+          "si": {
+            "principio": "coenzima_q10"
+          }
+        }
+      ],
+      "aerobico": [],
+      "fuerza": [
+        {
+          "nivel": "precaucion",
+          "texto": "Como con las estatinas, si tras el ejercicio nota un dolor muscular desproporcionado, debilidad u orina oscura, pare y consulte.",
+          "fuente": "FT AEMPS 4.4 (lovastatina)",
+          "evidencia": "ft",
+          "revisado": true,
+          "si": {
+            "principio": "levadura_roja"
+          }
+        }
+      ],
+      "equilibrio": [],
+      "fuentes": [
+        "Reglamento (UE) 2022/860",
+        "EFSA 2018, monacolinas",
+        "NCCIH"
+      ],
+      "combinable": true
     }
-   ],
-   "general": [
+  ],
+  "reglas_combinadas": [
     {
-     "nivel": "precaucion",
-     "texto": "El zinc impide que se absorban algunos antibióticos (ciprofloxacino, levofloxacino, doxiciclina): tómelo al menos 2 horas antes o de 4 a 6 horas después. Tomado durante meses por encima de 25 mg al día hace perder cobre, con anemia y hormigueos.",
-     "fuente": "FT AEMPS 4.5 (quinolonas, tetraciclinas) · EFSA (nivel máximo de zinc)",
-     "evidencia": "ft",
-     "revisado": false,
-     "si": {
-      "principio": "zinc"
-     }
+      "id": "dopaje_suplementos",
+      "si": {
+        "senal": "dopaje",
+        "min": 1
+      },
+      "nivel": "precaucion",
+      "titulo": "Suplementos con riesgo en un control antidopaje",
+      "texto": "Si compite con licencia federativa, usted responde de cualquier sustancia que aparezca en su control, aunque venga de un suplemento contaminado. Evite los productos señalados y use solo suplementos con control por lotes (Informed Sport, Kölner Liste o similar). Ante la duda, consulte la lista de la AMA o a su federación.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "AMA/WADA, Código Mundial Antidopaje · IOC consensus 2018 (suplementos)",
+      "evidencia": "guia",
+      "revisado": true
     },
     {
-     "nivel": "precaucion",
-     "texto": "Por encima de 300 mg al día (unas 450 UI), la vitamina E puede aumentar el sangrado si toma anticoagulantes o antiagregantes. No ha demostrado proteger el corazón ni mejorar el rendimiento.",
-     "fuente": "EFSA (nivel máximo de vitamina E) · NIH ODS (vitamina E)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "vitamina_e"
-     }
+      "id": "hepatotoxico_hepatopatia",
+      "si": {
+        "senal": "hepatotoxico",
+        "min": 1,
+        "condicion": "hepatopatia"
+      },
+      "nivel": "alerta",
+      "titulo": "Enfermedad del hígado y suplementos que pueden dañarlo",
+      "texto": "Tiene una enfermedad del hígado y toma algún producto que se ha relacionado con casos de daño hepático (aparece señalado en su lista). No siga tomándolo sin consultar con su médico, y pida un control de las enzimas del hígado.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "LiverTox (NIH)",
+      "evidencia": "base",
+      "revisado": true
     },
     {
-     "nivel": "precaucion",
-     "texto": "Si toma acenocumarol (Sintrom) o warfarina, no empiece ni deje la vitamina K por su cuenta: anula su efecto y el INR baja. Muchos productos para los huesos llevan vitamina K2. Con apixabán, rivaroxabán, edoxabán o dabigatrán no interfiere.",
-     "fuente": "FT AEMPS 4.5 (acenocumarol)",
-     "evidencia": "ft",
-     "revisado": false,
-     "si": {
-      "principio": "vitamina_k"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La vitamina B6 en dosis altas durante meses (por encima de 12 mg al día) puede dañar los nervios: hormigueo, entumecimiento y peor equilibrio. Revise la etiqueta: algunos complejos vitamínicos llevan mucho más.",
-     "fuente": "EFSA 2023 (nivel máximo de vitamina B6)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "vitamina_b6"
-     }
+      "id": "hepatotoxico_multiple",
+      "si": {
+        "senal": "hepatotoxico",
+        "min": 2
+      },
+      "nivel": "precaucion",
+      "titulo": "Varios productos que pueden cargar el hígado",
+      "texto": "Toma {n} productos que se han relacionado con casos de daño en el hígado, y el riesgo se suma. Coméntelo con su médico. Señales de alarma: cansancio intenso, orina oscura y piel u ojos amarillos.",
+      "ambitos": [
+        "general"
+      ],
+      "fuente": "LiverTox (NIH)",
+      "evidencia": "base",
+      "revisado": true
     }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [
+  ],
+  "clases_parche": [
     {
-     "nivel": "precaucion",
-     "texto": "Con dosis altas de vitamina B6, vigile hormigueos o torpeza en pies y manos. Si aparecen, déjela y consulte; mientras tanto, haga los ejercicios de equilibrio con un apoyo cerca.",
-     "fuente": "EFSA 2023 (nivel máximo de vitamina B6)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "vitamina_b6",
-      "dosis": "alta"
-     }
+      "id": "ezetimiba_otros_lipidos",
+      "principios_add": [
+        {
+          "id": "omega3",
+          "nombre": "Omega-3 (icosapento de etilo)",
+          "marcas": [
+            "Vazkepa",
+            "Omacor"
+          ],
+          "alias": [
+            "Aceite de pescado",
+            "Aceite de krill",
+            "Omega 3 (suplemento)",
+            "Fish oil"
+          ]
+        }
+      ]
     }
-   ],
-   "fuentes": [
-    "EFSA, niveles máximos tolerables de vitaminas y minerales",
-    "NIH Office of Dietary Supplements"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "hiperico",
-   "tipo": "planta",
-   "nombre": "Hipérico (hierba de San Juan)",
-   "atc": [],
-   "resumen": "Planta para el ánimo con muchas interacciones. Hace que el cuerpo elimine antes muchos fármacos, que así pierden efecto: por ejemplo, los anticoagulantes y los anticonceptivos. Con antidepresivos puede dar un exceso de serotonina.",
-   "senales": [
-    "serotoninergico",
-    "fotosensibilidad"
-   ],
-   "principios": [
-    {
-     "id": "hiperico",
-     "nombre": "Hipérico (hierba de San Juan)",
-     "marcas": [],
-     "alias": [
-      "Hierba de San Juan",
-      "Hypericum",
-      "Corazoncillo",
-      "St John's wort"
-     ],
-     "sinonimos": [
-      "hypericum perforatum"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "alerta",
-     "texto": "El hipérico reduce el efecto de muchos fármacos: anticoagulantes, anticonceptivos (riesgo de embarazo), inmunosupresores de trasplante, antivirales, digoxina y algunos fármacos del cáncer y del corazón. Antes de tomarlo, consulte. Si ya lo toma, no lo deje de golpe sin avisar: los niveles de sus otros fármacos subirían.",
-     "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.5",
-     "evidencia": "guia",
-     "revisado": false
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Con antidepresivos como la sertralina, con triptanes o con tramadol puede dar un exceso de serotonina. Los signos son temblor, sudor, fiebre y agitación. No los mezcle sin que se lo indique su médico.",
-     "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.5",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "aerobico": [
-    {
-     "nivel": "info",
-     "texto": "El hipérico aumenta la sensibilidad de la piel al sol. Si entrena al aire libre, use protector solar alto y ropa que cubra, sobre todo en las horas centrales del día.",
-     "fuente": "EMA HMPC, monografía de la UE (hipérico) 4.4",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Hypericum perforatum L., herba)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_sedantes",
-   "tipo": "planta",
-   "nombre": "Plantas para dormir o calmar (valeriana, pasiflora, melisa, tila, lúpulo, amapola de California)",
-   "atc": [],
-   "resumen": "Dan una sedación leve que se suma a la de los fármacos para dormir, la ansiedad o el dolor, y a la del alcohol. Lo importante es no mezclarlas con otros sedantes sin consultar y cuidar el equilibrio por la mañana.",
-   "senales": [
-    "sedacion"
-   ],
-   "principios": [
-    {
-     "id": "valeriana",
-     "nombre": "Valeriana",
-     "marcas": [],
-     "alias": [
-      "Valeriana officinalis",
-      "Valerian"
-     ],
-     "sinonimos": [
-      "valeriana officinalis"
-     ]
-    },
-    {
-     "id": "pasiflora",
-     "nombre": "Pasiflora",
-     "marcas": [],
-     "alias": [
-      "Passiflora",
-      "Flor de la pasión",
-      "Passionflower"
-     ],
-     "sinonimos": [
-      "passiflora incarnata"
-     ]
-    },
-    {
-     "id": "melisa",
-     "nombre": "Melisa (toronjil)",
-     "marcas": [],
-     "alias": [
-      "Toronjil",
-      "Melissa",
-      "Lemon balm"
-     ],
-     "sinonimos": [
-      "melissa officinalis"
-     ]
-    },
-    {
-     "id": "tila",
-     "nombre": "Tila (tilo)",
-     "marcas": [],
-     "alias": [
-      "Tilo",
-      "Infusión de tila",
-      "Linden"
-     ]
-    },
-    {
-     "id": "lupulo",
-     "nombre": "Lúpulo",
-     "marcas": [],
-     "alias": [
-      "Humulus lupulus",
-      "Hops"
-     ]
-    },
-    {
-     "id": "amapola_california",
-     "nombre": "Amapola de California (eschscholzia)",
-     "marcas": [],
-     "alias": [
-      "Eschscholzia"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "Estas plantas suman su efecto al de los fármacos para dormir o para la ansiedad (lorazepam, zolpidem…), los antihistamínicos que dan sueño, los opioides, los antiepilépticos y el alcohol. No las añada a esos fármacos sin consultar. Si las toma de noche, compruebe que por la mañana está despejado antes de conducir o entrenar.",
-     "fuente": "EMA HMPC, monografía de la UE (valeriana, pasiflora, melisa) 4.5/4.7",
-     "evidencia": "guia",
-     "revisado": false
-    },
-    {
-     "nivel": "info",
-     "texto": "Son de las plantas más seguras. La valeriana puede tardar unas semanas en notarse. Una infusión de tila o melisa por la noche no suele dar problemas.",
-     "fuente": "EMA HMPC, monografía de la UE (valeriana, tila, melisa)",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [
-    {
-     "nivel": "precaucion",
-     "texto": "Si las toma por la noche, evite los ejercicios de equilibrio exigentes a primera hora de la mañana y hágalos con un apoyo cerca. En mayores, sumadas a otros sedantes aumentan las caídas.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false
-    }
-   ],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Valerianae radix, Passiflorae herba, Melissae folium, Tiliae flos, Lupuli flos)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "cbd",
-   "tipo": "planta",
-   "nombre": "CBD de venta libre (aceites y cápsulas de cannabidiol)",
-   "atc": [],
-   "resumen": "El CBD de venta libre no es inocuo: da somnolencia, puede alterar las enzimas del hígado y cambia los niveles de varios fármacos. Los productos no siempre llevan lo que dice la etiqueta y algunos contienen THC.",
-   "senales": [
-    "sedacion",
-    "dopaje",
-    "hepatotoxico"
-   ],
-   "principios": [
-    {
-     "id": "cbd",
-     "nombre": "CBD (aceite de cannabidiol de venta libre)",
-     "marcas": [],
-     "alias": [
-      "Aceite de CBD",
-      "CBD",
-      "Cannabidiol (venta libre)"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "El CBD aumenta el efecto de los sedantes, los opioides y el alcohol. Sube los niveles de tacrolimus y everolimus, puede subir el INR con acenocumarol o warfarina y, con valproato, aumenta el riesgo de daño en el hígado. Si toma alguno de ellos, consulte antes.",
-     "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.4/4.5 · casos publicados (warfarina)",
-     "evidencia": "ft",
-     "revisado": false
-    },
-    {
-     "nivel": "info",
-     "texto": "El CBD de venta libre no se controla como un medicamento: la cantidad real puede ser distinta de la etiqueta y algunos productos llevan THC, que da positivo en un control antidopaje y afecta a la conducción.",
-     "fuente": "AMA/WADA, lista de prohibiciones (S8 cannabinoides)",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "Ficha técnica de Epidyolex (cannabidiol)",
-    "AMA/WADA, lista de prohibiciones"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_antiagregantes",
-   "tipo": "planta",
-   "nombre": "Plantas que pueden sumar sangrado (ginkgo, ajo, jengibre, cúrcuma, sauce, harpagofito)",
-   "atc": [],
-   "resumen": "Pueden frenar un poco las plaquetas. Solas apenas tienen importancia, pero junto a un anticoagulante, un antiagregante o un antiinflamatorio aumentan los hematomas y el sangrado.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "ginkgo",
-     "nombre": "Ginkgo biloba",
-     "marcas": [],
-     "alias": [
-      "Ginkgo"
-     ],
-     "senales_extra": [
-      "sangrado"
-     ],
-     "sinonimos": [
-      "ginkgo biloba"
-     ]
-    },
-    {
-     "id": "ajo_suplemento",
-     "nombre": "Ajo en cápsulas o extracto",
-     "marcas": [],
-     "alias": [
-      "Ajo negro",
-      "Aceite de ajo",
-      "Allium sativum",
-      "Garlic"
-     ]
-    },
-    {
-     "id": "jengibre",
-     "nombre": "Jengibre (cápsulas o extracto)",
-     "marcas": [],
-     "alias": [
-      "Zingiber",
-      "Ginger"
-     ]
-    },
-    {
-     "id": "curcuma",
-     "nombre": "Cúrcuma / curcumina",
-     "marcas": [],
-     "alias": [
-      "Curcumina",
-      "Turmeric"
-     ],
-     "senales_extra": [
-      "hepatotoxico"
-     ]
-    },
-    {
-     "id": "sauce",
-     "nombre": "Corteza de sauce (salicina)",
-     "marcas": [],
-     "alias": [
-      "Sauce blanco",
-      "Salicina",
-      "Salix",
-      "Willow bark"
-     ]
-    },
-    {
-     "id": "harpagofito",
-     "nombre": "Harpagofito (garra del diablo)",
-     "marcas": [],
-     "alias": [
-      "Garra del diablo",
-      "Harpagophytum",
-      "Devil's claw"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "Si toma anticoagulantes (Sintrom, apixabán, rivaroxabán…), antiagregantes (aspirina, clopidogrel) o antiinflamatorios, consulte antes de tomar estas plantas en cápsulas o extractos. Avise si va a operarse o a sacarse una muela: suele indicarse dejarlas unas 2 semanas antes. Como condimento en la comida no hay problema.",
-     "fuente": "EMA HMPC, monografía de la UE (ginkgo, ajo, jengibre, cúrcuma, sauce) 4.4/4.5 · ASA (suplementos antes de la cirugía)",
-     "evidencia": "guia",
-     "revisado": false
-    },
-    {
-     "nivel": "info",
-     "texto": "El ginkgo no ha demostrado mejorar la memoria ni prevenir la demencia en personas sanas. Si tiene epilepsia, consulte antes de tomarlo.",
-     "fuente": "EMA HMPC, monografía de la UE (ginkgo) 4.4 · ensayo GEM 2008",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "ginkgo"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Se han descrito casos de daño en el hígado con cápsulas de cúrcuma, sobre todo las de alta absorción (con piperina o pimienta negra). Si nota cansancio intenso, orina oscura o color amarillo en la piel o los ojos, déjela y consulte.",
-     "fuente": "LiverTox (NIH), cúrcuma · notificaciones de hepatitis (Italia, 2019)",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "curcuma"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "La corteza de sauce contiene salicilatos, parientes de la aspirina. No la tome si es alérgico a la aspirina o tiene asma que empeora con antiinflamatorios, ni junto con aspirina, otros antiinflamatorios o anticoagulantes.",
-     "fuente": "EMA HMPC, monografía de la UE (corteza de sauce) 4.3/4.5",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "sauce"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "El harpagofito puede irritar el estómago: no lo tome si tiene úlcera o mucha acidez, ni junto con antiinflamatorios o corticoides sin consultar. Con anticoagulantes se han descrito hematomas.",
-     "fuente": "EMA HMPC, monografía de la UE (harpagofito) 4.3/4.4",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "harpagofito"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Ginkgo folium, Allii sativi bulbus, Zingiberis rhizoma, Curcumae longae rhizoma, Salicis cortex, Harpagophyti radix)",
-    "LiverTox (NIH)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_potasio",
-   "tipo": "planta",
-   "nombre": "Regaliz y laxantes de plantas (sen, cáscara sagrada, frángula, aloe)",
-   "atc": [],
-   "resumen": "Hacen perder potasio. Con diuréticos, corticoides o digoxina el potasio puede bajar tanto que aparezcan calambres, debilidad o arritmias, más aún si suda mucho al hacer ejercicio. El regaliz además sube la tensión.",
-   "senales": [
-    "hipopotasemia"
-   ],
-   "principios": [
-    {
-     "id": "regaliz",
-     "nombre": "Regaliz (raíz, extracto o regaliz negro)",
-     "marcas": [],
-     "alias": [
-      "Regaliz de palo",
-      "Palo dulce",
-      "Orozuz",
-      "Glycyrrhiza",
-      "Licorice",
-      "Liquorice"
-     ],
-     "senales_extra": [
-      "hipertension"
-     ],
-     "sinonimos": [
-      "glycyrrhiza glabra"
-     ]
-    },
-    {
-     "id": "laxantes_plantas",
-     "nombre": "Laxantes de plantas (sen, cáscara sagrada, frángula, aloe)",
-     "marcas": [],
-     "alias": [
-      "Sen",
-      "Sena",
-      "Hojas de sen",
-      "Cáscara sagrada",
-      "Frángula",
-      "Aloe (látex)",
-      "Senna"
-     ],
-     "senales_extra": [
-      "deshidratacion"
-     ],
-     "sinonimos": [
-      "cassia angustifolia",
-      "rhamnus frangula",
-      "rhamnus frangula l",
-      "rhamnus purshiana",
-      "rhamnus purshiana dc",
-      "cascara sagrada",
-      "aloe ferox",
-      "senosidos"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "El regaliz retiene sal y agua, sube la tensión y baja el potasio, incluso a dosis moderadas si se toma a diario. No lo tome si tiene hipertensión o enfermedad del corazón o del riñón, ni junto con diuréticos, corticoides o digoxina. No pase de 4 semanas seguidas.",
-     "fuente": "EMA HMPC, monografía de la UE (raíz de regaliz) 4.3/4.4/4.5 · SCF 2003 (ácido glicirrícico)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "regaliz"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Use los laxantes de plantas solo unos días (no más de 1 o 2 semanas) y no a diario. Tomados de forma continuada bajan el potasio, sobre todo con diuréticos, corticoides o regaliz, y son peligrosos si toma digoxina o fármacos para el ritmo del corazón. Si necesita un laxante a menudo, mejor fibra, agua y movimiento.",
-     "fuente": "EMA HMPC, monografía de la UE (sen, frángula, cáscara sagrada) 4.2/4.4/4.5",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "laxantes_plantas"
-     }
-    }
-   ],
-   "aerobico": [
-    {
-     "nivel": "precaucion",
-     "texto": "Si suda mucho (calor, sesiones largas), la pérdida de potasio se suma. Si tiene calambres que no ceden, debilidad o palpitaciones, pare y consulte: puede ser el potasio bajo.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false
-    }
-   ],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Liquiritiae radix, Sennae folium, Frangulae cortex, Rhamni purshianae cortex, Aloe)",
-    "SCF 2003, ácido glicirrícico"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_diureticas",
-   "tipo": "planta",
-   "nombre": "Plantas diuréticas (cola de caballo, diente de león, abedul, ortosifón)",
-   "atc": [],
-   "resumen": "Aumentan la orina. Con calor y ejercicio favorecen la deshidratación, suman su efecto al de los diuréticos y pueden subir el litio en sangre.",
-   "senales": [
-    "deshidratacion"
-   ],
-   "principios": [
-    {
-     "id": "plantas_diureticas",
-     "nombre": "Planta diurética (cola de caballo, diente de león, abedul, ortosifón)",
-     "marcas": [],
-     "alias": [
-      "Cola de caballo",
-      "Diente de león",
-      "Abedul",
-      "Ortosifón",
-      "Té de Java",
-      "Equisetum",
-      "Drenante",
-      "Horsetail",
-      "Dandelion"
-     ],
-     "sinonimos": [
-      "equisetum arvense",
-      "taraxacum officinale",
-      "betula pendula",
-      "orthosiphon stamineus"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "No las tome si tiene edemas por enfermedad del corazón o del riñón, ni junto con litio (puede subir hasta niveles tóxicos) o con diuréticos sin consultar. Los 'drenantes' para adelgazar solo hacen perder agua, no grasa.",
-     "fuente": "EMA HMPC, monografía de la UE (cola de caballo, abedul, ortosifón) 4.3/4.4 · casos publicados con litio",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "aerobico": [
-    {
-     "nivel": "precaucion",
-     "texto": "Beba antes, durante y después del ejercicio, sobre todo con calor. Si la orina es muy oscura o escasa, o se marea al levantarse, está deshidratado.",
-     "fuente": "ACSM 2007 (reposición de líquidos en el ejercicio)",
-     "evidencia": "guia",
-     "revisado": false
-    }
-   ],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Equiseti herba, Taraxaci folium, Betulae folium, Orthosiphonis folium)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "suplementos_glucosa",
-   "tipo": "planta",
-   "nombre": "Suplementos para el azúcar (berberina, canela, cromo)",
-   "atc": [],
-   "resumen": "Se venden para bajar el azúcar. Si ya toma fármacos para la diabetes pueden sumar su efecto y provocar bajadas, más aún al hacer ejercicio. No sustituyen al tratamiento.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "berberina",
-     "nombre": "Berberina",
-     "marcas": [],
-     "alias": [
-      "Berberis"
-     ]
-    },
-    {
-     "id": "canela",
-     "nombre": "Canela en cápsulas (cassia)",
-     "marcas": [],
-     "alias": [
-      "Canela de China",
-      "Cinnamomum cassia",
-      "Cinnamon"
-     ]
-    },
-    {
-     "id": "cromo",
-     "nombre": "Cromo (picolinato de cromo)",
-     "marcas": [],
-     "alias": [
-      "Picolinato de cromo",
-      "Chromium"
-     ],
-     "tipo": "suplemento"
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "Si se inyecta insulina o toma gliclazida, glimepirida o repaglinida, estos suplementos pueden sumar su efecto. Mida la glucosa más a menudo las primeras semanas y lleve azúcar cuando entrene. No deje su tratamiento por ellos.",
-     "fuente": "NIH ODS (cromo) · NCCIH (canela, berberina)",
-     "evidencia": "base",
-     "revisado": false
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "La berberina hace que algunos fármacos se acumulen, como la ciclosporina o el tacrolimus. Da molestias de estómago y estreñimiento. Consulte antes si toma medicación a diario.",
-     "fuente": "Revisión clínica (estudios con ciclosporina) · NCCIH",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "berberina"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La canela cassia en cápsulas lleva cumarina, que a dosis altas puede dañar el hígado. Como especia en la comida no hay problema; si toma cápsulas, mejor canela de Ceilán.",
-     "fuente": "EFSA 2008 (cumarina)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "canela"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "El cromo puede reducir la absorción de la levotiroxina: sepárelos 3 o 4 horas.",
-     "fuente": "NIH ODS (cromo)",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "cromo"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "NIH Office of Dietary Supplements",
-    "NCCIH",
-    "EFSA 2008, cumarina"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_adaptogenas",
-   "tipo": "planta",
-   "nombre": "Plantas energizantes y adaptógenas (ginseng, rhodiola, ashwagandha)",
-   "atc": [],
-   "resumen": "Se venden contra el cansancio o el estrés. El ginseng puede acelerar el pulso y quitar el sueño; la ashwagandha da sueño, puede alterar el tiroides y se ha relacionado con casos de daño en el hígado.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "ginseng",
-     "nombre": "Ginseng (Panax)",
-     "marcas": [],
-     "alias": [
-      "Ginseng coreano",
-      "Ginseng rojo",
-      "Panax ginseng",
-      "Ginseng siberiano (eleuterococo)"
-     ],
-     "senales_extra": [
-      "taquicardia"
-     ],
-     "sinonimos": [
-      "panax ginseng"
-     ]
-    },
-    {
-     "id": "rhodiola",
-     "nombre": "Rhodiola rosea",
-     "marcas": [],
-     "alias": [
-      "Rodiola",
-      "Rhodiola"
-     ]
-    },
-    {
-     "id": "ashwagandha",
-     "nombre": "Ashwagandha (withania)",
-     "marcas": [],
-     "alias": [
-      "Withania somnifera",
-      "Ginseng indio"
-     ],
-     "senales_extra": [
-      "sedacion",
-      "hepatotoxico"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "El ginseng puede dar nerviosismo, insomnio y palpitaciones, sobre todo con café, pre-entrenos u otros estimulantes. Puede bajar el azúcar si toma fármacos para la diabetes y restar efecto a la warfarina o el acenocumarol. No lo tome por la tarde.",
-     "fuente": "EMA HMPC, monografía de la UE (ginseng) 4.4/4.5 · NCCIH",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "ginseng"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La rhodiola se tolera bien y no tiene interacciones relevantes conocidas; su efecto sobre el cansancio es modesto. Puede dar algo de nerviosismo o insomnio si se toma por la tarde.",
-     "fuente": "EMA HMPC, monografía de la UE (rhodiola)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "rhodiola"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "La ashwagandha da sueño y se suma a otros sedantes. Puede subir las hormonas del tiroides: no la tome con levotiroxina o fármacos para el tiroides sin control. Se han descrito casos de daño en el hígado. No la tome en el embarazo ni con inmunosupresores.",
-     "fuente": "LiverTox (NIH), ashwagandha · NIH ODS",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "ashwagandha"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Ginseng radix, Rhodiolae roseae rhizoma)",
-    "LiverTox (NIH)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_menopausia",
-   "tipo": "planta",
-   "nombre": "Plantas para la menopausia (isoflavonas de soja, trébol rojo, cimicífuga)",
-   "atc": [],
-   "resumen": "Tienen un efecto hormonal suave. Las isoflavonas pueden restar absorción a la levotiroxina y no se recomiendan tras un cáncer de mama sin consultar; la cimicífuga se ha relacionado con casos de daño en el hígado.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "isoflavonas",
-     "nombre": "Isoflavonas de soja o trébol rojo",
-     "marcas": [],
-     "alias": [
-      "Soja (isoflavonas)",
-      "Trébol rojo",
-      "Fitoestrógenos",
-      "Genisteína",
-      "Soy isoflavones",
-      "Red clover"
-     ]
-    },
-    {
-     "id": "cimicifuga",
-     "nombre": "Cimicífuga (black cohosh)",
-     "marcas": [],
-     "alias": [
-      "Black cohosh",
-      "Actaea racemosa",
-      "Cimicifuga racemosa"
-     ],
-     "senales_extra": [
-      "hepatotoxico"
-     ],
-     "sinonimos": [
-      "cimicifuga racemosa"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "Si toma levotiroxina, separe las isoflavonas al menos 4 horas. Si ha tenido cáncer de mama o toma tamoxifeno o un inhibidor de la aromatasa, no las tome sin consultarlo con su oncólogo.",
-     "fuente": "EFSA 2015 (isoflavonas en la posmenopausia) · FT AEMPS 4.5 (levotiroxina)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "isoflavonas"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Se han descrito casos de daño en el hígado. No la tome si tiene una enfermedad del hígado; déjela y consulte si nota cansancio intenso, orina oscura o piel u ojos amarillos. Tras un cáncer de mama, consulte antes.",
-     "fuente": "EMA HMPC, monografía de la UE (cimicífuga) 4.4",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "cimicifuga"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [
-    {
-     "nivel": "info",
-     "texto": "Ninguna de estas plantas protege el hueso. En la menopausia, lo que lo fortalece es el ejercicio de fuerza y de impacto, con calcio y vitamina D suficientes.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false
-    }
-   ],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Cimicifugae rhizoma)",
-    "EFSA 2015, isoflavonas"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "plantas_inmunes",
-   "tipo": "planta",
-   "nombre": "Equinácea, propóleo y jalea real",
-   "atc": [],
-   "resumen": "Se toman 'para las defensas'. La equinácea no conviene con enfermedades autoinmunes ni con fármacos que bajan las defensas; el propóleo y la jalea real pueden dar alergias graves, sobre todo con asma.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "equinacea",
-     "nombre": "Equinácea",
-     "marcas": [],
-     "alias": [
-      "Echinacea"
-     ],
-     "sinonimos": [
-      "echinacea purpurea",
-      "echinacea purpurea tintura parte aerea",
-      "echinacea purpurea tintura raiz"
-     ]
-    },
-    {
-     "id": "propoleo_jalea",
-     "nombre": "Propóleo / jalea real",
-     "marcas": [],
-     "alias": [
-      "Propóleo",
-      "Própolis",
-      "Jalea real",
-      "Propolis",
-      "Royal jelly"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "No tome equinácea si tiene una enfermedad de las defensas, como artritis reumatoide, lupus o esclerosis múltiple. Tampoco si toma fármacos que bajan las defensas o si es alérgico a la margarita o la manzanilla. No pase de 10 días seguidos.",
-     "fuente": "EMA HMPC, monografía de la UE (equinácea) 4.2/4.3/4.4",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "equinacea"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "El propóleo y la jalea real pueden provocar alergias e incluso crisis de asma graves. Si tiene alergia al polen, a las picaduras de abeja o a la miel, no los tome.",
-     "fuente": "NCCIH (propóleo, jalea real) · casos de anafilaxia publicados",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "propoleo_jalea"
-     }
-    },
-    {
-     "nivel": "alerta",
-     "texto": "Tiene asma o EPOC: evite el propóleo y la jalea real. Se han descrito crisis de asma graves con ellos.",
-     "fuente": "NCCIH (jalea real) · casos de anafilaxia publicados",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "propoleo_jalea",
-      "condicion": "epoc_asma"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EMA HMPC, monografía de la UE (Echinaceae purpureae herba)",
-    "NCCIH"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "productos_adelgazantes",
-   "tipo": "suplemento",
-   "nombre": "Productos para adelgazar y quemagrasas (sinefrina, té verde concentrado, fucus, glucomanano, garcinia, yohimbina)",
-   "atc": [],
-   "resumen": "Su eficacia es escasa y algunos no son seguros. Los estimulantes (sinefrina, yohimbina) suben el pulso y la tensión; el té verde concentrado y la garcinia pueden dañar el hígado; el fucus lleva mucho yodo.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "sinefrina",
-     "nombre": "Sinefrina (naranja amarga)",
-     "marcas": [],
-     "alias": [
-      "Naranja amarga",
-      "Citrus aurantium",
-      "Quemagrasas",
-      "Termogénico",
-      "Bitter orange",
-      "Fat burner"
-     ],
-     "senales_extra": [
-      "taquicardia",
-      "hipertension"
-     ]
-    },
-    {
-     "id": "te_verde_extracto",
-     "nombre": "Extracto de té verde (EGCG)",
-     "marcas": [],
-     "alias": [
-      "Té verde en cápsulas",
-      "EGCG",
-      "Camellia sinensis",
-      "Green tea extract"
-     ],
-     "senales_extra": [
-      "hepatotoxico"
-     ]
-    },
-    {
-     "id": "fucus",
-     "nombre": "Fucus y algas ricas en yodo (kelp)",
-     "marcas": [],
-     "alias": [
-      "Fucus vesiculosus",
-      "Kelp",
-      "Alga kombu",
-      "Bladderwrack"
-     ],
-     "sinonimos": [
-      "fucus vesiculosus",
-      "fucus vesiculosus exto seco"
-     ]
-    },
-    {
-     "id": "glucomanano",
-     "nombre": "Glucomanano y fibras saciantes",
-     "marcas": [],
-     "alias": [
-      "Konjac",
-      "Goma guar"
-     ]
-    },
-    {
-     "id": "garcinia",
-     "nombre": "Garcinia cambogia",
-     "marcas": [],
-     "alias": [
-      "Garcinia"
-     ],
-     "senales_extra": [
-      "hepatotoxico"
-     ]
-    },
-    {
-     "id": "yohimbina",
-     "nombre": "Yohimbina (yohimbe)",
-     "marcas": [],
-     "alias": [
-      "Yohimbe"
-     ],
-     "senales_extra": [
-      "taquicardia",
-      "hipertension"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "info",
-     "texto": "La AEMPS detecta a menudo productos 'naturales' para adelgazar con fármacos ocultos (sibutramina, diuréticos, laxantes…). Desconfíe de los que prometen resultados rápidos y compre en farmacia o marcas con control de calidad.",
-     "fuente": "AEMPS (alertas de productos ilegales)",
-     "evidencia": "guia",
-     "revisado": false
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "La sinefrina sube el pulso y la tensión, más aún con cafeína. No la tome si tiene hipertensión, arritmias o enfermedad del corazón, ni con antidepresivos IMAO, estimulantes o descongestionantes. Se han descrito infartos e ictus en personas jóvenes.",
-     "fuente": "Revisión clínica (casos publicados)",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "sinefrina"
-     }
-    },
-    {
-     "nivel": "alerta",
-     "texto": "La yohimbina está prohibida en los alimentos y complementos de la UE por sus riesgos: sube la tensión y el pulso, da ansiedad y se suma a antidepresivos y estimulantes. No la tome.",
-     "fuente": "Reglamento (UE) 2019/650 (yohimbe)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "yohimbina"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "En cápsulas o extractos concentrados, el té verde puede dañar el hígado, sobre todo en ayunas o por encima de 800 mg de EGCG al día. También lleva cafeína. Como bebida, unas tazas al día no plantean problema.",
-     "fuente": "EFSA 2018 (catequinas del té verde) · Reglamento (UE) 2022/2340",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "te_verde_extracto"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Se han descrito casos de daño grave en el hígado con garcinia, y su efecto sobre el peso es mínimo. No la tome si tiene una enfermedad del hígado o toma fármacos que lo cargan.",
-     "fuente": "LiverTox (NIH), garcinia",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "garcinia"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "El fucus y algas como el kelp llevan mucho yodo y pueden alterar el tiroides (por exceso o por defecto). No los tome si tiene problemas de tiroides o toma levotiroxina, amiodarona o litio.",
-     "fuente": "NIH ODS (yodo)",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "fucus"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "Tome el glucomanano con un vaso grande de agua: en seco puede atascarse en la garganta. Retrasa la absorción de otros fármacos; sepárelo al menos 2 horas, sobre todo de la levotiroxina, la digoxina y los fármacos para la diabetes.",
-     "fuente": "Reglamento (UE) 432/2012 (advertencia del glucomanano) · Revisión clínica",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "glucomanano"
-     }
-    }
-   ],
-   "aerobico": [
-    {
-     "nivel": "precaucion",
-     "texto": "Con estimulantes para adelgazar, evite el ejercicio intenso y con calor: el pulso y la tensión suben más de lo normal. Si nota palpitaciones, dolor en el pecho o mareo, pare.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "sinefrina"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "Con estimulantes para adelgazar, evite el ejercicio intenso y con calor: el pulso y la tensión suben más de lo normal. Si nota palpitaciones, dolor en el pecho o mareo, pare.",
-     "fuente": "Revisión clínica",
-     "evidencia": "revision",
-     "revisado": false,
-     "si": {
-      "principio": "yohimbina"
-     }
-    }
-   ],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "EFSA 2018, catequinas del té verde",
-    "Reglamento (UE) 2019/650",
-    "Reglamento (UE) 2022/2340",
-    "Reglamento (UE) 432/2012",
-    "LiverTox (NIH)",
-    "NIH ODS"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "suplementos_hormonales",
-   "tipo": "suplemento",
-   "nombre": "Prohormonas y potenciadores de testosterona (DHEA, SARMs, tribulus)",
-   "atc": [],
-   "resumen": "Riesgo real de positivo en un control antidopaje y de efectos sobre las hormonas, el hígado y el corazón. Muchos productos llevan anabolizantes que no figuran en la etiqueta.",
-   "senales": [
-    "dopaje"
-   ],
-   "principios": [
-    {
-     "id": "prohormonas_dhea",
-     "nombre": "DHEA, prohormonas y SARMs",
-     "marcas": [],
-     "alias": [
-      "DHEA",
-      "Prohormonas",
-      "Androstenediona",
-      "SARMs",
-      "Ostarina"
-     ],
-     "senales_extra": [
-      "hepatotoxico",
-      "hipertension"
-     ]
-    },
-    {
-     "id": "tribulus",
-     "nombre": "Tribulus terrestris y boosters de testosterona",
-     "marcas": [],
-     "alias": [
-      "Tribulus",
-      "Booster de testosterona",
-      "Testosterone booster"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "alerta",
-     "texto": "DHEA, prohormonas y SARMs están prohibidos en el deporte con licencia, en cualquier momento. Pueden dañar el hígado, subir la tensión y el colesterol, frenar sus propias hormonas y aumentar el riesgo de trombosis. No los tome; si ya lo hace, dígaselo a su médico para controlarlo.",
-     "fuente": "AMA/WADA, lista de prohibiciones (S1 anabolizantes) · AIS Sports Supplement Framework (grupo D)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "prohormonas_dhea"
-     }
-    },
-    {
-     "nivel": "precaucion",
-     "texto": "El tribulus y los 'boosters' no suben la testosterona de forma útil y están entre los productos con más riesgo de llevar anabolizantes ocultos. Si compite, evítelos.",
-     "fuente": "AIS Sports Supplement Framework (grupo D) · IOC consensus 2018 (suplementos)",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "tribulus"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [],
-   "equilibrio": [],
-   "fuentes": [
-    "AMA/WADA, lista de prohibiciones",
-    "AIS Sports Supplement Framework",
-    "IOC consensus 2018 (suplementos)"
-   ],
-   "combinable": true
-  },
-  {
-   "id": "suplementos_colesterol",
-   "tipo": "suplemento",
-   "nombre": "Levadura roja de arroz y coenzima Q10",
-   "atc": [],
-   "resumen": "La levadura roja contiene monacolina K, la misma molécula que la lovastatina: es una estatina 'natural' con sus mismos riesgos. La coenzima Q10 es segura, aunque no ha demostrado evitar el dolor muscular de las estatinas.",
-   "senales": [],
-   "principios": [
-    {
-     "id": "levadura_roja",
-     "nombre": "Levadura roja de arroz (monacolina K)",
-     "marcas": [],
-     "alias": [
-      "Monacolina",
-      "Arroz de levadura roja",
-      "Red yeast rice"
-     ],
-     "senales_extra": [
-      "miopatia",
-      "estatina"
-     ]
-    },
-    {
-     "id": "coenzima_q10",
-     "nombre": "Coenzima Q10 (ubiquinona, ubiquinol)",
-     "marcas": [],
-     "alias": [
-      "CoQ10",
-      "Q10",
-      "Ubiquinol",
-      "Ubidecarenona"
-     ]
-    }
-   ],
-   "general": [
-    {
-     "nivel": "precaucion",
-     "texto": "No tome levadura roja junto con una estatina: sería duplicar el mismo fármaco. Tiene sus mismos riesgos (daño muscular y del hígado) y sus mismas interacciones (claritromicina, antifúngicos, pomelo, fibratos). En la UE no puede pasar de 3 mg de monacolinas al día.",
-     "fuente": "Reglamento (UE) 2022/860 (monacolinas) · EFSA 2018",
-     "evidencia": "guia",
-     "revisado": false,
-     "si": {
-      "principio": "levadura_roja"
-     }
-    },
-    {
-     "nivel": "info",
-     "texto": "La coenzima Q10 se tolera bien. Puede bajar un poco la tensión y restar efecto al acenocumarol o la warfarina: si los toma, avise y adelante el control del INR.",
-     "fuente": "NCCIH (coenzima Q10) · casos publicados con warfarina",
-     "evidencia": "base",
-     "revisado": false,
-     "si": {
-      "principio": "coenzima_q10"
-     }
-    }
-   ],
-   "aerobico": [],
-   "fuerza": [
-    {
-     "nivel": "precaucion",
-     "texto": "Como con las estatinas, si tras el ejercicio nota un dolor muscular desproporcionado, debilidad u orina oscura, pare y consulte.",
-     "fuente": "FT AEMPS 4.4 (lovastatina)",
-     "evidencia": "ft",
-     "revisado": false,
-     "si": {
-      "principio": "levadura_roja"
-     }
-    }
-   ],
-   "equilibrio": [],
-   "fuentes": [
-    "Reglamento (UE) 2022/860",
-    "EFSA 2018, monacolinas",
-    "NCCIH"
-   ],
-   "combinable": true
-  }
- ],
- "reglas_combinadas": [
-  {
-   "id": "dopaje_suplementos",
-   "si": {
-    "senal": "dopaje",
-    "min": 1
-   },
-   "nivel": "precaucion",
-   "titulo": "Suplementos con riesgo en un control antidopaje",
-   "texto": "Si compite con licencia federativa, usted responde de cualquier sustancia que aparezca en su control, aunque venga de un suplemento contaminado. Evite los productos señalados y use solo suplementos con control por lotes (Informed Sport, Kölner Liste o similar). Ante la duda, consulte la lista de la AMA o a su federación.",
-   "ambitos": [
-    "general"
-   ],
-   "fuente": "AMA/WADA, Código Mundial Antidopaje · IOC consensus 2018 (suplementos)",
-   "evidencia": "guia",
-   "revisado": false
-  },
-  {
-   "id": "hepatotoxico_hepatopatia",
-   "si": {
-    "senal": "hepatotoxico",
-    "min": 1,
-    "condicion": "hepatopatia"
-   },
-   "nivel": "alerta",
-   "titulo": "Enfermedad del hígado y suplementos que pueden dañarlo",
-   "texto": "Tiene una enfermedad del hígado y toma algún producto que se ha relacionado con casos de daño hepático (aparece señalado en su lista). No siga tomándolo sin consultar con su médico, y pida un control de las enzimas del hígado.",
-   "ambitos": [
-    "general"
-   ],
-   "fuente": "LiverTox (NIH)",
-   "evidencia": "base",
-   "revisado": false
-  },
-  {
-   "id": "hepatotoxico_multiple",
-   "si": {
-    "senal": "hepatotoxico",
-    "min": 2
-   },
-   "nivel": "precaucion",
-   "titulo": "Varios productos que pueden cargar el hígado",
-   "texto": "Toma {n} productos que se han relacionado con casos de daño en el hígado, y el riesgo se suma. Coméntelo con su médico. Señales de alarma: cansancio intenso, orina oscura y piel u ojos amarillos.",
-   "ambitos": [
-    "general"
-   ],
-   "fuente": "LiverTox (NIH)",
-   "evidencia": "base",
-   "revisado": false
-  }
- ],
- "clases_parche": [
-  {
-   "id": "ezetimiba_otros_lipidos",
-   "principios_add": [
-    {
-     "id": "omega3",
-     "nombre": "Omega-3 (icosapento de etilo)",
-     "marcas": [
-      "Vazkepa",
-      "Omacor"
-     ],
-     "alias": [
-      "Aceite de pescado",
-      "Aceite de krill",
-      "Omega 3 (suplemento)",
-      "Fish oil"
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }

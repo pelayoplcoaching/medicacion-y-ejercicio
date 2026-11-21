@@ -217,7 +217,7 @@ def main(xlsx: Path, simular: bool):
             log.append(f"eliminar combinada {rid} ({F.combinada(rid, eliminar=True)} fuentes)")
         elif e == "CAMBIAR" and d.get("TEXTO NUEVO"):
             log.append(f"cambiar combinada {rid} ({F.combinada(rid, nuevo=d['TEXTO NUEVO'])} fuentes)")
-        elif e == "OK":
+        elif d.get("ESTADO", "").strip().upper() == "OK":  # estado() devuelve "" para OK
             F.combinada(rid)
 
     # Interacciones curadas
@@ -245,7 +245,7 @@ def main(xlsx: Path, simular: bool):
                 if len(partes) > 1:
                     x["accion"] = partes[1]
             log.append(f"cambiar interacción {ctx} → {x['nivel']}")
-        if e in ("OK", "CAMBIAR"):
+        if e == "CAMBIAR" or d.get("ESTADO", "").strip().upper() == "OK":
             x["revisado"] = True  # v1.1: las interacciones en borrador pasan a revisadas
             # reflejar en el bloque de origen si existe
             for p, dd in ddi_ext.items():

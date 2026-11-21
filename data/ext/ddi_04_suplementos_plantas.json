@@ -1,1028 +1,1028 @@
 [
- {
-  "a": "hiperico",
-  "b": "clase:anticoagulantes",
-  "nivel": "mayor",
-  "efecto": "El hipérico acelera la eliminación del anticoagulante y le quita efecto (riesgo de trombosis o ictus). Al dejarlo, el efecto vuelve a subir.",
-  "accion": "Evite el hipérico. Si ya lo toma, no lo deje sin avisar: hay que vigilar y ajustar el anticoagulante.",
-  "fuente": "FT AEMPS 4.5 (acenocumarol, apixabán, rivaroxabán, dabigatrán) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:hormonas_sexuales",
-  "nivel": "mayor",
-  "efecto": "Reduce el efecto de los anticonceptivos hormonales: riesgo de embarazo y sangrados irregulares.",
-  "accion": "Evite el hipérico o use además preservativo durante el tratamiento y 28 días después.",
-  "fuente": "FT AEMPS 4.5 (anticonceptivos hormonales) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:isrs_isrsn",
-  "nivel": "mayor",
-  "efecto": "Hipérico + antidepresivo serotoninérgico: riesgo de síndrome serotoninérgico (temblor, sudor, fiebre, agitación).",
-  "accion": "No los combine. Si toma un antidepresivo, no añada hipérico.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:triciclicos",
-  "nivel": "moderada",
-  "efecto": "Suma efecto serotoninérgico y reduce los niveles del antidepresivo.",
-  "accion": "Evite la combinación salvo indicación médica.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:otros_antidepresivos",
-  "nivel": "moderada",
-  "efecto": "Suma efecto serotoninérgico (mirtazapina, trazodona) y puede restar efecto.",
-  "accion": "Evite la combinación salvo indicación médica.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:triptanes",
-  "nivel": "moderada",
-  "efecto": "Riesgo de exceso de serotonina con los triptanes.",
-  "accion": "Evite el hipérico si usa triptanes con frecuencia.",
-  "fuente": "FT AEMPS 4.5 (triptanes) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "tramadol",
-  "nivel": "moderada",
-  "efecto": "Riesgo de síndrome serotoninérgico y menor efecto analgésico.",
-  "accion": "Evite la combinación.",
-  "fuente": "FT AEMPS 4.5 (tramadol) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "metadona",
-  "nivel": "moderada",
-  "efecto": "Baja los niveles de metadona: puede aparecer síndrome de abstinencia.",
-  "accion": "No lo combine sin control de su unidad de tratamiento.",
-  "fuente": "FT AEMPS 4.5 (metadona) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:inmunosupresores_trasplante",
-  "nivel": "mayor",
-  "efecto": "Baja mucho los niveles de tacrolimus, ciclosporina y everolimus: riesgo de rechazo del trasplante.",
-  "accion": "Contraindicado. No tome hipérico si es trasplantado.",
-  "fuente": "FT AEMPS 4.5 (tacrolimus, ciclosporina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:antirretrovirales",
-  "nivel": "mayor",
-  "efecto": "Baja los niveles de los antirretrovirales: riesgo de fracaso del tratamiento y resistencias.",
-  "accion": "Contraindicado.",
-  "fuente": "FT AEMPS 4.5 (antirretrovirales) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:quimio_oral_tki",
-  "nivel": "mayor",
-  "efecto": "Baja los niveles de muchos tratamientos orales del cáncer (imatinib, inhibidores de tirosina cinasa): pierden eficacia.",
-  "accion": "Contraindicado durante el tratamiento.",
-  "fuente": "FT AEMPS 4.5 (imatinib y otros) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "digoxina",
-  "nivel": "moderada",
-  "efecto": "Reduce los niveles de digoxina.",
-  "accion": "Evítelo; si lo toma o lo deja, avise para controlar la digoxina.",
-  "fuente": "FT AEMPS 4.5 (digoxina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "ivabradina",
-  "nivel": "moderada",
-  "efecto": "Reduce el efecto de la ivabradina.",
-  "accion": "Evite el hipérico.",
-  "fuente": "FT AEMPS 4.5 (ivabradina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:calcioantagonistas_dhp",
-  "nivel": "moderada",
-  "efecto": "Reduce los niveles del calcioantagonista: la tensión puede subir.",
-  "accion": "Evítelo o controle la tensión.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:calcioantagonistas_no_dhp",
-  "nivel": "moderada",
-  "efecto": "Reduce los niveles de verapamilo y diltiazem.",
-  "accion": "Evítelo o controle tensión y pulso.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:estatinas",
-  "nivel": "moderada",
-  "efecto": "Reduce los niveles de simvastatina y atorvastatina: bajan menos el colesterol.",
-  "accion": "Evítelo o controle el colesterol.",
-  "fuente": "FT AEMPS 4.5 (simvastatina, atorvastatina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:antiepilepticos",
-  "nivel": "moderada",
-  "efecto": "Puede bajar los niveles de algunos antiepilépticos: riesgo de crisis.",
-  "accion": "No lo combine sin consultar a su neurólogo.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:antiepilepticos_otros",
-  "nivel": "moderada",
-  "efecto": "Puede bajar los niveles de algunos antiepilépticos: riesgo de crisis.",
-  "accion": "No lo combine sin consultar a su neurólogo.",
-  "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "hiperico",
-  "b": "clase:hormonoterapia_cancer_mama",
-  "nivel": "moderada",
-  "efecto": "Puede reducir la eficacia del tratamiento hormonal del cáncer de mama.",
-  "accion": "Evite el hipérico.",
-  "fuente": "Revisión clínica · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
-  "revisado": false
- },
- {
-  "a": "vitamina_k",
-  "b": "acenocumarol",
-  "nivel": "mayor",
-  "efecto": "La vitamina K anula el efecto del acenocumarol: el INR baja y aumenta el riesgo de trombosis.",
-  "accion": "No empiece ni deje la vitamina K (también K2 'para los huesos') sin avisar a quien le controla el Sintrom.",
-  "fuente": "FT AEMPS 4.5 (acenocumarol)",
-  "revisado": false
- },
- {
-  "a": "vitamina_k",
-  "b": "warfarina",
-  "nivel": "mayor",
-  "efecto": "La vitamina K anula el efecto de la warfarina: el INR baja.",
-  "accion": "No empiece ni deje la vitamina K sin avisar a quien le controla el INR.",
-  "fuente": "FT AEMPS 4.5 (warfarina)",
-  "revisado": false
- },
- {
-  "a": "vitamina_e",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "A dosis altas (más de 300 mg al día) la vitamina E puede aumentar el sangrado.",
-  "accion": "Evite dosis altas; vigile hematomas y sangrados.",
-  "fuente": "EFSA (vitamina E) · NIH ODS",
-  "revisado": false
- },
- {
-  "a": "vitamina_e",
-  "b": "clase:antiagregantes",
-  "nivel": "menor",
-  "efecto": "A dosis altas la vitamina E puede sumar algo de sangrado.",
-  "accion": "Evite dosis altas.",
-  "fuente": "NIH ODS (vitamina E)",
-  "revisado": false
- },
- {
-  "a": "zinc",
-  "b": "clase:fluoroquinolonas",
-  "nivel": "moderada",
-  "efecto": "El zinc impide que se absorba el antibiótico.",
-  "accion": "Tome el antibiótico 2 horas antes o 4–6 horas después del zinc.",
-  "fuente": "FT AEMPS 4.5 (ciprofloxacino, levofloxacino)",
-  "revisado": false
- },
- {
-  "a": "zinc",
-  "b": "doxiciclina",
-  "nivel": "moderada",
-  "efecto": "El zinc reduce la absorción de doxiciclina.",
-  "accion": "Separe las tomas al menos 2–3 horas.",
-  "fuente": "FT AEMPS 4.5 (doxiciclina)",
-  "revisado": false
- },
- {
-  "a": "multivitaminico",
-  "b": "levotiroxina",
-  "nivel": "moderada",
-  "efecto": "El calcio, el hierro y el magnesio del multivitamínico reducen la absorción de levotiroxina.",
-  "accion": "Separe al menos 4 horas.",
-  "fuente": "FT AEMPS 4.5 (levotiroxina)",
-  "revisado": false
- },
- {
-  "a": "multivitaminico",
-  "b": "clase:fluoroquinolonas",
-  "nivel": "moderada",
-  "efecto": "Los minerales del multivitamínico impiden que se absorba el antibiótico.",
-  "accion": "Tome el antibiótico 2 horas antes o 4–6 horas después.",
-  "fuente": "FT AEMPS 4.5 (quinolonas)",
-  "revisado": false
- },
- {
-  "a": "multivitaminico",
-  "b": "clase:bifosfonatos",
-  "nivel": "moderada",
-  "efecto": "El calcio y otros minerales impiden la absorción del bifosfonato oral.",
-  "accion": "Tome el bifosfonato en ayunas y el multivitamínico al menos 30–60 minutos después.",
-  "fuente": "FT AEMPS 4.5 (bifosfonatos)",
-  "revisado": false
- },
- {
-  "a": "multivitaminico",
-  "b": "acenocumarol",
-  "nivel": "menor",
-  "efecto": "Algunos multivitamínicos llevan vitamina K, que reduce el efecto del acenocumarol.",
-  "accion": "Elija uno sin vitamina K o tómelo siempre igual; avise si lo empieza o lo deja.",
-  "fuente": "FT AEMPS 4.5 (acenocumarol)",
-  "revisado": false
- },
- {
-  "a": "ginkgo",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "El ginkgo puede aumentar el riesgo de sangrado.",
-  "accion": "Evítelo; si lo toma, vigile hematomas, sangrado de encías u orina o heces oscuras.",
-  "fuente": "EMA HMPC (ginkgo) 4.5 · FT AEMPS 4.5",
-  "revisado": false
- },
- {
-  "a": "ginkgo",
-  "b": "clase:heparinas",
-  "nivel": "moderada",
-  "efecto": "El ginkgo puede aumentar el riesgo de sangrado.",
-  "accion": "Evítelo mientras use heparina.",
-  "fuente": "EMA HMPC (ginkgo) 4.5",
-  "revisado": false
- },
- {
-  "a": "ginkgo",
-  "b": "clase:antiagregantes",
-  "nivel": "moderada",
-  "efecto": "Suma efecto sobre las plaquetas: más hematomas y sangrado.",
-  "accion": "Evítelo o consúltelo.",
-  "fuente": "EMA HMPC (ginkgo) 4.5",
-  "revisado": false
- },
- {
-  "a": "ginkgo",
-  "b": "clase:aines",
-  "nivel": "moderada",
-  "efecto": "Suma riesgo de sangrado, sobre todo digestivo.",
-  "accion": "Evite tomar antiinflamatorios a menudo si toma ginkgo.",
-  "fuente": "EMA HMPC (ginkgo) 4.5 · casos publicados",
-  "revisado": false
- },
- {
-  "a": "ginkgo",
-  "b": "clase:antiepilepticos",
-  "nivel": "moderada",
-  "efecto": "El ginkgo podría bajar el umbral de las crisis y los niveles de algunos antiepilépticos.",
-  "accion": "Consulte a su neurólogo antes de tomarlo.",
-  "fuente": "EMA HMPC (ginkgo) 4.4",
-  "revisado": false
- },
- {
-  "a": "ajo_suplemento",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "El ajo en cápsulas puede aumentar el riesgo de sangrado.",
-  "accion": "Consúltelo; como condimento no hay problema.",
-  "fuente": "EMA HMPC (ajo) 4.5",
-  "revisado": false
- },
- {
-  "a": "ajo_suplemento",
-  "b": "clase:antirretrovirales",
-  "nivel": "moderada",
-  "efecto": "El ajo en cápsulas reduce los niveles de algunos antirretrovirales.",
-  "accion": "Evite las cápsulas de ajo durante el tratamiento.",
-  "fuente": "EMA HMPC (ajo) 4.5",
-  "revisado": false
- },
- {
-  "a": "jengibre",
-  "b": "clase:anticoagulantes",
-  "nivel": "menor",
-  "efecto": "El jengibre en cápsulas podría sumar algo de sangrado.",
-  "accion": "Consúltelo si toma dosis altas; como condimento no hay problema.",
-  "fuente": "EMA HMPC (jengibre) 4.4",
-  "revisado": false
- },
- {
-  "a": "curcuma",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "La cúrcuma en cápsulas puede subir el INR y aumentar el sangrado.",
-  "accion": "Evítela o avise para adelantar el control.",
-  "fuente": "Revisión clínica (casos publicados) · EMA HMPC (cúrcuma)",
-  "revisado": false
- },
- {
-  "a": "curcuma",
-  "b": "clase:antiagregantes",
-  "nivel": "menor",
-  "efecto": "La cúrcuma en cápsulas puede sumar algo de efecto sobre las plaquetas.",
-  "accion": "Consúltelo si toma dosis altas.",
-  "fuente": "EMA HMPC (cúrcuma) 4.4",
-  "revisado": false
- },
- {
-  "a": "sauce",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "Los salicilatos del sauce suman riesgo de sangrado.",
-  "accion": "Evite la corteza de sauce.",
-  "fuente": "EMA HMPC (corteza de sauce) 4.5",
-  "revisado": false
- },
- {
-  "a": "sauce",
-  "b": "clase:antiagregantes",
-  "nivel": "moderada",
-  "efecto": "Salicilatos parecidos a la aspirina: suman efecto y molestias de estómago.",
-  "accion": "Evite la corteza de sauce.",
-  "fuente": "EMA HMPC (corteza de sauce) 4.5",
-  "revisado": false
- },
- {
-  "a": "sauce",
-  "b": "clase:aines",
-  "nivel": "moderada",
-  "efecto": "Suma efecto antiinflamatorio y riesgo de úlcera y sangrado.",
-  "accion": "No los combine.",
-  "fuente": "EMA HMPC (corteza de sauce) 4.5",
-  "revisado": false
- },
- {
-  "a": "harpagofito",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "Se han descrito hematomas al combinarlo con anticoagulantes.",
-  "accion": "Consúltelo antes de tomarlo.",
-  "fuente": "Revisión clínica (casos publicados) · EMA HMPC (harpagofito)",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:diureticos_asa",
-  "nivel": "moderada",
-  "efecto": "Regaliz + diurético (furosemida, torasemida): el potasio puede bajar mucho (calambres, debilidad, arritmias).",
-  "accion": "Evite el regaliz o pida un control de potasio.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5",
-  "revisado": false
- },
- {
-  "a": "laxantes_plantas",
-  "b": "clase:diureticos_asa",
-  "nivel": "moderada",
-  "efecto": "Laxante de plantas + diurético (furosemida, torasemida): pérdida de potasio y de líquidos.",
-  "accion": "Úselo solo unos días; si lo necesita a menudo, pida un control de potasio.",
-  "fuente": "EMA HMPC (sen, frángula) 4.5",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:tiazidas",
-  "nivel": "moderada",
-  "efecto": "Regaliz + diurético (hidroclorotiazida, indapamida): el potasio puede bajar mucho (calambres, debilidad, arritmias).",
-  "accion": "Evite el regaliz o pida un control de potasio.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5",
-  "revisado": false
- },
- {
-  "a": "laxantes_plantas",
-  "b": "clase:tiazidas",
-  "nivel": "moderada",
-  "efecto": "Laxante de plantas + diurético (hidroclorotiazida, indapamida): pérdida de potasio y de líquidos.",
-  "accion": "Úselo solo unos días; si lo necesita a menudo, pida un control de potasio.",
-  "fuente": "EMA HMPC (sen, frángula) 4.5",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:digoxina",
-  "nivel": "mayor",
-  "efecto": "El potasio bajo por el regaliz aumenta la toxicidad de la digoxina (arritmias).",
-  "accion": "No tome regaliz si toma digoxina.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5",
-  "revisado": false
- },
- {
-  "a": "laxantes_plantas",
-  "b": "clase:digoxina",
-  "nivel": "mayor",
-  "efecto": "El potasio bajo por el laxante aumenta la toxicidad de la digoxina.",
-  "accion": "Evite los laxantes de plantas; consulte otra opción.",
-  "fuente": "EMA HMPC (sen, frángula) 4.5",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:corticoides",
-  "nivel": "moderada",
-  "efecto": "Ambos retienen sal y bajan el potasio; el regaliz además potencia al corticoide.",
-  "accion": "Evite el regaliz durante el tratamiento.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5",
-  "revisado": false
- },
- {
-  "a": "laxantes_plantas",
-  "b": "clase:corticoides",
-  "nivel": "moderada",
-  "efecto": "Suma pérdida de potasio.",
-  "accion": "Úselo solo unos días.",
-  "fuente": "EMA HMPC (sen, frángula) 4.5",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:ieca_ara2",
-  "nivel": "menor",
-  "efecto": "El regaliz sube la tensión y contrarresta el tratamiento.",
-  "accion": "Evite tomar regaliz a diario.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5",
-  "revisado": false
- },
- {
-  "a": "regaliz",
-  "b": "clase:sotalol_dronedarona",
-  "nivel": "mayor",
-  "efecto": "Potasio bajo + fármaco que alarga el QT: riesgo de arritmia grave.",
-  "accion": "No tome regaliz.",
-  "fuente": "EMA HMPC (raíz de regaliz) 4.5 · CredibleMeds (QT)",
-  "revisado": false
- },
- {
-  "a": "laxantes_plantas",
-  "b": "clase:sotalol_dronedarona",
-  "nivel": "mayor",
-  "efecto": "Potasio bajo + fármaco que alarga el QT: riesgo de arritmia grave.",
-  "accion": "Evite los laxantes de plantas.",
-  "fuente": "EMA HMPC (sen) 4.5 · CredibleMeds (QT)",
-  "revisado": false
- },
- {
-  "a": "plantas_diureticas",
-  "b": "litio",
-  "nivel": "mayor",
-  "efecto": "Las plantas diuréticas pueden subir el litio hasta niveles tóxicos (temblor, confusión, vómitos).",
-  "accion": "No las tome si toma litio.",
-  "fuente": "Revisión clínica (casos publicados con litio)",
-  "revisado": false
- },
- {
-  "a": "plantas_diureticas",
-  "b": "clase:diureticos_asa",
-  "nivel": "moderada",
-  "efecto": "Suma pérdida de líquidos y sales.",
-  "accion": "No las añada sin consultar; hidrátese bien al entrenar.",
-  "fuente": "EMA HMPC (cola de caballo) 4.4",
-  "revisado": false
- },
- {
-  "a": "plantas_diureticas",
-  "b": "clase:tiazidas",
-  "nivel": "moderada",
-  "efecto": "Suma pérdida de líquidos y sales.",
-  "accion": "No las añada sin consultar; hidrátese bien al entrenar.",
-  "fuente": "EMA HMPC (cola de caballo) 4.4",
-  "revisado": false
- },
- {
-  "a": "cbd",
-  "b": "tacrolimus",
-  "nivel": "moderada",
-  "efecto": "El CBD puede subir los niveles de tacrolimus.",
-  "accion": "Evítelo o pida niveles en sangre.",
-  "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.5 · casos publicados",
-  "revisado": false
- },
- {
-  "a": "cbd",
-  "b": "everolimus",
-  "nivel": "moderada",
-  "efecto": "El CBD sube los niveles de everolimus.",
-  "accion": "Evítelo o pida niveles en sangre.",
-  "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.5",
-  "revisado": false
- },
- {
-  "a": "cbd",
-  "b": "valproato",
-  "nivel": "moderada",
-  "efecto": "CBD + valproato: más riesgo de daño en el hígado.",
-  "accion": "Consúltelo; requiere análisis del hígado.",
-  "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.4/4.5",
-  "revisado": false
- },
- {
-  "a": "cbd",
-  "b": "acenocumarol",
-  "nivel": "moderada",
-  "efecto": "El CBD puede subir el INR.",
-  "accion": "Avise y adelante el control del INR.",
-  "fuente": "Revisión clínica (casos publicados con warfarina)",
-  "revisado": false
- },
- {
-  "a": "cbd",
-  "b": "warfarina",
-  "nivel": "moderada",
-  "efecto": "El CBD puede subir el INR.",
-  "accion": "Avise y adelante el control del INR.",
-  "fuente": "Revisión clínica (casos publicados con warfarina)",
-  "revisado": false
- },
- {
-  "a": "ginseng",
-  "b": "acenocumarol",
-  "nivel": "moderada",
-  "efecto": "El ginseng puede reducir el efecto del anticoagulante.",
-  "accion": "Evítelo o avise para controlar el INR.",
-  "fuente": "EMA HMPC (ginseng) 4.5 · NCCIH",
-  "revisado": false
- },
- {
-  "a": "ginseng",
-  "b": "warfarina",
-  "nivel": "moderada",
-  "efecto": "El ginseng puede reducir el efecto de la warfarina.",
-  "accion": "Evítelo o avise para controlar el INR.",
-  "fuente": "EMA HMPC (ginseng) 4.5 · NCCIH",
-  "revisado": false
- },
- {
-  "a": "ginseng",
-  "b": "clase:insulina",
-  "nivel": "menor",
-  "efecto": "El ginseng puede bajar algo más el azúcar.",
-  "accion": "Mida la glucosa más a menudo al empezar.",
-  "fuente": "EMA HMPC (ginseng) 4.5",
-  "revisado": false
- },
- {
-  "a": "ginseng",
-  "b": "clase:sulfonilureas",
-  "nivel": "menor",
-  "efecto": "El ginseng puede bajar algo más el azúcar.",
-  "accion": "Mida la glucosa más a menudo al empezar.",
-  "fuente": "EMA HMPC (ginseng) 4.5",
-  "revisado": false
- },
- {
-  "a": "ashwagandha",
-  "b": "levotiroxina",
-  "nivel": "moderada",
-  "efecto": "La ashwagandha puede subir las hormonas del tiroides.",
-  "accion": "Evítela o pida un control de tiroides.",
-  "fuente": "NIH ODS (ashwagandha) · casos publicados",
-  "revisado": false
- },
- {
-  "a": "ashwagandha",
-  "b": "clase:antitiroideos",
-  "nivel": "moderada",
-  "efecto": "La ashwagandha puede subir las hormonas del tiroides y contrarrestar el tratamiento.",
-  "accion": "No la tome.",
-  "fuente": "NIH ODS (ashwagandha) · casos publicados",
-  "revisado": false
- },
- {
-  "a": "ashwagandha",
-  "b": "clase:inmunosupresores_trasplante",
-  "nivel": "moderada",
-  "efecto": "Puede estimular las defensas y contrarrestar al inmunosupresor.",
-  "accion": "No la tome si es trasplantado.",
-  "fuente": "NIH ODS (ashwagandha)",
-  "revisado": false
- },
- {
-  "a": "berberina",
-  "b": "clase:inmunosupresores_trasplante",
-  "nivel": "moderada",
-  "efecto": "La berberina sube los niveles de ciclosporina y tacrolimus.",
-  "accion": "Evítela o pida niveles en sangre.",
-  "fuente": "Revisión clínica (estudios con ciclosporina)",
-  "revisado": false
- },
- {
-  "a": "berberina",
-  "b": "clase:insulina",
-  "nivel": "menor",
-  "efecto": "Suma efecto para bajar el azúcar.",
-  "accion": "Mida la glucosa más a menudo al empezar y antes de entrenar.",
-  "fuente": "NCCIH (berberina)",
-  "revisado": false
- },
- {
-  "a": "berberina",
-  "b": "clase:sulfonilureas",
-  "nivel": "menor",
-  "efecto": "Suma efecto para bajar el azúcar.",
-  "accion": "Mida la glucosa más a menudo al empezar y antes de entrenar.",
-  "fuente": "NCCIH (berberina)",
-  "revisado": false
- },
- {
-  "a": "cromo",
-  "b": "levotiroxina",
-  "nivel": "menor",
-  "efecto": "El cromo reduce la absorción de la levotiroxina.",
-  "accion": "Separe 3–4 horas.",
-  "fuente": "NIH ODS (cromo)",
-  "revisado": false
- },
- {
-  "a": "cromo",
-  "b": "clase:insulina",
-  "nivel": "menor",
-  "efecto": "El cromo podría bajar algo más el azúcar.",
-  "accion": "Mida la glucosa más a menudo al empezar.",
-  "fuente": "NIH ODS (cromo)",
-  "revisado": false
- },
- {
-  "a": "isoflavonas",
-  "b": "levotiroxina",
-  "nivel": "menor",
-  "efecto": "La soja reduce la absorción de la levotiroxina.",
-  "accion": "Separe al menos 4 horas.",
-  "fuente": "FT AEMPS 4.5 (levotiroxina)",
-  "revisado": false
- },
- {
-  "a": "isoflavonas",
-  "b": "clase:hormonoterapia_cancer_mama",
-  "nivel": "moderada",
-  "efecto": "Las isoflavonas tienen efecto estrogénico y podrían contrarrestar el tratamiento.",
-  "accion": "No las tome sin consultar a su oncólogo.",
-  "fuente": "Revisión clínica · EFSA 2015 (isoflavonas)",
-  "revisado": false
- },
- {
-  "a": "equinacea",
-  "b": "clase:inmunosupresores_trasplante",
-  "nivel": "moderada",
-  "efecto": "La equinácea estimula las defensas y puede contrarrestar al inmunosupresor.",
-  "accion": "No la tome.",
-  "fuente": "EMA HMPC (equinácea) 4.3/4.5",
-  "revisado": false
- },
- {
-  "a": "equinacea",
-  "b": "clase:biologicos_jak",
-  "nivel": "moderada",
-  "efecto": "La equinácea estimula las defensas y puede contrarrestar el tratamiento.",
-  "accion": "No la tome sin consultar.",
-  "fuente": "EMA HMPC (equinácea) 4.3/4.5",
-  "revisado": false
- },
- {
-  "a": "equinacea",
-  "b": "clase:farme_sinteticos",
-  "nivel": "menor",
-  "efecto": "La equinácea no se recomienda en enfermedades autoinmunes en tratamiento.",
-  "accion": "Consúltelo antes.",
-  "fuente": "EMA HMPC (equinácea) 4.3",
-  "revisado": false
- },
- {
-  "a": "sinefrina",
-  "b": "cafeina",
-  "nivel": "moderada",
-  "efecto": "Sinefrina + cafeína: el pulso y la tensión suben mucho más que con cada uno por separado.",
-  "accion": "Evite la combinación (muy frecuente en los 'quemagrasas').",
-  "fuente": "Revisión clínica (casos publicados)",
-  "revisado": false
- },
- {
-  "a": "sinefrina",
-  "b": "clase:estimulantes_tdah",
-  "nivel": "mayor",
-  "efecto": "Suma de estimulantes: taquicardia, hipertensión, arritmias.",
-  "accion": "No los combine.",
-  "fuente": "Revisión clínica · FT AEMPS 4.5 (estimulantes)",
-  "revisado": false
- },
- {
-  "a": "sinefrina",
-  "b": "moclobemida",
-  "nivel": "mayor",
-  "efecto": "Con un antidepresivo IMAO, la sinefrina puede disparar la tensión.",
-  "accion": "No los combine.",
-  "fuente": "FT AEMPS 4.5 (moclobemida)",
-  "revisado": false
- },
- {
-  "a": "sinefrina",
-  "b": "pseudoefedrina",
-  "nivel": "moderada",
-  "efecto": "Suma de estimulantes: taquicardia e hipertensión.",
-  "accion": "No los combine.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "yohimbina",
-  "b": "clase:estimulantes_tdah",
-  "nivel": "mayor",
-  "efecto": "Suma de estimulantes: taquicardia, hipertensión, ansiedad.",
-  "accion": "No tome yohimbina.",
-  "fuente": "Revisión clínica · Reglamento (UE) 2019/650",
-  "revisado": false
- },
- {
-  "a": "yohimbina",
-  "b": "moclobemida",
-  "nivel": "mayor",
-  "efecto": "Con un antidepresivo IMAO, la yohimbina puede disparar la tensión.",
-  "accion": "No tome yohimbina.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "yohimbina",
-  "b": "clase:isrs_isrsn",
-  "nivel": "moderada",
-  "efecto": "La yohimbina aumenta la ansiedad y la tensión y altera el efecto del antidepresivo.",
-  "accion": "No tome yohimbina.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "fucus",
-  "b": "levotiroxina",
-  "nivel": "moderada",
-  "efecto": "El yodo del fucus altera el tiroides y descontrola la dosis de levotiroxina.",
-  "accion": "No lo tome sin control de su médico.",
-  "fuente": "NIH ODS (yodo)",
-  "revisado": false
- },
- {
-  "a": "fucus",
-  "b": "clase:antitiroideos",
-  "nivel": "moderada",
-  "efecto": "El yodo del fucus contrarresta el tratamiento del hipertiroidismo.",
-  "accion": "No lo tome.",
-  "fuente": "NIH ODS (yodo)",
-  "revisado": false
- },
- {
-  "a": "fucus",
-  "b": "clase:amiodarona",
-  "nivel": "moderada",
-  "efecto": "La amiodarona ya lleva mucho yodo: el fucus suma riesgo de alterar el tiroides.",
-  "accion": "No lo tome.",
-  "fuente": "NIH ODS (yodo) · FT AEMPS 4.4 (amiodarona)",
-  "revisado": false
- },
- {
-  "a": "fucus",
-  "b": "litio",
-  "nivel": "moderada",
-  "efecto": "Yodo + litio: más riesgo de hipotiroidismo.",
-  "accion": "No lo tome sin consultar.",
-  "fuente": "NIH ODS (yodo)",
-  "revisado": false
- },
- {
-  "a": "glucomanano",
-  "b": "levotiroxina",
-  "nivel": "menor",
-  "efecto": "La fibra retrasa y reduce la absorción de la levotiroxina.",
-  "accion": "Separe al menos 4 horas.",
-  "fuente": "FT AEMPS 4.5 (levotiroxina)",
-  "revisado": false
- },
- {
-  "a": "glucomanano",
-  "b": "clase:digoxina",
-  "nivel": "menor",
-  "efecto": "La fibra puede reducir la absorción de la digoxina.",
-  "accion": "Separe al menos 2 horas.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "te_verde_extracto",
-  "b": "metotrexato",
-  "nivel": "moderada",
-  "efecto": "Dos productos que pueden dañar el hígado.",
-  "accion": "Evite el extracto de té verde; la bebida en cantidad moderada no plantea problema.",
-  "fuente": "EFSA 2018 (catequinas del té verde)",
-  "revisado": false
- },
- {
-  "a": "prohormonas_dhea",
-  "b": "clase:anticoagulantes",
-  "nivel": "moderada",
-  "efecto": "Los anabolizantes aumentan el efecto del anticoagulante (sangrado).",
-  "accion": "No los tome; si ya lo hace, avise para controlar el INR.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "prohormonas_dhea",
-  "b": "clase:hormonoterapia_cancer_mama",
-  "nivel": "mayor",
-  "efecto": "La DHEA y las prohormonas se transforman en hormonas sexuales y contrarrestan el tratamiento.",
-  "accion": "Contraindicado.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "prohormonas_dhea",
-  "b": "clase:hormonoterapia_prostata",
-  "nivel": "mayor",
-  "efecto": "Las prohormonas se transforman en testosterona y contrarrestan el tratamiento.",
-  "accion": "Contraindicado.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "prohormonas_dhea",
-  "b": "testosterona",
-  "nivel": "moderada",
-  "efecto": "Duplica el efecto hormonal: más riesgo de efectos adversos.",
-  "accion": "No los combine.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "levadura_roja",
-  "b": "clase:estatinas",
-  "nivel": "mayor",
-  "efecto": "La levadura roja es una estatina (monacolina K = lovastatina): sería tomar dos estatinas.",
-  "accion": "No los combine. Deje la levadura roja si le pautan una estatina.",
-  "fuente": "Reglamento (UE) 2022/860 · EFSA 2018 (monacolinas)",
-  "revisado": false
- },
- {
-  "a": "levadura_roja",
-  "b": "claritromicina",
-  "nivel": "mayor",
-  "efecto": "La claritromicina dispara los niveles de monacolina K: riesgo de daño muscular grave.",
-  "accion": "Suspenda la levadura roja mientras dure el antibiótico.",
-  "fuente": "FT AEMPS 4.3/4.5 (lovastatina)",
-  "revisado": false
- },
- {
-  "a": "levadura_roja",
-  "b": "itraconazol",
-  "nivel": "mayor",
-  "efecto": "El itraconazol dispara los niveles de monacolina K: riesgo de daño muscular grave.",
-  "accion": "Suspenda la levadura roja durante el tratamiento.",
-  "fuente": "FT AEMPS 4.3/4.5 (lovastatina)",
-  "revisado": false
- },
- {
-  "a": "levadura_roja",
-  "b": "ciclosporina",
-  "nivel": "mayor",
-  "efecto": "La ciclosporina sube mucho los niveles de monacolina K: riesgo de daño muscular.",
-  "accion": "No la tome.",
-  "fuente": "FT AEMPS 4.5 (lovastatina)",
-  "revisado": false
- },
- {
-  "a": "coenzima_q10",
-  "b": "acenocumarol",
-  "nivel": "menor",
-  "efecto": "La coenzima Q10 podría reducir el efecto del anticoagulante.",
-  "accion": "Avise si la empieza o la deja.",
-  "fuente": "NCCIH (coenzima Q10) · casos publicados",
-  "revisado": false
- },
- {
-  "a": "coenzima_q10",
-  "b": "warfarina",
-  "nivel": "menor",
-  "efecto": "La coenzima Q10 podría reducir el efecto de la warfarina.",
-  "accion": "Avise si la empieza o la deja.",
-  "fuente": "NCCIH (coenzima Q10) · casos publicados",
-  "revisado": false
- },
- {
-  "a": "carnitina",
-  "b": "acenocumarol",
-  "nivel": "moderada",
-  "efecto": "La L-carnitina puede subir el INR.",
-  "accion": "Avise y adelante el control.",
-  "fuente": "Revisión clínica (casos publicados con acenocumarol)",
-  "revisado": false
- },
- {
-  "a": "carnitina",
-  "b": "warfarina",
-  "nivel": "moderada",
-  "efecto": "La L-carnitina puede subir el INR.",
-  "accion": "Avise y adelante el control.",
-  "fuente": "Revisión clínica (casos publicados)",
-  "revisado": false
- },
- {
-  "a": "arginina_citrulina",
-  "b": "clase:pde5",
-  "nivel": "moderada",
-  "efecto": "Arginina o citrulina + sildenafilo/tadalafilo: la tensión puede bajar demasiado.",
-  "accion": "No los combine sin consultar.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "arginina_citrulina",
-  "b": "clase:nitratos",
-  "nivel": "moderada",
-  "efecto": "Suma efecto vasodilatador: mareo y bajada de tensión.",
-  "accion": "No los combine sin consultar.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "nitrato_remolacha",
-  "b": "clase:pde5",
-  "nivel": "menor",
-  "efecto": "Los nitratos de la remolacha suman un pequeño efecto sobre la tensión.",
-  "accion": "Evite tomarlos juntos el mismo día si se marea.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "nitrato_remolacha",
-  "b": "clase:nitratos",
-  "nivel": "menor",
-  "efecto": "Suma un pequeño efecto sobre la tensión.",
-  "accion": "Si se marea, no los tome el mismo día.",
-  "fuente": "Revisión clínica",
-  "revisado": false
- },
- {
-  "a": "aminoacidos",
-  "b": "levodopa",
-  "nivel": "moderada",
-  "efecto": "Los aminoácidos compiten con la levodopa y le quitan efecto.",
-  "accion": "Sepárelos de las tomas de levodopa.",
-  "fuente": "FT AEMPS 4.5 (levodopa)",
-  "revisado": false
- },
- {
-  "a": "cafeina",
-  "b": "clase:fluoroquinolonas",
-  "nivel": "menor",
-  "efecto": "Ciprofloxacino frena la eliminación de la cafeína: más nervios, insomnio y palpitaciones.",
-  "accion": "Reduzca la cafeína mientras dure el antibiótico.",
-  "fuente": "FT AEMPS 4.5 (ciprofloxacino)",
-  "revisado": false
- },
- {
-  "a": "cafeina",
-  "b": "teofilina",
-  "nivel": "moderada",
-  "efecto": "Suma de efectos estimulantes: taquicardia, temblor, insomnio.",
-  "accion": "Limite la cafeína y evite los pre-entrenos.",
-  "fuente": "FT AEMPS 4.5 (teofilina)",
-  "revisado": false
- },
- {
-  "a": "cafeina",
-  "b": "litio",
-  "nivel": "menor",
-  "efecto": "La cafeína aumenta la eliminación del litio; si la deja de golpe, el litio puede subir.",
-  "accion": "Mantenga un consumo de cafeína estable y avise si lo cambia.",
-  "fuente": "FT AEMPS 4.5 (litio)",
-  "revisado": false
- },
- {
-  "a": "cafeina",
-  "b": "clozapina",
-  "nivel": "moderada",
-  "efecto": "La cafeína sube los niveles de clozapina.",
-  "accion": "Mantenga un consumo estable; evite los pre-entrenos.",
-  "fuente": "FT AEMPS 4.5 (clozapina)",
-  "revisado": false
- }
+  {
+    "a": "hiperico",
+    "b": "clase:anticoagulantes",
+    "nivel": "mayor",
+    "efecto": "El hipérico acelera la eliminación del anticoagulante y le quita efecto (riesgo de trombosis o ictus). Al dejarlo, el efecto vuelve a subir.",
+    "accion": "Evite el hipérico. Si ya lo toma, no lo deje sin avisar: hay que vigilar y ajustar el anticoagulante.",
+    "fuente": "FT AEMPS 4.5 (acenocumarol, apixabán, rivaroxabán, dabigatrán) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:hormonas_sexuales",
+    "nivel": "mayor",
+    "efecto": "Reduce el efecto de los anticonceptivos hormonales: riesgo de embarazo y sangrados irregulares.",
+    "accion": "Evite el hipérico o use además preservativo durante el tratamiento y 28 días después.",
+    "fuente": "FT AEMPS 4.5 (anticonceptivos hormonales) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:isrs_isrsn",
+    "nivel": "mayor",
+    "efecto": "Hipérico + antidepresivo serotoninérgico: riesgo de síndrome serotoninérgico (temblor, sudor, fiebre, agitación).",
+    "accion": "No los combine. Si toma un antidepresivo, no añada hipérico.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:triciclicos",
+    "nivel": "moderada",
+    "efecto": "Suma efecto serotoninérgico y reduce los niveles del antidepresivo.",
+    "accion": "Evite la combinación salvo indicación médica.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:otros_antidepresivos",
+    "nivel": "moderada",
+    "efecto": "Suma efecto serotoninérgico (mirtazapina, trazodona) y puede restar efecto.",
+    "accion": "Evite la combinación salvo indicación médica.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:triptanes",
+    "nivel": "moderada",
+    "efecto": "Riesgo de exceso de serotonina con los triptanes.",
+    "accion": "Evite el hipérico si usa triptanes con frecuencia.",
+    "fuente": "FT AEMPS 4.5 (triptanes) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "tramadol",
+    "nivel": "moderada",
+    "efecto": "Riesgo de síndrome serotoninérgico y menor efecto analgésico.",
+    "accion": "Evite la combinación.",
+    "fuente": "FT AEMPS 4.5 (tramadol) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "metadona",
+    "nivel": "moderada",
+    "efecto": "Baja los niveles de metadona: puede aparecer síndrome de abstinencia.",
+    "accion": "No lo combine sin control de su unidad de tratamiento.",
+    "fuente": "FT AEMPS 4.5 (metadona) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:inmunosupresores_trasplante",
+    "nivel": "mayor",
+    "efecto": "Baja mucho los niveles de tacrolimus, ciclosporina y everolimus: riesgo de rechazo del trasplante.",
+    "accion": "Contraindicado. No tome hipérico si es trasplantado.",
+    "fuente": "FT AEMPS 4.5 (tacrolimus, ciclosporina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:antirretrovirales",
+    "nivel": "mayor",
+    "efecto": "Baja los niveles de los antirretrovirales: riesgo de fracaso del tratamiento y resistencias.",
+    "accion": "Contraindicado.",
+    "fuente": "FT AEMPS 4.5 (antirretrovirales) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:quimio_oral_tki",
+    "nivel": "mayor",
+    "efecto": "Baja los niveles de muchos tratamientos orales del cáncer (imatinib, inhibidores de tirosina cinasa): pierden eficacia.",
+    "accion": "Contraindicado durante el tratamiento.",
+    "fuente": "FT AEMPS 4.5 (imatinib y otros) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "digoxina",
+    "nivel": "moderada",
+    "efecto": "Reduce los niveles de digoxina.",
+    "accion": "Evítelo; si lo toma o lo deja, avise para controlar la digoxina.",
+    "fuente": "FT AEMPS 4.5 (digoxina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "ivabradina",
+    "nivel": "moderada",
+    "efecto": "Reduce el efecto de la ivabradina.",
+    "accion": "Evite el hipérico.",
+    "fuente": "FT AEMPS 4.5 (ivabradina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:calcioantagonistas_dhp",
+    "nivel": "moderada",
+    "efecto": "Reduce los niveles del calcioantagonista: la tensión puede subir.",
+    "accion": "Evítelo o controle la tensión.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:calcioantagonistas_no_dhp",
+    "nivel": "moderada",
+    "efecto": "Reduce los niveles de verapamilo y diltiazem.",
+    "accion": "Evítelo o controle tensión y pulso.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:estatinas",
+    "nivel": "moderada",
+    "efecto": "Reduce los niveles de simvastatina y atorvastatina: bajan menos el colesterol.",
+    "accion": "Evítelo o controle el colesterol.",
+    "fuente": "FT AEMPS 4.5 (simvastatina, atorvastatina) · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:antiepilepticos",
+    "nivel": "moderada",
+    "efecto": "Puede bajar los niveles de algunos antiepilépticos: riesgo de crisis.",
+    "accion": "No lo combine sin consultar a su neurólogo.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:antiepilepticos_otros",
+    "nivel": "moderada",
+    "efecto": "Puede bajar los niveles de algunos antiepilépticos: riesgo de crisis.",
+    "accion": "No lo combine sin consultar a su neurólogo.",
+    "fuente": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "hiperico",
+    "b": "clase:hormonoterapia_cancer_mama",
+    "nivel": "moderada",
+    "efecto": "Puede reducir la eficacia del tratamiento hormonal del cáncer de mama.",
+    "accion": "Evite el hipérico.",
+    "fuente": "Revisión clínica · EMA HMPC (hipérico, inductor CYP3A4/P-gp)",
+    "revisado": true
+  },
+  {
+    "a": "vitamina_k",
+    "b": "acenocumarol",
+    "nivel": "mayor",
+    "efecto": "La vitamina K anula el efecto del acenocumarol: el INR baja y aumenta el riesgo de trombosis.",
+    "accion": "No empiece ni deje la vitamina K (también K2 'para los huesos') sin avisar a quien le controla el Sintrom.",
+    "fuente": "FT AEMPS 4.5 (acenocumarol)",
+    "revisado": true
+  },
+  {
+    "a": "vitamina_k",
+    "b": "warfarina",
+    "nivel": "mayor",
+    "efecto": "La vitamina K anula el efecto de la warfarina: el INR baja.",
+    "accion": "No empiece ni deje la vitamina K sin avisar a quien le controla el INR.",
+    "fuente": "FT AEMPS 4.5 (warfarina)",
+    "revisado": true
+  },
+  {
+    "a": "vitamina_e",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "A dosis altas (más de 300 mg al día) la vitamina E puede aumentar el sangrado.",
+    "accion": "Evite dosis altas; vigile hematomas y sangrados.",
+    "fuente": "EFSA (vitamina E) · NIH ODS",
+    "revisado": true
+  },
+  {
+    "a": "vitamina_e",
+    "b": "clase:antiagregantes",
+    "nivel": "menor",
+    "efecto": "A dosis altas la vitamina E puede sumar algo de sangrado.",
+    "accion": "Evite dosis altas.",
+    "fuente": "NIH ODS (vitamina E)",
+    "revisado": true
+  },
+  {
+    "a": "zinc",
+    "b": "clase:fluoroquinolonas",
+    "nivel": "moderada",
+    "efecto": "El zinc impide que se absorba el antibiótico.",
+    "accion": "Tome el antibiótico 2 horas antes o 4–6 horas después del zinc.",
+    "fuente": "FT AEMPS 4.5 (ciprofloxacino, levofloxacino)",
+    "revisado": true
+  },
+  {
+    "a": "zinc",
+    "b": "doxiciclina",
+    "nivel": "moderada",
+    "efecto": "El zinc reduce la absorción de doxiciclina.",
+    "accion": "Separe las tomas al menos 2–3 horas.",
+    "fuente": "FT AEMPS 4.5 (doxiciclina)",
+    "revisado": true
+  },
+  {
+    "a": "multivitaminico",
+    "b": "levotiroxina",
+    "nivel": "moderada",
+    "efecto": "El calcio, el hierro y el magnesio del multivitamínico reducen la absorción de levotiroxina.",
+    "accion": "Separe al menos 4 horas.",
+    "fuente": "FT AEMPS 4.5 (levotiroxina)",
+    "revisado": true
+  },
+  {
+    "a": "multivitaminico",
+    "b": "clase:fluoroquinolonas",
+    "nivel": "moderada",
+    "efecto": "Los minerales del multivitamínico impiden que se absorba el antibiótico.",
+    "accion": "Tome el antibiótico 2 horas antes o 4–6 horas después.",
+    "fuente": "FT AEMPS 4.5 (quinolonas)",
+    "revisado": true
+  },
+  {
+    "a": "multivitaminico",
+    "b": "clase:bifosfonatos",
+    "nivel": "moderada",
+    "efecto": "El calcio y otros minerales impiden la absorción del bifosfonato oral.",
+    "accion": "Tome el bifosfonato en ayunas y el multivitamínico al menos 30–60 minutos después.",
+    "fuente": "FT AEMPS 4.5 (bifosfonatos)",
+    "revisado": true
+  },
+  {
+    "a": "multivitaminico",
+    "b": "acenocumarol",
+    "nivel": "menor",
+    "efecto": "Algunos multivitamínicos llevan vitamina K, que reduce el efecto del acenocumarol.",
+    "accion": "Elija uno sin vitamina K o tómelo siempre igual; avise si lo empieza o lo deja.",
+    "fuente": "FT AEMPS 4.5 (acenocumarol)",
+    "revisado": true
+  },
+  {
+    "a": "ginkgo",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "El ginkgo puede aumentar el riesgo de sangrado.",
+    "accion": "Evítelo; si lo toma, vigile hematomas, sangrado de encías u orina o heces oscuras.",
+    "fuente": "EMA HMPC (ginkgo) 4.5 · FT AEMPS 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ginkgo",
+    "b": "clase:heparinas",
+    "nivel": "moderada",
+    "efecto": "El ginkgo puede aumentar el riesgo de sangrado.",
+    "accion": "Evítelo mientras use heparina.",
+    "fuente": "EMA HMPC (ginkgo) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ginkgo",
+    "b": "clase:antiagregantes",
+    "nivel": "moderada",
+    "efecto": "Suma efecto sobre las plaquetas: más hematomas y sangrado.",
+    "accion": "Evítelo o consúltelo.",
+    "fuente": "EMA HMPC (ginkgo) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ginkgo",
+    "b": "clase:aines",
+    "nivel": "moderada",
+    "efecto": "Suma riesgo de sangrado, sobre todo digestivo.",
+    "accion": "Evite tomar antiinflamatorios a menudo si toma ginkgo.",
+    "fuente": "EMA HMPC (ginkgo) 4.5 · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "ginkgo",
+    "b": "clase:antiepilepticos",
+    "nivel": "moderada",
+    "efecto": "El ginkgo podría bajar el umbral de las crisis y los niveles de algunos antiepilépticos.",
+    "accion": "Consulte a su neurólogo antes de tomarlo.",
+    "fuente": "EMA HMPC (ginkgo) 4.4",
+    "revisado": true
+  },
+  {
+    "a": "ajo_suplemento",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "El ajo en cápsulas puede aumentar el riesgo de sangrado.",
+    "accion": "Consúltelo; como condimento no hay problema.",
+    "fuente": "EMA HMPC (ajo) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ajo_suplemento",
+    "b": "clase:antirretrovirales",
+    "nivel": "moderada",
+    "efecto": "El ajo en cápsulas reduce los niveles de algunos antirretrovirales.",
+    "accion": "Evite las cápsulas de ajo durante el tratamiento.",
+    "fuente": "EMA HMPC (ajo) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "jengibre",
+    "b": "clase:anticoagulantes",
+    "nivel": "menor",
+    "efecto": "El jengibre en cápsulas podría sumar algo de sangrado.",
+    "accion": "Consúltelo si toma dosis altas; como condimento no hay problema.",
+    "fuente": "EMA HMPC (jengibre) 4.4",
+    "revisado": true
+  },
+  {
+    "a": "curcuma",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "La cúrcuma en cápsulas puede subir el INR y aumentar el sangrado.",
+    "accion": "Evítela o avise para adelantar el control.",
+    "fuente": "Revisión clínica (casos publicados) · EMA HMPC (cúrcuma)",
+    "revisado": true
+  },
+  {
+    "a": "curcuma",
+    "b": "clase:antiagregantes",
+    "nivel": "menor",
+    "efecto": "La cúrcuma en cápsulas puede sumar algo de efecto sobre las plaquetas.",
+    "accion": "Consúltelo si toma dosis altas.",
+    "fuente": "EMA HMPC (cúrcuma) 4.4",
+    "revisado": true
+  },
+  {
+    "a": "sauce",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "Los salicilatos del sauce suman riesgo de sangrado.",
+    "accion": "Evite la corteza de sauce.",
+    "fuente": "EMA HMPC (corteza de sauce) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "sauce",
+    "b": "clase:antiagregantes",
+    "nivel": "moderada",
+    "efecto": "Salicilatos parecidos a la aspirina: suman efecto y molestias de estómago.",
+    "accion": "Evite la corteza de sauce.",
+    "fuente": "EMA HMPC (corteza de sauce) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "sauce",
+    "b": "clase:aines",
+    "nivel": "moderada",
+    "efecto": "Suma efecto antiinflamatorio y riesgo de úlcera y sangrado.",
+    "accion": "No los combine.",
+    "fuente": "EMA HMPC (corteza de sauce) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "harpagofito",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "Se han descrito hematomas al combinarlo con anticoagulantes.",
+    "accion": "Consúltelo antes de tomarlo.",
+    "fuente": "Revisión clínica (casos publicados) · EMA HMPC (harpagofito)",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:diureticos_asa",
+    "nivel": "moderada",
+    "efecto": "Regaliz + diurético (furosemida, torasemida): el potasio puede bajar mucho (calambres, debilidad, arritmias).",
+    "accion": "Evite el regaliz o pida un control de potasio.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "laxantes_plantas",
+    "b": "clase:diureticos_asa",
+    "nivel": "moderada",
+    "efecto": "Laxante de plantas + diurético (furosemida, torasemida): pérdida de potasio y de líquidos.",
+    "accion": "Úselo solo unos días; si lo necesita a menudo, pida un control de potasio.",
+    "fuente": "EMA HMPC (sen, frángula) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:tiazidas",
+    "nivel": "moderada",
+    "efecto": "Regaliz + diurético (hidroclorotiazida, indapamida): el potasio puede bajar mucho (calambres, debilidad, arritmias).",
+    "accion": "Evite el regaliz o pida un control de potasio.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "laxantes_plantas",
+    "b": "clase:tiazidas",
+    "nivel": "moderada",
+    "efecto": "Laxante de plantas + diurético (hidroclorotiazida, indapamida): pérdida de potasio y de líquidos.",
+    "accion": "Úselo solo unos días; si lo necesita a menudo, pida un control de potasio.",
+    "fuente": "EMA HMPC (sen, frángula) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:digoxina",
+    "nivel": "mayor",
+    "efecto": "El potasio bajo por el regaliz aumenta la toxicidad de la digoxina (arritmias).",
+    "accion": "No tome regaliz si toma digoxina.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "laxantes_plantas",
+    "b": "clase:digoxina",
+    "nivel": "mayor",
+    "efecto": "El potasio bajo por el laxante aumenta la toxicidad de la digoxina.",
+    "accion": "Evite los laxantes de plantas; consulte otra opción.",
+    "fuente": "EMA HMPC (sen, frángula) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:corticoides",
+    "nivel": "moderada",
+    "efecto": "Ambos retienen sal y bajan el potasio; el regaliz además potencia al corticoide.",
+    "accion": "Evite el regaliz durante el tratamiento.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "laxantes_plantas",
+    "b": "clase:corticoides",
+    "nivel": "moderada",
+    "efecto": "Suma pérdida de potasio.",
+    "accion": "Úselo solo unos días.",
+    "fuente": "EMA HMPC (sen, frángula) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:ieca_ara2",
+    "nivel": "menor",
+    "efecto": "El regaliz sube la tensión y contrarresta el tratamiento.",
+    "accion": "Evite tomar regaliz a diario.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "regaliz",
+    "b": "clase:sotalol_dronedarona",
+    "nivel": "mayor",
+    "efecto": "Potasio bajo + fármaco que alarga el QT: riesgo de arritmia grave.",
+    "accion": "No tome regaliz.",
+    "fuente": "EMA HMPC (raíz de regaliz) 4.5 · CredibleMeds (QT)",
+    "revisado": true
+  },
+  {
+    "a": "laxantes_plantas",
+    "b": "clase:sotalol_dronedarona",
+    "nivel": "mayor",
+    "efecto": "Potasio bajo + fármaco que alarga el QT: riesgo de arritmia grave.",
+    "accion": "Evite los laxantes de plantas.",
+    "fuente": "EMA HMPC (sen) 4.5 · CredibleMeds (QT)",
+    "revisado": true
+  },
+  {
+    "a": "plantas_diureticas",
+    "b": "litio",
+    "nivel": "mayor",
+    "efecto": "Las plantas diuréticas pueden subir el litio hasta niveles tóxicos (temblor, confusión, vómitos).",
+    "accion": "No las tome si toma litio.",
+    "fuente": "Revisión clínica (casos publicados con litio)",
+    "revisado": true
+  },
+  {
+    "a": "plantas_diureticas",
+    "b": "clase:diureticos_asa",
+    "nivel": "moderada",
+    "efecto": "Suma pérdida de líquidos y sales.",
+    "accion": "No las añada sin consultar; hidrátese bien al entrenar.",
+    "fuente": "EMA HMPC (cola de caballo) 4.4",
+    "revisado": true
+  },
+  {
+    "a": "plantas_diureticas",
+    "b": "clase:tiazidas",
+    "nivel": "moderada",
+    "efecto": "Suma pérdida de líquidos y sales.",
+    "accion": "No las añada sin consultar; hidrátese bien al entrenar.",
+    "fuente": "EMA HMPC (cola de caballo) 4.4",
+    "revisado": true
+  },
+  {
+    "a": "cbd",
+    "b": "tacrolimus",
+    "nivel": "moderada",
+    "efecto": "El CBD puede subir los niveles de tacrolimus.",
+    "accion": "Evítelo o pida niveles en sangre.",
+    "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.5 · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "cbd",
+    "b": "everolimus",
+    "nivel": "moderada",
+    "efecto": "El CBD sube los niveles de everolimus.",
+    "accion": "Evítelo o pida niveles en sangre.",
+    "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "cbd",
+    "b": "valproato",
+    "nivel": "moderada",
+    "efecto": "CBD + valproato: más riesgo de daño en el hígado.",
+    "accion": "Consúltelo; requiere análisis del hígado.",
+    "fuente": "FT AEMPS Epidyolex (cannabidiol) 4.4/4.5",
+    "revisado": true
+  },
+  {
+    "a": "cbd",
+    "b": "acenocumarol",
+    "nivel": "moderada",
+    "efecto": "El CBD puede subir el INR.",
+    "accion": "Avise y adelante el control del INR.",
+    "fuente": "Revisión clínica (casos publicados con warfarina)",
+    "revisado": true
+  },
+  {
+    "a": "cbd",
+    "b": "warfarina",
+    "nivel": "moderada",
+    "efecto": "El CBD puede subir el INR.",
+    "accion": "Avise y adelante el control del INR.",
+    "fuente": "Revisión clínica (casos publicados con warfarina)",
+    "revisado": true
+  },
+  {
+    "a": "ginseng",
+    "b": "acenocumarol",
+    "nivel": "moderada",
+    "efecto": "El ginseng puede reducir el efecto del anticoagulante.",
+    "accion": "Evítelo o avise para controlar el INR.",
+    "fuente": "EMA HMPC (ginseng) 4.5 · NCCIH",
+    "revisado": true
+  },
+  {
+    "a": "ginseng",
+    "b": "warfarina",
+    "nivel": "moderada",
+    "efecto": "El ginseng puede reducir el efecto de la warfarina.",
+    "accion": "Evítelo o avise para controlar el INR.",
+    "fuente": "EMA HMPC (ginseng) 4.5 · NCCIH",
+    "revisado": true
+  },
+  {
+    "a": "ginseng",
+    "b": "clase:insulina",
+    "nivel": "menor",
+    "efecto": "El ginseng puede bajar algo más el azúcar.",
+    "accion": "Mida la glucosa más a menudo al empezar.",
+    "fuente": "EMA HMPC (ginseng) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ginseng",
+    "b": "clase:sulfonilureas",
+    "nivel": "menor",
+    "efecto": "El ginseng puede bajar algo más el azúcar.",
+    "accion": "Mida la glucosa más a menudo al empezar.",
+    "fuente": "EMA HMPC (ginseng) 4.5",
+    "revisado": true
+  },
+  {
+    "a": "ashwagandha",
+    "b": "levotiroxina",
+    "nivel": "moderada",
+    "efecto": "La ashwagandha puede subir las hormonas del tiroides.",
+    "accion": "Evítela o pida un control de tiroides.",
+    "fuente": "NIH ODS (ashwagandha) · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "ashwagandha",
+    "b": "clase:antitiroideos",
+    "nivel": "moderada",
+    "efecto": "La ashwagandha puede subir las hormonas del tiroides y contrarrestar el tratamiento.",
+    "accion": "No la tome.",
+    "fuente": "NIH ODS (ashwagandha) · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "ashwagandha",
+    "b": "clase:inmunosupresores_trasplante",
+    "nivel": "moderada",
+    "efecto": "Puede estimular las defensas y contrarrestar al inmunosupresor.",
+    "accion": "No la tome si es trasplantado.",
+    "fuente": "NIH ODS (ashwagandha)",
+    "revisado": true
+  },
+  {
+    "a": "berberina",
+    "b": "clase:inmunosupresores_trasplante",
+    "nivel": "moderada",
+    "efecto": "La berberina sube los niveles de ciclosporina y tacrolimus.",
+    "accion": "Evítela o pida niveles en sangre.",
+    "fuente": "Revisión clínica (estudios con ciclosporina)",
+    "revisado": true
+  },
+  {
+    "a": "berberina",
+    "b": "clase:insulina",
+    "nivel": "menor",
+    "efecto": "Suma efecto para bajar el azúcar.",
+    "accion": "Mida la glucosa más a menudo al empezar y antes de entrenar.",
+    "fuente": "NCCIH (berberina)",
+    "revisado": true
+  },
+  {
+    "a": "berberina",
+    "b": "clase:sulfonilureas",
+    "nivel": "menor",
+    "efecto": "Suma efecto para bajar el azúcar.",
+    "accion": "Mida la glucosa más a menudo al empezar y antes de entrenar.",
+    "fuente": "NCCIH (berberina)",
+    "revisado": true
+  },
+  {
+    "a": "cromo",
+    "b": "levotiroxina",
+    "nivel": "menor",
+    "efecto": "El cromo reduce la absorción de la levotiroxina.",
+    "accion": "Separe 3–4 horas.",
+    "fuente": "NIH ODS (cromo)",
+    "revisado": true
+  },
+  {
+    "a": "cromo",
+    "b": "clase:insulina",
+    "nivel": "menor",
+    "efecto": "El cromo podría bajar algo más el azúcar.",
+    "accion": "Mida la glucosa más a menudo al empezar.",
+    "fuente": "NIH ODS (cromo)",
+    "revisado": true
+  },
+  {
+    "a": "isoflavonas",
+    "b": "levotiroxina",
+    "nivel": "menor",
+    "efecto": "La soja reduce la absorción de la levotiroxina.",
+    "accion": "Separe al menos 4 horas.",
+    "fuente": "FT AEMPS 4.5 (levotiroxina)",
+    "revisado": true
+  },
+  {
+    "a": "isoflavonas",
+    "b": "clase:hormonoterapia_cancer_mama",
+    "nivel": "moderada",
+    "efecto": "Las isoflavonas tienen efecto estrogénico y podrían contrarrestar el tratamiento.",
+    "accion": "No las tome sin consultar a su oncólogo.",
+    "fuente": "Revisión clínica · EFSA 2015 (isoflavonas)",
+    "revisado": true
+  },
+  {
+    "a": "equinacea",
+    "b": "clase:inmunosupresores_trasplante",
+    "nivel": "moderada",
+    "efecto": "La equinácea estimula las defensas y puede contrarrestar al inmunosupresor.",
+    "accion": "No la tome.",
+    "fuente": "EMA HMPC (equinácea) 4.3/4.5",
+    "revisado": true
+  },
+  {
+    "a": "equinacea",
+    "b": "clase:biologicos_jak",
+    "nivel": "moderada",
+    "efecto": "La equinácea estimula las defensas y puede contrarrestar el tratamiento.",
+    "accion": "No la tome sin consultar.",
+    "fuente": "EMA HMPC (equinácea) 4.3/4.5",
+    "revisado": true
+  },
+  {
+    "a": "equinacea",
+    "b": "clase:farme_sinteticos",
+    "nivel": "menor",
+    "efecto": "La equinácea no se recomienda en enfermedades autoinmunes en tratamiento.",
+    "accion": "Consúltelo antes.",
+    "fuente": "EMA HMPC (equinácea) 4.3",
+    "revisado": true
+  },
+  {
+    "a": "sinefrina",
+    "b": "cafeina",
+    "nivel": "moderada",
+    "efecto": "Sinefrina + cafeína: el pulso y la tensión suben mucho más que con cada uno por separado.",
+    "accion": "Evite la combinación (muy frecuente en los 'quemagrasas').",
+    "fuente": "Revisión clínica (casos publicados)",
+    "revisado": true
+  },
+  {
+    "a": "sinefrina",
+    "b": "clase:estimulantes_tdah",
+    "nivel": "mayor",
+    "efecto": "Suma de estimulantes: taquicardia, hipertensión, arritmias.",
+    "accion": "No los combine.",
+    "fuente": "Revisión clínica · FT AEMPS 4.5 (estimulantes)",
+    "revisado": true
+  },
+  {
+    "a": "sinefrina",
+    "b": "moclobemida",
+    "nivel": "mayor",
+    "efecto": "Con un antidepresivo IMAO, la sinefrina puede disparar la tensión.",
+    "accion": "No los combine.",
+    "fuente": "FT AEMPS 4.5 (moclobemida)",
+    "revisado": true
+  },
+  {
+    "a": "sinefrina",
+    "b": "pseudoefedrina",
+    "nivel": "moderada",
+    "efecto": "Suma de estimulantes: taquicardia e hipertensión.",
+    "accion": "No los combine.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "yohimbina",
+    "b": "clase:estimulantes_tdah",
+    "nivel": "mayor",
+    "efecto": "Suma de estimulantes: taquicardia, hipertensión, ansiedad.",
+    "accion": "No tome yohimbina.",
+    "fuente": "Revisión clínica · Reglamento (UE) 2019/650",
+    "revisado": true
+  },
+  {
+    "a": "yohimbina",
+    "b": "moclobemida",
+    "nivel": "mayor",
+    "efecto": "Con un antidepresivo IMAO, la yohimbina puede disparar la tensión.",
+    "accion": "No tome yohimbina.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "yohimbina",
+    "b": "clase:isrs_isrsn",
+    "nivel": "moderada",
+    "efecto": "La yohimbina aumenta la ansiedad y la tensión y altera el efecto del antidepresivo.",
+    "accion": "No tome yohimbina.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "fucus",
+    "b": "levotiroxina",
+    "nivel": "moderada",
+    "efecto": "El yodo del fucus altera el tiroides y descontrola la dosis de levotiroxina.",
+    "accion": "No lo tome sin control de su médico.",
+    "fuente": "NIH ODS (yodo)",
+    "revisado": true
+  },
+  {
+    "a": "fucus",
+    "b": "clase:antitiroideos",
+    "nivel": "moderada",
+    "efecto": "El yodo del fucus contrarresta el tratamiento del hipertiroidismo.",
+    "accion": "No lo tome.",
+    "fuente": "NIH ODS (yodo)",
+    "revisado": true
+  },
+  {
+    "a": "fucus",
+    "b": "clase:amiodarona",
+    "nivel": "moderada",
+    "efecto": "La amiodarona ya lleva mucho yodo: el fucus suma riesgo de alterar el tiroides.",
+    "accion": "No lo tome.",
+    "fuente": "NIH ODS (yodo) · FT AEMPS 4.4 (amiodarona)",
+    "revisado": true
+  },
+  {
+    "a": "fucus",
+    "b": "litio",
+    "nivel": "moderada",
+    "efecto": "Yodo + litio: más riesgo de hipotiroidismo.",
+    "accion": "No lo tome sin consultar.",
+    "fuente": "NIH ODS (yodo)",
+    "revisado": true
+  },
+  {
+    "a": "glucomanano",
+    "b": "levotiroxina",
+    "nivel": "menor",
+    "efecto": "La fibra retrasa y reduce la absorción de la levotiroxina.",
+    "accion": "Separe al menos 4 horas.",
+    "fuente": "FT AEMPS 4.5 (levotiroxina)",
+    "revisado": true
+  },
+  {
+    "a": "glucomanano",
+    "b": "clase:digoxina",
+    "nivel": "menor",
+    "efecto": "La fibra puede reducir la absorción de la digoxina.",
+    "accion": "Separe al menos 2 horas.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "te_verde_extracto",
+    "b": "metotrexato",
+    "nivel": "moderada",
+    "efecto": "Dos productos que pueden dañar el hígado.",
+    "accion": "Evite el extracto de té verde; la bebida en cantidad moderada no plantea problema.",
+    "fuente": "EFSA 2018 (catequinas del té verde)",
+    "revisado": true
+  },
+  {
+    "a": "prohormonas_dhea",
+    "b": "clase:anticoagulantes",
+    "nivel": "moderada",
+    "efecto": "Los anabolizantes aumentan el efecto del anticoagulante (sangrado).",
+    "accion": "No los tome; si ya lo hace, avise para controlar el INR.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "prohormonas_dhea",
+    "b": "clase:hormonoterapia_cancer_mama",
+    "nivel": "mayor",
+    "efecto": "La DHEA y las prohormonas se transforman en hormonas sexuales y contrarrestan el tratamiento.",
+    "accion": "Contraindicado.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "prohormonas_dhea",
+    "b": "clase:hormonoterapia_prostata",
+    "nivel": "mayor",
+    "efecto": "Las prohormonas se transforman en testosterona y contrarrestan el tratamiento.",
+    "accion": "Contraindicado.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "prohormonas_dhea",
+    "b": "testosterona",
+    "nivel": "moderada",
+    "efecto": "Duplica el efecto hormonal: más riesgo de efectos adversos.",
+    "accion": "No los combine.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "levadura_roja",
+    "b": "clase:estatinas",
+    "nivel": "mayor",
+    "efecto": "La levadura roja es una estatina (monacolina K = lovastatina): sería tomar dos estatinas.",
+    "accion": "No los combine. Deje la levadura roja si le pautan una estatina.",
+    "fuente": "Reglamento (UE) 2022/860 · EFSA 2018 (monacolinas)",
+    "revisado": true
+  },
+  {
+    "a": "levadura_roja",
+    "b": "claritromicina",
+    "nivel": "mayor",
+    "efecto": "La claritromicina dispara los niveles de monacolina K: riesgo de daño muscular grave.",
+    "accion": "Suspenda la levadura roja mientras dure el antibiótico.",
+    "fuente": "FT AEMPS 4.3/4.5 (lovastatina)",
+    "revisado": true
+  },
+  {
+    "a": "levadura_roja",
+    "b": "itraconazol",
+    "nivel": "mayor",
+    "efecto": "El itraconazol dispara los niveles de monacolina K: riesgo de daño muscular grave.",
+    "accion": "Suspenda la levadura roja durante el tratamiento.",
+    "fuente": "FT AEMPS 4.3/4.5 (lovastatina)",
+    "revisado": true
+  },
+  {
+    "a": "levadura_roja",
+    "b": "ciclosporina",
+    "nivel": "mayor",
+    "efecto": "La ciclosporina sube mucho los niveles de monacolina K: riesgo de daño muscular.",
+    "accion": "No la tome.",
+    "fuente": "FT AEMPS 4.5 (lovastatina)",
+    "revisado": true
+  },
+  {
+    "a": "coenzima_q10",
+    "b": "acenocumarol",
+    "nivel": "menor",
+    "efecto": "La coenzima Q10 podría reducir el efecto del anticoagulante.",
+    "accion": "Avise si la empieza o la deja.",
+    "fuente": "NCCIH (coenzima Q10) · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "coenzima_q10",
+    "b": "warfarina",
+    "nivel": "menor",
+    "efecto": "La coenzima Q10 podría reducir el efecto de la warfarina.",
+    "accion": "Avise si la empieza o la deja.",
+    "fuente": "NCCIH (coenzima Q10) · casos publicados",
+    "revisado": true
+  },
+  {
+    "a": "carnitina",
+    "b": "acenocumarol",
+    "nivel": "moderada",
+    "efecto": "La L-carnitina puede subir el INR.",
+    "accion": "Avise y adelante el control.",
+    "fuente": "Revisión clínica (casos publicados con acenocumarol)",
+    "revisado": true
+  },
+  {
+    "a": "carnitina",
+    "b": "warfarina",
+    "nivel": "moderada",
+    "efecto": "La L-carnitina puede subir el INR.",
+    "accion": "Avise y adelante el control.",
+    "fuente": "Revisión clínica (casos publicados)",
+    "revisado": true
+  },
+  {
+    "a": "arginina_citrulina",
+    "b": "clase:pde5",
+    "nivel": "moderada",
+    "efecto": "Arginina o citrulina + sildenafilo/tadalafilo: la tensión puede bajar demasiado.",
+    "accion": "No los combine sin consultar.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "arginina_citrulina",
+    "b": "clase:nitratos",
+    "nivel": "moderada",
+    "efecto": "Suma efecto vasodilatador: mareo y bajada de tensión.",
+    "accion": "No los combine sin consultar.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "nitrato_remolacha",
+    "b": "clase:pde5",
+    "nivel": "menor",
+    "efecto": "Los nitratos de la remolacha suman un pequeño efecto sobre la tensión.",
+    "accion": "Evite tomarlos juntos el mismo día si se marea.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "nitrato_remolacha",
+    "b": "clase:nitratos",
+    "nivel": "menor",
+    "efecto": "Suma un pequeño efecto sobre la tensión.",
+    "accion": "Si se marea, no los tome el mismo día.",
+    "fuente": "Revisión clínica",
+    "revisado": true
+  },
+  {
+    "a": "aminoacidos",
+    "b": "levodopa",
+    "nivel": "moderada",
+    "efecto": "Los aminoácidos compiten con la levodopa y le quitan efecto.",
+    "accion": "Sepárelos de las tomas de levodopa.",
+    "fuente": "FT AEMPS 4.5 (levodopa)",
+    "revisado": true
+  },
+  {
+    "a": "cafeina",
+    "b": "clase:fluoroquinolonas",
+    "nivel": "menor",
+    "efecto": "Ciprofloxacino frena la eliminación de la cafeína: más nervios, insomnio y palpitaciones.",
+    "accion": "Reduzca la cafeína mientras dure el antibiótico.",
+    "fuente": "FT AEMPS 4.5 (ciprofloxacino)",
+    "revisado": true
+  },
+  {
+    "a": "cafeina",
+    "b": "teofilina",
+    "nivel": "moderada",
+    "efecto": "Suma de efectos estimulantes: taquicardia, temblor, insomnio.",
+    "accion": "Limite la cafeína y evite los pre-entrenos.",
+    "fuente": "FT AEMPS 4.5 (teofilina)",
+    "revisado": true
+  },
+  {
+    "a": "cafeina",
+    "b": "litio",
+    "nivel": "menor",
+    "efecto": "La cafeína aumenta la eliminación del litio; si la deja de golpe, el litio puede subir.",
+    "accion": "Mantenga un consumo de cafeína estable y avise si lo cambia.",
+    "fuente": "FT AEMPS 4.5 (litio)",
+    "revisado": true
+  },
+  {
+    "a": "cafeina",
+    "b": "clozapina",
+    "nivel": "moderada",
+    "efecto": "La cafeína sube los niveles de clozapina.",
+    "accion": "Mantenga un consumo estable; evite los pre-entrenos.",
+    "fuente": "FT AEMPS 4.5 (clozapina)",
+    "revisado": true
+  }
 ]

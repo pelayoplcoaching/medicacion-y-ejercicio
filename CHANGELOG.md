@@ -10,6 +10,7 @@ Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación
 - Interfaz: etiqueta «Suplemento»/«Planta» e icono propio (hoja, frasco) en la lista, el buscador, el informe y la ficha; plegable «¿Toma suplementos o plantas medicinales?» con 19 botones rápidos y contador; buscador «Medicamento, suplemento o planta»; textos en 5 idiomas.
 - Correcciones: las unidades que ya llevan «/día» (g/día, mg/día, inhalaciones/día…) o son por hora (mcg/h) ya no se muestran como «g/día/día» (`unidadPorDia`, `unidadPorToma`); el ritmo sin edad ya no muestra «no se guíe por el pulso ()».
 - Validación: 7 casos nuevos (25 → 32), 26 pruebas nuevas del motor y 6 de interfaz.
+- Revisión clínica (mismo día): el autor revisó la hoja `data/revision/revision_pendientes_20261121.xlsx` (253 filas) sin cambios; `import_revision.py` marca como revisadas las 68 reglas, 3 combinadas y 114 interacciones (corregido: el OK de interacciones y combinadas no se aplicaba). La base no tiene ninguna regla ni interacción en borrador.
 
 ## 1.0.2 · 2026-10-16
 - Combinaciones a dosis fijas: una presentación del nomenclátor cuyo componente suelto ya está incluido en un principio combinado de la base (Entresto → sacubitrilo/valsartán + valsartán; inhaladores LABA/ICS + ICS) ya no añade el componente dos veces (75 presentaciones afectadas). En la lista, las combinaciones se muestran con una cabecera con la marca y cada principio debajo, con una × que quita la combinación entera.
