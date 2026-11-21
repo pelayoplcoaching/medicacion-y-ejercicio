@@ -3893,3 +3893,15 @@ dialog.sesion > .ficha-cuerpo { flex: 1 1 auto; min-height: 0; max-height: none;
 @media print { .m12-dato, .m12-pie { display: none; } }
 :root[data-theme="contrast"] .tira .dia.sel { border: 3px solid var(--accent); }
 :root[data-theme="contrast"] .tira .dia.pasado { opacity: 1; }
+/* G1 por que: chips bajo los avisos de cada medicamento y boton en los efectos a vigilar (la escena lleva sus estilos en js/porque.js) */
+.pq-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 10px 0 2px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.pq-chips > span { font-size: .82rem; font-weight: 700; color: var(--muted); }
+.pq-chips .pq-btn { min-height: 34px; padding: 4px 12px 4px 30px; font-family: var(--font); font-size: .86rem; font-weight: 650; letter-spacing: 0; text-transform: none; background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23593ede' stroke-width='2'/%3E%3Cpath d='M10 9.5a2.2 2.2 0 1 1 3 2c-.8.4-1 .9-1 1.7M12 16.4v.4' fill='none' stroke='%23593ede' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") 9px center / 16px no-repeat; color: var(--accent-deep); border-color: transparent; }
+.pq-chips .pq-btn:hover { border-color: var(--accent); }
+#perfil li:has(.pq-mini) { grid-template-columns: 34px minmax(0, 1fr) auto; }
+#perfil li .pq-mini { grid-column: 3; grid-row: 1 / span 2; align-self: center; min-height: 32px; padding: 4px 10px; border: 1px solid var(--accent); border-radius: 999px; background: transparent; color: var(--accent-deep); font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
+#perfil li .pq-mini:hover { background: var(--accent-soft); }
+:root[data-theme="dark"] .pq-chips .pq-btn { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23c9c4ff' stroke-width='2'/%3E%3Cpath d='M10 9.5a2.2 2.2 0 1 1 3 2c-.8.4-1 .9-1 1.7M12 16.4v.4' fill='none' stroke='%23c9c4ff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .pq-chips .pq-btn { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23c9c4ff' stroke-width='2'/%3E%3Cpath d='M10 9.5a2.2 2.2 0 1 1 3 2c-.8.4-1 .9-1 1.7M12 16.4v.4' fill='none' stroke='%23c9c4ff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); } }
+:root[data-theme="contrast"] .pq-chips .pq-btn { border-color: var(--accent); background-color: var(--surface); }
+@media print { .pq-chips, #perfil li .pq-mini { display: none !important; } }

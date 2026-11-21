@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212102";
-import { APP_VERSION } from "./version.js?v=202611212102";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212102";
-import { picto } from "./pictos.js?v=202611212102";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212102";
-import { cargarScript } from "./libs.js?v=202611212102";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212102";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212102";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212122";
+import { APP_VERSION } from "./version.js?v=202611212122";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212122";
+import { picto } from "./pictos.js?v=202611212122";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212122";
+import { cargarScript } from "./libs.js?v=202611212122";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212122";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212122";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,7 +32,20 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212102"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212122"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212122"));
+/** «¿Por qué?» (mejora grande 1): explicador animado de cada mecanismo, por señal de la base (el contenido está en js/porque.js). */
+const PQ_SENAL = { fc_no_valida: "pulso", bradicardia: "pulso", hipoglucemia: "azucar", enmascara_hipoglucemia: "azucar", sangrado: "sangrado", hipotension: "tension", deshidratacion: "agua", hipopotasemia: "agua", hiponatremia: "agua", renal: "agua", litio: "agua", calor: "calor", anticolinergico: "calor", sedacion: "equilibrio", caidas: "equilibrio", miopatia: "musculo", tendon: "tendon", qt: "ritmo", taquicardia: "acelera", perdida_muscular: "fuerza_hueso", hueso: "fuerza_hueso", fotosensibilidad: "sol", hipertension: "tension_alta", fatiga: "cansancio" };
+const PQ_ORDEN = ["pulso", "azucar", "sangrado", "tension", "agua", "calor", "equilibrio", "musculo", "tendon", "ritmo", "acelera", "fuerza_hueso", "sol", "tension_alta", "cansancio"];
+const porquesDe = (senales) => PQ_ORDEN.filter((id) => [...senales].some((s) => PQ_SENAL[s] === id));
+const chipsPorque = (senales) => { const ids = porquesDe(senales); return ids.length ? `<div class="pq-chips"><span>${t("pq.entender")}</span>${ids.map((id) => `<button type="button" class="chip chip-btn pq-btn" data-porque="${id}">${t("pq.b." + id)}</button>`).join("")}</div>` : ""; };
+function abrirPorque(id) {
+  const res = evaluar(datos, medsActivos(), ctxActual());
+  const farmacos = {};
+  for (const it of res.items) for (const p of porquesDe(it.senales)) (farmacos[p] ||= []).includes(it.principio.nombre) || farmacos[p].push(it.principio.nombre);
+  cargarPorque().then((m) => m.abrir(id, { farmacos, presentes: PQ_ORDEN.filter((p) => farmacos[p]) })).catch(() => { cargarPorque.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-porque]"); if (b) { ev.preventDefault(); abrirPorque(b.dataset.porque); } });
 
 /* ---------- avisos breves (toast) con acción opcional ---------- */
 let toastTimer = null;
@@ -776,7 +789,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212102").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212122").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1698,7 +1711,7 @@ function render() {
   $("#perfil").innerHTML = "";
   if (perfil.length) {
     const sec = seccion(t("inf.efectos"), { abierta: false, clave: "perfil", resumen: t("inf.n_efectos", { n: perfil.length }) });
-    sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small></li>`).join("")}</ul>`;
+    sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small>${PQ_SENAL[s] ? `<button type="button" class="pq-mini" data-porque="${PQ_SENAL[s]}" aria-label="${t("pq.titulo")} ${datos.kb.senales[s]}">${t("pq.titulo")}</button>` : ""}</li>`).join("")}</ul>`;
     $("#perfil").append(sec);
   }
 }
@@ -1777,6 +1790,7 @@ function tarjetaFarmaco(g, amb, abierta) {
           ${amb ? "" : `<p class="resumen-clase">${it.clase.resumen}</p>`}
           ${it.principio.sintetico && !amb ? `<p class="resumen-clase"><em>${it.principio.nota}</em></p>` : ""}
           <ul>${g.reglas.sort((a, b) => ORDEN_NIVEL[b.nivel] - ORDEN_NIVEL[a.nivel]).map((r) => `<li class="nivel-${r.nivel}"><span class="punto"></span><span>${glosar(r.texto)}${r.si?.dosis === "alta" ? ' <em>(por la dosis)</em>' : ""}${r.si?.edad_min ? ` <em>(por la edad)</em>` : ""} <span class="estado-regla ${r.revisado ? "ok" : ""}" title="${r.revisado ? t("regla.revisada.t") : t("regla.borrador.t")}">${r.revisado ? t("regla.revisada") : t("regla.borrador")}</span> <span class="evidencia ev-${nivelEvidencia(r)}" title="${t("ev.titulo")}">${t("ev." + nivelEvidencia(r))}</span>${r.fuente ? ` <small class="fuente-regla">${seccionFT(r) && tieneFicha(it.principio) ? `<a href="${urlFicha(it.principio)}" target="_blank" rel="noopener">${r.fuente}</a>` : r.fuente}</small>` : ""}</span></li>`).join("")}</ul>
+          ${chipsPorque(it.senales)}
           <p class="fuentes">${it.clase.fuentes?.length ? `${t("inf.fuentes")}: ${it.clase.fuentes.join(" · ")} · ` : ""}${enlaceFicha(it.principio)}</p>
         </div>
       </details>`;
@@ -1925,7 +1939,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212102").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212122").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;

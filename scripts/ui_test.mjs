@@ -85,6 +85,16 @@ try {
   await p.click('[data-tab="general"]'); await p.waitForTimeout(200);
   await p.click("#sintomas-card summary"); await p.click('#sintomas-card button[data-s="mareo"]'); await p.waitForTimeout(150);
   check("síntomas → fármacos posibles", (await p.textContent("#sintoma-detalle")).includes("contribuir"));
+  {
+    const chip = await p.$(".pq-chips .pq-btn");
+    check("«¿Por qué?» en las tarjetas de los medicamentos y en los efectos a vigilar", !!chip && (await p.$$("#perfil .pq-mini")).length >= 1);
+    await p.evaluate(() => { const b = document.querySelector(".pq-chips .pq-btn"); b.closest("details").open = true; b.click(); });
+    await p.waitForSelector("#porque[open]", { timeout: 5000 }).catch(() => {});
+    check("el explicador se abre en el paso 1 con su escena, qué hacer y fuentes", await p.$eval("#porque", (d) => d.open).catch(() => false) && await p.$eval(".pq-escena", (e) => e.dataset.paso === "1" && !!e.querySelector("svg path")) && (await p.$$(".pq-hacer li")).length >= 3 && /Fuentes/.test(await p.textContent(".pq-fuentes")));
+    await p.click('#porque [data-pq="sig"]'); await p.keyboard.press("ArrowRight"); await p.waitForTimeout(150);
+    check("se avanza con «Siguiente» y con las flechas", await p.$eval(".pq-escena", (e) => e.dataset.paso) === "3" && /Paso 3 de 4/.test(await p.textContent(".pq-paso")));
+    await p.click("#pq-cerrar"); await p.waitForTimeout(150);
+  }
 
   console.log("Mi plan");
   await p.click('[data-tab="plan"]'); await p.waitForTimeout(250);

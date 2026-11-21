@@ -296,6 +296,24 @@ console.log("\nSemana activa: anillos, racha amable y mapa de 12 semanas (mejora
   check("niveles de color por minutos", [0, 5, 25, 60].map(S.nivelDia).join() === "0,1,2,3");
 }
 
+console.log("\n«¿Por qué?»: explicadores animados de los mecanismos (mejora grande 1)");
+{
+  const PQ = await import(pathToFileURL(path.join(ROOT, "app/js/porque.js")).href);
+  const kb = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/kb.json"), "utf8"));
+  const fuenteApp = fs.readFileSync(path.join(ROOT, "app/js", "app.js"), "utf8");
+  const mapa = JSON.parse(fuenteApp.match(/const PQ_SENAL = (\{[^}]+\});/)[1].replace(/(\w+):/g, '"$1":'));
+  const orden = JSON.parse(fuenteApp.match(/const PQ_ORDEN = (\[[^\]]+\]);/)[1]);
+  const esSrc = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  check("15 explicadores, los mismos que en app.js", PQ.PQ_IDS.length === 15 && JSON.stringify([...PQ.PQ_IDS].sort()) === JSON.stringify([...orden].sort()));
+  check("cada señal enlazada existe en la base y apunta a un explicador", Object.entries(mapa).every(([s, id]) => kb.senales[s] && PQ.PORQUE[id]), Object.entries(mapa).filter(([s, id]) => !kb.senales[s] || !PQ.PORQUE[id]).join());
+  check("cada explicador: título, 4 pasos, qué hacer y fuentes; botón traducido", PQ.PQ_IDS.every((id) => { const e = PQ.PORQUE[id]; return e.titulo && e.pasos.length === 4 && e.hacer.length >= 3 && e.fuentes.length >= 1 && esSrc.includes(`"pq.b.${id}"`); }));
+  check("cada escena tiene dibujo y piezas que cambian de paso", PQ.PQ_IDS.every((id) => { const h = PQ.escena(id, 2); return /<svg[^>]+data-e="/.test(h) && (h.match(/<(path|circle|rect|ellipse)/g) || []).length >= 8 && /q-[dsh][1-4]/.test(h); }));
+  check("las escenas no repiten el atributo class (se perdería la visibilidad por pasos)", PQ.PQ_IDS.every((id) => !/<[^>]+class="[^"]*"[^>]*\sclass="/.test(PQ.escena(id))));
+  const fuentesKb = [...new Set(kb.clases.flatMap((c) => ["general", "aerobico", "fuerza", "equilibrio"].flatMap((a) => (c[a] || []).map((r) => r.fuente))).concat((kb.reglas_combinadas || []).map((r) => r.fuente)).filter(Boolean).flatMap((f) => f.split(/ · |; /)))];
+  const enKb = (f) => fuentesKb.some((k) => k.includes(f.split(" (")[0].replace(" Lancet Diabetes Endocrinol", "")) || f.includes(k));
+  check("las fuentes de los explicadores son las de las reglas de la base", PQ.PQ_IDS.every((id) => PQ.PORQUE[id].fuentes.every(enKb)), PQ.PQ_IDS.flatMap((id) => PQ.PORQUE[id].fuentes.filter((f) => !enKb(f))).join(" | "));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);
@@ -448,7 +466,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 3760 desde la v1.1 (21/11/2026): base con 53 suplementos y plantas (+41 KB) y tres tandas de mejoras visuales 231-380 (+24 KB de CSS, +6 KB comprimidos)
   // 3800 desde las mejoras 381-530 (21/11/2026): +45 KB de CSS (+10 KB comprimidos) de movimiento, luz y cristal
   // 3850 desde las mejoras 531-680 (21/11/2026): +41 KB de CSS (+9 KB comprimidos)
-  check(`precarga total ≤ 3850 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3850);
+  // 3950 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda semana.js, voz.js y porque.js (explicadores con sus escenas), que se precargan para usarse sin conexión
+  check(`precarga total ≤ 3950 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3950);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
@@ -459,7 +478,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 325 KB desde las mejoras 381-530 (21/11/2026): movimiento futurista de una vez, luz y cristal; 67 KB comprimida con gzip
   // 370 KB desde las mejoras 531-680 (21/11/2026): transiciones nativas, tacto, profundidad y detalles; 75 KB comprimida
   // 345 KB desde la limpieza y las mejoras 681-830 (21/11/2026): 327 KB, 62 KB comprimida; las descripciones de las mejoras viven en docs/ESTILOS-MEJORAS.md
-  check(`hoja de estilos ≤ 345 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 345);
+  // 355 KB desde las 20 mejoras grandes (v1.2): solo lo que se ve en las pantallas principales; los estilos de las ventanas grandes van con su módulo (p. ej., las escenas de porque.js)
+  check(`hoja de estilos ≤ 355 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 355);
   const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
   const tabla = css.slice(css.indexOf("/* OP3."));
   const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));

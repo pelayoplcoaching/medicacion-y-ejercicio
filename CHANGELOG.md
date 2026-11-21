@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.2 · 2026-11-21 · Mejoras grandes (3): «¿Por qué?» animado en cada aviso
+- 15 explicadores (`js/porque.js`, bajo demanda): el pulso que no sirve para medir el esfuerzo, las bajadas de azúcar, los golpes y el sangrado, el mareo al levantarse, el agua y las sales, el calor, las caídas, el dolor muscular, los tendones, el QT, el corazón acelerado, el músculo y el hueso, el sol, la tensión alta al hacer fuerza y el cansancio. Cada uno: escena SVG en cuatro pasos (piezas que aparecen, agujas y niveles que se mueven; se avanza con «Siguiente», los puntos o las flechas del teclado; movimiento de una vez, apagado con «reducir movimiento»), qué hacer, fuentes (las mismas de las reglas de esas señales) y los otros porqués de su lista.
+- Enlaces: «Entender por qué» en cada tarjeta de medicamento (según sus señales, `PQ_SENAL` en `app.js`) y botón «¿Por qué?» en los efectos a vigilar. Textos de la interfaz en los cinco idiomas (`pq.*`); el contenido, en español como el resto de la base.
+- Los estilos de las escenas van con el módulo (se añaden al abrir el primero), no en la hoja general.
+- Presupuestos de `test.mjs`: precarga ≤ 3950 KB (módulos bajo demanda que se guardan para usarse sin conexión) y hoja de estilos ≤ 355 KB. Pruebas: 6 nuevas en `test.mjs` (señales, pasos, botones traducidos, escenas, fuentes de la base) y 3 en `ui_test.mjs`.
+
 ## 1.2.1 · 2026-11-21 · Mejoras grandes (2): tres anillos, racha amable y mapa de 12 semanas
 - «Mi plan»: tres anillos concéntricos con su leyenda (moverse: minutos de la semana frente a 150, o 90 en fragilidad; fuerza: días frente a 2; equilibrio: días frente a 2, o 3 con riesgo de caídas o fragilidad, el mismo criterio que la prescripción, `P.fue.n` y `P.eq.n` en `informes.js`). Ayuda «?» con qué cuenta cada cosa.
 - Racha amable (`rachaAmable`): semanas seguidas con al menos una sesión; la semana en curso no la rompe y se perdona una semana vacía si la anterior tuvo actividad y no se perdonó otra en las 5 anteriores. Dice también cuántas cumplieron el objetivo y la mejor racha de los dos últimos años.
