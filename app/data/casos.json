@@ -1153,6 +1153,273 @@
     ],
     "cribado": "parar"
    }
+  },
+  {
+   "id": "c26",
+   "titulo": "Hipérico con antidepresivo y anticonceptivo",
+   "descripcion": "34 años, sertralina 100 mg y anticonceptivo combinado; empieza hipérico por su cuenta y sale a correr al mediodía.",
+   "meds": [
+    {
+     "pid": "sertralina",
+     "dosis": 100,
+     "tomas": 1
+    },
+    {
+     "pid": "anticonceptivo_combinado",
+     "dosis": null,
+     "tomas": 1
+    },
+    {
+     "pid": "hiperico",
+     "dosis": null,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 34,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "mayores_min": 2,
+    "senales": [
+     "serotoninergico",
+     "fotosensibilidad"
+    ],
+    "combinadas_incluye": [
+     "serotoninérgicos"
+    ],
+    "esencial_incluye": [
+     "hipérico"
+    ]
+   }
+  },
+  {
+   "id": "c27",
+   "titulo": "Sintrom con ginkgo y vitamina K para los huesos",
+   "descripcion": "76 años, acenocumarol por fibrilación auricular; toma ginkgo para la memoria y un preparado de calcio con vitamina K2.",
+   "meds": [
+    {
+     "pid": "acenocumarol",
+     "dosis": 2,
+     "tomas": 1
+    },
+    {
+     "pid": "ginkgo",
+     "dosis": 120,
+     "tomas": 1
+    },
+    {
+     "pid": "vitamina_k",
+     "dosis": null,
+     "tomas": 1
+    },
+    {
+     "pid": "calcio_vitd",
+     "dosis": 1000,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 76,
+    "caidas": false,
+    "condiciones": [
+     "fibrilacion_auricular"
+    ]
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "mayores_min": 1,
+    "senales": [
+     "sangrado"
+    ],
+    "combinadas_incluye": [
+     "sangrado"
+    ]
+   }
+  },
+  {
+   "id": "c28",
+   "titulo": "Regaliz con diurético y digoxina",
+   "descripcion": "80 años, insuficiencia cardíaca con furosemida y digoxina; toma regaliz de palo a diario.",
+   "meds": [
+    {
+     "pid": "furosemida",
+     "dosis": 40,
+     "tomas": 1
+    },
+    {
+     "pid": "digoxina",
+     "dosis": 0.125,
+     "tomas": 1
+    },
+    {
+     "pid": "regaliz",
+     "dosis": null,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 80,
+    "caidas": false,
+    "condiciones": [
+     "insuficiencia_cardiaca"
+    ]
+   },
+   "esperado": {
+    "mayores_min": 1,
+    "senales": [
+     "hipopotasemia",
+     "hipertension"
+    ]
+   }
+  },
+  {
+   "id": "c29",
+   "titulo": "Valeriana sumada a una benzodiacepina en mayor con caídas",
+   "descripcion": "81 años, una caída este año, lorazepam por la noche; añade valeriana para dormir.",
+   "meds": [
+    {
+     "pid": "lorazepam",
+     "dosis": 1,
+     "tomas": 1
+    },
+    {
+     "pid": "valeriana",
+     "dosis": null,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 81,
+    "caidas": true,
+    "condiciones": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "sedacion",
+     "caidas"
+    ],
+    "combinadas_incluye": [
+     "sedantes"
+    ]
+   }
+  },
+  {
+   "id": "c30",
+   "titulo": "Deportista federado con pre-entreno, quemagrasas y prohormonas",
+   "descripcion": "28 años, sin medicación; cafeína, sinefrina, DHEA y creatina antes de una competición.",
+   "meds": [
+    {
+     "pid": "cafeina",
+     "dosis": 300,
+     "tomas": 1
+    },
+    {
+     "pid": "sinefrina",
+     "dosis": null,
+     "tomas": 1
+    },
+    {
+     "pid": "prohormonas_dhea",
+     "dosis": null,
+     "tomas": 1
+    },
+    {
+     "pid": "creatina",
+     "dosis": 5,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 28,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "dopaje",
+     "taquicardia",
+     "hipertension"
+    ],
+    "combinadas_incluye": [
+     "antidopaje",
+     "aceleran"
+    ]
+   }
+  },
+  {
+   "id": "c31",
+   "titulo": "Hepatopatía con cúrcuma y té verde concentrado",
+   "descripcion": "62 años, cirrosis compensada; toma cápsulas de cúrcuma con piperina y extracto de té verde para adelgazar.",
+   "meds": [
+    {
+     "pid": "curcuma",
+     "dosis": null,
+     "tomas": 1
+    },
+    {
+     "pid": "te_verde_extracto",
+     "dosis": null,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 62,
+    "caidas": false,
+    "condiciones": [
+     "hepatopatia"
+    ]
+   },
+   "esperado": {
+    "alerta_min": 1,
+    "senales": [
+     "hepatotoxico"
+    ],
+    "combinadas_incluye": [
+     "hígado"
+    ]
+   }
+  },
+  {
+   "id": "c32",
+   "titulo": "Negativo: suplementos habituales sin riesgo en adulto sano",
+   "descripcion": "35 años, sin enfermedades; creatina, proteína en polvo y vitamina D.",
+   "meds": [
+    {
+     "pid": "creatina",
+     "dosis": 5,
+     "tomas": 1
+    },
+    {
+     "pid": "proteina_suplemento",
+     "dosis": 30,
+     "tomas": 1
+    },
+    {
+     "pid": "vitamina_d",
+     "dosis": null,
+     "tomas": 1
+    }
+   ],
+   "ctx": {
+    "edad": 35,
+    "caidas": false,
+    "condiciones": []
+   },
+   "esperado": {
+    "alerta_min": 0,
+    "sin_senales": [
+     "sangrado",
+     "sedacion",
+     "dopaje",
+     "hepatotoxico",
+     "hipopotasemia"
+    ]
+   }
   }
  ]
 }

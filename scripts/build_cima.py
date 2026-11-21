@@ -130,6 +130,7 @@ def cargar_alias_kb():
     Incluye el nombre, el id y sinónimos frecuentes del nomenclátor (sales, DCI)."""
     kb = json.loads(KB.read_text(encoding="utf-8"))
     alias = {}
+    cargar_prefijos_botanicos(kb)
     for clase in kb["clases"]:
         for pref in clase.get("atc") or []:
             ATC_CLASE[pref.upper()] = clase["id"]
@@ -225,7 +226,25 @@ def resolver(nombre_pa: str, alias: dict):
     primera = n.split(" ")[0] if n else ""
     if primera in alias:
         return alias[primera]
+    # plantas: nombre botánico + parte de la planta ("cassia angustifolia hoja o foliola" → laxantes_plantas), por los sinónimos de dos o más palabras
+    for k, v in PREFIJOS_BOTANICOS:
+        if n.startswith(k):
+            return v
     return "?"
+
+
+PREFIJOS_BOTANICOS = []  # (sinónimo de 2+ palabras, id), los más largos primero; se rellena en cargar_alias_kb
+
+
+def cargar_prefijos_botanicos(kb):
+    PREFIJOS_BOTANICOS.clear()
+    for clase in kb["clases"]:
+        for p in clase["principios"]:
+            for s in p.get("sinonimos", []) or []:
+                s = quitar_acentos(s)
+                if " " in s:
+                    PREFIJOS_BOTANICOS.append((s, p["id"]))
+    PREFIJOS_BOTANICOS.sort(key=lambda x: -len(x[0]))
 
 
 def descargar(url: str) -> bytes:

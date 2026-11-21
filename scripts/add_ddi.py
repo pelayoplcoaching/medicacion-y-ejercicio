@@ -10,7 +10,7 @@ for x in nuevas:
     k=tuple(sorted((x['a'],x['b'])))
     if k in exist: continue
     d['interacciones'].append(x); exist.add(k); added+=1
-json.dump(d,open(p,'w',encoding='utf-8'),ensure_ascii=False,indent=2)
+open(p,'w',encoding='utf-8').write(json.dumps(d,ensure_ascii=False,separators=(',',':')))  # compacto, como kb.json: ~20 % menos de descarga
 kb=json.load(open('app/data/kb.json',encoding='utf-8'))
 ids={pp['id'] for c in kb['clases'] for pp in c['principios']}; clases={c['id'] for c in kb['clases']}
 bad=[(x['a'],x['b']) for x in d['interacciones'] for kk in (x['a'],x['b']) if (kk.startswith('clase:') and kk[6:] not in clases) or (not kk.startswith('clase:') and kk not in ids)]

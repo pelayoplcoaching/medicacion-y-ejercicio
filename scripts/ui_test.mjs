@@ -131,6 +131,24 @@ try {
   check("SPPB 8 → Vivifrail C calculado automáticamente (editable)", (await p.$eval("#pro-vivifrail", (e) => e.value)) === "C" && await p.isVisible("#vivifrail-auto"));
   await p.fill("#pro-sppb", ""); await p.$eval("#pro-sppb", (e) => e.dispatchEvent(new Event("change"))); await p.selectOption("#pro-vivifrail", ""); await p.$eval("#pro-vivifrail", (e) => e.dispatchEvent(new Event("change"))); await p.click('[data-modo="paciente"]'); await p.waitForTimeout(150);
 
+  console.log("Suplementos y plantas (v1.1)");
+  const nSup0 = (await p.$$("#lista-meds li")).length;
+  await p.fill("#buscar", "cola de caballo"); await p.waitForSelector("#sugerencias li");
+  check("el buscador encuentra plantas por su nombre común y las marca como «Planta»", (await p.textContent("#sugerencias li")).includes("Cola de caballo") && !!(await p.$("#sugerencias li .etq-planta")));
+  await p.keyboard.press("Escape"); await p.fill("#buscar", "");
+  await p.click("#sup-rapido > summary"); await p.waitForTimeout(150);
+  check("plegable «¿Toma suplementos o plantas?» con botones rápidos", await p.isVisible('#sup-chips button[data-pid="hiperico"]') && await p.isVisible('#sup-chips button[data-pid="creatina"]'));
+  await p.click('#sup-chips button[data-pid="hiperico"]'); await p.click("#form-med button[type=submit]"); await p.waitForTimeout(300);
+  check("hipérico añadido con icono de hoja y etiqueta «Planta»", (await p.$$("#lista-meds li")).length === nSup0 + 1 && !!(await p.$("#lista-meds li:last-child .ic-grupo.g-hoja")) && (await p.textContent("#lista-meds li:last-child .etq-tipo")).trim() === "Planta");
+  check("el botón rápido desaparece y el contador cuenta 1", !(await p.$('#sup-chips button[data-pid="hiperico"]')) && (await p.textContent("#sup-cuenta")).includes("1"));
+  await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(250);
+  const ddiTxt = await p.textContent("#contenido-tab");
+  check("hipérico + Sintrom: interacción mayor, señalada como borrador pendiente de revisión", /Hipérico[^]*Acenocumarol|Acenocumarol[^]*Hipérico/.test(ddiTxt) && /pendiente de revisión clínica/.test(ddiTxt) && /pendientes de revisión clínica/.test(ddiTxt));
+  await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
+  await p.click("#lista-meds li:last-child .quitar"); await p.waitForTimeout(250);
+  check("quitar el suplemento devuelve la lista a como estaba", (await p.$$("#lista-meds li")).length === nSup0 && await p.isVisible('#sup-chips button[data-pid="hiperico"]'));
+  await p.click("#sup-rapido > summary"); await p.waitForTimeout(100);
+
   console.log("Ilustraciones y hoja «Mi sesión» (v1.0)");
   await p.click('[data-tab="plan"]'); await p.waitForTimeout(300);
   check("los bloques de la sesión llevan ilustración propia (SVG 96×96 con figura y apoyo)", (await p.$$('#contenido-tab .bloques .picto[viewBox="0 0 96 96"] .fig')).length >= 3);

@@ -1,5 +1,6 @@
 /* Textos del informe que se ven en pantalla y van a la historia clínica (sin jsPDF).
    Los PDF se construyen en pdf.js, que se carga solo al pulsar una descarga. */
+import { unidadPorDia, unidadPorToma } from "./engine.js?v=202611211633";
 
 export const WEB = "medicacionyejercicio.fuerzabasadaenevidencia.com";
 
@@ -10,7 +11,7 @@ export const AMBITOS = [["general", "Antes de empezar"], ["aerobico", "Ejercicio
 const num = (x) => Number(x).toLocaleString("es-ES", { maximumFractionDigits: 3 });
 export function dosisTxt(it) {
   if (it.dosisTotal == null) return "dosis no indicada";
-  const base = it.esDiaria && it.tomas > 1 ? `${num(it.dosisPorToma)} ${it.unidad} × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día` : `${num(it.dosisTotal)} ${it.unidad}${it.esDiaria ? "/día" : ""}`;
+  const base = it.esDiaria && it.tomas > 1 ? `${num(it.dosisPorToma)} ${unidadPorToma(it.unidad)} × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día` : `${num(it.dosisTotal)} ${it.esDiaria ? unidadPorDia(it.unidad) : it.unidad}`;
   return base + (it.aDemanda ? " (si precisa)" : "") + (it.dosisCat === "alta" ? " · dosis alta" : "");
 }
 export const tiene = (res, s) => !!res.perfil[s]?.length;
@@ -103,7 +104,8 @@ export function ritmoTexto(zz) {
   if (!zz) return null;
   const linea = zz.metodo === "fc"
     ? `ligera ${zz.zonas.ligera[0]}–${zz.zonas.ligera[1]} lpm · moderada ${zz.zonas.moderada[0]}–${zz.zonas.moderada[1]} lpm` + (zz.techo === "vigorosa" ? ` · vigorosa ${zz.zonas.vigorosa[0]}–${zz.zonas.vigorosa[1]} lpm` : "") + "."
-    : `no se guíe por el pulso (${zz.motivos.join(", ")}); moderado = ${zz.rpe.moderada}.`;
+    : zz.motivos.length ? `no se guíe por el pulso (${zz.motivos.join(", ")}); moderado = ${zz.rpe.moderada}.`
+      : `guíese por la sensación de esfuerzo (sin su edad no se puede calcular el pulso); moderado = ${zz.rpe.moderada}.`;
   const nota = (zz.metodo === "fc" ? `Pulso máximo estimado ${zz.fcmax} lpm${zz.limiteDai ? `; con DAI, pulso < ${zz.limiteDai} lpm` : ""}. ` : "") + (zz.techo === "moderada" ? "No pase de intensidad moderada por su situación clínica. " : "") + (zz.habla || "");
   return { linea, nota };
 }

@@ -900,51 +900,6 @@
     "revisado": true
   },
   {
-    "a": "multivitaminico",
-    "b": "clase:anticoagulantes",
-    "nivel": "mayor",
-    "efecto": "El hipérico reduce el efecto anticoagulante; ginkgo y ginseng aumentan el sangrado.",
-    "accion": "Evitar hierbas sin consultar.",
-    "fuente": "FT AEMPS 4.5 (acenocumarol / ACOD)",
-    "revisado": true
-  },
-  {
-    "a": "multivitaminico",
-    "b": "clase:hormonas_sexuales",
-    "nivel": "mayor",
-    "efecto": "El hipérico anula el efecto anticonceptivo.",
-    "accion": "Evitar hipérico.",
-    "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
-    "revisado": true
-  },
-  {
-    "a": "multivitaminico",
-    "b": "clase:isrs_isrsn",
-    "nivel": "mayor",
-    "efecto": "Hipérico + ISRS: síndrome serotoninérgico.",
-    "accion": "Evitar hipérico.",
-    "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
-    "revisado": true
-  },
-  {
-    "a": "multivitaminico",
-    "b": "tacrolimus",
-    "nivel": "mayor",
-    "efecto": "El hipérico reduce los niveles de tacrolimus/ciclosporina (rechazo).",
-    "accion": "Evitar.",
-    "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
-    "revisado": true
-  },
-  {
-    "a": "multivitaminico",
-    "b": "clase:antirretrovirales",
-    "nivel": "mayor",
-    "efecto": "El hipérico reduce los niveles de antirretrovirales.",
-    "accion": "Evitar.",
-    "fuente": "FT AEMPS 4.5 · EMA (hipérico, inductor CYP3A4/P-gp)",
-    "revisado": true
-  },
-  {
     "a": "creatina",
     "b": "clase:aines",
     "nivel": "menor",

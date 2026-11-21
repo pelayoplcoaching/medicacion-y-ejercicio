@@ -24,6 +24,7 @@ export function construirIndice(kb, marcas = []) {
       porId.set(p.id, { principio: p, clase });
       entradas.push({ texto: p.nombre, tipo: "principio", pid: p.id });
       for (const m of p.marcas || []) entradas.push({ texto: m, tipo: "marca", pid: p.id });
+      for (const a of p.alias || []) entradas.push({ texto: a, tipo: "marca", pid: p.id, alias: true }); // nombres comunes de plantas y suplementos («hierba de San Juan», «cola de caballo»)
     }
   }
   for (const cmb of kb.combinaciones || []) {
@@ -65,8 +66,18 @@ export function construirIndice(kb, marcas = []) {
   const dosisPorPid = new Map();
   for (const e of entradas) if (e.tipo === "marca" && e.dosis != null && e.dosis > 0) { const set = dosisPorPid.get(e.pid) || new Set(); set.add(e.dosis); dosisPorPid.set(e.pid, set); }
   for (const [k, v] of dosisPorPid) { const arr = [...v].sort((x, y) => x - y); const max = arr[arr.length - 1]; dosisPorPid.set(k, arr.filter((d) => d >= max / 50).slice(0, 8)); }
+  // suplementos sin presentación en el nomenclátor: dosis habituales declaradas en la base (creatina 3 y 5 g…)
+  for (const [pid, { principio }] of porId) if (principio.presets?.length && !dosisPorPid.has(pid)) dosisPorPid.set(pid, principio.presets.slice(0, 8));
   return { porId, entradas, dosisPorPid, porCn };
 }
+
+/** Unidad de una dosis diaria para mostrarla: «mg» → «mg/día»; «g/día», «mcg/h» o «mg/24 h» ya lo dicen (no «g/día/día»). */
+export function unidadPorDia(u = "mg") { return /\/(día|h|24 h|min)$/.test(u) ? u : u + "/día"; }
+/** Unidad de una toma: «g/día» → «g», «inhalaciones/día» → «inhalaciones». */
+export function unidadPorToma(u = "mg") { return u.replace(/\/día$/, ""); }
+
+/** «suplemento» | «planta» | null: lo que no es un medicamento (el principio puede precisar el tipo de su clase). */
+export function tipoProducto(principio, clase) { return principio?.tipo || clase?.tipo || null; }
 
 /** Distancia de edición limitada (Levenshtein con corte). */
 function distancia(a, b, max) {
@@ -233,7 +244,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
         const p = ddi.pares.find((q) => q[0] === x && q[1] === y);
         if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: `Interacción de nivel ${p[2] === "mayor" ? "mayor" : p[2] === "moderada" ? "moderado" : "menor"} registrada en la base internacional DDInter 2.0; esta base no incluye el mecanismo ni el texto en español.`, accion: p[2] === "mayor" ? "Pregunte a su médico o farmacéutico antes de combinarlos; consulte la sección 4.5 (interacciones) de las fichas técnicas." : "Suele bastar con comentarlo en la próxima consulta; el detalle está en la sección 4.5 de las fichas técnicas." };
       }
-      if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, fuenteTxt: hit.fuenteTxt || "", efecto: hit.efecto, accion: hit.accion, a, b });
+      if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, fuenteTxt: hit.fuenteTxt || "", efecto: hit.efecto, accion: hit.accion, a, b, ...(hit.fuente === "curada" ? { revisado: hit.revisado !== false } : {}) });
     }
   }
   interacciones.sort((x, y) => ORDEN_DDI[y.nivel] - ORDEN_DDI[x.nivel]);
@@ -260,7 +271,7 @@ export function informeTexto(kb, res, ctx) {
   L.push("");
   L.push("MEDICACIÓN");
   for (const it of res.items) {
-    const d = it.dosisTotal != null ? ` — ${it.dosisTotal} ${it.unidad}${it.esDiaria ? "/día" : ""}${it.dosisCat === "alta" ? " (dosis alta)" : ""}` : "";
+    const d = it.dosisTotal != null ? ` — ${it.dosisTotal} ${it.esDiaria ? unidadPorDia(it.unidad) : it.unidad}${it.dosisCat === "alta" ? " (dosis alta)" : ""}` : "";
     L.push(`• ${it.principio.nombre}${d}`);
   }
   if (res.combinadas.length) {

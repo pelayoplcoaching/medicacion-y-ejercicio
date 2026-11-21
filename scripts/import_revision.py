@@ -142,7 +142,9 @@ class Fuentes:
                     if eliminar:
                         lista.remove(r)
                     else:
-                        r["texto"] = nuevo
+                        if nuevo:
+                            r["texto"] = nuevo
+                        r["revisado"] = True  # OK o CAMBIAR: revisada por el clínico
                     self.tocados.add(p)
                     n += 1
         return n
@@ -215,6 +217,8 @@ def main(xlsx: Path, simular: bool):
             log.append(f"eliminar combinada {rid} ({F.combinada(rid, eliminar=True)} fuentes)")
         elif e == "CAMBIAR" and d.get("TEXTO NUEVO"):
             log.append(f"cambiar combinada {rid} ({F.combinada(rid, nuevo=d['TEXTO NUEVO'])} fuentes)")
+        elif e == "OK":
+            F.combinada(rid)
 
     # Interacciones curadas
     borrar = []
@@ -241,11 +245,13 @@ def main(xlsx: Path, simular: bool):
                 if len(partes) > 1:
                     x["accion"] = partes[1]
             log.append(f"cambiar interacción {ctx} → {x['nivel']}")
+        if e in ("OK", "CAMBIAR"):
+            x["revisado"] = True  # v1.1: las interacciones en borrador pasan a revisadas
             # reflejar en el bloque de origen si existe
             for p, dd in ddi_ext.items():
                 for y in lista_ddi(dd):
                     if y.get("a") == x["a"] and y.get("b") == x["b"]:
-                        y.update({k: x[k] for k in ("nivel", "efecto", "accion") if k in x})
+                        y.update({k: x[k] for k in ("nivel", "efecto", "accion", "revisado") if k in x})
     for i in sorted(borrar, reverse=True):
         x = ddi["interacciones"].pop(i)
         for p, dd in ddi_ext.items():
@@ -273,7 +279,7 @@ def main(xlsx: Path, simular: bool):
         print("(simulación: no se ha escrito nada)")
         return
     n = F.guardar()
-    guardar(DDI, ddi)
+    DDI.write_text(json.dumps(ddi, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")  # compacto, como lo publica add_ddi.py
     for p, dd in ddi_ext.items():
         guardar(p, dd)
     print(f"Fuentes actualizadas: {n} + ddi_curated.json")

@@ -155,7 +155,9 @@ const ES = {
   "perf.nota": "Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.",
   "perf.vacio": "Todavía no hay listas guardadas.", "perf.cargar": "Cargar", "perf.actualizar": "Guardar aquí", "perf.borrar": "Borrar", "perf.seguro": "¿Seguro? Borrar",
   "perf.cargada": "Lista «{n}» cargada.", "perf.farmacos": "fármaco(s)", "perf.anos": "años",
-  "buscar.sr": "Buscar medicamento", "buscar.ph": "Marca o principio activo (Emconcor, bisoprolol…)",
+  "tipo.suplemento": "Suplemento", "tipo.planta": "Planta", "sup.titulo": "¿Toma suplementos o plantas medicinales?", "sup.nota": "También interactúan con su medicación y con el ejercicio. Añádalos aquí o escriba su nombre en el buscador (creatina, hierba de San Juan, cola de caballo…).", "sup.cuenta1": "1 en su lista", "sup.cuenta": "{n} en su lista", "ficha.alias": "también llamado",
+  "buscar.resultados": "Resultados de la búsqueda",
+  "buscar.sr": "Buscar medicamento", "buscar.ph": "Medicamento, suplemento o planta (Emconcor, creatina, valeriana…)",
   "buscar.quiso": "¿quería decir?", "buscar.combo": "Combinación", "buscar.segun": "según presentación",
   "dosis.toma": "Dosis por toma", "dosis.tomas": "Tomas al día", "dosis.anadir": "Añadir",
   "dosis.nota": "Si no conoce la dosis, puede añadirlo sin ella: perderá solo las indicaciones que dependen de la dosis.",
@@ -180,6 +182,7 @@ const ES = {
   "cuando.intro": "Según la hora de sus tomas, estas son las franjas del día más y menos adecuadas para entrenar. Verde: momento preferible; ámbar: mejor evitar; rojo: no entrene.",
   "cuando.titulo": "Franja horaria del día", "cuando.porque": "Por qué", "cuando.toma": "toma de",
   "ddi.ninguna": "No se han encontrado interacciones relevantes entre los fármacos introducidos en las bases consultadas.",
+  "ddi.fuente_borrador": "Redacción inicial pendiente de revisión clínica", "ddi.borradores": "pendientes de revisión clínica",
   "ddi.que_hacer": "Qué hacer", "ddi.fuente_propia": "Revisión clínica propia", "ddi.revisadas": "interacciones revisadas en español",
   "ddi.nota": "Fuentes consultadas: {n}. Las interacciones dependen también de la dosis, la función renal y otros factores que esta herramienta no conoce.",
   "desc.titulo": "Llévese este informe", "desc.medico": "Resumen para su médico (PDF)", "desc.medico.pro": "Informe clínico (PDF)", "desc.paciente": "Resumen para usted (PDF)",
@@ -213,10 +216,10 @@ const ES = {
 // Las claves que falten en un idioma se muestran en español.
 const DICC = { es: ES };
 const CARGAR = {
-  en: () => import("./i18n/en.js?v=202611211544"),
-  ca: () => import("./i18n/ca.js?v=202611211544"),
-  gl: () => import("./i18n/gl.js?v=202611211544"),
-  eu: () => import("./i18n/eu.js?v=202611211544"),
+  en: () => import("./i18n/en.js?v=202611211633"),
+  ca: () => import("./i18n/ca.js?v=202611211633"),
+  gl: () => import("./i18n/gl.js?v=202611211633"),
+  eu: () => import("./i18n/eu.js?v=202611211633"),
 };
 let actual = "es";
 

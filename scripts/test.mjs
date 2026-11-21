@@ -362,6 +362,43 @@ console.log("\nZona de intensidad, carga por fármaco, SPPB y escáner (beta 0)"
   check("EAN-13 farmacéutico 847 + CN + control → CN = posiciones 6–11", "8470006988571".slice(6, 12) === "698857");
 }
 
+console.log("\nSuplementos y plantas (v1.1)");
+{
+  const { tipoProducto, unidadPorDia, unidadPorToma } = await import(pathToFileURL(path.join(ROOT, "app/js/engine.js")).href);
+  const marcas = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/marcas.json"), "utf8"));
+  const idx = construirIndice(JSON.parse(JSON.stringify(kb)), marcas);
+  const d2 = { kb, ddiCurado, ddi: { pares: [] }, indice: idx };
+  const sup = kb.clases.filter((c) => c.tipo);
+  const nSup = sup.reduce((n, c) => n + c.principios.length, 0);
+  check(`al menos 14 grupos y 50 productos de suplementos y plantas (${sup.length} grupos, ${nSup} productos)`, sup.length >= 14 && nSup >= 50);
+  check("solo dos tipos: suplemento y planta", kb.clases.every((c) => !c.tipo || ["suplemento", "planta"].includes(c.tipo)) && kb.clases.every((c) => c.principios.every((p) => !p.tipo || ["suplemento", "planta"].includes(p.tipo))));
+  check("tipoProducto: el principio puede precisar el tipo de su clase (cromo = suplemento en un grupo de plantas)", tipoProducto(idx.porId.get("cromo").principio, idx.porId.get("cromo").clase) === "suplemento" && tipoProducto(idx.porId.get("berberina").principio, idx.porId.get("berberina").clase) === "planta" && tipoProducto(idx.porId.get("bisoprolol").principio, idx.porId.get("bisoprolol").clase) === null);
+  const busca = (q) => buscar(idx, q, 5).map((e) => e.pid);
+  check("buscador por nombre común: hierba de San Juan, cola de caballo, garra del diablo, St John's wort", busca("hierba de san juan")[0] === "hiperico" && busca("cola de caballo")[0] === "plantas_diureticas" && busca("garra del diablo")[0] === "harpagofito" && busca("st john")[0] === "hiperico");
+  check("lector de listas reconoce plantas por su nombre común", pids(extraerMedicacion("Hierba de San Juan 300 mg 1-0-0\nCola de caballo", idx)).join() === "hiperico,plantas_diureticas", pids(extraerMedicacion("Hierba de San Juan 300 mg 1-0-0\nCola de caballo", idx)).join());
+  check("nomenclátor: COLA DE CABALLO ARKOPHARMA ya no se clasifica como ahorrador de potasio", marcas.some((m) => /COLA DE CABALLO/.test(m.nombre) && m.principios?.[0] === "plantas_diureticas") && !marcas.some((m) => m.pa === "Equisetum arvense"));
+  check("nomenclátor: laxantes de sen, cáscara y frángula → laxantes de plantas (hipopotasemia)", marcas.filter((m) => m.principios?.includes("laxantes_plantas")).length >= 10);
+  check("dosis habituales del suplemento sin nomenclátor (creatina 3 y 5 g)", JSON.stringify(idx.dosisPorPid.get("creatina")) === "[3,5]");
+  check("unidades: «g/día» no se duplica y «mcg/h» no lleva «/día»", unidadPorDia("g/día") === "g/día" && unidadPorDia("mg") === "mg/día" && unidadPorDia("mcg/h") === "mcg/h" && unidadPorToma("g/día") === "g" && unidadPorToma("mg") === "mg");
+  const ev = (meds, ctx = {}) => evaluar(d2, meds, { edad: 50, condiciones: new Set(), ...ctx, condiciones: new Set(ctx.condiciones || []) });
+  const r1 = ev([{ pid: "hiperico" }, { pid: "apixaban", dosis: 5, tomas: 2 }]);
+  check("hipérico + apixabán: interacción mayor curada, marcada como borrador", r1.interacciones.some((x) => x.nivel === "mayor" && x.fuente === "curada" && x.revisado === false));
+  const r2 = ev([{ pid: "acenocumarol", dosis: 2 }, { pid: "ginkgo" }]);
+  check("ginkgo suma sangrado con anticoagulante (regla combinada)", r2.combinadas.some((c) => c.regla.id === "sangrado_multiple"));
+  const r3 = ev([{ pid: "lorazepam", dosis: 1 }, { pid: "valeriana" }]);
+  check("valeriana + lorazepam: varios sedantes", r3.combinadas.some((c) => c.regla.id === "sedantes_multiples"));
+  const r4 = ev([{ pid: "regaliz" }, { pid: "amiodarona", dosis: 200 }]);
+  check("regaliz + amiodarona: potasio bajo + QT (alerta)", r4.combinadas.some((c) => c.regla.id === "hipopotasemia_qt"));
+  const r5 = ev([{ pid: "levadura_roja" }, { pid: "atorvastatina", dosis: 20 }]);
+  check("levadura roja + estatina: duplicidad mayor", r5.interacciones.some((x) => x.nivel === "mayor"));
+  check("propóleo con asma: alerta condicionada", ev([{ pid: "propoleo_jalea" }], { condiciones: ["epoc_asma"] }).resumen.alerta >= 1 && ev([{ pid: "propoleo_jalea" }]).resumen.alerta === 0);
+  check("riesgo antidopaje y daño hepático: señales y reglas nuevas", !!kb.senales.dopaje && !!kb.senales.hepatotoxico && ev([{ pid: "tribulus" }]).combinadas.some((c) => c.regla.id === "dopaje_suplementos") && ev([{ pid: "garcinia" }], { condiciones: ["hepatopatia"] }).combinadas.some((c) => c.regla.id === "hepatotoxico_hepatopatia"));
+  check("las interacciones del hipérico ya no cuelgan del multivitamínico", !ddiCurado.interacciones.some((x) => [x.a, x.b].includes("multivitaminico") && /hip[eé]rico/i.test(x.efecto)));
+  const nuevas = sup.flatMap((c) => ["general", "aerobico", "fuerza", "equilibrio"].flatMap((a) => c[a] || []));
+  check("todas las reglas de suplementos y plantas tienen fuente y nivel de evidencia", nuevas.every((r) => r.fuente && r.evidencia));
+  check("el multivitamínico conserva su id (listas guardadas) y deja de prometer avisos de hierbas", idx.porId.has("multivitaminico") && !/hipérico/i.test(idx.porId.get("multivitaminico").principio.nombre));
+}
+
 console.log("\nPeso y funcionamiento sin conexión (service worker)");
 {
   const APP = path.join(ROOT, "app");

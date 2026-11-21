@@ -4,6 +4,7 @@
 Uso:
     python3 scripts/export_revision.py                 # → data/revision/revision_<fecha>.xlsx
     python3 scripts/export_revision.py salida.xlsx
+    python3 scripts/export_revision.py --pendientes     # solo lo que está en borrador (p. ej. suplementos y plantas, v1.1)
 
 Hojas: Instrucciones · Reglas · Umbrales · Reglas combinadas · Interacciones · Clases.
 En cada hoja el revisor rellena solo las columnas ESTADO (OK / CAMBIAR / ELIMINAR), TEXTO NUEVO y COMENTARIO.
@@ -102,7 +103,7 @@ def hoja(wb, titulo, columnas, filas, anchos, rev_desde, ref_col=True):
     return ws
 
 
-def main(out: Path):
+def main(out: Path, pendientes=False):
     wb = Workbook()
     ws = wb.active
     ws.title = "Instrucciones"
@@ -120,7 +121,7 @@ def main(out: Path):
         ["Fuente", "Si en COMENTARIO escribe la fuente al principio (p. ej. «FT 4.4», «ACSM ap. A», «Lexicomp»), se guarda junto a la regla y se muestra en la aplicación."],
         ["Evidencia", "En la hoja Reglas puede fijar EVIDENCIA: ft (ficha técnica), guia (guía/consenso), criterios (Beers, STOPP/START), base (base de interacciones), revision (revisión clínica sin fuente citada). Si se deja en blanco se deduce de la fuente."],
         ["Al terminar", "Guarde el archivo (si es Google Sheets: Archivo → Descargar → Excel) y envíelo; scripts/import_revision.py aplica los cambios y regenera la base."],
-        ["Hojas", "Reglas (612) · Umbrales de dosis · Reglas combinadas (por varios fármacos o situación) · Interacciones revisadas · Clases (resumen y señales)."],
+        ["Hojas", "Reglas · Umbrales de dosis · Reglas combinadas (por varios fármacos o situación) · Interacciones · Clases (resumen y señales)." + (" Esta hoja contiene SOLO lo pendiente de revisión (borradores): al marcar OK o CAMBIAR, la regla o la interacción pasa a «revisada» en la app." if pendientes else "")],
     ]
     for r in txt:
         ws.append(r)
@@ -136,6 +137,8 @@ def main(out: Path):
     for c in KB["clases"]:
         for amb, nom in AMBITOS.items():
             for i, r in enumerate(c.get(amb, [])):
+                if pendientes and r.get("revisado"):
+                    continue
                 fts = [FICHAS[p["id"]] for p in c["principios"] if p["id"] in FICHAS][:1]
                 filas.append([c["nombre"], nom, NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), r["texto"], "Sí" if r.get("revisado") else "", r.get("fuente", ""), fts[0] if fts else "", "", "", "", "", f"regla|{c['id']}|{amb}|{i}"])
     hoja(wb, "Reglas", ["Grupo", "Ámbito", "Nivel", "Condición", "Texto actual", "Revisada", "Fuente", "Ficha técnica (1.er principio)", "ESTADO", "TEXTO NUEVO", "EVIDENCIA", "COMENTARIO"], filas,
@@ -145,7 +148,7 @@ def main(out: Path):
     filas = []
     for c in KB["clases"]:
         for p in c["principios"]:
-            if p["id"].startswith("atc:"):
+            if p["id"].startswith("atc:") or (pendientes and not c.get("tipo")):
                 continue
             filas.append([c["nombre"], p["nombre"], ", ".join(p.get("marcas", [])[:6]), p.get("unidad", "mg"),
                           p.get("umbral_mg", {}).get("alta"), p.get("nota", ""), FICHAS.get(p["id"], ""), "", "", "", f"principio|{c['id']}|{p['id']}"])
@@ -155,6 +158,8 @@ def main(out: Path):
     # --- Reglas combinadas
     filas = []
     for r in KB["reglas_combinadas"]:
+        if pendientes and r.get("revisado", True):
+            continue
         filas.append([r["id"], r.get("titulo", ""), NIVEL.get(r["nivel"], r["nivel"]), condicion(r.get("si")), ", ".join(AMBITOS.get(a, a) for a in r.get("ambitos", [])), r["texto"], "", "", "", f"combinada|{r['id']}"])
     hoja(wb, "Reglas combinadas", ["Id", "Título", "Nivel", "Se activa cuando", "Ámbitos", "Texto actual", "ESTADO", "TEXTO NUEVO", "COMENTARIO"], filas,
          [24, 30, 11, 36, 22, 80, 11, 60, 30], rev_desde=7)
@@ -162,6 +167,8 @@ def main(out: Path):
     # --- Interacciones curadas
     filas = []
     for i, x in enumerate(DDI["interacciones"]):
+        if pendientes and x.get("revisado", True):
+            continue
         filas.append([nombre_ref(x["a"]), nombre_ref(x["b"]), x["nivel"], x.get("efecto", ""), x.get("accion", ""), "", "", "", "", f"ddi|{i}"])
     hoja(wb, "Interacciones", ["Fármaco / grupo A", "Fármaco / grupo B", "Nivel", "Efecto", "Qué hacer", "ESTADO", "NIVEL NUEVO (mayor/moderada/menor)", "TEXTO NUEVO (efecto · qué hacer)", "COMENTARIO"], filas,
          [28, 28, 11, 50, 50, 11, 16, 50, 30], rev_desde=6)
@@ -169,6 +176,8 @@ def main(out: Path):
     # --- Clases
     filas = []
     for c in KB["clases"]:
+        if pendientes and not c.get("tipo"):
+            continue
         filas.append([c["id"], c["nombre"], c.get("resumen", ""), ", ".join(c.get("senales", [])), ", ".join(c.get("fuentes", [])), "", "", "", f"clase|{c['id']}"])
     hoja(wb, "Clases", ["Id", "Grupo", "Resumen (lo ve el paciente)", "Señales", "Fuentes", "ESTADO", "RESUMEN NUEVO", "COMENTARIO"], filas,
          [22, 34, 70, 30, 30, 11, 60, 30], rev_desde=6)
@@ -180,4 +189,6 @@ def main(out: Path):
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "data" / "revision" / f"revision_{date.today():%Y%m%d}.xlsx")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    pend = "--pendientes" in sys.argv
+    main(Path(args[0]) if args else ROOT / "data" / "revision" / f"revision_{'pendientes_' if pend else ''}{date.today():%Y%m%d}.xlsx", pendientes=pend)

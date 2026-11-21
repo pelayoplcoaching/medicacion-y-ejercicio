@@ -2268,3 +2268,41 @@ details.seccion[data-sec="impacto"] { --ic: url("data:image/svg+xml;utf8,<svg xm
 :root[data-theme="contrast"] :is(.sem-barra i, .hoja-opciones .recomendado) { background: var(--accent); }
 @media (forced-colors: active) { .tabs, .tira { -webkit-mask-image: none; mask-image: none; } .tour-flecha { display: none; } .btn-doc { border: 1px solid CanvasText; } }
 @media print { .banner-ejemplo, .cuenta-meds, .marcadas, .rec-listo, .tour-flecha, .guia-abrir, .rpe-escala { display: none !important; } main.acerca section { box-shadow: none; break-inside: avoid; } }
+
+/* ===== SUPLEMENTOS Y PLANTAS (bloque SP, v1.1) ===== */
+/* SP1. Icono de grupo: hoja para plantas, frasco para suplementos */
+.ic-grupo.g-hoja { color: #2e7d32; background: #e4f3e3; }
+.ic-grupo.g-frasco { color: #475569; background: #e8edf3; }
+/* SP2. Etiqueta "Planta" / "Suplemento" delante del grupo (lista, buscador, informe, ficha) */
+.etq-tipo { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; padding: 0 6px; border-radius: 6px; margin-right: 2px; line-height: 1.55; vertical-align: 1px; white-space: nowrap; }
+.etq-planta { background: #e4f3e3; color: #1f6b24; }
+.etq-suplemento { background: #e8edf3; color: #3d4a5c; }
+/* SP3. Plegable "Toma suplementos o plantas?" bajo el buscador */
+.sup-rapido { margin-top: 12px; border: 1px dashed var(--line-strong); border-radius: 12px; padding: 6px 12px; background: var(--surface); }
+.sup-rapido > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; min-height: 36px; font-weight: 700; font-size: .92rem; color: var(--accent-deep); }
+.sup-rapido > summary::-webkit-details-marker { display: none; }
+.sup-rapido > summary::before { content: ""; flex: 0 0 20px; width: 20px; height: 20px; background: #2e7d32; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20.5 3.5c-8.3 0-14.1 3.4-15.6 9.2-.5 2-.4 3.8.3 5.3L3 20.2 4.4 21.6l2.2-2.2c1.5.7 3.3.8 5.3.3 5.8-1.5 9.2-7.3 8.6-16.2z'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20.5 3.5c-8.3 0-14.1 3.4-15.6 9.2-.5 2-.4 3.8.3 5.3L3 20.2 4.4 21.6l2.2-2.2c1.5.7 3.3.8 5.3.3 5.8-1.5 9.2-7.3 8.6-16.2z'/></svg>") center / contain no-repeat; }
+.sup-rapido > summary::after { content: "+"; margin-left: auto; font-size: 1.2rem; font-weight: 600; color: var(--muted); }
+.sup-rapido[open] > summary::after { content: "\2212"; }
+.sup-rapido > p { margin: 4px 0 0; font-size: .84rem; color: var(--muted); }
+.sup-rapido .sup-chips { margin: 8px 0 6px; }
+.sup-cuenta { font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: #e4f3e3; color: #1f6b24; white-space: nowrap; }
+.sup-chips .chip-btn::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; background: #64748b; }
+.sup-chips .chip-planta::before { background: #2e7d32; }
+/* SP4. Tema oscuro */
+:root[data-theme="dark"] .ic-grupo.g-hoja { color: #8fd694; } :root[data-theme="dark"] .ic-grupo.g-frasco { color: #b6c2d2; }
+:root[data-theme="dark"] :is(.etq-planta, .sup-cuenta) { background: rgba(143, 214, 148, .16); color: #a8e3ac; }
+:root[data-theme="dark"] .etq-suplemento { background: rgba(182, 194, 210, .16); color: #d3dbe6; }
+:root[data-theme="dark"] .sup-rapido > summary::before, :root[data-theme="dark"] .sup-chips .chip-planta::before { background: #8fd694; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-hoja { color: #8fd694; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo.g-frasco { color: #b6c2d2; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) :is(.etq-planta, .sup-cuenta) { background: rgba(143, 214, 148, .16); color: #a8e3ac; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .etq-suplemento { background: rgba(182, 194, 210, .16); color: #d3dbe6; }
+  :root:not([data-theme="light"]):not([data-theme="contrast"]) .sup-rapido > summary::before, :root:not([data-theme="light"]):not([data-theme="contrast"]) .sup-chips .chip-planta::before { background: #8fd694; }
+}
+/* SP5. Alto contraste, colores forzados e impresion */
+:root[data-theme="contrast"] :is(.etq-tipo, .sup-cuenta) { background: transparent; color: inherit; border: 1px solid currentColor; }
+:root[data-theme="contrast"] .sup-rapido { border-style: solid; }
+@media (forced-colors: active) { .etq-tipo, .sup-cuenta { border: 1px solid CanvasText; } .sup-rapido > summary::before { background: CanvasText; } }
+@media print { .sup-rapido { display: none !important; } }

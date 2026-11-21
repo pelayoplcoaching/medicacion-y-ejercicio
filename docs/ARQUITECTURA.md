@@ -1,4 +1,4 @@
-# Arquitectura técnica · Pauta Activa (v0.16, beta 0)
+# Arquitectura técnica · Pauta Activa (v1.1)
 
 Documento de referencia para quien mantenga o revise el código. Complementa el `README.md` (uso y flujo de datos clínicos) y `CHANGELOG.md`.
 
@@ -33,12 +33,13 @@ app/
     app.js              estado, interfaz, eventos, persistencia (localStorage), PWA
   data/
     kb.json             base de conocimiento (clases, principios, señales, reglas, reglas combinadas, combinaciones)
-    ddi_curated.json    interacciones revisadas en español (209)
+    ddi_curated.json    interacciones curadas en español (318; las de suplementos y plantas, en borrador)
     ddi.json            interacciones DDInter 2.0 (pares por principio)
     marcas.json         nomenclátor AEMPS (presentaciones comercializadas, dosis, ATC, cn opcional)
     fichas.json         principio → URL de ficha técnica (CIMA)
     casos.json          casos clínicos de validación (viñetas con resultado esperado)
-data/ext/               bloques fuente de la base (01…09, ddi_01…03); merge_kb.py los funde en kb.json
+data/ext/               bloques fuente de la base (01…11, ddi_02…04); merge_kb.py los funde en kb.json y add_ddi.py añade las interacciones.
+                        El 11 (suplementos y plantas) y el ddi_04 se generan con scripts/gen_suplementos_plantas.py y gen_ddi_suplementos_plantas.py
 scripts/                merge_kb, build_cima (nomenclátor), build_ddi, export/import_revision, bump_version, build_artifact, test.mjs, ui_test.mjs
 docs/                   auditorías y documentación técnica
 ```
@@ -59,6 +60,8 @@ docs/                   auditorías y documentación técnica
 - `reglas_combinadas[]`: `{ id, si: { senal?/senales?, clases?, condicion?, min? }, nivel, titulo, texto, ambitos[], fuente }`. Se disparan por combinación de medicación y situación clínica.
 - `combinaciones[]`: presentaciones a dosis fija con varios componentes.
 - `condiciones`: las situaciones clínicas que el usuario marca (18) más las derivadas en modo profesional (FG, FEVI, NYHA, DAI, SPPB/Vivifrail → fragilidad).
+
+Suplementos y plantas (v1.1): una clase con `tipo: "suplemento" | "planta"` (un principio puede precisar el suyo con `tipo`) no es un medicamento; la interfaz le pone etiqueta e icono propios (`tipoProducto`). Los principios admiten `alias` (nombres comunes en español e inglés que entran en el buscador y el lector de listas como si fueran marcas, sin mostrarse como marcas), `presets` (dosis habituales cuando no hay presentación en el nomenclátor) y `sinonimos` (nombres botánicos para que `build_cima.py` y `remapear_plantas.py` asignen las presentaciones del nomenclátor). Señales propias: `dopaje` y `hepatotoxico`.
 
 Principios "sintéticos" (`atc:<nombre>`): presentaciones del nomenclátor cuyo principio no está en la base, clasificadas por código ATC en una clase; heredan las reglas del grupo con una nota visible.
 
