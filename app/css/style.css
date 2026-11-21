@@ -1545,7 +1545,7 @@ article.regla footer .chip::before { content: ""; width: 5px; height: 5px; borde
 .descargas .acciones:not(:first-of-type) > .btn-sugerencia { justify-content: center; grid-column: 1 / -1; }
 /* 99. Secciones del detalle: fila que se ilumina al pasar */
 details.seccion > summary { border-radius: var(--r-sm); padding-inline: 8px; margin-inline: -8px; transition: background-color .15s; }
-details.seccion > summary:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+details.seccion > summary:hover { background-color: color-mix(in srgb, var(--accent) 4%, transparent); }
 details.seccion[open] > summary::before { left: -2px; }
 /* 100. Fuentes de cada interaccion y de cada farmaco: icono de libro delante */
 article.ddi footer { display: block; }
@@ -1667,7 +1667,7 @@ input, textarea { caret-color: var(--accent); }
 /* 124. Valor del esfuerzo como pastilla grande junto al deslizador */
 .registro output, .sesion-fin output { display: inline-grid; place-items: center; justify-self: start; width: max-content; min-width: 34px; height: 30px; margin-left: 10px; padding: 0 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-family: var(--mono); font-weight: 700; vertical-align: middle; }
 /* 125. Desplegables que no recortan su texto ("Elegir una plantilla") */
-.plantilla-fila select { width: 100%; min-width: 0; }
+.plantilla-fila > label > select { width: 100%; min-width: 0; }
 .plantilla-fila > label { min-width: 0; }
 /* 126. Areas de texto: altura comoda, solo crecen en vertical y con interlineado amplio */
 textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
@@ -1712,3 +1712,83 @@ input[type="password"] { padding-left: 40px; background: url("data:image/svg+xml
 #ayuda .hoja-cab p { display: flex; align-items: center; gap: 10px; }
 #ayuda .hoja-cab p::before { content: "?"; flex: 0 0 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-family: var(--mono); font-size: .9rem; font-weight: 800; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
 #ayuda-cuerpo > p:first-child { font-size: 1.02rem; color: var(--fg); }
+
+/* ---------- TANDA 8: pestanas del informe, ficha del farmaco, cribado y profesional ---------- */
+/* 141. Franja horaria (pestana "Cuando"): extremos redondeados y relieve suave en cada hora */
+.timeline .hora { box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .08); }
+.timeline .hora:first-child { border-radius: 10px 5px 5px 10px; }
+.timeline .hora:last-child { border-radius: 5px 10px 10px 5px; }
+/* 142. Franja horaria: rojo rayado y ambar punteado, para no depender solo del color */
+.timeline .hora.nivel-rojo { background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .28) 0 3px, transparent 3px 8px); }
+.timeline .hora.nivel-ambar { background-image: radial-gradient(rgba(255, 255, 255, .38) 1.2px, transparent 1.6px); background-size: 6px 6px; }
+.timeline .hora.nivel-verde { box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .1), 0 0 10px -3px var(--info); }
+/* 143. Franja horaria: las horas en letra de terminal, con aire por encima */
+.timeline { margin-top: 24px; }
+.timeline .hora span { top: -18px; font-family: var(--mono); font-size: .66rem; font-weight: 600; }
+/* 144. "Mejores momentos": pastillas con reloj */
+.mejores b { display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums; }
+.mejores b::before { content: ""; width: 13px; height: 13px; flex: 0 0 13px; background: currentColor; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>") center / contain no-repeat; }
+/* 145. Hora de las tomas: los cuatro momentos en rejilla, con rotulo de terminal */
+.horas-tomas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.horas-tomas label { display: grid; gap: 4px; font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.horas-tomas input { width: 100%; font-family: var(--font); letter-spacing: 0; text-align: center; }
+/* 146. Sello "revisada" con marca de verificacion */
+.estado-regla.ok::before { content: "\2713"; margin-right: 3px; }
+/* 147. Etiquetas de evidencia (ficha tecnica, guia, revision) con punto del tipo */
+.evidencia { display: inline-flex; align-items: center; gap: 4px; }
+.evidencia::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .8; }
+/* 148. Reglas dentro de cada tarjeta de farmaco: separadas por hilos discontinuos */
+details.farmaco .cuerpo > ul > li + li { margin-top: 8px; padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--accent) 16%, var(--line)); }
+/* 149. Tarjeta de farmaco abierta: cuerpo con un velo tenue del color de su nivel */
+details.farmaco[open] > .cuerpo { background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 4%, transparent), transparent 120px); }
+details.farmaco.nivel-alerta[open] > .cuerpo { background: linear-gradient(180deg, color-mix(in srgb, var(--alerta) 5%, transparent), transparent 120px); }
+details.farmaco.nivel-precaucion[open] > .cuerpo { background: linear-gradient(180deg, color-mix(in srgb, var(--precaucion) 6%, transparent), transparent 120px); }
+/* 150. Grupos de cada pestana ("Farmacos con avisos"...): hilo de degradado en lugar de linea gris */
+details.seccion > summary { border-bottom-color: transparent; background-image: linear-gradient(90deg, color-mix(in srgb, var(--accent) 45%, var(--line-strong)), color-mix(in srgb, var(--line) 50%, transparent) 70%); background-size: 100% 1px; background-position: left bottom; background-repeat: no-repeat; }
+/* 151. Ficha del farmaco y ventanas: subtitulos como rotulos de terminal con hilo */
+.ficha-cuerpo h3 { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: .74rem; font-weight: 700; font-stretch: 100%; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.ficha-cuerpo h3::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent), transparent); }
+/* 152. Ficha: reglas con punto con halo y separadas por hilos */
+.ficha-cuerpo ul.reglas li + li { padding-top: 6px; border-top: 1px dashed color-mix(in srgb, var(--accent) 14%, var(--line)); }
+.ficha-cuerpo ul.reglas li.nivel-alerta .punto { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--alerta) 75%, transparent); }
+.ficha-cuerpo ul.reglas li.nivel-precaucion .punto { box-shadow: 0 0 8px -1px color-mix(in srgb, var(--precaucion) 70%, transparent); }
+/* 153. Ficha: interacciones en mini tarjetas */
+.ficha-cuerpo .ddi-mini { list-style: none; padding: 0; }
+.ficha-cuerpo .ddi-mini li { padding: 7px 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); }
+/* 154. Modo profesional: filo del color del modo en lo alto de cada panel */
+body[data-modo="profesional"] .panel { box-shadow: inset 0 3px 0 var(--accent), var(--shadow); }
+/* 155. "Paciente en consulta": botones en rejilla de dos columnas y ayuda al final */
+.consulta .acciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.consulta .acciones > .btn-sec { justify-content: center; text-align: center; border-radius: 12px; padding-inline: 8px; }
+.consulta .acciones > .btn-ayuda { grid-column: 1 / -1; justify-self: end; }
+/* 156. Datos clinicos del profesional (FG, FEVI, NYHA, SPPB, Vivifrail, DAI) en rejilla ordenada */
+#bloque-pro .fila:not(.plantilla-fila) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+#bloque-pro .fila:not(.plantilla-fila) :is(input, select) { width: 100%; }
+/* 157. Nota del profesional (cuando se activan reglas especificas) como aviso con icono */
+small[data-i18n="pro.nota"] { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent-deep); line-height: 1.45; }
+small[data-i18n="pro.nota"]::before { content: "i"; flex: 0 0 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-family: var(--mono); font-size: .72rem; font-weight: 800; }
+/* 158. Resultado del cribado y del SPPB: icono segun el nivel */
+.crib-resultado { display: flex; gap: 8px; align-items: flex-start; }
+.crib-resultado::before { content: "\2713"; flex: 0 0 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: var(--info); color: var(--surface); font-size: .74rem; font-weight: 800; }
+.crib-resultado.nivel-precaucion::before { content: "!"; background: var(--precaucion); }
+.crib-resultado.nivel-alerta::before { content: "!"; background: var(--alerta); }
+/* 159. Preguntas del cribado en tarjetas suaves */
+#bloque-cribado fieldset.crib-preg { margin-top: 10px; padding: 10px 12px 12px; border: 1px solid var(--line); border-radius: var(--r-md); background: color-mix(in srgb, var(--surface-2) 45%, var(--surface)); }
+#bloque-cribado fieldset.crib-preg legend { float: left; width: 100%; margin-bottom: 4px; }
+#bloque-cribado fieldset.crib-preg > :not(legend) { clear: both; }
+#bloque-cribado fieldset.crib-preg > .check { clear: none; }
+/* 160. Escritorio sin medicacion: la columna del informe muestra un boceto decorativo en lugar de un hueco vacio */
+@media (min-width: 960px) {
+  body.sin-meds .contenedor::after { content: "03 / 03"; content: "03 / 03" / ""; display: block; min-height: 520px; padding: 22px 28px; border: 1.5px dashed color-mix(in srgb, var(--accent) 28%, var(--line-strong)); border-radius: var(--r-lg); font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .16em; color: var(--accent);
+    background:
+      linear-gradient(color-mix(in srgb, var(--fg) 14%, transparent) 0 0) 28px 46px / 42% 16px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--alerta) 16%, transparent) 0 0) 28px 84px / calc(100% - 56px) 58px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--accent) 22%, transparent) 0 0) 28px 160px / 22% 34px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--line-strong) 45%, transparent) 0 0) calc(28px + 24%) 160px / 18% 34px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--line-strong) 45%, transparent) 0 0) calc(28px + 44%) 160px / 18% 34px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--accent) 12%, transparent) 0 0) 28px 216px / calc(100% - 56px) 120px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--info) 14%, transparent) 0 0) 28px 356px / calc(50% - 34px) 130px no-repeat,
+      linear-gradient(color-mix(in srgb, var(--precaucion) 16%, transparent) 0 0) calc(50% + 6px) 356px / calc(50% - 34px) 130px no-repeat,
+      var(--rejilla), color-mix(in srgb, var(--accent-soft) 35%, var(--surface));
+    -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+}
