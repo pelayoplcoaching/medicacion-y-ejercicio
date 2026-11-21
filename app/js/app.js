@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212144";
-import { APP_VERSION } from "./version.js?v=202611212144";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212144";
-import { picto } from "./pictos.js?v=202611212144";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212144";
-import { cargarScript } from "./libs.js?v=202611212144";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212144";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212144";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212226";
+import { APP_VERSION } from "./version.js?v=202611212226";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212226";
+import { picto } from "./pictos.js?v=202611212226";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212226";
+import { cargarScript } from "./libs.js?v=202611212226";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212226";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212226";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,10 +32,26 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212144"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212144"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212144"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212144"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212226"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212226"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212226"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212226"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212226"));
+/** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
+function abrirPruebas() {
+  const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
+  const ctxP = { edad: estado.edad, sft: estado.sft, presentes: res ? porquesDe(res.items.flatMap((it) => [...it.senales])) : [], fragil: c.fragilidad === "fragil", consultar: crib === "valoracion_antes" || crib === "parar", ic: estado.condiciones.includes("insuficiencia_cardiaca"), osteoporosis: estado.condiciones.includes("osteoporosis"), cargarVoz: () => cargarVoz(), toast, vibrar, guardar: (sft) => { estado.sft = sanearSft(sft); guardar(); render(); } };
+  cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
+const SFT_REPETIR = 56; // días: se proponen cada 8-12 semanas
+/** Azulejo del plan: cuándo las hizo por última vez y si toca repetirlas. Se enseña desde los 60 años (los baremos son de 60 a 94) o si ya hay resultados. */
+function tileSft() {
+  const ult = estado.sft?.hist?.at(-1);
+  if (!ult && estado.edad != null && estado.edad < 60) return "";
+  const toca = !!ult && Date.now() - ult.f >= SFT_REPETIR * 864e5, d = ult ? new Date(ult.f).toLocaleDateString(idioma(), { day: "numeric", month: "short" }) : "";
+  return `<div class="pruebas-tile${toca ? " toca" : ""}"><span class="sft-ic-t" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></span><span><b>${t("sft.tile")}</b><small>${ult ? t(toca ? "sft.tile_toca" : "sft.tile_ult", { d }) : t("sft.tile_nunca")}</small></span><button type="button" class="btn-sec sm" data-pruebas="">${t("sft.abrir")}</button></div>`;
+}
 /** «Aprende» (mejora grande 2): lecciones de 2 minutos; se recomiendan según los mecanismos de su lista, su edad y si es hipertenso. */
 function abrirAprende(id = null) {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual();
@@ -204,8 +220,17 @@ $("#idioma").addEventListener("change", (e) => {
   if (document.startViewTransition && MOV.ok()) document.startViewTransition(cambiar); else cambiar();
 });
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null, sft: null };
 const sanearSppb = (x) => (x && Number.isFinite(Number(x.total)) ? { total: Math.max(0, Math.min(12, Number(x.total))), fecha: Number(x.fecha) || Date.now(), partes: x.partes || {}, velocidad: x.velocidad ?? null } : null);
+/** Pruebas de forma física guardadas: sexo para el baremo, prueba de resistencia elegida y hasta 20 baterías (fecha, edad, sexo y resultados). */
+const SFT_IDS = ["silla", "brazo", "paso2", "andar6", "sentado", "espalda", "levantarse"];
+const sanearSft = (x) => {
+  if (!x || typeof x !== "object") return null;
+  const sexo = (s) => (s === "m" || s === "h" ? s : null);
+  const hist = (Array.isArray(x.hist) ? x.hist : []).filter((h) => h && Number.isFinite(Number(h.f)) && h.r && typeof h.r === "object").slice(-20)
+    .map((h) => ({ f: Number(h.f), edad: numeroEntre(h.edad, 18, 120), sexo: sexo(h.sexo), r: Object.fromEntries(SFT_IDS.filter((k) => h.r[k] != null && Number.isFinite(Number(h.r[k])) && Math.abs(Number(h.r[k])) < 5000).map((k) => [k, Number(h.r[k])])) }));
+  return { sexo: sexo(x.sexo), aer: x.aer === "andar6" ? "andar6" : "paso2", hist };
+};
 const sanearCribado = (c) => ({ regular: c?.regular === true ? true : c?.regular === false ? false : null, enfermedad: c?.enfermedad === true ? true : c?.enfermedad === false ? false : null, sintomas: Array.isArray(c?.sintomas) ? c.sintomas.filter((x) => SINTOMAS_ACSM.some((y) => y.id === x)) : [] });
 const sanearPrescrito = (p) => (p && Number.isFinite(Number(p.fecha)) ? { fecha: Number(p.fecha), semanas: [4, 6, 8, 12].includes(Number(p.semanas)) ? Number(p.semanas) : 6, ...(p.base && typeof p.base === "object" ? { base: p.base } : {}) } : null);
 /** Plan semanal vigente (día 0–6 → tipo), según los días elegidos por el usuario. */
@@ -308,7 +333,7 @@ async function cargar() {
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
   if (soloLectura) return; // vista de solo lectura (#ver=): no pisa los datos propios
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, historialPresc: estado.historialPresc || [] })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, historialPresc: estado.historialPresc || [] })); } catch {}
   if (estado.meds.length) datosGuardados(); // primera vez con datos: pedir almacenamiento persistente (los avisos esperan a la próxima visita)
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
@@ -328,7 +353,7 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb), informeVisto: !!s.informeVisto, historialPresc: Array.isArray(s.historialPresc) ? s.historialPresc.slice(0, 12) : [] });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb), sft: sanearSft(s.sft), informeVisto: !!s.informeVisto, historialPresc: Array.isArray(s.historialPresc) ? s.historialPresc.slice(0, 12) : [] });
   } catch {}
   $("#edad").value = estado.edad ?? ""; $("#fc-reposo").value = estado.fcReposo ?? "";
   $("#caidas").checked = estado.caidas;
@@ -689,7 +714,7 @@ function mostrarFicha(pid) {
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
-function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, historialPresc: estado.historialPresc || [] }; }
+function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, historialPresc: estado.historialPresc || [] }; }
 function renderPerfiles() {
   if (typeof pintarConsulta === "function") pintarConsulta();
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
@@ -702,7 +727,7 @@ function renderPerfiles() {
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
       const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
       mostrarCambios(previa);
@@ -814,7 +839,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212144").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212226").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1992,6 +2017,7 @@ function renderPlan(cont) {
     </div>
     <div class="plan-prog ${prog.clave}"><b>${t("prog.titulo")}</b> ${t("prog." + prog.clave, { n: prog.n, r: prog.rpe || "" })}</div>
     <div class="aprende-tile"><span class="apr-ic-t" aria-hidden="true">?</span><span><b>${t("apr.tile")}</b><small class="apr-n">${t("apr.tile_n", { n: leccionesHechas() })}</small></span><button type="button" class="btn-sec sm" data-aprende="">${t("apr.abrir")}</button></div>
+    ${tileSft()}
     <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button><button type="button" class="btn-sec sm" id="btn-diario-csv">${icono("guardar")} ${t("diario.csv")}</button></div>
     <p class="esencial-nota">${t("plan.nota")}</p>`;
   cont.append(sec);
@@ -2043,7 +2069,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212144").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212226").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
@@ -2563,6 +2589,8 @@ $("#sppb-cerrar").addEventListener("click", () => { clearInterval(sppbCrono); sp
 function pintarSppbEstado() {
   const e = $("#sppb-estado"); if (!e) return;
   e.textContent = estado.sppb ? t("sppb.estado", { n: estado.sppb.total, d: new Date(estado.sppb.fecha).toLocaleDateString(idioma()) }) : "";
+  const s = $("#sft-estado"), u = estado.sft?.hist?.at(-1);
+  if (s) s.textContent = u ? t("sft.estado", { d: new Date(u.f).toLocaleDateString(idioma()) }) : "";
 }
 
 /* ---------- escáner de código de barras (EAN-13 farmacéutico → código nacional) ---------- */
@@ -3035,7 +3063,7 @@ function pintarConsulta() {
 function cargarPaciente(id) {
   const pf = leerPerfiles().find((p) => p.id === id); if (!pf) return;
   const e = pf.estado; const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-  Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
+  Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
   pacienteActual = id; restaurarFormulario(); guardar(); render(); mostrarCambios(previa); pintarConsulta();
 }
 function guardarPaciente() {
@@ -3053,7 +3081,7 @@ function guardarPaciente() {
 }
 function nuevoPaciente() {
   pacienteActual = null;
-  Object.assign(estado, { meds: [], edad: null, caidas: false, condiciones: [], pac: {}, pro: {}, plan: sanearPlan(null), cribado: sanearCribado(null), prescrito: null, fcReposo: null, sppb: null, historialPresc: [], ejemplo: false });
+  Object.assign(estado, { meds: [], edad: null, caidas: false, condiciones: [], pac: {}, pro: {}, plan: sanearPlan(null), cribado: sanearCribado(null), prescrito: null, fcReposo: null, sppb: null, sft: null, historialPresc: [], ejemplo: false });
   restaurarFormulario(); guardar(); render(); pintarConsulta();
 }
 $("#consulta-paciente")?.addEventListener("change", (ev) => { if (ev.target.value) cargarPaciente(ev.target.value); else nuevoPaciente(); });

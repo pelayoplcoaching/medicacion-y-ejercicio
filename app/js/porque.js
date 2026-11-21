@@ -2,7 +2,7 @@
    Contenido de la base de conocimiento (en español, como las reglas), coherente con los textos de las reglas de esas señales
    y con sus mismas fuentes. Cada explicador: escena SVG en cuatro pasos (se avanza a mano; el movimiento es de una vez y se
    apaga con «reducir movimiento»), qué hacer y fuentes. Se carga al pulsar un «¿Por qué?», no al abrir la aplicación. */
-import { t } from "./i18n.js?v=202611212144";
+import { t } from "./i18n.js?v=202611212226";
 
 /* ---------- piezas de dibujo (trazo lineal como los pictogramas de los ejercicios) ---------- */
 const P = (d, c = "q-l", extra = "") => `<path class="${c}" d="${d}"${extra}/>`;

@@ -2,7 +2,7 @@
    Contenido en español, como la base, con sus fuentes (las cifras, comprobadas en PubMed el 21/11/2026: OMS 2020,
    Arem 2015, Sherrington 2019, Fragala 2019, Colberg 2016, Gardner 2012) o las mismas guías que citan las reglas.
    Lo que se acierta se guarda solo en este dispositivo («medex.aprende»). Se carga al abrir «Aprende». */
-import { t } from "./i18n.js?v=202611212144";
+import { t } from "./i18n.js?v=202611212226";
 
 const OMS = { txt: "OMS 2020: guía de actividad física y sedentarismo (Bull et al., Br J Sports Med 2020)", doi: "10.1136/bjsports-2020-102955" };
 export const LECCIONES = [

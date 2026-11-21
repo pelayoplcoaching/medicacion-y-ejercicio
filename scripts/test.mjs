@@ -338,6 +338,29 @@ console.log("\nEjercicios animados (mejora grande 7)");
   check("los cuidados por ejercicio son mecanismos con explicador", M.IDS.every((id) => M.cuidados(id, PQ.PQ_IDS).every((m) => PQ.PQ_IDS.includes(m))));
 }
 
+console.log("\nPruebas de forma física: Senior Fitness Test con baremos por edad y sexo (mejora grande 8)");
+{
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/pruebas.js")).href);
+  const PQ = await import(pathToFileURL(path.join(ROOT, "app/js/porque.js")).href);
+  const tablas = Object.values(S.NORMAS).flatMap((x) => [x.m, x.h]);
+  check("baremos completos: 7 pruebas × 2 sexos × 7 bandas de edad, cada rango de menos a más", Object.keys(S.NORMAS).length === 7 && tablas.every((b) => b.length === 7 && b.every(([lo, hi]) => lo < hi)));
+  check("bandas de edad: sin baremo antes de los 60; desde los 95, la de 90-94", [59, 60, 64, 65, 94, 99].map(S.banda).join() === "-1,0,0,1,6,6");
+  check("se clasifica con lo mismo que se enseña (centímetros y metros redondeados)", S.clasificar("sentado", -1.3, 62, "m").nivel === "normal" && S.clasificar("sentado", -1.4, 62, "m").nivel === "bajo" && JSON.stringify(S.rango("andar6", 62, "m")) === "[498,604]");
+  check("en segundos, menos es mejor; la zona de riesgo va aparte del rango de su edad", S.clasificar("levantarse", 4, 67, "h").nivel === "alto" && S.clasificar("levantarse", 9.5, 67, "h").riesgo && S.clasificar("silla", 7, 92, "m").nivel === "normal" && S.clasificar("silla", 7, 92, "m").riesgo);
+  check("sin zona de riesgo en flexibilidad; meta de autonomía solo en silla y marcha en el sitio", S.umbral("sentado") === null && S.umbral("espalda") === null && Object.keys(S.META).join() === "silla,paso2" && S.clasificar("paso2", 95, 72, "h").metaOk === true && S.clasificar("silla", 13, 72, "m").metaOk === false);
+  check("sin sexo o antes de los 60 no se compara con la edad (sí consigo mismo)", S.clasificar("silla", 12, 55, "m").nivel === null && S.clasificar("silla", 12, 70, null).nivel === null);
+  check("mejor de dos intentos y metros andados", S.mejorDe("levantarse", [6.1, 5.8]) === 5.8 && S.mejorDe("espalda", [-3, 2]) === 2 && S.distancia(10, 45.7, 20) === 477);
+  const R = S.resumen({ silla: 9, brazo: 20, paso2: 60, sentado: 2, espalda: -12, levantarse: 6.5 }, 72, "m");
+  check("resumen: puntos fuertes y dónde más puede ganar (primero lo que está en zona de riesgo)", R.total === 6 && R.habituales === 3 && R.fuertes[0] === "brazo" && R.mejorar.join() === "paso2,silla" && R.riesgo.join() === "paso2");
+  const forma = (d) => d.replace(/-?\d*\.?\d+/g, "N").replace(/\s+/g, "").replace(/N(?=N)/g, "N,");
+  check("dibujos: las dos posturas con los mismos trazos y animaciones que esperan al toque", S.ORDEN.every((id) => { const h = S.escena(id); return /<svg/.test(h) && [...h.matchAll(/attributeName="d" values="([^"]+)"/g)].every((m) => new Set(m[1].split(";").map(forma)).size === 1) && !/<animate(?:Motion)?(?![^>]*begin="indefinite")/.test(h); }));
+  const ks = Object.keys(S.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(S.TXT[l]).length === ks.length && ks.every((k) => S.TXT[l][k] && vars(S.TXT[l][k]) === vars(S.TXT.es[k]))));
+  const nombres = new Set(); for (const tipo of ["aerobico", "fuerza", "fuerza_eq", "equilibrio"]) for (const fragil of [false, true]) for (const b of sesionTipo(tipo, { fragil }).bloques) nombres.add(b.nombre);
+  check("los ejercicios que propone existen en las sesiones (abren su ficha animada)", Object.values(S.PRUEBAS).every((x) => x.ej.length >= 2 && x.ej.every((e) => nombres.has(e))));
+  check("cuidados de cada prueba con explicador; fuentes de estudios con DOI", Object.values(S.PRUEBAS).every((x) => x.cuida.every((m) => PQ.PQ_IDS.includes(m)) && x.pasos.length === 4) && S.FUENTES.filter((f) => /J Aging|Gerontologist|Res Q/.test(f.txt)).every((f) => f.doi));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

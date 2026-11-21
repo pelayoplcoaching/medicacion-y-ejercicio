@@ -148,6 +148,22 @@ try {
   await p.click("#aprende [data-o] >> nth=0"); await p.waitForTimeout(100);
   check("tras las 4 tarjetas, preguntas con la respuesta buena marcada y su explicación", (await p.$$("#aprende .apr-opciones .bien")).length === 1 && await p.isVisible("#aprende .apr-expl"));
   await p.click("#apr-cerrar"); await p.waitForTimeout(150);
+  check("azulejo «Pruebas de forma física» en Mi plan, aún sin hacer", await p.isVisible(".pruebas-tile [data-pruebas]") && /Seis pruebas/.test(await p.textContent(".pruebas-tile small")));
+  await p.click(".pruebas-tile [data-pruebas]"); await p.waitForSelector("#pruebas[open] .sft-hero", { timeout: 5000 }).catch(() => {});
+  check("pruebas: seis en el orden del manual, aviso por insuficiencia cardiaca y no se empieza sin el aviso de seguridad", (await p.$$("#pruebas .sft-mapa li")).length === 6 && (await p.$$("#pruebas .sft-seguridad .sft-alerta")).length >= 1 && await p.$eval("#sft-empezar", (b) => b.disabled));
+  await p.check('#pruebas input[name="sft-sexo"][value="m"]', { force: true }); await p.check("#sft-ok"); await p.click("#sft-empezar"); await p.waitForTimeout(150);
+  await p.click("#pruebas [data-ini]"); for (let i = 0; i < 12; i++) await p.click("#pruebas [data-mas]");
+  await p.evaluate(() => window.__paSft.adelantar(31)); await p.waitForTimeout(300);
+  check("silla 30 s: el botón grande cuenta, el reloj acaba solo y el número pasa al resultado", (await p.$eval("#pruebas [data-valor]", (i) => i.value)) === "12" && await p.$eval("#pruebas .sft-reloj", (e) => e.classList.contains("acabado")));
+  if (await p.evaluate(() => "speechSynthesis" in window)) { const v = await p.evaluate(() => window.__paVoz || []); check("avisos de voz al empezar y al acabar el tiempo", v.some((x) => /¡Ya!/.test(x)) && /Tiempo/.test(v.at(-1) || ""), JSON.stringify(v.slice(-3))); }
+  await p.click("#pruebas [data-sig]"); await p.click("#pruebas [data-sig]"); await p.waitForTimeout(100);
+  check("sin resultado no se avanza: se pide escribirlo o saltar la prueba", await p.isVisible("#pruebas .sft-falta") && (await p.$eval("#pruebas .sft-medida", (e) => e.dataset.prueba)) === "brazo");
+  for (let i = 0; i < 4; i++) { await p.click("#pruebas [data-saltar]"); await p.waitForTimeout(60); }
+  await p.click("#pruebas [data-ini]"); await p.evaluate(() => window.__paSft.adelantar(7)); await p.waitForTimeout(150); await p.click("#pruebas [data-ini]");
+  await p.fill('#pruebas [data-int="1"]', "6.4"); await p.click("#pruebas [data-sig]"); await p.waitForSelector("#pruebas .sft-res", { timeout: 5000 }).catch(() => {});
+  check("resultados: cada prueba con su chip, su rango habitual, su escala y la meta de autonomía", (await p.$$("#pruebas .sft-res > li")).length === 2 && (await p.$$("#pruebas .sft-escala")).length === 2 && (await p.$$("#pruebas .sft-chip.n-normal, #pruebas .sft-chip.n-bajo, #pruebas .sft-chip.n-alto")).length === 2 && /Habitual a su edad: \d+–\d+/.test(await p.textContent("#pruebas .sft-res")) && /Meta para mantener la autonomía: \d+/.test(await p.textContent("#pruebas .sft-res")));
+  await p.click("#pruebas [data-guardar]"); await p.waitForTimeout(200); await p.click("#sft-cerrar"); await p.waitForTimeout(250);
+  check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue", await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
   const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));
