@@ -97,6 +97,7 @@ const ES = {
   "plan.compartir_semana": "Compartir mi semana", "plan.semana_txt": "esta semana {n} sesiones · {m} de {o} min", "plan.nota": "Plan tipo orientado por su medicación y sus datos; su médico o entrenador puede ajustarlo. Las sesiones se registran en este dispositivo.",
   "prog.titulo": "Siguiente paso:", "prog.pocos_datos": "registre sus sesiones ({n} hasta ahora) y en dos semanas le diremos si toca progresar.", "prog.progresar": "{n} sesiones en 2 semanas con esfuerzo medio {r}/10: toca subir un poco (5 minutos más de aeróbico o una serie más en fuerza).", "prog.mantener": "{n} sesiones en 2 semanas, esfuerzo {r}/10: mantenga este nivel una o dos semanas más.", "prog.reducir": "esfuerzo medio {r}/10, demasiado alto: reduzca intensidad o duración y recupere.", "prog.sintomas": "ha anotado síntomas en alguna sesión: no progrese y coméntelo con su médico.",
   "sesion.cab": "Sesión guiada", "sesion.iniciar": "Iniciar", "sesion.pausar": "Pausar", "sesion.reanudar": "Reanudar", "sesion.terminar": "Terminar y registrar",
+  "voz.toggle": "Entrenador por voz: le dice cada ejercicio y le avisa del tiempo", "voz.inicio": "Empezamos: {n} ejercicios, unos {m} minutos.", "voz.suave": "Hoy, versión suave: vaya más despacio y pare antes de cansarse.", "voz.alarma": "Si nota dolor en el pecho, mareo intenso o falta de aire que no mejora al parar, deténgase.", "voz.bloque": "Ejercicio {n} de {total}:", "voz.minutos": "{m} minutos.", "voz.mitad": "Mitad del ejercicio. Va bien.", "voz.recuerde": "Recuerde:", "voz.minuto": "Queda un minuto.", "voz.despues": "Después:", "voz.lleva": "Lleva {m} minutos.", "voz.respira": "Respire de forma continua; suelte el aire al hacer fuerza.", "voz.fin": "Sesión terminada. ¡Enhorabuena! Anote cómo de dura le ha parecido, del 1 al 10, y pulse «Terminar y registrar».", "voz.pausa": "En pausa.", "voz.sigue": "Seguimos:", "voz.siguiente": "Siguiente", "voz.siguiente_aria": "Pasar al siguiente ejercicio", "voz.queda": "quedan {t}", "voz.hecho": "¡Hecho! Anote el esfuerzo y termine", "voz.vivo": "Ejercicio {n} de {total}: {nombre}",
   "inf.ficha.buscar": "Buscar «{n}» en CIMA", "inf.ficha.buscar.t": "Abre el buscador de la AEMPS; escriba {n} en el campo de búsqueda",
   "error.inesperado": "Algo ha fallado en la aplicación. Puede seguir usándola; si se repite, infórmenos.", "error.informar": "Informar",
   "acc.caja": "Foto de una caja", "acc.dictar": "Dictar", "modo.badge": "Profesional", "pdf.generado": "PDF generado.",
@@ -216,10 +217,10 @@ const ES = {
 // Las claves que falten en un idioma se muestran en español.
 const DICC = { es: ES };
 const CARGAR = {
-  en: () => import("./i18n/en.js?v=202611211952"),
-  ca: () => import("./i18n/ca.js?v=202611211952"),
-  gl: () => import("./i18n/gl.js?v=202611211952"),
-  eu: () => import("./i18n/eu.js?v=202611211952"),
+  en: () => import("./i18n/en.js?v=202611212046"),
+  ca: () => import("./i18n/ca.js?v=202611212046"),
+  gl: () => import("./i18n/gl.js?v=202611212046"),
+  eu: () => import("./i18n/eu.js?v=202611212046"),
 };
 let actual = "es";
 
@@ -236,8 +237,10 @@ export function detectarIdioma() {
 }
 
 /** Traduce una clave con sustituciones {n}. Si no existe en el idioma, vuelve al español. */
-export function t(clave, vars) {
-  let s = DICC[actual]?.[clave] ?? ES[clave] ?? clave;
+export function t(clave, vars) { return rellenar(DICC[actual]?.[clave] ?? ES[clave] ?? clave, vars); }
+/** El mismo texto en español (para la voz cuando el dispositivo no tiene voz en el idioma elegido). */
+export function tEs(clave, vars) { return rellenar(ES[clave] ?? clave, vars); }
+function rellenar(s, vars) {
   if (vars) for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
   return s;
 }

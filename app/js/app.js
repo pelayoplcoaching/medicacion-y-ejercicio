@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211952";
-import { APP_VERSION } from "./version.js?v=202611211952";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211952";
-import { picto } from "./pictos.js?v=202611211952";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211952";
-import { cargarScript } from "./libs.js?v=202611211952";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211952";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211952";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212046";
+import { APP_VERSION } from "./version.js?v=202611212046";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212046";
+import { picto } from "./pictos.js?v=202611212046";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212046";
+import { cargarScript } from "./libs.js?v=202611212046";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212046";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212046";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -68,6 +68,7 @@ const ICONS = {
   editar: "M3 17.3V21h3.7L17.8 9.9l-3.7-3.7L3 17.3zm17.7-10.2a1 1 0 0 0 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7 1.9-1.7z",
   pausa: "M7 5h4v14H7V5zm6 0h4v14h-4V5z",
   reanudar: "M8 5v14l11-7L8 5z",
+  siguiente: "M5 6l9 6-9 6V6zm11 0h2.5v12H16V6z",
   caja: "M4 7l8-4 8 4v10l-8 4-8-4V7zm2 1.2v7.6l5 2.5v-7.6l-5-2.5zm12 0-5 2.5v7.6l5-2.5V8.2zM12 5.2 7.6 7.4 12 9.6l4.4-2.2L12 5.2z",
   mic: "M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm-7 9h2a5 5 0 0 0 10 0h2a7 7 0 0 1-6 6.9V20h3v2H8v-2h3v-2.1A7 7 0 0 1 5 11z",
   qr: "M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z",
@@ -772,7 +773,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211952").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212046").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1905,8 +1906,72 @@ function celebrar() {
   toast(`<span class="celebra">✓</span> ${t("hoy.guardado")}`, { ms: 5000 });
 }
 
+/* ---------- entrenador por voz de la sesión guiada (mejora grande 6) ----------
+   Usa la síntesis de voz del propio navegador (nada sale del dispositivo). Las frases de la interfaz van en el idioma
+   elegido; el contenido de la sesión está en español y se lee con voz española. Sin voz para el idioma elegido, todo en español. */
+const VOZ_LANG = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES", eu: "eu-ES" };
+const VOZ = {
+  on: false, ctx: null,
+  disponible: () => "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function",
+  preferida() { try { return localStorage.getItem("medex.voz") !== "0"; } catch { return true; } },
+  guardar(on) { try { localStorage.setItem("medex.voz", on ? "1" : "0"); } catch {} },
+  /** Voz del dispositivo para un idioma (la del país exacto primero y, entre iguales, la local). conocida = false mientras el navegador no ha cargado la lista. */
+  voz(lang) {
+    const vs = this.disponible() ? speechSynthesis.getVoices() : [];
+    if (!vs.length) return { conocida: false, voz: null };
+    const pre = lang.slice(0, 2);
+    const c = vs.filter((v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith(pre));
+    c.sort((a, b) => ((b.lang === lang) - (a.lang === lang)) || (b.localService - a.localService));
+    return { conocida: true, voz: c[0] || null };
+  },
+  frase(clave, vars) {
+    const l = idioma(), lang = VOZ_LANG[l] || "es-ES";
+    if (l !== "es") { const v = this.voz(lang); if (v.conocida && !v.voz) return { t: tEs(clave, vars), lang: "es-ES" }; }
+    return { t: t(clave, vars), lang };
+  },
+  /** Contenido de la sesión preparado para oírlo: sin «RPE», rangos y unidades dichos con palabras. */
+  contenido(s) {
+    const txt = String(s || "").replace(/\s*\(RPE[^)]*\)/g, "").replace(/[()«»]/g, "")
+      .replace(/(\d)\s*[–-]\s*(\d)/g, "$1 a $2").replace(/\s×\s/g, " por ")
+      .replace(/(\d)\s?s\b/g, "$1 segundos").replace(/(\d)\s?kg\b/g, "$1 kilos").replace(/(\d)\s?L\b/g, "$1 litros").replace(/(\d)\s?°/g, "$1 grados").replace(/(\d)\s?min\b/g, "$1 minutos");
+    return { t: txt, lang: "es-ES" };
+  },
+  /** Dice una lista de frases ({t, lang}); corta = interrumpe lo que estuviera diciendo. Frases cortas: Chrome corta las locuciones largas. */
+  decir(partes, { corta = false } = {}) {
+    if (!this.on) return;
+    partes = partes.filter((p) => p && p.t);
+    if (!partes.length) return;
+    if (navigator.webdriver) { (window.__paVoz ||= []).push(partes.map((p) => p.t).join(" ")); return; } // pruebas automáticas: se anota, no suena
+    if (!this.disponible()) return;
+    if (corta) speechSynthesis.cancel();
+    for (const p of partes) for (const trozo of p.t.match(/[^.;:!?¡¿]+[.;:!?]*/g) || [p.t]) {
+      const x = trozo.trim(); if (!x) continue;
+      const u = new SpeechSynthesisUtterance(x);
+      u.lang = p.lang; const v = this.voz(p.lang).voz; if (v) u.voice = v; u.rate = 0.92;
+      speechSynthesis.speak(u);
+    }
+  },
+  callar() { if (this.disponible()) speechSynthesis.cancel(); },
+  /** El sonido se prepara dentro del toque en «Iniciar»: los navegadores solo dejan sonar tras un gesto. */
+  preparar() {
+    if (navigator.webdriver || !this.on) return;
+    try { this.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); if (this.ctx.state === "suspended") this.ctx.resume(); } catch {}
+  },
+  pitar(f = 660, ms = 110) {
+    if (!this.on || !this.ctx) return;
+    try {
+      const c = this.ctx, t0 = c.currentTime, o = c.createOscillator(), g = c.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.22, t0 + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
+      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + ms / 1000 + 0.03);
+    } catch {}
+  },
+  cerrar() { this.callar(); try { this.ctx?.close(); } catch {} this.ctx = null; },
+};
+
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
+if (navigator.webdriver) window.__paSesion = { adelantar: (s) => { cronoInicio -= s * 1000; } }; // pruebas: adelantar el reloj de la sesión
 function abrirSesion(tipo, fecha = hoyISO()) {
   const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
   const dlg = $("#sesion");
@@ -1927,10 +1992,16 @@ function abrirSesion(tipo, fecha = hoyISO()) {
       <div class="acciones"><button type="button" class="btn" id="chequeo-continuar">${t("chequeo.continuar")}</button><button type="button" class="btn-sec sm" id="chequeo-saltar">${t("chequeo.saltar")}</button></div>
     </section>`;
   const faseSesion = (suave) => {
+    const conVoz = VOZ.disponible();
+    VOZ.on = conVoz && VOZ.preferida();
+    const B = ses.bloques, N = B.length;
     cuerpo.innerHTML = `
       <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
       ${suave ? `<p class="chequeo-aviso">${t("chequeo.suave_banner")}</p>` : ""}
-      <div class="crono">${anilloCrono(0)}<span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button></div>
+      <div class="crono">${anilloCrono(0)}<span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button>
+        <p class="crono-ahora" id="crono-ahora" hidden><b class="ca-n"></b><span class="ca-nombre"></span><span class="ca-queda"></span><button type="button" class="btn-sec sm" id="ses-sig" aria-label="${t("voz.siguiente_aria")}">${icono("siguiente")} ${t("voz.siguiente")}</button></p></div>
+      ${conVoz ? `<label class="check voz-check"><input type="checkbox" id="voz-on"${VOZ.on ? " checked" : ""}> <span>${icono("escuchar")} ${t("voz.toggle")}</span></label>` : ""}
+      <p class="sr-only" id="ses-vivo" aria-live="polite"></p>
       <ol class="bloques grande con-picto" data-sesion='${JSON.stringify(ses.bloques.map((b) => ({ nombre: b.nombre, detalle: b.detalle, facil: b.facil, dificil: b.dificil }))).replace(/'/g, "&#39;")}'>${ses.bloques.map((b, i) => bloqueHtml(b, i, { grande: true })).join("")}</ol>
       <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
       <div class="sesion-fin">
@@ -1940,17 +2011,102 @@ function abrirSesion(tipo, fecha = hoyISO()) {
         <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
       </div>`;
     activarVariantes(cuerpo);
-    cuerpo.querySelectorAll(".bloques input[type=checkbox]").forEach((c) => c.addEventListener("change", () => { if (c.checked) vibrar(15); }));
-    $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
-    const pintar = () => {
-      const seg = Math.floor((Date.now() - cronoInicio) / 1000);
-      $("#crono").textContent = `${String(Math.floor(seg / 60)).padStart(2, "0")}:${String(seg % 60).padStart(2, "0")}`;
-      const c = cuerpo.querySelector(".anillo-crono .valor"); if (c) c.setAttribute("stroke-dasharray", `${(Math.min(1, seg / (ses.min * 60)) * 113.1).toFixed(1)} 113.1`);
+    // Bloques con tiempo: el ejercicio en curso se resalta, avanza solo al cumplirse sus minutos (o con «Siguiente», o al marcarlo) y el entrenador por voz lo cuenta
+    const tl = { i: 0, ini: 0, prev: 0, fin: false, respira: false };
+    const lis = () => cuerpo.querySelectorAll(".bloques.grande > li");
+    const dur = (i) => B[i].min * 60;
+    const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    const detalleDe = (b) => { const v = leerVariantes()[b.nombre] || "normal"; return v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; };
+    const vivo = (txt) => { const v = $("#ses-vivo"); if (v) v.textContent = txt; };
+    /** Lleva un elemento al centro de lo que queda visible bajo el cronómetro fijo (solo se desplaza la sesión, no la página). */
+    const suave2 = (el) => {
+      if (!el) return;
+      const c = cuerpo.getBoundingClientRect(), r = el.getBoundingClientRect(), fijo = cuerpo.querySelector(".crono")?.offsetHeight || 0;
+      const libre = c.height - fijo, destino = c.top + fijo + Math.max(8, (libre - r.height) / 2);
+      cuerpo.scrollBy({ top: r.top - destino, behavior: MOV.ok() ? "smooth" : "auto" });
     };
+    const anunciar = (corta = true) => {
+      const b = B[tl.i];
+      const partes = [VOZ.frase("voz.bloque", { n: tl.i + 1, total: N }), VOZ.contenido(b.nombre), VOZ.frase("voz.minutos", { m: b.min }), VOZ.contenido(detalleDe(b))];
+      if (b.clave && dur(tl.i) < 240) partes.push(VOZ.contenido(b.clave));
+      if (tipo !== "aerobico" && tl.i > 0 && !tl.respira) { partes.push(VOZ.frase("voz.respira")); tl.respira = true; } // una vez por sesión: nada de aguantar el aire
+      VOZ.decir(partes, { corta });
+    };
+    const marcar = (k) => { const c = lis()[k]?.querySelector("input[type=checkbox]"); if (c && !c.checked) c.checked = true; };
+    const pintarAhora = (seg) => {
+      const p = $("#crono-ahora"); if (!p) return;
+      p.hidden = false;
+      lis().forEach((li, k) => {
+        const on = k === tl.i && !tl.fin; li.classList.toggle("en-curso", on);
+        if (on) { li.setAttribute("aria-current", "step"); li.style.setProperty("--p", Math.min(1, Math.max(0, (seg - tl.ini) / dur(k))).toFixed(3)); }
+        else { li.removeAttribute("aria-current"); li.style.removeProperty("--p"); }
+      });
+      p.classList.toggle("hecho", tl.fin);
+      p.querySelector(".ca-n").textContent = tl.fin ? "✓" : `${tl.i + 1}/${N}`;
+      p.querySelector(".ca-nombre").textContent = tl.fin ? t("voz.hecho") : B[tl.i].nombre;
+      p.querySelector(".ca-queda").textContent = tl.fin ? "" : t("voz.queda", { t: mmss(Math.max(0, Math.ceil(tl.ini + dur(tl.i) - seg))) });
+      $("#ses-sig").hidden = tl.fin;
+    };
+    const alCambiar = () => {
+      VOZ.pitar(880, 260); vibrar([30, 60, 30]);
+      anunciar(true);
+      vivo(t("voz.vivo", { n: tl.i + 1, total: N, nombre: B[tl.i].nombre }));
+      suave2(lis()[tl.i]);
+    };
+    const alTerminar = () => {
+      VOZ.pitar(880, 200); setTimeout(() => VOZ.pitar(1175, 320), 240); vibrar([20, 60, 20, 60, 40]);
+      VOZ.decir([VOZ.frase("voz.fin")], { corta: true });
+      vivo(t("voz.hecho"));
+      suave2(cuerpo.querySelector(".sesion-fin"));
+    };
+    /** Avisos dentro del ejercicio: cuenta atrás con pitidos, «queda un minuto», mitad (con la clave técnica) y, en los largos, cada 5 minutos. */
+    const avisos = (seg) => {
+      if (seg - tl.prev > 5) return; // al volver de segundo plano no se acumulan avisos atrasados
+      const cruza = (x) => tl.prev < x && seg >= x;
+      const b = B[tl.i], d = dur(tl.i), fin = tl.ini + d, sig = B[tl.i + 1];
+      for (const s of [3, 2, 1]) if (cruza(fin - s)) VOZ.pitar(660, 110);
+      if (d >= 180 && cruza(fin - 60)) VOZ.decir([VOZ.frase("voz.minuto"), ...(sig ? [VOZ.frase("voz.despues"), VOZ.contenido(sig.nombre)] : [])]);
+      if (d >= 240 && d < 600 && cruza(tl.ini + d / 2)) VOZ.decir(b.clave ? [VOZ.frase("voz.recuerde"), VOZ.contenido(b.clave)] : [VOZ.frase("voz.mitad")]);
+      if (d >= 600) for (let x = tl.ini + 300, k = 1; x < fin - 90; x += 300, k++) if (cruza(x)) VOZ.decir([VOZ.frase("voz.lleva", { m: k * 5 }), k % 3 === 1 ? VOZ.contenido(detalleDe(b)) : k % 3 === 2 && b.clave ? VOZ.contenido(b.clave) : VOZ.frase("voz.alarma")]);
+    };
+    const tick = () => {
+      const seg = (Date.now() - cronoInicio) / 1000, s = Math.floor(seg);
+      $("#crono").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+      const c = cuerpo.querySelector(".anillo-crono .valor"); if (c) c.setAttribute("stroke-dasharray", `${(Math.min(1, seg / (ses.min * 60)) * 113.1).toFixed(1)} 113.1`);
+      if (!tl.fin) {
+        let cambio = false;
+        while (!tl.fin && seg >= tl.ini + dur(tl.i)) { marcar(tl.i); if (tl.i >= N - 1) tl.fin = true; else { tl.ini += dur(tl.i); tl.i++; } cambio = true; }
+        if (cambio) { if (tl.fin) alTerminar(); else alCambiar(); } else avisos(seg);
+      }
+      tl.prev = seg; pintarAhora(seg);
+    };
+    const siguiente = () => {
+      if (!cronometro || tl.fin) return;
+      const seg = (Date.now() - cronoInicio) / 1000;
+      marcar(tl.i);
+      if (tl.i >= N - 1) { tl.fin = true; alTerminar(); } else { tl.i++; tl.ini = seg; alCambiar(); }
+      tl.prev = seg; pintarAhora(seg);
+    };
+    cuerpo.querySelectorAll(".bloques input[type=checkbox]").forEach((c) => c.addEventListener("change", () => { if (!c.checked) return; vibrar(15); if (cronometro && !tl.fin && Number(c.dataset.i) === tl.i) siguiente(); }));
+    $("#ses-sig").addEventListener("click", siguiente);
+    $("#voz-on")?.addEventListener("change", (ev) => {
+      VOZ.on = ev.target.checked; VOZ.guardar(VOZ.on);
+      if (!VOZ.on) { VOZ.callar(); return; }
+      VOZ.preparar();
+      if (cronometro && !tl.fin) anunciar(true); else if (!cronoInicio) VOZ.decir([VOZ.frase("voz.bloque", { n: 1, total: N }), VOZ.contenido(B[0].nombre)], { corta: true }); // se oye al momento: sirve para ajustar el volumen
+    });
+    $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
     $("#crono-btn").addEventListener("click", () => {
-      if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); return; }
+      if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); VOZ.decir([VOZ.frase("voz.pausa")], { corta: true }); return; }
+      const primera = !cronoInicio;
       cronoInicio = cronoInicio ? cronoInicio + (Date.now() - cronoPausa) : Date.now();
-      cronometro = setInterval(pintar, 500); $("#crono-btn").textContent = t("sesion.pausar"); vibrar(10);
+      cronometro = setInterval(tick, 500); $("#crono-btn").textContent = t("sesion.pausar"); vibrar(10);
+      VOZ.preparar();
+      if (primera) {
+        VOZ.decir([VOZ.frase("voz.inicio", { n: N, m: ses.min }), suave ? VOZ.frase("voz.suave") : null, VOZ.frase("voz.alarma")], { corta: true });
+        anunciar(false); vivo(t("voz.vivo", { n: 1, total: N, nombre: B[0].nombre }));
+      } else VOZ.decir([VOZ.frase("voz.sigue"), tl.fin ? null : VOZ.contenido(B[tl.i].nombre)], { corta: true });
+      tick();
     });
     $("#sesion-terminar").addEventListener("click", () => {
       const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
@@ -1980,9 +2136,15 @@ function abrirSesion(tipo, fecha = hoyISO()) {
 /** Anillo de progreso del cronómetro respecto a la duración prevista (r = 18 → perímetro 113,1). */
 function anilloCrono(p) { return `<svg class="anillo-crono" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" class="fondo"/><circle cx="22" cy="22" r="18" class="valor" stroke-dasharray="${(p * 113.1).toFixed(1)} 113.1" transform="rotate(-90 22 22)"/></svg>`; }
 let cronoPausa = 0;
-function cerrarSesion() { clearInterval(cronometro); cronometro = null; cronoInicio = 0; const dlg = $("#sesion"); dlg.__wake?.release?.(); dlg.close(); }
+function cerrarSesion() { clearInterval(cronometro); cronometro = null; cronoInicio = 0; VOZ.cerrar(); const dlg = $("#sesion"); dlg.__wake?.release?.(); dlg.__wake = null; dlg.close(); }
 $("#sesion-cerrar").addEventListener("click", cerrarSesion);
 $("#sesion").addEventListener("cancel", (ev) => { ev.preventDefault(); cerrarSesion(); });
+// La pantalla se apaga sola al volver de otra app (el navegador suelta el bloqueo): se vuelve a pedir mientras la sesión siga abierta
+document.addEventListener("visibilitychange", () => {
+  const dlg = $("#sesion");
+  if (document.visibilityState !== "visible" || !dlg.open || !navigator.wakeLock || (dlg.__wake && !dlg.__wake.released)) return;
+  navigator.wakeLock.request("screen").then((w) => { dlg.__wake = w; }).catch(() => {});
+});
 
 function renderCuando(cont) {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);

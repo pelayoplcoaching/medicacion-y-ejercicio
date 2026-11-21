@@ -864,3 +864,11 @@ Este documento se generó en la limpieza del 21/11/2026 a partir de los comentar
 | 828 | Alto contraste: sin halos ni anillos nuevos | `:root[data-theme="contrast"] :is(.veredicto > p:first-of-type)::before` |
 | 829 | Impresion: sin esquinas de visor, puntos de estado ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |
 | 830 | Colores forzados: sin esquinas de visor ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |
+
+## 20 mejoras grandes (v1.2)
+
+Bloque «20 MEJORAS GRANDES (v1.2)» al final de la hoja; cada mejora lleva un comentario `/* G<n> ... */` con su número de la propuesta.
+
+| N.º | Qué hace | Selector |
+|---|---|---|
+| G6 | Entrenador por voz: cronómetro fijo arriba, línea «ahora» (n/N, nombre, tiempo que queda, «Siguiente»), casilla de la voz, ejercicio en curso resaltado con barra de tiempo, ventana de la sesión en columna flexible | `#sesion .crono`, `.crono-ahora`, `.voz-check`, `.bloques.grande > li.en-curso` |

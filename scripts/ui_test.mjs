@@ -108,6 +108,16 @@ try {
   await p.click("#chequeo-continuar"); await p.waitForTimeout(200);
   check("todo marcado: cronómetro con anillo y bloques con pictograma", await p.isVisible("#crono") && (await p.$$("#sesion .anillo-crono")).length === 1 && (await p.$$("#sesion .bloques .picto")).length >= 3);
   check("constantes en la sesión (glucosa por insulina, pulso por betabloqueante)", (await p.$$("#sesion-const input")).length >= 3);
+  if (await p.evaluate(() => "speechSynthesis" in window)) {
+    check("entrenador por voz: casilla marcada por defecto", await p.$eval("#voz-on", (c) => c.checked));
+    await p.click("#crono-btn"); await p.waitForTimeout(600);
+    const voz = await p.evaluate(() => window.__paVoz || []);
+    check("al iniciar dice la sesión, las señales de alarma y el primer ejercicio", /Empezamos/.test(voz[0] || "") && /dolor en el pecho/.test(voz[0] || "") && /Ejercicio 1 de/.test(voz[1] || ""), JSON.stringify(voz));
+    check("ejercicio en curso resaltado con su tiempo", await p.$eval("#sesion .bloques.grande > li:nth-child(1)", (li) => li.classList.contains("en-curso")) && /quedan/.test(await p.textContent("#crono-ahora .ca-queda")));
+    await p.click("#ses-sig"); await p.waitForTimeout(300);
+    check("«Siguiente» marca el ejercicio y pasa al otro, y lo dice", await p.$eval("#sesion .bloques.grande > li:nth-child(1) input", (c) => c.checked) && await p.$eval("#sesion .bloques.grande > li:nth-child(2)", (li) => li.classList.contains("en-curso")) && /Ejercicio 2 de/.test((await p.evaluate(() => window.__paVoz)).at(-1)));
+    await p.click("#crono-btn"); await p.waitForTimeout(150);
+  }
   await p.fill('#sesion-const input[name="glucosa_antes"]', "140"); await p.fill('#sesion-const input[name="fc"]', "95");
   await p.click("#sesion-terminar"); await p.waitForTimeout(300);
   check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && (await p.textContent(".anillo .num")) !== "0");
