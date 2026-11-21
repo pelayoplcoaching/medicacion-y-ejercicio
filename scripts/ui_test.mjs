@@ -120,7 +120,11 @@ try {
   }
   await p.fill('#sesion-const input[name="glucosa_antes"]', "140"); await p.fill('#sesion-const input[name="fc"]', "95");
   await p.click("#sesion-terminar"); await p.waitForTimeout(300);
-  check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && (await p.textContent(".anillo .num")) !== "0");
+  await p.waitForSelector(".plan-cab .anillos", { timeout: 5000 }).catch(() => {});
+  check("sesión registrada en la semana", (await p.$$(".tira .dia.hecho")).length === 1 && !/^0\//.test((await p.textContent(".anillos-ley li.a1 b")) || "0/"));
+  { const tipoReg = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario"))[0].tipo); const f = ["fuerza", "fuerza_eq"].includes(tipoReg) ? 1 : 0, e = ["fuerza_eq", "equilibrio"].includes(tipoReg) ? 1 : 0;
+    check(`tres anillos (moverse, fuerza, equilibrio) con la sesión de ${tipoReg} donde toca`, (await p.$$(".anillos circle.v")).length === 3 && (await p.textContent(".anillos-ley li.a2 b")).startsWith(f + "/") && (await p.textContent(".anillos-ley li.a3 b")).startsWith(e + "/")); }
+  check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
   const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));
   check("constantes guardadas con la sesión", diario[0].const?.glucosa_antes === 140 && diario[0].const?.fc === 95 && diario[0].chequeo === "ok");

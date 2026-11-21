@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.1 · 2026-11-21 · Mejoras grandes (2): tres anillos, racha amable y mapa de 12 semanas
+- «Mi plan»: tres anillos concéntricos con su leyenda (moverse: minutos de la semana frente a 150, o 90 en fragilidad; fuerza: días frente a 2; equilibrio: días frente a 2, o 3 con riesgo de caídas o fragilidad, el mismo criterio que la prescripción, `P.fue.n` y `P.eq.n` en `informes.js`). Ayuda «?» con qué cuenta cada cosa.
+- Racha amable (`rachaAmable`): semanas seguidas con al menos una sesión; la semana en curso no la rompe y se perdona una semana vacía si la anterior tuvo actividad y no se perdonó otra en las 5 anteriores. Dice también cuántas cumplieron el objetivo y la mejor racha de los dos últimos años.
+- Mapa de 12 semanas (`mapaSemanas`): un cuadro por día con cuatro intensidades por minutos, hoy marcado, meses arriba, marca de las semanas cumplidas debajo y el detalle del día al tocarlo.
+- Las sesiones de fuerza y equilibrio se guardan ahora como `fuerza_eq` (antes, `fuerza`), para que cuenten en los dos anillos; el diario y el CSV las muestran como «Fuerza y equilibrio».
+- Módulos bajo demanda: `js/semana.js` (se precarga cuando el navegador está libre) y `js/voz.js` (el entrenador por voz sale de `app.js` y se carga al abrir la sesión). Están en la precarga del service worker.
+- Arreglos de alto contraste en la tira de la semana: el día elegido no tenía borde y los días pasados sin sesión se aclaraban por debajo del contraste mínimo.
+- El artefacto (`build_artifact.py`) mete cada módulo bajo demanda en su propio ámbito (`MOD_SEMANA`, `MOD_VOZ`) y cambia su `import()` por ese objeto.
+- Pruebas: 9 nuevas en `test.mjs` (resumen, objetivos, racha con comodín y mejor racha, mapa) y 3 en `ui_test.mjs`.
+
 ## 1.2.0 · 2026-11-21 · Mejoras grandes (1): entrenador por voz en la sesión guiada
 - Sesión guiada: el ejercicio en curso se resalta con su barra de tiempo y avanza solo al cumplirse sus minutos, con «Siguiente» o al marcarlo; línea «ahora» en el cronómetro (n/N, nombre, tiempo que queda), cronómetro fijo arriba al desplazarse y aviso para lectores de pantalla (`aria-live`).
 - Entrenador por voz (`VOZ` en `app.js`, síntesis del navegador, nada sale del dispositivo; casilla recordada en `medex.voz`): presentación con las señales de alarma, cada ejercicio con su variante elegida, «queda un minuto» con el siguiente, la clave técnica a mitad, recordatorio de respirar sin aguantar el aire en fuerza, cada 5 minutos en los bloques largos (prueba del habla, clave, alarma), pausa y reanudación, y fin con la petición del esfuerzo. Pitidos de cuenta atrás (Web Audio) y vibración al cambiar. Frases en los cinco idiomas (`voz.*`); el contenido de la sesión, en español con voz española; sin voz para el idioma elegido, todo en español (`tEs` en `i18n.js`).

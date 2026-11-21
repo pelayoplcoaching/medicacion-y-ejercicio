@@ -872,3 +872,4 @@ Bloque «20 MEJORAS GRANDES (v1.2)» al final de la hoja; cada mejora lleva un c
 | N.º | Qué hace | Selector |
 |---|---|---|
 | G6 | Entrenador por voz: cronómetro fijo arriba, línea «ahora» (n/N, nombre, tiempo que queda, «Siguiente»), casilla de la voz, ejercicio en curso resaltado con barra de tiempo, ventana de la sesión en columna flexible | `#sesion .crono`, `.crono-ahora`, `.voz-check`, `.bloques.grande > li.en-curso` |
+| G11 | Semana activa: tokens `--r-a1..3` y `--m12-0..3` (claro, oscuro y contraste), anillos concéntricos que se rellenan, leyenda con marca de cumplido, racha en dos líneas, mapa de 12 semanas (rejilla por columnas, hoy, elegido, futuro, marcas de semana cumplida, leyenda); día elegido de la tira con borde en alto contraste | `.anillos`, `.anillos-ley`, `.plan-cab.con-anillos`, `.mapa-semanas`, `.mapa12`, `.m12-*` |

@@ -1,6 +1,6 @@
 /* Textos del informe que se ven en pantalla y van a la historia clínica (sin jsPDF).
    Los PDF se construyen en pdf.js, que se carga solo al pulsar una descarga. */
-import { unidadPorDia, unidadPorToma } from "./engine.js?v=202611212046";
+import { unidadPorDia, unidadPorToma } from "./engine.js?v=202611212102";
 
 export const WEB = "medicacionyejercicio.fuerzabasadaenevidencia.com";
 
@@ -41,12 +41,14 @@ export function prescripcion(res, ctx) {
       tipo: ["Caminar, bici estática, elíptica, natación" + (sangra ? " (sin contacto ni riesgo de caída a velocidad)" : "") + ".", hipot >= 2 ? "Enfriamiento ≥10 min; evitar paradas bruscas y cambios posturales rápidos." : "Enfriamiento 5–10 min.", calor ? "Evitar calor; electrolitos en sesiones >60 min." : "", hipo ? "Glucemia capilar pre/post; HC de absorción rápida disponibles." : ""].filter(Boolean).join(" "),
     },
     fue: {
+      n: 2, // días a la semana (objetivo de los anillos de semana.js)
       frec: fragil || prefragil || musc ? "2–3 días/semana (prioritario)" : "2–3 días/semana no consecutivos",
       int: fragil ? "Programa multicomponente tipo Vivifrail A–B: sentarse-levantarse, elevaciones de talón, bandas elásticas; 1–2 series de 8–12 rep, RPE 4–6/10, progresión semanal." : tendon ? "Cargas ligeras, sin trabajo explosivo ni excéntrico intenso durante el tratamiento y 4 semanas después." : miop ? "Progresión lenta (ajustes cada 2–3 semanas); evitar fallo muscular y excéntricos intensos las primeras semanas." : "8–15 repeticiones, 2–3 series, RPE 5–7/10; progresar cuando complete las repeticiones con técnica.",
       tiempo: "20–40 min por sesión",
       tipo: ["Grandes grupos musculares (sentadilla/levantarse de silla, empuje, tracción, bisagra de cadera).", "Respiración continua, sin Valsalva.", hipo ? "Fuerza antes del aeróbico en la misma sesión." : "", sangra ? "Máquinas o pesos ligeros al inicio; evitar golpes." : ""].filter(Boolean).join(" "),
     },
     eq: {
+      n: caidas >= 2 || fragil ? 3 : 2,
       frec: caidas >= 2 || fragil ? "3 días/semana (prioritario)" : "2–3 días/semana",
       int: caidas >= 2 || sed || fragil ? "Con apoyo (pared, silla, barandilla) y supervisión inicial." : "Progresar de apoyo bipodal a unipodal y doble tarea.",
       tiempo: "10–15 min (integrable en las sesiones de fuerza)",

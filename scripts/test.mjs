@@ -272,6 +272,30 @@ console.log("\nIdiomas");
   check("todas las claves usadas existen en ES", sinDef.length === 0, sinDef.join());
 }
 
+console.log("\nSemana activa: anillos, racha amable y mapa de 12 semanas (mejora grande 11)");
+{
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/semana.js")).href);
+  const ahora = new Date(2026, 10, 19, 12); // jueves 19/11/2026
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const dia = (n) => { const d = new Date(ahora); d.setDate(d.getDate() + n); return iso(d); };
+  check("lunes de la semana", iso(S.lunesDe(ahora)) === "2026-11-16" && iso(S.lunesDe(new Date(2026, 10, 22, 12))) === "2026-11-16");
+  const l = S.lunesDe(ahora), fin = new Date(2026, 10, 23);
+  const r = S.resumen([{ fecha: "2026-11-16", tipo: "fuerza_eq", min: 35 }, { fecha: "2026-11-17", tipo: "aerobico", min: 40 }, { fecha: "2026-11-18", tipo: "fuerza", min: 30 }, { fecha: "2026-11-18", tipo: "paseo", min: 20 }, { fecha: "2026-11-15", tipo: "fuerza", min: 30 }], l, fin);
+  check("resumen: minutos de todo, días de fuerza (fuerza y fuerza+eq) y de equilibrio; fuera la semana anterior", r.min === 125 && r.fuerza === 2 && r.equilibrio === 1 && r.dias === 3 && r.sesiones === 4);
+  check("objetivos: 150/2/2; fragilidad 90 y equilibrio 3", JSON.stringify(S.objetivos()) === '{"min":150,"fuerza":2,"equilibrio":2}' && JSON.stringify(S.objetivos({ fragil: true, eq: 3 })) === '{"min":90,"fuerza":2,"equilibrio":3}');
+  const semanas = (ns) => ns.flatMap((n, i) => (n ? [{ fecha: dia(-7 * i), tipo: "aerobico", min: n }] : [])); // i = 0 esta semana, 1 la anterior…
+  const r1 = S.rachaAmable(semanas([0, 30, 160, 30, 30]), 150, ahora);
+  check("racha: la semana en curso vacía no la rompe; cuenta las cumplidas", r1.semanas === 4 && r1.cumplidas === 1 && !r1.comodin, JSON.stringify(r1));
+  const r2 = S.rachaAmable(semanas([30, 0, 30, 30, 0, 0, 30, 30, 30, 30, 30]), 150, ahora);
+  check("racha: una semana vacía se perdona (comodín), dos seguidas la rompen; mejor racha", r2.semanas === 3 && r2.comodin && r2.mejor === 5, JSON.stringify(r2));
+  const r3 = S.rachaAmable(semanas([30, 0, 30, 0, 30, 30]), 150, ahora);
+  check("racha: el comodín no se repite en menos de 6 semanas", r3.semanas === 2 && r3.comodin, JSON.stringify(r3));
+  check("racha vacía", S.rachaAmable([], 150, ahora).semanas === 0 && !S.rachaAmable([], 150, ahora).conDatos);
+  const m = S.mapaSemanas([{ fecha: dia(0), tipo: "fuerza", min: 45 }, { fecha: dia(-1), tipo: "aerobico", min: 10 }, { fecha: dia(-7), tipo: "aerobico", min: 160 }], 150, ahora);
+  check("mapa: 12 semanas de 7 días, la actual la última, hoy marcado y lo que falta, futuro", m.length === 12 && m.every((s) => s.dias.length === 7) && m[11].actual && m[11].dias[3].hoy && m[11].dias[3].min === 45 && m[11].dias[4].futuro && m[10].cumplida && !m[11].cumplida);
+  check("niveles de color por minutos", [0, 5, 25, 60].map(S.nivelDia).join() === "0,1,2,3");
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

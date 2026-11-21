@@ -3827,3 +3827,69 @@ dialog.sesion > .ficha-cuerpo { flex: 1 1 auto; min-height: 0; max-height: none;
 @media (forced-colors: active) { .bloques.grande > li.en-curso { outline: 3px solid Highlight; } .bloques.grande > li.en-curso::after { background: Highlight; } }
 #sesion .bloques.grande > li { padding: 8px 10px; border-radius: var(--r-md); }
 .anillo-crono { overflow: visible; }
+/* G11 semana activa: tres anillos (moverse, fuerza, equilibrio), leyenda, racha amable y mapa de 12 semanas */
+:root { --r-a1: #593ede; --r-a2: #9d8df5; --r-a3: #c8901c; --m12-0: #f1effa; --m12-1: #d8d0fb; --m12-2: #a596f2; --m12-3: #593ede; }
+:root[data-theme="dark"] { --r-a1: #a49cff; --r-a2: #ddd8ff; --r-a3: #f0c674; --m12-0: #211f32; --m12-1: #3b3266; --m12-2: #6f5fd0; --m12-3: #b8afff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) { --r-a1: #a49cff; --r-a2: #ddd8ff; --r-a3: #f0c674; --m12-0: #211f32; --m12-1: #3b3266; --m12-2: #6f5fd0; --m12-3: #b8afff; } }
+:root[data-theme="contrast"] { --r-a1: #3b0a9a; --r-a2: #7a3fe0; --r-a3: #8a5a00; --m12-0: #ffffff; --m12-1: #d6c9f7; --m12-2: #7a52d6; --m12-3: #2a0770; }
+.plan-cab.con-anillos { gap: 18px; align-items: center; }
+.anillos-caja { flex: 0 0 auto; }
+.anillos { display: block; width: 128px; height: 128px; overflow: visible; }
+.anillos circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+.anillos .pista { stroke-opacity: .16; }
+.anillos .a1 { stroke: var(--r-a1); } .anillos .a2 { stroke: var(--r-a2); } .anillos .a3 { stroke: var(--r-a3); }
+.anillos .v.a1.ok { filter: drop-shadow(0 0 4px var(--r-a1)); } .anillos .v.a2.ok { filter: drop-shadow(0 0 4px var(--r-a2)); } .anillos .v.a3.ok { filter: drop-shadow(0 0 4px var(--r-a3)); }
+.anillos .todo-ok { fill: none; stroke: var(--r-a1); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.plan-cab.con-anillos .plan-obj { flex: 1 1 auto; min-width: 0; }
+.plan-cab.con-anillos h3 { display: flex; align-items: center; gap: 8px; }
+.anillos-ley { list-style: none; margin: 6px 0 6px; padding: 0; display: grid; gap: 5px; }
+.anillos-ley li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 16px; align-items: center; gap: 8px; font-size: .92rem; color: var(--fg); }
+.anillos-ley li > i { width: 12px; height: 12px; border-radius: 50%; background: var(--r-a1); }
+.anillos-ley li.a2 > i { background: var(--r-a2); } .anillos-ley li.a3 > i { background: var(--r-a3); }
+.anillos-ley li > span { font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.anillos-ley li > b { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.anillos-ley li > b small { color: var(--muted); font-size: .8em; font-weight: 600; }
+.anillos-ley li > .ic { width: 16px; height: 16px; fill: var(--info); }
+.plan-cab.con-anillos .plan-racha { margin-top: 6px; line-height: 1.35; }
+.plan-cab.con-anillos .plan-racha b { display: block; font-size: .95rem; }
+.plan-cab.con-anillos .plan-racha small { display: block; margin-top: 2px; color: var(--muted); font-size: .8rem; font-weight: 600; }
+.mapa-semanas { position: relative; margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.m12-tit { margin: 0 0 8px; font-family: var(--mono); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.mapa12 { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: ". meses" "dias rejilla" ". obj"; gap: 4px 6px; max-width: 400px; }
+.m12-meses { grid-area: meses; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3px; font-size: .68rem; line-height: 1.2; color: var(--muted); text-transform: capitalize; white-space: nowrap; }
+.m12-dias { grid-area: dias; display: grid; grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; align-items: center; font-size: .64rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+.m12-rejilla { grid-area: rejilla; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(7, auto); grid-auto-flow: column; gap: 3px; cursor: default; }
+.m12-rejilla i { display: block; aspect-ratio: 1; border-radius: 4px; background: var(--m12-0); box-shadow: inset 0 0 0 1px var(--line); }
+.m12-rejilla i.d1, .m12-ley i.d1 { background: var(--m12-1); box-shadow: none; }
+.m12-rejilla i.d2, .m12-ley i.d2 { background: var(--m12-2); box-shadow: none; }
+.m12-rejilla i.d3, .m12-ley i.d3 { background: var(--m12-3); box-shadow: none; }
+.m12-rejilla i[data-t] { cursor: pointer; }
+.m12-rejilla i.d-hoy { outline: 2px solid var(--r-a1); outline-offset: 1px; }
+.m12-rejilla i.d-fut { background: transparent; opacity: .45; }
+.m12-rejilla i.d-sel { outline: 2px solid var(--r-a3); outline-offset: 1px; }
+.m12-obj { grid-area: obj; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3px; min-height: 16px; }
+.m12-obj span { display: grid; place-items: center; }
+.m12-obj .ic, .m12-ley-ok .ic { width: 14px; height: 14px; fill: var(--r-a3); }
+.m12-obj .w-ahora { border-top: 2px solid var(--line-strong); }
+.m12-pie { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; margin: 8px 0 0; font-size: .76rem; color: var(--muted); }
+.m12-ley, .m12-ley-ok { display: inline-flex; align-items: center; gap: 4px; }
+.m12-ley i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; background: var(--m12-0); box-shadow: inset 0 0 0 1px var(--line); }
+.m12-dato { margin: 4px 0 0; min-height: 1.3em; font-size: .85rem; color: var(--fg); }
+@media (max-width: 420px) { .anillos { width: 112px; height: 112px; } .plan-cab.con-anillos { gap: 14px; } .anillos-ley li { font-size: .86rem; gap: 6px; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  html:not(.pa-quieto) .anillos .v { animation: pa-anillo 1.1s var(--ease-salida) both; }
+  html:not(.pa-quieto) .anillos .v.a2 { animation-delay: .12s; }
+  html:not(.pa-quieto) .anillos .v.a3 { animation-delay: .24s; }
+  html:not(.pa-quieto) .anillos .todo-ok { stroke-dasharray: 40; animation: pa-traza .5s var(--ease-salida) 1.1s both; }
+  html:not(.pa-quieto) .m12-rejilla i { animation: pa-escala .32s var(--ease-salida) backwards; animation-delay: calc(var(--c, 0) * 28ms); }
+  html:not(.pa-quieto) .m12-rejilla i[data-t] { transition: scale .15s var(--ease-muelle); }
+  html:not(.pa-quieto) .m12-rejilla i[data-t]:hover { scale: 1.18; }
+}
+@keyframes pa-anillo { from { stroke-dasharray: 0 var(--c, 330); } }
+@keyframes pa-traza { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
+:root[data-theme="contrast"] .anillos .v.ok { filter: none; }
+:root[data-theme="contrast"] .anillos .pista { stroke-opacity: .3; }
+@media (forced-colors: active) { .anillos .v { stroke: Highlight; } .anillos .pista { stroke: GrayText; } .m12-rejilla i.d1, .m12-rejilla i.d2, .m12-rejilla i.d3 { background: Highlight; } }
+@media print { .m12-dato, .m12-pie { display: none; } }
+:root[data-theme="contrast"] .tira .dia.sel { border: 3px solid var(--accent); }
+:root[data-theme="contrast"] .tira .dia.pasado { opacity: 1; }

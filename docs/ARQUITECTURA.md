@@ -27,6 +27,8 @@ app/
     ocr.js              foto u hoja escaneada → texto (Tesseract, bajo demanda)
     informes.js         textos derivados que se ven en pantalla (prescripción, vistazo, ritmo, plan) y texto para la historia
     pdf.js              PDF (jsPDF): informe clínico, plan del paciente, evolución, ficha del entrenador, tarjeta A5.
+    semana.js           anillos de la semana (moverse, fuerza, equilibrio), racha amable y mapa de 12 semanas (bajo demanda, v1.2)
+    voz.js              entrenador por voz de la sesión guiada (síntesis del navegador, bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

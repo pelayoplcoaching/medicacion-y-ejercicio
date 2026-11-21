@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212046";
-import { APP_VERSION } from "./version.js?v=202611212046";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212046";
-import { picto } from "./pictos.js?v=202611212046";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212046";
-import { cargarScript } from "./libs.js?v=202611212046";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212046";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212046";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212102";
+import { APP_VERSION } from "./version.js?v=202611212102";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212102";
+import { picto } from "./pictos.js?v=202611212102";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212102";
+import { cargarScript } from "./libs.js?v=202611212102";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212102";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212102";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -31,6 +31,8 @@ const MOV = { ok: () => !matchMedia("(prefers-reduced-motion: reduce)").matches 
 if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); // las pruebas automáticas ven cada pantalla en su estado final
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
+/** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212102"));
 
 /* ---------- avisos breves (toast) con acción opcional ---------- */
 let toastTimer = null;
@@ -246,6 +248,7 @@ async function cargar() {
     }
     renderVersion(); render();
   });
+  enIdle(() => { cargarSemana().catch(() => { cargarSemana.p = null; }); });
   renderVersion();
   document.body.classList.remove("cargando");
   $("#aviso").textContent = kb.aviso;
@@ -773,7 +776,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212046").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212102").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1852,6 +1855,7 @@ function renderPlan(cont) {
         <p class="plan-racha">${racha ? t("plan.racha", { n: racha }) : t("plan.racha0")} · ${nSem} ${t("hoy.sesiones")} ${t("hoy.esta_semana")}</p>
       </div>
     </div>
+    <div class="mapa-semanas" hidden></div>
     <div class="tendencia">${tendenciaSemanas(diario, obj.min)}</div>
     <details class="bloque mis-dias"${estado.secciones?.misdias ? " open" : ""}><summary><span class="sub-label">${t("plan.dias")} <span class="dias-resumen">${[1, 2, 3, 4, 5, 6, 0].map((d) => `<b class="${estado.plan.dias.includes(d) ? "on" : "off"}">${new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "narrow" })}</b>`).join("")}</span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="dias-chips" role="group" aria-label="${t("plan.dias")}">${[1, 2, 3, 4, 5, 6, 0].map((d) => { const on = estado.plan.dias.includes(d); const nombre = new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "short" }).replace(".", ""); return `<button type="button" class="chip chip-btn${on ? " activo" : ""}" data-dia="${d}" aria-pressed="${on}">${nombre}</button>`; }).join("")}<button type="button" class="btn-sec sm" data-dias="tipo">${t("plan.restablecer")}</button></div>
@@ -1873,6 +1877,18 @@ function renderPlan(cont) {
     <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button><button type="button" class="btn-sec sm" id="btn-diario-csv">${icono("guardar")} ${t("diario.csv")}</button></div>
     <p class="esencial-nota">${t("plan.nota")}</p>`;
   cont.append(sec);
+  // Mejora grande 11: tres anillos (moverse, fuerza, equilibrio), racha amable y mapa de 12 semanas (módulo aparte, js/semana.js)
+  cargarSemana().then((S) => {
+    if (!sec.isConnected) return;
+    const l = S.lunesDe(), r = S.resumen(diario, l, new Date(l.getFullYear(), l.getMonth(), l.getDate() + 7));
+    const o = S.objetivos({ fragil, eq: P.eq.n });
+    const cab = sec.querySelector(".plan-cab");
+    cab.classList.add("con-anillos");
+    cab.innerHTML = `<div class="anillos-caja">${S.htmlAnillos(r, o)}</div>
+      <div class="plan-obj"><h3>${t("plan.objetivo")} <button type="button" class="btn-ayuda" data-ayuda="semana" aria-label="${t("sem.ayuda_aria")}">?</button></h3>${S.htmlLeyenda(r, o)}<p class="plan-racha">${S.textoRacha(S.rachaAmable(diario, o.min))}</p></div>`;
+    const m = sec.querySelector(".mapa-semanas");
+    m.innerHTML = `<h4 class="m12-tit">${t("sem.mapa")}</h4>${S.htmlMapa(S.mapaSemanas(diario, o.min))}`; m.hidden = false; S.activarMapa(m);
+  }).catch(() => { cargarSemana.p = null; });
   { const tira = sec.querySelector(".tira"); centrarEnFila(tira, tira.querySelector(".dia.sel") || tira.querySelector(".dia.hoy")); bordesDesplazables(tira); } // mejora 201
   sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { if (diaPlan === b.dataset.iso) return; conTransicion("vt-dia", () => { diaPlan = b.dataset.iso; render(); }); })); // mejoras 693-694
   sec.querySelectorAll(".dias-chips [data-dia]").forEach((b) => b.addEventListener("click", () => {
@@ -1891,7 +1907,7 @@ function renderPlan(cont) {
   activarVariantes(sec);
   sec.querySelector("#btn-sesion")?.addEventListener("click", () => abrirSesion(tipoSel, hoyISO(sel)));
   sec.querySelector("#btn-hoja-sesion")?.addEventListener("click", () => imprimirSesion(tipoSel));
-  sec.querySelector("#btn-marcar")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(sel), tipo: tipoSel === "fuerza_eq" ? "fuerza" : tipoSel, min: ses.min, rpe: 5, sintomas: [] }); celebrar(); });
+  sec.querySelector("#btn-marcar")?.addEventListener("click", () => { registrarSesion({ fecha: hoyISO(sel), tipo: tipoSel, min: ses.min, rpe: 5, sintomas: [] }); celebrar(); });
   sec.querySelector("#btn-cal2").addEventListener("click", () => $("#btn-calendario").click());
   sec.querySelector("#btn-semana-wa").addEventListener("click", async () => {
     const txt = `*${t("meta.titulo")}* · ${t("plan.semana_txt", { n: nSem, m: minSem, o: obj.min })}${racha ? " · " + t("plan.racha", { n: racha }) : ""}\n${dias.map((d) => `${fmtDia(d)} ${diario.some((x) => x.fecha === hoyISO(d)) ? "✅" : (plan[d.getDay()] === "descanso" ? "—" : "·")}`).join("  ")}\n${t("compartir.pie")}`;
@@ -1906,73 +1922,16 @@ function celebrar() {
   toast(`<span class="celebra">✓</span> ${t("hoy.guardado")}`, { ms: 5000 });
 }
 
-/* ---------- entrenador por voz de la sesión guiada (mejora grande 6) ----------
-   Usa la síntesis de voz del propio navegador (nada sale del dispositivo). Las frases de la interfaz van en el idioma
-   elegido; el contenido de la sesión está en español y se lee con voz española. Sin voz para el idioma elegido, todo en español. */
-const VOZ_LANG = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES", eu: "eu-ES" };
-const VOZ = {
-  on: false, ctx: null,
-  disponible: () => "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function",
-  preferida() { try { return localStorage.getItem("medex.voz") !== "0"; } catch { return true; } },
-  guardar(on) { try { localStorage.setItem("medex.voz", on ? "1" : "0"); } catch {} },
-  /** Voz del dispositivo para un idioma (la del país exacto primero y, entre iguales, la local). conocida = false mientras el navegador no ha cargado la lista. */
-  voz(lang) {
-    const vs = this.disponible() ? speechSynthesis.getVoices() : [];
-    if (!vs.length) return { conocida: false, voz: null };
-    const pre = lang.slice(0, 2);
-    const c = vs.filter((v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith(pre));
-    c.sort((a, b) => ((b.lang === lang) - (a.lang === lang)) || (b.localService - a.localService));
-    return { conocida: true, voz: c[0] || null };
-  },
-  frase(clave, vars) {
-    const l = idioma(), lang = VOZ_LANG[l] || "es-ES";
-    if (l !== "es") { const v = this.voz(lang); if (v.conocida && !v.voz) return { t: tEs(clave, vars), lang: "es-ES" }; }
-    return { t: t(clave, vars), lang };
-  },
-  /** Contenido de la sesión preparado para oírlo: sin «RPE», rangos y unidades dichos con palabras. */
-  contenido(s) {
-    const txt = String(s || "").replace(/\s*\(RPE[^)]*\)/g, "").replace(/[()«»]/g, "")
-      .replace(/(\d)\s*[–-]\s*(\d)/g, "$1 a $2").replace(/\s×\s/g, " por ")
-      .replace(/(\d)\s?s\b/g, "$1 segundos").replace(/(\d)\s?kg\b/g, "$1 kilos").replace(/(\d)\s?L\b/g, "$1 litros").replace(/(\d)\s?°/g, "$1 grados").replace(/(\d)\s?min\b/g, "$1 minutos");
-    return { t: txt, lang: "es-ES" };
-  },
-  /** Dice una lista de frases ({t, lang}); corta = interrumpe lo que estuviera diciendo. Frases cortas: Chrome corta las locuciones largas. */
-  decir(partes, { corta = false } = {}) {
-    if (!this.on) return;
-    partes = partes.filter((p) => p && p.t);
-    if (!partes.length) return;
-    if (navigator.webdriver) { (window.__paVoz ||= []).push(partes.map((p) => p.t).join(" ")); return; } // pruebas automáticas: se anota, no suena
-    if (!this.disponible()) return;
-    if (corta) speechSynthesis.cancel();
-    for (const p of partes) for (const trozo of p.t.match(/[^.;:!?¡¿]+[.;:!?]*/g) || [p.t]) {
-      const x = trozo.trim(); if (!x) continue;
-      const u = new SpeechSynthesisUtterance(x);
-      u.lang = p.lang; const v = this.voz(p.lang).voz; if (v) u.voice = v; u.rate = 0.92;
-      speechSynthesis.speak(u);
-    }
-  },
-  callar() { if (this.disponible()) speechSynthesis.cancel(); },
-  /** El sonido se prepara dentro del toque en «Iniciar»: los navegadores solo dejan sonar tras un gesto. */
-  preparar() {
-    if (navigator.webdriver || !this.on) return;
-    try { this.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); if (this.ctx.state === "suspended") this.ctx.resume(); } catch {}
-  },
-  pitar(f = 660, ms = 110) {
-    if (!this.on || !this.ctx) return;
-    try {
-      const c = this.ctx, t0 = c.currentTime, o = c.createOscillator(), g = c.createGain();
-      o.type = "sine"; o.frequency.value = f;
-      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.22, t0 + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
-      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + ms / 1000 + 0.03);
-    } catch {}
-  },
-  cerrar() { this.callar(); try { this.ctx?.close(); } catch {} this.ctx = null; },
-};
+/* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
+const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
+let VOZ = VOZ_MUDO;
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212102").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
 if (navigator.webdriver) window.__paSesion = { adelantar: (s) => { cronoInicio -= s * 1000; } }; // pruebas: adelantar el reloj de la sesión
 function abrirSesion(tipo, fecha = hoyISO()) {
+  cargarVoz().catch(() => { cargarVoz.p = null; }); // mientras se hace el chequeo previo
   const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
   const dlg = $("#sesion");
   const res = evaluar(datos, medsActivos(), ctxActual());
@@ -1991,7 +1950,8 @@ function abrirSesion(tipo, fecha = hoyISO()) {
       <div id="chequeo-resultado" class="chequeo-resultado" hidden></div>
       <div class="acciones"><button type="button" class="btn" id="chequeo-continuar">${t("chequeo.continuar")}</button><button type="button" class="btn-sec sm" id="chequeo-saltar">${t("chequeo.saltar")}</button></div>
     </section>`;
-  const faseSesion = (suave) => {
+  const faseSesion = async (suave) => {
+    await cargarVoz().catch(() => { cargarVoz.p = null; });
     const conVoz = VOZ.disponible();
     VOZ.on = conVoz && VOZ.preferida();
     const B = ses.bloques, N = B.length;
@@ -2112,7 +2072,7 @@ function abrirSesion(tipo, fecha = hoyISO()) {
       const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
       const min = seg >= 120 ? Math.round(seg / 60) : ses.min;
       const fc = $("#sesion-const"); const konst = fc ? leerConstantes(new FormData(fc)) : undefined;
-      registrarSesion({ fecha, tipo: tipo === "fuerza_eq" ? "fuerza" : tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [], const: konst, chequeo: chequeoClave });
+      registrarSesion({ fecha, tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [], const: konst, chequeo: chequeoClave });
       cerrarSesion(); celebrar(); vibrar([20, 60, 20]);
     });
   };
