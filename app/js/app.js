@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211800";
-import { APP_VERSION } from "./version.js?v=202611211800";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211800";
-import { picto } from "./pictos.js?v=202611211800";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211800";
-import { cargarScript } from "./libs.js?v=202611211800";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211800";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211800";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611211835";
+import { APP_VERSION } from "./version.js?v=202611211835";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211835";
+import { picto } from "./pictos.js?v=202611211835";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211835";
+import { cargarScript } from "./libs.js?v=202611211835";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211835";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211835";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -157,7 +157,11 @@ function ponerIconos() {
 await aplicarIdioma(detectarIdioma()); // español: inmediato; otro idioma: su diccionario ya viene precargado desde index.html
 ponerIconos(); // antes de la primera pintura: evita que los botones cambien de tamaño al cargar
 $("#idioma").value = idioma();
-$("#idioma").addEventListener("change", async (e) => { await aplicarIdioma(e.target.value); e.target.value = idioma(); aplicarModo(); if (datos) { renderVersion(); render(); } });
+$("#idioma").addEventListener("change", (e) => {
+  const cambiar = async () => { await aplicarIdioma(e.target.value); e.target.value = idioma(); aplicarModo(); if (datos) { renderVersion(); render(); } };
+  // mejora 540: fundido cruzado al cambiar de idioma
+  if (document.startViewTransition && MOV.ok()) document.startViewTransition(cambiar); else cambiar();
+});
 
 const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null };
 const sanearSppb = (x) => (x && Number.isFinite(Number(x.total)) ? { total: Math.max(0, Math.min(12, Number(x.total))), fecha: Number(x.fecha) || Date.now(), partes: x.partes || {}, velocidad: x.velocidad ?? null } : null);
@@ -424,7 +428,7 @@ function renderSupRapido() {
   const ya = new Set(estado.meds.map((m) => m.pid));
   const pids = SUP_HABITUALES.filter((p) => indice.porId.has(p) && !ya.has(p));
   const n = estado.meds.filter((m) => !m.libre && tipoProducto(indice.porId.get(m.pid)?.principio, indice.porId.get(m.pid)?.clase)).length;
-  const cuenta = $("#sup-cuenta"); if (cuenta) { cuenta.hidden = !n; cuenta.textContent = n ? t(n === 1 ? "sup.cuenta1" : "sup.cuenta", { n }) : ""; }
+  const cuenta = $("#sup-cuenta"); if (cuenta) { cuenta.hidden = !n; latirSiCambia(cuenta, n ? t(n === 1 ? "sup.cuenta1" : "sup.cuenta", { n }) : ""); } // mejora 586: late al cambiar
   const clave = pids.join(",");
   if (box.dataset.pids === clave) return; // sin cambios: no rehacer los botones (conserva el foco)
   box.dataset.pids = clave;
@@ -768,7 +772,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211800").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211835").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -857,9 +861,11 @@ for (const c of CONDICIONES) $("#cond-" + c)?.addEventListener("change", () => {
 
 $$(".tabs button").forEach((b) => b.addEventListener("click", () => {
   if (estado.tab === b.dataset.tab) return;
+  const orden = $$(".tabs button").map((x) => x.dataset.tab); // mejora 541: el contenido entra desde el lado de la pestaña elegida
+  const dir = orden.indexOf(b.dataset.tab) > orden.indexOf(estado.tab) ? "dcha" : "izq";
   estado.tab = b.dataset.tab; render();
   // transición suave del contenido y pestaña activa siempre a la vista
-  const c = $("#contenido-tab"); c.classList.remove("entra"); void c.offsetWidth; c.classList.add("entra");
+  const c = $("#contenido-tab"); c.dataset.dir = dir; c.classList.remove("entra"); void c.offsetWidth; c.classList.add("entra");
   b.scrollIntoView({ inline: "center", block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }));
 
@@ -987,7 +993,17 @@ function aplicarTema(tm) {
   try { localStorage.setItem("medex.tema", tm); } catch {}
   const b = $("#btn-tema"); b.title = t("tema." + tm); b.setAttribute("aria-label", t("tema." + tm)); b.querySelector(".ic-menu span").textContent = { auto: "A", light: "☀", dark: "☾", contrast: "◐" }[tm]; const tx = $("#tema-txt"); if (tx) tx.textContent = t("tema." + tm);
 }
-$("#btn-tema").addEventListener("click", () => { const act = document.documentElement.dataset.theme || "auto"; aplicarTema(TEMAS[(TEMAS.indexOf(act) + 1) % TEMAS.length]); });
+$("#btn-tema").addEventListener("click", (ev) => {
+  const act = document.documentElement.dataset.theme || "auto", sig = TEMAS[(TEMAS.indexOf(act) + 1) % TEMAS.length];
+  // mejora 539: el tema nuevo se abre en círculo desde el botón (si el navegador sabe y no se ha pedido reducir el movimiento)
+  if (!document.startViewTransition || !MOV.ok()) { aplicarTema(sig); return; }
+  const r = ev.currentTarget.getBoundingClientRect(), x = Math.round(r.left + r.width / 2), y = Math.round(r.top + r.height / 2);
+  const radio = Math.ceil(Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)));
+  const raiz = document.documentElement; raiz.classList.add("vt-tema");
+  const vt = document.startViewTransition(() => aplicarTema(sig));
+  vt.ready.then(() => raiz.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radio}px at ${x}px ${y}px)`] }, { duration: 560, easing: "cubic-bezier(.16, 1, .3, 1)", pseudoElement: "::view-transition-new(root)" })).catch(() => {});
+  vt.finished.finally(() => raiz.classList.remove("vt-tema"));
+});
 try { aplicarTema(localStorage.getItem("medex.tema") || "auto"); } catch { aplicarTema("auto"); }
 
 $("#btn-historia").addEventListener("click", async () => {
@@ -1470,7 +1486,7 @@ function latirSiCambia(el, valor) {
 }
 /** Mejora 418: luz que sigue al ratón sobre las tarjetas (solo con ratón; no se mueve sola). */
 if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-  const SEL = "details.farmaco, .btn-doc, #lista-meds li:not(.libre):not(.pausado):not(.combo-cab), .completitud, .vistazo, .tile, .veredicto, .hoy";
+  const SEL = "details.farmaco, .btn-doc, #lista-meds li:not(.libre):not(.pausado):not(.combo-cab), .completitud, .vistazo, .tile, .veredicto, .hoy, .hoja-opciones button";
   let ev = null, raf = 0, previo = null;
   document.addEventListener("pointermove", (e) => {
     ev = e; if (raf) return;
@@ -1481,9 +1497,25 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
       previo = el; if (!el) return;
       const r = el.getBoundingClientRect();
       el.style.setProperty("--mx", `${Math.round(ev.clientX - r.left)}px`); el.style.setProperty("--my", `${Math.round(ev.clientY - r.top)}px`); el.classList.add("con-luz");
+      // mejora 543: posición relativa (0 a 1) para inclinar documentos y opciones hacia el puntero
+      el.style.setProperty("--px", ((ev.clientX - r.left) / r.width).toFixed(2)); el.style.setProperty("--py", ((ev.clientY - r.top) / r.height).toFixed(2));
     });
   }, { passive: true });
 }
+/** Mejora 542: onda que sale del punto donde se pulsa (botones secundarios, chips, pestañas y menú). */
+document.addEventListener("pointerdown", (e) => {
+  if (!MOV.ok()) return;
+  const el = e.target.closest?.(".btn-sec, .chip-btn, .tabs button, .menu-lista [role=menuitem]");
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  el.style.setProperty("--ox", `${Math.round(e.clientX - r.left)}px`); el.style.setProperty("--oy", `${Math.round(e.clientY - r.top)}px`);
+  // con la API de animaciones (no toca la propiedad animation, así no se reinician las entradas del botón)
+  ondas.get(el)?.cancel(); el.classList.add("onda");
+  const a = el.animate?.([{ "--onda": "0px", "--onda-a": 1 }, { "--onda": "180px", "--onda-a": 0 }], { duration: 600, easing: "ease-out" });
+  if (!a) { el.classList.remove("onda"); return; }
+  ondas.set(el, a); a.onfinish = () => { el.classList.remove("onda"); ondas.delete(el); };
+}, { passive: true });
+const ondas = new WeakMap();
 
 /** Difuminado en los bordes de una fila que se desplaza en horizontal (pestañas, tira de días): indica que hay más. */
 function bordesDesplazables(el) {

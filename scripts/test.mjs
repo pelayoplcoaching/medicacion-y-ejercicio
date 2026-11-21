@@ -423,7 +423,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   const totalPrecarga = lista.reduce((s, f) => s + kbs(f), 0);
   // 3760 desde la v1.1 (21/11/2026): base con 53 suplementos y plantas (+41 KB) y tres tandas de mejoras visuales 231-380 (+24 KB de CSS, +6 KB comprimidos)
   // 3800 desde las mejoras 381-530 (21/11/2026): +45 KB de CSS (+10 KB comprimidos) de movimiento, luz y cristal
-  check(`precarga total ≤ 3800 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3800);
+  // 3850 desde las mejoras 531-680 (21/11/2026): +41 KB de CSS (+9 KB comprimidos)
+  check(`precarga total ≤ 3850 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3850);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
@@ -432,7 +433,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
   check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
   // 325 KB desde las mejoras 381-530 (21/11/2026): movimiento futurista de una vez, luz y cristal; 67 KB comprimida con gzip
-  check(`hoja de estilos ≤ 325 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 325);
+  // 370 KB desde las mejoras 531-680 (21/11/2026): transiciones nativas, tacto, profundidad y detalles; 75 KB comprimida
+  check(`hoja de estilos ≤ 370 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 370);
   const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
   const tabla = css.slice(css.indexOf("/* OP3."));
   const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));

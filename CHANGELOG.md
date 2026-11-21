@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.1.3 · 2026-11-21 · Otras tres tandas: transiciones nativas, tacto, profundidad y detalles (531-680)
+- CSS al final de `app/css/style.css` (bloque «OTRAS TRES TANDAS (531-680)»): tanda 16, plegables que deslizan su altura (`::details-content` + `interpolate-size`), transición entre páginas (`@view-transition`, la cabecera viaja con `view-transition-name`), pulsaciones con muelle, paralaje de la cabecera, línea de lectura en ventanas (`timeline-scope`); tanda 17, entradas por pantalla (resumen, compartir, Mi plan, sesión, SPPB, ventanas, páginas secundarias); tanda 18, lectura (equilibrio de títulos, guiones en pantallas estrechas, dígitos fijos), controles (`:user-invalid`, foco doble, sin destello al tocar), oscuro y detalles.
+- JS: cambio de tema con círculo desde el botón y de idioma con fundido (View Transitions), dirección del contenido al cambiar de pestaña (`data-dir`), onda de pulsación con la API de animaciones (`--onda`, no reinicia las entradas), inclinación 3D (`--px`/`--py`), contador de suplementos que late.
+- Arreglo: la elevación de los documentos al pasar el ratón no funcionaba (la animación de entrada pisaba el desplazamiento); ahora entran escalando.
+- Presupuestos de `test.mjs`: CSS ≤ 370 KB (354 KB; 75 KB con gzip), precarga ≤ 3850 KB. Lista completa en el proyecto («claude/pauta-activa-mejoras-visuales-531-680.md»).
+
 ## 1.1.2 · 2026-11-21 · Tres tandas más: belleza, luz y movimiento futurista (381-530)
 - CSS al final de `app/css/style.css` (bloque «TRES TANDAS MAS: BELLEZA, VISUAL Y MOVIMIENTO FUTURISTA», ASCII, sin color-mix): tanda 13, sistema de movimiento (tokens `--ease-salida`, `--ease-muelle`, fotogramas `pa-*` con `translate`/`scale`/`rotate` sueltos para no pisar los `transform`; entradas al cargar, hojas y ventanas con muelle o enfoque, menú en cascada, entradas ligadas al desplazamiento con `animation-timeline: view()` y tope de distancia `entry min(100%, Npx)`, barra de lectura con `scroll(root)`); tanda 14, luz, cristal y neón; tanda 15, detalles por pantalla.
 - Todo movimiento es de una vez: se apaga con «reducir movimiento», al imprimir (solo `@media screen`) y en las pruebas automáticas (`html.pa-quieto`, que `app.js` pone si `navigator.webdriver`).
