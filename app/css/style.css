@@ -3990,3 +3990,6 @@ body.sencillo { font-size: 1.1rem; }
 .menu-lista { max-height: min(80vh, 760px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 @media (max-width: 639px) { .menu-lista { max-height: calc(100vh - 120px - env(safe-area-inset-bottom, 0px)); max-height: calc(100dvh - 120px - env(safe-area-inset-bottom, 0px)); } }
 .menu-lista .ic-menu svg[fill="none"] { fill: none; stroke: currentColor; }
+/* G4 cuanto movimiento hace falta (v1.2.15): boton bajo la racha de Mi plan; el explorable lleva sus estilos en js/dosis.js */
+.plan-obj .ds-btn { margin-top: 6px; }
+.plan-obj .ds-btn .ic { width: 16px; height: 16px; }

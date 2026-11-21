@@ -522,6 +522,22 @@ console.log("\n«Lo que el ejercicio hace por usted»: beneficios con su fuente 
   check("interfaz en los cinco idiomas con las mismas variables; tarjetas sin huecos sin rellenar", ["en", "ca", "gl", "eu"].every((l) => Object.keys(B.TXT[l]).length === ks.length && ks.every((x) => B.TXT[l][x] && vars(B.TXT[l][x]) === vars(B.TXT.es[x]))) && !todas.some((b) => /\{\w+\}/.test(b.texto + b.cifra + b.unidad)));
 }
 
+console.log("\n«¿Cuánto movimiento hace falta?»: dosis y respuesta (mejora grande 4)");
+{
+  const D = await import(pathToFileURL(path.join(ROOT, "app/js/dosis.js")).href);
+  check("minutos: las cifras del resumen de Arem 2015 (−20, −31, −37, −39 y −31 %) y sin cifra entre 750 y 1499", D.MINUTOS.slice(1).map((g) => D.menos(g.hr)).join() === "20,31,37,39,31" && D.grupoMinutos(0).k === "g0" && D.grupoMinutos(90).k === "g1" && D.grupoMinutos(150).k === "g2" && D.grupoMinutos(449).k === "g3" && D.grupoMinutos(600).k === "g4" && D.grupoMinutos(1000) === null && D.grupoMinutos(2000).k === "g6" && /jamainternmed\.2015\.0533/.test(D.FUENTES.minutos.doi));
+  check("pasos: medianas y riesgo de los cuartos de Paluch 2022 (3553, 5801, 7842, 10 901; −40, −45, −53 %) y meseta por edad", D.PASOS.map((p) => p.x).join() === "3553,5801,7842,10901" && D.PASOS.slice(1).map((p) => D.menos(p.hr)).join() === "40,45,53" && D.grupoPasos(7600).x === 7842 && D.grupoPasos(1000).x === 3553 && D.MESETA.mayores.join() === "6000,8000" && D.MESETA.jovenes.join() === "8000,10000" && /S2468-2667\(21\)00302-9/.test(D.FUENTES.pasos.doi));
+  const hoy = new Date(2026, 10, 21), dia = (n) => { const d = new Date(hoy); d.setDate(d.getDate() - n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+  const diario = [...Array(12)].map((_, i) => ({ fecha: dia(i * 2), min: 30 })).concat([{ fecha: dia(40), min: 500 }]);
+  check("su punto: la media de minutos a la semana de las últimas 4 semanas del diario (lo anterior no cuenta)", D.minutosSemana(diario, hoy) === 90 && D.minutosSemana([], hoy) === 0);
+  const f90 = D.fraseMinutos(90), f0 = D.fraseMinutos(0), fg = D.fraseMinutos(1000);
+  check("frases: su grupo frente a no hacer nada, el siguiente escalón y lo que no tiene cifra", /20 %/.test(f90.frase) && /31 %/.test(f90.sig) && /20 %/.test(f0.sig) && /750 y 1500/.test(fg.frase) && /45 %/.test(D.frasePasos(7600)) && !/\{\w+\}/.test(f90.frase + f90.sig + D.frasePasos(5000)));
+  const g = D.grafica({ w: 360, h: 230, pts: [{ x: 0, y: 0, etq: "a" }, { x: 1, y: 20, etq: "b" }, { x: 2, y: 31, etq: "c" }], xMin: -0.4, xMax: 2.4, yMax: 50, ticksX: [0, 1, 2], fmtX: String, usted: 1.2, hueco: [1] });
+  check("gráfica: una serie con puntos, un tramo discontinuo donde no hay datos, su línea y lectura accesible", (g.svg.match(/class="ds-p"/g) || []).length === 3 && (g.svg.match(/ds-hueco/g) || []).length === 1 && /ds-usted/.test(g.svg) && /role="img"/.test(g.svg) && D.posMinutos(0) === 0 && Math.abs(D.posMinutos(75) - 1) < 0.01 && D.posMinutos(1800) <= 6.4);
+  const ks = Object.keys(D.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas con las mismas variables; aviso de que son estudios de observación", ["en", "ca", "gl", "eu"].every((l) => Object.keys(D.TXT[l]).length === ks.length && ks.every((x) => D.TXT[l][x] && vars(D.TXT[l][x]) === vars(D.TXT.es[x]))) && /asociación/.test(D.TXT.es.observ));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);
@@ -676,7 +692,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 3850 desde las mejoras 531-680 (21/11/2026): +41 KB de CSS (+9 KB comprimidos)
   // 4100 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda (semana, voz, porque, movimiento, aprende…), que se precargan para usarse sin conexión
   // 4300 desde las mejoras grandes 8, 9 y 12 (pruebas, metas y resumen del mes, 21/11/2026): módulos bajo demanda que llevan sus textos en cinco idiomas
-  check(`precarga total ≤ 4300 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 4300);
+  // 4500 desde las mejoras grandes 14, 17, 16, 3 y 4 (pastillero, mapa, simulador, beneficios y dosis, 21/11/2026): módulos bajo demanda de 15-30 KB, precargados para usarse sin conexión; lo que se descarga al abrir sigue en ≤ 440 KB
+  check(`precarga total ≤ 4500 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 4500);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);

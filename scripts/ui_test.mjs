@@ -215,6 +215,13 @@ try {
   check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue",await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
+  await p.click(".plan-obj .ds-btn"); await p.waitForSelector("#dosis[open] .ds-svg", { timeout: 5000 }).catch(() => {});
+  check("¿cuánto hace falta?: su media de minutos del diario, su grupo frente a no hacer nada y la curva con su línea", /min\/semana/.test(await p.textContent("#dosis .ds-su").catch(() => "")) && /% menos de riesgo/.test(await p.textContent("#dosis .ds-frase")) && (await p.$$("#dosis .ds-p")).length === 6 && (await p.$$("#dosis .ds-usted")).length === 1 && /observación/.test(await p.textContent("#dosis .ds-observ")));
+  await p.fill("#ds-rango", "200"); await p.dispatchEvent("#ds-rango", "input"); await p.waitForTimeout(100);
+  check("al mover el deslizador cambia la frase (150-299 min: −31 %) y se marca su fila en la tabla", /31 %/.test(await p.textContent("#dosis .ds-frase")) && (await p.$$('#dosis .ds-tabla tr.ds-su-fila[data-k="g2"]')).length === 1);
+  await p.click('#dosis [data-ds-vista="pasos"]'); await p.waitForTimeout(150);
+  check("pasos al día: cuatro grupos, meseta por edad y la fuente con DOI", (await p.$$("#dosis .ds-p")).length === 4 && (await p.$$("#dosis .ds-banda")).length === 1 && /doi\.org\/10\.1016\/S2468-2667/.test(await p.$eval("#dosis .ds-fuente a", (a) => a.href)));
+  await p.click("#ds-cerrar"); await p.waitForTimeout(150);
   const diario = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")));
   check("constantes guardadas con la sesión", diario[0].const?.glucosa_antes === 140 && diario[0].const?.fc === 95 && diario[0].chequeo === "ok");
   const [csv] = await Promise.all([p.waitForEvent("download"), p.click("#btn-diario-csv")]);

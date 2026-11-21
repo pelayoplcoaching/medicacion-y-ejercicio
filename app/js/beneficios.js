@@ -4,7 +4,7 @@
    certeza cuando la revisión la da (GRADE) y la fuente con su DOI. Cifras comprobadas en PubMed el 21/11/2026, una a una,
    en el resumen de cada artículo. Contenido en español (como el resto del contenido clínico) y en borrador hasta la
    revisión clínica; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611212349";
+import { idioma } from "./i18n.js?v=202611212358";
 
 const F = (txt, doi) => ({ txt, doi });
 /** Por situación: id de la situación (los de «Situación clínica») → tarjetas. «todos» y «mayores» se añaden solos. */

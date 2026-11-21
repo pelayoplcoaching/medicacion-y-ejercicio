@@ -6,10 +6,10 @@
    - Lo que la página pide con ?v= se precarga con esa misma dirección: el navegador lo toma de su caché
      y no se descarga dos veces. Lo demás se revalida con el servidor (si no ha cambiado, no se descarga).
    - Datos (data/*.json): se sirven de la caché al instante y se actualizan en segundo plano. */
-const VERSION = "202611212349";
+const VERSION = "202611212358";
 const CACHE = "medex-" + VERSION;
 // la página los pide con ?v=VERSION (incluye los que se cargan al elegir idioma o al pedir un PDF)
-const SELLADOS = ["css/style.css", "js/app.js", "js/version.js", "js/libs.js", "js/i18n.js", "js/pictos.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/pdf.js", "js/semana.js", "js/voz.js", "js/porque.js", "js/movimiento.js", "js/aprende.js", "js/pruebas.js", "js/metas.js", "js/mes.js", "js/calor.js", "js/constantes.js", "js/pastillero.js", "js/fhir.js", "js/mapa.js", "js/simula.js", "js/consulta.js", "js/beneficios.js",
+const SELLADOS = ["css/style.css", "js/app.js", "js/version.js", "js/libs.js", "js/i18n.js", "js/pictos.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/pdf.js", "js/semana.js", "js/voz.js", "js/porque.js", "js/movimiento.js", "js/aprende.js", "js/pruebas.js", "js/metas.js", "js/mes.js", "js/calor.js", "js/constantes.js", "js/pastillero.js", "js/fhir.js", "js/mapa.js", "js/simula.js", "js/consulta.js", "js/beneficios.js", "js/dosis.js",
   "js/i18n/en.js", "js/i18n/ca.js", "js/i18n/gl.js", "js/i18n/eu.js"];
 // imprescindibles sin sello: si alguno falla, la instalación falla y sigue funcionando la versión anterior
 const NUCLEO = ["./", "index.html", "novedades.html", "acerca.html", "legal.html", "guia.html", "manifest.webmanifest",
