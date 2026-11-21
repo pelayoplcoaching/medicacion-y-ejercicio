@@ -192,7 +192,7 @@ const ES = {
   "act.nueva": "Hay una versión nueva.", "act.btn": "Actualizar",
   "barra.ver": "Ver el informe",
   "kb.error": "No se ha podido cargar la base de conocimiento. Compruebe la conexión y recargue la página.",
-  "kb.version": "Base de conocimiento v{v} · {c} clases, {p} principios activos",
+  "kb.version": "Base de conocimiento v{v} · {c} clases, {p} principios activos revisados + {s} clasificados por grupo",
   "ctx.anos": "{n} años", "ctx.caidas": "caídas", "ctx.fragil": "frágil", "ctx.prefragil": "prefrágil",
 };
 
@@ -385,7 +385,7 @@ const EN = {
   "act.nueva": "A new version is available.", "act.btn": "Update",
   "barra.ver": "See the report",
   "kb.error": "The knowledge base could not be loaded. Check your connection and reload the page.",
-  "kb.version": "Knowledge base v{v} · {c} classes, {p} active ingredients",
+  "kb.version": "Knowledge base v{v} · {c} classes, {p} reviewed active ingredients + {s} classified by group",
   "ctx.anos": "{n} years", "ctx.caidas": "falls", "ctx.fragil": "frail", "ctx.prefragil": "pre-frail",
 };
 
@@ -578,7 +578,7 @@ const CA = {
   "act.nueva": "Hi ha una versió nova.", "act.btn": "Actualitzar",
   "barra.ver": "Veure l'informe",
   "kb.error": "No s'ha pogut carregar la base de coneixement. Comproveu la connexió i recarregueu la pàgina.",
-  "kb.version": "Base de coneixement v{v} · {c} classes, {p} principis actius",
+  "kb.version": "Base de coneixement v{v} · {c} classes, {p} principis actius revisats + {s} classificats per grup",
   "ctx.anos": "{n} anys", "ctx.caidas": "caigudes", "ctx.fragil": "fràgil", "ctx.prefragil": "prefràgil",
 };
 
@@ -771,7 +771,7 @@ const GL = {
   "act.nueva": "Hai unha versión nova.", "act.btn": "Actualizar",
   "barra.ver": "Ver o informe",
   "kb.error": "Non se puido cargar a base de coñecemento. Comprobe a conexión e recargue a páxina.",
-  "kb.version": "Base de coñecemento v{v} · {c} clases, {p} principios activos",
+  "kb.version": "Base de coñecemento v{v} · {c} clases, {p} principios activos revisados + {s} clasificados por grupo",
   "ctx.anos": "{n} anos", "ctx.caidas": "caídas", "ctx.fragil": "fráxil", "ctx.prefragil": "prefráxil",
 };
 
@@ -957,7 +957,7 @@ const EU = {
   "ficha.sin_reglas": "Ariketarako neurri espezifikorik gabe.",
   "act.nueva": "Bertsio berri bat dago.", "act.btn": "Eguneratu",
   "barra.ver": "Ikusi txostena",
-  "kb.error": "Ezin izan da ezagutza-basea kargatu. Egiaztatu konexioa eta birkargatu orria.", "kb.version": "Ezagutza-basea v{v} · {c} klase, {p} printzipio aktibo",
+  "kb.error": "Ezin izan da ezagutza-basea kargatu. Egiaztatu konexioa eta birkargatu orria.", "kb.version": "Ezagutza-basea v{v} · {c} klase, berrikusitako {p} printzipio aktibo + taldeka sailkatutako {s}",
   "ctx.anos": "{n} urte", "ctx.caidas": "erorketak", "ctx.fragil": "hauskorra", "ctx.prefragil": "aurre-hauskorra",
 };
 

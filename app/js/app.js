@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211009";
-import { APP_VERSION } from "./version.js?v=202611211009";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211009";
-import { picto } from "./pictos.js?v=202611211009";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211009";
-import { cargarScript } from "./libs.js?v=202611211009";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211009";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211009";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211022";
+import { APP_VERSION } from "./version.js?v=202611211022";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211022";
+import { picto } from "./pictos.js?v=202611211022";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211022";
+import { cargarScript } from "./libs.js?v=202611211022";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211022";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211022";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -173,7 +173,9 @@ const EJEMPLO = {
 };
 
 function renderVersion() {
-  $("#kb-version").textContent = `v${APP_VERSION} · ` + t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size });
+  // dos cifras: principios revisados uno a uno y los que el nomenclátor clasifica por su código ATC (heredan las precauciones del grupo)
+  const sinteticos = [...indice.porId.values()].filter((x) => x.principio.sintetico).length;
+  $("#kb-version").textContent = `v${APP_VERSION} · ` + t("kb.version", { v: datos.kb.version, c: datos.kb.clases.length, p: indice.porId.size - sinteticos, s: sinteticos });
 }
 
 const cargarJson = (f) => fetch(`data/${f}`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
