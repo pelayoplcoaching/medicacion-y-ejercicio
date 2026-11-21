@@ -1477,3 +1477,76 @@ details.bloque[open] > summary .flecha { background: var(--accent-soft); color: 
 /* 80. Aviso "sin conexion": pildora de estado con punto, en letra de terminal */
 .conexion { font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; border: 1px solid color-mix(in srgb, var(--precaucion) 40%, transparent); }
 .conexion span[aria-hidden] { color: var(--precaucion); text-shadow: 0 0 6px var(--precaucion); }
+
+/* ---------- TANDA 5: informe ---------- */
+/* 81. Titulos equilibrados y parrafos sin palabras huerfanas */
+h1, h2, h3, h4, .veredicto > p:first-of-type, .hoja-cab p, .ficha-cab p { text-wrap: balance; }
+p, li, dd, figcaption, .esencial-nota { text-wrap: pretty; }
+/* 82. Veredicto: icono del nivel en un circulo delante del titular */
+.veredicto > p:first-of-type { position: relative; padding-left: 2.05em; }
+.veredicto > p:first-of-type::before { content: "!"; position: absolute; left: 0; top: .02em; width: 1.45em; height: 1.45em; display: grid; place-items: center; border-radius: 50%; font-family: var(--mono); font-size: .92em; font-weight: 800; background: var(--accent); color: var(--surface); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
+.veredicto.v-alerta > p:first-of-type::before { background: var(--alerta); box-shadow: 0 0 0 4px color-mix(in srgb, var(--alerta) 16%, transparent); }
+.veredicto.v-precaucion > p:first-of-type::before { background: var(--precaucion); box-shadow: 0 0 0 4px color-mix(in srgb, var(--precaucion) 18%, transparent); }
+.veredicto.v-ok > p:first-of-type::before { content: "\2713"; background: var(--info); box-shadow: 0 0 0 4px color-mix(in srgb, var(--info) 16%, transparent); }
+/* 83. Datos del contexto (edad, situaciones): pildoras con punto de marca */
+.contexto-chips .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; background: var(--surface); border-color: color-mix(in srgb, var(--accent) 28%, var(--line)); }
+.contexto-chips .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 60%, transparent); }
+/* 84. "Su plan esta al N %": barra por tramos de 25 % */
+.comp-barra { position: relative; height: 12px; }
+.comp-barra::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), var(--surface) calc(25% - 2px) 25%); }
+/* 85. Hoy: mini semana legible (huecos visibles, esquinas suaves, letras de terminal) */
+.semana rect { rx: 2px; ry: 2px; }
+.semana rect.sin { y: 30px; height: 4px; fill: color-mix(in srgb, var(--accent) 22%, var(--line)); }
+.semana rect.con { fill: var(--accent); filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent) 60%, transparent)); }
+.semana text { font-family: var(--mono); font-weight: 600; }
+/* 86. Hoy: la mejor franja horaria como pildora con reloj */
+.hoy-franja { display: inline-flex; align-items: center; gap: 5px; margin-left: 4px; padding: 1px 10px 1px 8px; border-radius: 999px; background: var(--info-soft); font-size: .84rem; vertical-align: .1em; white-space: nowrap; }
+.hoy-franja::before { content: ""; width: 13px; height: 13px; flex: 0 0 13px; background: currentColor; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>") center / contain no-repeat; }
+/* 87. Lo esencial: cada punto separado por un hilo discontinuo */
+.esencial ol > li + li { padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--accent) 20%, var(--line)); }
+/* 88. "Pare y consulte si nota...": triangulo de aviso delante */
+details.alarma > summary .sub-label::before, details.sintomas > summary .sub-label::before { content: ""; display: inline-block; width: 1.05em; height: 1.05em; margin-right: .5em; vertical-align: -.16em; background: currentColor; }
+details.alarma > summary .sub-label::before { -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.5 1.5 21h21L12 2.5zm-1 6.5h2v6h-2V9zm0 8h2v2h-2v-2z'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.5 1.5 21h21L12 2.5zm-1 6.5h2v6h-2V9zm0 8h2v2h-2v-2z'/></svg>") center / contain no-repeat; }
+/* 89. "Si nota algo al entrenar": trazo de pulso delante */
+details.sintomas > summary .sub-label::before { -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M2 12h4l3-7 4 14 3-7h6'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M2 12h4l3-7 4 14 3-7h6'/></svg>") center / contain no-repeat; }
+/* 90. De un vistazo: simbolo en cada columna y vinetas de su color */
+.semaforo-col h4 { display: flex; align-items: center; gap: 7px; }
+.semaforo-col h4::before { content: "\2713"; flex: 0 0 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; font-size: .72rem; letter-spacing: 0; background: var(--info); color: var(--surface); }
+.semaforo-col.s-precaucion h4::before { content: "!"; background: var(--precaucion); }
+.semaforo-col.s-alerta h4::before { content: "\2715"; background: var(--alerta); }
+.semaforo-col.s-info li::marker { color: var(--info); } .semaforo-col.s-precaucion li::marker { color: var(--precaucion); } .semaforo-col.s-alerta li::marker { color: var(--alerta); }
+/* 91. Plan semanal: filas alternas y tipo de ejercicio con titular ancho */
+.tabla-plan tbody tr:nth-child(even) > * { background: color-mix(in srgb, var(--accent) 3.5%, transparent); }
+.tabla-plan tbody th { font-stretch: 110%; }
+/* 92. Hoy: rotulo con punto verde, como un indicador encendido */
+.hoy-cab small::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; vertical-align: .05em; background: var(--info); box-shadow: 0 0 0 3px color-mix(in srgb, var(--info) 20%, transparent); }
+/* 93. Pestanas: el contador de la pestana abierta se rellena con su color */
+.tabs button[aria-selected="true"] .cnt { background: var(--accent); color: var(--surface); }
+.tabs button[aria-selected="true"] .cnt.c-alerta { background: var(--alerta); } .tabs button[aria-selected="true"] .cnt.c-precaucion { background: var(--precaucion); } .tabs button[aria-selected="true"] .cnt.c-ok { background: var(--info); }
+.tabs button[aria-selected="true"] .ic { color: var(--accent); }
+/* 94. Reglas e interacciones: se elevan al pasar; farmacos implicados con punto */
+article.regla, article.ddi { transition: box-shadow .2s, border-color .2s; }
+article.regla:hover, article.ddi:hover { box-shadow: var(--shadow); }
+article.regla footer .chip { display: inline-flex; align-items: center; gap: 5px; }
+article.regla footer .chip::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .7; }
+/* 95. Interacciones: el signo + en una pastilla redonda */
+.ddi .mas { display: inline-grid; place-items: center; width: 1.3em; height: 1.3em; margin-inline: 5px; border-radius: 50%; background: var(--accent-soft); font-size: .82em; line-height: 1; vertical-align: .12em; }
+/* 96. Sellos de nivel (ATENCION, MAYOR...): punto de color delante */
+.nivel { display: inline-flex; align-items: center; gap: 5px; }
+.nivel::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+/* 97. Indice lateral numerado (01, 02...) en letra de terminal */
+.indice-informe { counter-reset: idx; }
+.indice-informe a { counter-increment: idx; }
+.indice-informe a::before { content: counter(idx, decimal-leading-zero); content: counter(idx, decimal-leading-zero) / ""; display: inline-block; min-width: 1.9em; font-family: var(--mono); font-size: .68rem; font-weight: 600; color: var(--muted); }
+@media (min-width: 1240px) { .indice-informe a.activo::before { content: counter(idx, decimal-leading-zero); content: counter(idx, decimal-leading-zero) / ""; color: var(--oro); text-shadow: 0 0 6px color-mix(in srgb, var(--oro) 60%, transparent); } }
+/* 98. Descargas: las opciones para compartir en una rejilla ordenada, alineadas a la izquierda */
+.descargas .acciones:not(:first-of-type) { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 8px; }
+.descargas .acciones:not(:first-of-type) > .btn-sec { justify-content: flex-start; text-align: left; margin: 0; border-radius: 14px; min-height: 44px; }
+.descargas .acciones:not(:first-of-type) > .btn-sugerencia { justify-content: center; grid-column: 1 / -1; }
+/* 99. Secciones del detalle: fila que se ilumina al pasar */
+details.seccion > summary { border-radius: var(--r-sm); padding-inline: 8px; margin-inline: -8px; transition: background-color .15s; }
+details.seccion > summary:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+details.seccion[open] > summary::before { left: -2px; }
+/* 100. Fuentes de cada interaccion y de cada farmaco: icono de libro delante */
+article.ddi footer { display: block; }
+article.ddi footer::before, details.farmaco .fuentes::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; margin-right: .45em; vertical-align: -.2em; background: currentColor; opacity: .75; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><path d='M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z'/><path d='M4 19a2 2 0 0 1 2-2h13'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><path d='M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z'/><path d='M4 19a2 2 0 0 1 2-2h13'/></svg>") center / contain no-repeat; }
