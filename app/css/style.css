@@ -3937,3 +3937,15 @@ body.sencillo { font-size: 1.1rem; }
 @media (max-width: 420px) { .sencillo-vista { margin: 0 0 32px; padding: 14px; border-radius: var(--r-md); } .sen-semana .anillos { width: 80px; height: 80px; } }
 :root[data-theme="contrast"] :is(.hoy-cuidados li, .sen-cuidados li) { background: var(--surface); border: 2px solid var(--precaucion); }
 @media print { body.sencillo main.contenedor > :not(#sencillo) { display: block !important; } #sencillo, .hoy-sencillo, .pq-mini { display: none !important; } }
+/* G7 ejercicios animados: el pictograma es un boton que abre su ficha (la ficha y la animacion llevan sus estilos en js/movimiento.js) */
+.picto-btn { position: relative; display: block; flex: 0 0 auto; align-self: flex-start; padding: 0; border: 0; border-radius: 12px; background: none; color: inherit; cursor: pointer; }
+.picto-btn::after { content: ""; position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='%23fff'/%3E%3C/svg%3E") center / 14px no-repeat; box-shadow: 0 0 0 2px var(--surface); }
+.picto-btn:hover .picto { box-shadow: inset 0 0 0 2px var(--accent); }
+.picto-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.bloques.grande .picto-btn::after { width: 24px; height: 24px; background-size: 16px; }
+:root[data-theme="contrast"] .picto-btn::after { box-shadow: 0 0 0 2px #fff; }
+@media print { .picto-btn::after { display: none; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  html:not(.pa-quieto) .picto-btn .picto { transition: box-shadow .2s, scale .2s var(--ease-muelle); }
+  html:not(.pa-quieto) .picto-btn:hover .picto { scale: 1.05; }
+}

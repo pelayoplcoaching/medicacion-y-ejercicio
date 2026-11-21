@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212131";
-import { APP_VERSION } from "./version.js?v=202611212131";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212131";
-import { picto } from "./pictos.js?v=202611212131";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212131";
-import { cargarScript } from "./libs.js?v=202611212131";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212131";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212131";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212136";
+import { APP_VERSION } from "./version.js?v=202611212136";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212136";
+import { picto } from "./pictos.js?v=202611212136";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212136";
+import { cargarScript } from "./libs.js?v=202611212136";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212136";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212136";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,8 +32,23 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212131"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212131"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212136"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212136"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212136"));
+/** Ejercicios animados (mejora grande 7): el pictograma de cada ejercicio es un botón que abre su ficha con el movimiento. */
+const botonPicto = (b) => `<button type="button" class="picto-btn" data-ejercicio="${b.nombre}" aria-label="${t("ej.ver")}: ${b.nombre}">${picto(b.pict)}</button>`;
+/** El bloque completo de un ejercicio por su nombre (en cualquiera de las sesiones tipo, de nivel estándar o frágil). */
+function buscarBloque(nombre) {
+  for (const tipo of ["fuerza_eq", "fuerza", "aerobico", "equilibrio"]) for (const fragil of [false, true]) { const b = sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }).bloques.find((x) => x.nombre === nombre); if (b) return b; }
+  return null;
+}
+function abrirEjercicio(nombre) {
+  const b = buscarBloque(nombre); if (!b) return;
+  const presentes = datos ? porquesDe(evaluar(datos, medsActivos(), ctxActual()).items.flatMap((it) => [...it.senales])) : [];
+  cargarMov().then((m) => m.abrir(b, { presentes, variante: leerVariantes()[b.nombre] || "normal" })).catch(() => { cargarMov.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+// en fase de captura: dentro de la sesión el dibujo está en la etiqueta de la casilla y el toque no debe marcarla
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-ejercicio]"); if (b) { ev.preventDefault(); ev.stopPropagation(); abrirEjercicio(b.dataset.ejercicio); } }, true);
 /** «¿Por qué?» (mejora grande 1): explicador animado de cada mecanismo, por señal de la base (el contenido está en js/porque.js). */
 const PQ_SENAL = { fc_no_valida: "pulso", bradicardia: "pulso", hipoglucemia: "azucar", enmascara_hipoglucemia: "azucar", sangrado: "sangrado", hipotension: "tension", deshidratacion: "agua", hipopotasemia: "agua", hiponatremia: "agua", renal: "agua", litio: "agua", calor: "calor", anticolinergico: "calor", sedacion: "equilibrio", caidas: "equilibrio", miopatia: "musculo", tendon: "tendon", qt: "ritmo", taquicardia: "acelera", perdida_muscular: "fuerza_hueso", hueso: "fuerza_hueso", fotosensibilidad: "sol", hipertension: "tension_alta", fatiga: "cansancio" };
 const PQ_ORDEN = ["pulso", "azucar", "sangrado", "tension", "agua", "calor", "equilibrio", "musculo", "tendon", "ritmo", "acelera", "fuerza_hueso", "sol", "tension_alta", "cansancio"];
@@ -789,7 +804,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212131").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212136").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1902,8 +1917,8 @@ function bloqueHtml(b, i, { grande = false } = {}) {
   const botones = b.facil || b.dificil ? `<span class="variantes" role="group" aria-label="${t("ej.variante")}">${["facil", "normal", "dificil"].filter((k) => k === "normal" || b[k]).map((k) => `<button type="button" data-v="${k}" data-ej="${b.nombre}" aria-pressed="${v === k}">${t("ej." + k)}</button>`).join("")}</span>` : "";
   const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones}`;
   return grande
-    ? `<li><label><input type="checkbox" data-i="${i}">${picto(b.pict)}<span>${cuerpo}</span></label></li>`
-    : `<li><span class="min">${b.min}′</span>${picto(b.pict)}<span>${cuerpo}</span></li>`;
+    ? `<li><label><input type="checkbox" data-i="${i}">${botonPicto(b)}<span>${cuerpo}</span></label></li>`
+    : `<li><span class="min">${b.min}′</span>${botonPicto(b)}<span>${cuerpo}</span></li>`;
 }
 function activarVariantes(raiz) {
   raiz.querySelectorAll(".variantes button").forEach((btn) => btn.addEventListener("click", (ev) => {
@@ -2017,7 +2032,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212131").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212136").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;

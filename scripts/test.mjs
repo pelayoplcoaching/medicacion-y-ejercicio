@@ -314,6 +314,20 @@ console.log("\n«¿Por qué?»: explicadores animados de los mecanismos (mejora 
   check("las fuentes de los explicadores son las de las reglas de la base", PQ.PQ_IDS.every((id) => PQ.PORQUE[id].fuentes.every(enKb)), PQ.PQ_IDS.flatMap((id) => PQ.PORQUE[id].fuentes.filter((f) => !enKb(f))).join(" | "));
 }
 
+console.log("\nEjercicios animados (mejora grande 7)");
+{
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/movimiento.js")).href);
+  const PQ = await import(pathToFileURL(path.join(ROOT, "app/js/porque.js")).href);
+  const picts = new Set();
+  for (const tipo of ["aerobico", "fuerza", "fuerza_eq", "equilibrio"]) for (const fragil of [false, true]) for (const b of sesionTipo(tipo, { fragil }).bloques) picts.add(b.pict);
+  check("cada ejercicio de las sesiones tiene su movimiento y sus errores frecuentes", [...picts].every((p) => M.IDS.includes(p) && M.errores(p).length >= 3), [...picts].filter((p) => !M.IDS.includes(p) || M.errores(p).length < 3).join());
+  const forma = (d) => d.replace(/-?\d*\.?\d+/g, "N").replace(/\s+/g, "").replace(/N(?=N)/g, "N,");
+  const anim = M.IDS.map((id) => [id, M.animado(id)]);
+  check("las dos posturas de cada ejercicio tienen los mismos trazos (si no, el navegador no puede pasar de una a otra)", anim.every(([, h]) => [...h.matchAll(/attributeName="d" values="([^"]+)"/g)].every((m) => new Set(m[1].split(";").map(forma)).size === 1)), anim.filter(([, h]) => [...h.matchAll(/attributeName="d" values="([^"]+)"/g)].some((m) => new Set(m[1].split(";").map(forma)).size !== 1)).map(([id]) => id).join());
+  check("las animaciones esperan al toque (begin indefinido) y acaban quietas", anim.every(([, h]) => !/<animate(?![^>]*begin="indefinite")/.test(h) && !/<animate(?![^>]*fill="freeze")/.test(h)));
+  check("los cuidados por ejercicio son mecanismos con explicador", M.IDS.every((id) => M.cuidados(id, PQ.PQ_IDS).every((m) => PQ.PQ_IDS.includes(m))));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

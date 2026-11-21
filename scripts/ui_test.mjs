@@ -106,6 +106,9 @@ try {
   check("tira de 7 días y sesión del día", (await p.$$(".tira .dia")).length === 7 && (await p.$$(".plan-dia .bloques li")).length >= 3);
   check("iconos de grupo terapéutico en la lista", (await p.$$("#lista-meds .ic-grupo.g-corazon")).length >= 1 && (await p.$$("#lista-meds .ic-grupo.g-azucar")).length >= 1);
   check("pictogramas, claves y variantes en los ejercicios", (await p.$$(".plan-dia .picto")).length >= 3 && (await p.$$(".plan-dia .variantes")).length >= 1 && (await p.$$(".plan-dia .clave")).length >= 1);
+  await p.click(".plan-dia .picto-btn >> nth=1"); await p.waitForSelector("#ejercicio[open]", { timeout: 5000 }).catch(() => {});
+  check("tocar el dibujo abre su ficha: las dos posturas (en pruebas, quietas), cómo se hace y errores frecuentes", await p.$eval("#ejercicio", (d) => d.open).catch(() => false) && (await p.$$("#ejercicio .ej-dos figure")).length === 2 && (await p.$$("#ejercicio .ej-errores li")).length >= 3);
+  await p.click("#ej-cerrar"); await p.waitForTimeout(150);
   const detalleAntes = await p.textContent(".plan-dia .bloques li:nth-child(2) .detalle");
   await p.click('.plan-dia .bloques li:nth-child(2) .variantes [data-v="facil"]'); await p.waitForTimeout(200);
   check("variante «más fácil» cambia la descripción y se recuerda", (await p.textContent(".plan-dia .bloques li:nth-child(2) .detalle")) !== detalleAntes && (await p.$eval('.plan-dia .bloques li:nth-child(2) .variantes [data-v="facil"]', (b) => b.getAttribute("aria-pressed"))) === "true");

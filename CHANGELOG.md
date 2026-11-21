@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.4 · 2026-11-21 · Mejoras grandes (5): ejercicios animados paso a paso
+- Los 17 pictogramas de los ejercicios son botones (con una marca de «reproducir») que abren la ficha del ejercicio (`js/movimiento.js`, bajo demanda): el dibujo se mueve entre la postura de partida y la de llegada (animación SVG con `begin="indefinite"`, también en Safari; arranca al abrir y con «Ver el movimiento otra vez»), cómo se hace con su clave, versión más fácil y más difícil (marcada la elegida), tres errores frecuentes por ejercicio y, según su medicación, dos cuidados con su «¿Por qué?».
+- Con «reducir movimiento» (y en las pruebas automáticas) se ven las dos posturas quietas, una junto a otra («Empiece así» / «Llegue hasta aquí»; en marcha y bici, «Un lado» / «Y el otro»).
+- En la sesión guiada, tocar el dibujo no marca la casilla del ejercicio (escucha en fase de captura).
+- Pruebas: 4 nuevas en `test.mjs` (cada ejercicio con movimiento y errores, posturas con los mismos trazos para poder interpolar, animaciones que esperan al toque, cuidados válidos) y 1 en `ui_test.mjs`; accesibilidad de la ficha en claro, oscuro y alto contraste.
+
 ## 1.2.3 · 2026-11-21 · Mejoras grandes (4): «Hoy» de un vistazo y modo sencillo
 - Tarjeta «Hoy»: «Hoy, con cuidado» con hasta 3 cuidados según su medicación y la sesión del día (`datosHoy`, prioridades `CUID_PRIO` por tipo de sesión; textos `cuid.*` en cinco idiomas), cada uno con su «¿Por qué?».
 - Modo sencillo (menú «Más» o «Solo lo de hoy, en grande»; se recuerda en `medex.sencillo`): una sola pantalla con la fecha, la ilustración del día, qué toca, cuánto y a qué hora, un botón grande para empezar la sesión, «Escuchar» (lee lo de hoy con la voz del dispositivo), «Ya lo he hecho», los cuidados, los anillos de la semana y las señales de alarma. El resto de la aplicación queda oculto hasta «Ver todo». Sin medicación, invita a añadirla.

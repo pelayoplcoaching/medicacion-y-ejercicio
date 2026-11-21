@@ -30,6 +30,7 @@ app/
     semana.js           anillos de la semana (moverse, fuerza, equilibrio), racha amable y mapa de 12 semanas (bajo demanda, v1.2)
     voz.js              entrenador por voz de la sesión guiada (síntesis del navegador, bajo demanda, v1.2)
     porque.js           «¿Por qué?»: 15 explicadores animados de mecanismos (escenas SVG con sus estilos, contenido en español con fuentes de la base; bajo demanda, v1.2)
+    movimiento.js       ejercicios animados: dos posturas por pictograma que se alternan (SMIL), errores frecuentes y cuidados por ejercicio (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
