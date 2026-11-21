@@ -81,6 +81,8 @@ try {
   await p.click("#sencillo [data-sen-salir]"); await p.waitForTimeout(300);
   check("«Ver todo» vuelve a la aplicación completa", !(await p.$eval("body", (b) => b.classList.contains("sencillo"))) && await p.isVisible("#panel-medicacion"));
   check("glosario presente", (await p.$$("abbr.glos")).length >= 1);
+  await p.waitForSelector('details[data-sec="beneficios"] .ben-t', { timeout: 5000 }).catch(() => {});
+  check("«Lo que el ejercicio hace por usted»: tarjetas con cifra, tipo de estudio y enlace a la fuente (DOI), marcadas como borrador", (await p.$$('details[data-sec="beneficios"] .ben-t')).length >= 1 && (await p.$$eval('details[data-sec="beneficios"] .ben-fuentes a', (as) => as.length > 0 && as.every((a) => a.href.startsWith("https://doi.org/10.") && a.rel.includes("noopener")))) && /revisión clínica/.test(await p.textContent('details[data-sec="beneficios"] .ben-borrador').catch(() => "")) && /beneficio/.test(await p.textContent('details[data-sec="beneficios"] .resumen-sec').catch(() => "")));
   const tabs = await p.$$eval(".tabs [role=tab] .cnt", (es) => es.map((e) => e.textContent.trim()));
   check("recuentos en pestañas", tabs.some((x) => x !== ""));
   await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(200);

@@ -42,6 +42,7 @@ app/
     mapa.js             Mapa de interacciones: tabla de cruces o red de arcos con gravedad por color, forma y trazo, filtros, «Dónde se concentran» y ficha de cada cruce; textos en 5 idiomas (bajo demanda, v1.2)
     simula.js           «¿Qué cambia si…?»: escenarios con el motor que le pasa app.js, comparación antes/después, avisos de retirada por grupo y resumen para copiar; textos en 5 idiomas (bajo demanda, v1.2)
     consulta.js         estadísticas, CSV y resumen de la consulta (modo profesional); sale de app.js en la v1.2.13 (bajo demanda)
+    beneficios.js       «Lo que el ejercicio hace por usted»: 21 tarjetas de beneficios por situación con cifra, estudio, certeza y DOI (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

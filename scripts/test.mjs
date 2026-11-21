@@ -505,6 +505,23 @@ console.log("\n«¿Qué cambia si…?»: simulador de retirada (mejora grande 16
   check("textos en los cinco idiomas con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(S.TXT[l]).length === ks.length && ks.every((x) => S.TXT[l][x] && vars(S.TXT[l][x]) === vars(S.TXT.es[x]))));
 }
 
+console.log("\n«Lo que el ejercicio hace por usted»: beneficios con su fuente (mejora grande 3)");
+{
+  const B = await import(pathToFileURL(path.join(ROOT, "app/js/beneficios.js")).href);
+  const appSrc = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const CONDS = JSON.parse(appSrc.match(/const CONDICIONES = (\[[^\]]+\])/)[1]);
+  const sits = Object.keys(B.BENEFICIOS).filter((k) => k !== "todos" && k !== "mayores");
+  check("cada grupo de tarjetas es una situación de «Situación clínica» (o «todos» y «mayores»)", sits.every((k) => CONDS.includes(k)) && sits.length >= 15);
+  const todas = Object.values(B.BENEFICIOS).flat();
+  check("ninguna cifra sin fuente: cada tarjeta lleva cifra, explicación, tipo de estudio y al menos un DOI", todas.every((b) => b.cifra && b.unidad && b.titulo && b.texto.length > 40 && b.estudio && b.fuentes.length && b.fuentes.every((f) => /^10\.\d{4,9}\/\S+$/.test(f.doi) && /\d{4}/.test(f.txt))) && new Set(todas.map((b) => b.id)).size === todas.length);
+  check("las cifras clave coinciden con los artículos (HbA1c −0,67; caídas −23 %; dolor de rodilla −12 de 100; 6 minutos +44 m en EPOC)", /0,67/.test(B.BENEFICIOS.diabetes[0].texto) && B.BENEFICIOS.mayores[0].cifra === "−23 %" && /12 puntos/.test(B.BENEFICIOS.artrosis[0].texto) && B.BENEFICIOS.epoc_asma[0].cifra === "+44 m");
+  const s1 = B.situaciones({ condiciones: ["obesidad", "oxigeno", "epoc_asma", "aneurisma_aorta", "diabetes"], edad: 50 });
+  check("situaciones: el oxígeno enseña la de EPOC sin repetirla, se ordenan, lo que no tiene tarjeta no sale y «todos» va al final", s1.join() === "diabetes,epoc_asma,obesidad,todos");
+  check("desde los 65 años o tras una caída, las caídas", B.situaciones({ edad: 72 }).join() === "mayores,todos" && B.situaciones({ edad: 40, caidas: true }).includes("mayores") && !B.situaciones({ edad: 64 }).includes("mayores"));
+  const ks = Object.keys(B.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("interfaz en los cinco idiomas con las mismas variables; tarjetas sin huecos sin rellenar", ["en", "ca", "gl", "eu"].every((l) => Object.keys(B.TXT[l]).length === ks.length && ks.every((x) => B.TXT[l][x] && vars(B.TXT[l][x]) === vars(B.TXT.es[x]))) && !todas.some((b) => /\{\w+\}/.test(b.texto + b.cifra + b.unidad)));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

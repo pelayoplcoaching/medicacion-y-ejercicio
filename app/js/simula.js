@@ -5,7 +5,7 @@
    cambios en su plan de ejercicio. Todo se calcula con el mismo motor que el informe (app.js le pasa «calc»). Avisa de
    los grupos que no se dejan de golpe o que no se deben dejar sin indicación (fichas técnicas; pendiente de revisión
    clínica). Nunca cambia la lista de verdad. Textos de la interfaz en cinco idiomas dentro del módulo. */
-import { t, idioma } from "./i18n.js?v=202611212342";
+import { t, idioma } from "./i18n.js?v=202611212349";
 
 /* grupos con aviso propio al quitarlos: «gradual» (no se dejan de golpe) e «imprescindible» (no se dejan sin indicación
    expresa). Fuente: fichas técnicas (AEMPS), apartados 4.2 y 4.4. */
