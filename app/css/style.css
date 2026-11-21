@@ -3984,3 +3984,9 @@ body.sencillo { font-size: 1.1rem; }
 .calor-resumen span { flex: 1 1 14em; }
 :root[data-theme="contrast"] .hoy-calor { background: var(--surface); }
 @media print { .hoy-calor .calor-chips, .calor-resumen .btn-sec { display: none !important; } }
+/* G16 Que cambia si (v1.2.13): boton por farmaco en la carga de precauciones; la ventana lleva sus estilos en js/simula.js */
+.impacto .imp-sim { grid-column: 1; grid-row: 2; justify-self: start; min-height: 32px; padding: 2px 12px; font-size: .8rem; }
+/* G16b menu Mas desplazable: con las herramientas nuevas ya no cabe en pantallas bajas; se desplaza dentro y no se sale de la pantalla (v1.2.13) */
+.menu-lista { max-height: min(80vh, 760px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+@media (max-width: 639px) { .menu-lista { max-height: calc(100vh - 120px - env(safe-area-inset-bottom, 0px)); max-height: calc(100dvh - 120px - env(safe-area-inset-bottom, 0px)); } }
+.menu-lista .ic-menu svg[fill="none"] { fill: none; stroke: currentColor; }

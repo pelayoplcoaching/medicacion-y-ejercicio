@@ -96,6 +96,16 @@ try {
   check("al tocar un medicamento, la ficha enseña todas las suyas", (await p.$$("#contenido-tab .im-ficha .im-mini li")).length >= 1);
   await p.click("#contenido-tab .im-ficha [data-im-par] >> nth=0"); await p.waitForTimeout(150); await p.click("#contenido-tab .im-ficha [data-im-ver]"); await p.waitForTimeout(700);
   check("«Ver en la lista» lleva a esa interacción del texto completo", (await p.evaluate(() => document.activeElement?.id || "")).startsWith("ddi-"));
+  const medsAntesSim = await p.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("medex.estado")).meds));
+  await p.click("#contenido-tab .im-mapa :is(.im-nom, .im-nodo) >> nth=0"); await p.waitForTimeout(150);
+  const nombreSim = (await p.textContent("#contenido-tab .im-ficha h4").catch(() => "")).trim();
+  await p.click("#contenido-tab .im-ficha [data-im-sim]"); await p.waitForSelector("#simula[open] .sim-tiles", { timeout: 5000 }).catch(() => {});
+  check("desde el mapa, «¿Qué cambia sin él?» abre el simulador con ese medicamento quitado y cinco cifras de antes y después", (await p.$$("#simula [data-sim]:checked")).length === 1 && (await p.textContent("#simula .sim-med.quitado").catch(() => "")).includes(nombreSim) && (await p.$$("#simula .sim-tile")).length === 5 && /→/.test(await p.textContent("#simula #sim-vivo")));
+  check("aviso de no cambiar nada por su cuenta y resumen orientativo", /por su cuenta/.test(await p.textContent("#simula .sim-aviso")) && /no sustituye/.test(await p.textContent("#simula .sim-nota")));
+  await p.click("#simula [data-sim-reiniciar]"); await p.waitForTimeout(200);
+  check("«Volver a empezar» quita las marcas y las cifras", (await p.$$("#simula [data-sim]:checked")).length === 0 && (await p.$$("#simula .sim-tile")).length === 0);
+  await p.click("#sim-cerrar"); await p.waitForTimeout(150);
+  check("la simulación no toca la lista de verdad", (await p.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem("medex.estado")).meds))) === medsAntesSim);
   await p.click('[data-tab="cuando"]'); await p.waitForTimeout(200);
   check("franja horaria pintada", (await p.textContent("#contenido-tab")).length > 50);
   await p.click('[data-tab="general"]'); await p.waitForTimeout(200);

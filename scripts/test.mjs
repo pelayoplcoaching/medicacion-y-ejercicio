@@ -485,6 +485,26 @@ console.log("\nMapa de interacciones: tabla de cruces y red (mejora grande 17)")
   check("textos en los cinco idiomas con las mismas variables; singulares propios", ["en", "ca", "gl", "eu"].every((l) => Object.keys(M.TXT[l]).length === ks.length && ks.every((x) => M.TXT[l][x] && vars(M.TXT[l][x]) === vars(M.TXT.es[x]))) && M.tx("n_int1") === "1 interacción" && vars(M.TXT.es.resumen1) === "{t}");
 }
 
+console.log("\n«¿Qué cambia si…?»: simulador de retirada (mejora grande 16)");
+{
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/simula.js")).href);
+  const { prescripcion } = await import(pathToFileURL(path.join(ROOT, "app/js/informes.js")).href);
+  const ctx = { edad: 72, caidas: true, condiciones: new Set() };
+  const lista = ["bisoprolol", "enalapril", "furosemida", "apixaban", "atorvastatina", "metformina", "gliclazida", "lorazepam", "omeprazol", "ibuprofeno"].map((pid) => ({ pid, dosis: 1, tomas: pid === "metformina" ? 2 : 1, momentos: pid === "metformina" ? ["desayuno", "cena"] : ["desayuno"] }));
+  const motor = { evaluar: (ms) => evaluar(datos, ms, ctx), prescripcion: (res) => prescripcion(res, ctx), ventana: (ms) => ventanaEntrenamiento(indice, ms), unidad: (pid) => indice.porId.get(pid)?.principio.unidad, cuidados: (sen) => [...new Set(sen)].map((id) => ({ id, txt: id })) };
+  const sin = (...q) => S.escenario(motor, lista.filter((m) => !q.includes(m.pid)));
+  const A = sin(), D = S.comparar(A, sin("ibuprofeno"));
+  check("sin ibuprofeno: desaparecen sus dos interacciones mayores y sus avisos, y hay una toma menos", D.mayores[0] === 2 && D.mayores[1] === 0 && D.interFuera.filter((x) => x.nivel === "mayor").length === 2 && D.interFuera.every((x) => /Ibuprofeno/.test(x.txt)) && D.reglasFuera.some((x) => x.farmaco === "Ibuprofeno") && D.tomas[0] - D.tomas[1] === 1 && !D.igual);
+  const D2 = S.comparar(A, sin("bisoprolol"));
+  check("sin el betabloqueante, el pulso vuelve a servir para medir la intensidad y el plan lo refleja", !D2.pulso[0] && D2.pulso[1] && D2.plan.some((p) => p.k === "aer.int" && /RPE/.test(p.antes) && /FC de reserva/.test(p.despues)));
+  check("la misma lista no cambia nada; lo que se pierde va ordenado de más a menos grave", S.comparar(A, sin()).igual && D.interFuera.every((x, i, xs) => i === 0 || ({ mayor: 0, moderada: 1, menor: 2 })[xs[i - 1].nivel] <= ({ mayor: 0, moderada: 1, menor: 2 })[x.nivel]));
+  check("avisos de retirada: los betabloqueantes no se dejan de golpe y los anticoagulantes no se dejan sin indicación; todos los grupos existen en la base", S.retirada("betabloqueantes") === "gradual" && S.retirada("benzodiacepinas") === "gradual" && S.retirada("anticoagulantes") === "imprescindible" && S.retirada("estatinas") === null && [...S.RETIRADA.gradual, ...S.RETIRADA.imprescindible].every((id) => kb.clases.some((c) => c.id === id)));
+  const txt = S.textoResumen(D, ["Ibuprofeno"], "9.9.9");
+  check("resumen para copiar: lo que se quita, las cifras de antes y después y que es orientativo", /Sin: Ibuprofeno/.test(txt) && /Interacciones: \d+ → \d+/.test(txt) && /no sustituye la valoración médica/.test(txt) && /v9\.9\.9/.test(txt) && !/\{\w+\}/.test(txt));
+  const ks = Object.keys(S.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(S.TXT[l]).length === ks.length && ks.every((x) => S.TXT[l][x] && vars(S.TXT[l][x]) === vars(S.TXT.es[x]))));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);
