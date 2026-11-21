@@ -2010,3 +2010,261 @@ body.sin-meds .ilustracion::before { display: none; }
 /* OP5. Ventanas en navegadores sin <dialog> (Safari de iOS 15.0-15.3): app.js las abre con [open] y aqui se centran con velo */
 dialog.dlg-reserva:not([open]) { display: none; }
 dialog.dlg-reserva[open] { display: block; position: fixed; z-index: 1000; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: calc(100% - 24px); max-height: calc(100% - 24px); overflow: auto; box-shadow: 0 0 0 100vmax rgba(20, 11, 58, .55); }
+
+/* ==========================================================================
+   MEJORAS VISUALES 181-230 (bloque V) - 21/11/2026
+   Sale de revisar capturas de movil y escritorio, claro y oscuro, ventanas y
+   paginas secundarias. Sin color-mix nuevo (no necesita reservas de OP3):
+   solo tokens, rgba y degradados. ASCII, sin animaciones continuas.
+   ========================================================================== */
+
+/* --- 1. Lista de medicacion y datos (181-190) --- */
+/* 181. Botones de toma en una fila de cuatro iguales (antes "Noche" bajaba sola); letra algo mas estrecha para que quepa */
+#lista-meds li { grid-template-areas: "nombre acciones" "dosis dosis" "momentos momentos"; }
+.momentos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin-top: 6px; }
+.momentos .mom { min-width: 0; padding: 0 3px; font-size: .76rem; font-stretch: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.momentos .mom[aria-pressed="true"]::before { margin-right: 2px; }
+@media (pointer: coarse) { .momentos .mom { padding: 0 3px; } }
+/* 182. Pausar y quitar arriba a la derecha, como botones redondos con fondo (antes flotaban a media altura) */
+#lista-meds .med-acciones { flex-direction: row; align-self: start; gap: 4px; margin: -4px -2px 0 0; }
+#lista-meds .med-acciones .pausar, #lista-meds .med-acciones .quitar { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2); font-size: 1.15rem; }
+@media (pointer: coarse) { #lista-meds .med-acciones .pausar, #lista-meds .med-acciones .quitar { width: 40px; height: 40px; } }
+/* 183. Dosis larga en una linea con su lapiz: ahora la dosis ocupa todo el ancho de la tarjeta */
+#lista-meds .med-dosis { margin-top: 4px; }
+#lista-meds .med-dosis .editar .ic { flex: 0 0 auto; }
+/* 184. Nombre del grupo en una sola linea con puntos suspensivos (el completo, al pasar por encima) */
+#lista-meds .med-nombre small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 185. Aviso del caso de ejemplo con su boton para vaciar dentro */
+.banner-ejemplo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.banner-ejemplo .btn-sec { background: var(--surface); }
+/* 186. Contador de farmacos junto al titulo de la lista */
+.cuenta-meds { margin-right: auto; padding: 2px 9px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+/* 187. Edad y pulso en reposo en la misma fila tambien en el movil */
+#panel-datos > .fila > label[for] { flex: 1 1 130px; }
+#panel-datos > .fila > label[for] > .lbl { flex-wrap: wrap; row-gap: 2px; }
+#panel-datos > .fila > label.check { flex: 1 1 auto; }
+/* 188. Plegables de datos con icono propio y "N marcadas" */
+.marcadas { margin-left: auto; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: .74rem; font-weight: 700; white-space: nowrap; }
+#bloque-situacion > summary > .sub-label::before, #bloque-situacion-mas > summary > .sub-label::before, #bloque-cribado > summary > .sub-label::before, #bloque-movilidad > summary > .sub-label::before, #bloque-pro > summary > .sub-label::before, #bloque-prescriptor > summary > .sub-label::before { content: ""; display: inline-block; width: 17px; height: 17px; margin-right: 8px; vertical-align: -3px; background: var(--accent); -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+#bloque-situacion > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21s-7.5-4.6-9.5-9.3C1.2 8.5 3.3 5 6.8 5c2 0 3.4 1.1 4.2 2.4C12.3 6.1 13.8 5 15.8 5c3.5 0 5.6 3.5 4.3 6.7C18 16.4 12 21 12 21z'/></svg>"); }
+#bloque-situacion-mas > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7V4z'/></svg>"); }
+#bloque-cribado > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2l8 3v6c0 5-3.4 8.8-8 11-4.6-2.2-8-6-8-11V5l8-3zm-1.2 13.6 5.6-5.6-1.4-1.4-4.2 4.2-2-2-1.4 1.4 3.4 3.4z'/></svg>"); }
+#bloque-movilidad > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M13 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-3 5.5 2.4-1.2L14 10l2.5 2-1.1 1.4-2-1.6-.7 2.6 2.3 2.5-1.2 4.6-1.9-.5 1-3.8-2.3-2.3-1.5 3.6-1.8-.8 2.1-5 1.6-3.7z'/></svg>"); }
+#bloque-pro > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 2h6a2 2 0 0 1 2 2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2-2zm0 2v2h6V4H9zm-1.5 8.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4-6 6-3.5-3.5z'/></svg>"); }
+#bloque-prescriptor > summary { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z'/></svg>"); }
+/* 189. Botones "?" de ayuda mas discretos: sin borde, fondo suave, mas pequenos; se encienden al pasar */
+.btn-ayuda { width: 22px; height: 22px; border-color: transparent; background: var(--accent-soft); color: var(--accent-deep); font-size: .72rem; }
+.btn-ayuda:hover, .btn-ayuda:focus-visible { background: var(--accent); color: var(--accent-fg); }
+@media (pointer: coarse) { .btn-ayuda { width: 28px; height: 28px; } }
+/* 190. Hoja "Como quiere anadir": cada via con su color y "Buscar por nombre" como recomendada */
+.hoja-opciones button[data-ic="camara"] svg { background: var(--info-soft); fill: var(--info); box-shadow: none; }
+.hoja-opciones button[data-ic="caja"] svg { background: var(--precaucion-soft); fill: var(--precaucion); box-shadow: none; }
+.hoja-opciones button[data-ic="pdf"] svg { background: var(--alerta-soft); fill: var(--alerta); box-shadow: none; }
+.hoja-opciones button[data-ic="pegar"] svg, .hoja-opciones button[data-ic="barras"] svg { background: var(--surface-2); fill: var(--fg); box-shadow: none; }
+.hoja-opciones #btn-buscar-nombre { grid-template-columns: 40px minmax(0, 1fr) auto; grid-template-areas: "ic t r" "ic s s"; border-color: var(--accent); background: linear-gradient(90deg, var(--accent-soft), var(--surface) 75%); }
+.hoja-opciones .recomendado { grid-area: r; align-self: start; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-family: var(--mono); font-size: .64rem; font-style: normal; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+
+/* --- 2. Informe (191-200) --- */
+/* 191. Movil: tarjetas de "Farmacos con avisos" con el nombre arriba y el texto a todo el ancho (antes, columna estrechisima) */
+@media (max-width: 639px) {
+  details.farmaco summary { grid-template-columns: 5px 30px minmax(0, 1fr) auto; grid-template-areas: "b i h fl" "b i s fl" "b n n n" "b f f f"; gap: 0 12px; padding-bottom: 10px; }
+  details.farmaco summary .barra { grid-area: b; }
+  details.farmaco summary .ic-grupo { grid-area: i; align-self: start; margin-top: 12px; }
+  details.farmaco summary .txt { display: contents; }
+  details.farmaco summary h4 { grid-area: h; margin-top: 12px; }
+  details.farmaco summary small { grid-area: s; }
+  details.farmaco summary .nivel { grid-area: n; justify-self: start; margin-top: 8px; }
+  details.farmaco summary .una-frase { grid-area: f; margin-top: 6px; }
+  details.farmaco summary .flecha { grid-area: fl; align-self: start; margin-top: 10px; }
+  /* 192. Movil: la etiqueta de nivel encima del titulo de cada regla o interaccion, para que el titulo no se parta */
+  article.regla > header, article.ddi > header { flex-direction: column-reverse; align-items: flex-start; gap: 6px; }
+  article.regla > header h4, article.ddi > header h4 { flex: 0 0 auto; }
+}
+/* 193. "Ver mi plan / Descargar / Compartir" en una fila de tres iguales (antes "Compartir" bajaba solo) */
+.veredicto-acciones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; }
+.veredicto-acciones > .btn, .veredicto-acciones > .btn-sec { min-width: 0; justify-content: center; padding-inline: 6px; gap: 6px; }
+@media (max-width: 420px) { .veredicto-acciones > .btn, .veredicto-acciones > .btn-sec { font-size: .86rem; } .veredicto-acciones > .btn svg, .veredicto-acciones > .btn-sec svg { display: none; } }
+/* 194. "De un vistazo": las dos primeras tarjetas lado a lado y "Evite" a todo el ancho, en dos columnas */
+.semaforo { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 480px) {
+  .semaforo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .semaforo > .s-alerta { grid-column: 1 / -1; }
+  .semaforo > .s-alerta ul { display: block; columns: 2; column-gap: 32px; }
+  .semaforo > .s-alerta li { break-inside: avoid; margin-bottom: 4px; }
+}
+/* 195. Pestanas y tira de dias: se difuminan en el borde cuando hay mas a ese lado (antes se cortaban a media palabra) */
+.tabs.hay-der, .tira.hay-der { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
+.tabs.hay-izq, .tira.hay-izq { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px); mask-image: linear-gradient(90deg, transparent, #000 40px); }
+.tabs.hay-izq.hay-der, .tira.hay-izq.hay-der { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
+/* 196. Tarjeta "Hoy": la franja "mejor entre ..." en su propia linea, bajo el titulo */
+.hoy-cab h3 { line-height: 1.3; }
+.hoy-cab h3 .hoy-franja { display: flex; width: fit-content; margin: 6px 0 0; }
+/* 197. Mini semana de "Hoy": siete columnas legibles con la inicial, los minutos y el tipo de sesion; hoy resaltado */
+.hoy-semana { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.semana { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; width: 100%; max-width: 380px; height: auto; }
+.sem-dia { display: grid; justify-items: center; gap: 4px; padding: 16px 0 6px; border-radius: 12px; color: var(--muted); }
+.sem-dia.hoy { background: var(--accent-soft); color: var(--accent-deep); box-shadow: inset 0 0 0 1px var(--accent); }
+.sem-barra { position: relative; display: flex; align-items: flex-end; width: 14px; height: 30px; border-radius: 6px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+.sem-barra i { display: block; width: 100%; border-radius: 6px; background: linear-gradient(var(--marca-clara), var(--accent)); }
+.sem-barra b { position: absolute; left: 50%; top: -15px; transform: translateX(-50%); font-family: var(--mono); font-size: .62rem; color: var(--accent-deep); }
+.sem-ini { font-family: var(--mono); font-size: .76rem; font-weight: 700; text-transform: uppercase; }
+.sem-ic { width: 14px; height: 14px; fill: currentColor; opacity: .85; }
+.sem-dia.descanso .sem-ic { opacity: .4; }
+/* 198. Resumen de la semana alineado a la izquierda, con la tarjeta */
+.hoy-resumen { text-align: left; }
+/* 199. Recorrido terminado: "Todo listo" junto a los tres circulos */
+.rec-listo { margin: 0; flex: 1 1 auto; min-width: 0; font-size: .84rem; font-weight: 700; color: var(--info-ink); }
+.rec-listo[hidden] { display: none; }
+.recorrido:has(.rec-listo:not([hidden])) ol { flex: 0 0 auto; }
+@media (min-width: 640px) { .rec-listo { display: none !important; } } /* en pantallas anchas ya se leen los tres pasos */
+/* 200. "Pare y consulte si nota...": icono mas grande y texto mas fuerte, distinto de "Si nota algo al entrenar" */
+details.alarma > summary .sub-label { font-size: .98rem; font-weight: 800; color: var(--alerta-ink); }
+details.alarma > summary .sub-label::before { width: 1.35em; height: 1.35em; vertical-align: -.3em; color: var(--alerta); }
+
+/* --- 3. Mi plan y sesion guiada (201-210) --- */
+/* 201. Tira de dias colocada en el dia elegido u hoy (ver 195 para el difuminado) */
+.tira { scroll-padding-inline: 12px; }
+/* 202. Hoy con anillo de marca; los dias ya pasados, atenuados */
+.tira .dia.hoy { box-shadow: 0 0 0 2px var(--accent), 0 .6rem 1.2rem -.9rem var(--accent); }
+.tira .dia.pasado:not(.sel) { opacity: .55; }
+.tira .dia.pasado.hecho:not(.sel) { opacity: .8; }
+/* 203. "Mis dias de ejercicio": los dias del resumen como circulos y botones grandes para elegirlos */
+.dias-resumen { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; letter-spacing: 0; }
+.dias-resumen b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: .68rem; font-weight: 700; }
+.dias-resumen b.on { background: var(--accent); color: var(--accent-fg); }
+.dias-resumen b.off { background: var(--surface-2); color: var(--muted); }
+.dias-chips .chip-btn { min-height: 44px; min-width: 54px; justify-content: center; font-size: .9rem; }
+/* 204. Acciones del dia: "Empezar" a todo el ancho; "Marcar como hecha" e "Imprimir" lado a lado */
+.plan-dia > .acciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.plan-dia > .acciones > :first-child { grid-column: 1 / -1; }
+.plan-dia > .acciones > * { width: 100%; min-width: 0; justify-content: center; }
+.plan-dia > .acciones > :not(:first-child) { min-height: 44px; padding-inline: 8px; font-size: .9rem; line-height: 1.2; }
+/* 205. Calendario, compartir semana y CSV: botones del mismo ancho */
+.plan > .acciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 6px; }
+.plan > .acciones > .btn-sec { width: 100%; justify-content: flex-start; }
+/* 206. "Siguiente paso" del plan con icono de progreso */
+.plan-prog { position: relative; padding-left: 46px; }
+.plan-prog::before { content: ""; position: absolute; left: 12px; top: 10px; width: 24px; height: 24px; background: currentColor; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.6 9 11.6l4 4 6.6-6.6H16V7h7v7h-2v-3.6l-8 8-4-4-4.6 4.6L3 17.6z'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.6 9 11.6l4 4 6.6-6.6H16V7h7v7h-2v-3.6l-8 8-4-4-4.6 4.6L3 17.6z'/></svg>") center / contain no-repeat; }
+/* 207. Sesion guiada: casilla mas grande; el bloque hecho se tacha y se atenua entero */
+.bloques.grande input { width: 28px; height: 28px; flex-basis: 28px; }
+.bloques.grande li:has(input:checked) { background: var(--surface-2); }
+.bloques.grande li:has(input:checked) .picto { opacity: .5; }
+/* 208. Constantes (glucosa, tension, pulso) en rejilla de dos; la glucosa, con sus dos campos, a todo el ancho */
+.constantes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+.constantes > label { min-width: 0; }
+.constantes > label input[type="number"] { width: 100%; }
+.constantes > label.doble { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 10px; }
+.constantes > label.doble > span { grid-column: 1 / -1; }
+/* 209. Esfuerzo: "muy suave / moderado / muy duro" bajo la barra */
+.rpe-campo { display: inline-grid; grid-template-columns: auto auto auto; align-items: center; column-gap: 10px; row-gap: 0; }
+.rpe-campo .rpe-escala { grid-column: 2; grid-row: 2; display: flex; justify-content: space-between; gap: 4px; margin-top: 2px; font-family: var(--mono); font-size: .62rem; font-weight: 500; letter-spacing: .01em; color: var(--muted); white-space: nowrap; }
+/* 210. SPPB: el campo "Segundos" dentro de la tarjeta del cronometro */
+.crono-sppb { flex-wrap: wrap; }
+.crono-seg { display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: .85rem; font-weight: 600; color: var(--muted); }
+.crono-seg input { width: 92px; }
+
+/* --- 4. Compartir, ventanas y menus (211-220) --- */
+/* 211. "Llevese este informe": los cuatro PDF como tarjetas con icono y una linea de para que sirve; el principal, relleno */
+.docs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 420px) { .docs { grid-template-columns: minmax(0, 1fr); } }
+.btn-doc { display: grid; grid-template-columns: 38px minmax(0, 1fr); grid-template-areas: "ic t" "ic s"; gap: 2px 10px; align-items: center; min-height: 66px; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); color: var(--fg); font: inherit; text-align: left; cursor: pointer; transition: border-color .15s, box-shadow .2s; }
+.btn-doc > svg { grid-area: ic; width: 38px; height: 38px; padding: 9px; border-radius: 12px; background: var(--accent-soft); fill: var(--accent); box-sizing: border-box; }
+.btn-doc > b { grid-area: t; font-size: .95rem; line-height: 1.25; color: var(--accent-deep); }
+.descargas .btn-doc > small { grid-area: s; max-width: none; font-size: .8rem; line-height: 1.3; color: var(--muted); opacity: 1; }
+.btn-doc:hover, .btn-doc:focus-visible { border-color: var(--accent); box-shadow: var(--shadow); }
+.btn-doc[aria-busy="true"], .btn-doc:disabled { opacity: .65; cursor: progress; }
+body[data-modo="paciente"] #btn-pdf-paciente, body[data-modo="profesional"] #btn-pdf-medico { order: -1; border-color: var(--accent); background: var(--accent); }
+body[data-modo="paciente"] #btn-pdf-paciente > b, body[data-modo="profesional"] #btn-pdf-medico > b, body[data-modo="paciente"] .descargas #btn-pdf-paciente > small, body[data-modo="profesional"] .descargas #btn-pdf-medico > small { color: var(--accent-fg); }
+body[data-modo="paciente"] #btn-pdf-paciente > svg, body[data-modo="profesional"] #btn-pdf-medico > svg { background: rgba(255, 255, 255, .2); fill: var(--accent-fg); }
+/* 212. Opciones de compartir en rejilla de dos columnas, todas con icono */
+.descargas .acciones.compartir, .descargas .acciones.compartir-enlaces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.descargas .compartir > .btn-sec, .descargas .compartir-enlaces > .btn-sec { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; justify-content: flex-start; gap: 8px; text-align: left; line-height: 1.2; font-size: .85rem; white-space: normal; }
+.descargas .compartir > .btn-sec svg, .descargas .compartir-enlaces > .btn-sec svg { flex: 0 0 18px; }
+/* 213. "Enviar una sugerencia o error" como enlace discreto al final */
+.descargas > .btn-sugerencia { justify-self: center; min-height: 40px; border: 0; background: none; box-shadow: none; color: var(--accent-deep); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.descargas > .btn-sugerencia svg { width: 16px; height: 16px; }
+/* 214. Ventana de sugerencias: la casilla "Adjuntar datos tecnicos" junto a su texto (antes en lineas separadas) */
+#feedback-form > label.check { display: flex; align-items: center; gap: 10px; }
+/* 215. Menu "Mas": todos los elementos con su icono en un circulo, alineados */
+.menu-lista [role=menuitem] > svg { flex: 0 0 26px; width: 26px; height: 26px; padding: 5px; border-radius: 50%; background: var(--surface-2); fill: var(--accent); box-sizing: border-box; }
+.menu-lista .ic-menu { background: var(--surface-2); color: var(--accent); }
+/* 216. Ficha del farmaco: icono del grupo junto al nombre y los efectos en lista con punto */
+.ficha-titulo { display: flex; align-items: center; gap: 10px; }
+.ficha-titulo .ic-grupo { width: 38px; height: 38px; flex-basis: 38px; padding: 7px; }
+.senales-lista { list-style: none; margin: 10px 0 6px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px 16px; }
+.senales-lista li { position: relative; padding-left: 20px; font-size: .88rem; line-height: 1.35; }
+.senales-lista li::before { content: ""; position: absolute; left: 3px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--precaucion); box-shadow: 0 0 0 3px var(--precaucion-soft); }
+/* 217. Recorrido guiado: la caja junto a lo que explica, con una flecha (la coloca app.js) */
+.tour-flecha { position: fixed; z-index: 72; width: 16px; height: 16px; background: var(--surface); border: 1px solid var(--accent); transform: rotate(45deg); pointer-events: none; }
+.tour-flecha[hidden] { display: none; }
+/* 218. Modo profesional: los cuatro botones de "Paciente en consulta" con la misma altura */
+.consulta .acciones { align-items: stretch; }
+.consulta .acciones > .btn-sec { height: 100%; min-height: 44px; font-size: .82rem; line-height: 1.2; }
+/* 219. "Soy paciente / Soy profesional" con el icono de cada modo */
+.modo button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.modo button > svg { flex: 0 0 18px; width: 18px; height: 18px; fill: currentColor; }
+/* 220. Barra inferior: los numeros ya no tapan el dibujo (anillo del color de la barra) */
+.nav-badge { top: -1px; right: calc(50% - 34px); box-shadow: 0 0 0 2px var(--surface); }
+
+/* --- 5. Pie, paginas y detalles (221-230) --- */
+/* 221. Pie ordenado: firma centrada con su logo y enlaces legales sin partir */
+.firma { justify-content: center; flex-wrap: wrap; text-align: center; font-size: .84rem; }
+.firma span { max-width: 48ch; text-wrap: balance; }
+.pie-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; font-size: 0; text-align: center; }
+.pie-legal > * { font-size: .76rem; white-space: nowrap; }
+/* 222. Legal: el indice de secciones se reparte en dos lineas en lugar de cortarse */
+main.legal .toc { flex-wrap: wrap; overflow: visible; }
+/* 223. Acerca de: cada seccion en su tarjeta con icono y el estado de la base en cifras */
+main.acerca { padding: 0; border: 0; background: none; box-shadow: none; }
+main.acerca section { margin: 12px 0; padding: 16px 18px 14px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow); }
+main.acerca section > h2 { position: relative; padding-left: 42px; min-height: 30px; display: flex; align-items: center; background-position: 42px 100%; }
+main.acerca section > h2::before { content: ""; position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 10px; background: var(--accent-soft); }
+main.acerca section > h2::after { content: ""; position: absolute; left: 6px; top: 6px; width: 18px; height: 18px; background: var(--accent); -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+main.acerca section:nth-of-type(1) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 8h2v7h-2v-7zm0-3h2v2h-2V7z'/></svg>"); }
+main.acerca section:nth-of-type(2) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z'/></svg>"); }
+main.acerca section:nth-of-type(3) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2h11a2 2 0 0 1 2 2v16a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2zm0 2v12.2A3 3 0 0 1 7 16h10V4H6zm1 14a1 1 0 0 0 0 2h10v-2H7z'/></svg>"); }
+main.acerca section:nth-of-type(4) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 15.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM12 6a3.6 3.6 0 0 1 3.6 3.6c0 1.6-1 2.3-1.8 2.9-.7.5-1 .8-1 1.5h-1.6c0-1.5.8-2.2 1.6-2.8.7-.5 1.2-.9 1.2-1.6a2 2 0 0 0-4 0H8.4A3.6 3.6 0 0 1 12 6z'/></svg>"); }
+main.acerca section:nth-of-type(5) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2l8 3v6c0 5-3.4 8.8-8 11-4.6-2.2-8-6-8-11V5l8-3zm0 2.2L6 6.5V11c0 3.9 2.5 7 6 8.9 3.5-1.9 6-5 6-8.9V6.5l-6-2.3z'/></svg>"); }
+main.acerca section:nth-of-type(6) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8.6 6.6 10 8l-4 4 4 4-1.4 1.4L3.2 12l5.4-5.4zm6.8 0L20.8 12l-5.4 5.4L14 16l4-4-4-4 1.4-1.4z'/></svg>"); }
+main.acerca section:nth-of-type(7) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M4 5h16v3H4V5zm0 5h4v9H4v-9zm6 0h4v9h-4v-9zm6 0h4v9h-4v-9z'/></svg>"); }
+main.acerca section:nth-of-type(8) > h2 { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 13.6-3.4-3.4 1.4-1.4 2 2 4.2-4.2 1.4 1.4-5.6 5.6z'/></svg>"); }
+main.acerca #estado-kb { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+main.acerca #estado-kb > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; padding: 12px; border-radius: var(--r-md); background: var(--accent-soft); }
+main.acerca #estado-kb dd { margin: 0; font-size: 1.35rem; font-weight: 800; line-height: 1.15; color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+main.acerca #estado-kb dd small { display: block; margin-top: 2px; font-size: .74rem; font-weight: 500; color: var(--muted); }
+main.acerca #estado-kb dt { font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+main.acerca > .pie { text-align: center; }
+/* 224. Novedades: la entrada mas reciente destacada en su tarjeta */
+main.novedades article:first-of-type { margin: 4px 0 10px; padding: 14px 16px 14px 30px; border-radius: var(--r-md); background: var(--accent-soft); }
+main.novedades article:first-of-type h2::after { content: "Lo \00FAltimo"; padding: 2px 9px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-family: var(--mono); font-size: .64rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+/* 225. Guia: "Abrir la aplicacion" al final y, en el movil, siempre a mano abajo */
+.guia-abrir { display: flex; justify-content: center; margin: 22px 0 6px; }
+.guia-abrir .btn { min-height: 48px; padding-inline: 26px; box-shadow: 0 .8rem 1.8rem -1rem var(--accent); }
+@media (max-width: 719px) { .guia-abrir { position: sticky; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 6; } .guia-abrir .btn { width: 100%; justify-content: center; } }
+/* 226. Paginas secundarias: "Volver a la aplicacion" se queda arriba al bajar (en Legal ya esta fijo el indice) */
+:is(main.acerca, main.novedades, .guia-pag) > .volver { position: sticky; top: 10px; z-index: 6; background: var(--surface); box-shadow: var(--shadow); }
+/* 227. Modo oscuro: iconos de grupo con su color sobre fondo tenue (sin el brillo que los blanqueaba), en la lista, el informe y la ficha */
+:root[data-theme="dark"] .ic-grupo { filter: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) .ic-grupo { filter: none; } }
+/* 228. Foco de teclado bien visible en pestanas, dias, botones de toma, documentos y acciones del veredicto */
+.tabs [role=tab]:focus-visible, .tira .dia:focus-visible, .momentos .mom:focus-visible, .dias-chips button:focus-visible, .btn-doc:focus-visible, .veredicto-acciones > :focus-visible, .modo button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+/* 229. Plegables del informe: icono segun el tipo junto al titulo y contador en pastilla */
+details.seccion > summary h3 { display: flex; align-items: center; gap: 8px; }
+details.seccion[data-sec] > summary h3::before { content: ""; flex: 0 0 18px; width: 18px; height: 18px; background: var(--accent); -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+details.seccion[data-sec="avisos"] { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.5 1.5 21h21L12 2.5zm-1 6.5h2v6h-2V9zm0 8h2v2h-2v-2z'/></svg>"); }
+details.seccion[data-sec="info"] { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 13.6-3.4-3.4 1.4-1.4 2 2 4.2-4.2 1.4 1.4-5.6 5.6z'/></svg>"); }
+details.seccion[data-sec="combinadas"] { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 11a4 4 0 0 1 4-4h2V5h-2a6 6 0 0 0 0 12h2v-2h-2a4 4 0 0 1-4-4zm8-6h-2v2h2a4 4 0 0 1 0 8h-2v2h2a6 6 0 0 0 0-12zm-7 5h6v2H9v-2z'/></svg>"); }
+details.seccion[data-sec="perfil"] { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 2 7l10 5 10-5-10-5zm-8 9.5L2 12.5l10 5 10-5-2-1-8 4-8-4zm0 5L2 17.5l10 5 10-5-2-1-8 4-8-4z'/></svg>"); }
+details.seccion[data-sec="impacto"] { --ic: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M4 19h16v2H4v-2zm1-8h3v6H5v-6zm5-6h3v12h-3V5zm5 3h3v9h-3V8z'/></svg>"); }
+/* 230. "Su plan esta al N %": la cifra grande y los dos botones del mismo alto y ancho */
+.comp-num { font-size: 1.45rem; font-weight: 800; line-height: 1; color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+.completitud .acciones { display: flex; gap: 8px; }
+.completitud .acciones > * { flex: 1 1 0; min-width: 0; min-height: 42px; justify-content: center; }
+
+/* Limpieza: alto contraste, colores forzados e impresion */
+:root[data-theme="contrast"] :is(.sem-dia.hoy, .tira .dia.hoy, .btn-doc, .guia-abrir .btn, main.acerca section, .volver) { box-shadow: none; }
+:root[data-theme="contrast"] :is(.tabs, .tira) { -webkit-mask-image: none; mask-image: none; }
+:root[data-theme="contrast"] .hoja-opciones #btn-buscar-nombre { background: var(--surface); }
+:root[data-theme="contrast"] :is(.sem-barra i, .hoja-opciones .recomendado) { background: var(--accent); }
+@media (forced-colors: active) { .tabs, .tira { -webkit-mask-image: none; mask-image: none; } .tour-flecha { display: none; } .btn-doc { border: 1px solid CanvasText; } }
+@media print { .banner-ejemplo, .cuenta-meds, .marcadas, .rec-listo, .tour-flecha, .guia-abrir, .rpe-escala { display: none !important; } main.acerca section { box-shadow: none; break-inside: avoid; } }

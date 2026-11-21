@@ -193,4 +193,8 @@ export default {
   "datos.copia_nunca": "Oraindik ez duzu zure datuen kopiarik gorde. Mugikorrez aldatzen baduzu edo nabigatzailea ezabatzen baduzu, galdu egingo lirateke.",
   "datos.copia_hace": "Duela {d} egun egin zenuen azken kopia zifratua. Komeni da beste bat egitea aldaketak ez galtzeko.", "datos.copia_ahora": "Egin kopia orain", "datos.luego": "Geroago",
   "datos.entendido": "Ulertuta",
+  "ejemplo.vaciar": "Hustu eta hasi nire zerrenda", "lista.cuenta": "{n} farmako", "lista.cuenta1": "farmako 1", "lista.cuenta_pausa": " · {n} etenda", "datos.marcadas": "{n} markatuta",
+  "datos.marcada1": "1 markatuta", "hoja.recomendado": "Gomendatua", "rec.listo": "Dena prest: zure plana badaukazu", "rpe.suave": "oso arina", "rpe.moderado": "ertaina", "rpe.duro": "oso gogorra",
+  "desc.medico.x": "Laburra eta klinikoa, kontsultara eramateko", "desc.paciente.x": "Zure plana hizkera errazean azalduta", "desc.entrenador.x": "Saioak zuzentzen dituenak jakin behar duena",
+  "desc.tarjeta.x": "Funtsezkoa orri batean, begi-bistan", "inf.efectos": "Metatzen diren efektuak", "inf.n_efectos": "{n} efektu", "inf.n_farmacos": "{n} farmako",
 };

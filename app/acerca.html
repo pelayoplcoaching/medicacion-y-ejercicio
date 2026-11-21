@@ -115,11 +115,11 @@
       ["Versión de la base", r.version],
       ["Grupos farmacológicos", r.clases.length],
       ["Principios activos con reglas", principios],
-      ["Reglas", `${reglas} (${revisadas} revisadas, ${reglas - revisadas} en borrador)`],
+      ["Reglas", `${reglas}<small>${revisadas} revisadas, ${reglas - revisadas} en borrador</small>`],
       ["Reglas por combinación o situación", r.reglas_combinadas.length],
       ["Interacciones revisadas en español", ddi.interacciones.length],
       ["Interacciones DDInter 2.0", (ddi2.pares || []).length.toLocaleString("es")],
-    ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+    ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
   }
 </script>
 </body>

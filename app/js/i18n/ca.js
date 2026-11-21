@@ -199,4 +199,8 @@ export default {
   "datos.copia_nunca": "Encara no heu desat cap còpia de les vostres dades. Si canvieu de mòbil o esborreu el navegador, es perdrien.",
   "datos.copia_hace": "Fa {d} dies de la vostra última còpia xifrada. Convé fer-ne una altra per no perdre els canvis.", "datos.copia_ahora": "Fer una còpia ara", "datos.luego": "Més tard",
   "datos.entendido": "Entesos",
+  "ejemplo.vaciar": "Buidar i començar la meva llista", "lista.cuenta": "{n} fàrmacs", "lista.cuenta1": "1 fàrmac", "lista.cuenta_pausa": " · {n} en pausa", "datos.marcadas": "{n} marcades",
+  "datos.marcada1": "1 marcada", "hoja.recomendado": "Recomanat", "rec.listo": "Tot a punt: ja teniu el vostre pla", "rpe.suave": "molt suau", "rpe.moderado": "moderat", "rpe.duro": "molt dur",
+  "desc.medico.x": "Breu i clínic, per portar a la consulta", "desc.paciente.x": "El vostre pla explicat en llenguatge senzill", "desc.entrenador.x": "El que ha de saber qui dirigeix les sessions",
+  "desc.tarjeta.x": "L'essencial en un full, a la vista", "inf.efectos": "Efectes que s'acumulen", "inf.n_efectos": "{n} efectes", "inf.n_farmacos": "{n} fàrmacs",
 };

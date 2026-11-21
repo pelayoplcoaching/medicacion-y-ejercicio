@@ -203,16 +203,20 @@ const ES = {
   "datos.copia_nunca": "Aún no ha guardado una copia de sus datos. Si cambia de móvil o borra el navegador, se perderían.",
   "datos.copia_hace": "Hace {d} días de su última copia cifrada. Conviene hacer otra para no perder los cambios.", "datos.copia_ahora": "Hacer copia ahora", "datos.luego": "Más tarde",
   "datos.entendido": "Entendido",
+  "ejemplo.vaciar": "Vaciar y empezar con mi lista", "lista.cuenta": "{n} fármacos", "lista.cuenta1": "1 fármaco", "lista.cuenta_pausa": " · {n} en pausa", "datos.marcadas": "{n} marcadas",
+  "datos.marcada1": "1 marcada", "hoja.recomendado": "Recomendado", "rec.listo": "Todo listo: ya tiene su plan", "rpe.suave": "muy suave", "rpe.moderado": "moderado", "rpe.duro": "muy duro",
+  "desc.medico.x": "Breve y clínico, para llevar a la consulta", "desc.paciente.x": "Su plan explicado en lenguaje sencillo", "desc.entrenador.x": "Lo que debe saber quien dirige las sesiones",
+  "desc.tarjeta.x": "Lo esencial en una hoja, a la vista", "inf.efectos": "Efectos que se acumulan", "inf.n_efectos": "{n} efectos", "inf.n_farmacos": "{n} fármacos",
 };
 
 // Solo el español viaja con la aplicación; los demás idiomas se descargan al elegirlos (js/i18n/xx.js).
 // Las claves que falten en un idioma se muestran en español.
 const DICC = { es: ES };
 const CARGAR = {
-  en: () => import("./i18n/en.js?v=202611211428"),
-  ca: () => import("./i18n/ca.js?v=202611211428"),
-  gl: () => import("./i18n/gl.js?v=202611211428"),
-  eu: () => import("./i18n/eu.js?v=202611211428"),
+  en: () => import("./i18n/en.js?v=202611211544"),
+  ca: () => import("./i18n/ca.js?v=202611211544"),
+  gl: () => import("./i18n/gl.js?v=202611211544"),
+  eu: () => import("./i18n/eu.js?v=202611211544"),
 };
 let actual = "es";
 

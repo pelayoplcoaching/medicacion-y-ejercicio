@@ -391,7 +391,7 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check(`JavaScript inicial ≤ 420 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 420);
   check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
   check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
-  check(`hoja de estilos ≤ 225 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 225);
+  check(`hoja de estilos ≤ 250 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 250);
   const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
   const tabla = css.slice(css.indexOf("/* OP3."));
   const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));

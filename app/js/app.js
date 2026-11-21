@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211428";
-import { APP_VERSION } from "./version.js?v=202611211428";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211428";
-import { picto } from "./pictos.js?v=202611211428";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211428";
-import { cargarScript } from "./libs.js?v=202611211428";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211428";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211428";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211544";
+import { APP_VERSION } from "./version.js?v=202611211544";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211544";
+import { picto } from "./pictos.js?v=202611211544";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211544";
+import { cargarScript } from "./libs.js?v=202611211544";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211544";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211544";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -78,6 +78,18 @@ const ICONS = {
   plan: "M4 5h16v3H4V5zm0 5h4v9H4v-9zm6 0h4v9h-4v-9zm6 0h4v9h-4v-9z",
   paseo: "M13 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-3 5.5 2.4-1.2L14 10l2.5 2-1.1 1.4-2-1.6-.7 2.6 2.3 2.5-1.2 4.6-1.9-.5 1-3.8-2.3-2.3-1.5 3.6-1.8-.8 2.1-5 1.6-3.7z",
   whatsapp: "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0 1 12 4zm-3 4.3c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.6 2.6 1 3.2.8 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4l-2.1-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.5L9.9 8.7c-.2-.4-.4-.4-.6-.4H9z",
+  // mejoras visuales 181-230: iconos para el menú «Más», compartir, documentos y modos
+  ojo: "M12 5c5 0 9 3.5 11 7-2 3.5-6 7-11 7S3 15.5 1 12c2-3.5 6-7 11-7zm0 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z",
+  copiar: "M8 3h10a2 2 0 0 1 2 2v12h-2V5H8V3zM5 7h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm0 2v11h10V9H5z",
+  texto: "M5 4h14v4h-2V6h-4v12h2v2H9v-2h2V6H7v2H5V4z",
+  codigo: "M8.6 6.6 10 8l-4 4 4 4-1.4 1.4L3.2 12l5.4-5.4zm6.8 0L20.8 12l-5.4 5.4L14 16l4-4-4-4 1.4-1.4z",
+  libro: "M6 2h11a2 2 0 0 1 2 2v16a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2zm0 2v12.2A3 3 0 0 1 7 16h10V4H6zm1 14a1 1 0 0 0 0 2h10v-2H7z",
+  guia: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm4.2 3.8-2.1 6.3-6.3 2.1 2.1-6.3 6.3-2.1zM12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z",
+  info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm-1 6h2v7h-2v-7zm0-3h2v2h-2V7z",
+  estrella: "M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9L12 2.5z",
+  bocadillo: "M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v10h2v2l2.5-2H20V6H4zm3 3h10v2H7V9zm0 3h7v2H7v-2z",
+  legal: "M11 3h2v2.1l5.5 1.8 1.2-.4.6 1.9-1.1.4L22 15a4 4 0 0 1-7 0l2.6-6.4L13 7.2V19h4v2H7v-2h4V7.2L6.4 8.6 9 15a4 4 0 0 1-7 0l2.8-6.2-1.1-.4.6-1.9 1.2.4L11 5.1V3zM5.5 10.6 4.1 14h2.8l-1.4-3.4zm13 0L17.1 14h2.8l-1.4-3.4z",
+  estetoscopio: "M6 2h2v2H7v5a3 3 0 0 0 6 0V4h-1V2h2a1 1 0 0 1 1 1v6a5 5 0 0 1-4 4.9V16a3 3 0 0 0 6 0v-1.2a3 3 0 1 1 2 0V16a5 5 0 0 1-10 0v-2.1A5 5 0 0 1 5 9V3a1 1 0 0 1 1-1zm13 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z",
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
 
@@ -116,11 +128,17 @@ function grupoClase(clase) {
 }
 const iconoGrupo = (clase) => `<svg class="ic-grupo g-${grupoClase(clase)}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${GRUPO_ICONS[grupoClase(clase)]}"/></svg>`;
 function ponerIconos() {
-  const mapa = { "btn-caja": "caja", "btn-dictar": "mic", "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar", "btn-pdf-medico": "pdf", "btn-pdf-paciente": "pdf" };
+  const mapa = { "btn-caja": "caja", "btn-dictar": "mic", "btn-foto": "foto", "btn-pdf": "pdf", "btn-pegar": "pegar", "btn-ejemplo": "ejemplo", "btn-vaciar": "vaciar", "btn-enlace": "compartir", "btn-whatsapp": "whatsapp", "btn-email": "correo", "btn-calendario": "calendario", "btn-instalar": "instalar" };
   for (const [id, n] of Object.entries(mapa)) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
   for (const b of $$(".tabs [role=tab]")) if (!b.querySelector("svg") && ICONS[b.dataset.tab]) b.insertAdjacentHTML("afterbegin", icono(b.dataset.tab));
   for (const [id, n] of Object.entries({ "btn-qr": "qr", "btn-exportar": "guardar", "btn-importar-listas": "abrir", "btn-anadir": "pegar", "btn-primero": "buscar", "btn-buscar-nombre": "buscar", "btn-barras": "barras", "btn-ver-mi-plan": "plan", "btn-ir-descargas": "pdf", "btn-compartir": "compartir", "btn-glosario": "ayuda" })) { const b = document.getElementById(id); if (b && !b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(n)); }
   for (const b of $$("#barra-inferior button")) if (!b.querySelector("svg")) b.insertAdjacentHTML("afterbegin", icono(b.dataset.ic === "plan" ? "plan" : b.dataset.ic));
+  // mejoras visuales 181-230: todo el menú «Más», los documentos, compartir y los dos modos con su icono
+  const mas = { "#btn-glosario": "libro", '.menu-lista a[href="guia.html"]': "guia", '.menu-lista a[href="presentacion.html"]': "pastilla", '.menu-lista a[href="novedades.html"]': "estrella", ".menu-lista .btn-sugerencia": "bocadillo", '.menu-lista a[href="acerca.html"]': "info", '.menu-lista a[href="legal.html"]': "legal",
+    "#btn-pdf-medico": "estetoscopio", "#btn-pdf-paciente": "persona", "#btn-pdf-entrenador": "fuerza", "#btn-pdf-tarjeta": "informe",
+    "#btn-ver-enlace": "ojo", "#btn-copiar": "copiar", "#btn-historia": "informe", "#btn-fhir": "codigo", "#btn-txt": "texto", "#btn-sugerencia": "bocadillo",
+    '.modo [data-modo="paciente"]': "persona", '.modo [data-modo="profesional"]': "estetoscopio" };
+  for (const [sel, n] of Object.entries(mas)) for (const b of $$(sel)) if (!b.querySelector(":scope > svg")) b.insertAdjacentHTML("afterbegin", icono(n));
 }
 
 // Idioma de la interfaz (la base de conocimiento sigue en español)
@@ -268,7 +286,7 @@ function aplicarModo() {
   document.body.dataset.modo = estado.modo;
   aplicarConsulta();
   $$(".modo button").forEach((b) => b.setAttribute("aria-checked", b.dataset.modo === estado.modo));
-  const conIcono = (el, txt) => { const svg = el.querySelector(":scope > svg"); el.textContent = txt; if (svg) el.prepend(svg); };
+  const conIcono = (el, txt) => { const b = el.querySelector(":scope > b"); if (b) { b.textContent = txt; return; } const svg = el.querySelector(":scope > svg"); el.textContent = txt; if (svg) el.prepend(svg); };
   conIcono($("#btn-pdf-medico"), estado.modo === "paciente" ? t("desc.medico") : t("desc.medico.pro"));
   conIcono($("#btn-pdf-paciente"), estado.modo === "paciente" ? t("desc.paciente.pac") : t("desc.paciente.pro"));
 }
@@ -564,11 +582,11 @@ function mostrarFicha(pid) {
   });
   const ddiOrden = { mayor: 0, moderada: 1, menor: 2 };
   fichaCuerpo.innerHTML = `
-    <h2 id="ficha-titulo">${p.nombre}</h2>
+    <h2 id="ficha-titulo" class="ficha-titulo">${iconoGrupo(c)}<span>${p.nombre}</span></h2>
     <p class="clase-nombre">${c.nombre}${p.marcas?.length ? " · " + p.marcas.slice(0, 6).join(", ") : ""}${p.umbral_mg?.alta != null ? ` · dosis alta a partir de ${p.umbral_mg.alta.toLocaleString("es-ES")} ${p.unidad || "mg"}/día` : ""}</p>
     <p>${c.resumen}</p>
     ${p.nota ? `<p><em>${p.nota}</em></p>` : ""}
-    ${senales.length ? `<div class="senales-chips">${senales.map((x) => `<span class="chip">${x}</span>`).join("")}</div>` : ""}
+    ${senales.length ? `<ul class="senales-lista">${senales.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
     ${[["general", t("tab.general")], ["aerobico", t("tab.aerobico")], ["fuerza", t("tab.fuerza")], ["equilibrio", t("tab.equilibrio")]].map(([amb, tit]) => { const r = reglas(amb); return r ? `<h3>${tit}</h3><ul class="reglas">${r}</ul>` : ""; }).join("")}
     ${horario ? `<h3>${t("ficha.horario")}</h3><ul class="reglas">${horario}</ul>` : ""}
     ${ddi.length ? `<h3>${t("ficha.interacciones")} (${ddi.length})</h3><ul class="ddi-mini">${ddi.join("")}</ul>` : ""}
@@ -705,7 +723,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211428").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211544").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -781,6 +799,7 @@ $("#btn-ejemplo").addEventListener("click", () => {
   $("#edad").value = estado.edad; $("#caidas").checked = estado.caidas;
   guardar(); render();
 });
+$("#btn-ejemplo-vaciar")?.addEventListener("click", () => { $("#btn-vaciar").click(); setTimeout(() => $("#buscar").focus({ preventScroll: true }), 50); }); // mejora 185
 $("#btn-vaciar").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const copia = estado.meds; estado.meds = []; estado.ejemplo = false; guardar(); render(); const c = $("#cambios"); if (c) c.hidden = true;
@@ -995,7 +1014,7 @@ function camposConstantes() {
   const cs = constantesRelevantes(res, ctxActual());
   if (!cs.length) return "";
   const campo = (name, c, ph) => `<input type="number" name="${name}" min="${c.min}" max="${c.max}" inputmode="numeric" placeholder="${ph}" aria-label="${t("const." + c.id)} ${ph}">`;
-  return `<small>${t("const.titulo")}</small><div class="fila constantes">${cs.map((c) => `<label><span>${t("const." + c.id)} <span class="unidad-mini">${c.unidad}</span></span>${c.doble ? campo("glucosa_antes", c, t("const.antes")) + campo("glucosa_despues", c, t("const.despues")) : campo(c.id, c, "")}</label>`).join("")}</div>`;
+  return `<small>${t("const.titulo")}</small><div class="fila constantes">${cs.map((c) => `<label${c.doble ? ' class="doble"' : ""}><span>${t("const." + c.id)} <span class="unidad-mini">${c.unidad}</span></span>${c.doble ? campo("glucosa_antes", c, t("const.antes")) + campo("glucosa_despues", c, t("const.despues")) : campo(c.id, c, "")}</label>`).join("")}</div>`;
 }
 function leerConstantes(f) {
   const n = (k) => { const v = parseInt(f.get(k), 10); return Number.isFinite(v) ? v : null; };
@@ -1038,10 +1057,17 @@ function barrasSemana(diario) {
   const dias = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return hoyISO(d); });
   const min = dias.map((iso) => diario.filter((x) => x.fecha === iso).reduce((n, x) => n + (x.min || 0), 0));
   const max = Math.max(30, ...min);
-  const L = ["L", "M", "X", "J", "V", "S", "D"];
-  return `<svg class="semana" viewBox="0 0 140 44" role="img" aria-label="${t("hoy.semana_aria", { n: min.reduce((a, b) => a + b, 0) })}">${dias.map((iso, i) => { const h = Math.round((min[i] / max) * 28); const d = new Date(iso + "T12:00"); return `<rect x="${i * 20 + 4}" y="${32 - h}" width="12" height="${Math.max(h, 2)}" rx="3" class="${min[i] ? "con" : "sin"}"/><text x="${i * 20 + 10}" y="42" text-anchor="middle">${L[(d.getDay() + 6) % 7]}</text>${min[i] ? `<text x="${i * 20 + 10}" y="${29 - h}" text-anchor="middle" class="val">${min[i]}</text>` : ""}`; }).join("")}</svg>`;
+  // mejora 197: siete columnas legibles (inicial del día, barra de minutos y el tipo de sesión que toca), hoy resaltado
+  const plan = planActual(), hoy = hoyISO();
+  const IC = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo" };
+  return `<div class="semana" role="img" aria-label="${t("hoy.semana_aria", { n: min.reduce((a, b) => a + b, 0) })}">${dias.map((iso, i) => {
+    const d = new Date(iso + "T12:00"), tipo = plan[d.getDay()] || "descanso";
+    return `<span class="sem-dia${iso === hoy ? " hoy" : ""}${min[i] ? " con" : ""}${tipo === "descanso" ? " descanso" : ""}"><span class="sem-barra"><i style="height:${Math.max(min[i] ? 18 : 0, Math.round((min[i] / max) * 100))}%"></i>${min[i] ? `<b>${min[i]}</b>` : ""}</span><span class="sem-ini">${d.toLocaleDateString(idioma(), { weekday: "narrow" })}</span>${icono(IC[tipo] || "fuerza", "ic sem-ic")}</span>`;
+  }).join("")}</div>`;
 }
 let diarioAbierto = false;
+/** Palabras bajo la barra de esfuerzo (mejora 209): el número solo no dice nada a quien no conoce la escala. */
+const escalaRpe = () => `<span class="rpe-escala" aria-hidden="true"><span>${t("rpe.suave")}</span><span>${t("rpe.moderado")}</span><span>${t("rpe.duro")}</span></span>`;
 function renderHoy() {
   const box = $("#hoy"); if (!box) return;
   const diario = leerDiario();
@@ -1057,7 +1083,7 @@ function renderHoy() {
     <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
     ${diarioAbierto ? `<form class="registro" id="form-registro">
       <div class="chips">${TIPOS_SESION.map((x) => `<label class="chip chip-btn"><input type="radio" name="tipo" value="${x}"${x === (plan.tipo === "descanso" ? "paseo" : plan.tipo) ? " checked" : ""}> ${t("sesion." + x)}</label>`).join("")}</div>
-      <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label>${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5"><output>5</output></label></div>
+      <div class="fila"><label>${t("hoy.minutos")} <input type="number" name="min" min="1" max="300" value="30" inputmode="numeric"></label><label class="rpe-campo">${t("hoy.rpe")} <input type="range" name="rpe" min="1" max="10" value="5"><output>5</output>${escalaRpe()}</label></div>
       <small>${t("hoy.sintomas")}</small>
       <div class="chips">${SINTOMAS.slice(0, 7).map((x) => `<label class="chip chip-btn"><input type="checkbox" name="sint" value="${x.id}"> ${x.nombre}</label>`).join("")}</div>
       ${camposConstantes()}
@@ -1122,6 +1148,7 @@ function pintarPasos() {
   const pasos = [[p1, t("pasos.1")], [p2, t("pasos.2")], [p3, t("pasos.3")]];
   $("#recorrido-pasos").innerHTML = pasos.map(([ok, txt], i) => `<li class="paso${ok ? " hecho" : ""}${pasoActual === i + 1 ? " actual" : ""}"${pasoActual === i + 1 ? ' aria-current="step"' : ""}><b>${ok ? "✓" : i + 1}</b><span>${txt}</span></li>`).join("");
   const b = $("#btn-siguiente"); b.hidden = pasoActual === 0;
+  const listo = $("#rec-listo"); if (listo) listo.hidden = pasoActual !== 0; // mejora 199: con los tres pasos hechos, «Todo listo» en lugar de una barra vacía
   b.innerHTML = `<span class="largo">${t(pasoActual === 1 ? "rec.ir_datos" : pasoActual === 2 ? "rec.ir_meds" : "rec.ir_plan")}</span><span class="corto">${t("rec.siguiente")}</span> →`;
   // barra inferior (móvil): insignias
   const nMeds = estado.meds.length; const bm = $('#barra-inferior [data-ir="medicacion"] .nav-badge'); if (bm) { bm.textContent = nMeds || ""; bm.hidden = !nMeds; }
@@ -1361,6 +1388,30 @@ function renderVistazo(res, ctx) {
   $("#btn-vistazo-semana").addEventListener("click", () => { estado.tab = "plan"; guardar(); render(); $("#contenido-tab").scrollIntoView({ behavior: "smooth", block: "start" }); });
 }
 
+/** «N marcadas» en el resumen de los plegables de datos (situación clínica, más situaciones, cómo se mueve). */
+function pintarMarcadas() {
+  for (const id of ["bloque-situacion", "bloque-situacion-mas", "bloque-movilidad"]) {
+    const d = document.getElementById(id); const sum = d?.querySelector(":scope > summary"); if (!sum) continue;
+    let b = sum.querySelector(".marcadas");
+    if (!b) { b = document.createElement("span"); b.className = "marcadas"; sum.querySelector(".sub-label")?.after(b); }
+    const n = d.querySelectorAll("input[type=checkbox]:checked").length;
+    b.hidden = !n; b.textContent = n ? t(n === 1 ? "datos.marcada1" : "datos.marcadas", { n }) : "";
+  }
+}
+/** Difuminado en los bordes de una fila que se desplaza en horizontal (pestañas, tira de días): indica que hay más. */
+function bordesDesplazables(el) {
+  if (!el) return;
+  const pintar = () => { const max = el.scrollWidth - el.clientWidth; el.classList.toggle("hay-izq", el.scrollLeft > 4); el.classList.toggle("hay-der", max > 4 && el.scrollLeft < max - 4); };
+  if (!el.dataset.bordes) { el.dataset.bordes = "1"; el.addEventListener("scroll", pintar, { passive: true }); window.addEventListener("resize", pintar); }
+  pintar();
+}
+/** Centra un elemento dentro de su fila desplazable sin mover la página. */
+function centrarEnFila(fila, el) {
+  if (!fila || !el || fila.scrollWidth <= fila.clientWidth) return;
+  const fr = fila.getBoundingClientRect(), er = el.getBoundingClientRect();
+  fila.scrollLeft = Math.max(0, fila.scrollLeft + (er.left - fr.left) - (fila.clientWidth - er.width) / 2);
+}
+
 function render() {
   const ctx = ctxActual();
   const resLista = evaluar(datos, estado.meds.filter((m) => !m.libre), ctx);     // todos los conocidos, para pintar la lista
@@ -1403,7 +1454,7 @@ function render() {
       ? `${it.dosisPorToma.toLocaleString("es-ES")} ${it.unidad}${it.esDiaria && it.tomas > 1 ? ` × ${it.aDemanda ? "hasta " : ""}${it.tomas}/día = ${it.dosisTotal.toLocaleString("es-ES")} ${it.unidad}/día` : it.esDiaria ? "/día" : ""}${it.aDemanda ? " · si precisa" : ""}`
       : t("lista.sin_dosis");
     li.innerHTML = `
-      <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small>${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
+      <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small title="${it.clase.nombre.replace(/"/g, "&quot;")}">${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
       <div class="med-dosis"><button type="button" class="editar" title="${t("lista.editar_dosis")}">${dosis}${it.dosisCat === "alta" && !m.pausado ? ` <span class="chip chip-alta">${t("inf.dosis_alta")}</span>` : ""} ${icono("editar", "ic ic-sm")}</button></div>
       <div class="momentos" role="group" aria-label="${t("mom.grupo")}">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${momTxt(mm)}">${mm === "noche" ? t("mom.noche_corto") : momTxt(mm)}</button>`).join("")}</div>
       <div class="med-acciones"><button type="button" class="pausar" title="${m.pausado ? t("lista.reanudar") : t("lista.pausar")}" aria-label="${m.pausado ? t("lista.reanudar") : t("lista.pausar")} ${it.principio.nombre}">${icono(m.pausado ? "reanudar" : "pausa")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${it.principio.nombre}">×</button></div>`;
@@ -1422,6 +1473,11 @@ function render() {
     ul.append(li);
   });
   $("#sin-meds").hidden = estado.meds.length > 0;
+  { // contador de la lista (mejora 186) y casillas marcadas en cada plegable de datos (mejora 188)
+    const cm = $("#cuenta-meds"), n = estado.meds.length, np = estado.meds.filter((m) => m.pausado).length;
+    if (cm) { cm.hidden = !n; cm.textContent = n ? t(n === 1 ? "lista.cuenta1" : "lista.cuenta", { n }) + (np ? t("lista.cuenta_pausa", { n: np }) : "") : ""; }
+    pintarMarcadas();
+  }
   $("#informe").hidden = res.items.length === 0;
   $("#solo-libres").hidden = !(res.items.length === 0 && medsLibres().length);
   if (!res.items.length) { $("#barra-inferior").hidden = $("#completitud").hidden = true; $("#esencial").innerHTML = ""; $("#indice-informe").hidden = true; renderCribado(res); pintarReeval(); pintarSppbEstado(); $("#btn-barras").hidden = !barrasDisponible(); return; }
@@ -1485,6 +1541,7 @@ function render() {
     else if (b.dataset.tab === "interacciones") { const n = res.interacciones.filter((x) => x.nivel !== "menor").length; c.textContent = n || ""; c.className = "cnt" + (res.interacciones.some((x) => x.nivel === "mayor") ? " c-alerta" : n ? " c-precaucion" : ""); }
     else { const { a, p } = cuenta(b.dataset.tab); c.textContent = a + p || ""; c.className = "cnt" + (a ? " c-alerta" : p ? " c-precaucion" : ""); }
   });
+  centrarEnFila($(".tabs"), $('.tabs [aria-selected="true"]')); bordesDesplazables($(".tabs"));
   $("#barra-inferior").hidden = false;
   { const bc = $("#barra-contador"); const n = res.resumen.alerta + res.resumen.precaucion; bc.textContent = n || ""; bc.hidden = !n; bc.className = "nav-badge" + (res.resumen.alerta ? " alerta" : ""); const bp = $('#barra-inferior [data-ir="plan"] .nav-badge'); if (bp) { const d = leerDiario().filter((x) => (Date.now() - new Date(x.fecha + "T12:00")) / 864e5 <= 6).length; bp.textContent = d || ""; bp.hidden = !d; } }
   pintarCompletitud(res);
@@ -1502,7 +1559,7 @@ function render() {
   const perfil = Object.entries(res.perfil).filter(([s]) => datos.kb.senales[s] && !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s)).sort((a, b) => b[1].length - a[1].length);
   $("#perfil").innerHTML = "";
   if (perfil.length) {
-    const sec = seccion("Efectos que se acumulan", { abierta: false, clave: "perfil", resumen: `${perfil.length} efectos` });
+    const sec = seccion(t("inf.efectos"), { abierta: false, clave: "perfil", resumen: t("inf.n_efectos", { n: perfil.length }) });
     sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small></li>`).join("")}</ul>`;
     $("#perfil").append(sec);
   }
@@ -1514,6 +1571,7 @@ function seccion(titulo, { abierta = true, clave, resumen = "" } = {}) {
   sec.className = "seccion";
   if (clave && estado.secciones?.[clave] != null) abierta = estado.secciones[clave];
   if (abierta) sec.open = true;
+  if (clave) sec.dataset.sec = clave.replace(/^.*:/, ""); // icono de la cabecera según el tipo (avisos, info, combinadas, perfil, impacto)
   sec.innerHTML = `<summary><h3>${titulo}</h3>${resumen ? `<span class="resumen-sec">${resumen}</span>` : ""}<span class="flecha" aria-hidden="true">⌄</span></summary><div class="cuerpo-sec"></div>`;
   if (clave) sec.addEventListener("toggle", () => { (estado.secciones ||= {})[clave] = sec.open; });
   return sec;
@@ -1540,10 +1598,10 @@ function renderAmbito(cont, grupos, titulo, amb) {
   if (conAvisos.length) {
     const a = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "alerta").length, 0);
     const p = conAvisos.reduce((n, g) => n + g.reglas.filter((r) => r.nivel === "precaucion").length, 0);
-    pintar(seccion(titulo ? `${titulo}: con avisos` : t("inf.con_avisos"), { clave: (amb || "general") + ":avisos", resumen: `${conAvisos.length} fármacos · ${resumenNiveles(a, p, 0)}` }), conAvisos, true);
+    pintar(seccion(titulo ? `${titulo}: ${t("inf.con_avisos")}` : t("inf.con_avisos"), { clave: (amb || "general") + ":avisos", resumen: `${t("inf.n_farmacos", { n: conAvisos.length })} · ${resumenNiveles(a, p, 0)}` }), conAvisos, true);
   }
   if (soloInfo.length) {
-    pintar(seccion(titulo ? `${titulo}: ${t("inf.solo_info")}` : t("inf.sin_precauciones"), { abierta: !conAvisos.length, clave: (amb || "general") + ":info", resumen: `${soloInfo.length} fármacos · ${resumenNiveles(0, 0, soloInfo.reduce((n, g) => n + g.reglas.length, 0))}` }), soloInfo, false);
+    pintar(seccion(titulo ? `${titulo}: ${t("inf.solo_info")}` : t("inf.sin_precauciones"), { abierta: !conAvisos.length, clave: (amb || "general") + ":info", resumen: `${t("inf.n_farmacos", { n: soloInfo.length })} · ${resumenNiveles(0, 0, soloInfo.reduce((n, g) => n + g.reglas.length, 0))}` }), soloInfo, false);
   }
 }
 
@@ -1660,12 +1718,12 @@ function renderPlan(cont) {
       </div>
     </div>
     <div class="tendencia">${tendenciaSemanas(diario, obj.min)}</div>
-    <details class="bloque mis-dias"${estado.secciones?.misdias ? " open" : ""}><summary><span class="sub-label">${t("plan.dias")} <span class="dias-resumen">· ${[1, 2, 3, 4, 5, 6, 0].filter((d) => estado.plan.dias.includes(d)).map((d) => new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "narrow" })).join(" ")}</span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
+    <details class="bloque mis-dias"${estado.secciones?.misdias ? " open" : ""}><summary><span class="sub-label">${t("plan.dias")} <span class="dias-resumen">${[1, 2, 3, 4, 5, 6, 0].map((d) => `<b class="${estado.plan.dias.includes(d) ? "on" : "off"}">${new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "narrow" })}</b>`).join("")}</span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="dias-chips" role="group" aria-label="${t("plan.dias")}">${[1, 2, 3, 4, 5, 6, 0].map((d) => { const on = estado.plan.dias.includes(d); const nombre = new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "short" }).replace(".", ""); return `<button type="button" class="chip chip-btn${on ? " activo" : ""}" data-dia="${d}" aria-pressed="${on}">${nombre}</button>`; }).join("")}<button type="button" class="btn-sec sm" data-dias="tipo">${t("plan.restablecer")}</button></div>
       <small>${t("plan.dias_nota")}</small>
       ${"Notification" in window ? `<div class="aviso-plan"><label class="check"><input type="checkbox" id="aviso-on"${leerAviso().on ? " checked" : ""}> <span>${t("aviso.toggle")}</span></label><label class="aviso-hora"><span>${t("aviso.hora")}</span><input type="time" id="aviso-hora" value="${leerAviso().hora}"></label><small class="muted">${t("aviso.nota")}</small></div>` : ""}
     </details>
-    <div class="tira" role="group" aria-label="${t("hoy.esta_semana")}">${dias.map((d) => { const iso = hoyISO(d); const tipo = plan[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
+    <div class="tira" role="group" aria-label="${t("hoy.esta_semana")}">${dias.map((d) => { const iso = hoyISO(d); const tipo = plan[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso < hoy ? "pasado" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
     <div class="plan-dia">
       <img class="plan-banda" src="assets/img/${{ aerobico: "plan-aerobico", fuerza: "plan-fuerza", fuerza_eq: "plan-equilibrio", equilibrio: "plan-equilibrio" }[tipoSel] || "plan-paseo"}.webp" alt="" width="960" height="480" loading="lazy" decoding="async">
       <div class="plan-dia-cab"><h3>${sel.toLocaleDateString(idioma(), { weekday: "long", day: "numeric", month: "long" })}${hoyISO(sel) === hoy ? ` · ${t("hoy.titulo").toLowerCase()}` : ""}</h3>${hechoSel.length ? `<span class="chip chip-ok">${t("plan.hecho", { m: hechoSel.reduce((n, x) => n + (x.min || 0), 0) })}</span>` : ""}</div>
@@ -1680,6 +1738,7 @@ function renderPlan(cont) {
     <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button><button type="button" class="btn-sec sm" id="btn-diario-csv">${icono("guardar")} ${t("diario.csv")}</button></div>
     <p class="esencial-nota">${t("plan.nota")}</p>`;
   cont.append(sec);
+  { const tira = sec.querySelector(".tira"); centrarEnFila(tira, tira.querySelector(".dia.sel") || tira.querySelector(".dia.hoy")); bordesDesplazables(tira); } // mejora 201
   sec.querySelectorAll(".tira .dia").forEach((b) => b.addEventListener("click", () => { diaPlan = b.dataset.iso; render(); }));
   sec.querySelectorAll(".dias-chips [data-dia]").forEach((b) => b.addEventListener("click", () => {
     const d = Number(b.dataset.dia); const set = new Set(estado.plan.dias);
@@ -1742,7 +1801,7 @@ function abrirSesion(tipo, fecha = hoyISO()) {
       <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
       <div class="sesion-fin">
         <img class="ses-img" src="assets/img/sesion-fin.webp" alt="" width="104" height="104" loading="lazy" decoding="async">
-        <label>${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output></label>
+        <label class="rpe-campo">${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output>${escalaRpe()}</label>
         ${cs.length ? `<form id="sesion-const" class="registro">${camposConstantes()}</form>` : ""}
         <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
       </div>`;
@@ -2102,8 +2161,7 @@ function abrirSppb() {
       ${paso.img ? `<figure class="sppb-img"><img src="assets/img/sppb-${paso.id}.webp" alt="" width="320" height="320" decoding="async"></figure>` : ""}
       <p>${t("sppb.x." + paso.id)}</p>
       <p class="muted">${t("sppb.seguridad")}</p>
-      <div class="crono">${anilloCrono(0)}<span id="sppb-crono">0,0 s</span><button type="button" class="btn sm" id="sppb-ini">${t("sesion.iniciar")}</button></div>
-      <div class="fila"><label>${t("sppb.segundos")} <input type="number" id="sppb-seg" step="0.1" min="0" max="120" inputmode="decimal"></label></div>
+      <div class="crono crono-sppb">${anilloCrono(0)}<span id="sppb-crono">0,0 s</span><button type="button" class="btn sm" id="sppb-ini">${t("sesion.iniciar")}</button><label class="crono-seg">${t("sppb.segundos")} <input type="number" id="sppb-seg" step="0.1" min="0" max="120" inputmode="decimal"></label></div>
       <div class="acciones"><button type="button" class="btn" id="sppb-sig">${t("sppb.siguiente")}</button><button type="button" class="btn-sec sm" id="sppb-nopuede">${t("sppb.nopuede")}</button>${i ? `<button type="button" class="btn-sec sm" id="sppb-atras">${t("sppb.atras")}</button>` : ""}</div>`;
     const seg = $("#sppb-seg"); const tick = () => { const sgs = (Date.now() - sppbInicio) / 1000; $("#sppb-crono").textContent = sgs.toFixed(1).replace(".", ",") + " s"; if (paso.max && sgs >= paso.max) { parar(); seg.value = paso.max; vibrar(30); } };
     const parar = () => { clearInterval(sppbCrono); sppbCrono = null; $("#sppb-ini").textContent = t("sesion.iniciar"); seg.value = ((Date.now() - sppbInicio) / 1000).toFixed(1); };
@@ -2236,8 +2294,37 @@ function tourPaso(dir) {
   $("#tour-texto").textContent = t("tour." + paso.clave + ".x");
   $("#tour-sig").textContent = visibles.indexOf(paso) === visibles.length - 1 ? t("tour.fin") : t("tour.sig");
   setTimeout(() => $("#tour-sig").focus({ preventScroll: true }), 50);
+  colocarTour(null); clearTimeout(tourTimer);
+  tourTimer = setTimeout(() => colocarTour(el), matchMedia("(prefers-reduced-motion: reduce)").matches ? 30 : 480); // tras el desplazamiento suave
 }
-function cerrarTour() { $$(".tour-foco").forEach((e) => e.classList.remove("tour-foco")); $("#tour").hidden = true; tourI = -1; try { localStorage.setItem("medex.guia", "1"); } catch {} }
+/** Mejora 217: la caja del recorrido junto a lo que explica, con una flecha hacia ello. Sin sitio, se queda donde la pone el CSS. */
+let tourTimer = null;
+function colocarTour(el) {
+  const caja = $(".tour-caja"), fl = $("#tour-flecha"); if (!caja || !fl) return;
+  for (const p of ["left", "top", "right", "bottom", "transform"]) caja.style[p] = "";
+  fl.hidden = true;
+  if (!el || $("#tour").hidden) return;
+  const r = el.getBoundingClientRect(), vw = document.documentElement.clientWidth, vh = innerHeight, m = 18;
+  const entre = (v, a, b) => Math.min(Math.max(v, a), Math.max(a, b));
+  const w = caja.offsetWidth, h = caja.offsetHeight;
+  let x, y, lado;
+  if (vw >= 960) {
+    if (vw - r.right >= w + 2 * m) { x = r.right + m; y = entre(r.top, m, vh - h - m); lado = "izq"; }
+    else if (r.left >= w + 2 * m) { x = r.left - w - m; y = entre(r.top, m, vh - h - m); lado = "der"; }
+    else if (vh - r.bottom >= h + 2 * m) { y = r.bottom + m; x = entre(r.left, m, vw - w - m); lado = "arr"; }
+    else if (r.top >= h + 2 * m) { y = r.top - h - m; x = entre(r.left, m, vw - w - m); lado = "aba"; }
+  } else if (r.bottom > 0 && r.top < vh - h - 2 * m) { // móvil: la caja sigue abajo; la flecha apunta hacia arriba, a lo que explica
+    const cr = caja.getBoundingClientRect(); x = cr.left; y = cr.top; lado = "arr";
+  }
+  if (!lado) return;
+  if (vw >= 960) Object.assign(caja.style, { left: x + "px", top: y + "px", right: "auto", bottom: "auto", transform: "none" });
+  const cr = caja.getBoundingClientRect();
+  fl.className = "tour-flecha " + lado; fl.hidden = false;
+  if (lado === "izq" || lado === "der") { fl.style.top = entre(r.top + Math.min(r.height, 80) / 2, cr.top + 20, cr.bottom - 20) - 8 + "px"; fl.style.left = (lado === "izq" ? cr.left : cr.right) - 8 + "px"; }
+  else { fl.style.left = entre(r.left + Math.min(r.width, 160) / 2, cr.left + 24, cr.right - 24) - 8 + "px"; fl.style.top = (lado === "arr" ? cr.top : cr.bottom) - 8 + "px"; }
+}
+window.addEventListener("resize", () => { if (!$("#tour").hidden && TOUR[tourI]) colocarTour($(TOUR[tourI].sel)); });
+function cerrarTour() { $$(".tour-foco").forEach((e) => e.classList.remove("tour-foco")); $("#tour").hidden = true; tourI = -1; colocarTour(null); try { localStorage.setItem("medex.guia", "1"); } catch {} }
 $("#tour-sig").addEventListener("click", () => tourPaso(1));
 $("#guia-cerrar").addEventListener("click", cerrarTour);
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && !$("#tour").hidden) cerrarTour(); });
@@ -2260,7 +2347,7 @@ function pintarCompletitud(res) {
   box.hidden = !falta.length;
   if (!falta.length) return;
   const sig = falta[0];
-  box.innerHTML = `<div class="comp-cab"><b>${t("comp.titulo", { p: pct })}</b><span class="comp-barra" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${t("comp.titulo", { p: pct })}"><span style="width:${pct}%"></span></span></div>
+  box.innerHTML = `<div class="comp-cab"><b>${t("comp.titulo", { p: `<span class="comp-num">${pct}</span>` })}</b><span class="comp-barra" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${t("comp.titulo", { p: pct })}"><span style="width:${pct}%"></span></span></div>
     <p>${t("comp.sig")} <b>${t("comp." + sig.id)}</b> <small>· ${t("comp." + sig.id + ".por")}</small></p>
     <div class="acciones"><button type="button" class="btn sm" id="comp-ir">${t("comp.ir")}</button>${falta.length > 1 ? `<button type="button" class="btn-sec sm" id="comp-todo" aria-expanded="false">${t("comp.todo", { n: falta.length })}</button>` : ""}</div>
     <ul class="comp-lista" id="comp-lista" hidden>${falta.map((x) => `<li><button type="button" data-comp="${x.id}">${t("comp." + x.id)}</button></li>`).join("")}</ul>`;

@@ -199,4 +199,8 @@ export default {
   "datos.copia_nunca": "You haven't saved a backup of your data yet. If you change phones or clear your browser, it would be lost.",
   "datos.copia_hace": "Your last encrypted backup was {d} days ago. It's a good idea to make a new one so you don't lose your changes.", "datos.copia_ahora": "Back up now", "datos.luego": "Later",
   "datos.entendido": "Got it",
+  "ejemplo.vaciar": "Clear it and start my list", "lista.cuenta": "{n} medicines", "lista.cuenta1": "1 medicine", "lista.cuenta_pausa": " · {n} paused", "datos.marcadas": "{n} ticked",
+  "datos.marcada1": "1 ticked", "hoja.recomendado": "Recommended", "rec.listo": "All set: your plan is ready", "rpe.suave": "very easy", "rpe.moderado": "moderate", "rpe.duro": "very hard",
+  "desc.medico.x": "Short and clinical, to take to your appointment", "desc.paciente.x": "Your plan explained in plain language", "desc.entrenador.x": "What whoever leads the sessions should know",
+  "desc.tarjeta.x": "The essentials on one sheet, in plain sight", "inf.efectos": "Effects that add up", "inf.n_efectos": "{n} effects", "inf.n_farmacos": "{n} medicines",
 };

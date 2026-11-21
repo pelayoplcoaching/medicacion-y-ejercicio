@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-/kOfOh8OAIsdmuLbeIs822kALyQ6M63AoXsIouwPn3M=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-w5RGE3LCB8dyf2mV2koluqJRH/HIYOdIWrftz7qe6rY=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611211428";document.head.appendChild(p)}}catch(e){}</script>
+<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611211544";document.head.appendChild(p)}}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Pauta Activa · Medicación y Ejercicio</title>
 <meta name="description" content="Pauta Activa: introduce tu medicación habitual con la dosis y descubre qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre tus fármacos. Herramienta gratuita del Dr. Pelayo Fdez. Cidón (Fuerza Basada en Evidencia).">
@@ -58,18 +58,18 @@
 }
 </script>
 <link rel="preload" href="assets/fonts/Archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="js/version.js?v=202611211428">
-<link rel="modulepreload" href="js/libs.js?v=202611211428">
-<link rel="modulepreload" href="js/i18n.js?v=202611211428">
-<link rel="modulepreload" href="js/pictos.js?v=202611211428">
-<link rel="modulepreload" href="js/engine.js?v=202611211428">
-<link rel="modulepreload" href="js/parser.js?v=202611211428">
-<link rel="modulepreload" href="js/informes.js?v=202611211428">
-<link rel="modulepreload" href="js/ocr.js?v=202611211428">
+<link rel="modulepreload" href="js/version.js?v=202611211544">
+<link rel="modulepreload" href="js/libs.js?v=202611211544">
+<link rel="modulepreload" href="js/i18n.js?v=202611211544">
+<link rel="modulepreload" href="js/pictos.js?v=202611211544">
+<link rel="modulepreload" href="js/engine.js?v=202611211544">
+<link rel="modulepreload" href="js/parser.js?v=202611211544">
+<link rel="modulepreload" href="js/informes.js?v=202611211544">
+<link rel="modulepreload" href="js/ocr.js?v=202611211544">
 <link rel="preload" href="data/kb.json" as="fetch" crossorigin>
 <link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#140B3A">
-<link rel="stylesheet" href="css/style.css?v=202611211428">
+<link rel="stylesheet" href="css/style.css?v=202611211544">
 </head>
 <body class="cargando" data-modo="paciente">
 
@@ -117,6 +117,7 @@
   <aside>
     <nav class="recorrido" id="recorrido" aria-label="Pasos">
       <ol id="recorrido-pasos"></ol>
+      <p class="rec-listo" id="rec-listo" hidden data-i18n="rec.listo">Todo listo: ya tiene su plan</p>
       <button type="button" class="btn sm" id="btn-siguiente"><span data-i18n="rec.siguiente">Siguiente</span> →</button>
     </nav>
     <div class="panel" id="panel-datos">
@@ -222,7 +223,7 @@
     </div>
 
     <div class="panel" id="panel-medicacion">
-      <div class="cab-panel"><h2 data-i18n="med.titulo">Medicación habitual</h2><div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-consultar" data-i18n="med.consultar">Consultar un fármaco</button><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false" data-i18n="med.perfiles">Listas guardadas</button></div></div>
+      <div class="cab-panel"><h2 data-i18n="med.titulo">Medicación habitual</h2><span class="cuenta-meds" id="cuenta-meds" hidden></span><div class="acciones" style="margin:0"><button type="button" class="btn-sec sm" id="btn-consultar" data-i18n="med.consultar">Consultar un fármaco</button><button type="button" class="btn-sec sm" id="btn-perfiles" aria-expanded="false" data-i18n="med.perfiles">Listas guardadas</button></div></div>
       <div id="perfiles" class="perfiles" hidden>
         <div class="fila"><label style="flex:1 1 160px"><span data-i18n="perf.guardar_como">Guardar la lista actual como</span> <input type="text" id="perfil-nombre" maxlength="30" placeholder="p. ej. Mi madre, Paciente 3" data-i18n-ph="perf.ph" autocomplete="off"></label><button type="button" class="btn-sec sm" id="btn-perfil-guardar" data-i18n="perf.guardar">Guardar</button></div>
         <small data-i18n="perf.nota">Las listas se guardan solo en este dispositivo. No use nombres ni datos que identifiquen a nadie.</small>
@@ -271,7 +272,7 @@
       <div id="no-reconocidos" class="no-reconocidos" hidden></div>
       <div id="cambios" class="cambios" hidden aria-live="polite"></div>
 
-      <div id="ejemplo-banner" class="banner" data-i18n="ejemplo.banner" hidden>Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</div>
+      <div id="ejemplo-banner" class="banner banner-ejemplo" hidden><span data-i18n="ejemplo.banner">Está viendo un caso de ejemplo. Añada su primera medicación o pulse «Vaciar» para empezar con su lista.</span> <button type="button" class="btn-sec sm" id="btn-ejemplo-vaciar" data-i18n="ejemplo.vaciar">Vaciar y empezar con mi lista</button></div>
       <ul id="lista-meds"></ul>
       <p id="solo-libres" class="banner" data-i18n="libre.solo" hidden>Los medicamentos añadidos tal cual no están en la base: no generan recomendaciones. Añada el resto de su medicación para ver el informe.</p>
       <div class="ilustracion" id="ilustracion" aria-hidden="true"><img src="assets/img/inicio-vacio.webp" alt="" width="240" height="240" loading="lazy" decoding="async"></div>
@@ -309,11 +310,12 @@
     <textarea id="informe-texto" hidden readonly></textarea>
     <div class="descargas" id="descargas">
       <h3 data-i18n="desc.titulo">Llévese este informe</h3>
-      <div class="acciones">
-        <button type="button" class="btn" id="btn-pdf-medico" data-i18n="desc.medico">Resumen para su médico (PDF)</button>
-        <button type="button" class="btn" id="btn-pdf-paciente" data-i18n="desc.paciente">Resumen para usted (PDF)</button>
+      <div class="docs">
+        <button type="button" class="btn-doc" id="btn-pdf-medico"><b>Resumen para su médico (PDF)</b><small data-i18n="desc.medico.x">Breve y clínico, para llevar a la consulta</small></button>
+        <button type="button" class="btn-doc" id="btn-pdf-paciente"><b>Su plan (PDF)</b><small data-i18n="desc.paciente.x">Su plan explicado en lenguaje sencillo</small></button>
+        <button type="button" class="btn-doc" id="btn-pdf-entrenador"><b data-i18n="desc.entrenador">Ficha para el entrenador o fisioterapeuta (PDF)</b><small data-i18n="desc.entrenador.x">Lo que debe saber quien dirige las sesiones</small></button>
+        <button type="button" class="btn-doc" id="btn-pdf-tarjeta"><b data-i18n="desc.tarjeta">Tarjeta para la nevera (A5)</b><small data-i18n="desc.tarjeta.x">Lo esencial en una hoja, a la vista</small></button>
       </div>
-      <div class="acciones"><button type="button" class="btn-sec sm" id="btn-pdf-entrenador" data-i18n="desc.entrenador">Ficha para el entrenador o fisioterapeuta (PDF)</button><button type="button" class="btn-sec sm" id="btn-pdf-tarjeta" data-i18n="desc.tarjeta">Tarjeta para la nevera (A5)</button></div>
       <small data-i18n="desc.nota">El resumen para el médico es breve y clínico; el suyo explica cada punto en lenguaje sencillo. Se generan en su dispositivo.</small>
       <small id="pdf-aviso" aria-live="polite"></small>
       <div class="util" id="util" hidden aria-live="polite"></div>
@@ -377,7 +379,7 @@
 <dialog id="hoja-anadir" class="hoja" aria-labelledby="hoja-anadir-titulo">
   <div class="hoja-cab"><p id="hoja-anadir-titulo" data-i18n="hoja.anadir">Añadir medicación</p><button type="button" class="btn-sec sm" id="hoja-anadir-cerrar" data-i18n="ficha.cerrar">Cerrar</button></div>
   <div class="hoja-opciones">
-    <button type="button" id="btn-buscar-nombre" data-ic="buscar"><b data-i18n="via.buscar">Buscar por nombre</b><small data-i18n="via.buscar.x">Marca o principio activo, con la dosis</small></button>
+    <button type="button" id="btn-buscar-nombre" data-ic="buscar"><b data-i18n="via.buscar">Buscar por nombre</b><small data-i18n="via.buscar.x">Marca o principio activo, con la dosis</small><em class="recomendado" data-i18n="hoja.recomendado">Recomendado</em></button>
     <button type="button" id="btn-foto" data-ic="camara"><b data-i18n="acc.foto">Foto de la hoja de medicación</b><small data-i18n="via.foto.x">La app lee los nombres y las dosis</small></button>
     <button type="button" id="btn-caja" data-ic="caja"><b data-i18n="acc.caja">Foto de una caja</b><small data-i18n="via.caja.x">Un medicamento cada vez</small></button>
     <button type="button" id="btn-pdf" data-ic="pdf"><b data-i18n="acc.pdf">Subir un PDF</b><small data-i18n="via.pdf.x">Informe de alta o receta electrónica</small></button>
@@ -392,6 +394,7 @@
 </dialog>
 <div class="tour" id="tour" hidden>
   <div class="tour-fondo" id="tour-fondo"></div>
+  <span class="tour-flecha" id="tour-flecha" aria-hidden="true" hidden></span>
   <div class="tour-caja" role="dialog" aria-labelledby="tour-titulo" aria-describedby="tour-texto">
     <img class="tour-img" id="tour-img" alt="" width="88" height="88" decoding="async" hidden>
     <p class="tour-paso" id="tour-paso"></p>
@@ -407,6 +410,6 @@
   <button type="button" data-ir="plan" data-ic="plan"><span data-i18n="nav.plan">Mi plan</span><b class="nav-badge" hidden></b></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202611211428"></script>
+<script type="module" src="js/app.js?v=202611211544"></script>
 </body>
 </html>

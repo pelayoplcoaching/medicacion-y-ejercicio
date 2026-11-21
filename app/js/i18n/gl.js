@@ -199,4 +199,8 @@ export default {
   "datos.copia_nunca": "Aínda non gardou unha copia dos seus datos. Se cambia de móbil ou borra o navegador, perderíanse.",
   "datos.copia_hace": "Hai {d} días da súa última copia cifrada. Convén facer outra para non perder os cambios.", "datos.copia_ahora": "Facer copia agora", "datos.luego": "Máis tarde",
   "datos.entendido": "Entendido",
+  "ejemplo.vaciar": "Baleirar e comezar a miña lista", "lista.cuenta": "{n} fármacos", "lista.cuenta1": "1 fármaco", "lista.cuenta_pausa": " · {n} en pausa", "datos.marcadas": "{n} marcadas",
+  "datos.marcada1": "1 marcada", "hoja.recomendado": "Recomendado", "rec.listo": "Todo listo: xa ten o seu plan", "rpe.suave": "moi suave", "rpe.moderado": "moderado", "rpe.duro": "moi duro",
+  "desc.medico.x": "Breve e clínico, para levar á consulta", "desc.paciente.x": "O seu plan explicado en linguaxe sinxela", "desc.entrenador.x": "O que debe saber quen dirixe as sesións",
+  "desc.tarjeta.x": "O esencial nunha folla, á vista", "inf.efectos": "Efectos que se acumulan", "inf.n_efectos": "{n} efectos", "inf.n_farmacos": "{n} fármacos",
 };
