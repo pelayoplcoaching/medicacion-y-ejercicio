@@ -18,6 +18,6 @@ jobs:
         run: node scripts/test.mjs
       - name: Pruebas de interfaz
         run: |
-          npm i --no-save playwright@1.49.1
+          npm i --no-save playwright@1.63.0
           npx playwright install --with-deps chromium
           node scripts/ui_test.mjs
