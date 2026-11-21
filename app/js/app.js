@@ -1,17 +1,29 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211218";
-import { APP_VERSION } from "./version.js?v=202611211218";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211218";
-import { picto } from "./pictos.js?v=202611211218";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211218";
-import { cargarScript } from "./libs.js?v=202611211218";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211218";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211218";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211428";
+import { APP_VERSION } from "./version.js?v=202611211428";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211428";
+import { picto } from "./pictos.js?v=202611211428";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211428";
+import { cargarScript } from "./libs.js?v=202611211428";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211428";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211428";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+// Safari de iOS 15.0-15.3 no conoce <dialog>: ventana mínima (abrir, cerrar, Esc) para que la app no se rompa; la coloca el CSS (.dlg-reserva)
+if (typeof HTMLDialogElement !== "function") {
+  for (const d of $$("dialog")) {
+    d.classList.add("dlg-reserva");
+    Object.defineProperty(d, "open", { configurable: true, get: () => d.hasAttribute("open"), set: (v) => d.toggleAttribute("open", !!v) });
+    d.show = d.showModal = () => { d.setAttribute("open", ""); (d.querySelector("[autofocus], input, select, textarea, button") || d).focus?.(); };
+    d.close = (v) => { if (!d.hasAttribute("open")) return; d.removeAttribute("open"); if (v !== undefined) d.returnValue = String(v); d.dispatchEvent(new Event("close")); };
+  }
+  document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; const d = [...document.querySelectorAll("dialog[open]")].pop(); if (d && d.dispatchEvent(new Event("cancel", { cancelable: true }))) d.close(); });
+}
+/** Nombre del momento de la toma en el idioma de la interfaz (el motor guarda el español en MOMENTO_TXT). */
+const momTxt = (m) => t("mom." + m) || MOMENTO_TXT[m];
 
 /** Medicación que entra en el informe (los fármacos "pausados" se quedan en la lista pero no cuentan). */
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
@@ -112,10 +124,10 @@ function ponerIconos() {
 }
 
 // Idioma de la interfaz (la base de conocimiento sigue en español)
-aplicarIdioma(detectarIdioma());
+await aplicarIdioma(detectarIdioma()); // español: inmediato; otro idioma: su diccionario ya viene precargado desde index.html
 ponerIconos(); // antes de la primera pintura: evita que los botones cambien de tamaño al cargar
 $("#idioma").value = idioma();
-$("#idioma").addEventListener("change", (e) => { aplicarIdioma(e.target.value); aplicarModo(); if (datos) { renderVersion(); render(); } });
+$("#idioma").addEventListener("change", async (e) => { await aplicarIdioma(e.target.value); e.target.value = idioma(); aplicarModo(); if (datos) { renderVersion(); render(); } });
 
 const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null };
 const sanearSppb = (x) => (x && Number.isFinite(Number(x.total)) ? { total: Math.max(0, Math.min(12, Number(x.total))), fecha: Number(x.fecha) || Date.now(), partes: x.partes || {}, velocidad: x.velocidad ?? null } : null);
@@ -210,6 +222,7 @@ async function cargar() {
   comprobarCambiosBase(); // antes del primer render: compara la huella guardada con la base nueva
   render();
   pintarAvisoKb();
+  pintarAvisoDatos();
   const hs = location.hash.match(/^#sync=([A-Za-z0-9_.-]+)/);
   if (hs) { recibirSync(hs[1]); return; }
   // primera visita sin lista: recorrido guiado sobre los elementos reales
@@ -220,6 +233,7 @@ async function cargar() {
 function guardar() {
   if (soloLectura) return; // vista de solo lectura (#ver=): no pisa los datos propios
   try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, historialPresc: estado.historialPresc || [] })); } catch {}
+  if (estado.meds.length) datosGuardados(); // primera vez con datos: pedir almacenamiento persistente (los avisos esperan a la próxima visita)
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
 function numeroEntre(v, min, max) { if (v == null || v === "") return null; const n = Number(v); return Number.isFinite(n) && n >= min && n <= max ? n : null; }
@@ -689,13 +703,17 @@ $("#caja-input").addEventListener("change", async () => {
 const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 /* ---------- Resúmenes en PDF ---------- */
+// El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
+let modPdf = null;
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211428").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
   try {
     const res = evaluar(datos, medsActivos(), ctxActual());
     const ctx = { ...ctxActual(), ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), horas: estado.horas, diario: leerDiario(), plan: sanearPlan(estado.plan), cribado: cribadoActual(res), zona: zonaIntensidad(res, ctxActual(), { fcReposo: estado.fcReposo }), prescriptor: estado.modo === "profesional" ? prescriptorActual() : null, prescrito: estado.prescrito, appVersion: APP_VERSION, enlace: `${location.origin}${location.pathname}#lista=${codificarEstado()}`, libres: medsLibres().map((m) => m.nombre + (m.dosis != null ? ` ${m.dosis} mg` : "")) };
-    const doc = await ({ medico: pdfMedico, paciente: pdfPaciente, entrenador: pdfEntrenador, tarjeta: pdfTarjeta }[tipo])(datos.kb, res, ctx);
+    const P = await cargarPdf();
+    const doc = await ({ medico: P.pdfMedico, paciente: P.pdfPaciente, entrenador: P.pdfEntrenador, tarjeta: P.pdfTarjeta }[tipo])(datos.kb, res, ctx);
     doc.save(`${{ medico: "resumen-medico", paciente: "resumen-paciente", entrenador: "ficha-entrenador", tarjeta: "tarjeta-nevera" }[tipo]}-${new Date().toISOString().slice(0, 10)}.pdf`);
     if (estado.modo === "profesional" && !estado.prescrito) { estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision, base: basePrescripcion() }; guardar(); pintarReeval(); }
     toast(t("pdf.generado"), { ms: 3000 });
@@ -1387,7 +1405,7 @@ function render() {
     li.innerHTML = `
       <div class="med-nombre">${iconoGrupo(it.clase)}<div><strong>${it.principio.nombre}</strong><small>${m.combo ? `${t("lista.en")} ${m.combo} · ` : ""}${it.clase.nombre}${m.pausado ? ` · <em>${t("lista.pausado")}</em>` : ""}</small></div></div>
       <div class="med-dosis"><button type="button" class="editar" title="${t("lista.editar_dosis")}">${dosis}${it.dosisCat === "alta" && !m.pausado ? ` <span class="chip chip-alta">${t("inf.dosis_alta")}</span>` : ""} ${icono("editar", "ic ic-sm")}</button></div>
-      <div class="momentos" role="group" aria-label="Momento de las tomas">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${MOMENTO_TXT[mm]}">${{ desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Noche" }[mm]}</button>`).join("")}</div>
+      <div class="momentos" role="group" aria-label="${t("mom.grupo")}">${MOMENTOS.map((mm) => `<button type="button" class="mom" data-m="${mm}" aria-pressed="${(m.momentos || []).includes(mm)}" title="${momTxt(mm)}">${mm === "noche" ? t("mom.noche_corto") : momTxt(mm)}</button>`).join("")}</div>
       <div class="med-acciones"><button type="button" class="pausar" title="${m.pausado ? t("lista.reanudar") : t("lista.pausar")}" aria-label="${m.pausado ? t("lista.reanudar") : t("lista.pausar")} ${it.principio.nombre}">${icono(m.pausado ? "reanudar" : "pausa")}</button><button type="button" class="quitar" aria-label="${t("lista.quitar")} ${it.principio.nombre}">×</button></div>`;
     li.querySelectorAll(".mom").forEach((b) => b.addEventListener("click", () => {
       const set = new Set(m.momentos || []);
@@ -1779,16 +1797,16 @@ function renderCuando(cont) {
   const hh = (h) => `${String(h).padStart(2, "0")}:00`;
   const conInfo = v.motivos.length || v.avisos.length;
   sec.innerHTML = `
-    <p class="intro-cuando">${conInfo ? t("cuando.intro") : "Ninguno de sus fármacos condiciona la hora de entrenar. Elija el momento del día que mejor le encaje; lo importante es la constancia."}</p>
+    <p class="intro-cuando">${conInfo ? t("cuando.intro") : t("cuando.sin_info")}</p>
     <div class="timeline" role="img" aria-label="${t("cuando.titulo")}">${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
-    ${v.mejores.length ? `<p class="mejores">Mejores momentos: ${v.mejores.map((f) => `<b>${hh(f.desde)}–${hh(f.hasta)}</b>`).join(" y ")}</p>` : ""}
-    <details class="bloque" open><summary><span class="sub-label">Hora de sus tomas</span><span class="flecha" aria-hidden="true">⌄</span></summary>
-      <div class="fila horas-tomas">${MOMENTOS.map((m) => `<label>${MOMENTO_TXT[m]} <input type="number" min="0" max="23" inputmode="numeric" data-hora="${m}" value="${estado.horas[m]}"></label>`).join("")}</div>
-      <small>Marque en la lista de medicación (D / C / Ce / N) en qué tomas va cada fármaco.</small>
+    ${v.mejores.length ? `<p class="mejores">${t("cuando.mejores", { m: v.mejores.map((f) => `<b>${hh(f.desde)}–${hh(f.hasta)}</b>`).join(t("cuando.y")) })}</p>` : ""}
+    <details class="bloque" open><summary><span class="sub-label">${t("cuando.horas_tomas")}</span><span class="flecha" aria-hidden="true">⌄</span></summary>
+      <div class="fila horas-tomas">${MOMENTOS.map((m) => `<label>${momTxt(m)} <input type="number" min="0" max="23" inputmode="numeric" data-hora="${m}" value="${estado.horas[m]}"></label>`).join("")}</div>
+      <small>${t("cuando.marque")}</small>
     </details>
-    ${v.motivos.length ? `<h3>${t("cuando.porque")}</h3><ul class="motivos">${v.motivos.sort((a, b) => a.desde - b.desde).map((m) => `<li class="nivel-${m.nivel}"><span class="punto"></span><span><b>${hh(m.desde)}–${hh(m.hasta)}</b> · ${m.farmaco} (toma de ${MOMENTO_TXT[m.momento].toLowerCase()}): ${m.motivo}</span></li>`).join("")}</ul>` : ""}
+    ${v.motivos.length ? `<h3>${t("cuando.porque")}</h3><ul class="motivos">${v.motivos.sort((a, b) => a.desde - b.desde).map((m) => `<li class="nivel-${m.nivel}"><span class="punto"></span><span><b>${hh(m.desde)}–${hh(m.hasta)}</b> · ${m.farmaco} (${t("cuando.toma")} ${momTxt(m.momento).toLowerCase()}): ${m.motivo}</span></li>`).join("")}</ul>` : ""}
     ${v.avisos.length ? `<ul class="motivos">${v.avisos.map((a) => `<li class="nivel-${a.nivel}"><span class="punto"></span><span>${a.farmaco}: ${a.motivo}</span></li>`).join("")}</ul>` : ""}
-    <p class="nota-fuentes">Las ventanas se calculan a partir del inicio y el pico de acción habituales de cada fármaco y de la hora de las tomas que indique. Son orientativas: la respuesta individual varía y, si su médico le ha dado una pauta concreta, siga la suya.</p>`;
+    <p class="nota-fuentes">${t("cuando.nota")}</p>`;
   sec.querySelectorAll("[data-hora]").forEach((inp) => inp.addEventListener("change", () => { const v = parseInt(inp.value, 10); if (v >= 0 && v <= 23) { estado.horas[inp.dataset.hora] = v; guardar(); render(); } }));
   cont.append(sec);
 }
@@ -1810,7 +1828,7 @@ function renderInteracciones(cont, res) {
   }
   const fuentes = [`${datos.ddiCurado.interacciones.length} ${t("ddi.revisadas")}`];
   if (datos.ddi?.pares?.length) fuentes.push(`DDInter 2.0 (${datos.ddi.pares.length.toLocaleString("es")} pares, ${datos.ddi.version})`);
-  else fuentes.push("DDInter 2.0 pendiente de cargar");
+  else fuentes.push(t("ddi.pendiente"));
   sec.insertAdjacentHTML("beforeend", `<p class="nota-fuentes">${t("ddi.nota", { n: fuentes.join(" · ") })}</p>`);
   cont.append(sec);
 }
@@ -1981,7 +1999,7 @@ function abrirEvolucion() {
   $("#evo-pdf").addEventListener("click", async () => {
     const res = evaluar(datos, medsActivos(), ctxActual());
     const ctx = { ...ctxActual(), prescriptor: prescriptorActual(), prescrito: estado.prescrito, appVersion: APP_VERSION, nombres };
-    try { const doc = await pdfEvolucion(datos.kb, res, ctx, evo); doc.save(`evolucion-${evo.hasta}.pdf`); } catch (e) { informarError(e?.message || e); }
+    try { const doc = await (await cargarPdf()).pdfEvolucion(datos.kb, res, ctx, evo); doc.save(`evolucion-${evo.hasta}.pdf`); } catch (e) { informarError(e?.message || e); }
   });
   $("#evo-renovar").addEventListener("click", () => {
     const hist = Array.isArray(estado.historialPresc) ? estado.historialPresc : [];
@@ -2379,6 +2397,7 @@ $("#btn-copia-crear").addEventListener("click", async () => {
     const blob = new Blob([await cifrarCopia(pass)], { type: "application/json" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `pauta-activa-copia-${new Date().toISOString().slice(0, 10)}.pauta`; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     toast(t("copia.creada"), { ms: 5000 });
+    ponerNum("medex.ultima_copia", Date.now()); pintarAvisoDatos();
   } catch (e) { toast(t("copia.error"), { ms: 5000 }); }
 });
 $("#btn-copia-restaurar").addEventListener("click", () => $("#copia-input").click());
@@ -2392,6 +2411,50 @@ $("#copia-input").addEventListener("change", async (ev) => {
   try { aplicarTodo(paq, { fusionar }); } catch { toast(t("copia.error"), { ms: 5000 }); return; }
   toast(t("copia.restaurada"), { ms: 3000 }); setTimeout(() => location.reload(), 600);
 });
+
+// --- cuidar los datos guardados: almacenamiento persistente, aviso en iPhone y recordatorio de copia ---
+const DIA_MS = 864e5;
+function leerNum(k) { try { return Number(localStorage.getItem(k)) || 0; } catch { return 0; } }
+function ponerNum(k, v) { try { localStorage.setItem(k, String(v)); } catch {} }
+const enPantallaInicio = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const esIOSTactil = () => esIOS || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // el iPad con iPadOS se presenta como Mac
+const hayDatos = () => !soloLectura && (estado.meds.length > 0 || leerDiario().length > 0);
+let persistenciaPedida = false;
+/** Pide al navegador que no borre lo guardado aunque falte espacio. Chrome y Safari lo deciden solos, sin preguntar;
+    Firefox abre una ventana de permiso, así que allí solo se pide con la app instalada. */
+async function pedirPersistencia() {
+  if (persistenciaPedida || !navigator.storage?.persist) return;
+  persistenciaPedida = true;
+  try {
+    if (await navigator.storage.persisted()) return;
+    if (/firefox/i.test(navigator.userAgent) && !enPantallaInicio()) return;
+    await navigator.storage.persist();
+  } catch {}
+}
+function datosGuardados() {
+  if (soloLectura) return;
+  if (!leerNum("medex.datos_desde")) ponerNum("medex.datos_desde", Date.now());
+  pedirPersistencia();
+}
+/** Banda de aviso al abrir la app (una sola a la vez): primero la de iPhone/iPad sin instalar; después, la copia pendiente. */
+function pintarAvisoDatos() {
+  const b = $("#aviso-datos"); if (!b) return;
+  if (!hayDatos()) { b.hidden = true; return; }
+  datosGuardados();
+  const ahora = Date.now();
+  // Safari borra lo que guarda una web si pasa una semana sin abrirla; las apps de la pantalla de inicio quedan a salvo
+  if (esIOSTactil() && !enPantallaInicio() && !location.hostname.endsWith("claude.ai") && !leerNum("medex.aviso_ios")) {
+    b.innerHTML = `${t("datos.ios")} <span class="banner-acciones"><button type="button" class="btn-sec sm" id="btn-datos-copia">${t("datos.copia_ahora")}</button> <button type="button" class="btn-sec sm" id="btn-datos-ok">${t("datos.entendido")}</button></span>`;
+    $("#btn-datos-ok").addEventListener("click", () => { ponerNum("medex.aviso_ios", Date.now()); pintarAvisoDatos(); });
+  } else if (ahora - Math.max(leerNum("medex.ultima_copia"), leerNum("medex.datos_desde"), leerNum("medex.copia_aplazada")) > 30 * DIA_MS) {
+    const ult = leerNum("medex.ultima_copia");
+    b.innerHTML = `${ult ? t("datos.copia_hace", { d: Math.floor((ahora - ult) / DIA_MS) }) : t("datos.copia_nunca")} <span class="banner-acciones"><button type="button" class="btn-sec sm" id="btn-datos-copia">${t("datos.copia_ahora")}</button> <button type="button" class="btn-sec sm" id="btn-datos-ok">${t("datos.luego")}</button></span>`;
+    $("#btn-datos-ok").addEventListener("click", () => { ponerNum("medex.copia_aplazada", Date.now()); pintarAvisoDatos(); });
+  } else { b.hidden = true; return; }
+  $("#btn-datos-copia").addEventListener("click", () => $("#btn-copia-crear").click());
+  b.hidden = false;
+}
+document.addEventListener("idioma", () => { if (!$("#aviso-datos")?.hidden) pintarAvisoDatos(); });
 
 // --- pasar a otro dispositivo: enlace #sync= con todo comprimido (deflate) y codificado; QR si cabe ---
 const b64url = (buf) => b64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");

@@ -397,7 +397,8 @@ try {
   check("lista restaurada tras recargar", (await p.$$("#lista-meds li")).length === 6);
   check("cabecera compacta en la segunda visita", await p.$eval("html", (e) => e.classList.contains("retorno")));
   await p.selectOption("#idioma", "en");
-  check("interfaz en inglés", (await p.textContent('[data-tab="cuando"]')).includes("When"));
+  await p.waitForFunction(() => document.documentElement.lang === "en", null, { timeout: 5000 }).catch(() => {}); // el diccionario inglés se descarga al elegirlo
+  check("interfaz en inglés (diccionario descargado al elegirlo)", (await p.textContent('[data-tab="cuando"]')).includes("When"));
   await p.selectOption("#idioma", "es");
   const [dl] = await Promise.all([p.waitForEvent("download"), p.click("#btn-calendario")]);
   check("plan .ics descargable", dl.suggestedFilename().endsWith(".ics"));
@@ -434,6 +435,34 @@ try {
   await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("navegador en inglés: interfaz traducida y visible (sin la clase de espera)", (await pe.textContent('[data-tab="cuando"]')).includes("When") && !(await pe.evaluate(() => document.documentElement.classList.contains("i18n-espera"))) && (await pe.$eval("main", (m) => getComputedStyle(m).visibility)) === "visible");
   await enCtx.close();
+
+  console.log("Sin conexión (service worker)");
+  const offCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" });
+  await offCtx.addInitScript(() => { try { localStorage.setItem("medex.guia", "1"); } catch {} });
+  const po = await offCtx.newPage();
+  po.on("pageerror", (e) => errores.push("sin conexión: " + e.message));
+  await po.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" });
+  // en local (http) la app no registra el service worker; aquí se registra a mano y se espera a que tome el control
+  await po.evaluate(async () => { await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready; });
+  await po.reload({ waitUntil: "networkidle" });
+  check("service worker instalado y controlando la página", await po.evaluate(() => !!navigator.serviceWorker.controller));
+  const cache = await po.evaluate(async () => { const ks = (await caches.keys()).filter((k) => k.startsWith("medex-")); const c = await caches.open(ks[0]); return (await c.keys()).map((r) => new URL(r.url).pathname + new URL(r.url).search); });
+  check("la precarga incluye ilustraciones, idiomas y PDF, pero no las capturas de la guía", cache.some((u) => u.includes("/assets/img/sppb-silla.webp")) && cache.some((u) => /\/js\/i18n\/en\.js\?v=/.test(u)) && cache.some((u) => /\/js\/pdf\.js\?v=/.test(u)) && !cache.some((u) => u.includes("/assets/guia/")));
+  await offCtx.setOffline(true);
+  await po.reload({ waitUntil: "domcontentloaded" });
+  await po.waitForFunction(() => /principios/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 15000 });
+  await po.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
+  check("sin conexión: la app arranca con la base de conocimiento", await po.isVisible("#buscar"));
+  await po.waitForFunction(() => { const i = document.querySelector("#ilustracion img"); return i && i.complete; }, null, { timeout: 5000 }).catch(() => {});
+  check("sin conexión: la ilustración de inicio se ve", await po.$eval("#ilustracion img", (i) => i.complete && i.naturalWidth > 0));
+  await po.waitForFunction(() => /\d/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 5000 });
+  await po.fill("#buscar", "sintrom"); await po.waitForSelector("#sugerencias li", { timeout: 8000 });
+  check("sin conexión: busca por marca comercial (nomenclátor en caché)", /sintrom|acenocumarol/i.test(await po.textContent("#sugerencias")));
+  await po.keyboard.press("Escape");
+  await po.selectOption("#idioma", "en"); await po.waitForTimeout(500);
+  check("sin conexión: se puede cambiar a inglés (diccionario precargado)", await po.evaluate(() => document.documentElement.lang) === "en" && (await po.textContent('[data-tab="cuando"]')).includes("When"));
+  await offCtx.setOffline(false);
+  await offCtx.close();
 } catch (e) {
   fallos++; console.log("  ✘ excepción en las pruebas:", e.message);
 }

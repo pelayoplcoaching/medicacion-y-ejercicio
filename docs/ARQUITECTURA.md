@@ -7,7 +7,7 @@ Documento de referencia para quien mantenga o revise el código. Complementa el 
 - **Todo en el navegador.** No hay servidor ni backend: la aplicación es un sitio estático (GitHub Pages) y ningún dato del paciente sale del dispositivo. Las únicas peticiones de red son los propios ficheros de la app, las bibliotecas externas cargadas bajo demanda (jsPDF, qrcode-generator, Tesseract, pdf.js, desde cdnjs) y el formulario de sugerencias (Tally) que el usuario abre voluntariamente.
 - **Sin dependencias de compilación.** JavaScript ES2022 nativo (módulos), CSS y HTML planos. Lo que hay en `app/` es exactamente lo que se sirve. No hay bundler ni framework; el "build" (`scripts/bump_version.py`) solo re-estampa los parámetros `?v=` de caché.
 - **Datos como ficheros JSON versionados.** La base de conocimiento es un JSON generado a partir de bloques fuente (`data/ext/*.json`) por `scripts/merge_kb.py`, y revisable en hoja de cálculo (`export_revision.py` / `import_revision.py`).
-- **Instalable y sin conexión.** PWA con `manifest.webmanifest` y `sw.js` (precache de la app y de los datos, estrategia "network first, cache fallback" para la base).
+- **Instalable y sin conexión.** PWA con `manifest.webmanifest` y `sw.js`: precarga mínima (app, datos, idiomas, maquetador de PDF e ilustraciones de `assets/img`; las capturas de la guía y la presentación se guardan al visitarlas). Lo que la página pide con `?v=` se precarga con esa dirección (no se descarga dos veces); lo demás se revalida. Datos con "caché primero y actualizar por detrás". La app pide almacenamiento persistente cuando hay datos, avisa en iPhone/iPad sin instalar y recuerda la copia cifrada cada 30 días.
 
 ## 2. Estructura
 
@@ -24,8 +24,11 @@ app/
     engine.js           motor puro (sin DOM): índice, búsqueda, evaluación, reglas, ventana horaria, plan, SPPB, zona…
     parser.js           lectura de listas pegadas / PDF (texto) → medicamentos
     ocr.js              foto u hoja escaneada → texto (Tesseract, bajo demanda)
-    informes.js         PDF (jsPDF): informe clínico, plan del paciente, ficha del entrenador, tarjeta A5; texto para la historia
-    i18n.js             diccionarios ES/EN/CA/GL y aplicación al DOM
+    informes.js         textos derivados que se ven en pantalla (prescripción, vistazo, ritmo, plan) y texto para la historia
+    pdf.js              PDF (jsPDF): informe clínico, plan del paciente, evolución, ficha del entrenador, tarjeta A5.
+                        Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
+    i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
+    i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas
     app.js              estado, interfaz, eventos, persistencia (localStorage), PWA
   data/
@@ -45,7 +48,7 @@ docs/                   auditorías y documentación técnica
 1. `app.js` carga `kb.json`, `ddi_curated.json`, `marcas.json`, `fichas.json` (en dos fases: lo necesario para el primer render y el resto en `requestIdleCallback`) y construye el índice (`construirIndice`): principio/clase por id, entradas de búsqueda normalizadas (principios, marcas, combinaciones, presentaciones del nomenclátor), dosis habituales por principio y mapa código nacional → presentación.
 2. El estado del usuario (`estado`: edad, caídas, situaciones, medicación con dosis y tomas, horas de las tomas, plan, cribado, prescriptor, FC en reposo, SPPB…) vive en memoria y se persiste en `localStorage` (`medex.estado`); listas guardadas en `medex.perfiles`; diario de sesiones en `medex.diario`.
 3. Cada cambio llama a `render()`: `evaluar(datos, meds, ctx)` devuelve `res` con los ítems resueltos (principio, clase, dosis diaria, categoría de dosis, señales), las reglas por ámbito (general/aeróbico/fuerza/equilibrio), las reglas combinadas disparadas (situación × señal/clase), las interacciones (curadas + DDInter) y el perfil de señales acumuladas. Sobre `res` se derivan: veredicto, Lo esencial (`loEsencial`), chips de contexto, ventana horaria (`ventanaEntrenamiento`), zona de intensidad (`zonaIntensidad`), carga por fármaco (`impactoPorFarmaco`), plan semanal (`planSemana`, `sesionTipo`), chequeo previo a la sesión (`chequeoPrevio`) y cribado ACSM (`cribadoACSM`).
-4. Los PDF se generan en el cliente con jsPDF a partir del mismo `res` + `ctx` (`informes.js`); el texto para la historia clínica (`textoHistoria`) usa las mismas funciones.
+4. Los PDF se generan en el cliente con jsPDF a partir del mismo `res` + `ctx` (`pdf.js`, cargado bajo demanda, que reutiliza las funciones de `informes.js`); el texto para la historia clínica (`textoHistoria`) usa las mismas funciones.
 5. El enlace compartible (`#lista=…`) codifica el estado (sin nombre ni datos identificativos) en base64url; al abrirlo se restaura.
 
 ## 4. Modelo de la base de conocimiento (`kb.json`)
@@ -72,4 +75,4 @@ Claves de `localStorage`: `medex.estado`, `medex.perfiles`, `medex.diario`, `med
 
 ## 7. Versionado y despliegue
 
-`app/js/version.js` (semver con sufijo de fase) + `CHANGELOG.md` + etiqueta git `vX.Y.Z-fase`. La base lleva su propia versión (fecha de regeneración, `kb.version`). `scripts/bump_version.py` actualiza los `?v=` y los `modulepreload`; `sw.js` cambia su nombre de caché con cada versión. Despliegue: push a `main` → GitHub Pages sirve `app/`.
+`app/js/version.js` (semver con sufijo de fase) + `CHANGELOG.md` + etiqueta git `vX.Y.Z-fase`. La base lleva su propia versión (fecha de regeneración, `kb.version`). `scripts/bump_version.py` actualiza los `?v=`, los `modulepreload`, los `import()` dinámicos (pdf.js, i18n/xx.js), la precarga del idioma del script en línea y su huella sha256 en la CSP; `sw.js` cambia su nombre de caché con cada versión. `test.mjs` vigila el presupuesto de peso, que la precarga esté completa y que el sello y la huella CSP coincidan. Despliegue: push a `main` → GitHub Pages sirve `app/`.

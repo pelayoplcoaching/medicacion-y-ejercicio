@@ -248,12 +248,18 @@ console.log("\nLectura fácil (v1.0)");
 console.log("\nIdiomas");
 {
   // i18n.js usa document/localStorage solo dentro de funciones; aquí comprobamos los diccionarios
+  // el español va en i18n.js; los demás idiomas, cada uno en js/i18n/xx.js (se descargan al elegirlos)
   const src = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  const clavesDe = (txt) => new Set([...txt.matchAll(/"([a-z0-9_.]+)":/g)].map((x) => x[1]));
   const dicc = {};
-  for (const m of src.matchAll(/^const (ES|EN|CA|GL|EU) = \{([\s\S]*?)^\};/gm)) {
-    dicc[m[1]] = new Set([...m[2].matchAll(/"([a-z0-9_.]+)":/g)].map((x) => x[1]));
+  const mES = src.match(/^const ES = \{([\s\S]*?)^\};/m);
+  if (mES) dicc.ES = clavesDe(mES[1]);
+  for (const l of ["en", "ca", "gl", "eu"]) {
+    const f = path.join(ROOT, `app/js/i18n/${l}.js`);
+    if (fs.existsSync(f)) { const txt = fs.readFileSync(f, "utf8"); if (/^export default \{/m.test(txt)) dicc[l.toUpperCase()] = clavesDe(txt); }
   }
   check("cinco diccionarios", Object.keys(dicc).length === 5, Object.keys(dicc).join());
+  check("i18n.js lleva solo el español (los otros idiomas se cargan al elegirlos)", !/^const (EN|CA|GL|EU) = /m.test(src) && /import\("\.\/i18n\/en\.js/.test(src));
   for (const l of ["EN", "CA", "GL", "EU"]) {
     const faltan = [...dicc.ES].filter((k) => !dicc[l].has(k));
     check(`${l} tiene todas las claves de ES`, faltan.length === 0, faltan.join());
@@ -354,6 +360,54 @@ console.log("\nZona de intensidad, carga por fármaco, SPPB y escáner (beta 0)"
   const idxCn = construirIndice(JSON.parse(JSON.stringify(kb)), [{ nombre: "ELIQUIS 5 MG COMPRIMIDOS", principios: ["apixaban"], dosis: [5], cn: ["698857", "698858"] }, { nombre: "SIN CN", principios: ["paracetamol"], dosis: [1000] }]);
   check("índice porCn: dos envases apuntan a la misma presentación; sin cn no entra", idxCn.porCn.size === 2 && idxCn.porCn.get("698857").pid === "apixaban" && idxCn.porCn.get("698858") === idxCn.porCn.get("698857"));
   check("EAN-13 farmacéutico 847 + CN + control → CN = posiciones 6–11", "8470006988571".slice(6, 12) === "698857");
+}
+
+console.log("\nPeso y funcionamiento sin conexión (service worker)");
+{
+  const APP = path.join(ROOT, "app");
+  const kbs = (f) => fs.statSync(path.join(APP, f)).size / 1024;
+  // lista de precarga del service worker: se ejecuta sw.js en un entorno vacío y se leen sus constantes
+  const vm = await import("node:vm");
+  const swSrc = fs.readFileSync(path.join(APP, "sw.js"), "utf8");
+  const sw = vm.runInNewContext(`${swSrc};({ VERSION, SELLADOS, NUCLEO, IMAGENES })`, { self: { addEventListener() {} }, location: {}, caches: {}, URL, Request: class {} });
+  const lista = [...sw.SELLADOS, ...sw.NUCLEO, ...sw.IMAGENES].filter((f) => f !== "./");
+  const faltan = lista.filter((f) => !fs.existsSync(path.join(APP, f)));
+  check("todos los ficheros de la precarga existen", faltan.length === 0, faltan.join());
+  check("la precarga no repite ficheros", new Set(lista).size === lista.length);
+  // ilustraciones usadas por la app (HTML, CSS y JS) → todas en la precarga, para que se vean sin conexión
+  const fuentes = ["index.html", "css/style.css", ...fs.readdirSync(path.join(APP, "js")).filter((f) => f.endsWith(".js")).map((f) => "js/" + f)].map((f) => fs.readFileSync(path.join(APP, f), "utf8")).join("\n");
+  const imgs = fs.readdirSync(path.join(APP, "assets/img")).filter((f) => f.endsWith(".webp"));
+  const usadas = imgs.filter((f) => fuentes.includes(f.replace(/\.webp$/, "")) || fuentes.includes(f.replace(/-[a-z]+\.webp$/, "-${")));
+  const sinPrecarga = usadas.filter((f) => !sw.IMAGENES.includes("assets/img/" + f));
+  check(`las ${usadas.length} ilustraciones de la app están en la precarga`, usadas.length >= 25 && sinPrecarga.length === 0, sinPrecarga.join());
+  check("los módulos con sello de versión están todos en la precarga", fs.readdirSync(path.join(APP, "js")).filter((f) => f.endsWith(".js")).every((f) => sw.SELLADOS.includes("js/" + f)) && ["en", "ca", "gl", "eu"].every((l) => sw.SELLADOS.includes(`js/i18n/${l}.js`)));
+  check("las capturas de la guía y la presentación no se precargan (se guardan al visitarlas)", !lista.some((f) => /assets\/(guia|presentacion)\//.test(f)) && !lista.includes("assets/logo-app.png") && !lista.includes("assets/icon-512.png"));
+  const totalPrecarga = lista.reduce((s, f) => s + kbs(f), 0);
+  check(`precarga total ≤ 3700 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 3700);
+  // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
+  const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
+  const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
+  const inicialJs = ["js/app.js", ...precargados].reduce((s, f) => s + kbs(f), 0);
+  check(`JavaScript inicial ≤ 420 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 420);
+  check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
+  check(`i18n.js ≤ 60 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 60);
+  check(`hoja de estilos ≤ 225 KB, reservas para Safari antiguo incluidas (ahora ${Math.round(kbs("css/style.css"))} KB)`, kbs("css/style.css") <= 225);
+  const css = fs.readFileSync(path.join(APP, "css/style.css"), "utf8");
+  const tabla = css.slice(css.indexOf("/* OP3."));
+  const usadasCm = new Set([...css.matchAll(/var\(--cm-(\d+)\)/g)].map((m) => m[1]));
+  const definidasCm = new Set([...tabla.matchAll(/--cm-(\d+):/g)].map((m) => m[1]));
+  check(`reservas de color-mix: las ${usadasCm.size} variables usadas están definidas para Safari antiguo`, usadasCm.size > 40 && [...usadasCm].every((n) => definidasCm.has(n)));
+  check("la hoja de estilos sigue en ASCII desde las tandas FBE", /^[\x00-\x7F]*$/.test(css.slice(css.indexOf("CAPA DE ESTILO FBE"))));
+  const pesadas = imgs.filter((f) => kbs("assets/img/" + f) > 40);
+  check("cada ilustración ≤ 40 KB", pesadas.length === 0, pesadas.join());
+  check(`logo de los PDF ≤ 50 KB (ahora ${Math.round(kbs("assets/logo-pdf.png"))} KB)`, kbs("assets/logo-pdf.png") <= 50 && fs.readFileSync(path.join(APP, "js/pdf.js"), "utf8").includes("assets/logo-pdf.png"));
+  // sellos de versión coherentes: index.html, módulos, import() dinámicos y service worker
+  const sellos = new Set([...html.matchAll(/\?v=(\d+)/g), ...fuentes.matchAll(/\?v=(\d+)/g)].map((m) => m[1]));
+  check("un único sello de versión en index.html, módulos y service worker", sellos.size === 1 && sellos.has(sw.VERSION), [...sellos].join());
+  const csp = html.match(/'sha256-([A-Za-z0-9+/=]+)'/)?.[1];
+  const enLinea = html.match(/<script>([\s\S]*?)<\/script>/)?.[1] ?? "";
+  const { createHash } = await import("node:crypto");
+  check("la huella CSP coincide con el script en línea", csp === createHash("sha256").update(enLinea, "utf8").digest("base64"));
 }
 
 console.log(`\n${total - fallos}/${total} pruebas correctas`);
