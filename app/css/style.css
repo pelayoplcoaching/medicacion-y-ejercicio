@@ -1922,3 +1922,12 @@ body.sin-meds .ilustracion::before { display: none; }
 #bloque-cribado fieldset.crib-preg { clear: both; }
 :root[data-theme="contrast"] :is(.ses-img, .crib-img) { box-shadow: none; }
 @media print { .ses-img, .crib-img { display: none !important; } }
+/* Mi plan: banda ilustrada del tipo de dia (aerobico, fuerza, equilibrio, paseo) en lo alto de la tarjeta del dia */
+.plan-dia > .plan-banda { display: block; width: calc(100% + 28px); max-width: none; height: 120px; margin: -12px -14px 10px; object-fit: cover; object-position: center 55%; border-radius: var(--r-md) var(--r-md) 0 0; background: #140b3a; }
+@media (min-width: 640px) { .plan-dia > .plan-banda { height: 150px; } }
+/* Si nota algo: ilustracion de la solucion junto al consejo de cada sintoma */
+.sintoma { display: flow-root; }
+.sint-img { float: right; width: 104px; height: 104px; margin: 2px 0 8px 14px; border-radius: 18px; box-shadow: 0 .6rem 1.4rem -.8rem rgba(20, 11, 58, .6); }
+:root[data-theme="contrast"] .sint-img { box-shadow: none; }
+@media print { .plan-banda, .sint-img { display: none !important; } }
+@media (max-width: 639px) { .sint-img { width: 84px; height: 84px; margin-left: 10px; } .plan-dia > .plan-banda { height: 108px; } }

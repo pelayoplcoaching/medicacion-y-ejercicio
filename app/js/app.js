@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211158";
-import { APP_VERSION } from "./version.js?v=202611211158";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211158";
-import { picto } from "./pictos.js?v=202611211158";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211158";
-import { cargarScript } from "./libs.js?v=202611211158";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211158";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211158";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211214";
+import { APP_VERSION } from "./version.js?v=202611211214";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211214";
+import { picto } from "./pictos.js?v=202611211214";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211214";
+import { cargarScript } from "./libs.js?v=202611211214";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211214";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211214";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -1068,6 +1068,7 @@ function sintomaDetalle(res) {
   const s = sintomasPosibles(res).find((x) => x.id === sintomaAbierto);
   if (!s) return "";
   return `<div class="sintoma">
+    <img class="sint-img" src="assets/img/sintoma-${s.id}.webp" alt="" width="104" height="104" decoding="async">
     <p>${s.farmacos.length ? t("sintomas.posibles", { f: s.farmacos.join(", ") }) : t("sintomas.ninguno")}</p>
     <p>${glosar(s.consejo)}</p>
     ${s.alarma ? `<p class="sintoma-alarma">${s.alarma}</p>` : ""}
@@ -1648,6 +1649,7 @@ function renderPlan(cont) {
     </details>
     <div class="tira" role="group" aria-label="${t("hoy.esta_semana")}">${dias.map((d) => { const iso = hoyISO(d); const tipo = plan[d.getDay()] || "descanso"; const hecho = diario.some((x) => x.fecha === iso); const clase = ["dia", iso === hoy ? "hoy" : "", iso === diaPlan ? "sel" : "", hecho ? "hecho" : "", tipo === "descanso" ? "descanso" : ""].filter(Boolean).join(" "); return `<button type="button" class="${clase}" data-iso="${iso}" aria-pressed="${iso === diaPlan}"><span class="d">${fmtDia(d)}</span><span class="n">${d.getDate()}</span>${icono({ aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", descanso: "paseo" }[tipo] || "fuerza")}<span class="tipo">${{ aerobico: t("sesion.aerobico"), fuerza: t("sesion.fuerza"), fuerza_eq: t("plan.fuerza_eq_corto"), descanso: t("plan.descanso_corto") }[tipo]}</span>${hecho ? `<span class="ok">✓</span>` : ""}</button>`; }).join("")}</div>
     <div class="plan-dia">
+      <img class="plan-banda" src="assets/img/${{ aerobico: "plan-aerobico", fuerza: "plan-fuerza", fuerza_eq: "plan-equilibrio", equilibrio: "plan-equilibrio" }[tipoSel] || "plan-paseo"}.webp" alt="" width="960" height="480" loading="lazy" decoding="async">
       <div class="plan-dia-cab"><h3>${sel.toLocaleDateString(idioma(), { weekday: "long", day: "numeric", month: "long" })}${hoyISO(sel) === hoy ? ` · ${t("hoy.titulo").toLowerCase()}` : ""}</h3>${hechoSel.length ? `<span class="chip chip-ok">${t("plan.hecho", { m: hechoSel.reduce((n, x) => n + (x.min || 0), 0) })}</span>` : ""}</div>
       ${ses ? `
         <p class="plan-dia-tit"><b>${ses.titulo}</b> · ${ses.min} min</p>
