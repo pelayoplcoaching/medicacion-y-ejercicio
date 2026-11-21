@@ -1550,3 +1550,95 @@ details.seccion[open] > summary::before { left: -2px; }
 /* 100. Fuentes de cada interaccion y de cada farmaco: icono de libro delante */
 article.ddi footer { display: block; }
 article.ddi footer::before, details.farmaco .fuentes::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; margin-right: .45em; vertical-align: -.2em; background: currentColor; opacity: .75; -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><path d='M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z'/><path d='M4 19a2 2 0 0 1 2-2h13'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><path d='M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z'/><path d='M4 19a2 2 0 0 1 2-2h13'/></svg>") center / contain no-repeat; }
+
+/* ---------- TANDA 6: mi plan, sesiones, ventanas, paginas y detalles ---------- */
+/* 101. Fecha del dia del plan sin mayusculas raras ("Sabado, 21 de noviembre", no "21 De Noviembre") */
+.plan-dia-cab h3 { text-transform: none; }
+.plan-dia-cab h3::first-letter { text-transform: uppercase; }
+/* 102. Facil / Normal / Dificil: control segmentado en su propia linea */
+.bloques .variantes { display: flex; width: max-content; max-width: 100%; margin-top: 8px; border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong)); box-shadow: 0 1px 2px rgba(36, 22, 101, .06); }
+.bloques .variantes button { transition: background-color .15s, color .15s; }
+.bloques .variantes button:not([aria-pressed="true"]):hover { background: var(--accent-soft); color: var(--accent-deep); }
+/* 103. Bloques de la sesion: minutos en pastilla y dibujo con anillo suave */
+.bloques .min { display: inline-grid; place-items: center; min-width: 40px; height: 26px; padding: 0 6px; border-radius: 999px; background: var(--accent-soft); font-size: .8rem; }
+.bloques .picto { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent); }
+/* 104. Tira de dias: punto en el dia de hoy, descanso con borde discontinuo y hechos en verde */
+.tira .dia.hoy::after { content: ""; position: absolute; top: 5px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.tira .dia.descanso { border-style: dashed; }
+.tira .dia.hecho { border-color: color-mix(in srgb, var(--info) 60%, var(--line)); }
+/* 105. Objetivo semanal: tarjeta propia con rejilla y pista del anillo en lila */
+.plan-cab { position: relative; overflow: hidden; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.plan-cab::after { content: ""; position: absolute; right: 0; top: 0; width: 160px; height: 100%; pointer-events: none; background-image: var(--rejilla); -webkit-mask-image: radial-gradient(80% 90% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(80% 90% at 100% 0%, #000, transparent 70%); }
+.plan-cab > * { position: relative; }
+.anillo .fondo { stroke: color-mix(in srgb, var(--accent) 14%, var(--line)); }
+/* 106. Chequeo antes de la sesion: cada condicion marcada se ilumina en verde */
+.chequeo > ul > li { transition: background-color .15s, border-color .15s; }
+.chequeo > ul > li:has(input:checked) { background: var(--info-soft); border-color: color-mix(in srgb, var(--info) 45%, var(--line)); }
+:root:not([data-theme="contrast"]) .chequeo input[type="checkbox"]:checked { background-color: var(--info); border-color: var(--info); }
+/* 107. Cabeceras de las ventanas: titulo destacado a la izquierda y "Cerrar" siempre a la derecha */
+.ficha-cab > p, .hoja-cab > p { flex: 1 1 auto; min-width: 0; margin: 0; color: var(--fg); font-weight: 750; font-stretch: 108%; font-size: 1.02rem; line-height: 1.3; }
+.ficha-cab > .btn-sec, .hoja-cab > .btn-sec { flex: 0 0 auto; }
+/* 108. Ventanas en escritorio: aparecen con un leve impulso (una vez; nada si se reduce el movimiento) */
+@media (min-width: 640px) { dialog.ficha[open] { animation: dlg-aparece .22s cubic-bezier(.2, .9, .3, 1.15); } }
+@keyframes dlg-aparece { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+/* 109. Hojas inferiores del movil: asa de arrastre tambien en las de anadir y ayuda */
+@media (max-width: 639px) { dialog.hoja::before { content: ""; display: block; width: 44px; height: 5px; margin: 8px auto 0; border-radius: 999px; background: linear-gradient(90deg, var(--marca), var(--marca-clara)); } }
+/* 110. Boton principal: brillo superior de cristal */
+:root:not([data-theme="contrast"]) .btn:not(.btn-anadir) { background-image: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 60%); }
+/* 111. Enlaces del texto: subrayado fino y separado que se refuerza al pasar; externos con flecha */
+main a:not(.btn):not(.btn-sec), .ficha-cuerpo a:not(.btn):not(.btn-sec), .hoja-cuerpo a { text-underline-offset: .2em; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); transition: text-decoration-color .15s; }
+main a:not(.btn):not(.btn-sec):hover, .ficha-cuerpo a:not(.btn):not(.btn-sec):hover, .hoja-cuerpo a:hover { text-decoration-color: currentColor; text-decoration-thickness: 2px; }
+:is(main, .ficha-cuerpo, .hoja-cuerpo) a[target="_blank"]:not(.btn):not(.btn-sec)::after { content: "\2197"; content: "\2197" / ""; display: inline-block; margin-left: .15em; font-size: .78em; text-decoration: none; opacity: .75; }
+/* 112. Paginas Acerca, Legal y Novedades: el texto en una hoja con titulos subrayados de marca */
+main.acerca, main.legal, main.novedades { padding: 14px clamp(16px, 4vw, 30px) 22px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+main.acerca section:last-of-type, main.legal section:last-of-type { border-bottom: 0; }
+:is(main.acerca, main.legal) h2 { padding-bottom: 8px; background: linear-gradient(90deg, var(--marca), var(--marca-clara) 70%, var(--oro)) left bottom / 2.6rem 2px no-repeat; }
+:is(main.acerca, main.legal, main.novedades, .guia-pag) li::marker { color: var(--accent); }
+/* 113. Novedades: linea de tiempo con un nodo por fecha (la ultima en oro) */
+main.novedades article { position: relative; padding-left: 28px; border-bottom: 0; }
+main.novedades article::before { content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: linear-gradient(color-mix(in srgb, var(--marca-clara) 70%, transparent), color-mix(in srgb, var(--marca-clara) 25%, transparent)); }
+main.novedades article::after { content: ""; position: absolute; left: 1px; top: 21px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 3px solid var(--accent); }
+main.novedades article:first-of-type::after { background: var(--oro); border-color: var(--oro); box-shadow: 0 0 10px color-mix(in srgb, var(--oro) 70%, transparent); }
+main.novedades h2 small { font-family: var(--mono); font-size: .72rem; letter-spacing: .03em; color: var(--muted); }
+/* 114. Legal: indice de secciones fijo arriba, en cristal y en una sola fila deslizable */
+main.legal .toc { position: sticky; top: 8px; z-index: 5; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -8px; padding: 8px; border-radius: var(--r-md); background: color-mix(in srgb, var(--surface) 86%, transparent); -webkit-backdrop-filter: blur(12px) saturate(1.3); backdrop-filter: blur(12px) saturate(1.3); }
+main.legal .toc::-webkit-scrollbar { display: none; }
+main.legal .toc a { flex: 0 0 auto; }
+main.legal section { scroll-margin-top: 76px; }
+/* 115. "Volver a la aplicacion": se desplaza hacia la izquierda al pasar */
+.volver { transition: transform .15s, background-color .15s, border-color .15s; }
+.volver:hover { transform: translateX(-3px); }
+/* 116. Modo oscuro: campos hundidos (mas oscuros que el panel) para distinguirlos */
+:root[data-theme="dark"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) { background-color: color-mix(in srgb, var(--bg) 65%, var(--surface)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not([data-theme="contrast"]) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) { background-color: color-mix(in srgb, var(--bg) 65%, var(--surface)); } }
+/* 117. Saltos del indice en escritorio: el titulo queda a la vista bajo las pestanas fijas */
+@media (min-width: 960px) { #veredicto, #hoy, #esencial, #vistazo, #detalle-t, #descargas { scroll-margin-top: 18px; } #detalle-t, #descargas { scroll-margin-top: 76px; } }
+/* 118. Cursor de escritura en el color de marca */
+input, textarea { caret-color: var(--accent); }
+/* 119. Ficha del farmaco: senales en letra normal y legible, como etiquetas suaves */
+.ficha-cuerpo .senales-chips .chip { font-family: var(--font); font-size: .82rem; font-weight: 600; letter-spacing: 0; line-height: 1.35; padding: 4px 10px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-deep); }
+/* 120. Guia rapida: numeros con degradado de marca y capturas con marco de dispositivo */
+.paso-guia h2 b { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--marca-clara))); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent); font-family: var(--mono); }
+.paso-guia img { border: 6px solid var(--surface-2); outline: 1px solid var(--line); outline-offset: 0; border-radius: 20px; }
+.faq details[open] > summary { color: var(--accent-deep); }
+
+/* ---------- Limpieza de las tandas 4-6: alto contraste, colores forzados, impresion ---------- */
+:root[data-theme="contrast"] .cabecera h1 > span[data-i18n="meta.titulo"], :root[data-theme="contrast"] .cabecera h1:not(:has(span)) { background: none; color: inherit; }
+@media (forced-colors: active) { .cabecera h1 > span[data-i18n="meta.titulo"], .cabecera h1:not(:has(span)) { background: none; color: CanvasText; } }
+:root[data-theme="contrast"] :is(#sin-meds, .btn-anadir, .plan-cab, #lista-meds li.combo-cab, #lista-meds li.pausado) { background: var(--surface); background-image: none; }
+:root[data-theme="contrast"] .btn-anadir { background: var(--accent); }
+:root[data-theme="contrast"] .btn-anadir::after, :root[data-theme="contrast"] .plan-cab::after, :root[data-theme="contrast"] .tira .dia.hoy::after, :root[data-theme="contrast"] main.novedades article::before { display: none; }
+:root[data-theme="contrast"] .veredicto > p:first-of-type::before, :root[data-theme="contrast"] .contexto-chips .chip::before, :root[data-theme="contrast"] .hoy-cab small::before, :root[data-theme="contrast"] main.novedades article::after, :root[data-theme="contrast"] :is(.momentos .mom, .paso-guia h2 b, .bloques .variantes, .conexion span[aria-hidden]) { box-shadow: none; text-shadow: none; }
+:root[data-theme="contrast"] .semana rect.con { filter: none; }
+:root[data-theme="contrast"] .indice-informe a.activo::before { text-shadow: none; }
+:root[data-theme="contrast"] .paso-guia h2 b { background: var(--accent); }
+:root[data-theme="contrast"] main.legal .toc { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root[data-theme="contrast"] dialog.hoja::before { background: var(--fg); }
+@media print {
+  .cabecera h1 > span[data-i18n="meta.titulo"], .cabecera h1:not(:has(span)) { background: none !important; color: #000 !important; }
+  input[type="checkbox"] { -webkit-appearance: checkbox !important; appearance: auto !important; background: none !important; }
+  .btn-anadir::after, .plan-cab::after, main.novedades article::before, main.novedades article::after { display: none !important; }
+  main.acerca, main.legal, main.novedades { border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+  main.legal .toc { position: static !important; }
+  :is(main, .ficha-cuerpo) a[target="_blank"]::after { content: none !important; }
+}
