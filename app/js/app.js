@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211214";
-import { APP_VERSION } from "./version.js?v=202611211214";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211214";
-import { picto } from "./pictos.js?v=202611211214";
-import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211214";
-import { cargarScript } from "./libs.js?v=202611211214";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211214";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211214";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion } from "./engine.js?v=202611211218";
+import { APP_VERSION } from "./version.js?v=202611211218";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211218";
+import { picto } from "./pictos.js?v=202611211218";
+import { pdfMedico, pdfPaciente, pdfEntrenador, pdfTarjeta, textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente, pdfEvolucion } from "./informes.js?v=202611211218";
+import { cargarScript } from "./libs.js?v=202611211218";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211218";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211218";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -935,7 +935,7 @@ function etiqueta(nivel) { return datos.kb.niveles[nivel]?.etiqueta || nivel; }
 /* ---------- glosario: términos técnicos con definición al tocarlos ---------- */
 const GLOSARIO = {
   "RPE": "Escala de esfuerzo percibido: del 0 (nada) al 10 (máximo). Moderado = 4–6, puede hablar pero no cantar.",
-  "Borg": "Escala de esfuerzo percibido de 6 a 20. Moderado = 11–14 (algo duro).",
+  "Borg": "Escala de esfuerzo percibido de 6 a 20. Moderado = 12–13 (algo duro); vigoroso = 14–17.",
   "FITT": "Frecuencia, Intensidad, Tiempo y Tipo: las cuatro variables con que se prescribe el ejercicio.",
   "NYHA": "Clase funcional de la insuficiencia cardíaca: I sin síntomas; II con esfuerzos normales; III con esfuerzos pequeños; IV en reposo.",
   "FEVI": "Fracción de eyección del ventrículo izquierdo: porcentaje de sangre que el corazón expulsa en cada latido (normal ≥ 50 %).",

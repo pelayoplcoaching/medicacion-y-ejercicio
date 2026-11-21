@@ -724,7 +724,7 @@ export function zonaIntensidad(res, ctx = {}, { fcReposo = null } = {}) {
   if (cond.has("marcapasos")) motivos.push("marcapasos/DAI");
   const edad = ctx.edad;
   const fcmax = edad ? Math.round(208 - 0.7 * edad) : null;
-  const out = { metodo: motivos.length || !fcmax ? "rpe" : "fc", motivos: [...new Set(motivos)], fcmax, fcReposo: fcReposo ?? null, rpe: { ligera: "RPE 9–11 (puede cantar)", moderada: "RPE 12–14 (puede hablar, no cantar)", vigorosa: "RPE 15–17 (frases cortas)" }, habla: "Prueba del habla: moderado = puede hablar pero no cantar; vigoroso = solo frases cortas." };
+  const out = { metodo: motivos.length || !fcmax ? "rpe" : "fc", motivos: [...new Set(motivos)], fcmax, fcReposo: fcReposo ?? null, rpe: { ligera: "RPE 9–11 (puede cantar)", moderada: "RPE 12–13 (puede hablar, no cantar)", vigorosa: "RPE 14–17 (frases cortas)" }, habla: "Prueba del habla: moderado = puede hablar pero no cantar; vigoroso = solo frases cortas." };
   if (out.metodo === "fc") {
     const rep = fcReposo ?? 70;
     const z = (lo, hi) => [Math.round(rep + (fcmax - rep) * lo), Math.round(rep + (fcmax - rep) * hi)];

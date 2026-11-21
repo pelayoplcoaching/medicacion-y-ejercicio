@@ -1,8 +1,8 @@
 /* Resúmenes en PDF (jsPDF, global window.jspdf).
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel. */
-import { jspdf, cargarScript } from "./libs.js?v=202611211214";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, textoEvolucion, SINTOMAS } from "./engine.js?v=202611211214";
+import { jspdf, cargarScript } from "./libs.js?v=202611211218";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, textoEvolucion, SINTOMAS } from "./engine.js?v=202611211218";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";
@@ -310,7 +310,7 @@ export function prescripcion(res, ctx) {
   return {
     aer: {
       frec: fragil || nyha34 ? "Diario, en varias sesiones cortas" : "5 días/semana (mín. 3)",
-      int: (fcNoValida ? "Moderada por RPE 11–14 (Borg 6–20) o prueba del habla. No usar %FCmáx ni zonas de pulso." : feviBaja || nyha34 ? "Ligera-moderada: RPE 10–13; sin esfuerzos máximos ni intervalos de alta intensidad salvo en programa supervisado." : "Moderada: 40–60 % FC de reserva o RPE 11–14; progresar a vigorosa si tolera.") + dai,
+      int: (fcNoValida ? "Moderada por RPE 12–13 (Borg 6–20) o prueba del habla. No usar %FCmáx ni zonas de pulso." : feviBaja || nyha34 ? "Ligera-moderada: RPE 10–13; sin esfuerzos máximos ni intervalos de alta intensidad salvo en programa supervisado." : "Moderada: 40–59 % FC de reserva o RPE 12–13; progresar a vigorosa si tolera.") + dai,
       tiempo: fragil ? "Marcha 5–10 min, 2–3 veces al día; aumentar 1–2 min cada pocos días hasta 30 min" : nyha34 ? "5–10 min, 2–4 veces al día; progresar a 20–30 min continuos" : "150–300 min/semana; empezar con 10–20 min y aumentar 5–10 min/semana",
       tipo: ["Caminar, bici estática, elíptica, natación" + (sangra ? " (sin contacto ni riesgo de caída a velocidad)" : "") + ".", hipot >= 2 ? "Enfriamiento ≥10 min; evitar paradas bruscas y cambios posturales rápidos." : "Enfriamiento 5–10 min.", calor ? "Evitar calor; electrolitos en sesiones >60 min." : "", hipo ? "Glucemia capilar pre/post; HC de absorción rápida disponibles." : ""].filter(Boolean).join(" "),
     },
