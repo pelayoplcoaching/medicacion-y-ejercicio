@@ -173,6 +173,11 @@ try {
   await p.check('#metas .mt-hitos input[data-k="2"]'); await p.waitForTimeout(200);
   check("en la meta: marcar el tercer hito marca los anteriores; se ve la prueba que la mide y los ejercicios", (await p.$$("#metas .mt-hitos li.on")).length === 3 && /Piernas: 12/.test(await p.textContent("#metas .mt-medidas")) && (await p.$$("#metas .mt-ejs [data-ejercicio]")).length >= 3);
   await p.click("#mt-cerrar"); await p.waitForTimeout(200);
+  await p.click("#btn-mes"); await p.waitForSelector("#mes[open] .mes-img[src^='data:image/png']", { timeout: 10000 }).catch(() => {});
+  check("resumen del mes: imagen creada en el dispositivo, con la sesión de hoy, el hito de la meta y las pruebas", (await p.$eval("#mes .mes-img", (i) => (i.getAttribute("src") || "").length).catch(() => 0)) > 50000 && /\b1 sesión\b/.test(await p.textContent("#mes .mes-texto pre")) && /Escaleras/.test(await p.textContent("#mes .mes-texto pre")) && /Pruebas de forma física/.test(await p.textContent("#mes .mes-texto pre")));
+  await p.check('#mes input[name="mes-para"][value="medico"]', { force: true }); await p.waitForSelector("#mes-sin", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(300);
+  check("para el médico: esfuerzo y síntomas; los nombres de los fármacos, solo si se desmarca la casilla", /Esfuerzo medio/.test(await p.textContent("#mes .mes-texto pre")) && !/Medicación:/.test(await p.textContent("#mes .mes-texto pre")) && await p.$eval("#mes-sin", (c) => c.checked));
+  await p.click("#mes-cerrar"); await p.waitForTimeout(150);
   check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue",await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);

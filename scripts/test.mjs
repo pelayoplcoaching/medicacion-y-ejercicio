@@ -382,6 +382,30 @@ console.log("\nMetas de la vida diaria (mejora grande 9)");
   check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(M.TXT[l]).length === ks.length && ks.every((k) => M.TXT[l][k] && vars(M.TXT[l][k]) === vars(M.TXT.es[k]))));
 }
 
+console.log("\nResumen del mes con imagen para compartir (mejora grande 12)");
+{
+  const Mm = await import(pathToFileURL(path.join(ROOT, "app/js/mes.js")).href);
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/metas.js")).href);
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/pruebas.js")).href);
+  const d = [
+    { fecha: "2026-10-05", tipo: "fuerza_eq", min: 30, rpe: 5, sintomas: [] }, { fecha: "2026-10-06", tipo: "aerobico", min: 40, rpe: 6, sintomas: [] }, { fecha: "2026-10-27", tipo: "fuerza", min: 30, rpe: 5, sintomas: [] },
+    { fecha: "2026-11-02", tipo: "fuerza_eq", min: 35, rpe: 4, sintomas: [] }, { fecha: "2026-11-02", tipo: "aerobico", min: 20, rpe: 6, sintomas: ["mareo"] }, { fecha: "2026-11-04", tipo: "aerobico", min: 45, rpe: 5, sintomas: [] }, { fecha: "2026-11-10", tipo: "equilibrio", min: 15, sintomas: [] },
+  ];
+  const r = Mm.resumenMes(d, 2026, 10);
+  check("resumen del mes: sesiones, minutos, días activos, de fuerza y de equilibrio, esfuerzo y síntomas", r.sesiones === 4 && r.minutos === 115 && r.dias === 3 && r.diasFuerza === 1 && r.diasEquilibrio === 2 && r.rpe === 5 && r.conSintomas === 1 && r.masLarga === 45 && r.mejorSemana.desde === "2026-11-02" && r.mejorSemana.min === 100);
+  check("el mes en curso se compara con los mismos días del anterior (si no, siempre saldría «menos»)", Mm.resumenMes(d, 2026, 9, 21).sesiones === 2 && Mm.datosMes({ diario: d, ahora: new Date(2026, 10, 21, 12) }, 2026, 10).d.sesiones === 2 && Mm.datosMes({ diario: d, ahora: new Date(2026, 11, 5, 12) }, 2026, 10).d.sesiones === 1);
+  check("meses para navegar: desde la primera sesión hasta el actual", JSON.stringify(Mm.meses(d, new Date(2026, 11, 3))) === "[[2026,9],[2026,10],[2026,11]]" && JSON.stringify(Mm.meses([], new Date(2026, 10, 3))) === "[[2026,10]]");
+  const metas = M.marcar(M.alternar(null, "escaleras"), "escaleras", 1, true, new Date(2026, 10, 8).getTime());
+  check("hitos de las metas conseguidos en el mes", Mm.hitosDelMes(metas, M.POR_ID, 2026, 10).length === 2 && Mm.hitosDelMes(metas, M.POR_ID, 2026, 9).length === 0);
+  const c = { diario: d, ahora: new Date(2026, 10, 21, 12), objMin: 150, eqN: 3, metas, POR_ID: M.POR_ID, pruebas: S, sft: { hist: [{ f: new Date(2026, 10, 9).getTime(), edad: 72, sexo: "m", r: { silla: 13, brazo: 15 } }] }, racha: 6, cuidados: ["el pulso", "el azúcar"], farmacos: ["Bisoprolol", "Metformina"] };
+  const fam = Mm.datosMes(c, 2026, 10), med = Mm.datosMes(c, 2026, 10, { para: "medico", sinNombres: true }), medN = Mm.datosMes(c, 2026, 10, { para: "medico", sinNombres: false });
+  check("para la familia: actividad, mejor semana, hitos, pruebas y racha; sin datos de salud", fam.medico.length === 0 && fam.destacados.some((x) => /Escaleras/.test(x)) && fam.destacados.some((x) => /2\/2/.test(x)) && fam.destacados.some((x) => /6 semanas/.test(x)) && !/Bisoprolol|síntoma/.test(Mm.textoMes(fam)));
+  check("para el médico: esfuerzo, síntomas y cuidados; los fármacos solo si se quiere (y entonces el pie ya no dice «sin datos personales»)", med.medico.length === 3 && !/Bisoprolol/.test(Mm.textoMes(med)) && /Bisoprolol, Metformina/.test(Mm.textoMes(medN)) && /sin nombre ni datos/.test(med.pie) && !/datos personales/.test(medN.pie));
+  check("objetivos del mes proporcionales a sus semanas (moverse, fuerza y equilibrio)", fam.barras[0].o === 640 && fam.barras[1].o === 9 && fam.barras[2].o === 13);
+  const ks = Object.keys(Mm.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(Mm.TXT[l]).length === ks.length && ks.every((k) => Mm.TXT[l][k] && vars(Mm.TXT[l][k]) === vars(Mm.TXT.es[k]))));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);
@@ -535,7 +559,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 3800 desde las mejoras 381-530 (21/11/2026): +45 KB de CSS (+10 KB comprimidos) de movimiento, luz y cristal
   // 3850 desde las mejoras 531-680 (21/11/2026): +41 KB de CSS (+9 KB comprimidos)
   // 4100 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda (semana, voz, porque, movimiento, aprende…), que se precargan para usarse sin conexión
-  check(`precarga total ≤ 4100 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB; antes 4300)`, totalPrecarga <= 4100);
+  // 4300 desde las mejoras grandes 8, 9 y 12 (pruebas, metas y resumen del mes, 21/11/2026): módulos bajo demanda que llevan sus textos en cinco idiomas
+  check(`precarga total ≤ 4300 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 4300);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);

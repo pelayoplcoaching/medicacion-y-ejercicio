@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.8 · 2026-11-21 · Mejoras grandes (9): resumen del mes con imagen para compartir
+- `js/mes.js` (bajo demanda): el mes en movimiento (sesiones, minutos, días activos, días de fuerza y de equilibrio, mejor semana, sesión más larga, hitos de sus metas, pruebas de forma física del mes y racha amable) comparado consigo mismo. El mes en curso se compara con los mismos días del mes anterior («a estas alturas»), para que no salga siempre «menos».
+- Imagen de 1080 × 1350 dibujada en el propio dispositivo (canvas, con la letra Archivo): cabecera de noche con los tres anillos del mes, tres cifras con su comparación, calendario del mes con un color por minutos (hoy marcado en oro), barras de moverse, fuerza y equilibrio frente a un objetivo proporcional a las semanas del mes, destacados y una franja final: una frase de ánimo para la familia o, para el médico, esfuerzo medio, sesiones con algún síntoma, cuidados de su medicación y, solo si se desmarca «Sin los nombres de los fármacos», la lista de fármacos (entonces el pie ya no dice «sin datos personales»).
+- Compartir con el menú del sistema (archivo PNG) o descargar; también «Copiar el texto» y la versión en texto desplegable. Se navega por los meses desde la primera sesión. Nada sale del dispositivo si la persona no lo comparte.
+- Accesos: botón «Resumen del mes» en «Mi plan» (junto a «Compartir mi semana») y entrada en el menú «Más». Singular y plural cuidados («1 sesión»).
+- Presupuesto de precarga: ≤ 4300 KB (módulos bajo demanda con sus textos en cinco idiomas).
+- Pruebas: 8 nuevas en `test.mjs` (cálculo del mes, comparación justa, meses, hitos, contenido para la familia y para el médico, objetivos, idiomas) y 2 en `ui_test.mjs`; accesibilidad en claro, oscuro y alto contraste.
+
 ## 1.2.7 · 2026-11-21 · Mejoras grandes (8): metas de la vida diaria
 - `js/metas.js` (bajo demanda): ocho metas del día a día (subir escaleras sin pararse, levantarse del suelo, llevar la compra, caminar 30 minutos seguidos, jugar con los nietos, andar seguro sin miedo a caerse, vestirse y calzarse con facilidad, viajar y hacer excursiones). Se eligen hasta 3.
 - Cada meta tiene cuatro hitos funcionales seguidos (marcar uno marca los anteriores; desmarcar quita los siguientes), las pruebas de forma física que la miden (último resultado, su nivel para la edad y si ha subido o bajado) y los ejercicios de las sesiones que la trabajan (abren su ficha animada).
