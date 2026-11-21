@@ -470,6 +470,21 @@ console.log("\nMi pastillero: tomas por momentos y hoja de la semana (mejora gra
   check("textos en los cinco idiomas con las mismas variables; singular «1 toma al día»", ["en", "ca", "gl", "eu"].every((l) => Object.keys(PT.TXT[l]).length === ks.length && ks.every((x) => PT.TXT[l][x] && vars(PT.TXT[l][x]) === vars(PT.TXT.es[x]))) && PT.tx("toma1") === "1 toma al día" && vars(PT.TXT.es.toma1) === "");
 }
 
+console.log("\nMapa de interacciones: tabla de cruces y red (mejora grande 17)");
+{
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/mapa.js")).href);
+  const P = (a, b, nivel, i) => ({ i, a: { id: a, nombre: a }, b: { id: b, nombre: b }, nivel, efecto: "e", accion: "", fuente: "f" });
+  const G = M.grafo([P("ibu", "enal", "mayor", 0), P("ibu", "apix", "mayor", 1), P("biso", "glic", "moderada", 2), P("ibu", "biso", "moderada", 3), P("glic", "omep", "menor", 4), P("x", "x", "moderada", 5), P("lor", "lor2", "menor", 6)]);
+  const nd = (id) => G.nodos.find((n) => n.id === id);
+  check("un nodo por medicamento; la duplicidad marca el nodo y no es arco; peso y gravedad máxima de cada uno", G.aristas.length === 6 && nd("x").dups.length === 1 && nd("x").n === 0 && nd("ibu").peso === 8 && nd("ibu").max === "mayor" && nd("glic").max === "moderada" && nd("omep").cuenta.menor === 1);
+  const O = M.orden(G.nodos, G.aristas).map((n) => n.id);
+  check("orden de filas: el más implicado primero, sus vecinos fuertes al lado y cada grupo seguido", O.join() === "ibu,apix,enal,biso,glic,omep,lor,lor2,x");
+  check("arco entre filas: sale y llega al centro de cada fila y se abre con la distancia, sin pasarse del ancho", M.arco(0, 2, 100, 200) === "M100 24C41.7 24 41.7 120 100 120" && M.arco(0, 8, 100, 40).includes("C60.0 24 60.0 408"));
+  check("vista por defecto: tabla de cruces con muchas interacciones o medicamentos; red con pocas", M.vistaPorDefecto(15, 9) === "tabla" && M.vistaPorDefecto(3, 4) === "red" && M.vistaPorDefecto(7, 5) === "tabla");
+  const ks = Object.keys(M.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas con las mismas variables; singulares propios", ["en", "ca", "gl", "eu"].every((l) => Object.keys(M.TXT[l]).length === ks.length && ks.every((x) => M.TXT[l][x] && vars(M.TXT[l][x]) === vars(M.TXT.es[x]))) && M.tx("n_int1") === "1 interacción" && vars(M.TXT.es.resumen1) === "{t}");
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

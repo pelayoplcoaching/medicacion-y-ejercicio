@@ -85,6 +85,17 @@ try {
   check("recuentos en pestañas", tabs.some((x) => x !== ""));
   await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(200);
   check("interacciones listadas", (await p.$$("#contenido-tab .ddi")).length >= 1);
+  await p.waitForSelector("#contenido-tab .im-mapa .im-vis > *", { timeout: 5000 }).catch(() => {});
+  const marcasMapa = () => p.$$eval("#contenido-tab .im-mapa :is(button.im-c, .im-a)", (xs) => xs.length);
+  const nDdi = (await p.$$("#contenido-tab .ddi")).length, nMarcas = await marcasMapa();
+  check("mapa de interacciones: una casilla o un arco por interacción y, en la ficha, la más importante", nMarcas >= 1 && nMarcas <= nDdi && /\+/.test(await p.textContent("#contenido-tab .im-ficha h4").catch(() => "")));
+  const vistaIni = await p.$eval('#contenido-tab .im-vista [aria-pressed="true"]', (b) => b.dataset.imV).catch(() => "");
+  await p.click(`#contenido-tab .im-vista [data-im-v="${vistaIni === "tabla" ? "red" : "tabla"}"]`); await p.waitForTimeout(200);
+  check("se cambia entre tabla de cruces y red con las mismas interacciones, y se recuerda", (await marcasMapa()) === nMarcas && (await p.evaluate(() => localStorage.getItem("medex.im-vista"))) === (vistaIni === "tabla" ? "red" : "tabla"));
+  await p.click("#contenido-tab .im-mapa :is(.im-nom, .im-nodo) >> nth=0"); await p.waitForTimeout(150);
+  check("al tocar un medicamento, la ficha enseña todas las suyas", (await p.$$("#contenido-tab .im-ficha .im-mini li")).length >= 1);
+  await p.click("#contenido-tab .im-ficha [data-im-par] >> nth=0"); await p.waitForTimeout(150); await p.click("#contenido-tab .im-ficha [data-im-ver]"); await p.waitForTimeout(700);
+  check("«Ver en la lista» lleva a esa interacción del texto completo", (await p.evaluate(() => document.activeElement?.id || "")).startsWith("ddi-"));
   await p.click('[data-tab="cuando"]'); await p.waitForTimeout(200);
   check("franja horaria pintada", (await p.textContent("#contenido-tab")).length > 50);
   await p.click('[data-tab="general"]'); await p.waitForTimeout(200);

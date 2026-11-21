@@ -1,7 +1,7 @@
 /* Semana activa (mejora grande 11): tres anillos (moverse, fuerza y equilibrio), racha amable y mapa de 12 semanas.
    Lógica pura (se prueba en scripts/test.mjs) y el HTML de «Mi plan» y «Hoy». Se carga al abrir esas pantallas,
    no al arrancar la aplicación. */
-import { t, idioma } from "./i18n.js?v=202611212315";
+import { t, idioma } from "./i18n.js?v=202611212327";
 
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 /** Lunes (00:00) de la semana de una fecha. */

@@ -39,6 +39,7 @@ app/
     constantes.js       Mis constantes: gráficas SVG de glucosa, tensión y pulso del diario con franjas, lectura al pasar y tabla; valores para comentar con el médico (bajo demanda, v1.2)
     pastillero.js       Mi pastillero: tomas por momentos del día, lo no diario aparte, línea del día con la ventana de entrenamiento y hoja de la semana para imprimir; textos en 5 idiomas (bajo demanda, v1.2)
     fhir.js             exportación FHIR R4 (Bundle de colección); sale de app.js en la v1.2.11 (bajo demanda)
+    mapa.js             Mapa de interacciones: tabla de cruces o red de arcos con gravedad por color, forma y trazo, filtros, «Dónde se concentran» y ficha de cada cruce; textos en 5 idiomas (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

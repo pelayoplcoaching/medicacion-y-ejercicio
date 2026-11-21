@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.12 · 2026-11-21 · Mejoras grandes (13): mapa de interacciones
+- `js/mapa.js` (bajo demanda): al abrir «Interacciones», un mapa de las de su lista con dos vistas que se eligen y se recuerdan. «Tabla de cruces»: un triángulo como las tablas de distancias de los mapas de carreteras (cada casilla es el cruce de dos medicamentos y una guía en L lleva de la casilla a los dos nombres al pasar el dedo o el ratón). «Red»: diagrama de arcos con un medicamento por fila (con su número de interacciones) y un arco por interacción. Por defecto, tabla con más de 6 interacciones o 7 medicamentos; red con menos.
+- Gravedad codificada tres veces (color, forma y trazo): mayor en rojo con triángulo y línea continua gruesa, moderada en ámbar con rombo y línea discontinua, menor en verde con círculo y línea de puntos. Los filtros por gravedad hacen de leyenda (con su número) y nunca dejan el mapa vacío.
+- «Dónde se concentran»: los tres medicamentos que más participan, con barra proporcional a la carga (las mayores pesan más) y cuántas son mayores. El orden de filas pone primero el más implicado y a su lado los que más se relacionan con él, para arcos cortos y pocos cruces.
+- Ficha al tocar un cruce, un arco o un medicamento: gravedad, efecto, qué hacer, fuente y «Ver en la lista» (lleva a esa interacción del texto completo, que se ilumina); la de un medicamento enseña todas las suyas y las duplicidades («Aparece dos veces en su lista»). Abre con la más importante, sin atenuar el resto hasta que la persona elige.
+- Accesibilidad: botones con nombre en cada cruce y medicamento, flechas arriba y abajo entre medicamentos de la red, ficha con aviso educado al lector de pantalla y versión en texto en la lista de debajo; contraste de los glifos comprobado en claro, oscuro y alto contraste.
+- Pruebas: 5 nuevas en `test.mjs` (grafo, duplicidades, orden de filas, geometría de los arcos, vista por defecto, idiomas) y 4 en `ui_test.mjs`; accesibilidad de las dos vistas en claro, oscuro y alto contraste.
+
 ## 1.2.11 · 2026-11-21 · Mejoras grandes (12): mi pastillero
 - `js/pastillero.js` (bajo demanda): sus tomas de cada día en cuatro compartimentos (desayuno, comida, cena y al acostarse, a las horas de «¿Cuándo?»), cada fármaco con el icono de su grupo y la dosis de una toma; los «cuando lo necesite» y los que no son diarios, aparte.
 - Seguridad: los fármacos semanales, mensuales o de más tiempo (metotrexato, alendronato, semaglutida, denosumab…, por la unidad de la base) nunca entran en las casillas diarias; van en un recuadro ámbar «No son diarios» con «No los tome cada día: siga el día que le indicaron» y, en la hoja impresa, con un hueco para anotar el día.
