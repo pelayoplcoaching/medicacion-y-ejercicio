@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma } from "./engine.js?v=202611211641";
-import { APP_VERSION } from "./version.js?v=202611211641";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211641";
-import { picto } from "./pictos.js?v=202611211641";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211641";
-import { cargarScript } from "./libs.js?v=202611211641";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211641";
-import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211641";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma } from "./engine.js?v=202611211655";
+import { APP_VERSION } from "./version.js?v=202611211655";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611211655";
+import { picto } from "./pictos.js?v=202611211655";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611211655";
+import { cargarScript } from "./libs.js?v=202611211655";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611211655";
+import { t, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611211655";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -750,7 +750,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211641").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611211655").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
