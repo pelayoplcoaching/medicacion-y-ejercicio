@@ -37,6 +37,8 @@ app/
     mes.js              Resumen del mes: cálculo comparado con el mes anterior e imagen 1080 × 1350 en canvas para compartir (familia o médico); textos en 5 idiomas (bajo demanda, v1.2)
     calor.js            «Hoy hace calor»: consejo por nivel de calor elegido por la persona (sin ubicación), agua, ropa, fármacos con calor y señales de alarma (bajo demanda, v1.2)
     constantes.js       Mis constantes: gráficas SVG de glucosa, tensión y pulso del diario con franjas, lectura al pasar y tabla; valores para comentar con el médico (bajo demanda, v1.2)
+    pastillero.js       Mi pastillero: tomas por momentos del día, lo no diario aparte, línea del día con la ventana de entrenamiento y hoja de la semana para imprimir; textos en 5 idiomas (bajo demanda, v1.2)
+    fhir.js             exportación FHIR R4 (Bundle de colección); sale de app.js en la v1.2.11 (bajo demanda)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

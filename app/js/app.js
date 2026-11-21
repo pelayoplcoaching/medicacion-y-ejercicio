@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212256";
-import { APP_VERSION } from "./version.js?v=202611212256";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212256";
-import { picto } from "./pictos.js?v=202611212256";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212256";
-import { cargarScript } from "./libs.js?v=202611212256";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212256";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212256";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212315";
+import { APP_VERSION } from "./version.js?v=202611212315";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212315";
+import { picto } from "./pictos.js?v=202611212315";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212315";
+import { cargarScript } from "./libs.js?v=202611212315";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212315";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212315";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,11 +32,11 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212256"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212256"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212256"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212256"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212256"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212315"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212315"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212315"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212315"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212315"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611212256"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611212315"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611212256"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611212315"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611212256"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611212315"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611212256"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611212315"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,6 +110,20 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611212315"));
+const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
+/** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
+function abrirPastillero() {
+  const meds = estado.meds.filter((m) => !m.pausado).map((m) => {
+    const ref = m.libre ? null : indice.porId.get(m.pid);
+    if (!m.libre && !ref) return null;
+    return { nombre: m.libre ? m.nombre : ref.principio.nombre, dosis: m.dosis, unidad: m.unidad || ref?.principio.unidad || "mg", momentos: m.momentos?.length ? m.momentos : momentosPorDefecto(m.tomas || 1), aDemanda: !!m.aDemanda, ic: ref ? iconoGrupo(ref.clase) : "", nota: m.combo ? t("pt.en_combo", { m: m.combo }) : "" };
+  }).filter(Boolean);
+  const irHoras = () => { estado.tab = "cuando"; render(); requestAnimationFrame(() => { const i = $('#contenido-tab [data-hora="desayuno"]'); if (i) { desplazar(i); i.focus({ preventScroll: true }); } }); };
+  cargarPastillero().then((P) => P.abrir({ meds, horas: { ...estado.horas }, ventana: ventanaEntrenamiento(indice, medsActivos(), estado.horas), franja: franjaHoy(), plan: planActual(), iconos: Object.fromEntries(Object.entries(ICONO_TIPO).map(([k, n]) => [k, icono(n, "pt-ti")])), momentos: Object.fromEntries(MOMENTOS.map((m) => [m, momTxt(m)])), version: APP_VERSION, irHoras }))
+    .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
 const SFT_REPETIR = 56; // días: se proponen cada 8-12 semanas
 /** Azulejo del plan: cuándo las hizo por última vez y si toca repetirlas. Se enseña desde los 60 años (los baremos son de 60 a 94) o si ya hay resultados. */
 function tileSft() {
@@ -218,6 +232,7 @@ const ICONS = {
   legal: "M11 3h2v2.1l5.5 1.8 1.2-.4.6 1.9-1.1.4L22 15a4 4 0 0 1-7 0l2.6-6.4L13 7.2V19h4v2H7v-2h4V7.2L6.4 8.6 9 15a4 4 0 0 1-7 0l2.8-6.2-1.1-.4.6-1.9 1.2.4L11 5.1V3zM5.5 10.6 4.1 14h2.8l-1.4-3.4zm13 0L17.1 14h2.8l-1.4-3.4z",
   estetoscopio: "M6 2h2v2H7v5a3 3 0 0 0 6 0V4h-1V2h2a1 1 0 0 1 1 1v6a5 5 0 0 1-4 4.9V16a3 3 0 0 0 6 0v-1.2a3 3 0 1 1 2 0V16a5 5 0 0 1-10 0v-2.1A5 5 0 0 1 5 9V3a1 1 0 0 1 1-1zm13 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z",
   grafica: "M3 19h18v2H3v-2zm1.6-3.8 4.6-6.4 3.7 2.9 5.5-7.6 1.6 1.2-6.7 9.2-3.7-2.9-3.4 4.8-1.6-1.2z",
+  pastillero: "M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 4v8h2.75V9H5zm3.75 0v8h2.75V9H8.75zm3.75 0v8h2.75V9H12.5zm3.75 0v8H19V9h-2.75z",
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
 
@@ -914,7 +929,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212256").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212315").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -2153,7 +2168,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212256").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212315").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
@@ -2344,6 +2359,7 @@ function renderCuando(cont) {
     <p class="intro-cuando">${conInfo ? t("cuando.intro") : t("cuando.sin_info")}</p>
     <div class="timeline" role="img" aria-label="${t("cuando.titulo")}">${v.horas.map((x) => `<div class="hora nivel-${x.nivel}" title="${hh(x.h)}${x.motivos.length ? ": " + x.motivos.map((m) => m.farmaco + " (" + m.motivo + ")").join("; ") : ""}"><span>${x.h % 3 === 0 ? x.h : ""}</span></div>`).join("")}</div>
     ${v.mejores.length ? `<p class="mejores">${t("cuando.mejores", { m: v.mejores.map((f) => `<b>${hh(f.desde)}–${hh(f.hasta)}</b>`).join(t("cuando.y")) })}</p>` : ""}
+    <div class="acciones pt-entrada"><button type="button" class="btn-sec sm" data-pastillero="">${icono("pastillero")} ${t("pt.btn")}</button></div>
     <details class="bloque" open><summary><span class="sub-label">${t("cuando.horas_tomas")}</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <div class="fila horas-tomas">${MOMENTOS.map((m) => `<label>${momTxt(m)} <input type="number" min="0" max="23" inputmode="numeric" data-hora="${m}" value="${estado.horas[m]}"></label>`).join("")}</div>
       <small>${t("cuando.marque")}</small>
@@ -3083,49 +3099,16 @@ async function recibirSync(cod) {
 }
 
 
-/* ---------- beta 3: exportación FHIR R4 (Bundle de colección) y versión en texto accesible ---------- */
-const MOMENTO_FHIR = { desayuno: "MORN", comida: "NOON", cena: "EVE", noche: "NIGHT" };
-const CODIGOS_FHIR = { fcReposo: ["40443-4", "Heart rate --resting"], fg: ["62238-1", "Glomerular filtration rate/1.73 sq M.predicted"], fevi: ["10230-1", "Left ventricular Ejection fraction"], edad: ["30525-0", "Age"] };
-function bundleFhir() {
-  const res = evaluar(datos, medsActivos(), ctxActual());
-  const ctx = ctxActual();
-  const P = prescripcion(res, ctx);
-  const ahora = new Date().toISOString();
-  const ref = (tipo, id) => ({ reference: `${tipo}/${id}` });
-  const obs = (id, [code, display], valor, unidad) => ({ resourceType: "Observation", id, status: "final", code: { coding: [{ system: "http://loinc.org", code, display }], text: display }, subject: ref("Patient", "paciente"), effectiveDateTime: ahora, valueQuantity: { value: valor, unit: unidad, system: "http://unitsofmeasure.org" } });
-  const recursos = [];
-  recursos.push({ resourceType: "Patient", id: "paciente", text: { status: "generated", div: `<div xmlns="http://www.w3.org/1999/xhtml">Paciente anónimo${ctx.edad ? ", " + ctx.edad + " años" : ""}</div>` } });
-  const presc = estado.modo === "profesional" ? prescriptorActual() : null;
-  if (presc?.nombre) recursos.push({ resourceType: "Practitioner", id: "prescriptor", name: [{ text: presc.nombre }], ...(presc.colegiado ? { identifier: [{ system: "urn:oid:2.16.724.4.9", value: presc.colegiado }] } : {}), ...(presc.especialidad ? { qualification: [{ code: { text: presc.especialidad } }] } : {}) });
-  if (ctx.edad) recursos.push(obs("edad", CODIGOS_FHIR.edad, ctx.edad, "a"));
-  if (estado.fcReposo) recursos.push(obs("fc-reposo", CODIGOS_FHIR.fcReposo, estado.fcReposo, "/min"));
-  if (ctx.fg != null) recursos.push(obs("fg", CODIGOS_FHIR.fg, ctx.fg, "mL/min/{1.73_m2}"));
-  if (ctx.fevi != null) recursos.push(obs("fevi", CODIGOS_FHIR.fevi, ctx.fevi, "%"));
-  if (ctx.sppb != null) recursos.push({ resourceType: "Observation", id: "sppb", status: "final", code: { text: "SPPB (Short Physical Performance Battery)" }, subject: ref("Patient", "paciente"), effectiveDateTime: estado.sppb?.fecha ? new Date(estado.sppb.fecha).toISOString() : ahora, valueInteger: ctx.sppb, interpretation: [{ text: ctx.fragilidad || "" }] });
-  if (ctx.nyha != null) recursos.push({ resourceType: "Observation", id: "nyha", status: "final", code: { text: "Clase funcional NYHA" }, subject: ref("Patient", "paciente"), valueString: ["", "I", "II", "III", "IV"][ctx.nyha] });
-  if (estado.caidas) recursos.push({ resourceType: "Observation", id: "caidas", status: "final", code: { text: "Caída en el último año" }, subject: ref("Patient", "paciente"), valueBoolean: true });
-  const crib = cribadoActual(res); if (crib.clave !== "sin_datos") recursos.push({ resourceType: "Observation", id: "cribado-acsm", status: "final", code: { text: "Cribado preparticipación ACSM 2015" }, subject: ref("Patient", "paciente"), valueString: crib.clave, note: [{ text: CRIBADO_TXT[crib.clave] || "" }] });
-  const condTxt = { ...ETIQUETAS_CTX };
-  for (const c of estado.condiciones) recursos.push({ resourceType: "Condition", id: "cond-" + c, clinicalStatus: { coding: [{ system: "http://terminology.hl7.org/CodeSystem/condition-clinical", code: "active" }] }, code: { text: condTxt[c] || t("sit." + c) || c }, subject: ref("Patient", "paciente") });
-  estado.meds.forEach((m, i) => {
-    const it = res.items.find((x) => x.principio.id === m.pid);
-    const ent = indice.porId.get(m.pid);
-    const atc = ent?.principio?.atc || ent?.clase?.atc?.[0];
-    const ms = { resourceType: "MedicationStatement", id: "med-" + (i + 1), status: m.pausado ? "on-hold" : "active", subject: ref("Patient", "paciente"), dateAsserted: ahora,
-      medicationCodeableConcept: { text: m.libre ? m.nombre : ent.principio.nombre, ...(atc ? { coding: [{ system: "http://www.whocc.no/atc", code: atc, display: ent.clase.nombre }] } : {}) } };
-    if (m.dosis != null) ms.dosage = [{ text: it ? `${m.dosis} ${m.unidad || "mg"} × ${m.tomas || 1}/día${m.aDemanda ? " si precisa" : ""}` : `${m.dosis} ${m.unidad || "mg"}`, asNeededBoolean: !!m.aDemanda, timing: { repeat: { frequency: m.tomas || 1, period: 1, periodUnit: "d", ...(m.momentos?.length ? { when: m.momentos.map((x) => MOMENTO_FHIR[x]).filter(Boolean) } : {}) } }, doseAndRate: [{ doseQuantity: { value: m.dosis, unit: m.unidad || "mg" } }] }];
-    recursos.push(ms);
-  });
-  const act = (titulo, f) => ({ detail: { kind: "ServiceRequest", status: "scheduled", code: { text: titulo }, description: `Frecuencia: ${f.frec}. Intensidad: ${f.int} Tiempo: ${f.tiempo}. Tipo: ${f.tipo}` } });
-  const sem = estado.prescrito?.semanas || presc?.revision || 6;
-  const inicio = estado.prescrito ? new Date(estado.prescrito.fecha) : new Date(); const fin = new Date(inicio); fin.setDate(fin.getDate() + sem * 7);
-  recursos.push({ resourceType: "CarePlan", id: "plan-ejercicio", status: "active", intent: "plan", title: "Prescripción de ejercicio físico adaptada al tratamiento (FITT)", subject: ref("Patient", "paciente"), period: { start: inicio.toISOString().slice(0, 10), end: fin.toISOString().slice(0, 10) }, ...(presc?.nombre ? { author: ref("Practitioner", "prescriptor") } : {}), activity: [act("Ejercicio aeróbico", P.aer), act("Entrenamiento de fuerza", P.fue), act("Equilibrio", P.eq)], note: [{ text: `Generado con Pauta Activa v${APP_VERSION} (base ${datos.kb.version}). ${loEsencial(res, 5).map((a) => a.titulo + ": " + a.texto).join(" | ")}` }] });
-  return { resourceType: "Bundle", id: "pauta-activa-" + Date.now().toString(36), type: "collection", timestamp: ahora, meta: { source: "https://medicacionyejercicio.fuerzabasadaenevidencia.com/" }, entry: recursos.map((r) => ({ fullUrl: `urn:uuid:${r.resourceType.toLowerCase()}-${r.id}`, resource: r })) };
-}
+/* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611212315"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
-  descargarTexto(`pauta-activa-fhir-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(bundleFhir(), null, 1), "application/fhir+json");
-  toast(t("inf.fhir_ok"), { ms: 5000 });
+  const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();
+  cargarFhir().then((F) => {
+    const b = F.bundleFhir({ res, ctx, P: prescripcion(res, ctx), presc: estado.modo === "profesional" ? prescriptorActual() : null, estado, crib: cribadoActual(res), cribTxt: CRIBADO_TXT, cond: (c) => ETIQUETAS_CTX[c] || t("sit." + c) || c, ent: (pid) => indice.porId.get(pid), esencial: loEsencial(res, 5), version: APP_VERSION, kbVersion: datos.kb.version });
+    descargarTexto(`pauta-activa-fhir-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(b, null, 1), "application/fhir+json");
+    toast(t("inf.fhir_ok"), { ms: 5000 });
+  }).catch(() => { cargarFhir.p = null; toast(t("pq.error"), { ms: 4000 }); });
 });
 $("#btn-txt").addEventListener("click", () => {
   if (!estado.meds.length) return;

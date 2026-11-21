@@ -444,6 +444,32 @@ console.log("\n«Hoy hace calor»: calor y medicación (mejora grande 10)");
   check("textos en los cinco idiomas; fuentes de la OMS y del ACSM (con DOI)", ["en", "ca", "gl", "eu"].every((l) => Object.keys(C.TXT[l]).length === ks.length && ks.every((x) => C.TXT[l][x] && vars(C.TXT[l][x]) === vars(C.TXT.es[x]))) && C.FUENTES.filter((x) => /ACSM/.test(x.txt)).every((x) => x.doi) && C.FUENTES.some((x) => /OMS/.test(x.txt)));
 }
 
+console.log("\nMi pastillero: tomas por momentos y hoja de la semana (mejora grande 14)");
+{
+  const PT = await import(pathToFileURL(path.join(ROOT, "app/js/pastillero.js")).href);
+  const meds = [
+    { nombre: "Insulina rápida", pid: "insulina_rapida", dosis: 6, unidad: "UI", momentos: ["desayuno", "comida", "cena"] },
+    { nombre: "Metotrexato", pid: "metotrexato", dosis: 15, unidad: "mg/semana", momentos: ["desayuno"] },
+    { nombre: "Paracetamol", pid: "paracetamol", dosis: 1000, unidad: "mg", momentos: ["desayuno"], aDemanda: true },
+    { nombre: "Salbutamol", pid: "salbutamol", dosis: 2, unidad: "inhalaciones/día", momentos: [] },
+  ];
+  const C = PT.compartimentos(meds);
+  check("cada fármaco en su momento (sin momentos, al desayuno); «cuando lo necesite» aparte", C.por.desayuno.map((m) => m.nombre).join() === "Insulina rápida,Salbutamol" && C.por.comida.length === 1 && C.por.cena.length === 1 && C.por.noche.length === 0 && C.demanda.map((m) => m.nombre).join() === "Paracetamol" && C.tomas === 4);
+  const semanales = ["mg/semana", "mg/mes", "mg/3 meses", "mg/año", "UI/semana", "mg/2 semanas"];
+  check("lo semanal o mensual nunca entra en las casillas diarias (metotrexato semanal)", C.periodicos.map((m) => m.nombre).join() === "Metotrexato" && !Object.values(C.por).flat().some((m) => m.nombre === "Metotrexato") && semanales.every((u) => PT.periodo(u)) && ["mg", "UI", "g/día", "mcg/h", "mg/24 h", "inhalaciones/día"].every((u) => !PT.periodo(u)));
+  check("dosis de una toma legible: sin «/día» y con su periodo si no es diaria", PT.dosisTxt(meds[0]) === "6 UI" && PT.dosisTxt(meds[1]) === "15 mg/semana" && PT.dosisTxt(meds[3]) === "2 inhalaciones" && PT.dosisTxt({ dosis: 1000, unidad: "mg" }) === "1000 mg" && PT.dosisTxt({ dosis: 2.5 }) === "2,5 mg" && PT.dosisTxt({ dosis: null }) === "");
+  const v = ventanaEntrenamiento(indice, meds.filter((m) => !m.aDemanda).map((m) => ({ pid: m.pid, tomas: m.momentos.length || 1, momentos: m.momentos })));
+  const tr = PT.trasToma(v, "desayuno");
+  check("tras cada toma, lo que dice la ventana de «¿Cuándo?» (insulina rápida: hipoglucemia), sin repetir y por orden", tr.length >= 1 && tr.some((x) => x.farmaco && /insulina/i.test(x.farmaco)) && new Set(tr.map((x) => x.farmaco + x.motivo)).size === tr.length && tr.every((x, i) => i === 0 || tr[i - 1].desde <= x.desde) && PT.trasToma(v, "noche").length === 0);
+  const linea = PT.lineaDia(v, { desayuno: 8, comida: 14, cena: 21, noche: 23 }, C.por, "16:00–19:00");
+  check("línea del día: 18 horas, una marca por momento con tomas (con el n.º de fármacos) y lectura accesible", (linea.match(/class="pt-h /g) || []).length === 18 && (linea.match(/class="pt-toma"/g) || []).length === 3 && />2<\/b>/.test(linea) && /aria-label="Su día: 08:00, 14:00, 21:00\. Mejor entre 16:00–19:00"/.test(linea));
+  const h = PT.hoja({ meds, horas: { desayuno: 8, comida: 14, cena: 21, noche: 23 }, plan: planSemana([1, 3, 5]), tipos: { fuerza_eq: "Fuerza y equilibrio", aerobico: "Aeróbico", fuerza: "Fuerza", descanso: "Descanso" }, momentos: { desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Al acostarse" }, franja: "16:00–19:00", version: "9.9.9" });
+  check("hoja de la semana: 7 días, una casilla por toma y día, sesión del plan y lo no diario al pie con su día", (h.match(/<th scope="col">/g) || []).length === 8 && (h.match(/<div><i><\/i>/g) || []).length === 4 * 7 + 3 && /Metotrexato 15 mg\/semana · Día: ________/.test(h) && !/<td>[^]*Metotrexato[^]*<\/td>/.test(h.split("</table>")[0]) && /Paracetamol 1000 mg/.test(h) && /Fuerza y equilibrio · 16:00–19:00/.test(h) && /Pauta Activa v9\.9\.9/.test(h));
+  check("sin restricciones de horario, la hoja lo dice en lugar de inventar una franja", /Sin restricciones de horario/.test(PT.hoja({ meds: meds.slice(0, 1), horas: { desayuno: 8, comida: 14, cena: 21, noche: 23 }, plan: [], tipos: {}, momentos: {} })));
+  const ks = Object.keys(PT.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas con las mismas variables; singular «1 toma al día»", ["en", "ca", "gl", "eu"].every((l) => Object.keys(PT.TXT[l]).length === ks.length && ks.every((x) => PT.TXT[l][x] && vars(PT.TXT[l][x]) === vars(PT.TXT.es[x]))) && PT.tx("toma1") === "1 toma al día" && vars(PT.TXT.es.toma1) === "");
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

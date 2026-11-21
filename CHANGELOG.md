@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.2.11 · 2026-11-21 · Mejoras grandes (12): mi pastillero
+- `js/pastillero.js` (bajo demanda): sus tomas de cada día en cuatro compartimentos (desayuno, comida, cena y al acostarse, a las horas de «¿Cuándo?»), cada fármaco con el icono de su grupo y la dosis de una toma; los «cuando lo necesite» y los que no son diarios, aparte.
+- Seguridad: los fármacos semanales, mensuales o de más tiempo (metotrexato, alendronato, semaglutida, denosumab…, por la unidad de la base) nunca entran en las casillas diarias; van en un recuadro ámbar «No son diarios» con «No los tome cada día: siga el día que le indicaron» y, en la hoja impresa, con un hueco para anotar el día.
+- Línea del día de 6 a 24 h con las horas mejores y peores para entrenar (la misma ventana de «¿Cuándo?», de los horarios de la base), las tomas marcadas con el número de fármacos y la mejor franja; leyenda solo con los colores que aparecen. Bajo cada compartimento, lo que hay que tener en cuenta tras esa toma, con su horario y su motivo (insulina, diuréticos, benzodiacepinas…).
+- Su semana de ejercicio (tipo de sesión de cada día del plan, hoy marcado) y «Cambiar las horas de las tomas», que lleva a las horas de «¿Cuándo?».
+- «Imprimir la hoja de la semana»: A4 apaisado con siete columnas, una casilla por toma y día, la fila del ejercicio con la mejor franja, lo no diario y lo que se toma si hace falta al pie.
+- Accesos: botón «Ver mi pastillero» en «¿Cuándo?» y entrada en el menú «Más». Nuevo icono «pastillero».
+- Rendimiento: la exportación FHIR sale de `app.js` a `js/fhir.js` (bajo demanda, misma salida), y el JavaScript inicial vuelve a 437 KB.
+- Pruebas: 8 nuevas en `test.mjs` y 4 en `ui_test.mjs` (incluida la impresión con `window.print` simulado); accesibilidad en claro, oscuro, alto contraste y en «¿Cuándo?».
+
 ## 1.2.10 · 2026-11-21 · Mejoras grandes (11): gráficas de constantes
 - `js/constantes.js` (bajo demanda): «Mis constantes» con una gráfica por constante del diario (glucosa antes y después, tensión sistólica y pulso al terminar), con las franjas de su situación detrás: glucosa por debajo de 70 (bajada de azúcar), 70–89, 90–250 y por encima de 250 (las cifras de la regla de la base, ADA 2024 y Riddell 2017); tensión por debajo de 90, 90–159, 160–179 (solo ligera o moderada) y 180 o más (no entrene), de ESC 2024 y ACSM; pulso con las zonas moderada y vigorosa del ACSM (Garber 2011, doi:10.1249/MSS.0b013e318213fefb) sobre el máximo de Tanaka 2001 (208 − 0,7 × edad, doi:10.1016/s0735-1097(00)01054-8). Con fármacos que invalidan el pulso, sin franjas y con la explicación.
 - Diseño de gráfica según la guía de visualización: líneas de 2 px, puntos con anillo del color del fondo, rejilla fina, último valor rotulado, leyenda para antes y después, paleta de dos series comprobada para daltonismo en claro y en oscuro, lectura al pasar el dedo o el ratón (cruz y globo con valor y fecha) y tabla desplegable de cada gráfica.

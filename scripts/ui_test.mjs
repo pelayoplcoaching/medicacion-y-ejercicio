@@ -196,6 +196,15 @@ try {
   check("constantes guardadas con la sesión", diario[0].const?.glucosa_antes === 140 && diario[0].const?.fc === 95 && diario[0].chequeo === "ok");
   const [csv] = await Promise.all([p.waitForEvent("download"), p.click("#btn-diario-csv")]);
   check("diario exportable en CSV", csv.suggestedFilename().endsWith(".csv"));
+  await p.click("#menu-mas > summary"); await p.click("#menu-mas [data-pastillero]"); await p.waitForSelector("#pastillero[open] .pt-cajas", { timeout: 5000 }).catch(() => {});
+  check("mi pastillero: cuatro momentos con sus fármacos y dosis, tomas en la línea del día y la semana del plan", (await p.$$("#pastillero .pt-caja")).length >= 4 && (await p.$$("#pastillero .pt-meds li")).length >= 3 && (await p.$$("#pastillero .pt-toma")).length >= 1 && (await p.$$("#pastillero .pt-semana li")).length === 7 && (await p.$$("#pastillero .pt-semana li.hoy-pt")).length === 1 && /\d/.test(await p.textContent("#pastillero .pt-dosis")));
+  check("tras la toma de la insulina, las horas en rojo y su motivo", (await p.$$("#pastillero .pt-h.n-rojo")).length >= 1 && (await p.$$("#pastillero .pt-tras li")).length >= 1 && /insulina/i.test(await p.textContent("#pastillero .pt-cajas")));
+  await p.evaluate(() => { window.__impreso = 0; window.print = () => { window.__impreso++; }; });
+  await p.click("#pastillero [data-pt-imprimir]"); await p.waitForTimeout(300);
+  check("hoja de la semana para imprimir: 7 días, casillas por toma y la fila del ejercicio", (await p.evaluate(() => window.__impreso)) === 1 && (await p.$$("#hoja-pastillero thead th")).length === 8 && (await p.$$("#hoja-pastillero td i")).length >= 7 && await p.$eval("body", (b) => b.classList.contains("imprimir-pastillero")) && (await p.$$("#hoja-pastillero tr.hp-ej")).length === 1);
+  await p.evaluate(() => window.dispatchEvent(new Event("afterprint"))); await p.waitForTimeout(50);
+  await p.click("#pastillero [data-pt-horas]"); await p.waitForTimeout(400);
+  check("«Cambiar las horas» cierra el pastillero y lleva a las horas de «¿Cuándo?», que también lo enlaza", !(await p.$eval("body", (b) => b.classList.contains("imprimir-pastillero"))) && !(await p.$eval("#pastillero", (d) => d.open)) && (await p.evaluate(() => document.activeElement?.dataset?.hora)) === "desayuno" && await p.isVisible("#contenido-tab [data-pastillero]"));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(150);
 
   console.log("Combinaciones y Vivifrail automático (v1.0.2)");
