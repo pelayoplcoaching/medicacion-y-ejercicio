@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212242";
-import { APP_VERSION } from "./version.js?v=202611212242";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212242";
-import { picto } from "./pictos.js?v=202611212242";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212242";
-import { cargarScript } from "./libs.js?v=202611212242";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212242";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212242";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212248";
+import { APP_VERSION } from "./version.js?v=202611212248";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212248";
+import { picto } from "./pictos.js?v=202611212248";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212248";
+import { cargarScript } from "./libs.js?v=202611212248";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212248";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212248";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,11 +32,11 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212242"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212242"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212242"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212242"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212242"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212248"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212248"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212248"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212248"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212248"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611212242"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611212248"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611212242"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611212248"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,6 +77,30 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611212248"));
+/** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
+function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
+function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
+function abrirCalor() {
+  const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null;
+  const farmacos = res ? res.items.map((it) => ({ nombre: it.principio.nombre, ids: porquesDe(it.senales) })) : [];
+  cargarCalor().then((C) => C.abrir({ nivel: nivelCalorHoy(), edad: estado.edad, limiteLiquidos: estado.condiciones.includes("insuficiencia_cardiaca") || estado.condiciones.includes("renal"), farmacos, guardar: (n) => { escribirCalor(n); renderHoy(); } }))
+    .catch(() => { cargarCalor.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+const CALOR_N = ["calor.n0", "calor.n1", "calor.n2", "calor.n3"], CALOR_R = [null, "calor.r1", "calor.r2", "calor.r3"];
+/** Fila de «Hoy»: de mayo a septiembre (o si ya lo dijo hoy) pregunta qué tiempo hace y resume qué hacer. */
+function filaCalor() {
+  const n = nivelCalorHoy(), mes = new Date().getMonth();
+  if (n == null && (mes < 4 || mes > 8)) return "";
+  return `<div class="hoy-calor${n != null ? " n" + n : ""}"><small>${t("calor.pregunta")}</small><div class="calor-chips" role="group" aria-label="${t("calor.pregunta")}">${CALOR_N.map((k, i) => `<button type="button" class="chip chip-btn${n === i ? " activo" : ""}" data-calor="${i}" aria-pressed="${n === i}">${t(k)}</button>`).join("")}</div>${n ? `<p class="calor-resumen"><span>${t(CALOR_R[n])}</span> <button type="button" class="btn-sec sm" data-calor-ver="">${t("calor.ver")}</button></p>` : ""}</div>`;
+}
+document.addEventListener("click", (ev) => {
+  const b = ev.target.closest("[data-calor], [data-calor-ver]"); if (!b) return;
+  ev.preventDefault(); $("#menu-mas").open = false;
+  if (b.matches("[data-calor-ver]")) return abrirCalor();
+  escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
+  $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
+});
 const SFT_REPETIR = 56; // días: se proponen cada 8-12 semanas
 /** Azulejo del plan: cuándo las hizo por última vez y si toca repetirlas. Se enseña desde los 60 años (los baremos son de 60 a 94) o si ya hay resultados. */
 function tileSft() {
@@ -880,7 +904,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212242").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212248").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1324,6 +1348,7 @@ function renderHoy() {
       <div class="hoy-botones"><button type="button" class="btn sm" id="btn-empezar-hoy"${plan.tipo === "descanso" ? " hidden" : ""}>${t("plan.empezar")}</button><button type="button" class="btn-sec sm" id="btn-registrar">${diarioAbierto ? t("ficha.cerrar") : t("hoy.registrar")}</button><button type="button" class="btn-sec sm" id="btn-ver-plan">${t("plan.ver")}</button></div>
     </div>
     ${(() => { const c = datosHoy().cuidados; return c.length ? `<div class="hoy-cuid"><small>${t("hoy.cuidado")}</small>${listaCuidados(c, "hoy-cuidados")}</div>` : ""; })()}
+    ${filaCalor()}
     <div class="hoy-semana">${barrasSemana(diario)}<div class="hoy-resumen"><b>${nSem}</b> ${t("hoy.sesiones")} · <b>${minSem}</b> min ${t("hoy.esta_semana")}</div></div>
     <p class="hoy-sencillo"><button type="button" class="btn-sec sm" id="btn-sencillo-hoy">${icono("ojo")} ${t("hoy.sencillo")}</button></p>
     ${diarioAbierto ? `<form class="registro" id="form-registro">
@@ -2118,13 +2143,14 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212242").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212248").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
 if (navigator.webdriver) window.__paSesion = { adelantar: (s) => { cronoInicio -= s * 1000; } }; // pruebas: adelantar el reloj de la sesión
 function abrirSesion(tipo, fecha = hoyISO()) {
   cargarVoz().catch(() => { cargarVoz.p = null; }); // mientras se hace el chequeo previo
+  if (fecha === hoyISO() && (nivelCalorHoy() ?? 0) >= 2) toast(t("calor.sesion"), { accion: t("calor.ver"), onAccion: abrirCalor, ms: 8000 }); // mejora grande 10
   const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
   const dlg = $("#sesion");
   const res = evaluar(datos, medsActivos(), ctxActual());

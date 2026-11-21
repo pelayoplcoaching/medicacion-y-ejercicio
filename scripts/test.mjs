@@ -402,8 +402,24 @@ console.log("\nResumen del mes con imagen para compartir (mejora grande 12)");
   check("para la familia: actividad, mejor semana, hitos, pruebas y racha; sin datos de salud", fam.medico.length === 0 && fam.destacados.some((x) => /Escaleras/.test(x)) && fam.destacados.some((x) => /2\/2/.test(x)) && fam.destacados.some((x) => /6 semanas/.test(x)) && !/Bisoprolol|síntoma/.test(Mm.textoMes(fam)));
   check("para el médico: esfuerzo, síntomas y cuidados; los fármacos solo si se quiere (y entonces el pie ya no dice «sin datos personales»)", med.medico.length === 3 && !/Bisoprolol/.test(Mm.textoMes(med)) && /Bisoprolol, Metformina/.test(Mm.textoMes(medN)) && /sin nombre ni datos/.test(med.pie) && !/datos personales/.test(medN.pie));
   check("objetivos del mes proporcionales a sus semanas (moverse, fuerza y equilibrio)", fam.barras[0].o === 640 && fam.barras[1].o === 9 && fam.barras[2].o === 13);
-  const ks = Object.keys(Mm.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
-  check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(Mm.TXT[l]).length === ks.length && ks.every((k) => Mm.TXT[l][k] && vars(Mm.TXT[l][k]) === vars(Mm.TXT.es[k]))));
+  const ks2 = Object.keys(Mm.TXT.es), vars2 = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("singular y plural («1 sesión») en los cinco idiomas", ["es", "en", "ca", "gl", "eu"].every((l) => Mm.TXT[l].sesion1 && Mm.TXT[l].racha1 && vars2(Mm.TXT[l].racha1) === "") && ks2.includes("sesion1"));
+  check("textos de la interfaz en los cinco idiomas, con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(Mm.TXT[l]).length === ks2.length && ks2.every((k) => Mm.TXT[l][k] && vars2(Mm.TXT[l][k]) === vars2(Mm.TXT.es[k]))));
+}
+
+console.log("\n«Hoy hace calor»: calor y medicación (mejora grande 10)");
+{
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/calor.js")).href);
+  const PQ = await import(pathToFileURL(path.join(ROOT, "app/js/porque.js")).href);
+  const k = [0, 1, 2, 3].map((n) => C.consejo(n));
+  check("cuatro niveles que van a más: de cualquier hora a «mejor sin ejercicio intenso fuera»", k.every((x, i) => x.nivel === i && x.cuando) && /cualquier|venga bien/.test(k[0].cuando) && /primera hora/.test(k[2].cuando) && /sin ejercicio intenso fuera/.test(k[3].cuando) && C.consejo(9).nivel === 3);
+  const lim = C.consejo(2, { edad: 78, limiteLiquidos: true, mecanismos: ["agua", "sol"] }), sin = C.consejo(2, { edad: 50 });
+  check("agua: no perder más del 2 % del peso (ACSM); con 65 años o más, beber con horario; con líquidos limitados, la indicación del médico manda", lim.agua.some((x) => /2 %/.test(x)) && lim.agua.some((x) => /sed/.test(x) && /horario/.test(x)) && lim.agua.some((x) => /limitado los líquidos/.test(x)) && !sin.agua.some((x) => /limitado|horario/.test(x)));
+  check("protección solar solo si algún fármaco da sensibilidad al sol; señales para parar y llamar al 112", lim.sol && !sin.sol && k[0].parar.some((x) => /112/.test(x)));
+  const f = C.farmacosConCalor([{ nombre: "Furosemida", ids: ["agua", "tension"] }, { nombre: "Metoprolol", ids: ["pulso"] }, { nombre: "Doxiciclina", ids: ["sol"] }]);
+  check("fármacos que importan con calor: solo los de calor, agua o sol, y con explicador", f.map((x) => x.nombre).join() === "Furosemida,Doxiciclina" && C.MECANISMOS.every((m) => PQ.PQ_IDS.includes(m)));
+  const ks = Object.keys(C.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("textos en los cinco idiomas; fuentes de la OMS y del ACSM (con DOI)", ["en", "ca", "gl", "eu"].every((l) => Object.keys(C.TXT[l]).length === ks.length && ks.every((x) => C.TXT[l][x] && vars(C.TXT[l][x]) === vars(C.TXT.es[x]))) && C.FUENTES.filter((x) => /ACSM/.test(x.txt)).every((x) => x.doi) && C.FUENTES.some((x) => /OMS/.test(x.txt)));
 }
 
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");

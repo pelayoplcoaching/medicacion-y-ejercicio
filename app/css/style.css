@@ -3970,3 +3970,17 @@ body.sencillo { font-size: 1.1rem; }
 .menu-lista .ic-menu svg { display: block; }
 :root[data-theme="contrast"] .pruebas-tile.toca { background: var(--surface); }
 @media print { .pruebas-tile, .sft-acciones-datos { display: none !important; } }
+/* G10 hoy hace calor: fila de Hoy con el tiempo del dia (la ventana lleva sus estilos en js/calor.js) */
+.hoy-calor { margin: 10px 0 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.hoy-calor > small { display: block; margin-bottom: 6px; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.calor-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.calor-chips .chip-btn.activo { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
+.hoy-calor.n1 { border-color: var(--precaucion); }
+.hoy-calor.n2 { border-color: var(--precaucion); background: linear-gradient(135deg, var(--precaucion-soft), var(--surface) 70%); }
+.hoy-calor.n3 { border-color: var(--alerta); background: linear-gradient(135deg, var(--alerta-soft), var(--surface) 70%); }
+.hoy-calor.n2 .chip-btn.activo, .hoy-calor.n1 .chip-btn.activo { border-color: var(--precaucion); background: var(--precaucion-soft); color: var(--precaucion-ink); }
+.hoy-calor.n3 .chip-btn.activo { border-color: var(--alerta); background: var(--alerta-soft); color: var(--alerta-ink); }
+.calor-resumen { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 8px 0 0; font-size: .92rem; font-weight: 600; }
+.calor-resumen span { flex: 1 1 14em; }
+:root[data-theme="contrast"] .hoy-calor { background: var(--surface); }
+@media print { .hoy-calor .calor-chips, .calor-resumen .btn-sec { display: none !important; } }

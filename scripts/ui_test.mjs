@@ -178,6 +178,12 @@ try {
   await p.check('#mes input[name="mes-para"][value="medico"]', { force: true }); await p.waitForSelector("#mes-sin", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(300);
   check("para el médico: esfuerzo y síntomas; los nombres de los fármacos, solo si se desmarca la casilla", /Esfuerzo medio/.test(await p.textContent("#mes .mes-texto pre")) && !/Medicación:/.test(await p.textContent("#mes .mes-texto pre")) && await p.$eval("#mes-sin", (c) => c.checked));
   await p.click("#mes-cerrar"); await p.waitForTimeout(150);
+  await p.click("#menu-mas > summary"); await p.click("#menu-mas [data-calor-ver]"); await p.waitForSelector("#calor[open] .cal-chips", { timeout: 5000 }).catch(() => {});
+  await p.click('#calor [data-nivel="2"]'); await p.waitForSelector("#calor .cal-cab.n2", { timeout: 5000 }).catch(() => {});
+  check("calor y medicación: sin ubicación, consejo por nivel, líquidos limitados por la insuficiencia cardiaca y sus fármacos con calor", /no se usa su ubicación/.test(await p.textContent("#calor .cal-priv")) && /primera hora/.test(await p.textContent("#calor .cal-cab")) && (await p.$$("#calor .cal-lista li.fuerte")).length === 1 && (await p.$$("#calor .cal-meds li")).length >= 1 && /112/.test(await p.textContent("#calor .cal-parar")));
+  await p.click("#cal-cerrar"); await p.waitForTimeout(150);
+  check("el tiempo elegido se recuerda hoy y «Hoy» lo resume", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.calor")).nivel)) === 2 && /primera hora/.test(await p.textContent("#hoy .hoy-calor .calor-resumen")));
+  if (await p.isVisible("#btn-empezar-hoy")) { await p.click("#btn-empezar-hoy"); await p.waitForTimeout(250); check("con mucho calor, al empezar la sesión se recuerda bajar la intensidad", /mucho calor/.test(await p.textContent("#toast"))); await p.click("#sesion-cerrar").catch(() => {}); await p.waitForTimeout(150); }
   check("guardadas con el estado (el mejor de los dos intentos) y el azulejo dice cuándo fue",await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")).sft; return s.hist.length === 1 && s.hist[0].r.silla === 12 && s.hist[0].r.levantarse === 6.4 && s.sexo === "m"; }) && /Última vez/.test(await p.textContent(".pruebas-tile small")));
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
