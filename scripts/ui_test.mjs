@@ -463,6 +463,37 @@ try {
     await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
     await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
   }
+  // «Me duele…» (segunda tanda, 7): zona, semáforo, adaptar el plan y quitar las adaptaciones (se deja todo como estaba)
+  {
+    await p.click('.rato-enlaces [data-abre="dolor"]'); await p.waitForSelector("#dolor[open] .dl-chips", { timeout: 6000 }).catch(() => {});
+    check("«Me duele…» ofrece siete zonas, con la marca de borrador y sus fuentes", (await p.$$('#dolor .dl-chips [data-dl="zona"]')).length === 7 && (await p.isVisible("#dolor .dl-borrador")) && (await p.$$('#dolor .dl-fuentes a[href^="https://doi.org/10."]')).length === 3 && (await p.$$("#dolor #dl-ver")).length === 0);
+    await p.click('#dolor .dl-chips [data-dl="zona"][data-v="lumbar"]'); await p.waitForSelector("#dolor #dl-ver", { timeout: 4000 }).catch(() => {});
+    const k3 = await p.$eval("#dl-ver", (e) => e.dataset.k);
+    await p.fill("#dl-n", "7"); const k7 = await p.$eval("#dl-ver", (e) => e.dataset.k);
+    await p.fill("#dl-n", "1"); const k1 = await p.$eval("#dl-ver", (e) => e.dataset.k);
+    await p.click('#dolor [data-dl="manana"][data-v="no"]'); const kNo = await p.$eval("#dl-ver", (e) => e.dataset.k);
+    await p.click('#dolor [data-dl="manana"][data-v="si"]');
+    await p.check('#dolor [data-dl-alarma="esfinter"]'); const kAl = await p.$eval("#dl-ver", (e) => e.dataset.k), txtAl = await p.textContent("#dl-ver");
+    await p.uncheck('#dolor [data-dl-alarma="esfinter"]');
+    check("semáforo del dolor: 3 amarillo, 7 rojo, 1 verde; si no cede a la mañana siguiente, rojo; con señal de alarma, no entrenar y 112", k3 === "amarillo" && k7 === "rojo" && k1 === "verde" && kNo === "rojo" && kAl === "alarma" && /112/.test(txtAl), [k3, k7, k1, kNo, kAl].join());
+    const nCambia = (await p.$$("#dl-plan li.cambia")).length, nAdapta = (await p.$$("#dl-plan li.adapta")).length;
+    check("su plan con dolor lumbar: unos ejercicios se cambian por otro (con su dibujo) y otros se hacen de otra manera", nCambia >= 1 && nAdapta >= 1 && (await p.$$("#dl-plan li.cambia .dl-por svg.picto")).length === nCambia, `${nCambia} ${nAdapta}`);
+    await p.click('#dolor [data-dl="aplicar"]'); await p.waitForSelector("#dolor .dl-activo", { timeout: 4000 }).catch(() => {});
+    const cam = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.cambios") || "{}"));
+    check("«Adaptar mi plan» guarda los cambios, lo deja indicado y marca lo hecho en la lista", Object.keys(cam).length === nCambia && (await p.$$("#dl-plan li.hecho")).length >= nCambia && (await p.$$("#dl-plan li")).length === nCambia + nAdapta && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.dolor")).aplicado?.zona)) === "lumbar");
+    await p.click("#dl-cerrar"); await p.waitForTimeout(300);
+    const isoFz = await p.$$eval(".tira .dia", (ds) => ds.find((d) => /fuerza/i.test(d.querySelector(".tipo")?.textContent || ""))?.dataset.iso || null);
+    if (isoFz) await p.click(`.tira .dia[data-iso="${isoFz}"]`); await p.waitForTimeout(300);
+    check("Mi plan muestra los ejercicios cambiados en su sitio («en lugar de…»)", (await p.$$(".plan .bloques .ej-de")).length >= 1);
+    await p.click('.rato-enlaces [data-abre="dolor"]'); await p.waitForSelector("#dolor[open] .dl-activo", { timeout: 6000 }).catch(() => {});
+    await p.click('#dolor .dl-activo [data-dl="quitar"]'); await p.waitForTimeout(400);
+    check("«Quitar las adaptaciones» deja el plan como estaba", (await p.evaluate(() => localStorage.getItem("medex.cambios"))) === null && (await p.evaluate(() => localStorage.getItem("medex.variantes"))) === null && (await p.$$("#dolor .dl-activo")).length === 0);
+    await p.fill("#dl-n", "4"); await p.click('#dolor [data-dl="apuntar"]'); await p.waitForTimeout(200);
+    check("el dolor de hoy se apunta en el diario de la zona", (await p.$$("#dolor .dl-graf i")).length === 1 && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.dolor")).hist.length)) === 1);
+    await p.click("#dl-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { localStorage.removeItem("medex.dolor"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+    await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
+  }
   // Paseo guiado (segunda tanda, 6): preparar, andar con avisos, prueba del habla y guardar en el diario (se deja todo como estaba)
   {
     const diarioAntes = await p.evaluate(() => localStorage.getItem("medex.diario"));

@@ -72,6 +72,8 @@ const PANTALLAS = [
   { n: "programa-elegir", w: 390, pasos: [prgEstado(""), async (p) => p.waitForSelector("#programa[open] .prg-niveles")] },
   { n: "programa-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [prgEstado("medio"), async (p) => p.waitForSelector("#programa[open] .prg-tabla")] },
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
+  { n: "dolor-rodilla", w: 390, pasos: [abre("dolor", "rodilla"), async (p) => p.waitForSelector("#dolor #dl-ver")] },
+  { n: "dolor-lumbar-oscuro", w: 1280, tema: "dark", pasos: [abre("dolor", "lumbar"), async (p) => { await p.waitForSelector("#dolor #dl-ver"); await p.$eval("#dl-cuerpo", (e) => { e.scrollTop = e.querySelector("#dl-ver").offsetTop - 80; }); }] },
   { n: "paseo-preparar", w: 390, pasos: [abre("paseo"), async (p) => p.waitForSelector("#paseo .ps-barra")] },
   { n: "paseo-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [abre("paseo"), async (p) => { await p.click('#paseo [data-ps="empezar"]'); await p.waitForSelector("#ps-marcha"); await p.evaluate(() => window.__paPaseo.fijar(400)); }] },
   { n: "rato-sesion", w: 390, pasos: [abre("rato"), async (p) => p.waitForSelector("#rato #rt-lista li")] },

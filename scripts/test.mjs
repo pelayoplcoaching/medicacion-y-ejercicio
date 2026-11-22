@@ -793,6 +793,46 @@ console.log("\nPaseo guiado: planes, tramos, prueba del habla y cuenta de pasos 
   check("avisa de que el pulso no sirve de guía con fármacos que lo frenan, y el paseo se apunta en el diario como aeróbico", /fc_no_valida/.test(src) && /bradicardia/.test(src) && /registrarSesion\(\{ fecha: A\.hoyISO\(\), tipo: "aerobico"/.test(src) && /paseo: \(\) => import\("\.\/paseo\.js/.test(appJs));
 }
 
+console.log("\n«Me duele…»: semáforo del dolor, adaptaciones por zona y cruce con la medicación (segunda tanda, 7)");
+{
+  const L = await import(pathToFileURL(path.join(ROOT, "app/js/dolor.js")).href);
+  const B = await import(pathToFileURL(path.join(ROOT, "app/js/biblioteca.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/dolor.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const ids = new Set(B.catalogo().map((e) => e.id)), d0 = { n: 0, manana: null, sube: null, alarmas: [] };
+  check("semáforo: hasta 2, verde; de 3 a 5, amarillo; más de 5, rojo", [0, 1, 2].every((n) => L.semaforo({ ...d0, n }) === "verde") && [3, 4, 5].every((n) => L.semaforo({ ...d0, n }) === "amarillo") && [6, 8, 10].every((n) => L.semaforo({ ...d0, n }) === "rojo"));
+  check("semáforo: si a la mañana siguiente no ha vuelto a su nivel, o va a más cada semana, es rojo aunque duela poco", L.semaforo({ ...d0, n: 2, manana: false }) === "rojo" && L.semaforo({ ...d0, n: 1, sube: true }) === "rojo" && L.semaforo({ ...d0, n: 4, manana: true, sube: false }) === "amarillo" && L.semaforo({ ...d0, n: 2, manana: true, sube: false }) === "verde");
+  check("semáforo: cualquier señal de alarma manda sobre todo lo demás", L.semaforo({ ...d0, n: 0, alarmas: ["golpe"] }) === "alarma" && L.semaforo({ n: 9, manana: false, sube: true, alarmas: ["tvp"] }) === "alarma");
+  check("siete zonas, cada una con adaptaciones, lo que conviene, consejos y sus señales de alarma (4 generales más las propias)", L.ZONAS.length === 7 && L.ZONAS.every((z) => { const Z = L.CONT.zonas[z]; return Z && Object.keys(Z.cambia).length >= 4 && Object.keys(Z.adapta).length >= 5 && Z.conviene.length > 30 && Z.general.length >= 1 && L.alarmasDe(z).length >= 4; }) && L.alarmasDe("lumbar").some((x) => x.id === "esfinter" && x.u) && L.alarmasDe("hombro").some((x) => x.id === "corazon" && x.u) && L.alarmasDe("tobillo").some((x) => x.id === "aquiles"));
+  const malos = L.ZONAS.flatMap((z) => { const Z = L.CONT.zonas[z]; return [...Object.entries(Z.cambia).flat(), ...Object.keys(Z.adapta)].filter((x) => !ids.has(x)).map((x) => `${z}:${x}`); });
+  check("todos los ejercicios de las tablas existen en la biblioteca", malos.length === 0, malos.join());
+  const cadenas = L.ZONAS.flatMap((z) => { const Z = L.CONT.zonas[z]; return Object.entries(Z.cambia).filter(([a, b]) => Z.cambia[b] || a === b || Z.adapta[a]).map(([a, b]) => `${z}:${a}>${b}`); });
+  check("ningún sustituto está a su vez entre los que se cambian, y un ejercicio o se cambia o se adapta, no las dos cosas", cadenas.length === 0, cadenas.join());
+  const zonaDe = { rodilla: ["piernas"], cadera: ["piernas", "cadera"], tobillo: ["piernas", "pantorrilla", "equilibrio"] };
+  check("los sustitutos de rodilla y tobillo no son ejercicios de impacto ni de apoyo sobre un pie", !Object.values(L.CONT.zonas.rodilla.cambia).some((x) => ["zancada", "escalon", "sentadilla_pared", "silla_rapida", "levantarse_suelo"].includes(x)) && !Object.values(L.CONT.zonas.tobillo.cambia).some((x) => ["unpie", "puntillas", "talonpunta", "escalon", "zancada"].includes(x)) && !!zonaDe);
+  const plan = [...sesionTipo("fuerza_eq", {}).bloques, ...sesionTipo("aerobico", {}).bloques];
+  const cR = L.consejos("rodilla", plan), cL = L.consejos("lumbar", plan), cT = L.consejos("tobillo", plan);
+  check("plan estándar con dolor de rodilla: la sentadilla se adapta y el paseo lleva el consejo de marcha y el de bici; el calentamiento no", cR.some((c) => c.nombre === "Sentadilla a la silla" && c.accion === "adapta" && c.facil) && cR.some((c) => c.pict === "bici" && /En llano/.test(c.texto) && /En bicicleta: sillín alto/.test(c.texto)) && !cR.some((c) => c.nombre === "Calentamiento" || c.nombre === "Enfriamiento"));
+  check("plan estándar con dolor lumbar: la bisagra se cambia por el puente y el press de hombro por el empuje sentado", cL.find((c) => c.nombre === "Bisagra de cadera")?.por === "puente" && cL.find((c) => c.nombre === "Press de hombro ligero")?.por === "press_sentado" && cL.find((c) => c.nombre === "Remo con banda elástica")?.accion === "adapta");
+  check("plan estándar con dolor de tobillo: los talones pasan a hacerse sentado y el equilibrio a un pie pasa al tándem", cT.find((c) => c.nombre === "Elevación de talones")?.por === "talones_sentado" && cT.find((c) => c.pict === "unpie")?.por === "tandem");
+  const ad = L.adaptacion(cL), ad2 = L.adaptacion(cL, { cambios: { "Bisagra de cadera": "extension_cadera" }, variantes: { "Remo con banda elástica": "dificil" } });
+  check("«Adaptar mi plan»: cambia unos, pone la versión fácil a otros y no pisa lo que la persona ya había elegido", ad.cambios["Bisagra de cadera"] === "puente" && ad.variantes["Remo con banda elástica"] === "facil" && !("Bisagra de cadera" in ad2.cambios) && !("Remo con banda elástica" in ad2.variantes) && ad2.cambios["Press de hombro ligero"] === "press_sentado");
+  // tras aplicar, la lista se sigue viendo igual: los ejercicios que cambió la herramienta se miran por su original
+  const aplicado = B.aplicar(sesionTipo("fuerza_eq", {}), ad.cambios).bloques;
+  check("tras aplicar, la lista de consejos no cambia (los cambiados por la herramienta se miran por su original)", L.consejos("lumbar", aplicado, Object.keys(ad.cambios)).map((c) => c.nombre + c.accion).join() === L.consejos("lumbar", sesionTipo("fuerza_eq", {}).bloques).map((c) => c.nombre + c.accion).join() && L.consejos("lumbar", aplicado).length < cL.length);
+  const it = (nombre, clase, ...sen) => ({ principio: { nombre }, clase: { id: clase }, senales: new Set(sen) });
+  const lista = [it("Ibuprofeno", "aines", "aine", "sangrado", "renal"), it("Prednisona", "corticoides", "corticoide", "hueso", "tendon"), it("Atorvastatina", "estatinas", "estatina", "miopatia"), it("Bisoprolol", "betabloqueantes", "bradicardia")];
+  const cz = (z) => L.cruces(lista, z).map((c) => c.id).join();
+  check("cruce con la medicación: analgésicos, tendones, estatinas y antiinflamatorios siempre; sangrado en articulaciones; vértebra solo en la zona lumbar", cz("cuello") === "analgesico,tendon,estatina,aine" && cz("rodilla") === "analgesico,tendon,estatina,sangrado,aine" && cz("lumbar") === "analgesico,tendon,estatina,hueso,aine" && L.cruces([it("Bisoprolol", "betabloqueantes", "bradicardia")], "rodilla").length === 0);
+  check("cada aviso nombra los fármacos de la lista que lo provocan", L.cruces(lista, "rodilla").find((c) => c.id === "tendon").texto.startsWith("Prednisona debilita") && /Toma Ibuprofeno\./.test(L.cruces(lista, "rodilla")[0].texto) && L.cruces([it("Tramadol", "opioides", "sedacion")], "cadera").map((c) => c.id).join() === "analgesico,sedacion");
+  const h = (ns) => ns.map((n, i) => ({ f: `2026-11-${String(i + 1).padStart(2, "0")}`, z: "rodilla", n }));
+  check("tendencia: compara los tres últimos apuntes con los tres anteriores; con menos de seis no opina", L.tendencia(h([2, 3, 2, 5, 6, 6]), "rodilla").clave === "sube" && L.tendencia(h([6, 6, 5, 3, 2, 2]), "rodilla").clave === "baja" && L.tendencia(h([3, 4, 3, 4, 3, 4]), "rodilla").clave === "igual" && L.tendencia(h([3, 4, 3]), "rodilla").clave === "pocos" && L.tendencia(h([2, 3, 2, 5, 6, 6]), "hombro").clave === "pocos");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos de la interfaz en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 55 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("etiquetas de zona y de veredicto; tres fuentes con DOI y su frase; marca de borrador", L.ZONAS.every((z) => kEs.has("z_" + z)) && ["verde", "amarillo", "rojo", "alarma"].every((k) => kEs.has("v_" + k) && L.CONT.veredicto[k].length > 30) && L.FUENTES.length === 3 && L.FUENTES.every((f) => /^10\.\d{4,}\//.test(f.doi) && kEs.has("f_" + f.id)) && /dl-borrador">\$\{tx\("borrador"\)\}/.test(src));
+  check("módulo registrado y accesible desde Mi plan; quitar las adaptaciones solo retira lo que puso la herramienta", /dolor: \(\) => import\("\.\/dolor\.js/.test(appJs) && appJs.includes('data-abre="dolor"') && /if \(Object\.values\(Z\.cambia\)\.includes\(cam\[n\]\)\) delete cam\[n\]/.test(src) && /if \(vars\[n\] === "facil"\) delete vars\[n\]/.test(src));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

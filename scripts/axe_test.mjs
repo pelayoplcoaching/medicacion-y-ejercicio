@@ -44,6 +44,7 @@ const esc0 = [
   { n: "ds-min", w: 390, tab: "plan", diario: true, ds: "min" }, { n: "ds-pasos-oscuro", w: 1280, tab: "plan", diario: true, ds: "pasos", tema: "dark" }, { n: "ds-contraste", w: 390, tab: "plan", diario: true, ds: "min", tema: "contrast" },
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
   { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
+  { n: "dolor-zonas-claro", w: 390, abre: "dolor" }, { n: "dolor-lumbar-oscuro", w: 1280, abre: "dolor", arg: "lumbar", tema: "dark" }, { n: "dolor-rodilla-contraste", w: 390, abre: "dolor", arg: "rodilla", tema: "contrast" },
   { n: "paseo-preparar-claro", w: 390, abre: "paseo" }, { n: "paseo-programa-oscuro", w: 1280, abre: "paseo", arg: "prog", tema: "dark" }, { n: "paseo-en-marcha-contraste", w: 390, abre: "paseo", marcha: 400, tema: "contrast" },
   { n: "rato-sesion-claro", w: 390, abre: "rato" }, { n: "rato-pildoras-oscuro", w: 1280, abre: "rato", arg: "pildoras", tema: "dark" }, { n: "rato-pildoras-contraste", w: 390, abre: "rato", arg: "pildoras", tema: "contrast" },
   { n: "biblioteca-claro", w: 390, bib: "" }, { n: "biblioteca-oscuro", w: 1280, bib: "", tema: "dark" }, { n: "biblioteca-cambiar-contraste", w: 390, bib: "Sentadilla a la silla", tema: "contrast" },

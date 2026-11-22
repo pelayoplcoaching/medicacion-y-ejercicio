@@ -1,6 +1,6 @@
 /* Textos del informe que se ven en pantalla y van a la historia clínica (sin jsPDF).
    Los PDF se construyen en pdf.js, que se carga solo al pulsar una descarga. */
-import { unidadPorDia, unidadPorToma } from "./engine.js?v=202611222014";
+import { unidadPorDia, unidadPorToma } from "./engine.js?v=202611222025";
 
 export const WEB = "medicacionyejercicio.fuerzabasadaenevidencia.com";
 

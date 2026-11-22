@@ -1,11 +1,11 @@
 /* Herramientas de uso ocasional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo. Se cargan al pulsar su botón;
    app.js les pasa en «a» lo que necesitan de la aplicación. Nada sale del dispositivo. */
-import { t, idioma } from "./i18n.js?v=202611222014";
-import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611222014";
-import { picto } from "./pictos.js?v=202611222014";
-import { cargarScript } from "./libs.js?v=202611222014";
-import { APP_VERSION } from "./version.js?v=202611222014";
+import { t, idioma } from "./i18n.js?v=202611222025";
+import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611222025";
+import { picto } from "./pictos.js?v=202611222025";
+import { cargarScript } from "./libs.js?v=202611222025";
+import { APP_VERSION } from "./version.js?v=202611222025";
 
 const $ = (s) => document.querySelector(s);
 const hechos = new Set();
@@ -89,7 +89,7 @@ export async function abrirBarras(a) {
 }
 
 /* ---------- copia cifrada (AES-GCM 256; clave derivada de la contraseña con PBKDF2-SHA-256, 250 000 iteraciones) ---------- */
-const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes", "medex.aviso", "medex.favoritas", "medex.aprende", "medex.cambios", "medex.programa", "medex.pildoras", "medex.rato", "medex.paseo"]; // las cuatro últimas, desde la v1.3.3
+const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes", "medex.aviso", "medex.favoritas", "medex.aprende", "medex.cambios", "medex.programa", "medex.pildoras", "medex.rato", "medex.paseo", "medex.dolor"]; // las cuatro últimas, desde la v1.3.3
 export function empaquetarTodo() { const o = {}; for (const k of CLAVES_LOCALES) { try { const v = localStorage.getItem(k); if (v != null) o[k] = v; } catch {} } return { app: "pauta-activa", v: 1, fecha: new Date().toISOString(), version_app: APP_VERSION, datos: o }; }
 export function aplicarTodo(paq, { fusionar = false } = {}) {
   if (!paq || paq.app !== "pauta-activa" || !paq.datos || typeof paq.datos !== "object") throw new Error("formato");
