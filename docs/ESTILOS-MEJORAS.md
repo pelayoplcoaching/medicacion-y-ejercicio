@@ -916,3 +916,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H14 | (sin estilos en `style.css`: todo en el módulo) | `js/frid.js` |
 | H15 | (sin estilos en `style.css`: todo en el módulo) | `js/escalas.js` |
 | H16 | (sin estilos en `style.css`: todo en el módulo) | `js/receta.js` |
+| H19 | (sin estilos en `style.css`: hoja propia de la enciclopedia) | `enciclopedia/enc.css` |

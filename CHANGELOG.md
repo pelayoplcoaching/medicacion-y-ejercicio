@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.18 · 2026-11-22 · Segunda tanda de mejoras grandes (19): enciclopedia pública «X y ejercicio»
+- **Enciclopedia pública «X y ejercicio»** (`app/enciclopedia/`): 460 páginas estáticas que Google puede indexar. Una por cada principio de la base (388 principios activos y 53 suplementos y plantas), una por cada una de las 18 situaciones clínicas y un índice con buscador por nombre, marca o familia.
+- **Solo publica contenido ya revisado de la base**, tal cual: el resumen de la familia, lo que puede notar al moverse, las reglas (en general, aeróbico, fuerza y equilibrio) con su nivel y su fuente, el momento del día cuando lo hay, los otros medicamentos de la familia y la ficha técnica de la AEMPS. No incluye nada de los módulos que están en borrador.
+- Cada página invita a abrir la aplicación: las de medicamento, con su ficha (`#farmaco=<id>`); las de situación, con su receta de ejercicio (`#abre=receta:<id>`). La aplicación atiende ahora esos enlaces de entrada (y, en general, `#abre=<herramienta>[:<argumento>]`), sin lanzar el recorrido de bienvenida encima.
+- Para buscadores: título, descripción y dirección canónica por página, datos estructurados (schema.org `MedicalWebPage`, con autor y fecha de revisión), migas, y las 460 direcciones en `sitemap.xml`. En las familias que agrupan productos distintos, la descripción es la del propio producto.
+- `scripts/build_enciclopedia.py` las genera desde `data/kb.json`; hay que repetirlo cuando cambie la base (una prueba lo vigila comparando la versión). Hoja de estilos y guion propios y pequeños (`enc.css`, `enc.js`), con tema claro y oscuro; no entran en la precarga de la aplicación.
+- Enlace «Enciclopedia: medicamentos y ejercicio» en el menú y en el centro («Entender»).
+- Pruebas: 13 comprobaciones unitarias (entre ellas, que cada página lleva todas sus reglas revisadas y ninguna de otro principio) y 9 de interfaz (buscador, páginas y entrada a la aplicación).
+
 ## 1.3.17 · 2026-11-22 · Segunda tanda de mejoras grandes (16): receta de ejercicio por enfermedad
 - `js/receta.js` (nuevo, bajo demanda): **«Receta de ejercicio por enfermedad»**. Para cada una de las 18 situaciones clínicas, una tabla FITT de referencia (frecuencia, intensidad, tiempo y tipo de aeróbico, fuerza y equilibrio), lo específico de esa situación, lo que añade su guía, las señales de alarma y una hoja para imprimir con todas las situaciones de la persona.
 - **No se han inventado pautas.** La tabla parte de la recomendación general de la OMS 2020 para adultos con enfermedades crónicas; las celdas que cambian (en negrita) resumen la regla ya revisada de la base o una fuente comprobada: Pescatello 2004 (hipertensión), Donnelly 2009 (obesidad) y KDIGO 2024 (riñón). «Lo específico» es el texto de la base tal cual, con su fuente.

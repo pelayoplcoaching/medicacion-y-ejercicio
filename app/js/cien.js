@@ -6,7 +6,7 @@
    el 22/11/2026) y se guardan exactas en «x»; lo que se enseña es su redondeo a personas enteras. La revisión de cardiopatía
    isquémica no da las cifras de cada grupo, solo la diferencia (NNT): se enseña así. Contenido en español, como la base;
    la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611222313";
+import { idioma } from "./i18n.js?v=202611222326";
 
 const TXT = {
   es: { titulo: "De cada 100 personas…", borrador: "Borrador pendiente de revisión clínica", intro: "Los porcentajes engañan; las personas se cuentan mejor. Aquí verá qué les pasa a 100 personas sin ejercicio y con ejercicio, según los mejores estudios.", para_usted: "Para su situación", otras: "Otras situaciones", todas: "Las seis cajas",

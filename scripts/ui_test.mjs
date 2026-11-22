@@ -79,6 +79,28 @@ const paralelos = Promise.all([
     await offCtx.setOffline(false);
     await offCtx.close();
   }),
+  bloque("Enciclopedia pública y enlaces de entrada (segunda tanda, 19; en paralelo)", async (check) => {
+    const eCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES", serviceWorkers: "block" }); const pe = await eCtx.newPage();
+    const errE = []; pe.on("pageerror", (e) => errE.push(e.message));
+    await pe.goto(`http://localhost:${PORT}/enciclopedia/`, { waitUntil: "load" });
+    check("índice de la enciclopedia: título, buscador y un enlace por cada página (441 + 18)", (await pe.textContent("h1")) === "Medicamentos y ejercicio físico" && (await pe.$$("ul.indice li a")).length === 459 && (await pe.isVisible("#q")));
+    await pe.fill("#q", "sintrom"); await pe.waitForTimeout(150);
+    check("buscar por la marca (Sintrom) deja solo ese medicamento", (await pe.textContent("#cuenta")) === "1 resultado" && (await pe.$$eval("ul.indice li:not([hidden]) b", (x) => x.map((y) => y.textContent).join())) === "Acenocumarol");
+    await pe.fill("#q", "estatinas"); await pe.waitForTimeout(150);
+    check("si no hay nombre ni marca que coincida, busca por la familia (estatinas)", (await pe.$$("ul.indice li:not([hidden])")).length >= 4 && (await pe.$$eval("ul.indice li:not([hidden]) b", (x) => x.map((y) => y.textContent).join())).includes("Atorvastatina"));
+    await pe.fill("#q", "zzzz"); await pe.waitForTimeout(150);
+    check("sin resultados lo dice", /Sin resultados/.test(await pe.textContent("#cuenta")) && (await pe.$$("ul.indice li:not([hidden])")).length === 0);
+    await pe.goto(`http://localhost:${PORT}/enciclopedia/bisoprolol.html`, { waitUntil: "load" });
+    check("página de Bisoprolol: sus secciones, sus reglas con fuente y sin desbordes en el móvil", (await pe.textContent("h1")) === "Bisoprolol y ejercicio físico" && (await pe.$$("section#general, section#aerobico, section#fuerza, section#equilibrio")).length === 4 && (await pe.$$(".regla")).length >= 6 && (await pe.$$eval(".regla", (r) => r.every((x) => x.querySelector("small")))) && (await pe.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)));
+    await pe.click(".cta .btn"); await pe.waitForSelector("#ficha[open]", { timeout: 15000 }).catch(() => {});
+    check("su botón abre la aplicación con la ficha de Bisoprolol, sin recorrido de bienvenida y sin tocar la lista", (await pe.$eval("#ficha", (d) => d.open).catch(() => false)) && /Bisoprolol/.test(await pe.textContent("#ficha-cuerpo")) && !(await pe.evaluate(() => location.hash)) && (await pe.$$("#lista-meds li")).length === 0 && !(await pe.isVisible("#guia-cerrar").catch(() => false)));
+    await pe.goto(`http://localhost:${PORT}/enciclopedia/situacion-hipertension.html`, { waitUntil: "load" });
+    check("página de la hipertensión: la regla revisada de la base y el enlace a su receta", (await pe.textContent("h1")) === "Hipertensión arterial y ejercicio físico" && /180\/110/.test(await pe.textContent("#especifico")) && (await pe.$eval(".cta .btn", (a) => a.getAttribute("href"))) === "../#abre=receta:hipertension");
+    await pe.click(".cta .btn"); await pe.waitForSelector("#receta[open] #rx-ficha", { timeout: 15000 }).catch(() => {});
+    check("su botón abre la aplicación con la receta de esa situación", (await pe.$eval("#rx-ficha", (f) => f.dataset.id).catch(() => "")) === "hipertension");
+    check("sin errores de JavaScript en la enciclopedia ni al entrar desde ella", errE.length === 0, errE.join(" | ").slice(0, 200));
+    await eCtx.close();
+  }),
 ]);
 
 try {
