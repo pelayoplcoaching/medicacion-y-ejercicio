@@ -67,6 +67,7 @@ app/
     enfermedad.js       plan para los días de enfermedad: qué medicamentos de la lista entran en la pauta (seis grupos y sulfonilureas), lo acordado con el médico y hoja para imprimir; bajo demanda, por data-abre (v1.3.14)
     frid.js             panel de caídas y carga anticolinérgica (modo profesional): clases de STOPPFall con su guía de retirada, escala CRIDECO y señales de la base; bajo demanda, por data-abre (v1.3.15)
     escalas.js          escalas rápidas de cribado: FRAIL, SARC-F, tres preguntas de caídas (STEADI) y constante vital de actividad física, con resultado guardado; bajo demanda, por data-abre (v1.3.16)
+    receta.js           receta de ejercicio por enfermedad: tabla FITT de las 18 situaciones (OMS 2020 + reglas revisadas de la base), lo que añade cada guía y hoja para imprimir; bajo demanda, por data-abre (v1.3.17)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

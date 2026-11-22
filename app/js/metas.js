@@ -4,7 +4,7 @@
    prueba de forma física que las mide (con su último resultado) y una insignia en los ejercicios de la sesión que las
    trabajan. Los hitos son pasos funcionales, no cifras clínicas. Los textos de la interfaz van en los cinco idiomas
    dentro del módulo; el contenido de las metas, en español como el resto de explicadores. Se guarda en el estado. */
-import { t, idioma } from "./i18n.js?v=202611222304";
+import { t, idioma } from "./i18n.js?v=202611222313";
 
 /* ---------- las metas ---------- */
 export const MAX_METAS = 3;

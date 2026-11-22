@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.17 · 2026-11-22 · Segunda tanda de mejoras grandes (16): receta de ejercicio por enfermedad
+- `js/receta.js` (nuevo, bajo demanda): **«Receta de ejercicio por enfermedad»**. Para cada una de las 18 situaciones clínicas, una tabla FITT de referencia (frecuencia, intensidad, tiempo y tipo de aeróbico, fuerza y equilibrio), lo específico de esa situación, lo que añade su guía, las señales de alarma y una hoja para imprimir con todas las situaciones de la persona.
+- **No se han inventado pautas.** La tabla parte de la recomendación general de la OMS 2020 para adultos con enfermedades crónicas; las celdas que cambian (en negrita) resumen la regla ya revisada de la base o una fuente comprobada: Pescatello 2004 (hipertensión), Donnelly 2009 (obesidad) y KDIGO 2024 (riñón). «Lo específico» es el texto de la base tal cual, con su fuente.
+- «En su caso, además» añade las reglas que han saltado con la lista de medicamentos y nombran esa situación (por ejemplo, betabloqueante y diabetes).
+- «Qué añade su guía»: frases de resúmenes comprobados en PubMed (Kanaley 2022 en diabetes tipo 2, Brooke-Wavell 2022 en osteoporosis, Campbell 2019 en cáncer, Mottola 2018 en embarazo).
+- Si la situación fija su propia intensidad (aneurisma, insuficiencia cardiaca, fibrilación auricular…), el tiempo general deja de ofrecer la variante «intensa». La tabla avisa de que lo específico manda sobre ella.
+- **Contenido nuevo (el resumen en celdas y las frases de las guías), con la marca «Borrador pendiente de revisión clínica»**.
+- Botón bajo la situación clínica y herramienta en el centro («Moverse»). Enlaza con «De cada 100 personas» en las cuatro situaciones que tienen caja de datos.
+- Pruebas: 16 comprobaciones unitarias (entre ellas, que cada celda restrictiva está respaldada por el texto de la base), 5 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.16 · 2026-11-22 · Segunda tanda de mejoras grandes (15): escalas rápidas
 - `js/escalas.js` (nuevo, bajo demanda): **«Escalas rápidas»**, cuatro cuestionarios cortos de cribado con su puntuación, su categoría y qué hacer después: **FRAIL** (fragilidad; Morley 2012), **SARC-F** (sarcopenia; Malmstrom 2016), las **tres preguntas clave de caídas** del algoritmo STEADI de los CDC y la **constante vital de actividad física** (días × minutos frente a 150; Greenwood 2010, Ball 2016), con una pregunta opcional de días de fuerza (OMS 2020).
 - Cada resultado enlaza el paso siguiente que ya tiene la aplicación: SPPB guiado, pruebas de forma física, programa de 12 semanas, paseo guiado y, en modo profesional, el panel de caídas.

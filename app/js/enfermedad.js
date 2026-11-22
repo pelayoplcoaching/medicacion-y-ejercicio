@@ -9,8 +9,8 @@
    bebiendo con normalidad, sin dosis de más, consultar si dura más de 72 horas y la cautela en la insuficiencia cardiaca.
    Lo que se sabe de su eficacia: Watson 2022 (PubMed). El descanso con fiebre es la regla ya revisada de la aplicación.
    Contenido en español, como la base; la interfaz, en cinco idiomas. Estado: «medex.enfermedad» = { acordado: [ids] }. */
-import { idioma, t } from "./i18n.js?v=202611222304";
-import { APP_VERSION } from "./version.js?v=202611222304";
+import { idioma, t } from "./i18n.js?v=202611222313";
+import { APP_VERSION } from "./version.js?v=202611222313";
 
 const TXT = {
   es: { titulo: "Plan para los días de enfermedad", borrador: "Borrador pendiente de revisión clínica", de_su_lista: "De su lista", ninguno: "Ninguno de sus medicamentos está en esta pauta.", sin_meds: "Añada su medicación y verá cuáles entran en esta pauta.", todos: "Los grupos de la pauta", otros: "Los demás grupos de la pauta", segun: "Según la glucosa", acordado: "Acordado con mi médico: pausarlo esos días", por_acordar: "Por acordar", ya: "Acordado", retomar: "Cuándo retomarlos", consultar: "Cuándo consultar", ejercicio: "¿Y el ejercicio?", sabe: "Qué se sabe", fuentes: "Fuentes",

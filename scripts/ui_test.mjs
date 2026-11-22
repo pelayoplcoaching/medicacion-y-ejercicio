@@ -485,6 +485,21 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Receta de ejercicio por enfermedad (segunda tanda, 16): situaciones, tabla FITT, lo específico de la base e impresión
+  {
+    await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "receta"; b.dataset.arg = "hipertension"; document.body.append(b); b.click(); b.remove(); });
+    await p.waitForSelector("#receta[open] #rx-ficha", { timeout: 6000 }).catch(() => {});
+    check("«Receta de ejercicio por enfermedad»: marca de borrador, las 18 situaciones y la pedida ya abierta", (await p.isVisible("#receta .rx-borrador")) && (await p.$$("#receta [data-rx-sit]")).length === 18 && (await p.$eval("#rx-ficha", (f) => f.dataset.id)) === "hipertension" && (await p.$eval('#receta [data-rx-sit="hipertension"]', (b) => b.getAttribute("aria-pressed"))) === "true");
+    check("tabla FITT de la hipertensión: tres filas por cuatro columnas, con sus celdas propias en negrita y el aviso de que lo específico manda", (await p.$$("#rx-ficha .rx-tabla tbody tr")).length === 3 && (await p.$$("#rx-ficha .rx-tabla tbody td")).length === 12 && (await p.$$("#rx-ficha .rx-tabla td.propio")).length === 6 && /La mayoría de los días, mejor todos/.test(await p.textContent("#rx-ficha .rx-tabla")) && /manda sobre la tabla/.test(await p.textContent("#rx-ficha .rx-nota")));
+    check("lo específico es la regla revisada de la base, con su fuente, y debajo van las señales de alarma y las fuentes con DOI", /180\/110/.test(await p.textContent('#rx-propias [data-regla="hipertension_cond"]')) && /Fuente: ESC 2024/.test(await p.textContent('#rx-propias [data-regla="hipertension_cond"]')) && (await p.$$("#rx-alarma li")).length === 6 && (await p.$$eval('#rx-fuentes a[href^="https://doi.org/"]', (a) => a.length)) === 3);
+    await p.click('#receta [data-rx-sit="aneurisma_aorta"]'); await p.waitForTimeout(150);
+    check("al cambiar de situación cambia la ficha: en el aneurisma, la fuerza es ligera y la fija el cardiólogo", (await p.$eval("#rx-ficha", (f) => f.dataset.id)) === "aneurisma_aorta" && /la fija su cardiólogo o cirujano vascular/.test(await p.textContent("#rx-ficha .rx-tabla")) && (await p.$$('#receta [data-rx-sit][aria-pressed="true"]')).length === 1 && !(await p.$("#rx-guia")));
+    await p.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; setTimeout(() => window.dispatchEvent(new Event("afterprint")), 50); }; });
+    const nHoja = Number((await p.textContent("#rx-n")).match(/\d+/)[0]);
+    await p.click('#receta [data-rx="imprimir"]'); await p.waitForFunction(() => window.__printed === 1, null, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150);
+    check("la hoja impresa lleva una tabla por situación (las marcadas y la que se ve), las señales de alarma y el pie", (await p.evaluate(() => window.__printed)) === 1 && (await p.$$("#rx-hoja table")).length === nHoja && nHoja >= 1 && /Aneurisma de aorta/.test(await p.textContent("#rx-hoja")) && /Pare y consulte si nota/.test(await p.textContent("#rx-hoja")) && /no sustituye la valoración de su médico/.test(await p.textContent("#rx-hoja footer")) && !(await p.$eval("body", (b) => b.classList.contains("rx-imprime"))), String(nHoja));
+    await p.click("#rx-cerrar"); await p.waitForTimeout(150);
+  }
   // Escalas rápidas (segunda tanda, 15): lista, FRAIL con resultado guardado, actividad con números, copiar y borrar (se deja todo como estaba)
   {
     await p.evaluate(() => localStorage.removeItem("medex.escalas"));
