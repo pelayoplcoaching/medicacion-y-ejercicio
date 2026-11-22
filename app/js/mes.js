@@ -4,7 +4,7 @@
    medicación, con o sin los nombres de los fármacos. La imagen se dibuja en el propio dispositivo (canvas) y se comparte
    con el menú del sistema o se descarga: nada sale de la aplicación sin que la persona lo decida. Textos de la interfaz
    en los cinco idiomas dentro del módulo. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611221954";
+import { t, idioma } from "./i18n.js?v=202611222003";
 
 /* ---------- cálculo ---------- */
 const DIA = 864e5;

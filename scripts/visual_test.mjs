@@ -45,6 +45,7 @@ const prgEstado = (k) => async (p) => { await p.evaluate((k) => {
   if (k === "medio") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 3, lunes: mas(0), hist: hist(2), fin: null, mant: false, ciclo: 1, creado: mas(-14) }));
   if (k === "fin") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 12, lunes: mas(0), hist: hist(12), fin: mas(-1), mant: false, ciclo: 1, creado: mas(-84) }));
   const b = document.createElement("button"); b.dataset.programa = ""; document.body.append(b); b.click(); b.remove(); }, k); };
+const abre = (n, arg = "") => async (p) => { await p.evaluate(([n, arg]) => { const b = document.createElement("button"); b.dataset.abre = n; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, [n, arg]); await p.waitForSelector(`#${n}[open] .ficha-cuerpo > *`); };
 const PANTALLAS = [
   { n: "inicio-vacio-movil", w: 390, vacio: true },
   { n: "inicio-vacio-escritorio", w: 1280, vacio: true },
@@ -71,6 +72,8 @@ const PANTALLAS = [
   { n: "programa-elegir", w: 390, pasos: [prgEstado(""), async (p) => p.waitForSelector("#programa[open] .prg-niveles")] },
   { n: "programa-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [prgEstado("medio"), async (p) => p.waitForSelector("#programa[open] .prg-tabla")] },
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
+  { n: "rato-sesion", w: 390, pasos: [abre("rato"), async (p) => p.waitForSelector("#rato #rt-lista li")] },
+  { n: "rato-pildoras-oscuro", w: 1280, tema: "dark", pasos: [abre("rato", "pildoras"), async (p) => p.waitForSelector("#rato .rt-pil")] },
   { n: "biblioteca-ejercicios", w: 390, pasos: [async (p) => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.biblioteca = ""; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#biblioteca[open] .bib-lista li"); }] },
   { n: "biblioteca-cambiar-oscuro", w: 1280, tema: "dark", pasos: [async (p) => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.cambiar = "Sentadilla a la silla"; b.dataset.pict = "sentadilla"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#biblioteca[open] .bib-lista li"); }] },
   { n: "pastillero", w: 390, pasos: [menu("data-pastillero"), async (p) => p.waitForSelector("#pastillero[open] .pt-cajas")] },

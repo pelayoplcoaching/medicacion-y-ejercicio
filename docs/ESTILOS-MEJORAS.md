@@ -902,3 +902,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H2 | Centro de herramientas: quinto botón de la barra inferior (rejilla de 5), botón «Herramientas» de la cabecera desde 960 px y primera línea del menú «Más»; la ventana (buscador en píldora, tarjetas «Para usted hoy», tejas por grupo con icono teñido y estrella, resultados) lleva sus estilos en `js/centro.js` | final de `style.css` y `centro.js` |
 | H4 | Botón «Cambiar» y nota «en lugar de…» en los ejercicios del plan; ficha de la biblioteca en Mi plan | `style.css` (final) y `js/biblioteca.js` |
 | H3 | Ficha para empezar el programa de 12 semanas en Mi plan | `style.css` (final) y `js/programa.js` |
+| H5 | Accesos a «Hoy tengo…» y a las píldoras bajo el día del plan | `style.css` (final) y `js/rato.js` |

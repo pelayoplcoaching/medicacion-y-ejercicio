@@ -54,6 +54,7 @@ app/
     centro.js           centro de herramientas: catálogo de 34 herramientas por grupos, buscador único (herramientas, medicamentos, lecciones, explicaciones, ejercicios, glosario), favoritas y «Para usted hoy»; textos en 5 idiomas (bajo demanda, v1.3)
     biblioteca.js       biblioteca de ejercicios (45 con dibujo), filtros y «Cambiar» un ejercicio del plan; bajo demanda (v1.3.2)
     programa.js         programa de 12 semanas: dosis por nivel y semana, decisiones con el diario, ajuste de las sesiones, tarjeta y ventana; bajo demanda (v1.3.3)
+    rato.js             «Hoy tengo…»: sesión a la medida (5-30 min) y píldoras de movimiento con contador; bajo demanda, por data-abre (v1.3.4)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

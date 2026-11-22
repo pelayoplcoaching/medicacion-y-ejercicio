@@ -733,6 +733,38 @@ console.log("\nPrograma de 12 semanas: dosis, decisiones y ajuste de las sesione
   check("la aplicación usa la semana del programa en las sesiones y en el objetivo, y lo pone al día una vez al día", /sesionTipo\(tipo, sem \? \{ \.\.\.o, aer: sem\.aer \} : o\)/.test(appJs) && appJs.includes("PRG.ajustar(s, sem)") && appJs.includes("PRG.actualizar(leerDiario()") && appJs.includes("[data-programa]") && appJs.includes('import("./programa.js'));
 }
 
+console.log("\n«Hoy tengo…»: sesión a la medida y píldoras de movimiento (segunda tanda, 5)");
+{
+  const R = await import(pathToFileURL(path.join(ROOT, "app/js/rato.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/rato.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), mov = fs.readFileSync(path.join(ROOT, "app/js/movimiento.js"), "utf8");
+  const bases = [["aerobico", false], ["aerobico", true], ["fuerza", false], ["fuerza", true], ["fuerza_eq", false], ["fuerza_eq", true]].map(([tp, fragil]) => sesionTipo(tp, { fragil, minutosAer: fragil ? 10 : 30 }));
+  const todas = bases.flatMap((b) => R.TIEMPOS.map((m) => [m, R.armar(b, m)]));
+  check("la sesión armada dura exactamente lo pedido (5, 10, 20 o 30 min) con cualquier sesión del plan", todas.every(([m, s]) => s.min === m && s.bloques.reduce((n, b) => n + b.min, 0) === m && s.bloques.every((b) => b.min >= 1)), todas.filter(([m, s]) => s.min !== m).map(([m, s]) => `${s.tipo}:${m}→${s.min}`).join());
+  const fz = (m) => R.armar(sesionTipo("fuerza_eq", {}), m);
+  check("fuerza: 2 ejercicios en 5 min, 3 en 10 y 5 en 20, siempre con calentamiento y en el orden del plan (piernas primero)", fz(5).bloques.length === 3 && fz(10).bloques.length === 4 && fz(20).bloques.filter((b) => b.clave).length === 6 && fz(5).bloques[0].nombre === "Calentamiento" && fz(5).bloques[1].nombre === "Sentadilla a la silla" && fz(30).bloques.length === 8);
+  check("fuerza: una serie hasta 10 min, dos en 20 y la dosis del plan en 30; el equilibrio entra desde 20 min con su nombre de ejercicio", /^1 serie de/.test(fz(10).bloques[1].detalle) && /^2 series de/.test(fz(20).bloques[1].detalle) && fz(30).bloques[1].detalle === sesionTipo("fuerza_eq", {}).bloques[1].detalle && !fz(10).bloques.some((b) => b.pict === "unpie") && fz(20).bloques.at(-1).nombre === "Apoyo sobre un pie");
+  const pa = (m) => R.armar(sesionTipo("aerobico", {}), m).bloques.map((b) => b.min).join();
+  check("paseo: calentamiento, tramo principal y vuelta a la calma en proporción", pa(5) === "1,3,1" && pa(10) === "2,6,2" && pa(20) === "3,14,3" && pa(30) === "5,20,5");
+  const eq = (m) => R.armar(sesionTipo("equilibrio", {}), m);
+  check("equilibrio: dos ejercicios en 5 min y los cuatro en 10, de 2 min como mínimo", eq(5).bloques.length === 2 && eq(5).min === 5 && eq(10).bloques.length === 5 && eq(10).min === 10 && eq(10).bloques.slice(1).every((b) => b.min >= 2));
+  check("«lo de hoy» usa la sesión del plan; en día de descanso, fuerza", R.tipoBase("hoy", "aerobico") === "aerobico" && R.tipoBase("hoy", "fuerza_eq") === "fuerza_eq" && R.tipoBase("hoy", "descanso") === "fuerza" && R.tipoBase("paseo", "fuerza") === "aerobico" && R.tipoBase("equilibrio", "fuerza") === "equilibrio" && R.armar(null, 10) === null);
+  check(`${R.PILDORAS.length} píldoras, todas con dibujo, qué hacer y cuándo`, R.PILDORAS.length === 10 && R.PILDORAS.every((p) => new RegExp(`^  ${p.id}: \\{`, "m").test(mov) && (!p.s || new RegExp(`^  ${p.s}: \\{`, "m").test(mov)) && p.n.length > 10 && p.d.length > 15 && p.c.length > 8));
+  const frag = R.pildorasPara(true);
+  check("con fragilidad se quitan las exigentes y se usan las variantes sentadas o con apoyo", frag.length === 8 && !frag.some((p) => p.fuerte) && frag.some((p) => p.id === "marcha_sentado") && frag.some((p) => p.id === "talones_sentado") && R.pildorasPara(false).length === 10);
+  let reg = {}; reg = R.sumarPildora(reg, "2026-11-22"); reg = R.sumarPildora(reg, "2026-11-22"); reg = R.sumarPildora(reg, "2026-11-21", 3);
+  check("contador: suma por día, resta sin bajar de cero y borra el día que queda a cero", reg["2026-11-22"] === 2 && reg["2026-11-21"] === 3 && R.sumarPildora(reg, "2026-11-22", -5)["2026-11-22"] === undefined && R.sumarPildora({}, "2026-11-22", -1)["2026-11-22"] === undefined);
+  let largo = {}; for (let i = 0; i < 120; i++) { const d = new Date(2026, 0, 1 + i); largo = R.sumarPildora(largo, `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`); }
+  check("contador: guarda como mucho 90 días, los más recientes, y descarta claves que no son fechas", Object.keys(largo).length === 90 && !largo["2026-01-01"] && !!largo["2026-04-30"] && Object.keys(R.sumarPildora({ basura: 4 }, "2026-11-22")).join() === "2026-11-22");
+  const u7 = R.ultimos7(reg, new Date("2026-11-22T10:00"));
+  check("últimos 7 días: termina hoy y trae las píldoras de cada día", u7.length === 7 && u7[6].dia === "2026-11-22" && u7[6].n === 2 && u7[5].n === 3 && u7[0].dia === "2026-11-16" && u7[0].n === 0);
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size > 40 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("tres fuentes con DOI y su frase; las cifras citadas son las de los resúmenes de PubMed", R.FUENTES.length === 3 && R.FUENTES.every((f) => /^10\.\d{4,}\//.test(f.doi) && kEs.has("f_" + f.id)) && /11 ensayos \(414 personas/.test(src) && /un 31 %/.test(src) && /7 ensayos de un día/.test(src) && /91 %/.test(src));
+  check("módulo registrado en la aplicación (data-abre) y con dos accesos en Mi plan", /rato: \(\) => import\("\.\/rato\.js/.test(appJs) && (appJs.match(/data-abre="rato"/g) || []).length === 2 && appJs.includes('data-arg="pildoras"') && appJs.includes("[data-abre]"));
+  check("la interfaz común api() ofrece lo que usa el módulo", ["toast", "hoyISO", "esFragil", "planDeHoy", "sesionDe", "abrirSesion", "porquesDe", "vibrar", "anilloCrono", "cargarMov", "cargarBiblio"].every((k) => new RegExp(`const api = \\(\\) => \\(api\\.o \\|\\|= \\{[^}]*\\b${k}\\b`).test(appJs)) && /dibujo: \(id\)/.test(appJs) && /res: \(\) => evaluar/.test(appJs) && /cerrar: \(\) => t\(/.test(appJs));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

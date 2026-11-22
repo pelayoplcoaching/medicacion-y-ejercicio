@@ -4016,3 +4016,6 @@ details.seccion[data-sec="beneficios"] { --ic: url("data:image/svg+xml;utf8,<svg
 .prg-tile .apr-ic-t { font-family: var(--mono); font-size: 1rem; }
 .prg-plan:empty { display: none; }
 @media print { .prg-tile { display: none !important; } }
+/* H5. Hoy tengo... (segunda tanda, 5): accesos a la sesion corta y a las pildoras de movimiento bajo el dia del plan. La ventana lleva sus estilos en js/rato.js */
+.rato-enlaces { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding-top: 12px; border-top: 1px dashed var(--line-strong); }
+@media print { .rato-enlaces { display: none !important; } }

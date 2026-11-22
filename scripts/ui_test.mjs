@@ -463,6 +463,28 @@ try {
     await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
     await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
   }
+  // «Hoy tengo…» (segunda tanda, 5): sesión a la medida y píldoras de movimiento (se deja todo como estaba)
+  {
+    await p.click('.rato-enlaces [data-abre="rato"]:not([data-arg])'); await p.waitForSelector("#rato[open] #rt-lista li", { timeout: 6000 }).catch(() => {});
+    await p.click('#rato [data-rt="min"][data-v="5"]'); await p.click('#rato [data-rt="tipo"][data-v="paseo"]'); await p.waitForTimeout(150);
+    const mins5 = await p.$$eval("#rt-lista .rt-m", (ms) => ms.map((m) => parseInt(m.textContent, 10)));
+    check("«Hoy tengo…»: 5 minutos de paseo son 1 + 3 + 1", mins5.join() === "1,3,1", mins5.join());
+    await p.click('#rato [data-rt="min"][data-v="20"]'); await p.waitForTimeout(150);
+    check("en 20 minutos no se ofrece el equilibrio solo, y la elección se recuerda en el dispositivo", (await p.$eval('#rato [data-rt="tipo"][data-v="equilibrio"]', (b) => b.disabled)) && JSON.parse(await p.evaluate(() => localStorage.getItem("medex.rato"))).min === 20);
+    await p.click('#rato [data-rt="min"][data-v="10"]'); await p.click('#rato [data-rt="tipo"][data-v="fuerza"]'); await p.waitForTimeout(150);
+    const suma10 = (await p.$$eval("#rt-lista .rt-m", (ms) => ms.map((m) => parseInt(m.textContent, 10)))).reduce((a, b) => a + b, 0);
+    await p.click('#rato [data-rt="empezar"]'); await p.waitForSelector("#sesion[open] #chequeo-saltar", { timeout: 6000 }).catch(() => {});
+    check("«Empezar ahora» abre la sesión guiada con la sesión de 10 minutos", suma10 === 10 && !(await p.$eval("#rato", (d) => d.open)) && (await p.textContent("#sesion-cuerpo h2")).includes("10 min"));
+    await p.evaluate(() => document.querySelector("#sesion").close()); await p.waitForTimeout(250);
+    await p.click('.rato-enlaces [data-arg="pildoras"]'); await p.waitForSelector("#rato[open] .rt-pil", { timeout: 6000 }).catch(() => {});
+    const primeraPil = await p.textContent("#rt-pil-n");
+    await p.click('#rato [data-rt="hecha"]'); await p.waitForTimeout(250);
+    check("píldoras: «Hecha» suma una al día de hoy, la guarda y propone otra", (await p.textContent("#rt-n")).trim() === "1" && Object.values(JSON.parse(await p.evaluate(() => localStorage.getItem("medex.pildoras")))).join() === "1" && (await p.textContent("#rt-pil-n")) !== primeraPil);
+    await p.click('#rato [data-rt="quitar"]'); await p.waitForTimeout(200);
+    check("«Quitar una» la descuenta; las tres fuentes llevan su DOI", (await p.textContent("#rt-n")).trim() === "0" && (await p.$$('#rato .rt-fuentes a[href^="https://doi.org/10."]')).length === 3);
+    await p.click("#rt-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { localStorage.removeItem("medex.pildoras"); localStorage.removeItem("medex.rato"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+  }
   // Programa de 12 semanas (segunda tanda, 3): empezar, dosis de la semana en el plan y dejarlo (el resto de pruebas sigue sin programa)
   {
     await p.click(".prg-tile [data-programa]"); await p.waitForSelector("#programa[open] .prg-niveles", { timeout: 6000 }).catch(() => {});
