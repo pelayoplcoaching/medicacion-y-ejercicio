@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.8 · 2026-11-22 · Segunda tanda de mejoras grandes (13): los primeros 14 días
+- `js/primeros.js` (nuevo, bajo demanda): **«Los primeros 14 días»**, un arranque guiado con un paso pequeño cada día: poner la medicación, responder al cribado, leer lo esencial del informe, un paseo de 5 minutos, elegir metas, aprender «Levantarse de la silla», la prueba de la silla, la primera sesión de fuerza de 10 minutos, mirar «¿Cuándo?», entender un «¿Por qué?», tres píldoras de movimiento en un día, una lección de «Aprende», elegir los días de la semana y empezar el programa de 12 semanas.
+- Cada paso tiene su botón, que abre la herramienta que toca. Nueve se **marcan solos** al hacerlos (con lo que la aplicación ya sabe: lista, cribado, diario, metas, pruebas, píldoras, lecciones y programa) y todos se pueden marcar o desmarcar a mano. No caducan: se pueden adelantar o atrasar.
+- Anillo «n de 14», día del arranque, tarjeta con «El paso de hoy» (el primero sin hacer) y aviso de si va al día. Al completar los catorce, o cuando se quiera, «Dar por terminado»; se puede empezar de nuevo.
+- Entradas: banda en el panel de hoy (invitación mientras haya menos de tres sesiones en el diario; con el arranque en curso, el día en que va, hasta cuatro semanas), herramienta en el centro («Moverse») y sugerencia en «Para usted hoy».
+- «Hoy tengo…» acepta dos atajos (`paseo5`, `fuerza10`) que la abren con el tiempo y el tipo ya elegidos, y deja de heredar la elección de un atajo anterior.
+- No añade contenido clínico: solo ordena lo que la aplicación ya ofrece. Estado en `medex.primeros` (entra en la copia de seguridad).
+- Pruebas: 14 comprobaciones unitarias, 8 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.7 · 2026-11-22 · Segunda tanda de mejoras grandes (8): volver tras un parón, una enfermedad o un ingreso
 - `js/vuelta.js` (nuevo, bajo demanda): **«Volver tras un parón»**. Tres preguntas: por qué paró (sin motivo de salud, infección, lesión o dolor, ingreso u operación, corazón o pulmón), cuánto tiempo (menos de 2 semanas, de 2 a 4, de 1 a 3 meses, más de 3) y cómo está hoy.
 - **Qué toca hoy**: dolor en el pecho, palpitaciones o falta de aire nuevos → no entrenar y consultar (112 si es en reposo); fiebre en 48 horas, síntomas de pecho o agotamiento → esperar; problema de corazón o pulmón → con el visto bueno del médico o de rehabilitación cardiaca; herida sin cerrar → seguir lo indicado al alta; si no, puede volver.

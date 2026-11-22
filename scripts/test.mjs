@@ -869,6 +869,33 @@ console.log("\nVolver tras un parón, una enfermedad o un ingreso (segunda tanda
   check("módulo registrado; en Mi plan el acceso sale tras diez días sin sesiones", /vuelta: \(\) => import\("\.\/vuelta\.js/.test(appJs) && /Date\.now\(\) - new Date\(diario\.at\(-1\)\.fecha \+ "T12:00"\) >= 10 \* 864e5/.test(appJs) && appJs.includes('data-abre="vuelta"'));
 }
 
+console.log("\nLos primeros 14 días (segunda tanda, 13)");
+{
+  const R = await import(pathToFileURL(path.join(ROOT, "app/js/primeros.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/primeros.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), html = fs.readFileSync(path.join(ROOT, "app/index.html"), "utf8");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 60 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("catorce pasos con identificador único; cada uno con título, explicación y botón", R.PASOS.length === 14 && new Set(R.PASOS.map((p) => p.id)).size === 14 && R.PASOS.every((p) => ["t_", "x_", "b_"].every((k) => kEs.has(k + p.id))));
+  check("cada paso lleva a algo que existe: pestaña, bloque, botón, ventana o módulo registrado", R.PASOS.every((p) => { const x = p.ir; return x.tab ? html.includes(`data-tab="${x.tab}"`) : x.clic || x.ver ? html.includes(`id="${(x.clic || x.ver).slice(1)}"`) : x.abre ? new RegExp(`\\n  ${x.abre}: \\(\\) => import\\("\\./${x.abre}\\.js`).test(appJs) : x.attr ? appJs.includes(`[data-${x.attr}]`) : !!(x.ejercicio || x.programa || x.porque); }), R.PASOS.filter((p) => !Object.keys(p.ir).length).map((p) => p.id).join());
+  check("los atajos de «Hoy tengo…» que usan los pasos existen (paseo de 5 y fuerza de 10)", /paseo5: \{ min: 5, tipo: "paseo" \}, fuerza10: \{ min: 10, tipo: "fuerza" \}/.test(fs.readFileSync(path.join(ROOT, "app/js/rato.js"), "utf8")));
+  check("día del arranque: 0 sin empezar, 1 el primer día y 14 como tope", R.diaDe(null, "2026-11-22") === 0 && R.diaDe("2026-11-22", "2026-11-22") === 1 && R.diaDe("2026-11-22", "2026-11-28") === 7 && R.diaDe("2026-11-22", "2027-01-30") === 14 && R.diaDe("2026-11-22", "2026-11-20") === 0);
+  const c0 = { meds: 0, crib: null, sesiones: 0, fuerza: 0, metas: 0, pruebas: 0, pildoras: 0, lecciones: 0, programa: false };
+  const hechos = (o, c) => R.PASOS.filter((p) => R.hecho(p, o, c)).map((p) => p.id).join();
+  check("nueve pasos se marcan solos con lo que la aplicación ya sabe", hechos(null, c0) === "" && hechos(null, { ...c0, meds: 3 }) === "meds" && hechos(null, { ...c0, crib: "sin_datos" }) === "" && hechos(null, { ...c0, crib: "empezar" }) === "cribado" && hechos(null, { ...c0, sesiones: 1 }) === "paseo" && hechos(null, { ...c0, sesiones: 2, fuerza: 1 }) === "paseo,fuerza" && hechos(null, { ...c0, metas: 1 }) === "metas" && hechos(null, { ...c0, pruebas: 1 }) === "silla" && hechos(null, { ...c0, pildoras: 2 }) === "" && hechos(null, { ...c0, pildoras: 3 }) === "pildoras" && hechos(null, { ...c0, lecciones: 1 }) === "leccion" && hechos(null, { ...c0, programa: true }) === "programa" && R.PASOS.filter((p) => p.auto).length === 9);
+  check("todos se pueden marcar a mano, también los que se marcan solos", hechos({ hechos: { informe: "2026-11-22", silla: "2026-11-22" } }, c0) === "informe,silla" && hechos({ hechos: Object.fromEntries(R.PASOS.map((p) => [p.id, "2026-11-22"])) }, c0).split(",").length === 14);
+  const r = R.resumen({ inicio: "2026-11-20", hechos: { informe: "2026-11-21" } }, { ...c0, meds: 2, crib: "empezar" }, "2026-11-22");
+  check("resumen: cuenta los hechos, propone el primero sin hacer y dice si va al día", r.n === 3 && r.dia === 3 && r.sig.id === "paseo" && r.alDia && !r.completo && !R.resumen({ inicio: "2026-11-10", hechos: {} }, c0, "2026-11-22").alDia);
+  const fin = R.resumen({ inicio: "2026-11-01", hechos: Object.fromEntries(R.PASOS.map((p) => [p.id, "2026-11-10"])) }, c0, "2026-11-22");
+  check("con los catorce hechos queda completo y sin paso pendiente", fin.completo && fin.n === 14 && fin.sig === null);
+  check("no es contenido clínico: no trae cifras, fuentes ni marca de borrador (solo ordena lo que ya hay)", !/doi\.org|borrador|mmHg|\d\s?mg\b/i.test(src));
+  const base = { n: 6, pro: false, edad: 72, crib: "ok", calor: 0, tipoHoy: "fuerza", etiquetaHoy: "Fuerza", hecho: false, mayores: 0, hab: { alcohol: "no", tabaco: "no", cafe: "poco" }, metas: 2, sft: Date.now(), lecciones: 10, copia: Date.now(), hayDiario: false, ult: null };
+  check("centro: sin diario y sin empezar, lo propone; en curso, dice el día; terminado, con diario o sin el dato, no", C.sugerencias({ ...base, pri: null })[0].id === "primeros" && C.sugerencias({ ...base, pri: { dia: 4 } })[0].titulo.includes("4") && !C.sugerencias({ ...base, pri: "fin" }).some((s) => s.id === "primeros") && !C.sugerencias({ ...base, pri: null, hayDiario: true }).some((s) => s.id === "primeros") && !C.sugerencias(base).some((s) => s.id === "primeros"));
+  check("centro: la herramienta está en el catálogo y se encuentra al buscar «empezar»", C.HERRAMIENTAS.some((h) => h.id === "primeros" && h.dv === "primeros" && /empezar/.test(h.p)));
+  check("módulo registrado, banda en el panel de hoy y clave en la copia de seguridad", /\n  primeros: \(\) => import\("\.\/primeros\.js/.test(appJs) && /\$\{filaCalor\(\)\}\$\{bandaPrimeros\(diario\)\}/.test(appJs) && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.primeros"'));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

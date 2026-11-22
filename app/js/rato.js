@@ -6,7 +6,7 @@
    Guarda en el dispositivo la última elección («medex.rato») y las píldoras de cada día («medex.pildoras»: { "AAAA-MM-DD": n }).
    Las cifras de las fuentes están comprobadas en PubMed (22/11/2026). Textos de la interfaz en cinco idiomas; los de cada
    píldora, en español como el resto del contenido de ejercicios. */
-import { t, idioma } from "./i18n.js?v=202611222036";
+import { t, idioma } from "./i18n.js?v=202611222054";
 
 const TXT = {
   es: { titulo: "Hoy tengo…", p_sesion: "Una sesión", p_pildoras: "Píldoras de movimiento", cuanto: "¿Cuánto tiempo tiene?", que: "¿De qué?", min: "{n} min", t_hoy: "Lo de hoy", t_fuerza: "Fuerza", t_paseo: "Paseo", t_equilibrio: "Equilibrio",
@@ -248,13 +248,15 @@ function pintar() {
   cu().innerHTML = `<div class="rt-tabs" role="tablist"><button type="button" role="tab" data-rt="vista" data-v="sesion" aria-selected="${vista === "sesion"}">${tx("p_sesion")}</button><button type="button" role="tab" data-rt="vista" data-v="pildoras" aria-selected="${vista === "pildoras"}">${tx("p_pildoras")}</button></div>
     <div role="tabpanel">${vista === "pildoras" ? vistaPildoras() : vistaSesion()}</div>`;
 }
-/** Abre la ventana. arg = "pildoras" la abre en las píldoras. */
+/** Abre la ventana. arg = "pildoras" la abre en las píldoras; "paseo5" y "fuerza10" la abren con ese tiempo y ese tipo ya elegidos (los primeros 14 días). */
 export async function abrir(api, arg = null) {
   A = api;
   try { await api.cargarBiblio(); MOV = await api.cargarMov(); } catch {} // dibujos de la biblioteca y cuidados por ejercicio
   if (!dlg) crear();
+  sel = { min: 10, tipo: "hoy" };
   try { const o = JSON.parse(localStorage.getItem(K_RATO) || "null"); if (o && TIEMPOS.includes(o.min) && ["hoy", "fuerza", "paseo", "equilibrio"].includes(o.tipo)) sel = { min: o.min, tipo: o.tipo }; } catch {}
   if (sel.tipo === "equilibrio" && sel.min > 10) sel.tipo = "hoy";
+  const pre = { paseo5: { min: 5, tipo: "paseo" }, fuerza10: { min: 10, tipo: "fuerza" } }[arg]; if (pre) sel = pre;
   vista = arg === "pildoras" ? "pildoras" : "sesion"; pararCrono();
   iPil = (leerPildoras()[api.hoyISO()] || 0) % pildoras().length;
   dlg.querySelector("#rt-cerrar").textContent = api.cerrar();

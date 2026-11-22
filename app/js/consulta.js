@@ -1,7 +1,7 @@
 /* Estadísticas y exportación de la consulta (v1.0; modo profesional): resumen de los pacientes guardados en este
    dispositivo, CSV anonimizado y texto para copiar. Sale de app.js en la v1.2.13 para no cargarlo al abrir: se carga al
    pulsar «Estadísticas». app.js le pasa los datos y las funciones del motor (d). */
-import { t } from "./i18n.js?v=202611222036";
+import { t } from "./i18n.js?v=202611222054";
 
 /** d: { perfiles, evaluar(e) → { ctx, res, crib }, sit(c), senales, crib(k) }. */
 export function estadisticas(d) {

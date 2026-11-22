@@ -906,3 +906,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H6 | (sin estilos en `style.css`: todo en el módulo) | `js/paseo.js` |
 | H7 | (sin estilos en `style.css`: todo en el módulo) | `js/dolor.js` |
 | H8 | (sin estilos en `style.css`: todo en el módulo) | `js/vuelta.js` |
+| H13 | (sin estilos en `style.css`: la banda del panel de hoy reutiliza `.aprende-tile.prg-tile`; el resto, en el módulo) | `js/primeros.js` |

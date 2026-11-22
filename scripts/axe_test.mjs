@@ -45,6 +45,7 @@ const esc0 = [
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
   { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
   { n: "vuelta-inicio-claro", w: 390, abre: "vuelta" }, { n: "vuelta-ingreso-oscuro", w: 1280, abre: "vuelta", vuelta: ["ingreso", "t2"], tema: "dark" }, { n: "vuelta-infeccion-contraste", w: 390, abre: "vuelta", vuelta: ["infeccion", "t3"], tema: "contrast" },
+  { n: "primeros-inicio-claro", w: 390, abre: "primeros" }, { n: "primeros-curso-oscuro", w: 1280, abre: "primeros", primeros: true, tema: "dark" }, { n: "primeros-curso-contraste", w: 390, abre: "primeros", primeros: true, tema: "contrast" },
   { n: "dolor-zonas-claro", w: 390, abre: "dolor" }, { n: "dolor-lumbar-oscuro", w: 1280, abre: "dolor", arg: "lumbar", tema: "dark" }, { n: "dolor-rodilla-contraste", w: 390, abre: "dolor", arg: "rodilla", tema: "contrast" },
   { n: "paseo-preparar-claro", w: 390, abre: "paseo" }, { n: "paseo-programa-oscuro", w: 1280, abre: "paseo", arg: "prog", tema: "dark" }, { n: "paseo-en-marcha-contraste", w: 390, abre: "paseo", marcha: 400, tema: "contrast" },
   { n: "rato-sesion-claro", w: 390, abre: "rato" }, { n: "rato-pildoras-oscuro", w: 1280, abre: "rato", arg: "pildoras", tema: "dark" }, { n: "rato-pildoras-contraste", w: 390, abre: "rato", arg: "pildoras", tema: "contrast" },
@@ -116,6 +117,7 @@ async function correr(e) {
     }
     // módulos de la segunda tanda que se abren con data-abre (y data-arg): se espera a su ventana, que lleva el mismo id que el módulo
     if (e.abre) { await p.evaluate(([n, arg]) => { const b = document.createElement("button"); b.dataset.abre = n; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, [e.abre, e.arg || ""]); await p.waitForSelector(`#${e.abre}[open] .ficha-cuerpo > *`); await p.waitForTimeout(600);
+      if (e.primeros) { await p.click('#primeros [data-pr="empezar"]'); await p.waitForSelector("#primeros #pr-hoy"); await p.waitForTimeout(300); }
       if (e.vuelta) { await p.click(`#vuelta [data-vt="motivo"][data-v="${e.vuelta[0]}"]`); await p.click(`#vuelta [data-vt="tiempo"][data-v="${e.vuelta[1]}"]`); await p.waitForSelector("#vuelta #vt-esc"); await p.waitForTimeout(300); }
       if (e.marcha) { await p.click('#paseo [data-ps="empezar"]'); await p.waitForSelector("#ps-marcha"); await p.evaluate((s) => window.__paPaseo.fijar(s), e.marcha); await p.waitForTimeout(300); } }
     if (e.bib != null) { await p.evaluate((n) => { const b = document.createElement("button"); if (n) { b.dataset.cambiar = n; b.dataset.pict = "sentadilla"; } else b.dataset.biblioteca = ""; document.body.append(b); b.click(); b.remove(); }, e.bib); await p.waitForSelector("#biblioteca[open] .bib-lista li"); await p.waitForTimeout(500); }

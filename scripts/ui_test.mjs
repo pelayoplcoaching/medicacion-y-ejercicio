@@ -485,6 +485,36 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Los primeros 14 días (segunda tanda, 13): empezar, pasos que se marcan solos y a mano, botones que llevan a su sitio y terminar (se deja todo como estaba)
+  {
+    const abrePri = async () => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "primeros"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#primeros[open] #pr-lista", { timeout: 6000 }).catch(() => {}); };
+    await p.evaluate(() => localStorage.removeItem("medex.primeros"));
+    await abrePri();
+    check("«Los primeros 14 días» sin empezar: los catorce pasos, un botón para empezar y nada que marcar todavía", (await p.$$("#pr-lista li")).length === 14 && (await p.$$('#primeros [data-pr="empezar"]')).length === 1 && (await p.$$("#pr-lista [data-pr]")).length === 0);
+    await p.click('#primeros [data-pr="empezar"]'); await p.waitForSelector("#primeros #pr-hoy", { timeout: 4000 }).catch(() => {});
+    const n0 = Number(await p.textContent("#pr-n")), hechos0 = await p.$$eval("#pr-lista li.hecho", (l) => l.map((x) => x.dataset.id));
+    check("al empezar guarda la fecha, es el día 1 y da por hecho lo que ya está (la medicación puesta)", /^\d{4}-\d\d-\d\d$/.test(await p.evaluate(() => JSON.parse(localStorage.getItem("medex.primeros") || "{}").inicio || "")) && hechos0.includes("meds") && n0 === hechos0.length && n0 >= 1 && n0 < 14 && /1/.test(await p.textContent(".pr-cab strong")), `${n0} ${hechos0.join()}`);
+    check("el paso de hoy es el primero sin hacer, con su botón y la opción de marcarlo", (await p.$eval("#pr-lista li.sig", (e) => e.dataset.id)) === (await p.$eval('#pr-hoy [data-pr="ir"]', (e) => e.dataset.v)) && !hechos0.includes(await p.$eval("#pr-lista li.sig", (e) => e.dataset.id)) && (await p.isVisible('#pr-hoy [data-pr="marcar"]')));
+    await p.click('#pr-lista li[data-id="informe"] [data-pr="marcar"]'); await p.waitForTimeout(150);
+    const n1 = Number(await p.textContent("#pr-n")), foco = await p.evaluate(() => document.activeElement?.dataset.v || "");
+    await p.click('#pr-lista li[data-id="informe"] [data-pr="marcar"]'); await p.waitForTimeout(150);
+    check("marcar un paso a mano suma uno, deja el foco en su botón y se puede desmarcar", n1 === n0 + 1 && foco === "informe" && Number(await p.textContent("#pr-n")) === n0 && !(await p.$eval('#pr-lista li[data-id="informe"]', (e) => e.classList.contains("hecho"))), `${n0} → ${n1}`);
+    check("la banda del panel de hoy enseña el día y abre esta ventana", /14/.test(await p.textContent("#hoy #pri-banda")) && (await p.$$('#hoy #pri-banda [data-abre="primeros"]')).length === 1);
+    await p.click('#pr-lista li[data-id="cuando"] [data-pr="ir"]'); await p.waitForTimeout(300);
+    const tabCuando = await p.$eval('.tabs [aria-selected="true"]', (b) => b.dataset.tab), cerrada = !(await p.$eval("#primeros", (d) => d.open));
+    await abrePri(); await p.click('#pr-lista li[data-id="ejercicio"] [data-pr="ir"]'); await p.waitForSelector("#ejercicio[open], dialog[open] #ej-tit", { timeout: 6000 }).catch(() => {});
+    const ejTit = await p.textContent("#ej-tit").catch(() => "");
+    await p.click("#ej-cerrar").catch(() => {}); await p.waitForTimeout(150);
+    await abrePri(); await p.click('#pr-lista li[data-id="dias"] [data-pr="ir"]'); await p.waitForTimeout(300);
+    check("los botones llevan a su sitio: la pestaña «¿Cuándo?», la ficha de «Levantarse de la silla» y «Mi plan»", tabCuando === "cuando" && cerrada && /silla/i.test(ejTit) && (await p.$eval('.tabs [aria-selected="true"]', (b) => b.dataset.tab)) === "plan", `${tabCuando} · ${ejTit}`);
+    await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "rato"; b.dataset.arg = "paseo5"; document.body.append(b); b.click(); b.remove(); });
+    await p.waitForSelector("#rato[open] #rt-lista li", { timeout: 6000 }).catch(() => {});
+    check("el paseo de 5 minutos abre «Hoy tengo…» con 5 minutos y paseo ya elegidos", (await p.$eval('#rato [data-rt="min"][data-v="5"]', (b) => b.getAttribute("aria-pressed"))) === "true" && (await p.$eval('#rato [data-rt="tipo"][data-v="paseo"]', (b) => b.getAttribute("aria-pressed"))) === "true");
+    await p.click("#rt-cerrar"); await p.waitForTimeout(150);
+    await abrePri(); await p.click('#primeros [data-pr="terminar"]'); await p.waitForTimeout(250);
+    check("«Dar por terminado» lo guarda, cierra la ventana y quita la banda", !!(await p.evaluate(() => JSON.parse(localStorage.getItem("medex.primeros") || "{}").fin)) && !(await p.$eval("#primeros", (d) => d.open)) && (await p.$$("#hoy #pri-banda")).length === 0);
+    await p.evaluate(() => { localStorage.removeItem("medex.primeros"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+  }
   // «Me duele…» (segunda tanda, 7): zona, semáforo, adaptar el plan y quitar las adaptaciones (se deja todo como estaba)
   {
     await p.click('.rato-enlaces [data-abre="dolor"]'); await p.waitForSelector("#dolor[open] .dl-chips", { timeout: 6000 }).catch(() => {});
