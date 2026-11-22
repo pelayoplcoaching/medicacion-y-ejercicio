@@ -45,6 +45,7 @@ app/
     beneficios.js       «Lo que el ejercicio hace por usted»: 21 tarjetas de beneficios por situación con cifra, estudio, certeza y DOI (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
     dosis.js            «¿Cuánto movimiento hace falta?»: dosis y respuesta (Arem 2015 por minutos, Paluch 2022 por pasos) con su media del diario, deslizador y gráfica SVG; interfaz en 5 idiomas (bajo demanda, v1.2)
     habitos.js          «Alcohol, tabaco y café con su medicación»: 28 reglas con su fuente (fichas técnicas, EFSA, PubMed) que cruzan tres hábitos con la lista, la edad y la situación (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
+    conversa.js         «Guía de conversación» (modo profesional): consejo breve en 1, 5 y 20-30 minutos con las 5 Aes, barreras, nota para la historia y hoja imprimible para el paciente (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)

@@ -575,6 +575,33 @@ console.log("\n«Alcohol, tabaco y café con su medicación» (mejora grande 5)"
   check("interfaz en los cinco idiomas con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(H.TXT[l]).length === ks.length && ks.every((x) => H.TXT[l][x] && vars(H.TXT[l][x]) === vars(H.TXT.es[x]))));
 }
 
+console.log("\n«Guía de conversación» para la consulta (mejora grande 15)");
+{
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/conversa.js")).href);
+  const B = await import(pathToFileURL(path.join(ROOT, "app/js/beneficios.js")).href);
+  const { prescripcion, listasVistazo, filasPlanPaciente } = await import(pathToFileURL(path.join(ROOT, "app/js/informes.js")).href);
+  const ctx = { edad: 74, caidas: true, condiciones: new Set(["diabetes", "artrosis"]) };
+  const res = evaluar(datos, ["bisoprolol", "gliclazida", "acenocumarol", "lorazepam"].map((pid) => ({ pid, dosis: 1, tomas: 1 })), ctx);
+  const d = { condiciones: ctx.condiciones, edad: 74, caidas: true, senales: Object.keys(res.perfil), esencial: loEsencial(res, 3), vistazo: listasVistazo(res, ctx), plan: filasPlanPaciente(res, ctx), P: prescripcion(res, ctx), crib: { clave: "valoracion_antes", texto: "Conviene una valoración médica antes de empezar." }, ben: B.tarjetas(B.situaciones({ condiciones: ["diabetes", "artrosis"], edad: 74, caidas: true })), metas: ["Subir escaleras sin pararme"], alarma: ALARMA, nMeds: 4, version: "9.9.9" };
+  const bs = C.barreras(d);
+  check("barreras: las frecuentes en su caso primero (dolor por artrosis, caídas, medicación) y la respuesta con los cuidados de su lista", bs[0].frecuente && ["dolor", "caidas", "medicacion"].every((id) => bs.find((b) => b.id === id).frecuente) && !bs.find((b) => b.id === "dinero").frecuente && bs.find((b) => b.id === "medicacion").resp.includes(d.vistazo.cuidado[0]) && bs.every((b) => !/\{\w+\}/.test(b.resp)) && C.BARRERAS.length === 10);
+  check("objetivo de partida según la situación: frágil, NYHA III-IV, ya activo o el paseo de 10 minutos", /silla 5 veces/.test(C.objetivoSugerido({ condiciones: ["fragil"] })) && /5-10 minutos, dos veces/.test(C.objetivoSugerido({ condiciones: ["nyha34"] })) && /fuerza/.test(C.objetivoSugerido({}, "si")) && /Caminar 10 minutos/.test(C.objetivoSugerido({}, "no")));
+  const e1 = C.escalas(2, 8), e2 = C.escalas(8, 3), e3 = C.escalas(8, 8);
+  check("escalas de importancia y confianza: pregunta de seguimiento y pista (importancia baja, confianza baja, a acordar)", e2.pImp === "¿Por qué un 8 y no un 6?" && e2.pConf === "¿Qué le haría pasar de un 3 a un 5?" && /Importancia baja/.test(e1.pista) && /Confianza baja/.test(e2.pista) && /acordar/.test(e3.pista) && C.escalas(0, 10).pImp === "¿Por qué un 0 y no un 0?");
+  const P1 = C.pasos(d, "uno"), P5 = C.pasos(d, "cinco", { imp: 5, conf: 5, barreras: ["caidas"] }), PM = C.pasos(d, "mas");
+  check("pasos: 1 minuto (averiguar, aconsejar con su beneficio y su medicación, asegurar), 5 minutos con las cinco Aes en orden y la consulta programada", P1.map((p) => p.a).join() === "averiguar,aconsejar,asegurar" && /HbA1c|azúcar/.test(P1[1].html) && P1[1].html.includes(d.vistazo.cuidado[0].replace(/[<>&"]/g, "")) && P5.map((p) => p.a).join() === C.AES.join() && PM.length === 5 && PM.every((p) => C.AES.includes(p.a)));
+  check("su caso en los pasos: metas, escalas, la barrera marcada con su respuesta, derivación por artrosis y la prescripción completa", P5[0].html.includes("Subir escaleras") && /name="cv-imp"/.test(P5[0].html) && /value="caidas" checked/.test(P5[3].html) && /<li><b>Me da miedo caerme/.test(P5[3].html) && PM[4].html.includes(C.DERIVAR.artrosis) && (PM[2].html.match(/<tr>/g) || []).length === 4 && !/\{\w+\}/.test([...P1, ...P5, ...PM].map((p) => p.html).join("")));
+  const s = { actividad: "no", sentado: true, imp: 7, conf: 4, barreras: ["dolor", "tiempo"], objetivo: "Caminar <b>15</b> min", semanas: 8 };
+  const n = C.nota(d, s);
+  check("nota para la historia: 5 Aes, actividad, escalas, barreras, acuerdo, seguridad, cribado y seguimiento, en texto plano", /5 Aes/.test(n) && /no llega/.test(n) && /más de 2 h seguidas sentado/.test(n) && /Importancia 7\/10 · confianza 4\/10/.test(n) && /no tengo tiempo; me duelen/.test(n) && /Acuerdo: Caminar <b>15<\/b> min/.test(n) && /Seguridad por la medicación/.test(n) && /Cribado ACSM/.test(n) && /en 8 semanas/.test(n) && /v9\.9\.9/.test(n));
+  const h = C.hoja(d, s, new Date(2026, 10, 22).getTime());
+  check("hoja para el paciente: su objetivo (sin HTML), su semana, cuidados, las 6 señales de alarma, el aviso del cribado y la fecha de revisión", h.includes("Caminar &lt;b&gt;15&lt;/b&gt; min") && (h.match(/<tr>/g) || []).length === 4 && (h.match(/<li>/g) || []).length >= ALARMA.length + 3 && /hc-aviso/.test(h) && /17 de enero de 2027/.test(h) && /Si me cuesta/.test(h) && /Nombre:/.test(h));
+  check("sin cribado que pida valoración, la hoja no lleva el aviso; sin objetivo escrito, lleva el de partida", !/hc-aviso/.test(C.hoja({ ...d, crib: { clave: "empezar", texto: "x" } }, {})) && /Caminar 10 minutos/.test(C.hoja({ ...d, crib: null }, {})));
+  check("fuentes: Ministerio de Sanidad 2015, OMS 2020, Orrow 2012 y Rubak 2005, con DOI o enlace", C.FUENTES.length === 4 && C.FUENTES.every((f) => (f.doi ? /^10\.\d{4,9}\/\S+$/.test(f.doi) : /^https:\/\//.test(f.url))) && C.FUENTES.some((f) => f.doi === "10.1136/bmj.e1389") && C.FUENTES.some((f) => f.doi === "10.1136/bjsports-2020-102955") && /^https:\/\//.test(C.LOCALIZA.url));
+  const ks = Object.keys(C.TXT.es), vars = (x) => (x.match(/\{\w+\}/g) || []).sort().join();
+  check("interfaz en los cinco idiomas con las mismas variables; las cinco Aes traducidas", ["en", "ca", "gl", "eu"].every((l) => Object.keys(C.TXT[l]).length === ks.length && ks.every((x) => C.TXT[l][x] && vars(C.TXT[l][x]) === vars(C.TXT.es[x]))) && C.AES.every((a) => C.TXT.en[a] && C.TXT.en[a] !== C.TXT.es[a]));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

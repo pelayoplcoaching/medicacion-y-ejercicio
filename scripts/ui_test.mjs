@@ -486,6 +486,16 @@ try {
   await p.click("#estadisticas-cerrar");
   check("cargar el paciente guardado restaura la lista y la edad", (await p.$$("#lista-meds li")).length === nMedsAntes && (await p.$eval("#edad", (e) => e.value)) === "78");
   await p.click('#cambios [data-a="cerrar"]').catch(() => {});
+  await p.click("#consulta [data-conversa]"); await p.waitForSelector("#conversa[open] .cv-paso", { timeout: 5000 }).catch(() => {});
+  check("guía de conversación: tres modalidades; en 1 minuto, tres pasos con su caso (beneficio y cuidado por su medicación)", (await p.$$("#conversa .cv-tab")).length === 3 && (await p.$$("#conversa .cv-paso")).length === 3 && (await p.$$("#conversa .cv-caso")).length >= 2);
+  await p.click('#conversa [data-cv-tab="cinco"]'); await p.fill('#conversa input[name="cv-conf"]', "2"); await p.click('#conversa input[name="cv-bar"][value="caidas"]'); await p.waitForTimeout(150);
+  check("5 minutos: las cinco Aes en orden, la confianza baja cambia la pista y la barrera marcada trae su respuesta", (await p.$$eval("#conversa .cv-a", (xs) => xs.map((x) => x.textContent).join())) === "Averiguar,Aconsejar,Acordar,Ayudar,Asegurar" && /Confianza baja/.test(await p.textContent("#conversa [data-cv-pista]")) && (await p.$$("#conversa [data-cv-resp] li")).length === 1);
+  await p.click("#conversa [data-cv-nota]"); await p.waitForTimeout(200);
+  { const nt = await p.evaluate(() => navigator.clipboard.readText()); check("nota para la historia copiada: 5 Aes, confianza, barrera y seguimiento", /5 Aes/.test(nt) && /confianza 2\/10/.test(nt) && /miedo caerme/.test(nt) && /Seguimiento: en 4 semanas/.test(nt)); }
+  await p.evaluate(() => { window.__imp = 0; window.print = () => { window.__imp++; }; });
+  await p.click("#conversa [data-cv-imprimir]"); await p.waitForTimeout(300);
+  check("hoja para el paciente: se imprime con su objetivo, su semana, las señales de alarma y la próxima revisión", (await p.evaluate(() => window.__imp)) === 1 && (await p.$$("#hoja-conversa tbody tr")).length === 3 && (await p.$$("#hoja-conversa .hc-alarma li")).length === 6 && /Próxima revisión/.test(await p.textContent("#hoja-conversa")) && await p.evaluate(() => document.body.classList.contains("imprimir-conversa")));
+  await p.evaluate(() => window.dispatchEvent(new Event("afterprint"))); await p.click("#cv-cerrar"); await p.waitForTimeout(150);
   await p.selectOption("#plantilla", "ic"); await p.click("#btn-plantilla"); await p.waitForTimeout(300);
   check("plantilla «insuficiencia cardíaca» marca la situación, 4 días de plan y reevaluación a 6 semanas", await p.isChecked("#cond-insuficiencia_cardiaca") && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).plan.dias.length)) === 4 && (await p.$eval("#presc-revision", (e) => e.value)) === "6");
   const [dlFhir] = await Promise.all([p.waitForEvent("download"), p.click("#btn-fhir")]);
