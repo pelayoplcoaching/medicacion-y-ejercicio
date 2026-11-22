@@ -3,7 +3,7 @@
    a su «¿Por qué?». No añade contenido clínico: los efectos son las señales de la base revisada (kb.senales) tal como están,
    los cuidados son los del panel de hoy («cuid.*») y las explicaciones, las de js/porque.js. Aquí solo se reparten por zonas.
    Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611222111";
+import { t, idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Su medicación en el cuerpo", intro: "Toque una zona para ver qué hacen ahí sus medicamentos y qué conviene cuidar al moverse.", resumen: "Su medicación actúa en <b>{a}</b> de {b} zonas.", resumen0: "Con su lista de hoy, ninguna zona pide un cuidado especial al moverse.",
@@ -66,7 +66,6 @@ export const zonaInicial = (m) => m.reduce((mejor, z) => (z.meds.length > (mejor
 
 const CSS = `
 .cp-dlg { width: min(880px, calc(100vw - 16px)); }
-.cp-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .cp-intro { margin: 0 0 6px; color: var(--muted); }
 .cp-res { margin: 0 0 12px; }
 .cp-res b { font-family: var(--mono); font-size: 1.15em; color: var(--accent-deep, var(--accent)); }
@@ -115,7 +114,7 @@ const cuenta = (n) => (n === 0 ? tx("cuenta0") : n === 1 ? tx("cuenta1") : tx("c
 function crear() {
   if (!document.getElementById("cp-css")) { const st = document.createElement("style"); st.id = "cp-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "cuerpo"; dlg.className = "ficha cp-dlg"; dlg.setAttribute("aria-labelledby", "cp-cab-t");
+  dlg.id = "cuerpo"; dlg.className = "ficha alta cp-dlg"; dlg.setAttribute("aria-labelledby", "cp-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="cp-cab-t"></p><button type="button" class="btn-sec sm" id="cp-cerrar"></button></div><div class="ficha-cuerpo" id="cp-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

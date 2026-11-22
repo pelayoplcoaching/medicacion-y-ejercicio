@@ -4,7 +4,7 @@
    silla, sesión de fuerza, píldoras, lección, programa); todos se pueden marcar a mano. No caducan: se adelantan o se atrasan.
    Estado en localStorage («medex.primeros»): { inicio (ISO), hechos: { id: ISO }, fin (ISO) | null }.
    No contiene contenido clínico: solo ordena lo que la aplicación ya ofrece. Textos en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611222111";
+import { idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Los primeros 14 días", intro: "Un paso pequeño cada día, sin prisa. En dos semanas tendrá su medicación revisada, un plan a su medida y las primeras sesiones hechas.", empezar: "Empezar hoy", dia: "Día {n}", de: "{a} de 14", hoy: "El paso de hoy", hecho: "Hecho", marcar: "Marcar como hecho", desmarcar: "Desmarcar", solo: "Se marca solo al hacerlo.", todos: "Los 14 pasos",
@@ -128,7 +128,6 @@ const guardar = (o) => { try { if (o) localStorage.setItem(CLAVE, JSON.stringify
 
 const CSS = `
 .pr-dlg { width: min(720px, calc(100vw - 16px)); }
-.pr-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .pr-intro { margin: 0 0 12px; color: var(--muted); }
 .pr-dlg h3 { margin: 18px 0 8px; font-size: 1rem; }
 .pr-cab { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: center; margin: 0 0 12px; }
@@ -191,7 +190,7 @@ function ir(p) {
 function crear() {
   if (!document.getElementById("pr-css")) { const st = document.createElement("style"); st.id = "pr-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "primeros"; dlg.className = "ficha pr-dlg"; dlg.setAttribute("aria-labelledby", "pr-cab-t");
+  dlg.id = "primeros"; dlg.className = "ficha alta pr-dlg"; dlg.setAttribute("aria-labelledby", "pr-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="pr-cab-t"></p><button type="button" class="btn-sec sm" id="pr-cerrar"></button></div><div class="ficha-cuerpo" id="pr-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

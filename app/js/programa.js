@@ -6,7 +6,7 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611222111";
+import { idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -255,7 +255,6 @@ const CSS = `
 .prg-sub { margin: 0 0 4px; font-size: .84rem; color: var(--muted); }
 .prg-card .acciones { margin-top: 8px; }
 .prg-dlg { width: min(820px, calc(100vw - 16px)); }
-.prg-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .prg-borrador { display: inline-block; margin: 0 0 10px; padding: 3px 10px; border: 1px dashed var(--precaucion); border-radius: 999px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .76rem; font-weight: 700; }
 .prg-intro { margin: 0 0 12px; color: var(--muted); }
 .prg-dlg h3 { margin: 18px 0 8px; font-size: 1rem; }
@@ -338,7 +337,7 @@ const cu = () => dlg.querySelector("#prg-cuerpo");
 function crear() {
   estilos();
   dlg = document.createElement("dialog");
-  dlg.id = "programa"; dlg.className = "ficha prg-dlg"; dlg.setAttribute("aria-labelledby", "prg-cab-t");
+  dlg.id = "programa"; dlg.className = "ficha alta prg-dlg"; dlg.setAttribute("aria-labelledby", "prg-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="prg-cab-t"></p><button type="button" class="btn-sec sm" id="prg-cerrar"></button></div><div class="ficha-cuerpo" id="prg-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

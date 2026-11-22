@@ -6,7 +6,7 @@
    Guarda en el dispositivo la última elección («medex.rato») y las píldoras de cada día («medex.pildoras»: { "AAAA-MM-DD": n }).
    Las cifras de las fuentes están comprobadas en PubMed (22/11/2026). Textos de la interfaz en cinco idiomas; los de cada
    píldora, en español como el resto del contenido de ejercicios. */
-import { t, idioma } from "./i18n.js?v=202611222111";
+import { t, idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Hoy tengo…", p_sesion: "Una sesión", p_pildoras: "Píldoras de movimiento", cuanto: "¿Cuánto tiempo tiene?", que: "¿De qué?", min: "{n} min", t_hoy: "Lo de hoy", t_fuerza: "Fuerza", t_paseo: "Paseo", t_equilibrio: "Equilibrio",
@@ -123,7 +123,6 @@ export function tipoBase(tipo, tipoHoy) {
 
 const CSS = `
 .rt-dlg { width: min(720px, calc(100vw - 16px)); }
-.rt-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .rt-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 0 12px; padding: 4px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
 .rt-tabs button { padding: 8px 10px; min-height: 40px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-weight: 700; cursor: pointer; }
 .rt-tabs button[aria-selected="true"] { background: var(--accent); color: var(--surface); }
@@ -178,7 +177,7 @@ const pararCrono = () => { if (crono) { clearInterval(crono.id); crono = null; }
 function crear() {
   if (!document.getElementById("rt-css")) { const st = document.createElement("style"); st.id = "rt-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "rato"; dlg.className = "ficha rt-dlg"; dlg.setAttribute("aria-labelledby", "rt-cab-t");
+  dlg.id = "rato"; dlg.className = "ficha alta rt-dlg"; dlg.setAttribute("aria-labelledby", "rt-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="rt-cab-t"></p><button type="button" class="btn-sec sm" id="rt-cerrar"></button></div><div class="ficha-cuerpo" id="rt-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

@@ -5,8 +5,8 @@
    original -> id del que lo sustituye) y la aplicación lo aplica al plan, a la sesión guiada y a la hoja imprimible.
    Los dibujos y la ficha animada viven en movimiento.js; la aplicación se los pasa (un módulo bajo demanda no importa a otro).
    Textos de la interfaz en cinco idiomas; los de cada ejercicio, en español como el resto del contenido de las sesiones. */
-import { idioma } from "./i18n.js?v=202611222111";
-import { sesionTipo, normalizar } from "./engine.js?v=202611222111";
+import { idioma } from "./i18n.js?v=202611222121";
+import { sesionTipo, normalizar } from "./engine.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Biblioteca de ejercicios", intro: "{n} ejercicios con su dibujo. Toque uno para ver cómo se hace.", zona: "Zona", material: "Con qué", postura: "Postura", todo: "Todo", cualquiera: "Cualquiera",
@@ -156,7 +156,6 @@ export function aplicar(ses, cambios = leerCambios()) {
 
 const CSS = `
 .bib-dlg { width: min(900px, calc(100vw - 16px)); }
-.bib-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .bib-intro { margin: 0 0 10px; color: var(--muted); font-size: .92rem; }
 .bib-fil { display: grid; gap: 6px; margin: 0 0 10px; }
 .bib-fila { display: grid; grid-template-columns: 74px minmax(0, 1fr); align-items: center; gap: 8px; }
@@ -207,7 +206,7 @@ const dibujo = (e) => A.dibujo(e.id);
 function crear() {
   if (!document.getElementById("bib-css")) { const st = document.createElement("style"); st.id = "bib-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "biblioteca"; dlg.className = "ficha bib-dlg"; dlg.setAttribute("aria-labelledby", "bib-cab-t");
+  dlg.id = "biblioteca"; dlg.className = "ficha alta bib-dlg"; dlg.setAttribute("aria-labelledby", "bib-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="bib-cab-t"></p><button type="button" class="btn-sec sm" id="bib-cerrar"></button></div><div class="ficha-cuerpo" id="bib-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

@@ -60,6 +60,7 @@ app/
     vuelta.js           volver tras un parón: qué toca hoy, escalones de la vuelta por semanas y enlace con el programa de 12 semanas; bajo demanda, por data-abre (v1.3.7)
     primeros.js         los primeros 14 días: arranque guiado, un paso al día que lleva a cada herramienta; nueve se marcan solos; bajo demanda, por data-abre (v1.3.8)
     cuerpo.js           su medicación en el cuerpo: figura con once zonas que reparte las señales de la base, con cuidados y «¿Por qué?»; bajo demanda, por data-abre (v1.3.9)
+    preguntas.js        mis preguntas para la consulta: las genera con avisos, interacciones, señales, cribado y hábitos; elegir, añadir propias, imprimir, compartir o copiar; bajo demanda, por data-abre (v1.3.10)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

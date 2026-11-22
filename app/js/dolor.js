@@ -9,7 +9,7 @@
    Estado en localStorage («medex.dolor»): { zona, hist: [{ f, z, n }], aplicado: { zona, cambios, variantes } | null }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA. Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en
    español como el resto de reglas de la aplicación. Fuentes comprobadas en PubMed (22/11/2026). */
-import { idioma } from "./i18n.js?v=202611222111";
+import { idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Me duele…", borrador: "Borrador pendiente de revisión clínica", intro: "Con dolor casi siempre se puede seguir moviéndose, de otra manera. Diga dónde le duele y cuánto, y le digo qué hacer con su plan.", donde: "¿Dónde le duele?",
@@ -202,7 +202,6 @@ const ponerJson = (k, o) => { try { if (Object.keys(o).length) localStorage.setI
 
 const CSS = `
 .dl-dlg { width: min(760px, calc(100vw - 16px)); }
-.dl-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .dl-borrador { display: inline-block; margin: 0 0 10px; padding: 3px 10px; border: 1px dashed var(--precaucion); border-radius: 999px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .76rem; font-weight: 700; }
 .dl-intro { margin: 0 0 12px; color: var(--muted); }
 .dl-dlg h3 { margin: 18px 0 8px; font-size: 1rem; }
@@ -274,7 +273,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 function crear() {
   if (!document.getElementById("dl-css")) { const st = document.createElement("style"); st.id = "dl-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "dolor"; dlg.className = "ficha dl-dlg"; dlg.setAttribute("aria-labelledby", "dl-cab-t");
+  dlg.id = "dolor"; dlg.className = "ficha alta dl-dlg"; dlg.setAttribute("aria-labelledby", "dl-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="dl-cab-t"></p><button type="button" class="btn-sec sm" id="dl-cerrar"></button></div><div class="ficha-cuerpo" id="dl-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

@@ -485,6 +485,30 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Mis preguntas para la consulta (segunda tanda, 11): elegir, añadir una propia, imprimir y copiar (se deja todo como estaba)
+  {
+    await p.evaluate(() => localStorage.removeItem("medex.preguntas"));
+    await p.evaluate(() => document.querySelector('#descargas [data-abre="preguntas"]').click());
+    await p.waitForSelector("#preguntas[open] .pg-lista", { timeout: 6000 }).catch(() => {});
+    const grupos = await p.$$eval("#preguntas .pg-lista[data-g]", (us) => us.map((u) => u.dataset.g));
+    check("«Mis preguntas para la consulta» se abre desde «Llévese este informe», con preguntas por su medicación y generales, y ninguna marcada", grupos.includes("meds") && grupos.includes("general") && grupos.includes("empezar") && (await p.$$('#preguntas [data-pg="sel"]:checked')).length === 0 && (await p.$$("#preguntas .pg-sug")).length === 3 && (await p.$$eval("#preguntas .pg-q span", (ss) => ss.every((s) => /\?/.test(s.textContent) && !/[{}]/.test(s.textContent)))));
+    await p.click('#preguntas [data-pg="imprimir"]', { force: true }); await p.waitForTimeout(200); // aria-disabled: el botón responde con un aviso
+    check("sin ninguna elegida no imprime: pide elegir al menos una", /al menos una/.test(await p.textContent("#toast")) && !(await p.$eval("body", (b) => b.classList.contains("pg-imprime"))));
+    await p.click('#preguntas [data-pg="sugeridas"]'); await p.waitForTimeout(150);
+    await p.fill("#pg-nueva-i", "¿Puedo nadar con la sonda?"); await p.press("#pg-nueva-i", "Enter"); await p.waitForTimeout(200);
+    const guardado = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.preguntas") || "{}"));
+    check("«Marcar las sugeridas» marca tres, la pregunta propia se añade ya marcada y todo queda guardado", (await p.$$('#preguntas [data-pg="sel"]:checked')).length === 3 && guardado.sel?.length === 3 && guardado.propias?.[0]?.t === "¿Puedo nadar con la sonda?" && guardado.propias[0].s === true && /4/.test(await p.textContent("#pg-n")) && (await p.inputValue("#pg-nueva-i")) === "");
+    await p.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; setTimeout(() => window.dispatchEvent(new Event("afterprint")), 50); }; });
+    await p.click('#preguntas [data-pg="imprimir"]'); await p.waitForFunction(() => window.__printed === 1, null, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150);
+    const hojaLis = await p.$$eval("#pg-hoja ol li", (ls) => ls.map((l) => l.textContent));
+    check("la hoja lleva las cuatro, la propia la primera, con la lista de medicación y el aviso de que no sustituye la consulta", (await p.evaluate(() => window.__printed)) === 1 && hojaLis.length === 4 && hojaLis[0].includes("sonda") && (await p.$$("#pg-hoja ul li")).length >= 3 && /no sustituye/.test(await p.textContent("#pg-hoja footer")) && !(await p.$eval("body", (b) => b.classList.contains("pg-imprime"))));
+    await p.uncheck('#preguntas [data-pg="lista"]'); await p.click('#preguntas [data-pg="imprimir"]'); await p.waitForFunction(() => window.__printed === 2, null, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150);
+    check("sin «Incluir mi lista», la hoja no lleva la medicación", (await p.$$("#pg-hoja ul li")).length === 0 && (await p.$$("#pg-hoja ol li")).length === 4);
+    await p.click('#preguntas [data-pg="quitar"]'); await p.waitForTimeout(150); await p.click('#preguntas [data-pg="limpiar"]'); await p.waitForTimeout(150);
+    check("quitar la propia y «Desmarcar todas» lo dejan a cero", (await p.$$("#pg-propias li")).length === 0 && (await p.$$('#preguntas input[type="checkbox"][data-pg="sel"]:checked')).length === 0 && (await p.$$eval('#preguntas .pg-pie button', (bs) => bs.every((b) => b.getAttribute("aria-disabled") === "true"))));
+    await p.click("#pg-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { localStorage.removeItem("medex.preguntas"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+  }
   // Su medicación en el cuerpo (segunda tanda, 9): once zonas, detalle de la elegida, cuidados con su «¿Por qué?» y ficha del medicamento
   {
     const abreCp = async (arg) => { await p.evaluate((arg) => { const b = document.createElement("button"); b.dataset.abre = "cuerpo"; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, arg); await p.waitForSelector("#cuerpo[open] #cp-zonas", { timeout: 6000 }).catch(() => {}); };

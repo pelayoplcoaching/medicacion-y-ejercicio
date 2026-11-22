@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.10 · 2026-11-22 · Segunda tanda de mejoras grandes (11): mis preguntas para la consulta
+- `js/preguntas.js` (nuevo, bajo demanda): **«Mis preguntas para la consulta»**. Con los avisos importantes del informe, las interacciones mayores y moderadas, los efectos de la medicación (18 preguntas por señal de la base), el cribado, las caídas y los hábitos, propone qué preguntar al médico, la enfermera o el farmacéutico. Cada pregunta nombra los medicamentos por los que sale (hasta tres).
+- La persona elige (ninguna viene marcada; tres llevan la etiqueta «Sugerida», de tipos distintos, y hay un botón para marcarlas), añade hasta ocho preguntas propias y decide si la hoja lleva su lista de medicación.
+- **Imprimir, compartir o copiar**: hoja A4 con fecha, nombre, las preguntas numeradas (las propias primero) con dos renglones para apuntar la respuesta, la medicación a dos columnas y el aviso de que no sustituye la consulta. Compartir usa el menú del sistema; si no lo hay, copia el texto.
+- Son preguntas, no consejos: no dicen qué hacer ni dan cifras. Lo elegido se guarda en `medex.preguntas` (entra en la copia de seguridad); si cambia la lista de medicación, lo que ya no aplica deja de estar elegido.
+- Entradas: quinto botón de «Llévese este informe» y herramienta en el centro («Consulta»).
+- **Ventanas de la segunda tanda con un único desplazamiento**: en el móvil, el cuerpo de la ventana se desplazaba por dentro y además la ventana entera unos 60 píxeles. Las nueve (biblioteca, programa, «Hoy tengo…», paseo, «Me duele…», vuelta, primeros 14 días, cuerpo y preguntas) usan ahora la clase `alta`: cabecera fija y cuerpo flexible, como la sesión guiada.
+- Pruebas: 14 comprobaciones unitarias, 6 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.9 · 2026-11-22 · Segunda tanda de mejoras grandes (9): su medicación en el cuerpo
 - `js/cuerpo.js` (nuevo, bajo demanda): **«Su medicación en el cuerpo»**. Una figura con once zonas (cerebro y equilibrio, defensas, corazón y circulación, hígado, azúcar en sangre, riñón, agua y sales, piel y calor, sangre, hueso, músculo y tendones); cada punto lleva el número de medicamentos de la lista que actúan ahí.
 - Al elegir una zona: los efectos (tal como están en la base revisada), los medicamentos que los producen (cada nombre abre su ficha) y, agrupados y sin repetir, los cuidados al moverse con su «¿Por qué?». Se abre por la zona con más medicamentos; una zona sin ninguno lo dice.

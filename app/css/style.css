@@ -3802,9 +3802,9 @@ main.legal > section > h2::before { content: counter(lg, decimal-leading-zero) /
 #sesion .crono { position: sticky; top: -14px; z-index: 1; flex-wrap: wrap; box-shadow: 0 -14px 0 var(--surface), 0 12px 18px -14px rgba(20, 11, 58, .45); }
 :root[data-theme="contrast"] #sesion .crono { box-shadow: 0 -14px 0 var(--surface); }
 #sesion .crono > .btn { margin-left: auto; }
-dialog.sesion[open] { display: flex; flex-direction: column; overflow: hidden; }
-dialog.sesion > .ficha-cab { flex: none; }
-dialog.sesion > .ficha-cuerpo { flex: 1 1 auto; min-height: 0; max-height: none; }
+dialog.sesion[open], dialog.alta[open] { display: flex; flex-direction: column; overflow: hidden; }
+dialog.sesion > .ficha-cab, dialog.alta > .ficha-cab { flex: none; }
+dialog.sesion > .ficha-cuerpo, dialog.alta > .ficha-cuerpo { flex: 1 1 auto; min-height: 0; max-height: none; }
 .crono-ahora { display: grid; flex: 1 0 100%; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "n nombre sig" "n queda sig"; align-items: center; gap: 0 10px; margin: 0; padding-top: 10px; border-top: 1px dashed var(--line-strong); font-size: .95rem; line-height: 1.3; }
 .crono-ahora .ca-n { grid-area: n; display: inline-grid; place-items: center; min-width: 46px; height: 26px; padding: 0 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-family: var(--mono); font-size: .82rem; font-weight: 700; }
 .crono-ahora .ca-nombre { grid-area: nombre; min-width: 0; font-weight: 700; color: var(--fg); }

@@ -927,6 +927,39 @@ console.log("\nSu medicación en el cuerpo (segunda tanda, 9)");
   check("el aviso de cambios de la base y la hoja de sugerencias ya no están en el fichero principal", !/function diffHuella|function contextoTecnico|function textoInforme|const FB_TIPOS/.test(appJs) && /O\.diffHuella\(/.test(appJs) && /O\.abrirFeedback\(apiFb\(\), o\)/.test(appJs) && typeof O.avisoKb === "function" && typeof O.contextoTecnico === "function" && typeof O.datosFeedback === "function");
 }
 
+console.log("\nMis preguntas para la consulta (segunda tanda, 11)");
+{
+  const Q = await import(pathToFileURL(path.join(ROOT, "app/js/preguntas.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/preguntas.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), html = fs.readFileSync(path.join(ROOT, "app/index.html"), "utf8"), css = fs.readFileSync(path.join(ROOT, "app/css/style.css"), "utf8");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 65 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("cada pregunta por efecto usa señales que existen en la base y tiene su texto", Q.POR_SENAL.length >= 18 && Q.POR_SENAL.every(([id, ss, pr]) => kEs.has("q_" + id) && ss.every((s) => datos.kb.senales[s]) && pr > 30 && pr < 90));
+  const it = (pid, nombre, senales, alerta = false) => ({ pid, nombre, senales, alerta });
+  const ctx = { items: [it("bisoprolol", "Bisoprolol", ["bradicardia", "fc_no_valida", "hipotension", "enmascara_hipoglucemia"]), it("gliclazida", "Gliclazida", ["hipoglucemia"], true), it("acenocumarol", "Acenocumarol", ["sangrado", "caidas"], true), it("lorazepam", "Lorazepam", ["sedacion", "caidas"], true), it("furosemida", "Furosemida", ["deshidratacion", "hipotension", "hipopotasemia"])],
+    inter: [{ a: "Bisoprolol", b: "Gliclazida", pa: "bisoprolol", pb: "gliclazida", nivel: "moderada" }, { a: "Acenocumarol", b: "Ibuprofeno", pa: "acenocumarol", pb: "ibuprofeno", nivel: "mayor" }, { a: "A", b: "B", pa: "a", pb: "b", nivel: "menor" }, { a: "C", b: "D", pa: "c", pb: "d", nivel: "moderada" }, { a: "E", b: "F", pa: "e", pb: "f", nivel: "moderada" }],
+    habitos: { alcohol: "diario", tabaco: "si", cafe: "poco" }, crib: "valoracion_antes", caidas: false, n: 5 };
+  const P = Q.generar(ctx), ids = P.map((q) => q.id), txt = P.map(Q.texto);
+  check("salen las preguntas que tocan: cribado, azúcar, síntomas ocultos, pulso, mareo, golpes, sueño, caídas, calor y agua, análisis, alcohol y tabaco", ["empezar_valoracion", "azucar", "azucar_oculta", "pulso", "mareo", "golpes", "sueno", "caidas", "calor_agua", "analisis", "alcohol", "tabaco", "poli", "hora", "parar", "que_ejercicio", "suplementos"].every((id) => ids.includes(id)) && !ids.includes("cafeina") && !ids.includes("tendon") && !ids.includes("empezar_intenso"), ids.join());
+  check("nombran los medicamentos (hasta tres) y no dejan huecos sin rellenar", txt.every((x) => !/[{}]/.test(x) && x.length > 25) && txt.find((x) => /azúcar antes/.test(x)).includes("Gliclazida") && txt.find((x) => /el pulso no me sirve/.test(x)).includes("Bisoprolol") && /Bisoprolol y Furosemida/.test(txt.find((x) => /me mareo/.test(x))));
+  check("avisos importantes: como mucho dos; combinaciones: como mucho tres, las mayores primero y sin las menores", ids.filter((x) => x.startsWith("aviso:")).length === 2 && ids.filter((x) => x.startsWith("ddi:")).join() === "ddi:acenocumarol+ibuprofeno,ddi:bisoprolol+gliclazida,ddi:c+d" && /Acenocumarol e Ibuprofeno a la vez/.test(txt[ids.indexOf("ddi:acenocumarol+ibuprofeno")]));
+  check("van por grupos (antes de empezar, medicación, combinaciones, hábitos, generales) y, dentro, por importancia", P.every((q, i) => i === 0 || Q.GRUPOS.indexOf(q.g) > Q.GRUPOS.indexOf(P[i - 1].g) || (q.g === P[i - 1].g && q.pr <= P[i - 1].pr)) && new Set(ids).size === ids.length);
+  const sug = Q.sugeridas(P);
+  check("sugeridas: tres, las de más peso y de tipos distintos (no dos avisos ni dos combinaciones)", sug.length === 3 && sug[0] === "empezar_valoracion" && new Set(sug.map((id) => P.find((q) => q.id === id).base)).size === 3, sug.join());
+  const sin = Q.generar({ items: [], inter: [], habitos: {}, crib: null, caidas: true, n: 0 });
+  check("sin medicación quedan las generales, y con caídas marcadas pregunta por ellas sin nombrar ninguno", sin.length === 7 && sin.some((q) => q.id === "caidas" && q.base === "caidas0") && sin.every((q) => !/[{}]/.test(Q.texto(q))), sin.map((q) => q.id).join());
+  check("ya hace ejercicio moderado y tiene enfermedad: pregunta por el intenso; mucho café, por la cafeína", Q.generar({ ...ctx, crib: "valoracion_vigoroso", habitos: { cafe: "mucho" } }).some((q) => q.id === "empezar_intenso") && Q.generar({ ...ctx, habitos: { cafe: "mucho", alcohol: "no", tabaco: "dejado" } }).filter((q) => q.g === "habitos").map((q) => q.id).join() === "cafeina");
+  const el = Q.elegidas(P, { sel: ["mareo", "azucar", "no_existe"], propias: [{ t: "¿Puedo nadar?", s: true }, { t: "Otra", s: false }] });
+  check("la hoja lleva primero las propias marcadas y después las elegidas por importancia", el.length === 3 && el[0] === "¿Puedo nadar?" && /azúcar/.test(el[1]) && /mareo/.test(el[2]));
+  const plano = Q.textoPlano(el, ["Bisoprolol 5 mg", "Gliclazida 30 mg"]);
+  check("texto para compartir: título, preguntas numeradas y, si se pide, la medicación", plano.startsWith("Mis preguntas para la consulta\n\n1. ¿Puedo nadar?") && /\n3\. /.test(plano) && /Mi medicación:\n- Bisoprolol 5 mg\n- Gliclazida 30 mg$/.test(plano) && !/Mi medicación/.test(Q.textoPlano(el)));
+  check("son preguntas, no consejos: todas llevan interrogación y ninguna da una orden ni una cifra", [...kEs].filter((k) => k.startsWith("q_")).every((k) => /\?/.test(Q.tx(k))) && !/\d\s?(mg|mmHg|lpm)|borrador/i.test(src));
+  check("módulo registrado, botón en «Llévese este informe», herramienta en el centro y clave en la copia de seguridad", /\n  preguntas: \(\) => import\("\.\/preguntas\.js/.test(appJs) && /class="btn-doc" data-abre="preguntas"><b data-i18n="preg\.btn">/.test(html) && C.HERRAMIENTAS.some((h) => h.id === "preguntas" && h.g === "consulta") && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.preguntas"'));
+  const altas = ["biblioteca", "cuerpo", "dolor", "paseo", "preguntas", "primeros", "programa", "rato", "vuelta"];
+  check("las ventanas de la segunda tanda tienen un único desplazamiento (cuerpo flexible bajo la cabecera)", /dialog\.alta\[open\] \{ display: flex; flex-direction: column; overflow: hidden; \}/.test(css) && /dialog\.alta > \.ficha-cuerpo \{ flex: 1 1 auto; min-height: 0; max-height: none; \}/.test(css) && altas.every((m) => { const f = fs.readFileSync(path.join(ROOT, `app/js/${m}.js`), "utf8"); return /className = "ficha alta [a-z]+-dlg"/.test(f) && !/max-height: calc\(100dvh - 110px\)/.test(f); }));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

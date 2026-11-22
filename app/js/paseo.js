@@ -6,7 +6,7 @@
    - Con fármacos que frenan el pulso avisa de que el pulso no sirve de guía. Al terminar, lo apunta en el diario.
    Preferencias y avance del programa en localStorage («medex.paseo»). Cifras de cadencia y prueba del habla comprobadas en
    PubMed (22/11/2026). El programa de 8 semanas es una progresión orientativa propia, no la de un estudio. */
-import { t, idioma } from "./i18n.js?v=202611222111";
+import { t, idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Paseo guiado", m_libre: "Paseo libre", m_prog: "Programa de 8 semanas", intro: "Un paseo con ritmo: el móvil marca el paso, avisa de los cambios y cuenta el tiempo.", cuanto: "¿Cuánto rato?", min: "{n} min",
@@ -124,7 +124,6 @@ export function trasPaseo(o) { const h = o.hechos + 1; if (h < 3) return { o: { 
 
 const CSS = `
 .ps-dlg { width: min(680px, calc(100vw - 16px)); }
-.ps-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .ps-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 0 12px; padding: 4px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
 .ps-tabs button { padding: 8px 10px; min-height: 40px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-weight: 700; cursor: pointer; }
 .ps-tabs button[aria-selected="true"] { background: var(--accent); color: var(--surface); }
@@ -205,7 +204,7 @@ const transcurrido = () => (P ? P.acum + (P.t0 ? (Date.now() - P.t0) / 1000 : 0)
 function crear() {
   if (!document.getElementById("ps-css")) { const st = document.createElement("style"); st.id = "ps-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "paseo"; dlg.className = "ficha ps-dlg"; dlg.setAttribute("aria-labelledby", "ps-cab-t");
+  dlg.id = "paseo"; dlg.className = "ficha alta ps-dlg"; dlg.setAttribute("aria-labelledby", "ps-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="ps-cab-t"></p><button type="button" class="btn-sec sm" id="ps-cerrar"></button></div><div class="ficha-cuerpo" id="ps-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

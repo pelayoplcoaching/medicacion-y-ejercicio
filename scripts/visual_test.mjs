@@ -74,6 +74,8 @@ const PANTALLAS = [
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
   { n: "vuelta-infeccion", w: 390, pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="infeccion"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t2"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
   { n: "vuelta-ingreso-oscuro", w: 1280, tema: "dark", pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="ingreso"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t3"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
+  { n: "preguntas-movil", w: 390, pasos: [abre("preguntas"), async (p) => { await p.click('#preguntas [data-pg="sugeridas"]'); await p.fill("#pg-nueva-i", "¿Puedo nadar?"); await p.press("#pg-nueva-i", "Enter"); }] },
+  { n: "preguntas-oscuro", w: 1280, tema: "dark", pasos: [abre("preguntas")] },
   { n: "cuerpo-movil", w: 390, pasos: [abre("cuerpo")] },
   { n: "cuerpo-rinon-oscuro", w: 1280, tema: "dark", pasos: [abre("cuerpo", "rinon")] },
   { n: "primeros-dia1", w: 390, pasos: [abre("primeros"), async (p) => { await p.click('#primeros [data-pr="empezar"]'); await p.waitForSelector("#primeros #pr-hoy"); }] },

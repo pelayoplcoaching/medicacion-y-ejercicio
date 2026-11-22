@@ -5,7 +5,7 @@
    Estado en localStorage («medex.vuelta»): { motivo, tiempo, inicio (ISO) }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: los escalones y las reglas de espera son una propuesta de esta aplicación.
    Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en español. Fuentes comprobadas en PubMed (22/11/2026). */
-import { t, idioma } from "./i18n.js?v=202611222111";
+import { t, idioma } from "./i18n.js?v=202611222121";
 
 const TXT = {
   es: { titulo: "Volver tras un parón", borrador: "Borrador pendiente de revisión clínica", intro: "Parar pasa. Lo importante es cómo se vuelve: sin prisa y sin empezar donde lo dejó.", p_motivo: "¿Por qué paró?", p_tiempo: "¿Cuánto tiempo lleva sin entrenar?", p_hoy: "¿Cómo está hoy? Marque lo que le pase",
@@ -156,7 +156,6 @@ const guardar = (o) => { try { localStorage.setItem(CLAVE, JSON.stringify(o)); }
 
 const CSS = `
 .vt-dlg { width: min(720px, calc(100vw - 16px)); }
-.vt-dlg .ficha-cuerpo { max-height: calc(100dvh - 110px); }
 .vt-borrador { display: inline-block; margin: 0 0 10px; padding: 3px 10px; border: 1px dashed var(--precaucion); border-radius: 999px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .76rem; font-weight: 700; }
 .vt-intro { margin: 0 0 12px; color: var(--muted); }
 .vt-dlg h3 { margin: 18px 0 8px; font-size: 1rem; }
@@ -207,7 +206,7 @@ const cu = () => dlg.querySelector("#vt-cuerpo");
 function crear() {
   if (!document.getElementById("vt-css")) { const st = document.createElement("style"); st.id = "vt-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
-  dlg.id = "vuelta"; dlg.className = "ficha vt-dlg"; dlg.setAttribute("aria-labelledby", "vt-cab-t");
+  dlg.id = "vuelta"; dlg.className = "ficha alta vt-dlg"; dlg.setAttribute("aria-labelledby", "vt-cab-t");
   dlg.innerHTML = `<div class="ficha-cab"><p id="vt-cab-t"></p><button type="button" class="btn-sec sm" id="vt-cerrar"></button></div><div class="ficha-cuerpo" id="vt-cuerpo"></div>`;
   document.body.append(dlg);
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }

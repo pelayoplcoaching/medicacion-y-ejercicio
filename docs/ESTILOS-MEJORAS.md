@@ -908,3 +908,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H8 | (sin estilos en `style.css`: todo en el módulo) | `js/vuelta.js` |
 | H13 | (sin estilos en `style.css`: la banda del panel de hoy reutiliza `.aprende-tile.prg-tile`; el resto, en el módulo) | `js/primeros.js` |
 | H9 | (sin estilos en `style.css`: todo en el módulo) | `js/cuerpo.js` |
+| H11 | `dialog.alta`: ventanas con cabecera fija y cuerpo flexible (un único desplazamiento); el resto, en el módulo | `css/style.css` (junto a `dialog.sesion`), `js/preguntas.js` |
