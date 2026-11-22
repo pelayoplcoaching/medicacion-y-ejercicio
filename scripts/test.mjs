@@ -960,6 +960,32 @@ console.log("\nMis preguntas para la consulta (segunda tanda, 11)");
   check("las ventanas de la segunda tanda tienen un único desplazamiento (cuerpo flexible bajo la cabecera)", /dialog\.alta\[open\] \{ display: flex; flex-direction: column; overflow: hidden; \}/.test(css) && /dialog\.alta > \.ficha-cuerpo \{ flex: 1 1 auto; min-height: 0; max-height: none; \}/.test(css) && altas.every((m) => { const f = fs.readFileSync(path.join(ROOT, `app/js/${m}.js`), "utf8"); return /className = "ficha alta [a-z]+-dlg"/.test(f) && !/max-height: calc\(100dvh - 110px\)/.test(f); }));
 }
 
+console.log("\nMitos sobre medicación y ejercicio (segunda tanda, 12)");
+{
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/mitos.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/mitos.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), i18nJs = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`interfaz en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 15 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }));
+  check("doce mitos con identificador único, veredicto, explicación, qué hacer, tipo de estudio y fuente", M.MITOS.length === 12 && new Set(M.MITOS.map((m) => m.id)).size === 12 && M.MITOS.every((m) => ["falso", "medias"].includes(m.v) && m.mito.length > 30 && m.x.length > 150 && m.hacer.length > 20 && m.tipo.length > 15 && m.f.length >= 1 && typeof m.aplica === "function"));
+  check("todas las fuentes tienen DOI y se usan; la única sin resumen en PubMed lo dice", Object.values(M.FUENTES).every((f) => /^10\.\d{4,}\/\S+$/.test(f.doi) && f.cita.length > 15) && Object.keys(M.FUENTES).every((k) => M.MITOS.some((m) => m.f.includes(k))) && M.MITOS.every((m) => m.f.every((k) => M.FUENTES[k])) && Object.entries(M.FUENTES).filter(([, f]) => f.sinResumen).map(([k]) => k).join() === "colberg");
+  const cif = (id, ...res) => { const m = M.MITOS.find((x) => x.id === id); return res.every((r) => r.test(m.x)); };
+  check("cifras de los resúmenes de PubMed (comprobadas el 22/11/2026)", cif("betabloqueante", /52 personas/, /10,6 mmHg/, /18 %/) && cif("anticoagulante", /988 personas/, /3,1 por cada 100/, /11,6/) && cif("aine", /89 corredores/, /52 % frente a 34 %/, /400 mg cada 4 horas/) && cif("tension", /391 ensayos/) && cif("osteoporosis", /101 mujeres/, /2,9 %/, /1,2 %/) && cif("antidepresivo", /218 ensayos/, /14 170/) && cif("benzodiacepina", /248 estudios/, /1,42/, /1,81/) && cif("metformina", /94 personas/, /53 personas/, /14 semanas/) && cif("fragilidad", /100 personas/, /87 años/, /113 %/, /11,8 %/) && cif("dejar", /98 personas/, /73,5 %/, /26,4 %/));
+  check("los estudios de observación y los límites se dicen: no demuestran causa, confianza baja, sin significación", /estudio de observación: no demuestra/.test(src) && /confianza en estos resultados es baja/.test(src) && /no alcanzó la significación estadística/.test(src) && /no pueden descartar/.test(src) && /ningún ensayo los comparó cara a cara/.test(src));
+  check("ningún mito invita a dejar la medicación: los que la mencionan remiten al médico", ["metformina", "dejar", "tension", "antidepresivo", "benzodiacepina"].every((id) => /médico/.test(M.MITOS.find((m) => m.id === id).hacer)) && /Nunca deje ni baje un medicamento por su cuenta/.test(src));
+  const d = (o = {}) => ({ clases: new Set(o.clases || []), senales: new Set(o.senales || []), conds: new Set(o.conds || []), edad: o.edad ?? 60, n: o.n ?? 1 });
+  check("los que le tocan salen primero: por familia, por efecto, por situación clínica o por edad", M.propios(d({ clases: ["betabloqueantes", "anticoagulantes"], senales: ["estatina"] })).join() === "betabloqueante,estatina,anticoagulante" && M.propios(d({ senales: ["hipoglucemia", "aine"] })).join() === "insulina,aine" && M.propios(d({ conds: ["osteoporosis", "hipertension"] })).join() === "tension,osteoporosis" && M.propios(d({ clases: ["benzodiacepinas", "isrs_isrsn", "metformina"], edad: 80 })).join() === "antidepresivo,benzodiacepina,metformina,fragilidad" && M.propios(d({ n: 6 })).join() === "fragilidad" && M.propios(d()).length === 0);
+  check("las familias y señales que se miran existen en la base", ["betabloqueantes", "estatinas", "anticoagulantes", "bifosfonatos", "osteoporosis_anabolicos", "isrs_isrsn", "triciclicos", "otros_antidepresivos", "otros_antidepresivos_2", "benzodiacepinas", "hipnoticos_z", "metformina"].every((c) => src.includes(`"${c}"`) && datos.kb.clases.some((x) => x.id === c)) && ["estatina", "hipoglucemia", "aine", "ieca_ara", "diuretico"].every((s) => datos.kb.senales[s]));
+  const r = M.recuento();
+  check("recuento de veredictos: diez falsos y dos a medias", r.falso === 10 && r.medias === 2);
+  check("los cuidados añadidos y los «¿Por qué?» enlazados existen en el diccionario", M.MITOS.every((m) => (!m.cuid || i18nJs.includes(`"cuid.${m.cuid}"`)) && (!m.pq || i18nJs.includes(`"pq.b.${m.pq}"`))) && M.MITOS.filter((m) => m.cuid).length >= 6);
+  check("lleva la marca de borrador y avisa de que no se cambie la medicación por lo leído", /mit-borrador">\$\{tx\("borrador"\)\}/.test(src) && /no cambie su medicación por lo que lea aquí/.test(src));
+  const cierres = [...fs.readdirSync(path.join(ROOT, "app/js")).filter((f) => f.endsWith(".js")).map((f) => fs.readFileSync(path.join(ROOT, "app/js", f), "utf8")), fs.readFileSync(path.join(ROOT, "app/index.html"), "utf8")].flatMap((x) => [...x.matchAll(/id="([a-z0-9]+-cerrar)"/g)].map((m) => m[1]));
+  check(`ninguna ventana repite el identificador de su botón de cerrar (${cierres.length} ventanas)`, cierres.length >= 30 && new Set(cierres).size === cierres.length, cierres.filter((x, i) => cierres.indexOf(x) !== i).join());
+  check("módulo registrado, herramienta en el centro y clave en la copia de seguridad", /\n  mitos: \(\) => import\("\.\/mitos\.js/.test(appJs) && C.HERRAMIENTAS.some((h) => h.id === "mitos" && h.g === "entender") && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.mitos"'));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

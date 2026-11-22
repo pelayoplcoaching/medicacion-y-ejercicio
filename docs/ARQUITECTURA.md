@@ -61,6 +61,7 @@ app/
     primeros.js         los primeros 14 días: arranque guiado, un paso al día que lleva a cada herramienta; nueve se marcan solos; bajo demanda, por data-abre (v1.3.8)
     cuerpo.js           su medicación en el cuerpo: figura con once zonas que reparte las señales de la base, con cuidados y «¿Por qué?»; bajo demanda, por data-abre (v1.3.9)
     preguntas.js        mis preguntas para la consulta: las genera con avisos, interacciones, señales, cribado y hábitos; elegir, añadir propias, imprimir, compartir o copiar; bajo demanda, por data-abre (v1.3.10)
+    mitos.js            mitos sobre medicación y ejercicio: doce, con veredicto, estudio, qué hacer y fuente con DOI; primero los de su medicación; bajo demanda, por data-abre (v1.3.11)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

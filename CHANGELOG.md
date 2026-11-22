@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.11 · 2026-11-22 · Segunda tanda de mejoras grandes (12): mitos sobre medicación y ejercicio
+- `js/mitos.js` (nuevo, bajo demanda): **«Mitos sobre medicación y ejercicio»**. Doce ideas muy extendidas (betabloqueantes, estatinas, anticoagulantes, insulina, ibuprofeno preventivo, pastillas de la tensión, osteoporosis, antidepresivos, pastillas para dormir, metformina, edad y fragilidad, dejar la medicación), cada una con su veredicto (diez falsos y dos a medias), lo que encontró el estudio, qué hacer, el tipo de estudio y la fuente con DOI.
+- **Los que tocan a su medicación, primero**: por familia (betabloqueantes, anticoagulantes, antidepresivos…), por efecto (estatina, hipoglucemia, AINE), por situación clínica (hipertensión, osteoporosis) o por edad y número de medicamentos.
+- «Qué hacer» añade el cuidado ya revisado del panel de hoy cuando existe, y cada mito enlaza con su «¿Por qué?», con el programa de 12 semanas o con «Mis preguntas para la consulta». Se apunta cuáles se han leído (`medex.mitos`, en la copia de seguridad) y se puede abrir directamente en un mito.
+- **Contenido nuevo, con la marca «Borrador pendiente de revisión clínica»**. Quince fuentes, comprobadas en PubMed el 22/11/2026 y enlazadas: Westhoff 2007, Allard 2021 y 2023, Frey 2015, Riddell 2017, Colberg 2016 (sin resumen en PubMed: se cita sin cifras), Lipman 2017, Naci 2019, Watson 2018 (LIFTMOR), Noetel 2024, Seppala 2018, Walton 2019 (MASTERS), Konopka 2019, Fiatarone 1994 y Johansen 2017. Los límites de cada estudio van en el texto (observación, confianza baja, sin significación estadística).
+- Ningún mito invita a cambiar la medicación: los que la mencionan remiten al médico.
+- Pruebas: 12 comprobaciones unitarias (cifras incluidas), 4 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.10 · 2026-11-22 · Segunda tanda de mejoras grandes (11): mis preguntas para la consulta
 - `js/preguntas.js` (nuevo, bajo demanda): **«Mis preguntas para la consulta»**. Con los avisos importantes del informe, las interacciones mayores y moderadas, los efectos de la medicación (18 preguntas por señal de la base), el cribado, las caídas y los hábitos, propone qué preguntar al médico, la enfermera o el farmacéutico. Cada pregunta nombra los medicamentos por los que sale (hasta tres).
 - La persona elige (ninguna viene marcada; tres llevan la etiqueta «Sugerida», de tipos distintos, y hay un botón para marcarlas), añade hasta ocho preguntas propias y decide si la hoja lleva su lista de medicación.

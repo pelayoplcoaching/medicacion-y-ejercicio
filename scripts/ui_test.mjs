@@ -485,6 +485,24 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Mitos sobre medicación y ejercicio (segunda tanda, 12): doce tarjetas, las de su medicación primero, leídos y enlaces (se deja todo como estaba)
+  {
+    const abreMt = async (arg) => { await p.evaluate((arg) => { const b = document.createElement("button"); b.dataset.abre = "mitos"; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, arg); await p.waitForSelector("#mitos[open] .mit-lista", { timeout: 6000 }).catch(() => {}); };
+    await p.evaluate(() => localStorage.removeItem("medex.mitos"));
+    await abreMt();
+    const nMios = (await p.$$("#mit-mios .mit-m")).length, nResto = (await p.$$("#mit-resto .mit-m")).length;
+    check("«Mitos»: doce tarjetas cerradas, las que tocan a su medicación en un grupo aparte, con la marca de borrador y cero leídos", nMios + nResto === 12 && nMios >= 1 && (await p.$$("#mitos .mit-m[open]")).length === 0 && (await p.isVisible("#mitos .mit-borrador")) && /0 de 12/.test(await p.textContent("#mit-leidos")) && /10/.test(await p.textContent("#mit-resumen")));
+    const id1 = await p.$eval("#mit-mios .mit-m", (d) => d.dataset.id);
+    await p.click(`#mit-${id1} summary`); await p.waitForTimeout(200);
+    check("al abrir uno se ve la explicación, qué hacer, el tipo de estudio y la fuente con su DOI, y cuenta como leído", (await p.isVisible(`#mit-${id1} .mit-hacer`)) && (await p.$$(`#mit-${id1} .mit-meta a[href^="https://doi.org/10."]`)).length >= 1 && (await p.$$(`#mit-${id1} .mit-meta dt`)).length >= 2 && /1/.test(await p.textContent("#mit-leidos")) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.mitos") || "{}").leidos?.length)) === 1 && (await p.$eval(`#mit-${id1}`, (d) => d.classList.contains("leido"))), id1);
+    await p.click("#mit-cerrar"); await p.waitForTimeout(120);
+    await abreMt("dejar"); await p.waitForTimeout(200);
+    check("se puede abrir directamente en un mito, y lo leído se conserva", (await p.$eval("#mit-dejar", (d) => d.open)) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.mitos") || "{}").leidos?.length)) === 2 && /Falso/.test(await p.textContent("#mit-dejar .mit-v")));
+    await p.click('#mit-dejar [data-abre="preguntas"]'); await p.waitForSelector("#preguntas[open]", { timeout: 6000 }).catch(() => {});
+    check("el mito de «dejar las pastillas» lleva a «Mis preguntas para la consulta»", (await p.$eval("#preguntas", (d) => d.open)) && !(await p.$eval("#mitos", (d) => d.open)));
+    await p.click("#pg-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { localStorage.removeItem("medex.mitos"); localStorage.removeItem("medex.preguntas"); });
+  }
   // Mis preguntas para la consulta (segunda tanda, 11): elegir, añadir una propia, imprimir y copiar (se deja todo como estaba)
   {
     await p.evaluate(() => localStorage.removeItem("medex.preguntas"));
