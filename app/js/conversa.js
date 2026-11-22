@@ -5,7 +5,7 @@
    Incluye las barreras más frecuentes con una respuesta para cada una, una nota para la historia clínica y una hoja
    imprimible para el paciente. Nada se guarda fuera de este dispositivo. Contenido en español, revisado por un clínico el
    22/11/2026; la interfaz, en cinco idiomas. Se carga al abrirla. */
-import { idioma } from "./i18n.js?v=202611222025";
+import { idioma } from "./i18n.js?v=202611222036";
 
 export const FUENTES = [
   { txt: "Ministerio de Sanidad 2015, Consejo integral en estilo de vida en Atención Primaria (modelo de las 5 Aes)", url: "https://www.sanidad.gob.es/areas/promocionPrevencion/envejecimientoSaludable/activo/consejoIntegralAP.htm" },

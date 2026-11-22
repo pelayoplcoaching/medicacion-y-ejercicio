@@ -463,6 +463,28 @@ try {
     await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
     await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
   }
+  // Volver tras un parón (segunda tanda, 8): tres preguntas, veredicto, escalones y acciones (se deja todo como estaba)
+  {
+    await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "vuelta"; document.body.append(b); b.click(); b.remove(); });
+    await p.waitForSelector("#vuelta[open] .vt-ops", { timeout: 6000 }).catch(() => {});
+    check("«Volver tras un parón» empieza por el motivo (cinco), con la marca de borrador y sus fuentes", (await p.$$('#vuelta [data-vt="motivo"]')).length === 5 && (await p.$$('#vuelta [data-vt="tiempo"]')).length === 0 && (await p.isVisible("#vuelta .vt-borrador")) && (await p.$$('#vuelta .vt-fuentes a[href^="https://doi.org/10."]')).length === 3);
+    await p.click('#vuelta [data-vt="motivo"][data-v="infeccion"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t2"]'); await p.waitForSelector("#vuelta #vt-ver", { timeout: 4000 }).catch(() => {});
+    const nEsc = (await p.$$("#vt-esc li")).length, pcts = await p.$$eval("#vt-esc .vt-pct strong", (ss) => ss.map((s) => parseInt(s.textContent, 10)));
+    check("tras una infección de 2 a 4 semanas: puede volver, en tres semanas que suben hasta el 90 % y después su plan de siempre", (await p.$eval("#vt-ver", (e) => e.dataset.k)) === "adelante" && nEsc === 4 && ["55,75,90,100", "45,70,90,100"].includes(pcts.join()) && (await p.$$("#vuelta [data-vt-hoy]")).length >= 4, pcts.join()); // 10 puntos menos de partida con fragilidad o desde los 75 años
+    await p.check('#vuelta [data-vt-hoy="fiebre"]'); const kF = await p.$eval("#vt-ver", (e) => e.dataset.k), escF = (await p.$$("#vt-esc")).length;
+    await p.check('#vuelta [data-vt-hoy="pecho"]'); const kP = await p.$eval("#vt-ver", (e) => e.dataset.k), txtP = await p.textContent("#vt-ver");
+    await p.uncheck('#vuelta [data-vt-hoy="pecho"]'); await p.uncheck('#vuelta [data-vt-hoy="fiebre"]');
+    check("con fiebre reciente toca esperar (sin escalones); con dolor en el pecho, consultar y 112", kF === "espera" && escF === 0 && kP === "consulta" && /112/.test(txtP) && (await p.$eval("#vt-ver", (e) => e.dataset.k)) === "adelante", `${kF} ${kP}`);
+    await p.click('#vuelta [data-vt="empezar"]'); await p.waitForTimeout(250);
+    check("«Empezar la vuelta hoy» lo guarda y marca la semana en curso", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.vuelta") || "{}").motivo)) === "infeccion" && (await p.$$("#vt-esc li.actual")).length === 1 && (await p.$$('#vuelta [data-vt="empezar"]')).length === 0);
+    await p.click('#vuelta [data-vt="motivo"][data-v="corazon"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t3"]'); await p.waitForTimeout(200);
+    check("tras un problema de corazón pide el visto bueno del médico y alarga la vuelta", (await p.$eval("#vt-ver", (e) => e.dataset.k)) === "medico" && (await p.$$("#vt-esc li")).length === 6 && (await p.$$('#vuelta [data-vt="rato"]')).length === 0);
+    await p.click('#vuelta [data-vt="motivo"][data-v="vida"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t1"]'); await p.waitForTimeout(200);
+    await p.click('#vuelta [data-vt="rato"]'); await p.waitForSelector("#rato[open] #rt-lista li", { timeout: 6000 }).catch(() => {});
+    check("la sesión suave de 10 minutos abre «Hoy tengo…» y cierra esta ventana", (await p.$eval("#rato", (d) => d.open)) && !(await p.$eval("#vuelta", (d) => d.open)));
+    await p.click("#rt-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+  }
   // «Me duele…» (segunda tanda, 7): zona, semáforo, adaptar el plan y quitar las adaptaciones (se deja todo como estaba)
   {
     await p.click('.rato-enlaces [data-abre="dolor"]'); await p.waitForSelector("#dolor[open] .dl-chips", { timeout: 6000 }).catch(() => {});

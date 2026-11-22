@@ -72,6 +72,8 @@ const PANTALLAS = [
   { n: "programa-elegir", w: 390, pasos: [prgEstado(""), async (p) => p.waitForSelector("#programa[open] .prg-niveles")] },
   { n: "programa-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [prgEstado("medio"), async (p) => p.waitForSelector("#programa[open] .prg-tabla")] },
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
+  { n: "vuelta-infeccion", w: 390, pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="infeccion"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t2"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
+  { n: "vuelta-ingreso-oscuro", w: 1280, tema: "dark", pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="ingreso"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t3"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
   { n: "dolor-rodilla", w: 390, pasos: [abre("dolor", "rodilla"), async (p) => p.waitForSelector("#dolor #dl-ver")] },
   { n: "dolor-lumbar-oscuro", w: 1280, tema: "dark", pasos: [abre("dolor", "lumbar"), async (p) => { await p.waitForSelector("#dolor #dl-ver"); await p.$eval("#dl-cuerpo", (e) => { e.scrollTop = e.querySelector("#dl-ver").offsetTop - 80; }); }] },
   { n: "paseo-preparar", w: 390, pasos: [abre("paseo"), async (p) => p.waitForSelector("#paseo .ps-barra")] },

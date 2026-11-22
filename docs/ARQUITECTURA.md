@@ -57,6 +57,7 @@ app/
     rato.js             «Hoy tengo…»: sesión a la medida (5-30 min) y píldoras de movimiento con contador; bajo demanda, por data-abre (v1.3.4)
     paseo.js            paseo guiado: metrónomo, voz, prueba del habla, cuenta de pasos con el sensor y programa de 8 semanas; bajo demanda, por data-abre (v1.3.5)
     dolor.js            «Me duele…»: señales de alarma, semáforo del dolor, adaptaciones del plan por zona, cruce con la medicación y diario del dolor; bajo demanda, por data-abre (v1.3.6)
+    vuelta.js           volver tras un parón: qué toca hoy, escalones de la vuelta por semanas y enlace con el programa de 12 semanas; bajo demanda, por data-abre (v1.3.7)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

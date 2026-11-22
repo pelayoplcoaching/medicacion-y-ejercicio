@@ -905,3 +905,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H5 | Accesos a «Hoy tengo…» y a las píldoras bajo el día del plan | `style.css` (final) y `js/rato.js` |
 | H6 | (sin estilos en `style.css`: todo en el módulo) | `js/paseo.js` |
 | H7 | (sin estilos en `style.css`: todo en el módulo) | `js/dolor.js` |
+| H8 | (sin estilos en `style.css`: todo en el módulo) | `js/vuelta.js` |
