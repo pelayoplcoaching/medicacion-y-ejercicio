@@ -74,6 +74,8 @@ const PANTALLAS = [
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
   { n: "vuelta-infeccion", w: 390, pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="infeccion"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t2"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
   { n: "vuelta-ingreso-oscuro", w: 1280, tema: "dark", pasos: [abre("vuelta"), async (p) => { await p.click('#vuelta [data-vt="motivo"][data-v="ingreso"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t3"]'); await p.waitForSelector("#vuelta #vt-esc"); await p.$eval("#vt-ver", (e) => e.scrollIntoView({ block: "start" })); }] },
+  { n: "frid-movil", w: 390, pasos: [abre("frid")] },
+  { n: "frid-guia-oscuro", w: 1280, tema: "dark", pasos: [abre("frid"), async (p) => { await p.$$eval("#frid details", (ds) => ds.forEach((d) => { d.open = true; })); }] },
   { n: "enfermedad-movil", w: 390, pasos: [abre("enfermedad")] },
   { n: "enfermedad-oscuro", w: 1280, tema: "dark", pasos: [abre("enfermedad"), async (p) => { await p.click("#enfermedad [data-sd-g]"); }] },
   { n: "numeros-movil", w: 390, pasos: [abre("numeros")] },

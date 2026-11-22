@@ -4,7 +4,7 @@
    silla, sesión de fuerza, píldoras, lección, programa); todos se pueden marcar a mano. No caducan: se adelantan o se atrasan.
    Estado en localStorage («medex.primeros»): { inicio (ISO), hechos: { id: ISO }, fin (ISO) | null }.
    No contiene contenido clínico: solo ordena lo que la aplicación ya ofrece. Textos en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611222216";
+import { idioma } from "./i18n.js?v=202611222236";
 
 const TXT = {
   es: { titulo: "Los primeros 14 días", intro: "Un paso pequeño cada día, sin prisa. En dos semanas tendrá su medicación revisada, un plan a su medida y las primeras sesiones hechas.", empezar: "Empezar hoy", dia: "Día {n}", de: "{a} de 14", hoy: "El paso de hoy", hecho: "Hecho", marcar: "Marcar como hecho", desmarcar: "Desmarcar", solo: "Se marca solo al hacerlo.", todos: "Los 14 pasos",

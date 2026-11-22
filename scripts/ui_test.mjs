@@ -485,6 +485,27 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Panel de caídas y carga anticolinérgica (segunda tanda, 14): cifras coherentes con lo que se pinta, guía de retirada, copiar y paso al simulador
+  {
+    const abreFr = async () => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "frid"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#frid[open] #fr-cifras", { timeout: 6000 }).catch(() => {}); };
+    await abreFr();
+    const fr = await p.evaluate(() => ({ n: Number(document.querySelector("#fr-n-frid").textContent), chips: new Set([...document.querySelectorAll("#fr-stopp .fr-chip")].map((c) => c.dataset.simula)).size, clases: [...document.querySelectorAll("#fr-stopp > li")].map((l) => ({ id: l.dataset.id, chips: l.querySelectorAll(".fr-chip").length, txt: l.querySelector(".fr-det").textContent.length })), cals: Number(document.querySelector("#fr-n-cals").textContent), filas: [...document.querySelectorAll("#fr-cals tbody td:nth-child(2)")].map((t) => Number(t.textContent)), pie: document.querySelector("#fr-cals tfoot")?.textContent || "", sed: Number(document.querySelector("#fr-n-sed").textContent), sedTxt: document.querySelector("#fr-sed").textContent, hipo: Number(document.querySelector("#fr-n-hipo").textContent), hipoTxt: document.querySelector("#fr-hipo").textContent }));
+    const cuenta = (s) => (/^(ninguno|none|cap|ningún|bat ere ez)$/.test(s.trim()) ? 0 : s.split(", ").length);
+    check("«Caídas y carga anticolinérgica»: marca de borrador y las clases de STOPPFall de su lista, cada una con sus fármacos y su texto", (await p.isVisible("#frid .fr-borrador")) && fr.n >= 1 && fr.n === fr.chips && fr.clases.length >= 1 && fr.clases.every((c) => c.chips >= 1 && c.txt > 20), JSON.stringify(fr.clases));
+    check("la carga anticolinérgica es la suma de sus filas, de más a menos, y dice si llega a 3", fr.filas.length >= 1 && fr.filas.reduce((a, b) => a + b, 0) === fr.cals && fr.filas.every((x, i) => i === 0 || x <= fr.filas[i - 1]) && (fr.cals >= 3 ? /clínicamente relevante/.test(fr.pie) : /por debajo de 3/.test(fr.pie)), `${fr.cals} · ${fr.filas.join()}`);
+    check("los sedantes y los que bajan la tensión se cuentan igual que se listan", fr.sed === cuenta(fr.sedTxt) && fr.hipo === cuenta(fr.hipoTxt) && fr.hipo >= 1, `${fr.sed} «${fr.sedTxt}» · ${fr.hipo} «${fr.hipoTxt}»`);
+    const hayGuia = (await p.$$("#fr-stopp details.fr-como")).length;
+    if (hayGuia) await p.click("#fr-stopp details.fr-como summary");
+    check("la guía de retirada se despliega (escalonada y qué vigilar) y el panel dice sus límites y sus dos fuentes con DOI", (!hayGuia || /Retirada escalonada(en general|valorar)/.test(await p.textContent("#fr-stopp details.fr-como[open]"))) && /alternativa más segura/.test(await p.textContent("#fr-siempre")) && (await p.$$("#fr-limites li")).length === 4 && (await p.$$eval('#frid a[href^="https://doi.org/"]', (a) => a.map((x) => x.getAttribute("href")).join())) === "https://doi.org/10.1093/ageing/afaa249,https://doi.org/10.3390/jpm12020207");
+    await p.evaluate(() => { window.__copiado = ""; Object.defineProperty(navigator, "clipboard", { value: { writeText: async (x) => { window.__copiado = x; } }, configurable: true }); });
+    await p.click('#frid [data-fr="copiar"]'); await p.waitForTimeout(200);
+    check("«Copiar para la historia» lleva las clases, la carga y los sedantes", /^Caídas y carga anticolinérgica \(Pauta Activa\)\nSTOPPFall: /.test(await p.evaluate(() => window.__copiado)) && new RegExp(`CALS: ${fr.cals} `).test(await p.evaluate(() => window.__copiado)));
+    const pidFr = await p.$eval("#fr-stopp .fr-chip", (c) => c.dataset.simula), nomFr = await p.$eval("#fr-stopp .fr-chip", (c) => c.textContent);
+    await p.click("#fr-stopp .fr-chip"); await p.waitForSelector("#simula[open] .sim-tiles", { timeout: 6000 }).catch(() => {});
+    check("pulsar un fármaco cierra el panel y abre el simulador con ese fármaco quitado", !(await p.$eval("#frid", (d) => d.open)) && (await p.$$("#simula [data-sim]:checked")).length === 1 && (await p.textContent("#simula .sim-med.quitado").catch(() => "")).includes(nomFr), pidFr);
+    await p.click("#sim-cerrar"); await p.waitForTimeout(150);
+    await p.evaluate(() => { const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+  }
   // Plan para los días de enfermedad (segunda tanda, 18): grupos de su lista, marcar lo acordado e imprimir (se deja todo como estaba)
   {
     await p.evaluate(() => localStorage.removeItem("medex.enfermedad"));
@@ -871,6 +892,10 @@ try {
   await p.click("#estadisticas-cerrar");
   check("cargar el paciente guardado restaura la lista y la edad", (await p.$$("#lista-meds li")).length === nMedsAntes && (await p.$eval("#edad", (e) => e.value)) === "78");
   await p.click('#cambios [data-a="cerrar"]').catch(() => {});
+  // Panel de caídas (segunda tanda, 14): en modo profesional hay botón junto a los datos del paciente
+  await p.$eval("#btn-frid", (b) => b.scrollIntoView({ block: "center" })); await p.click("#btn-frid"); await p.waitForSelector("#frid[open] #fr-cifras", { timeout: 6000 }).catch(() => {});
+  check("modo profesional: el botón «Caídas y carga anticolinérgica» de los datos del paciente abre el panel", (await p.isVisible("#frid[open] #fr-cifras")) && (await p.textContent("#fr-cab-t")) === "Caídas y carga anticolinérgica" && (await p.textContent("#btn-frid")) === "Caídas y carga anticolinérgica");
+  await p.click("#fr-cerrar"); await p.waitForTimeout(150);
   await p.click("#consulta [data-conversa]"); await p.waitForSelector("#conversa[open] .cv-paso", { timeout: 5000 }).catch(() => {});
   check("guía de conversación: tres modalidades; en 1 minuto, tres pasos con su caso (beneficio y cuidado por su medicación)", (await p.$$("#conversa .cv-tab")).length === 3 && (await p.$$("#conversa .cv-paso")).length === 3 && (await p.$$("#conversa .cv-caso")).length >= 2);
   await p.click('#conversa [data-cv-tab="cinco"]'); await p.fill('#conversa input[name="cv-conf"]', "2"); await p.click('#conversa input[name="cv-bar"][value="caidas"]'); await p.waitForTimeout(150);

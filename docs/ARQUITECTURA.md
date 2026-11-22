@@ -65,6 +65,7 @@ app/
     cien.js             «De cada 100 personas…»: seis cajas de datos en números absolutos con dibujo de 100 puntos, límites y fuente con DOI; bajo demanda, por data-abre (v1.3.12)
     numeros.js          números antes de entrenar: glucosa, tensión, pulso, saturación y temperatura → adelante, suave u hoy no; umbrales en UMBRALES (rev: true/false); bajo demanda, por data-abre (v1.3.13)
     enfermedad.js       plan para los días de enfermedad: qué medicamentos de la lista entran en la pauta (seis grupos y sulfonilureas), lo acordado con el médico y hoja para imprimir; bajo demanda, por data-abre (v1.3.14)
+    frid.js             panel de caídas y carga anticolinérgica (modo profesional): clases de STOPPFall con su guía de retirada, escala CRIDECO y señales de la base; bajo demanda, por data-abre (v1.3.15)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

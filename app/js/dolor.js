@@ -9,7 +9,7 @@
    Estado en localStorage («medex.dolor»): { zona, hist: [{ f, z, n }], aplicado: { zona, cambios, variantes } | null }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA. Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en
    español como el resto de reglas de la aplicación. Fuentes comprobadas en PubMed (22/11/2026). */
-import { idioma } from "./i18n.js?v=202611222216";
+import { idioma } from "./i18n.js?v=202611222236";
 
 const TXT = {
   es: { titulo: "Me duele…", borrador: "Borrador pendiente de revisión clínica", intro: "Con dolor casi siempre se puede seguir moviéndose, de otra manera. Diga dónde le duele y cuánto, y le digo qué hacer con su plan.", donde: "¿Dónde le duele?",

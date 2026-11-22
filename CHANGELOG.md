@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.15 · 2026-11-22 · Segunda tanda de mejoras grandes (14): panel de caídas y carga anticolinérgica (modo profesional)
+- `js/frid.js` (nuevo, bajo demanda): **«Caídas y carga anticolinérgica»**, para la revisión de la medicación de una persona con riesgo de caídas. Solo en modo profesional: botón junto a los datos del paciente y herramienta en el centro («Consulta»).
+- **STOPPFall** (Seppala et al., Age Ageing 2021; consenso Delphi de 24 expertos europeos): qué fármacos de la lista están en sus 14 clases, las diferencias dentro de cada clase (tabla 1 del artículo), cuándo plantear la retirada, si conviene escalonarla y qué vigilar después (tabla 2). La asignación de cada familia de la base a una clase es de la aplicación y está marcada para revisar.
+- **Carga anticolinérgica** con la escala CRIDECO (CALS; Ramos et al., J Pers Med 2022): puntos por fármaco y suma, con el umbral de 3 («clínicamente relevante», el del artículo). De los 217 fármacos de la escala, están puntuados los 100 principios de la base que figuran en ella.
+- Además, según las señales ya revisadas de la base: cuántos sedan, cuántos bajan la tensión, cuáles tienen efecto anticolinérgico y si hay anticoagulantes.
+- Cada fármaco es un botón que abre **«¿Qué cambia si…?»** con ese fármaco quitado; «Copiar para la historia» lleva el resumen en cuatro líneas; enlace a las pruebas de forma física.
+- El panel dice sus límites: STOPPFall es un consenso cuyo efecto en las caídas está por evaluar y se plantea dentro de una estrategia multifactorial; no valora dosis ni combinaciones; la escala no cuenta formas tópicas ni dosis.
+- **Contenido nuevo, con la marca «Borrador pendiente de revisión clínica»**. Textos de STOPPFall traducidos del artículo (texto completo en PubMed Central, leído el 22/11/2026).
+- Pruebas: 18 comprobaciones unitarias (entre ellas, que cada familia, principio y señal usados existe en la base y que ningún fármaco cae en dos clases), 7 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.14 · 2026-11-22 · Segunda tanda de mejoras grandes (18): plan para los días de enfermedad
 - `js/enfermedad.js` (nuevo, bajo demanda): **«Plan para los días de enfermedad»**. Con vómitos o diarrea (dos o más veces) o fiebre con sudores o tiritona, algunos medicamentos conviene pausarlos y retomarlos al recuperarse. La aplicación dice cuáles de la lista están en esa pauta y por qué: inhibidores de SGLT2, IECA y ARA-II, diuréticos, metformina y antiinflamatorios; las sulfonilureas, aparte, según la glucosa.
 - **No indica dejar ningún medicamento por cuenta propia.** Es una pauta que se pacta: la persona marca lo que ya ha acordado con su médico y se lleva la hoja impresa, que distingue «pausar esos días (acordado)» de «preguntar en la consulta».
