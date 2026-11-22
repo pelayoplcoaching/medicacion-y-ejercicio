@@ -371,13 +371,13 @@ try {
   await p.click("#bloque-situacion-mas summary"); await p.check("#cond-aneurisma_aorta"); await p.waitForTimeout(250);
   check("aneurisma de aorta → regla combinada de atención en Lo esencial", (await p.textContent("#esencial")).includes("Aneurisma"));
   await p.uncheck("#cond-aneurisma_aorta"); await p.waitForTimeout(200);
-  await p.click("#btn-sppb"); await p.waitForTimeout(150);
+  await p.click("#btn-sppb"); await p.waitForSelector("#sppb[open]", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150);
   check("diálogo SPPB abierto en el paso 1", await p.isVisible("#sppb") && (await p.textContent("#sppb-cuerpo")).includes("Paso 1 de 5"));
   for (const v of ["10", "10", "10", "4", "10"]) { await p.fill("#sppb-seg", v); await p.click("#sppb-sig"); await p.waitForTimeout(80); }
   check("resultado SPPB 12/12 robusto", (await p.textContent("#sppb-cuerpo")).includes("12") && (await p.textContent("#sppb-cuerpo")).includes("robusto"));
   await p.click("#sppb-guardar"); await p.waitForTimeout(300);
   check("SPPB guardado y visible en Sus datos", (await p.textContent("#sppb-estado")).includes("12/12") && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).sppb.total)) === 12);
-  await p.click("#btn-sppb"); await p.waitForTimeout(100); await p.fill("#sppb-seg", "5"); await p.click("#sppb-sig"); await p.waitForTimeout(80);
+  await p.click("#btn-sppb"); await p.waitForSelector("#sppb[open]", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(100); await p.fill("#sppb-seg", "5"); await p.click("#sppb-sig"); await p.waitForTimeout(80);
   check("pies juntos < 10 s salta al paso de marcha", (await p.textContent("#sppb-cuerpo")).includes("Paso 4 de 5"));
   await p.click("#sppb-cerrar"); await p.waitForTimeout(100);
   await p.click("#menu-mas summary"); for (let i = 0; i < 3; i++) await p.click("#btn-tema");
@@ -447,7 +447,7 @@ try {
   { const u = decodeURIComponent((await p.evaluate(() => window.__u[0])) || "").replace(/\+/g, " "); check("el formulario se abre con texto, tipo, pantalla y pasos prerrellenados", u.includes("tally.so") && u.includes("texto=Prueba de sugerencia") && u.includes("tipo=Una idea") && u.includes("pantalla=modo") && u.includes("pasos=")); }
   await p.click("#btn-perfiles"); await p.waitForTimeout(100);
   check("bloque de copia de seguridad con tres acciones", await p.isVisible("#btn-copia-crear") && await p.isVisible("#btn-copia-restaurar") && await p.isVisible("#btn-sync"));
-  await p.click("#btn-copia-crear"); await p.waitForTimeout(150); await p.fill("#copia-pass", "corta"); await p.fill("#copia-pass2", "corta"); await p.click("#copia-ok"); await p.waitForTimeout(100);
+  await p.click("#btn-copia-crear"); await p.waitForSelector("#copia[open]", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150); await p.fill("#copia-pass", "corta"); await p.fill("#copia-pass2", "corta"); await p.click("#copia-ok"); await p.waitForTimeout(100);
   check("contraseña corta rechazada", (await p.textContent("#copia-error")).length > 0 && await p.isVisible("#copia"));
   await p.fill("#copia-pass", "contraseña-segura-1"); await p.fill("#copia-pass2", "contraseña-segura-1");
   const [dlCopia] = await Promise.all([p.waitForEvent("download"), p.click("#copia-ok")]);
@@ -463,7 +463,7 @@ try {
   await p.waitForFunction(() => JSON.parse(localStorage.getItem("medex.diario") || "[]").length > 0, null, { timeout: 8000 }); await p.waitForTimeout(1200);
   await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("copia restaurada con la contraseña correcta: diario y estado recuperados", (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario")).length)) > 0 && (await p.evaluate(() => localStorage.getItem("medex.estado"))) === antes);
-  await p.click("#btn-perfiles"); await p.waitForTimeout(100); await p.click("#btn-sync"); await p.waitForTimeout(600);
+  await p.click("#btn-perfiles"); await p.waitForTimeout(100); await p.click("#btn-sync"); await p.waitForSelector("#sync[open]", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(600);
   const urlSync = await p.getAttribute("#sync", "data-url");
   check("enlace de sincronización #sync= comprimido (y QR si cabe)", /#sync=[rz]\./.test(urlSync) && (await p.isVisible("#sync-cuerpo svg") || (await p.textContent("#sync-nota")).length > 0));
   await p.click("#sync-cerrar");
@@ -491,7 +491,7 @@ try {
   await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("medex.estado")); s.prescrito.fecha = Date.now() - 50 * 864e5; localStorage.setItem("medex.estado", JSON.stringify(s)); });
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("aviso de reevaluación cuando vence el plazo", await p.isVisible("#aviso-reeval"));
-  await p.click("#btn-evolucion-aviso"); await p.waitForTimeout(300);
+  await p.click("#btn-evolucion-aviso"); await p.waitForSelector("#evolucion[open]", { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(300); // la ventana vive en js/pro.js (bajo demanda)
   check("informe de evolución: diálogo con adherencia, sesiones, minutos/semana y comparativa", await p.isVisible("#evolucion") && (await p.$$("#evolucion .evo-tiles .tile")).length === 4 && (await p.textContent("#evolucion .evo-tabla")).includes("SPPB"));
   await p.click("#evo-copiar"); await p.waitForTimeout(200);
   check("texto de evolución copiado para la historia", (await p.evaluate(() => navigator.clipboard.readText())).startsWith("EVOLUCIÓN DEL PLAN"));

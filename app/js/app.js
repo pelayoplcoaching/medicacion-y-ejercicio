@@ -1,11 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611220747";
-import { APP_VERSION } from "./version.js?v=202611220747";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611220747";
-import { picto } from "./pictos.js?v=202611220747";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611220747";
-import { cargarScript } from "./libs.js?v=202611220747";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611220747";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611220747";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611221836";
+import { APP_VERSION } from "./version.js?v=202611221836";
+import { picto } from "./pictos.js?v=202611221836";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611221836";
+import { cargarScript } from "./libs.js?v=202611221836";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611221836";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,11 +30,13 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611220747"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611220747"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611220747"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611220747"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611220747"));
+const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611221836")); // lector de listas pegadas y PDF: solo al leer una lista
+const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611221836")); // lectura de fotos y escaneos
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611221836"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611221836"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611221836"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611221836"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611221836"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611220747"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611221836"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611220747"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611221836"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611220747"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611221836"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611220747"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611221836"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,7 +110,7 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
-const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611220747"));
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611221836"));
 const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
 /** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
 function abrirPastillero() {
@@ -124,11 +124,11 @@ function abrirPastillero() {
     .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
-const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611220747"));
+const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611221836"));
 /** «¿Cuánto movimiento hace falta?» (mejora grande 4): curvas de dosis y respuesta con su punto del diario. */
 function abrirDosis() { cargarDosis().then((D) => D.abrir({ diario: leerDiario(), edad: estado.edad })).catch(() => { cargarDosis.p = null; toast(t("pq.error"), { ms: 4000 }); }); }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-dosis]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirDosis(); } });
-const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611220747"));
+const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611221836"));
 /** «¿Qué cambia si…?» (mejora grande 16): el escenario se calcula en simula.js con el motor que se le pasa; la lista real no se toca. */
 function abrirSimula(quitar = []) {
   const meds = datos ? medsActivos().map((m) => { const ref = indice.porId.get(m.pid); return ref ? { pid: m.pid, nombre: ref.principio.nombre, clase: ref.clase.id, ic: iconoGrupo(ref.clase) } : null; }).filter(Boolean) : [];
@@ -433,7 +433,7 @@ async function cargar() {
   pintarAvisoKb();
   pintarAvisoDatos();
   const hs = location.hash.match(/^#sync=([A-Za-z0-9_.-]+)/);
-  if (hs) { recibirSync(hs[1]); return; }
+  if (hs) { ocasional((O) => O.recibirSync(hs[1], apiOc())); return; }
   // primera visita sin lista: recorrido guiado sobre los elementos reales
   try { if (localStorage.getItem("medex.guia") !== "1" && !estado.meds.length && !h) setTimeout(iniciarTour, 400); } catch {}
 }
@@ -689,15 +689,15 @@ $("#dosis-presets").hidden = true;
 
 /* ---------- pegar lista ---------- */
 $("#btn-pegar").addEventListener("click", () => { $("#pegar-wrap").hidden = !$("#pegar-wrap").hidden; });
-$("#btn-importar").addEventListener("click", () => {
-  const n = incorporarTexto($("#pegar").value);
+$("#btn-importar").addEventListener("click", async () => {
+  const n = await incorporarTexto($("#pegar").value);
   $("#pegar").value = "";
   if (n.reconocidos) $("#pegar-wrap").hidden = true;
 });
 
 /** Reconoce fármacos en un texto y los añade a la lista. Devuelve contadores. */
-function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
-  const { reconocidos, noReconocidos } = extraerMedicacion(texto, indice);
+async function incorporarTexto(texto, origen = "la lista", reemplazar = false) {
+  const { reconocidos, noReconocidos } = (await cargarParser()).extraerMedicacion(texto, indice);
   const habia = estado.meds.length;
   const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
   if (reconocidos.length) {
@@ -873,12 +873,12 @@ $("#pdf-input").addEventListener("change", async () => {
   if (!f) return;
   progreso("Leyendo el PDF en su dispositivo…");
   try {
-    let texto = await textoDePdf(f);
+    let texto = await (await cargarParser()).textoDePdf(f);
     if (texto.trim().length < 20) {
       progreso("El PDF no tiene texto: es un escaneo. Reconociendo con OCR (puede tardar un minuto la primera vez)…");
-      texto = await textoDePdfEscaneado(f, progreso);
+      texto = await (await cargarOcr()).textoDePdfEscaneado(f, progreso);
     }
-    incorporarTexto(texto, `«${f.name}»`, true);
+    await incorporarTexto(texto, `«${f.name}»`, true);
   } catch (e) {
     progreso("No se ha podido leer el PDF: " + (e.message || e) + ". Puede pegar la lista a mano.");
   }
@@ -890,9 +890,9 @@ $("#foto-input").addEventListener("change", async () => {
   if (!f) return;
   progreso("Preparando la imagen… (se procesa en su dispositivo; la primera vez descarga el modelo de lectura)");
   try {
-    const texto = await textoDeImagen(f, progreso);
+    const texto = await (await cargarOcr()).textoDeImagen(f, progreso);
     if (texto.trim().length < 10) { progreso(t("foto.error")); return; }
-    incorporarTexto(texto, "la foto", true);
+    await incorporarTexto(texto, "la foto", true);
   } catch (e) {
     progreso("No se ha podido leer la foto: " + (e.message || e) + ". Puede pegar la lista a mano.");
   }
@@ -926,7 +926,7 @@ $("#caja-input").addEventListener("change", async () => {
   const f = $("#caja-input").files[0]; $("#caja-input").value = ""; if (!f) return;
   progreso(t("caja.leyendo"));
   try {
-    const texto = await textoDeImagen(f, progreso);
+    const texto = await (await cargarOcr()).textoDeImagen(f, progreso);
     const lineas = texto.split(/\n+/).map((l) => l.replace(/[^\p{L}\p{N} ,./-]/gu, " ").trim()).filter((l) => l.length >= 4);
     let mejor = null;
     for (const l of lineas) {
@@ -947,7 +947,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611220747").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611221836").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1491,7 +1491,7 @@ $("#btn-ver-enlace")?.addEventListener("click", async () => {
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo); el cálculo va en consulta.js, bajo demanda ---------- */
-const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611220747"));
+const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611221836"));
 function abrirEstadisticas() {
   const evaluarE = (e) => ({ ctx: ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} }), res: evaluarEstado(e), crib: cribadoACSM(sanearCribado(e.cribado)) });
   cargarConsulta().then((C) => C.abrir({ perfiles: leerPerfiles(), evaluar: evaluarE, sit: (c) => ETIQUETAS_CTX[c] || t("sit." + c), senales: datos.kb.senales, crib: (k) => t("crib.chip." + k), version: APP_VERSION, kbVersion: datos.kb.version, descargar: descargarTexto, toast, hoy: hoyISO() }))
@@ -1590,7 +1590,7 @@ function pintarAvisoKb() {
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
 
-const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611220747"));
+const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611221836"));
 /** «Lo que el ejercicio hace por usted» (mejora grande 3): cifras de revisiones para lo marcado; el contenido va en beneficios.js. */
 function seccionBeneficios() {
   const ctx = ctxActual(), sec = seccion(t("ben.titulo"), { clave: "beneficios", resumen: "…" }), cuerpo = sec.querySelector(".cuerpo-sec");
@@ -1598,7 +1598,7 @@ function seccionBeneficios() {
     .catch(() => { cargarBeneficios.p = null; sec.remove(); });
   return sec;
 }
-const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611220747"));
+const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611221836"));
 function irHabitos() { const d = $("#bloque-habitos"); if (!d) return; d.open = true; desplazar(d); setTimeout(() => d.querySelector("input:checked, input")?.focus({ preventScroll: true }), 400); }
 /** «Alcohol, tabaco y café con su medicación» (mejora grande 5): abierta si alguna respuesta tiene algo que cruzar. */
 function seccionHabitos(res) {
@@ -1610,7 +1610,7 @@ function seccionHabitos(res) {
   }).catch(() => { cargarHabitos.p = null; sec.remove(); });
   return sec;
 }
-const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611220747"));
+const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611221836"));
 /** «Guía de conversación» (mejora grande 15, modo profesional): reúne lo que la guía adapta y la abre. */
 async function abrirConversa() {
   const ctx = ctxActual(), res = evaluar(datos, medsActivos(), ctx), M = estado.metas?.ids?.length ? await cargarMetas() : null;
@@ -2153,190 +2153,17 @@ function celebrar() {
   toast(`<span class="celebra">✓</span> ${t("hoy.guardado")}`, { ms: 5000 });
 }
 
-/* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
-const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
-let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611220747").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
-
-/* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
-let cronometro = null, cronoInicio = 0;
-if (navigator.webdriver) window.__paSesion = { adelantar: (s) => { cronoInicio -= s * 1000; } }; // pruebas: adelantar el reloj de la sesión
-function abrirSesion(tipo, fecha = hoyISO()) {
-  cargarVoz().catch(() => { cargarVoz.p = null; }); // mientras se hace el chequeo previo
-  if (fecha === hoyISO() && (nivelCalorHoy() ?? 0) >= 2) toast(t("calor.sesion"), { accion: t("calor.ver"), onAccion: abrirCalor, ms: 8000 }); // mejora grande 10
-  const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
-  const dlg = $("#sesion");
-  const res = evaluar(datos, medsActivos(), ctxActual());
-  const chequeo = chequeoPrevio(res, ctxActual());
-  const cs = constantesRelevantes(res, ctxActual());
-  let chequeoClave = "sin";
-  const cuerpo = $("#sesion-cuerpo");
-  // Fase 1: chequeo previo (marque lo que se cumple hoy)
-  cuerpo.innerHTML = `
-    <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
-    <section class="chequeo" id="chequeo">
-      <img class="ses-img" src="assets/img/sesion-antes.webp" alt="" width="104" height="104" decoding="async">
-      <h3>${t("chequeo.titulo")}</h3>
-      <p class="muted">${t("chequeo.intro")}</p>
-      <ul>${chequeo.map((c) => `<li class="nivel-${c.nivel === "rojo" ? "alerta" : "precaucion"}"><label><input type="checkbox" data-id="${c.id}"><span>${c.texto}${c.farmacos.length ? ` <small>(${t("chequeo.por", { f: c.farmacos.join(", ") })})</small>` : ""}</span></label></li>`).join("")}</ul>
-      <div id="chequeo-resultado" class="chequeo-resultado" hidden></div>
-      <div class="acciones"><button type="button" class="btn" id="chequeo-continuar">${t("chequeo.continuar")}</button><button type="button" class="btn-sec sm" id="chequeo-saltar">${t("chequeo.saltar")}</button></div>
-    </section>`;
-  const faseSesion = async (suave) => {
-    await cargarVoz().catch(() => { cargarVoz.p = null; });
-    const conVoz = VOZ.disponible();
-    VOZ.on = conVoz && VOZ.preferida();
-    const B = ses.bloques, N = B.length;
-    cuerpo.innerHTML = `
-      <h2>${ses.titulo} <small>· ${ses.min} min</small></h2>
-      ${suave ? `<p class="chequeo-aviso">${t("chequeo.suave_banner")}</p>` : ""}
-      <div class="crono">${anilloCrono(0)}<span id="crono">00:00</span><button type="button" class="btn sm" id="crono-btn">${t("sesion.iniciar")}</button>
-        <p class="crono-ahora" id="crono-ahora" hidden><b class="ca-n"></b><span class="ca-nombre"></span><span class="ca-queda"></span><button type="button" class="btn-sec sm" id="ses-sig" aria-label="${t("voz.siguiente_aria")}">${icono("siguiente")} ${t("voz.siguiente")}</button></p></div>
-      ${conVoz ? `<label class="check voz-check"><input type="checkbox" id="voz-on"${VOZ.on ? " checked" : ""}> <span>${icono("escuchar")} ${t("voz.toggle")}</span></label>` : ""}
-      <p class="sr-only" id="ses-vivo" aria-live="polite"></p>
-      <ol class="bloques grande con-picto" data-sesion='${JSON.stringify(ses.bloques.map((b) => ({ nombre: b.nombre, detalle: b.detalle, facil: b.facil, dificil: b.dificil }))).replace(/'/g, "&#39;")}'>${ses.bloques.map((b, i) => bloqueHtml(b, i, { grande: true })).join("")}</ol>
-      <details class="alarma"><summary><span class="sub-label">${t("alarma.titulo")}</span><span class="flecha" aria-hidden="true">⌄</span></summary><ul>${ALARMA.map((a) => `<li>${a}</li>`).join("")}</ul></details>
-      <div class="sesion-fin">
-        <img class="ses-img" src="assets/img/sesion-fin.webp" alt="" width="104" height="104" loading="lazy" decoding="async">
-        <label class="rpe-campo">${t("hoy.rpe")} <input type="range" id="sesion-rpe" min="1" max="10" value="5"><output>5</output>${escalaRpe()}</label>
-        ${cs.length ? `<form id="sesion-const" class="registro">${camposConstantes()}</form>` : ""}
-        <button type="button" class="btn" id="sesion-terminar">${t("sesion.terminar")}</button>
-      </div>`;
-    activarVariantes(cuerpo);
-    // Bloques con tiempo: el ejercicio en curso se resalta, avanza solo al cumplirse sus minutos (o con «Siguiente», o al marcarlo) y el entrenador por voz lo cuenta
-    const tl = { i: 0, ini: 0, prev: 0, fin: false, respira: false };
-    const lis = () => cuerpo.querySelectorAll(".bloques.grande > li");
-    const dur = (i) => B[i].min * 60;
-    const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-    const detalleDe = (b) => { const v = leerVariantes()[b.nombre] || "normal"; return v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; };
-    const vivo = (txt) => { const v = $("#ses-vivo"); if (v) v.textContent = txt; };
-    /** Lleva un elemento al centro de lo que queda visible bajo el cronómetro fijo (solo se desplaza la sesión, no la página). */
-    const suave2 = (el) => {
-      if (!el) return;
-      const c = cuerpo.getBoundingClientRect(), r = el.getBoundingClientRect(), fijo = cuerpo.querySelector(".crono")?.offsetHeight || 0;
-      const libre = c.height - fijo, destino = c.top + fijo + Math.max(8, (libre - r.height) / 2);
-      cuerpo.scrollBy({ top: r.top - destino, behavior: MOV.ok() ? "smooth" : "auto" });
-    };
-    const anunciar = (corta = true) => {
-      const b = B[tl.i];
-      const partes = [VOZ.frase("voz.bloque", { n: tl.i + 1, total: N }), VOZ.contenido(b.nombre), VOZ.frase("voz.minutos", { m: b.min }), VOZ.contenido(detalleDe(b))];
-      if (b.clave && dur(tl.i) < 240) partes.push(VOZ.contenido(b.clave));
-      if (tipo !== "aerobico" && tl.i > 0 && !tl.respira) { partes.push(VOZ.frase("voz.respira")); tl.respira = true; } // una vez por sesión: nada de aguantar el aire
-      VOZ.decir(partes, { corta });
-    };
-    const marcar = (k) => { const c = lis()[k]?.querySelector("input[type=checkbox]"); if (c && !c.checked) c.checked = true; };
-    const pintarAhora = (seg) => {
-      const p = $("#crono-ahora"); if (!p) return;
-      p.hidden = false;
-      lis().forEach((li, k) => {
-        const on = k === tl.i && !tl.fin; li.classList.toggle("en-curso", on);
-        if (on) { li.setAttribute("aria-current", "step"); li.style.setProperty("--p", Math.min(1, Math.max(0, (seg - tl.ini) / dur(k))).toFixed(3)); }
-        else { li.removeAttribute("aria-current"); li.style.removeProperty("--p"); }
-      });
-      p.classList.toggle("hecho", tl.fin);
-      p.querySelector(".ca-n").textContent = tl.fin ? "✓" : `${tl.i + 1}/${N}`;
-      p.querySelector(".ca-nombre").textContent = tl.fin ? t("voz.hecho") : B[tl.i].nombre;
-      p.querySelector(".ca-queda").textContent = tl.fin ? "" : t("voz.queda", { t: mmss(Math.max(0, Math.ceil(tl.ini + dur(tl.i) - seg))) });
-      $("#ses-sig").hidden = tl.fin;
-    };
-    const alCambiar = () => {
-      VOZ.pitar(880, 260); vibrar([30, 60, 30]);
-      anunciar(true);
-      vivo(t("voz.vivo", { n: tl.i + 1, total: N, nombre: B[tl.i].nombre }));
-      suave2(lis()[tl.i]);
-    };
-    const alTerminar = () => {
-      VOZ.pitar(880, 200); setTimeout(() => VOZ.pitar(1175, 320), 240); vibrar([20, 60, 20, 60, 40]);
-      VOZ.decir([VOZ.frase("voz.fin")], { corta: true });
-      vivo(t("voz.hecho"));
-      suave2(cuerpo.querySelector(".sesion-fin"));
-    };
-    /** Avisos dentro del ejercicio: cuenta atrás con pitidos, «queda un minuto», mitad (con la clave técnica) y, en los largos, cada 5 minutos. */
-    const avisos = (seg) => {
-      if (seg - tl.prev > 5) return; // al volver de segundo plano no se acumulan avisos atrasados
-      const cruza = (x) => tl.prev < x && seg >= x;
-      const b = B[tl.i], d = dur(tl.i), fin = tl.ini + d, sig = B[tl.i + 1];
-      for (const s of [3, 2, 1]) if (cruza(fin - s)) VOZ.pitar(660, 110);
-      if (d >= 180 && cruza(fin - 60)) VOZ.decir([VOZ.frase("voz.minuto"), ...(sig ? [VOZ.frase("voz.despues"), VOZ.contenido(sig.nombre)] : [])]);
-      if (d >= 240 && d < 600 && cruza(tl.ini + d / 2)) VOZ.decir(b.clave ? [VOZ.frase("voz.recuerde"), VOZ.contenido(b.clave)] : [VOZ.frase("voz.mitad")]);
-      if (d >= 600) for (let x = tl.ini + 300, k = 1; x < fin - 90; x += 300, k++) if (cruza(x)) VOZ.decir([VOZ.frase("voz.lleva", { m: k * 5 }), k % 3 === 1 ? VOZ.contenido(detalleDe(b)) : k % 3 === 2 && b.clave ? VOZ.contenido(b.clave) : VOZ.frase("voz.alarma")]);
-    };
-    const tick = () => {
-      const seg = (Date.now() - cronoInicio) / 1000, s = Math.floor(seg);
-      $("#crono").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-      const c = cuerpo.querySelector(".anillo-crono .valor"); if (c) c.setAttribute("stroke-dasharray", `${(Math.min(1, seg / (ses.min * 60)) * 113.1).toFixed(1)} 113.1`);
-      if (!tl.fin) {
-        let cambio = false;
-        while (!tl.fin && seg >= tl.ini + dur(tl.i)) { marcar(tl.i); if (tl.i >= N - 1) tl.fin = true; else { tl.ini += dur(tl.i); tl.i++; } cambio = true; }
-        if (cambio) { if (tl.fin) alTerminar(); else alCambiar(); } else avisos(seg);
-      }
-      tl.prev = seg; pintarAhora(seg);
-    };
-    const siguiente = () => {
-      if (!cronometro || tl.fin) return;
-      const seg = (Date.now() - cronoInicio) / 1000;
-      marcar(tl.i);
-      if (tl.i >= N - 1) { tl.fin = true; alTerminar(); } else { tl.i++; tl.ini = seg; alCambiar(); }
-      tl.prev = seg; pintarAhora(seg);
-    };
-    cuerpo.querySelectorAll(".bloques input[type=checkbox]").forEach((c) => c.addEventListener("change", () => { if (!c.checked) return; vibrar(15); if (cronometro && !tl.fin && Number(c.dataset.i) === tl.i) siguiente(); }));
-    $("#ses-sig").addEventListener("click", siguiente);
-    $("#voz-on")?.addEventListener("change", (ev) => {
-      VOZ.on = ev.target.checked; VOZ.guardar(VOZ.on);
-      if (!VOZ.on) { VOZ.callar(); return; }
-      VOZ.preparar();
-      if (cronometro && !tl.fin) anunciar(true); else if (!cronoInicio) VOZ.decir([VOZ.frase("voz.bloque", { n: 1, total: N }), VOZ.contenido(B[0].nombre)], { corta: true }); // se oye al momento: sirve para ajustar el volumen
-    });
-    $("#sesion-rpe").addEventListener("input", (ev) => { ev.target.nextElementSibling.textContent = ev.target.value; });
-    $("#crono-btn").addEventListener("click", () => {
-      if (cronometro) { clearInterval(cronometro); cronometro = null; $("#crono-btn").textContent = t("sesion.reanudar"); cronoPausa = Date.now(); VOZ.decir([VOZ.frase("voz.pausa")], { corta: true }); return; }
-      const primera = !cronoInicio;
-      cronoInicio = cronoInicio ? cronoInicio + (Date.now() - cronoPausa) : Date.now();
-      cronometro = setInterval(tick, 500); $("#crono-btn").textContent = t("sesion.pausar"); vibrar(10);
-      VOZ.preparar();
-      if (primera) {
-        VOZ.decir([VOZ.frase("voz.inicio", { n: N, m: ses.min }), suave ? VOZ.frase("voz.suave") : null, VOZ.frase("voz.alarma")], { corta: true });
-        anunciar(false); vivo(t("voz.vivo", { n: 1, total: N, nombre: B[0].nombre }));
-      } else VOZ.decir([VOZ.frase("voz.sigue"), tl.fin ? null : VOZ.contenido(B[tl.i].nombre)], { corta: true });
-      tick();
-    });
-    $("#sesion-terminar").addEventListener("click", () => {
-      const seg = cronoInicio ? Math.round((Date.now() - cronoInicio) / 1000) : 0;
-      const min = seg >= 120 ? Math.round(seg / 60) : ses.min;
-      const fc = $("#sesion-const"); const konst = fc ? leerConstantes(new FormData(fc)) : undefined;
-      registrarSesion({ fecha, tipo, min, rpe: parseInt($("#sesion-rpe").value, 10) || 5, sintomas: [], const: konst, chequeo: chequeoClave });
-      cerrarSesion(); celebrar(); vibrar([20, 60, 20]);
-    });
-  };
-  const evaluarChequeo = () => {
-    const marcados = [...cuerpo.querySelectorAll("#chequeo input:checked")].map((x) => x.dataset.id);
-    const v = veredictoChequeo(chequeo, marcados);
-    chequeoClave = v.clave;
-    const box = $("#chequeo-resultado"); box.hidden = false; box.className = "chequeo-resultado r-" + v.clave;
-    if (v.clave === "ok") { faseSesion(false); return; }
-    box.innerHTML = `<p><b>${v.clave === "no" ? t("chequeo.no") : t("chequeo.suave")}</b></p><ul>${v.faltan.map((c) => `<li>${c.consejo}</li>`).join("")}</ul>${v.clave === "suave" ? `<button type="button" class="btn sm" id="chequeo-seguir">${t("chequeo.seguir_suave")}</button>` : `<button type="button" class="btn-sec sm" id="chequeo-cerrar">${t("ficha.cerrar")}</button>`}`;
-    $("#chequeo-seguir")?.addEventListener("click", () => faseSesion(true));
-    $("#chequeo-cerrar")?.addEventListener("click", cerrarSesion);
-    box.scrollIntoView({ block: "nearest" });
-  };
-  $("#chequeo-continuar").addEventListener("click", evaluarChequeo);
-  $("#chequeo-saltar").addEventListener("click", () => { chequeoClave = "saltado"; faseSesion(false); });
-  cronoInicio = 0; cronometro = null;
-  dlg.showModal();
-  try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { dlg.__wake = w; }).catch(() => {}); } catch {}
+/* ---------- entrenador por voz (js/voz.js) y sesión guiada (js/sesion.js): se cargan al abrir la sesión ---------- */
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611221836").then((m) => m.VOZ));
+const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611221836"));
+/** Sesión guiada: chequeo previo, bloques con cronómetro y voz. «extra» permite pasar una sesión ya armada (extra.sesion). */
+function abrirSesion(tipo, fecha = hoyISO(), extra = {}) {
+  const ctx = ctxActual();
+  cargarSesion().then((S) => S.abrir(tipo, fecha, { res: evaluar(datos, medsActivos(), ctx), ctx, fragil: esFragil(), hoyISO, nivelCalorHoy, abrirCalor, toast, icono, vibrar, MOV, ALARMA, anilloCrono, bloqueHtml, escalaRpe, camposConstantes, activarVariantes, leerVariantes, leerConstantes, registrarSesion, celebrar, cargarVoz: () => cargarVoz().catch((e) => { cargarVoz.p = null; throw e; }), ...extra }))
+    .catch(() => { cargarSesion.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 /** Anillo de progreso del cronómetro respecto a la duración prevista (r = 18 → perímetro 113,1). */
 function anilloCrono(p) { return `<svg class="anillo-crono" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" class="fondo"/><circle cx="22" cy="22" r="18" class="valor" stroke-dasharray="${(p * 113.1).toFixed(1)} 113.1" transform="rotate(-90 22 22)"/></svg>`; }
-let cronoPausa = 0;
-function cerrarSesion() { clearInterval(cronometro); cronometro = null; cronoInicio = 0; VOZ.cerrar(); const dlg = $("#sesion"); dlg.__wake?.release?.(); dlg.__wake = null; dlg.close(); }
-$("#sesion-cerrar").addEventListener("click", cerrarSesion);
-$("#sesion").addEventListener("cancel", (ev) => { ev.preventDefault(); cerrarSesion(); });
-// La pantalla se apaga sola al volver de otra app (el navegador suelta el bloqueo): se vuelve a pedir mientras la sesión siga abierta
-document.addEventListener("visibilitychange", () => {
-  const dlg = $("#sesion");
-  if (document.visibilityState !== "visible" || !dlg.open || !navigator.wakeLock || (dlg.__wake && !dlg.__wake.released)) return;
-  navigator.wakeLock.request("screen").then((w) => { dlg.__wake = w; }).catch(() => {});
-});
 
 function renderCuando(cont) {
   const v = ventanaEntrenamiento(indice, medsActivos(), estado.horas);
@@ -2383,7 +2210,7 @@ function renderInteracciones(cont, res) {
   cont.append(sec);
   if (res.interacciones.length) pintarMapaInter(sec.querySelector(".im-caja"), res);
 }
-const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611220747"));
+const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611221836"));
 /** Mapa de interacciones (mejora grande 17): tabla de cruces o red, con la ficha de cada cruce; el texto completo sigue en la lista. */
 function pintarMapaInter(caja, res) {
   const fuente = (x) => (x.fuente === "curada" ? x.fuenteTxt || t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : t("ddi.duplicidad"));
@@ -2535,54 +2362,27 @@ function evolucionActual() {
   return evolucion(leerDiario(), estado.prescrito, { planDias: sanearPlan(estado.plan).dias, actual: { meds: estado.meds.filter((m) => !m.libre).map((m) => ({ pid: m.pid, dosis: m.dosis ?? null, tomas: m.tomas || 1 })), sppb: estado.sppb?.total ?? (estado.pro.sppb != null && estado.pro.sppb !== "" ? Number(estado.pro.sppb) : null), fcReposo: estado.fcReposo ?? null } });
 }
 function nombresPids() { const o = {}; for (const c of datos.kb.clases) for (const pr of c.principios) o[pr.id] = pr.nombre; return o; }
+// La ventana de evolución y los casos (exportar, importar, CSV, caso de prueba) viven en js/pro.js (se cargan al pulsar su botón)
+const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611221836"));
+const pro = (f) => cargarPro().then(f, () => { cargarPro.p = null; toast(t("pq.error"), { ms: 4000 }); });
 function abrirEvolucion() {
   const evo = evolucionActual(); if (!evo) return;
-  const dlg = $("#evolucion"); const f = (iso) => new Date(iso + "T12:00").toLocaleDateString(idioma());
-  const nombres = nombresPids(); const nom = (m) => nombres[m.pid] || m.pid;
-  const c = evo.comp; const flecha = (d) => (d == null ? "" : d > 0 ? ` <b class="delta up">+${d}</b>` : d < 0 ? ` <b class="delta down">${d}</b>` : ' <b class="delta">=</b>');
-  const medsTxt = c.medicacion ? ([c.medicacion.nuevos.length ? `${t("evo.nuevos")}: ${c.medicacion.nuevos.map(nom).join(", ")}` : "", c.medicacion.retirados.length ? `${t("evo.retirados")}: ${c.medicacion.retirados.map(nom).join(", ")}` : "", c.medicacion.cambios.length ? `${t("evo.dosis")}: ${c.medicacion.cambios.map(nom).join(", ")}` : ""].filter(Boolean).join(" · ") || t("evo.sin_cambios")) : "—";
-  const maxMin = Math.max(1, ...evo.porSemana.map((w) => w.min));
-  const sint = Object.entries(evo.sintomas).map(([k, n]) => `${SINTOMAS.find((x) => x.id === k)?.nombre || k} (${n})`).join(", ");
-  $("#evolucion-cuerpo").innerHTML = `
-    <p class="muted">${t("evo.periodo", { a: f(evo.desde), b: f(evo.hasta), s: evo.semanas, r: f(evo.prevista) })}</p>
-    ${evo.sesiones ? "" : `<p class="banner">${t("evo.sin_registros")}</p>`}
-    <div class="evo-tiles">
-      <div class="tile tile-${evo.valoracion === "buena" ? "info" : evo.valoracion === "parcial" ? "precaucion" : evo.valoracion === "baja" ? "alerta" : "ddi"}"><span class="num">${evo.adherencia != null ? evo.adherencia + " %" : "—"}</span><span>${t("evo.adherencia")}</span></div>
-      <div class="tile tile-ddi"><span class="num">${evo.sesiones}</span><span>${t("evo.sesiones")} <small>${t("evo.de_previstas", { n: evo.previstas })}</small></span></div>
-      <div class="tile tile-ddi"><span class="num">${evo.minutosSemana}</span><span>${t("evo.min_semana")}</span></div>
-      <div class="tile tile-ddi"><span class="num">${evo.rpeMedio ?? "—"}</span><span>${t("evo.rpe")}</span></div>
-    </div>
-    <p class="evo-val nivel-${evo.valoracion === "buena" ? "info" : evo.valoracion === "parcial" ? "precaucion" : "alerta"}">${t("evo.val." + evo.valoracion)}</p>
-    <h4>${t("evo.semanas")}</h4>
-    <div class="evo-barras" role="img" aria-label="${t("evo.semanas")}: ${evo.porSemana.map((w) => w.min).join(", ")}">${evo.porSemana.map((w) => `<div class="evo-barra" title="${f(w.desde)}: ${w.min} min"><span style="height:${Math.round((w.min / maxMin) * 100)}%"></span><small>${w.min}</small></div>`).join("")}</div>
-    <h4>${t("evo.comparativa")}</h4>
-    <table class="tabla-plan evo-tabla"><thead><tr><th></th><th scope="col">${t("evo.antes")}</th><th scope="col">${t("evo.ahora")}</th></tr></thead><tbody>
-      <tr><th scope="row">${t("evo.sppb")}</th><td>${c.sppb.antes ?? "—"}</td><td>${c.sppb.ahora ?? "—"}${flecha(c.sppb.delta)}</td></tr>
-      <tr><th scope="row">${t("evo.fc")}</th><td>${c.fcReposo.antes ?? "—"}</td><td>${c.fcReposo.ahora ?? "—"}${flecha(c.fcReposo.delta)}</td></tr>
-      <tr><th scope="row">${t("evo.meds")}</th><td colspan="2">${medsTxt}</td></tr>
-    </tbody></table>
-    ${evo.conBase ? "" : `<p class="muted"><small>${t("evo.sin_base")}</small></p>`}
-    <p><b>${t("evo.sintomas")}:</b> ${sint || t("evo.ninguno")}.${evo.constantes.glucosa ? ` ${t("evo.glucosa", { n: evo.constantes.glucosa.n, m: evo.constantes.glucosa.media, h: evo.constantes.glucosa.hipos })}.` : ""}</p>
-    <div class="acciones"><button type="button" class="btn-sec sm" id="evo-copiar">${t("evo.copiar")}</button><button type="button" class="btn-sec sm" id="evo-pdf">${t("evo.pdf")}</button><button type="button" class="btn sm" id="evo-renovar">${t("evo.renovar")}</button></div>`;
-  $("#evo-copiar").addEventListener("click", async () => { const txt = textoEvolucion(evo, { nombres }); try { await navigator.clipboard.writeText(txt); toast(t("evo.copiado"), { ms: 3000 }); } catch { descargarTexto(`evolucion-${evo.hasta}.txt`, txt, "text/plain"); } });
-  $("#evo-pdf").addEventListener("click", async () => {
-    const res = evaluar(datos, medsActivos(), ctxActual());
-    const ctx = { ...ctxActual(), prescriptor: prescriptorActual(), prescrito: estado.prescrito, appVersion: APP_VERSION, nombres };
-    try { const doc = await (await cargarPdf()).pdfEvolucion(datos.kb, res, ctx, evo); doc.save(`evolucion-${evo.hasta}.pdf`); } catch (e) { informarError(e?.message || e); }
-  });
-  $("#evo-renovar").addEventListener("click", () => {
-    const hist = Array.isArray(estado.historialPresc) ? estado.historialPresc : [];
-    hist.unshift({ fecha: estado.prescrito.fecha, semanas: estado.prescrito.semanas, cierre: evo.hasta, adherencia: evo.adherencia, sesiones: evo.sesiones, minutosSemana: evo.minutosSemana, sppb: c.sppb, fcReposo: c.fcReposo });
-    estado.historialPresc = hist.slice(0, 12);
-    estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision, base: basePrescripcion() };
-    guardar(); pintarReeval(); dlg.close(); toast(t("evo.renovado", { d: fechaReeval().toLocaleDateString(idioma()) }), { ms: 5000 });
-  });
-  dlg.showModal();
+  pro((P) => P.abrirEvolucion({ evo, nombres: nombresPids(), toast, descargarTexto,
+    pdfEvolucion: async (e, nombres) => {
+      const res = evaluar(datos, medsActivos(), ctxActual());
+      const ctx = { ...ctxActual(), prescriptor: prescriptorActual(), prescrito: estado.prescrito, appVersion: APP_VERSION, nombres };
+      try { const doc = await (await cargarPdf()).pdfEvolucion(datos.kb, res, ctx, e); doc.save(`evolucion-${e.hasta}.pdf`); } catch (err) { informarError(err?.message || err); }
+    },
+    renovar: (e) => {
+      const hist = Array.isArray(estado.historialPresc) ? estado.historialPresc : [];
+      hist.unshift({ fecha: estado.prescrito.fecha, semanas: estado.prescrito.semanas, cierre: e.hasta, adherencia: e.adherencia, sesiones: e.sesiones, minutosSemana: e.minutosSemana, sppb: e.comp.sppb, fcReposo: e.comp.fcReposo });
+      estado.historialPresc = hist.slice(0, 12);
+      estado.prescrito = { fecha: Date.now(), semanas: prescriptorActual().revision, base: basePrescripcion() };
+      guardar(); pintarReeval(); toast(t("evo.renovado", { d: fechaReeval().toLocaleDateString(idioma()) }), { ms: 5000 });
+    } }));
 }
-$("#evolucion-cerrar")?.addEventListener("click", () => $("#evolucion").close());
 
 /* ---------- casos: exportar / importar (JSON anonimizado con huella), lista en CSV, caso de prueba ---------- */
-async function huella(txt) { try { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("").slice(0, 16); } catch { return "sin-huella"; } }
 function casoActual() {
   return { meds: estado.meds.map((m) => (m.libre ? { libre: true, nombre: m.nombre, dosis: m.dosis, tomas: m.tomas } : { pid: m.pid, dosis: m.dosis, tomas: m.tomas, unidad: m.unidad, momentos: m.momentos, aDemanda: !!m.aDemanda, pausado: !!m.pausado })),
     edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), modo: estado.modo };
@@ -2590,54 +2390,28 @@ function casoActual() {
 function descargarTexto(nombre, contenido, tipo) {
   const blob = new Blob([contenido], { type: tipo }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nombre; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
-$("#btn-caso-exportar").addEventListener("click", async () => {
+$("#btn-caso-exportar").addEventListener("click", () => {
   if (!estado.meds.length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
-  const caso = casoActual(); const cuerpo = JSON.stringify(caso);
-  const doc = { app: "pauta-activa", formato: 1, version_app: APP_VERSION, version_base: datos.kb.version, fecha: new Date().toISOString().slice(0, 10), huella: await huella(cuerpo + datos.kb.version), caso };
-  descargarTexto(`caso-${doc.fecha}-${doc.huella.slice(0, 6)}.json`, JSON.stringify(doc, null, 1), "application/json");
-  toast(t("caso.exportado"), { ms: 4000 });
+  pro((P) => P.exportarCaso({ caso: casoActual(), kbVersion: datos.kb.version, descargarTexto, toast }));
 });
 $("#btn-caso-importar").addEventListener("click", () => $("#caso-input").click());
-$("#caso-input").addEventListener("change", async (ev) => {
+$("#caso-input").addEventListener("change", (ev) => {
   const f = ev.target.files?.[0]; ev.target.value = ""; if (!f) return;
-  try {
-    const d = JSON.parse(await f.text());
-    const c = d.caso || d; if (!Array.isArray(c.meds)) throw new Error("formato");
-    const integra = d.huella ? (await huella(JSON.stringify(c) + d.version_base)) === d.huella : null;
+  pro((P) => P.importarCaso(f, { toast, aplicarCaso: (c, meds) => {
     const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-    const meds = c.meds.map((m) => (m.libre ? { pid: "libre:" + String(m.nombre).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "_"), nombre: m.nombre, libre: true, dosis: m.dosis ?? null, tomas: m.tomas || 1, unidad: "mg", momentos: momentosPorDefecto(m.tomas || 1) } : m));
     Object.assign(estado, { meds: sanearMeds(meds), edad: numeroEntre(c.edad, 1, 120), caidas: !!c.caidas, condiciones: (c.condiciones || []).filter((x) => CONDICIONES.includes(x)), pac: c.pac || {}, pro: c.pro || {}, horas: { ...HORA_MOMENTO, ...(c.horas || {}) }, plan: sanearPlan(c.plan), cribado: sanearCribado(c.cribado), ejemplo: false });
     if (c.modo === "profesional" || c.modo === "paciente") estado.modo = c.modo;
     restaurarFormulario(); guardar(); render(); mostrarCambios(previa);
-    toast(integra === false ? t("caso.importado_alterado") : t("caso.importado", { v: d.version_base || "?" }), { ms: 6000 });
-  } catch { toast(t("caso.error"), { ms: 5000 }); }
+  } }));
 });
 $("#btn-lista-csv").addEventListener("click", () => {
   if (!estado.meds.length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
-  const res = evaluar(datos, estado.meds.filter((m) => !m.libre), ctxActual());
-  const filas = [["principio_activo", "grupo", "dosis_por_toma", "unidad", "tomas_dia", "dosis_diaria", "categoria_dosis", "momentos", "a_demanda", "en_pausa", "senales"]];
-  let k = 0;
-  for (const m of estado.meds) {
-    if (m.libre) { filas.push([m.nombre, "(sin información)", m.dosis ?? "", "mg", m.tomas || 1, "", "", "", "", "", ""]); continue; }
-    const it = res.items[k++]; if (!it) continue;
-    filas.push([it.principio.nombre, it.clase.nombre, it.dosisPorToma ?? "", it.unidad, it.tomas, it.dosisTotal ?? "", it.dosisCat, (m.momentos || []).join("|"), it.aDemanda ? "sí" : "no", m.pausado ? "sí" : "no", [...it.senales].join("|")]);
-  }
-  const csv = "﻿" + filas.map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
-  descargarTexto(`medicacion-${hoyISO()}.csv`, csv, "text/csv;charset=utf-8");
-  toast(t("caso.csv_ok"), { ms: 3000 });
+  pro((P) => P.listaCsv({ meds: estado.meds, res: evaluar(datos, estado.meds.filter((m) => !m.libre), ctxActual()), hoy: hoyISO(), descargarTexto, toast }));
 });
 $("#btn-caso-prueba").addEventListener("click", () => {
   if (!medsActivos().length) { toast(t("caso.vacio"), { ms: 3000 }); return; }
-  const ctx = ctxActual(); const res = evaluar(datos, medsActivos(), ctx);
-  const senales = [...new Set(res.items.flatMap((it) => [...it.senales]))].filter((s) => !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s));
-  const caso = { id: "c" + Date.now().toString(36), titulo: prompt(t("caso.titulo_prompt"), "") || "Caso sin título", descripcion: `${ctx.edad ? ctx.edad + " años, " : ""}${res.items.map((i) => i.principio.nombre).join(" + ")}`,
-    meds: medsActivos().map((m) => ({ pid: m.pid, dosis: m.dosis, tomas: m.tomas, ...(m.unidad ? { unidad: m.unidad } : {}), ...(m.aDemanda ? { aDemanda: true } : {}) })),
-    ctx: { edad: ctx.edad, caidas: ctx.caidas, condiciones: [...ctx.condiciones], ...(ctx.fg != null ? { fg: ctx.fg } : {}), ...(ctx.fevi != null ? { fevi: ctx.fevi } : {}), ...(ctx.nyha != null ? { nyha: ctx.nyha } : {}) },
-    ...(estado.cribado.regular != null ? { cribado: sanearCribado(estado.cribado) } : {}),
-    esperado: { alerta_min: res.resumen.alerta, precaucion_min: res.resumen.precaucion, mayores_min: res.interacciones.filter((x) => x.nivel === "mayor").length, senales, combinadas_incluye: res.combinadas.map((c) => c.regla.titulo.toLowerCase()).slice(0, 4), ...(estado.cribado.regular != null ? { cribado: cribadoACSM(estado.cribado).clave } : {}) } };
-  const r = comprobarCaso(datos, caso);
-  descargarTexto(`caso-prueba-${caso.id}.json`, JSON.stringify(caso, null, 1), "application/json");
-  toast(r.ok ? t("caso.prueba_ok") : t("caso.prueba_fallo", { f: r.fallos.join("; ") }), { ms: 6000 });
+  const ctx = ctxActual();
+  pro((P) => P.casoPrueba({ ctx, res: evaluar(datos, medsActivos(), ctx), meds: medsActivos(), cribado: estado.cribado.regular != null ? sanearCribado(estado.cribado) : null, datos, descargarTexto, toast }));
 });
 
 /* ---------- índice lateral del informe (escritorio) y versión ---------- */
@@ -2650,51 +2424,13 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
 }
 
 /* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
-const SPPB_PASOS = [
-  { id: "lado", max: 10, pict: "unpie", img: true },
-  { id: "semitandem", max: 10, pict: "unpie", img: true },
-  { id: "tandem", max: 10, pict: "talonpunta", img: true },
-  { id: "marcha", pict: "marcha", img: true },
-  { id: "silla", pict: "silla", img: true },
-];
-let sppbCrono = null, sppbInicio = 0;
-function abrirSppb() {
-  const dlg = $("#sppb"), cuerpo = $("#sppb-cuerpo");
-  const r = {};
-  let i = 0;
-  const pintar = () => {
-    if (i >= SPPB_PASOS.length) return resultado();
-    const paso = SPPB_PASOS[i];
-    cuerpo.innerHTML = `
-      <p class="muted sppb-progreso">${t("sppb.paso", { n: i + 1, t: SPPB_PASOS.length })}</p>
-      <h2>${paso.img ? "" : picto(paso.pict)} ${t("sppb.t." + paso.id)}</h2>
-      ${paso.img ? `<figure class="sppb-img"><img src="assets/img/sppb-${paso.id}.webp" alt="" width="320" height="320" decoding="async"></figure>` : ""}
-      <p>${t("sppb.x." + paso.id)}</p>
-      <p class="muted">${t("sppb.seguridad")}</p>
-      <div class="crono crono-sppb">${anilloCrono(0)}<span id="sppb-crono">0,0 s</span><button type="button" class="btn sm" id="sppb-ini">${t("sesion.iniciar")}</button><label class="crono-seg">${t("sppb.segundos")} <input type="number" id="sppb-seg" step="0.1" min="0" max="120" inputmode="decimal"></label></div>
-      <div class="acciones"><button type="button" class="btn" id="sppb-sig">${t("sppb.siguiente")}</button><button type="button" class="btn-sec sm" id="sppb-nopuede">${t("sppb.nopuede")}</button>${i ? `<button type="button" class="btn-sec sm" id="sppb-atras">${t("sppb.atras")}</button>` : ""}</div>`;
-    const seg = $("#sppb-seg"); const tick = () => { const sgs = (Date.now() - sppbInicio) / 1000; $("#sppb-crono").textContent = sgs.toFixed(1).replace(".", ",") + " s"; if (paso.max && sgs >= paso.max) { parar(); seg.value = paso.max; vibrar(30); } };
-    const parar = () => { clearInterval(sppbCrono); sppbCrono = null; $("#sppb-ini").textContent = t("sesion.iniciar"); seg.value = ((Date.now() - sppbInicio) / 1000).toFixed(1); };
-    $("#sppb-ini").addEventListener("click", () => { if (sppbCrono) { parar(); return; } sppbInicio = Date.now(); sppbCrono = setInterval(tick, 100); $("#sppb-ini").textContent = t("sppb.parar"); vibrar(10); });
-    $("#sppb-sig").addEventListener("click", () => { if (sppbCrono) parar(); const v = parseFloat(String(seg.value).replace(",", ".")); if (!Number.isFinite(v)) { seg.focus(); return; } r[paso.id] = v; if (paso.id === "lado" && v < 10) { r.semitandem = null; r.tandem = null; i += 3; } else if (paso.id === "semitandem" && v < 10) { r.tandem = null; i += 2; } else i++; pintar(); });
-    $("#sppb-nopuede").addEventListener("click", () => { if (sppbCrono) parar(); r[paso.id] = paso.max ? 0 : null; if (paso.id === "lado") { r.semitandem = null; r.tandem = null; i += 3; } else if (paso.id === "semitandem") { r.tandem = null; i += 2; } else i++; pintar(); });
-    $("#sppb-atras")?.addEventListener("click", () => { if (sppbCrono) parar(); i = Math.max(0, i - 1); pintar(); });
-  };
-  const resultado = () => {
-    const p = puntuarSPPB(r);
-    cuerpo.innerHTML = `
-      <h2>${t("sppb.resultado")}: <b>${p.total}</b> / 12</h2>
-      <p class="crib-resultado nivel-${p.categoria === "fragil" ? "alerta" : p.categoria === "prefragil" ? "precaucion" : "info"}">${t("sppb.cat." + p.categoria)} · ${t("sppb.vivifrail", { v: ({ A: t("pro.vA"), B: t("pro.vB"), C: t("pro.vC"), D: t("pro.vD") })[vivifrailDeSppb(p.total)] })}</p>
-      <ul class="bloques"><li><span class="min">${p.equilibrio}/4</span><span>${t("sppb.equilibrio")}</span></li><li><span class="min">${p.marcha}/4</span><span>${t("sppb.marcha")}${p.velocidad ? ` · ${p.velocidad.toLocaleString(idioma())} m/s` : ""}</span></li><li><span class="min">${p.silla}/4</span><span>${t("sppb.silla")}</span></li></ul>
-      <p class="muted">${t("sppb.nota")}</p>
-      <div class="acciones"><button type="button" class="btn" id="sppb-guardar">${t("sppb.guardar")}</button><button type="button" class="btn-sec sm" id="sppb-repetir">${t("sppb.repetir")}</button></div>`;
-    $("#sppb-guardar").addEventListener("click", () => { estado.sppb = { total: p.total, fecha: Date.now(), partes: r, velocidad: p.velocidad }; estado.pro.sppb = p.total; $("#pro-sppb").value = p.total; aplicarVivifrailAuto(); guardar(); render(); dlg.close(); toast(t("sppb.guardado", { n: p.total }) + " · " + t("sppb.vivifrail", { v: vivifrailDeSppb(p.total) }), { ms: 6000 }); vibrar([20, 60, 20]); });
-    $("#sppb-repetir").addEventListener("click", () => { i = 0; for (const k of Object.keys(r)) delete r[k]; pintar(); });
-  };
-  pintar(); dlg.showModal();
-}
-$("#btn-sppb").addEventListener("click", abrirSppb);
-$("#sppb-cerrar").addEventListener("click", () => { clearInterval(sppbCrono); sppbCrono = null; $("#sppb").close(); });
+// El SPPB guiado, el escáner de cajas, la copia cifrada y el paso a otro dispositivo viven en js/ocasional.js (se cargan al pulsar su botón)
+const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611221836"));
+const ocasional = (f) => cargarOcasional().then(f, () => { cargarOcasional.p = null; toast(t("pq.error"), { ms: 4000 }); });
+const apiOc = () => ({ estado, indice, toast, vibrar, anilloCrono, elegir, leerPerfiles, leerDiario,
+  guardarSppb: (s) => { estado.sppb = s; estado.pro.sppb = s.total; $("#pro-sppb").value = s.total; aplicarVivifrailAuto(); guardar(); render(); },
+  copiaHecha: () => { ponerNum("medex.ultima_copia", Date.now()); pintarAvisoDatos(); } });
+$("#btn-sppb").addEventListener("click", () => ocasional((O) => O.abrirSppb(apiOc())));
 function pintarSppbEstado() {
   const e = $("#sppb-estado"); if (!e) return;
   e.textContent = estado.sppb ? t("sppb.estado", { n: estado.sppb.total, d: new Date(estado.sppb.fecha).toLocaleDateString(idioma()) }) : "";
@@ -2703,33 +2439,8 @@ function pintarSppbEstado() {
 }
 
 /* ---------- escáner de código de barras (EAN-13 farmacéutico → código nacional) ---------- */
-let barrasStream = null, barrasTimer = null;
 function barrasDisponible() { return "BarcodeDetector" in window && indice?.porCn?.size > 0; }
-async function abrirBarras() {
-  const dlg = $("#barras"), video = $("#barras-video"), estadoEl = $("#barras-estado");
-  try {
-    barrasStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-    video.srcObject = barrasStream; dlg.showModal(); estadoEl.textContent = t("barras.buscando");
-    const det = new window.BarcodeDetector({ formats: ["ean_13"] });
-    barrasTimer = setInterval(async () => {
-      try {
-        const codes = await det.detect(video);
-        for (const c of codes) {
-          const ean = c.rawValue || "";
-          if (!/^847\d{10}$/.test(ean)) continue;
-          const cn = ean.slice(6, 12);
-          const e = indice.porCn.get(cn);
-          if (e) { cerrarBarras(); elegir(e); toast(t("barras.ok", { n: e.texto }), { ms: 5000 }); vibrar(20); return; }
-          estadoEl.textContent = t("barras.desconocido", { cn });
-        }
-      } catch {}
-    }, 400);
-  } catch (e) { toast(t("barras.error"), { ms: 5000 }); cerrarBarras(); }
-}
-function cerrarBarras() { clearInterval(barrasTimer); barrasTimer = null; barrasStream?.getTracks().forEach((tr) => tr.stop()); barrasStream = null; const d = $("#barras"); if (d.open) d.close(); }
-$("#btn-barras").addEventListener("click", abrirBarras);
-$("#barras-cerrar").addEventListener("click", cerrarBarras);
-$("#barras").addEventListener("cancel", (ev) => { ev.preventDefault(); cerrarBarras(); });
+$("#btn-barras").addEventListener("click", () => ocasional((O) => O.abrirBarras(apiOc())));
 
 /* ---------- zona de intensidad y carga por fármaco ---------- */
 function tarjetaZona(res) {
@@ -2954,67 +2665,11 @@ $("#fb-correo").addEventListener("click", () => {
 });
 
 // --- copia cifrada (AES-GCM 256; clave derivada de la contraseña con PBKDF2-SHA-256, 250 000 iteraciones) ---
-const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes", "medex.aviso"];
-function empaquetarTodo() { const o = {}; for (const k of CLAVES_LOCALES) { try { const v = localStorage.getItem(k); if (v != null) o[k] = v; } catch {} } return { app: "pauta-activa", v: 1, fecha: new Date().toISOString(), version_app: APP_VERSION, datos: o }; }
-function aplicarTodo(paq, { fusionar = false } = {}) {
-  if (!paq || paq.app !== "pauta-activa" || !paq.datos || typeof paq.datos !== "object") throw new Error("formato");
-  for (const k of CLAVES_LOCALES) {
-    const v = paq.datos[k]; if (v == null) continue;
-    if (fusionar && (k === "medex.perfiles" || k === "medex.diario")) {
-      try { const act = JSON.parse(localStorage.getItem(k) || "[]"), nue = JSON.parse(v); const clave = (x) => JSON.stringify(k === "medex.diario" ? [x.fecha, x.tipo, x.min] : x.nombre); const vistos = new Set(act.map(clave)); localStorage.setItem(k, JSON.stringify([...act, ...nue.filter((x) => !vistos.has(clave(x)))])); continue; } catch {}
-    }
-    try { localStorage.setItem(k, v); } catch {}
-  }
-}
-const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
-const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-async function claveDe(pass, salt, it = 250000) {
-  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
-  return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: it, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
-}
-async function cifrarCopia(pass) {
-  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
-  const key = await claveDe(pass, salt);
-  const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(empaquetarTodo())));
-  return JSON.stringify({ app: "pauta-activa", formato: "copia-cifrada", v: 1, fecha: new Date().toISOString(), kdf: { alg: "PBKDF2-SHA256", it: 250000 }, cifrado: "AES-GCM-256", salt: b64(salt), iv: b64(iv), data: b64(data) });
-}
-async function descifrarCopia(texto, pass) {
-  const f = JSON.parse(texto);
-  if (f.formato !== "copia-cifrada" || !f.data) throw new Error("formato");
-  const key = await claveDe(pass, unb64(f.salt), f.kdf?.it || 250000);
-  const plano = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(f.iv) }, key, unb64(f.data));
-  return JSON.parse(new TextDecoder().decode(plano));
-}
-function pedirPassword({ confirmar, texto }) {
-  return new Promise((ok) => {
-    const dlg = $("#copia"), form = $("#copia-form"), p1 = $("#copia-pass"), p2 = $("#copia-pass2"), err = $("#copia-error");
-    $("#copia-texto").textContent = texto; $("#copia-pass2-wrap").hidden = !confirmar; p2.required = !!confirmar; p1.value = p2.value = ""; err.textContent = "";
-    const fin = (v) => { form.onsubmit = null; $("#copia-cerrar").onclick = null; dlg.close(); ok(v); };
-    form.onsubmit = (ev) => { ev.preventDefault(); if (p1.value.length < 8) { err.textContent = t("copia.corta"); return; } if (confirmar && p1.value !== p2.value) { err.textContent = t("copia.distintas"); return; } fin(p1.value); };
-    $("#copia-cerrar").onclick = () => fin(null);
-    dlg.showModal(); setTimeout(() => p1.focus(), 50);
-  });
-}
-$("#btn-copia-crear").addEventListener("click", async () => {
-  if (!window.crypto?.subtle) { toast(t("copia.nocrypto"), { ms: 5000 }); return; }
-  const pass = await pedirPassword({ confirmar: true, texto: t("copia.crear_txt") }); if (!pass) return;
-  try {
-    const blob = new Blob([await cifrarCopia(pass)], { type: "application/json" });
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `pauta-activa-copia-${new Date().toISOString().slice(0, 10)}.pauta`; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    toast(t("copia.creada"), { ms: 5000 });
-    ponerNum("medex.ultima_copia", Date.now()); pintarAvisoDatos();
-  } catch (e) { toast(t("copia.error"), { ms: 5000 }); }
-});
+$("#btn-copia-crear").addEventListener("click", () => ocasional((O) => O.crearCopia(apiOc())));
 $("#btn-copia-restaurar").addEventListener("click", () => $("#copia-input").click());
-$("#copia-input").addEventListener("change", async (ev) => {
+$("#copia-input").addEventListener("change", (ev) => {
   const f = ev.target.files?.[0]; ev.target.value = ""; if (!f) return;
-  const texto = await f.text();
-  const pass = await pedirPassword({ confirmar: false, texto: t("copia.restaurar_txt", { n: f.name }) }); if (!pass) return;
-  let paq; try { paq = await descifrarCopia(texto, pass); } catch { toast(t("copia.pass_mal"), { ms: 6000 }); return; }
-  const fusionar = !!estado.meds.length && window.confirm(t("copia.fusionar"));
-  if (!fusionar && estado.meds.length && !window.confirm(t("copia.sustituir"))) return;
-  try { aplicarTodo(paq, { fusionar }); } catch { toast(t("copia.error"), { ms: 5000 }); return; }
-  toast(t("copia.restaurada"), { ms: 3000 }); setTimeout(() => location.reload(), 600);
+  ocasional((O) => O.restaurarCopia(f, apiOc()));
 });
 
 // --- cuidar los datos guardados: almacenamiento persistente, aviso en iPhone y recordatorio de copia ---
@@ -3062,53 +2717,11 @@ function pintarAvisoDatos() {
 document.addEventListener("idioma", () => { if (!$("#aviso-datos")?.hidden) pintarAvisoDatos(); });
 
 // --- pasar a otro dispositivo: enlace #sync= con todo comprimido (deflate) y codificado; QR si cabe ---
-const b64url = (buf) => b64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-const unb64url = (s) => unb64(s.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - s.length % 4) % 4));
-async function comprimir(txt) { const bytes = new TextEncoder().encode(txt); if (!("CompressionStream" in window)) return "r." + b64url(bytes); const out = await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer(); return "z." + b64url(out); }
-async function descomprimir(s) { const [modo, cuerpo] = [s.slice(0, 2), s.slice(2)]; const bytes = unb64url(cuerpo); if (modo === "r.") return new TextDecoder().decode(bytes); if (!("DecompressionStream" in window)) throw new Error("sin DecompressionStream"); const out = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer(); return new TextDecoder().decode(out); }
-async function enlaceSync() {
-  const paq = empaquetarTodo();
-  try { const d = JSON.parse(paq.datos["medex.diario"] || "[]"); if (d.length > 120) paq.datos["medex.diario"] = JSON.stringify(d.slice(-120)); } catch {}
-  return `${location.origin}${location.pathname}#sync=${await comprimir(JSON.stringify(paq))}`;
-}
-$("#btn-sync").addEventListener("click", async () => {
-  const dlg = $("#sync"), cuerpo = $("#sync-cuerpo"), nota = $("#sync-nota");
-  cuerpo.innerHTML = ""; nota.textContent = "";
-  const url = await enlaceSync();
-  dlg.dataset.url = url;
-  if (url.length <= 2300) {
-    try {
-      if (!window.qrcode) await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js");
-      const q = window.qrcode(0, "L"); q.addData(url); q.make(); cuerpo.innerHTML = q.createSvgTag({ cellSize: 3, margin: 2, scalable: true });
-    } catch { nota.textContent = t("sync.sin_qr"); }
-  } else nota.textContent = t("sync.largo");
-  $("#sync-escanear").hidden = !("BarcodeDetector" in window);
-  dlg.showModal();
-});
-$("#sync-cerrar").addEventListener("click", () => $("#sync").close());
-$("#sync-copiar").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("#sync").dataset.url); toast(t("sync.copiado"), { ms: 4000 }); } catch { toast(t("fb.copiar_error"), { ms: 4000 }); } });
-$("#sync-escanear").addEventListener("click", async () => {
-  // en escritorio (Chromium): leer con la cámara el QR que muestra el móvil
-  const dlg = $("#barras"), video = $("#barras-video"), estadoEl = $("#barras-estado");
-  try {
-    barrasStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-    video.srcObject = barrasStream; $("#sync").close(); dlg.showModal(); estadoEl.textContent = t("sync.buscando");
-    const det = new window.BarcodeDetector({ formats: ["qr_code"] });
-    barrasTimer = setInterval(async () => { try { for (const c of await det.detect(video)) { const m = String(c.rawValue || "").match(/#sync=([A-Za-z0-9_.-]+)/); if (m) { cerrarBarras(); await recibirSync(m[1]); return; } } } catch {} }, 400);
-  } catch { toast(t("barras.error"), { ms: 5000 }); cerrarBarras(); }
-});
-async function recibirSync(cod) {
-  let paq; try { paq = JSON.parse(await descomprimir(cod)); } catch { toast(t("sync.error"), { ms: 6000 }); return false; }
-  if (paq.app !== "pauta-activa") { toast(t("sync.error"), { ms: 6000 }); return false; }
-  const hay = estado.meds.length || leerPerfiles().length || leerDiario().length;
-  if (hay && !window.confirm(t("sync.confirmar"))) return false;
-  try { aplicarTodo(paq); } catch { toast(t("sync.error"), { ms: 6000 }); return false; }
-  history.replaceState(null, "", location.pathname); toast(t("sync.hecho"), { ms: 3000 }); setTimeout(() => location.reload(), 500); return true;
-}
+$("#btn-sync").addEventListener("click", () => ocasional((O) => O.abrirSync(apiOc())));
 
 
 /* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
-const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611220747"));
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611221836"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();
