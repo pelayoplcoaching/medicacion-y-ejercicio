@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.9 · 2026-11-22 · Segunda tanda de mejoras grandes (9): su medicación en el cuerpo
+- `js/cuerpo.js` (nuevo, bajo demanda): **«Su medicación en el cuerpo»**. Una figura con once zonas (cerebro y equilibrio, defensas, corazón y circulación, hígado, azúcar en sangre, riñón, agua y sales, piel y calor, sangre, hueso, músculo y tendones); cada punto lleva el número de medicamentos de la lista que actúan ahí.
+- Al elegir una zona: los efectos (tal como están en la base revisada), los medicamentos que los producen (cada nombre abre su ficha) y, agrupados y sin repetir, los cuidados al moverse con su «¿Por qué?». Se abre por la zona con más medicamentos; una zona sin ninguno lo dice.
+- **No añade contenido clínico**: los efectos son las señales de `kb.json`, los cuidados son los del panel de hoy y las explicaciones, las de «¿Por qué?». El módulo solo las reparte por zonas; una prueba comprueba que ninguna señal de la base se queda sin zona (salvo las que solo marcan la familia del medicamento y el aviso de dopaje).
+- Entradas: botón al final de «Efectos de su medicación» en el informe y herramienta en el centro («Entender»). La lista de zonas es el control accesible; los puntos de la figura quedan fuera del orden de tabulación.
+- **Arranque más ligero** (de 396 a 391 KB de JavaScript inicial): la comparación de huellas al cambiar la base de conocimiento, su aviso y la hoja de sugerencias (tipos, contexto técnico y texto del informe) pasan a `js/ocasional.js` y solo se cargan cuando hacen falta.
+- Pruebas: 14 comprobaciones unitarias, 7 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.8 · 2026-11-22 · Segunda tanda de mejoras grandes (13): los primeros 14 días
 - `js/primeros.js` (nuevo, bajo demanda): **«Los primeros 14 días»**, un arranque guiado con un paso pequeño cada día: poner la medicación, responder al cribado, leer lo esencial del informe, un paseo de 5 minutos, elegir metas, aprender «Levantarse de la silla», la prueba de la silla, la primera sesión de fuerza de 10 minutos, mirar «¿Cuándo?», entender un «¿Por qué?», tres píldoras de movimiento en un día, una lección de «Aprende», elegir los días de la semana y empezar el programa de 12 semanas.
 - Cada paso tiene su botón, que abre la herramienta que toca. Nueve se **marcan solos** al hacerlos (con lo que la aplicación ya sabe: lista, cribado, diario, metas, pruebas, píldoras, lecciones y programa) y todos se pueden marcar o desmarcar a mano. No caducan: se pueden adelantar o atrasar.

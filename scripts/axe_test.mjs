@@ -45,6 +45,7 @@ const esc0 = [
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
   { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
   { n: "vuelta-inicio-claro", w: 390, abre: "vuelta" }, { n: "vuelta-ingreso-oscuro", w: 1280, abre: "vuelta", vuelta: ["ingreso", "t2"], tema: "dark" }, { n: "vuelta-infeccion-contraste", w: 390, abre: "vuelta", vuelta: ["infeccion", "t3"], tema: "contrast" },
+  { n: "cuerpo-claro", w: 390, abre: "cuerpo" }, { n: "cuerpo-rinon-oscuro", w: 1280, abre: "cuerpo", arg: "rinon", tema: "dark" }, { n: "cuerpo-contraste", w: 390, abre: "cuerpo", arg: "higado", tema: "contrast" },
   { n: "primeros-inicio-claro", w: 390, abre: "primeros" }, { n: "primeros-curso-oscuro", w: 1280, abre: "primeros", primeros: true, tema: "dark" }, { n: "primeros-curso-contraste", w: 390, abre: "primeros", primeros: true, tema: "contrast" },
   { n: "dolor-zonas-claro", w: 390, abre: "dolor" }, { n: "dolor-lumbar-oscuro", w: 1280, abre: "dolor", arg: "lumbar", tema: "dark" }, { n: "dolor-rodilla-contraste", w: 390, abre: "dolor", arg: "rodilla", tema: "contrast" },
   { n: "paseo-preparar-claro", w: 390, abre: "paseo" }, { n: "paseo-programa-oscuro", w: 1280, abre: "paseo", arg: "prog", tema: "dark" }, { n: "paseo-en-marcha-contraste", w: 390, abre: "paseo", marcha: 400, tema: "contrast" },

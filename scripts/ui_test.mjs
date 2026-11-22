@@ -485,6 +485,32 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Su medicación en el cuerpo (segunda tanda, 9): once zonas, detalle de la elegida, cuidados con su «¿Por qué?» y ficha del medicamento
+  {
+    const abreCp = async (arg) => { await p.evaluate((arg) => { const b = document.createElement("button"); b.dataset.abre = "cuerpo"; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, arg); await p.waitForSelector("#cuerpo[open] #cp-zonas", { timeout: 6000 }).catch(() => {}); };
+    await abreCp();
+    const nCon = (await p.$$("#cp-zonas button.con")).length, sel = await p.$eval('#cp-zonas [aria-pressed="true"]', (b) => b.dataset.v).catch(() => "");
+    check("«Su medicación en el cuerpo»: once zonas en la lista y en la figura, y el resumen cuenta las que tienen algún medicamento", (await p.$$("#cp-zonas button")).length === 11 && (await p.$$("#cuerpo .cp-fig .cp-p")).length === 11 && nCon >= 3 && (await p.$$("#cuerpo .cp-fig .cp-p.con")).length === nCon && (await p.textContent("#cp-res")).includes(String(nCon)), String(nCon));
+    const maxN = Math.max(...(await p.$$eval("#cp-zonas button i", (is) => is.map((i) => Number(i.textContent) || 0))));
+    check("se abre por la zona con más medicamentos, con sus efectos y los nombres de los medicamentos", !!sel && Number(await p.$eval(`#cp-zonas [data-v="${sel}"] i`, (i) => i.textContent)) === maxN && (await p.$$("#cp-det .cp-ef li")).length >= 1 && (await p.$$('#cp-det [data-cp="ficha"]')).length >= maxN, `${sel} ${maxN}`);
+    check("los puntos de la figura quedan fuera del orden de tabulación (la lista es el control accesible)", await p.$$eval("#cuerpo .cp-fig .cp-p", (bs) => bs.every((b) => b.tabIndex === -1 && b.getAttribute("aria-hidden") === "true")) && (await p.$$eval("#cp-zonas button", (bs) => bs.every((b) => /:/.test(b.getAttribute("aria-label") || "")))));
+    const vacia = await p.$eval("#cp-zonas button:not(.con)", (b) => b.dataset.v).catch(() => null);
+    if (vacia) { await p.click(`#cp-zonas [data-v="${vacia}"]`); await p.waitForTimeout(120); }
+    check("una zona sin medicamentos lo dice, sin efectos ni cuidados", !vacia || ((await p.$$("#cp-det .cp-ef li")).length === 0 && (await p.$$("#cp-cuida")).length === 0 && (await p.$eval(`#cp-zonas [data-v="${vacia}"]`, (b) => b.getAttribute("aria-pressed"))) === "true" && (await p.textContent("#cp-det .cp-n")).length > 20), String(vacia));
+    await p.evaluate(() => document.querySelector("#cuerpo .cp-fig .cp-p.con").click()); await p.waitForTimeout(150);
+    const conPq = await p.$$eval("#cp-zonas button.con", (bs) => bs.map((b) => b.dataset.v));
+    let abiertoPq = false;
+    for (const z of conPq) { await p.click(`#cp-zonas [data-v="${z}"]`); await p.waitForTimeout(80); if (await p.$("#cp-cuida [data-porque]")) { await p.click("#cp-cuida [data-porque]"); await p.waitForSelector("#porque[open]", { timeout: 6000 }).catch(() => {}); abiertoPq = await p.$eval("#porque", (d) => d.open).catch(() => false); break; } }
+    check("tocar un punto de la figura elige su zona, y el cuidado lleva a su «¿Por qué?» sin cerrar esta ventana", abiertoPq && (await p.$eval("#cuerpo", (d) => d.open)));
+    await p.evaluate(() => document.querySelector("#porque")?.close()); await p.waitForTimeout(150);
+    const nombreMed = await p.textContent('#cp-det [data-cp="ficha"]');
+    await p.click('#cp-det [data-cp="ficha"]'); await p.waitForSelector("#ficha[open]", { timeout: 4000 }).catch(() => {});
+    check("el nombre del medicamento abre su ficha y cierra la figura", (await p.$eval("#ficha", (d) => d.open)) && !(await p.$eval("#cuerpo", (d) => d.open)) && (await p.inputValue("#ficha-buscar")).toLowerCase().includes(nombreMed.trim().toLowerCase().slice(0, 5)), nombreMed);
+    await p.click("#ficha-cerrar"); await p.waitForTimeout(150);
+    await abreCp("tendon");
+    check("se puede abrir directamente en una zona", (await p.$eval('#cp-zonas [data-v="tendon"]', (b) => b.getAttribute("aria-pressed"))) === "true");
+    await p.click("#cp-cerrar"); await p.waitForTimeout(150);
+  }
   // Los primeros 14 días (segunda tanda, 13): empezar, pasos que se marcan solos y a mano, botones que llevan a su sitio y terminar (se deja todo como estaba)
   {
     const abrePri = async () => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "primeros"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#primeros[open] #pr-lista", { timeout: 6000 }).catch(() => {}); };

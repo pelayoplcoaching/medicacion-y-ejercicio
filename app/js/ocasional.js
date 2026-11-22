@@ -1,11 +1,11 @@
 /* Herramientas de uso ocasional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo. Se cargan al pulsar su botón;
    app.js les pasa en «a» lo que necesitan de la aplicación. Nada sale del dispositivo. */
-import { t, idioma } from "./i18n.js?v=202611222054";
-import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611222054";
-import { picto } from "./pictos.js?v=202611222054";
-import { cargarScript } from "./libs.js?v=202611222054";
-import { APP_VERSION } from "./version.js?v=202611222054";
+import { t, idioma } from "./i18n.js?v=202611222111";
+import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611222111";
+import { picto } from "./pictos.js?v=202611222111";
+import { cargarScript } from "./libs.js?v=202611222111";
+import { APP_VERSION } from "./version.js?v=202611222111";
 
 const $ = (s) => document.querySelector(s);
 const hechos = new Set();
@@ -251,4 +251,85 @@ export function hojaSesion(a) {
   const fin = () => { document.body.classList.remove("imprimir-sesion"); window.removeEventListener("afterprint", fin); };
   window.addEventListener("afterprint", fin);
   setTimeout(() => { try { window.print(); } catch { fin(); } }, 120);
+}
+
+/* ---------- aviso de cambios al actualizar la base de conocimiento (sale de app.js en la v1.3.9) ---------- */
+/** Compara dos huellas del informe: avisos nuevos, eliminados y modificados (el mismo fármaco y ámbito con un texto parecido). */
+export function diffHuella(antes, ahora) {
+  const A = new Set(antes || []), B = new Set(ahora || []);
+  const quitados = [...A].filter((x) => !B.has(x)), anadidos = [...B].filter((x) => !A.has(x));
+  const clave = (x) => x.split("|").slice(0, 2).join("|");
+  const palabras = (x) => new Set(x.split("|").slice(3).join("|").toLowerCase().match(/[a-záéíóúñü0-9]{4,}/g) || []);
+  const parecido = (a, b) => { const P = palabras(a), Q = palabras(b); if (!P.size || !Q.size) return 0; let n = 0; for (const w of P) if (Q.has(w)) n++; return n / Math.max(P.size, Q.size); };
+  const pendientes = [...quitados]; const modificados = [], nuevos = [];
+  for (const x of anadidos) {
+    let mejor = -1, mejorS = 0.45;
+    pendientes.forEach((q, i) => { if (clave(q) === clave(x)) { const sc = parecido(q, x); if (sc > mejorS) { mejorS = sc; mejor = i; } } });
+    if (mejor >= 0) { modificados.push({ antes: pendientes[mejor], ahora: x }); pendientes.splice(mejor, 1); } else nuevos.push(x);
+  }
+  return { nuevos, eliminados: pendientes, modificados, total: nuevos.length + pendientes.length + modificados.length };
+}
+/** Banda «la base de conocimiento ha cambiado» y su ventana de detalle. a = { nombresPids() }. */
+export function avisoKb(a) {
+  const b = $("#aviso-kb"); if (!b) return;
+  let k = null; try { k = JSON.parse(localStorage.getItem("medex.kbcambios") || "null"); } catch {}
+  if (!k) { b.hidden = true; return; }
+  const propios = k.cambios.find((c) => c.nombre === t("kbcambio.actual"));
+  const nProp = propios ? propios.nuevos.length + propios.eliminados.length + propios.modificados.length : 0;
+  b.hidden = false;
+  b.innerHTML = `${k.cambios.length ? t("kbcambio.banner", { v: k.a, n: nProp, p: k.tocados ? t("kbcambio.pacientes", { n: k.tocados }) : "" }) : t("kbcambio.sin", { v: k.a })} ${k.cambios.length ? `<button type="button" class="btn-sec sm" id="btn-kb-ver">${t("kbcambio.ver")}</button>` : ""} <button type="button" class="btn-sec sm" id="btn-kb-ok">${t("kbcambio.ok")}</button>`;
+  $("#btn-kb-ok").addEventListener("click", () => { try { localStorage.removeItem("medex.kbcambios"); } catch {} b.hidden = true; });
+  $("#btn-kb-ver")?.addEventListener("click", () => {
+    const nombres = a.nombresPids();
+    const nom = (x) => { const [tipo, id] = x.split("|"); return tipo === "comb" ? id.replace(/_/g, " ") : tipo === "ddi" ? id.split("+").map((p) => nombres[p] || p).join(" + ") : `${nombres[id] || id} · ${t("tab." + tipo)}`; };
+    const linea = (x) => { const [, , nivel, ...resto] = x.split("|"); return `<li class="nivel-${nivel === "mayor" ? "alerta" : nivel === "moderada" ? "precaucion" : nivel === "menor" ? "info" : nivel}"><span class="punto"></span><span><b>${nom(x)}.</b> ${resto.join("|")}</span></li>`; };
+    $("#kbcambios-cuerpo").innerHTML = `<p class="muted">${t("kbcambio.de", { a: k.de, b: k.a, f: new Date(k.fecha).toLocaleDateString(idioma()) })}</p>` + k.cambios.map((c) => `
+      <h4>${c.nombre}</h4>
+      ${c.nuevos.length ? `<p class="sub-label">${t("kbcambio.nuevos")} (${c.nuevos.length})</p><ul class="lista-cambios">${c.nuevos.map(linea).join("")}</ul>` : ""}
+      ${c.eliminados.length ? `<p class="sub-label">${t("kbcambio.eliminados")} (${c.eliminados.length})</p><ul class="lista-cambios eliminados">${c.eliminados.map(linea).join("")}</ul>` : ""}
+      ${c.modificados.length ? `<p class="sub-label">${t("kbcambio.modificados")} (${c.modificados.length})</p><ul class="lista-cambios">${c.modificados.map((m) => linea(m.ahora).replace("</span></li>", ` <s class="muted">${m.antes.split("|").slice(3).join("|")}</s></span></li>`)).join("")}</ul>` : ""}`).join("") + `<p class="muted"><small>${t("kbcambio.nota")}</small></p>`;
+    $("#kbcambios").showModal();
+  });
+}
+
+/* ---------- sugerencias con contexto técnico (sale de app.js en la v1.3.9) ----------
+   a = { estado, datos, errores (últimos errores), pasos (últimos controles pulsados), cribado() }. Nunca valores escritos ni datos personales. */
+const FB_TIPOS = [["farmaco", "fb.t.farmaco"], ["recomendacion", "fb.t.recomendacion"], ["interaccion", "fb.t.interaccion"], ["error", "fb.t.error"], ["idea", "fb.t.idea"], ["valoracion", "fb.t.valoracion"]];
+const FB_CAMPOS = ["app", "navegador", "pantalla", "lista", "contexto", "errores", "pasos"];
+const fbNombre = (tipo) => t(FB_TIPOS.find((x) => x[0] === tipo)?.[1] || "fb.t.idea");
+export function pantallaActual(a) {
+  const tab = a.estado.tab || "general"; const vis = $("#informe") && !$("#informe").hidden;
+  const dlgs = [...document.querySelectorAll("dialog[open]")].map((d) => d.id).filter((id) => id && id !== "feedback");
+  return [`modo ${a.estado.modo}`, vis ? `pestaña ${tab}` : "sin informe", dlgs.length ? "diálogo " + dlgs.join("/") : "", document.documentElement.classList.contains("retorno") ? "visita repetida" : "primera visita"].filter(Boolean).join(" · ");
+}
+export function contextoTecnico(a) {
+  const e = a.estado;
+  const lista = e.meds.map((m) => `${m.libre ? "LIBRE " + m.nombre : m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}${m.pausado ? " (pausado)" : ""}`).join("; ");
+  let ultimo = ""; try { ultimo = localStorage.getItem("medex.ultimoerror") || ""; } catch {}
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  return {
+    app: `v${APP_VERSION} · base ${a.datos?.kb?.version || "?"}`,
+    navegador: `${navigator.userAgent.slice(0, 90)} · ${screen.width}×${screen.height}@${devicePixelRatio} · ${standalone ? "instalada" : "navegador"} · ${navigator.onLine ? "con conexión" : "sin conexión"} · letra ${localStorage.getItem("medex.letra") || 0} · tema ${document.documentElement.dataset.theme || "auto"}`,
+    pantalla: pantallaActual(a),
+    lista,
+    contexto: [e.edad ? e.edad + " años" : "", e.caidas ? "caídas" : "", e.fcReposo ? "FC reposo " + e.fcReposo : "", ...e.condiciones, e.sppb ? "SPPB " + e.sppb.total : "", a.cribado()].filter(Boolean).join(", "),
+    errores: [...a.errores, ultimo ? "último guardado: " + ultimo : ""].filter(Boolean).join(" | "),
+    pasos: a.pasos.join(" → "),
+  };
+}
+export function textoInforme(tipo, texto, c) {
+  return `${t("fb.titulo")} · Pauta Activa\n${t("fb.tipo")} ${fbNombre(tipo)}\n\n${texto}\n\n--- ${t("fb.contexto")} ---\n${FB_CAMPOS.map((k) => `${k}: ${c[k] || "—"}`).join("\n")}`;
+}
+export function abrirFeedback(a, { tipo = "", texto = "" } = {}) {
+  const dlg = $("#feedback");
+  $("#fb-tipos").innerHTML = FB_TIPOS.map(([id, k]) => `<label class="check"><input type="radio" name="fb-tipo" value="${id}"${id === tipo ? " checked" : ""}> <span>${t(k)}</span></label>`).join("");
+  $("#fb-texto").value = texto;
+  const c = contextoTecnico(a);
+  $("#fb-contexto").textContent = FB_CAMPOS.map((k) => `${k}: ${c[k] || "—"}`).join("\n");
+  dlg.showModal(); setTimeout(() => (tipo ? $("#fb-texto") : $("#fb-tipos input")).focus(), 50);
+}
+/** Lo que hay en la hoja: tipo elegido, su nombre, el texto y el contexto (completo solo si se marca «adjuntar»). */
+export function datosFeedback(a) {
+  const tipo = $("#feedback input[name=fb-tipo]:checked")?.value || "";
+  return { tipo, nombre: fbNombre(tipo), texto: $("#fb-texto").value.trim(), c: $("#fb-adjuntar").checked ? contextoTecnico(a) : { pantalla: pantallaActual(a) } };
 }

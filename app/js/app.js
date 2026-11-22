@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611222054";
-import { APP_VERSION } from "./version.js?v=202611222054";
-import { picto } from "./pictos.js?v=202611222054";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611222054";
-import { cargarScript } from "./libs.js?v=202611222054";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611222054";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611222111";
+import { APP_VERSION } from "./version.js?v=202611222111";
+import { picto } from "./pictos.js?v=202611222111";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611222111";
+import { cargarScript } from "./libs.js?v=202611222111";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611222111";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -30,13 +30,13 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611222054")); // lector de listas pegadas y PDF: solo al leer una lista
-const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611222054")); // lectura de fotos y escaneos
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611222054"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611222054"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611222054"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611222054"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611222054"));
+const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611222111")); // lector de listas pegadas y PDF: solo al leer una lista
+const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611222111")); // lectura de fotos y escaneos
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611222111"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611222111"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611222111"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611222111"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611222111"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611222054"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611222111"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611222054"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611222111"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611222054"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611222111"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611222054"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611222111"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,7 +110,7 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
-const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611222054"));
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611222111"));
 const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
 /** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
 function abrirPastillero() {
@@ -124,11 +124,11 @@ function abrirPastillero() {
     .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
-const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611222054"));
+const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611222111"));
 /** «¿Cuánto movimiento hace falta?» (mejora grande 4): curvas de dosis y respuesta con su punto del diario. */
 function abrirDosis() { cargarDosis().then((D) => D.abrir({ diario: leerDiario(), edad: estado.edad })).catch(() => { cargarDosis.p = null; toast(t("pq.error"), { ms: 4000 }); }); }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-dosis]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirDosis(); } });
-const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611222054"));
+const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611222111"));
 /** «¿Qué cambia si…?» (mejora grande 16): el escenario se calcula en simula.js con el motor que se le pasa; la lista real no se toca. */
 function abrirSimula(quitar = []) {
   const meds = datos ? medsActivos().map((m) => { const ref = indice.porId.get(m.pid); return ref ? { pid: m.pid, nombre: ref.principio.nombre, clase: ref.clase.id, ic: iconoGrupo(ref.clase) } : null; }).filter(Boolean) : [];
@@ -159,12 +159,12 @@ document.addEventListener("aprende", () => { const n = $(".aprende-tile .apr-n")
 /** Biblioteca de ejercicios (segunda tanda, 4): 45 ejercicios con dibujo y «Cambiar» uno del plan por otro del mismo tipo (js/biblioteca.js).
     Lo cambiado va en localStorage («medex.cambios»); se aplica en cuanto la biblioteca ha cargado (al arrancar, solo si hay cambios). */
 let BIB = null, MOVM = null;
-const cargarBiblio = () => (cargarBiblio.p ||= Promise.all([import("./biblioteca.js?v=202611222054"), cargarMov()]).then(([B, M]) => { BIB = B; MOVM = M; return B; }));
+const cargarBiblio = () => (cargarBiblio.p ||= Promise.all([import("./biblioteca.js?v=202611222111"), cargarMov()]).then(([B, M]) => { BIB = B; MOVM = M; return B; }));
 const hayCambios = () => { try { return (localStorage.getItem("medex.cambios") || "").length > 2; } catch { return false; } };
 /** Programa de 12 semanas (segunda tanda, 3; js/programa.js): fija los minutos de paseo y las series de la semana, y avanza solo con el diario.
     El estado va en localStorage («medex.programa»); el módulo se carga al arrancar solo si hay un programa en marcha. */
 let PRG = null;
-const cargarPrograma = () => (cargarPrograma.p ||= import("./programa.js?v=202611222054").then((m) => { PRG = m; return m; }));
+const cargarPrograma = () => (cargarPrograma.p ||= import("./programa.js?v=202611222111").then((m) => { PRG = m; return m; }));
 const hayPrograma = () => { try { return !!localStorage.getItem("medex.programa"); } catch { return false; } };
 const diasConSesion = () => Object.values(planActual()).filter((x) => x && x !== "descanso");
 /** Semana del programa en vigor (o null). Una vez al día pone el programa al día con el diario y avisa de lo decidido. */
@@ -190,11 +190,12 @@ document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-
 /** Módulos bajo demanda de la segunda tanda (desde la mejora 5): se abren con data-abre="nombre" (y data-arg opcional) y reciben todos
     la misma interfaz de la aplicación, api(). Así cada módulo nuevo solo añade aquí su línea de import y app.js no crece. */
 const MODULOS = {
-  rato: () => import("./rato.js?v=202611222054"), // 5 · «Hoy tengo…»: sesión de 5 a 30 minutos y píldoras de movimiento
-  paseo: () => import("./paseo.js?v=202611222054"), // 6 · paseo guiado con metrónomo, voz, prueba del habla y programa de 8 semanas
-  dolor: () => import("./dolor.js?v=202611222054"), // 7 · «Me duele…»: semáforo del dolor y plan adaptado por zona
-  vuelta: () => import("./vuelta.js?v=202611222054"), // 8 · volver tras un parón, una enfermedad o un ingreso
-  primeros: () => import("./primeros.js?v=202611222054"), // 13 · los primeros 14 días: un paso pequeño cada día
+  rato: () => import("./rato.js?v=202611222111"), // 5 · «Hoy tengo…»: sesión de 5 a 30 minutos y píldoras de movimiento
+  paseo: () => import("./paseo.js?v=202611222111"), // 6 · paseo guiado con metrónomo, voz, prueba del habla y programa de 8 semanas
+  dolor: () => import("./dolor.js?v=202611222111"), // 7 · «Me duele…»: semáforo del dolor y plan adaptado por zona
+  vuelta: () => import("./vuelta.js?v=202611222111"), // 8 · volver tras un parón, una enfermedad o un ingreso
+  primeros: () => import("./primeros.js?v=202611222111"), // 13 · los primeros 14 días: un paso pequeño cada día
+  cuerpo: () => import("./cuerpo.js?v=202611222111"), // 9 · su medicación en el cuerpo: figura con once zonas
 };
 /** Banda de «Los primeros 14 días» en el panel de hoy: mientras dura el arranque (hasta 4 semanas) o, si aún no hay sesiones, como invitación. */
 function bandaPrimeros(diario) {
@@ -257,7 +258,7 @@ function abrirPorque(id) {
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-porque]"); if (b) { ev.preventDefault(); abrirPorque(b.dataset.porque); } });
 /** Centro de herramientas (segunda tanda, 2): todo en una pantalla, con buscador, favoritas y «Para usted hoy» (js/centro.js). */
-const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611222054"));
+const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611222111"));
 function abrirCentro(foco = false) {
   $("#menu-mas").open = false;
   const aPlan = (tab) => { estado.tab = tab; render(); desplazar($(".tabs")); };
@@ -1039,7 +1040,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611222054").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611222111").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1544,7 +1545,7 @@ $("#btn-ver-enlace")?.addEventListener("click", async () => {
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo); el cálculo va en consulta.js, bajo demanda ---------- */
-const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611222054"));
+const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611222111"));
 function abrirEstadisticas() {
   const evaluarE = (e) => ({ ctx: ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} }), res: evaluarEstado(e), crib: cribadoACSM(sanearCribado(e.cribado)) });
   cargarConsulta().then((C) => C.abrir({ perfiles: leerPerfiles(), evaluar: evaluarE, sit: (c) => ETIQUETAS_CTX[c] || t("sit." + c), senales: datos.kb.senales, crib: (k) => t("crib.chip." + k), version: APP_VERSION, kbVersion: datos.kb.version, descargar: descargarTexto, toast, hoy: hoyISO() }))
@@ -1573,66 +1574,37 @@ function huellaInforme(res) {
   for (const x of res.interacciones) items.push(`ddi|${[x.a.principio.id, x.b.principio.id].sort().join("+")}|${x.nivel}|${x.efecto}`);
   return items;
 }
-function diffHuella(antes, ahora) {
-  const A = new Set(antes || []), B = new Set(ahora || []);
-  const quitados = [...A].filter((x) => !B.has(x)), anadidos = [...B].filter((x) => !A.has(x));
-  const clave = (x) => x.split("|").slice(0, 2).join("|");
-  const palabras = (x) => new Set(x.split("|").slice(3).join("|").toLowerCase().match(/[a-záéíóúñü0-9]{4,}/g) || []);
-  const parecido = (a, b) => { const A = palabras(a), B = palabras(b); if (!A.size || !B.size) return 0; let n = 0; for (const w of A) if (B.has(w)) n++; return n / Math.max(A.size, B.size); };
-  const pendientes = [...quitados]; const modificados = [], nuevos = [];
-  for (const x of anadidos) { // un aviso «modificado» es el mismo fármaco/ámbito con un texto parecido (mismo nivel o distinto)
-    let mejor = -1, mejorS = 0.45;
-    pendientes.forEach((q, i) => { if (clave(q) === clave(x)) { const sc = parecido(q, x); if (sc > mejorS) { mejorS = sc; mejor = i; } } });
-    if (mejor >= 0) { modificados.push({ antes: pendientes[mejor], ahora: x }); pendientes.splice(mejor, 1); } else nuevos.push(x);
-  }
-  const eliminados = pendientes;
-  return { nuevos, eliminados, modificados, total: nuevos.length + eliminados.length + modificados.length };
-}
 function firmaLista() { return JSON.stringify([medsActivos().map((m) => [m.pid, m.dosis, m.tomas]), estado.edad, [...ctxActual().condiciones].sort()]); }
 function guardarHuella(res) { try { localStorage.setItem("medex.huella", JSON.stringify({ kb: datos.kb.version, lista: firmaLista(), items: huellaInforme(res) })); } catch {} }
 function evaluarEstado(e) { return evaluar(datos, (e.meds || []).filter((m) => !m.pausado && !m.libre), ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} })); }
 function comprobarCambiosBase() {
   let h = null; try { h = JSON.parse(localStorage.getItem("medex.huella") || "null"); } catch {}
   if (!h || h.kb === datos.kb.version) return;
-  const cambios = [];
-  if (estado.meds.length && h.lista === firmaLista() && Array.isArray(h.items)) { const d = diffHuella(h.items, huellaInforme(evaluar(datos, medsActivos(), ctxActual()))); if (d.total) cambios.push({ nombre: t("kbcambio.actual"), d }); }
-  const perfiles = leerPerfiles(); let tocados = 0;
-  for (const pf of perfiles) {
-    try {
-      const items = huellaInforme(evaluarEstado(pf.estado));
-      if (pf.huella?.items && pf.huella.kb !== datos.kb.version) { const d = diffHuella(pf.huella.items, items); if (d.total) { cambios.push({ nombre: pf.nombre, d }); tocados++; } }
-      pf.huella = { kb: datos.kb.version, items };
-    } catch {}
-  }
-  escribirPerfiles(perfiles);
-  try { localStorage.setItem("medex.kbcambios", JSON.stringify({ fecha: Date.now(), de: h.kb, a: datos.kb.version, cambios: cambios.map((c) => ({ nombre: c.nombre, nuevos: c.d.nuevos, eliminados: c.d.eliminados, modificados: c.d.modificados })), tocados })); } catch {}
-  try { localStorage.setItem("medex.huella", JSON.stringify({ ...h, kb: datos.kb.version })); } catch {}
-  pintarAvisoKb();
+  try { localStorage.setItem("medex.huella", JSON.stringify({ ...h, kb: datos.kb.version })); } catch {} // ya, antes del primer render (que guarda la huella nueva)
+  ocasional((O) => { // la comparación y el aviso viven en js/ocasional.js: solo hacen falta cuando cambia la base
+    const cambios = [];
+    if (estado.meds.length && h.lista === firmaLista() && Array.isArray(h.items)) { const d = O.diffHuella(h.items, huellaInforme(evaluar(datos, medsActivos(), ctxActual()))); if (d.total) cambios.push({ nombre: t("kbcambio.actual"), d }); }
+    const perfiles = leerPerfiles(); let tocados = 0;
+    for (const pf of perfiles) {
+      try {
+        const items = huellaInforme(evaluarEstado(pf.estado));
+        if (pf.huella?.items && pf.huella.kb !== datos.kb.version) { const d = O.diffHuella(pf.huella.items, items); if (d.total) { cambios.push({ nombre: pf.nombre, d }); tocados++; } }
+        pf.huella = { kb: datos.kb.version, items };
+      } catch {}
+    }
+    escribirPerfiles(perfiles);
+    try { localStorage.setItem("medex.kbcambios", JSON.stringify({ fecha: Date.now(), de: h.kb, a: datos.kb.version, cambios: cambios.map((c) => ({ nombre: c.nombre, nuevos: c.d.nuevos, eliminados: c.d.eliminados, modificados: c.d.modificados })), tocados })); } catch {}
+    O.avisoKb({ nombresPids });
+  });
 }
 function pintarAvisoKb() {
   const b = $("#aviso-kb"); if (!b) return;
-  let k = null; try { k = JSON.parse(localStorage.getItem("medex.kbcambios") || "null"); } catch {}
-  if (!k) { b.hidden = true; return; }
-  const propios = k.cambios.find((c) => c.nombre === t("kbcambio.actual"));
-  const nProp = propios ? propios.nuevos.length + propios.eliminados.length + propios.modificados.length : 0;
-  b.hidden = false;
-  b.innerHTML = `${k.cambios.length ? t("kbcambio.banner", { v: k.a, n: nProp, p: k.tocados ? t("kbcambio.pacientes", { n: k.tocados }) : "" }) : t("kbcambio.sin", { v: k.a })} ${k.cambios.length ? `<button type="button" class="btn-sec sm" id="btn-kb-ver">${t("kbcambio.ver")}</button>` : ""} <button type="button" class="btn-sec sm" id="btn-kb-ok">${t("kbcambio.ok")}</button>`;
-  $("#btn-kb-ok").addEventListener("click", () => { try { localStorage.removeItem("medex.kbcambios"); } catch {} b.hidden = true; });
-  $("#btn-kb-ver")?.addEventListener("click", () => {
-    const nombres = nombresPids();
-    const nom = (x) => { const [tipo, id] = x.split("|"); return tipo === "comb" ? id.replace(/_/g, " ") : tipo === "ddi" ? id.split("+").map((p) => nombres[p] || p).join(" + ") : `${nombres[id] || id} · ${t("tab." + tipo)}`; };
-    const linea = (x) => { const [, , nivel, ...resto] = x.split("|"); return `<li class="nivel-${nivel === "mayor" ? "alerta" : nivel === "moderada" ? "precaucion" : nivel === "menor" ? "info" : nivel}"><span class="punto"></span><span><b>${nom(x)}.</b> ${resto.join("|")}</span></li>`; };
-    $("#kbcambios-cuerpo").innerHTML = `<p class="muted">${t("kbcambio.de", { a: k.de, b: k.a, f: new Date(k.fecha).toLocaleDateString(idioma()) })}</p>` + k.cambios.map((c) => `
-      <h4>${c.nombre}</h4>
-      ${c.nuevos.length ? `<p class="sub-label">${t("kbcambio.nuevos")} (${c.nuevos.length})</p><ul class="lista-cambios">${c.nuevos.map(linea).join("")}</ul>` : ""}
-      ${c.eliminados.length ? `<p class="sub-label">${t("kbcambio.eliminados")} (${c.eliminados.length})</p><ul class="lista-cambios eliminados">${c.eliminados.map(linea).join("")}</ul>` : ""}
-      ${c.modificados.length ? `<p class="sub-label">${t("kbcambio.modificados")} (${c.modificados.length})</p><ul class="lista-cambios">${c.modificados.map((m) => linea(m.ahora).replace("</span></li>", ` <s class="muted">${m.antes.split("|").slice(3).join("|")}</s></span></li>`)).join("")}</ul>` : ""}`).join("") + `<p class="muted"><small>${t("kbcambio.nota")}</small></p>`;
-    $("#kbcambios").showModal();
-  });
+  let k = null; try { k = localStorage.getItem("medex.kbcambios"); } catch {}
+  if (k) ocasional((O) => O.avisoKb({ nombresPids })); else b.hidden = true;
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
 
-const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611222054"));
+const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611222111"));
 /** «Lo que el ejercicio hace por usted» (mejora grande 3): cifras de revisiones para lo marcado; el contenido va en beneficios.js. */
 function seccionBeneficios() {
   const ctx = ctxActual(), sec = seccion(t("ben.titulo"), { clave: "beneficios", resumen: "…" }), cuerpo = sec.querySelector(".cuerpo-sec");
@@ -1640,7 +1612,7 @@ function seccionBeneficios() {
     .catch(() => { cargarBeneficios.p = null; sec.remove(); });
   return sec;
 }
-const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611222054"));
+const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611222111"));
 function irHabitos() { const d = $("#bloque-habitos"); if (!d) return; d.open = true; desplazar(d); setTimeout(() => d.querySelector("input:checked, input")?.focus({ preventScroll: true }), 400); }
 /** «Alcohol, tabaco y café con su medicación» (mejora grande 5): abierta si alguna respuesta tiene algo que cruzar. */
 function seccionHabitos(res) {
@@ -1652,7 +1624,7 @@ function seccionHabitos(res) {
   }).catch(() => { cargarHabitos.p = null; sec.remove(); });
   return sec;
 }
-const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611222054"));
+const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611222111"));
 /** «Guía de conversación» (mejora grande 15, modo profesional): reúne lo que la guía adapta y la abre. */
 async function abrirConversa() {
   const ctx = ctxActual(), res = evaluar(datos, medsActivos(), ctx), M = estado.metas?.ids?.length ? await cargarMetas() : null;
@@ -1960,7 +1932,7 @@ function render() {
   $("#perfil").innerHTML = "";
   if (perfil.length) {
     const sec = seccion(t("inf.efectos"), { abierta: false, clave: "perfil", resumen: t("inf.n_efectos", { n: perfil.length }) });
-    sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small>${PQ_SENAL[s] ? `<button type="button" class="pq-mini" data-porque="${PQ_SENAL[s]}" aria-label="${t("pq.titulo")} ${datos.kb.senales[s]}">${t("pq.titulo")}</button>` : ""}</li>`).join("")}</ul>`;
+    sec.querySelector(".cuerpo-sec").innerHTML = `<ul>${perfil.map(([s, its]) => `<li><span class="num">${its.length}</span><span>${datos.kb.senales[s]}</span><small>${its.map((i) => i.principio.nombre).join(", ")}</small>${PQ_SENAL[s] ? `<button type="button" class="pq-mini" data-porque="${PQ_SENAL[s]}" aria-label="${t("pq.titulo")} ${datos.kb.senales[s]}">${t("pq.titulo")}</button>` : ""}</li>`).join("")}</ul><p><button type="button" class="btn-sec sm" data-abre="cuerpo">${t("cuerpo.btn")}</button></p>`;
     $("#perfil").append(sec);
   }
 }
@@ -2204,8 +2176,8 @@ function celebrar() {
 }
 
 /* ---------- entrenador por voz (js/voz.js) y sesión guiada (js/sesion.js): se cargan al abrir la sesión ---------- */
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611222054").then((m) => m.VOZ));
-const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611222054"));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611222111").then((m) => m.VOZ));
+const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611222111"));
 /** Sesión guiada: chequeo previo, bloques con cronómetro y voz. «extra» permite pasar una sesión ya armada (extra.sesion). */
 function abrirSesion(tipo, fecha = hoyISO(), extra = {}) {
   const ctx = ctxActual(), fragil = esFragil();
@@ -2262,7 +2234,7 @@ function renderInteracciones(cont, res) {
   cont.append(sec);
   if (res.interacciones.length) pintarMapaInter(sec.querySelector(".im-caja"), res);
 }
-const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611222054"));
+const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611222111"));
 /** Mapa de interacciones (mejora grande 17): tabla de cruces o red, con la ficha de cada cruce; el texto completo sigue en la lista. */
 function pintarMapaInter(caja, res) {
   const fuente = (x) => (x.fuente === "curada" ? x.fuenteTxt || t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : t("ddi.duplicidad"));
@@ -2415,7 +2387,7 @@ function evolucionActual() {
 }
 function nombresPids() { const o = {}; for (const c of datos.kb.clases) for (const pr of c.principios) o[pr.id] = pr.nombre; return o; }
 // La ventana de evolución y los casos (exportar, importar, CSV, caso de prueba) viven en js/pro.js (se cargan al pulsar su botón)
-const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611222054"));
+const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611222111"));
 const pro = (f) => cargarPro().then(f, () => { cargarPro.p = null; toast(t("pq.error"), { ms: 4000 }); });
 function abrirEvolucion() {
   const evo = evolucionActual(); if (!evo) return;
@@ -2477,7 +2449,7 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
 
 /* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
 // El SPPB guiado, el escáner de cajas, la copia cifrada y el paso a otro dispositivo viven en js/ocasional.js (se cargan al pulsar su botón)
-const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611222054"));
+const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611222111"));
 const ocasional = (f) => cargarOcasional().then(f, () => { cargarOcasional.p = null; toast(t("pq.error"), { ms: 4000 }); });
 const apiOc = () => ({ estado, indice, toast, vibrar, anilloCrono, elegir, leerPerfiles, leerDiario,
   guardarSppb: (s) => { estado.sppb = s; estado.pro.sppb = s.total; $("#pro-sppb").value = s.total; aplicarVivifrailAuto(); guardar(); render(); },
@@ -2541,7 +2513,7 @@ $("#btn-glosario").addEventListener("click", () => {
 });
 
 // recorrido guiado sobre los elementos reales (primera visita o desde «¿Cómo funciona?»)
-const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611222054")); // vive en js/tour.js y se carga al iniciarlo
+const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611222111")); // vive en js/tour.js y se carga al iniciarlo
 function iniciarTour() { cargarTour().then((T) => T.iniciar({ MOV, conTransicion }), () => { cargarTour.p = null; }); }
 
 // «Su plan está al N %»: qué falta por rellenar para afinar el plan, con un botón directo
@@ -2596,60 +2568,27 @@ document.addEventListener("click", (ev) => {
   if (ultimo && ultimo.endsWith(nombre)) return;
   pasosRecientes.push(`${new Date().toISOString().slice(11, 19)} ${nombre}`); if (pasosRecientes.length > 12) pasosRecientes.shift();
 }, true);
-const FB_TIPOS = [["farmaco", "fb.t.farmaco"], ["recomendacion", "fb.t.recomendacion"], ["interaccion", "fb.t.interaccion"], ["error", "fb.t.error"], ["idea", "fb.t.idea"], ["valoracion", "fb.t.valoracion"]];
-function pantallaActual() {
-  const tab = estado.tab || "general"; const vis = $("#informe") && !$("#informe").hidden;
-  const dlgs = $$("dialog[open]").map((d) => d.id).filter((id) => id && id !== "feedback");
-  return [`modo ${estado.modo}`, vis ? `pestaña ${tab}` : "sin informe", dlgs.length ? "diálogo " + dlgs.join("/") : "", document.documentElement.classList.contains("retorno") ? "visita repetida" : "primera visita"].filter(Boolean).join(" · ");
-}
-function contextoTecnico() {
-  const lista = estado.meds.map((m) => `${m.libre ? "LIBRE " + m.nombre : m.pid}${m.dosis != null ? " " + m.dosis + " " + (m.unidad || "mg") : ""}${m.tomas > 1 ? " x" + m.tomas : ""}${m.pausado ? " (pausado)" : ""}`).join("; ");
-  let ultimo = ""; try { ultimo = localStorage.getItem("medex.ultimoerror") || ""; } catch {}
-  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
-  return {
-    app: `v${APP_VERSION} · base ${datos?.kb?.version || "?"}`,
-    navegador: `${navigator.userAgent.slice(0, 90)} · ${screen.width}×${screen.height}@${devicePixelRatio} · ${standalone ? "instalada" : "navegador"} · ${navigator.onLine ? "con conexión" : "sin conexión"} · letra ${localStorage.getItem("medex.letra") || 0} · tema ${document.documentElement.dataset.theme || "auto"}`,
-    pantalla: pantallaActual(),
-    lista,
-    contexto: [estado.edad ? estado.edad + " años" : "", estado.caidas ? "caídas" : "", estado.fcReposo ? "FC reposo " + estado.fcReposo : "", ...estado.condiciones, estado.sppb ? "SPPB " + estado.sppb.total : "", cribadoActual(evaluar(datos, medsActivos(), ctxActual())).clave].filter(Boolean).join(", "),
-    errores: [...erroresRecientes, ultimo ? "último guardado: " + ultimo : ""].filter(Boolean).join(" | "),
-    pasos: pasosRecientes.join(" → "),
-  };
-}
-function textoInforme(tipo, texto, c) {
-  return `${t("fb.titulo")} · Pauta Activa\n${t("fb.tipo")} ${t(FB_TIPOS.find((x) => x[0] === tipo)?.[1] || "fb.t.idea")}\n\n${texto}\n\n--- ${t("fb.contexto")} ---\n${["app", "navegador", "pantalla", "lista", "contexto", "errores", "pasos"].map((k) => `${k}: ${c[k] || "—"}`).join("\n")}`;
-}
-function abrirFeedback({ tipo = "", texto = "" } = {}) {
-  const dlg = $("#feedback");
-  $("#fb-tipos").innerHTML = FB_TIPOS.map(([id, k]) => `<label class="check"><input type="radio" name="fb-tipo" value="${id}"${id === tipo ? " checked" : ""}> <span>${t(k)}</span></label>`).join("");
-  $("#fb-texto").value = texto;
-  const c = contextoTecnico();
-  $("#fb-contexto").textContent = ["app", "navegador", "pantalla", "lista", "contexto", "errores", "pasos"].map((k) => `${k}: ${c[k] || "—"}`).join("\n");
-  dlg.showModal(); setTimeout(() => (tipo ? $("#fb-texto") : $("#fb-tipos input")).focus(), 50);
-}
-function datosFeedback() {
-  const tipo = $("#feedback input[name=fb-tipo]:checked")?.value || "";
-  const texto = $("#fb-texto").value.trim();
-  const c = $("#fb-adjuntar").checked ? contextoTecnico() : { pantalla: pantallaActual() };
-  return { tipo, texto, c };
-}
+// La hoja de sugerencias (tipos, contexto técnico y texto del informe) vive en js/ocasional.js desde la v1.3.9: la trae abrirFeedback
+let OC = null; // js/ocasional.js ya cargado: lo usan los botones de la hoja, que solo se ven con ella abierta
+const apiFb = () => ({ estado, datos, errores: erroresRecientes, pasos: pasosRecientes, cribado: () => cribadoActual(evaluar(datos, medsActivos(), ctxActual())).clave });
+function abrirFeedback(o) { ocasional((O) => { OC = O; O.abrirFeedback(apiFb(), o); }); }
 $("#feedback-cerrar").addEventListener("click", () => $("#feedback").close());
 $("#feedback").addEventListener("click", (ev) => { if (ev.target === $("#feedback")) $("#feedback").close(); });
 $("#feedback-form").addEventListener("submit", (ev) => {
   ev.preventDefault();
-  const { tipo, texto, c } = datosFeedback();
+  const { tipo, nombre, texto, c } = OC.datosFeedback(apiFb());
   if (!tipo) { toast(t("fb.falta_tipo"), { ms: 3000 }); return; }
-  window.open(urlSugerencia({ tipo: t(FB_TIPOS.find((x) => x[0] === tipo)[1]), texto, pantalla: c.pantalla, errores: c.errores, pasos: c.pasos, navegador: c.navegador, lista: $("#fb-adjuntar").checked ? undefined : "" }), "_blank", "noopener");
+  window.open(urlSugerencia({ tipo: nombre, texto, pantalla: c.pantalla, errores: c.errores, pasos: c.pasos, navegador: c.navegador, lista: $("#fb-adjuntar").checked ? undefined : "" }), "_blank", "noopener");
   $("#feedback").close(); $("#pdf-aviso").textContent = t("sug.abierto");
 });
 $("#fb-copiar").addEventListener("click", async () => {
-  const { tipo, texto, c } = datosFeedback();
-  try { await navigator.clipboard.writeText(textoInforme(tipo, texto, c)); toast(t("fb.copiado"), { ms: 3000 }); } catch { toast(t("fb.copiar_error"), { ms: 4000 }); }
+  const { tipo, texto, c } = OC.datosFeedback(apiFb());
+  try { await navigator.clipboard.writeText(OC.textoInforme(tipo, texto, c)); toast(t("fb.copiado"), { ms: 3000 }); } catch { toast(t("fb.copiar_error"), { ms: 4000 }); }
 });
 $("#fb-correo").addEventListener("click", () => {
-  const { tipo, texto, c } = datosFeedback();
-  const cuerpo = textoInforme(tipo, texto, c).slice(0, 1800);
-  location.href = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent("Pauta Activa · " + (t(FB_TIPOS.find((x) => x[0] === tipo)?.[1] || "fb.t.idea")))}&body=${encodeURIComponent(cuerpo)}`;
+  const { tipo, nombre, texto, c } = OC.datosFeedback(apiFb());
+  const cuerpo = OC.textoInforme(tipo, texto, c).slice(0, 1800);
+  location.href = `mailto:pelayoplcoaching@gmail.com?subject=${encodeURIComponent("Pauta Activa · " + nombre)}&body=${encodeURIComponent(cuerpo)}`;
 });
 
 // --- copia cifrada (AES-GCM 256; clave derivada de la contraseña con PBKDF2-SHA-256, 250 000 iteraciones) ---
@@ -2709,7 +2648,7 @@ $("#btn-sync").addEventListener("click", () => ocasional((O) => O.abrirSync(apiO
 
 
 /* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
-const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611222054"));
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611222111"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();

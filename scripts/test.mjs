@@ -896,6 +896,37 @@ console.log("\nLos primeros 14 días (segunda tanda, 13)");
   check("módulo registrado, banda en el panel de hoy y clave en la copia de seguridad", /\n  primeros: \(\) => import\("\.\/primeros\.js/.test(appJs) && /\$\{filaCalor\(\)\}\$\{bandaPrimeros\(diario\)\}/.test(appJs) && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.primeros"'));
 }
 
+console.log("\nSu medicación en el cuerpo (segunda tanda, 9)");
+{
+  const B = await import(pathToFileURL(path.join(ROOT, "app/js/cuerpo.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const O = await import(pathToFileURL(path.join(ROOT, "app/js/ocasional.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/cuerpo.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const senales = datos.kb.senales, enZona = new Set(B.ZONAS.flatMap((z) => z.s));
+  check("once zonas con identificador único y su punto dentro de la figura", B.ZONAS.length === 11 && new Set(B.ZONAS.map((z) => z.id)).size === 11 && B.ZONAS.every((z) => z.s.length >= 1 && z.x >= 15 && z.x <= 85 && z.y >= 5 && z.y <= 95));
+  const dist = (a, b) => Math.hypot((a.x - b.x) * 2, (a.y - b.y) * 4.4); // la caja mide 200 × 440 unidades
+  const cerca = B.ZONAS.flatMap((a, i) => B.ZONAS.slice(i + 1).filter((b) => dist(a, b) < 40).map((b) => `${a.id}-${b.id}`));
+  check("los puntos de la figura no se pisan (al menos 40 unidades entre centros)", cerca.length === 0, cerca.join());
+  check("todas las señales de las zonas existen en la base", [...enZona].every((s) => typeof senales[s] === "string" && senales[s].length > 5), [...enZona].filter((s) => !senales[s]).join());
+  const sueltas = Object.keys(senales).filter((s) => !enZona.has(s) && !B.MARCAS.includes(s));
+  check("ninguna señal de la base se queda sin zona (salvo las que solo marcan la familia y el dopaje)", sueltas.length === 0 && B.MARCAS.every((s) => senales[s] && !enZona.has(s)), sueltas.join());
+  const lista = ["bisoprolol", "enalapril", "metformina", "acenocumarol", "atorvastatina", "lorazepam", "furosemida"].map((pid) => ({ pid, dosis: null, tomas: 1 }));
+  const res = evaluar(datos, lista.filter((m) => indice.porId.has(m.pid)), { edad: 72, condiciones: new Set(["hipertension", "diabetes"]) });
+  const m = B.mapa(res.perfil, senales), z = (id) => m.find((x) => x.id === id);
+  check("lista de ejemplo: el betabloqueante sale en el corazón, la estatina en el músculo, el anticoagulante en la sangre y el diurético en el riñón", z("corazon").meds.some((x) => x.pid === "bisoprolol") && z("musculo").meds.some((x) => x.pid === "atorvastatina") && z("sangre").meds.some((x) => x.pid === "acenocumarol") && z("rinon").meds.some((x) => x.pid === "furosemida") && z("tendon").meds.length === 0, m.map((x) => `${x.id}:${x.meds.length}`).join(" "));
+  check("cada efecto lleva el texto de la base tal cual y sus medicamentos; los de la zona no se repiten", m.every((x) => x.efectos.every((e) => e.texto === senales[e.s] && e.meds.length >= 1) && new Set(x.meds.map((y) => y.pid)).size === x.meds.length && x.meds.length <= x.efectos.reduce((s, e) => s + e.meds.length, 0)));
+  check("se abre por la zona con más medicamentos; sin medicación, por ninguna", B.zonaInicial(m) === [...m].sort((a, b) => b.meds.length - a.meds.length)[0].id && B.zonaInicial(B.mapa({}, senales)) === null && B.mapa({}, senales).every((x) => x.meds.length === 0 && x.efectos.length === 0));
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves, y nombre para cada zona`, kEs.size >= 28 && B.ZONAS.every((x) => kEs.has("z_" + x.id)) && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("no trae contenido clínico propio: efectos de kb.senales, cuidados «cuid.*» y enlace al «¿Por qué?»", /texto: senales\[s\]/.test(src) && /t\("cuid\." \+ id\)/.test(src) && /data-porque="\$\{id\}"/.test(src) && !/borrador|doi\.org/i.test(src));
+  check("módulo registrado, botón en «Efectos de su medicación» y herramienta en el centro", /\n  cuerpo: \(\) => import\("\.\/cuerpo\.js/.test(appJs) && /data-abre="cuerpo">\$\{t\("cuerpo\.btn"\)\}/.test(appJs) && C.HERRAMIENTAS.some((h) => h.id === "cuerpo" && h.dv === "cuerpo" && h.meds));
+  // arranque más ligero (v1.3.9): la comparación de huellas y la hoja de sugerencias salen del fichero principal
+  const d = O.diffHuella(["general|a|alerta|Evite el calor intenso al entrenar", "fuerza|b|info|Texto que se quita"], ["general|a|precaucion|Evite el calor intenso al entrenar fuera", "aerobico|c|info|Texto nuevo del todo"]);
+  check("huellas del informe: distingue avisos nuevos, eliminados y modificados", d.total === 3 && d.nuevos.length === 1 && d.eliminados.length === 1 && d.modificados.length === 1 && d.modificados[0].antes.includes("alerta") && O.diffHuella(["x|y|z|igual"], ["x|y|z|igual"]).total === 0);
+  check("el aviso de cambios de la base y la hoja de sugerencias ya no están en el fichero principal", !/function diffHuella|function contextoTecnico|function textoInforme|const FB_TIPOS/.test(appJs) && /O\.diffHuella\(/.test(appJs) && /O\.abrirFeedback\(apiFb\(\), o\)/.test(appJs) && typeof O.avisoKb === "function" && typeof O.contextoTecnico === "function" && typeof O.datosFeedback === "function");
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
