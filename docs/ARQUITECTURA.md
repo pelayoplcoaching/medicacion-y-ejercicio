@@ -26,7 +26,7 @@ app/
     parser.js           lectura de listas pegadas / PDF (texto) → medicamentos
     ocr.js              foto u hoja escaneada → texto (Tesseract, bajo demanda)
     informes.js         textos derivados que se ven en pantalla (prescripción, vistazo, ritmo, plan) y texto para la historia
-    pdf.js              PDF (jsPDF): informe clínico, plan del paciente, evolución, ficha del entrenador, tarjeta A5.
+    pdf.js              PDF (jsPDF): informe clínico, plan del paciente, evolución, ficha del entrenador, tarjeta A5; infografías (vistazo con QR, fichas de mecanismo, calendario, barra de intensidad) y máximo de 4 caras con detalle decreciente (v1.2.18).
     semana.js           anillos de la semana (moverse, fuerza, equilibrio), racha amable y mapa de 12 semanas (bajo demanda, v1.2)
     voz.js              entrenador por voz de la sesión guiada (síntesis del navegador, bajo demanda, v1.2)
     porque.js           «¿Por qué?»: 15 explicadores animados de mecanismos (escenas SVG con sus estilos, contenido en español con fuentes de la base; bajo demanda, v1.2)

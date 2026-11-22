@@ -602,6 +602,20 @@ console.log("\n«Guía de conversación» para la consulta (mejora grande 15)");
   check("interfaz en los cinco idiomas con las mismas variables; las cinco Aes traducidas", ["en", "ca", "gl", "eu"].every((l) => Object.keys(C.TXT[l]).length === ks.length && ks.every((x) => C.TXT[l][x] && vars(C.TXT[l][x]) === vars(C.TXT.es[x]))) && C.AES.every((a) => C.TXT.en[a] && C.TXT.en[a] !== C.TXT.es[a]));
 }
 
+console.log("\nPDF con infografías (mejora grande 18)");
+{
+  const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
+  const appSrc = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), pdfSrc = fs.readFileSync(path.join(ROOT, "app/js/pdf.js"), "utf8");
+  const PQ_APP = Function(`return ${appSrc.match(/const PQ_SENAL = (\{[^;]+\});/)[1]}`)();
+  const ORDEN_APP = JSON.parse(appSrc.match(/const PQ_ORDEN = (\[[^\]]+\]);/)[1]);
+  check("las fichas de mecanismo del PDF son las mismas que los «¿Por qué?» de la app (señales y orden), con icono y textos cortos", JSON.stringify(PDF.PQ_SENAL) === JSON.stringify(PQ_APP) && JSON.stringify(PDF.PQ_ORDEN) === JSON.stringify(ORDEN_APP) && PDF.PQ_ORDEN.every((id) => PDF.MEC[id] && PDF.ICONOS[PDF.MEC[id].ico] && PDF.MEC[id].t.length <= 30 && PDF.MEC[id].h.length <= 70));
+  const res = evaluar(datos, ["bisoprolol", "acenocumarol", "insulina_basal", "furosemida", "lorazepam", "atorvastatina", "ciprofloxacino"].map((pid) => ({ pid, dosis: 1, tomas: 1 })), { condiciones: new Set() });
+  const M = PDF.mecanismosDe(res), M3 = PDF.mecanismosDe(res, { max: 3, nombres: false });
+  check("mecanismos de la lista: por orden de importancia (pulso, azúcar, golpes…), con quién los causa y un máximo", M.length === 6 && M.map((x) => x.id).slice(0, 3).join() === "pulso,azucar,sangrado" && /^Por: .*Bisoprolol/.test(M[0].nombres) && M3.length === 3 && M3.every((x) => x.nombres === "") && PDF.mecanismosDe({ perfil: {} }).length === 0);
+  check("iconos: trazos en rejilla de 24 con órdenes de trazado válidas", Object.values(PDF.ICONOS).every((d) => /^[MmLlHhVvCcSsQqTtAaZz0-9 .,\-]+$/.test(d) && /^M/.test(d)) && ["caminar", "pesa", "equilibrio", "descanso", "habla"].every((k) => PDF.ICONOS[k]));
+  check("ningún documento pasa de 4 caras: paciente, informe clínico y ficha del entrenador se rehacen con menos detalle si se pasan", PDF.MAX_CARAS === 4 && (pdfSrc.match(/getNumberOfPages\(\) <= MAX_CARAS(?:_PACIENTE)?\) break/g) || []).length === 3);
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);
