@@ -3,9 +3,9 @@
    precauciones, interacciones (y cuántas mayores), horas del día en que es mejor no entrenar, lo que ya no haría falta
    vigilar, si el pulso vuelve a servir para medir la intensidad, las interacciones y los avisos que desaparecerían y los
    cambios en su plan de ejercicio. Todo se calcula con el mismo motor que el informe (app.js le pasa «calc»). Avisa de
-   los grupos que no se dejan de golpe o que no se deben dejar sin indicación (fichas técnicas; pendiente de revisión
-   clínica). Nunca cambia la lista de verdad. Textos de la interfaz en cinco idiomas dentro del módulo. */
-import { t, idioma } from "./i18n.js?v=202611220123";
+   los grupos que no se dejan de golpe o que no se deben dejar sin indicación (fichas técnicas; revisado por un clínico el
+   22/11/2026). Nunca cambia la lista de verdad. Textos de la interfaz en cinco idiomas dentro del módulo. */
+import { t, idioma } from "./i18n.js?v=202611220747";
 
 /* grupos con aviso propio al quitarlos: «gradual» (no se dejan de golpe) e «imprescindible» (no se dejan sin indicación
    expresa). Fuente: fichas técnicas (AEMPS), apartados 4.2 y 4.4. */

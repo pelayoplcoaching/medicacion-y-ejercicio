@@ -2,7 +2,7 @@
    y la de llegada, con cómo se hace, versión más fácil y más difícil, errores frecuentes y, según su medicación, con qué
    tener cuidado. El movimiento empieza al abrir o al pulsar «Ver otra vez» (animación SVG, también en Safari) y, con
    «reducir movimiento», se ven las dos posturas quietas, una junto a otra. Se carga al abrir un ejercicio. */
-import { t } from "./i18n.js?v=202611220123";
+import { t } from "./i18n.js?v=202611220747";
 
 /* ---------- piezas (mismo trazo que pictos.js: figura gruesa, apoyos finos, movimiento en el color de acento) ---------- */
 const prop = (d) => `<path class="prop" d="${d}"/>`;

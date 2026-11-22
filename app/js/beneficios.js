@@ -2,9 +2,8 @@
    sistemáticas, metaanálisis y ensayos, solo para lo que la persona ha marcado (más el ánimo para todos y las caídas
    desde los 65 años o tras una caída). Cada tarjeta: la cifra, qué significa en lenguaje llano, el tipo de estudio, la
    certeza cuando la revisión la da (GRADE) y la fuente con su DOI. Cifras comprobadas en PubMed el 21/11/2026, una a una,
-   en el resumen de cada artículo. Contenido en español (como el resto del contenido clínico) y en borrador hasta la
-   revisión clínica; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611220123";
+   en el resumen de cada artículo. Contenido en español (como el resto del contenido clínico), revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
+import { idioma } from "./i18n.js?v=202611220747";
 
 const F = (txt, doi) => ({ txt, doi });
 /** Por situación: id de la situación (los de «Situación clínica») → tarjetas. «todos» y «mayores» se añaden solos. */
@@ -82,11 +81,11 @@ export function situaciones({ condiciones = [], edad = null, caidas = false } = 
 export const tarjetas = (ids) => ids.flatMap((id) => (BENEFICIOS[id] || []).map((b) => ({ ...b, sit: id })));
 
 export const TXT = {
-  es: { intro: "Lo que han encontrado las revisiones de ensayos para su situación: la cifra, lo que significa y de dónde sale.", borrador: "Borrador pendiente de revisión clínica", certeza: "Certeza {c}", ver_mas: "Ver las {n} tarjetas", ver_menos: "Ver menos", marque: "Marque su situación clínica en «Sus datos» para ver los beneficios que más le tocan.", n: "{n} beneficios", n1: "1 beneficio", fuente: "Fuente" },
-  en: { intro: "What reviews of trials have found for your situation: the figure, what it means and where it comes from.", borrador: "Draft pending clinical review", certeza: "Certainty {c}", ver_mas: "See all {n} cards", ver_menos: "See less", marque: "Tick your clinical situation in “Your details” to see the benefits that matter most to you.", n: "{n} benefits", n1: "1 benefit", fuente: "Source" },
-  ca: { intro: "El que han trobat les revisions d'assajos per a la seva situació: la xifra, què vol dir i d'on surt.", borrador: "Esborrany pendent de revisió clínica", certeza: "Certesa {c}", ver_mas: "Veure les {n} targetes", ver_menos: "Veure'n menys", marque: "Marqui la seva situació clínica a «Les seves dades» per veure els beneficis que més li toquen.", n: "{n} beneficis", n1: "1 benefici", fuente: "Font" },
-  gl: { intro: "O que atoparon as revisións de ensaios para a súa situación: a cifra, o que significa e de onde sae.", borrador: "Borrador pendente de revisión clínica", certeza: "Certeza {c}", ver_mas: "Ver as {n} tarxetas", ver_menos: "Ver menos", marque: "Marque a súa situación clínica en «Os seus datos» para ver os beneficios que máis lle tocan.", n: "{n} beneficios", n1: "1 beneficio", fuente: "Fonte" },
-  eu: { intro: "Saiakuntzen berrikuspenek zure egoerarako aurkitu dutena: zifra, zer esan nahi duen eta nondik datorren.", borrador: "Zirriborroa, berrikuspen klinikoaren zain", certeza: "Ziurtasuna: {c}", ver_mas: "Ikusi {n} txartelak", ver_menos: "Ikusi gutxiago", marque: "Markatu zure egoera klinikoa «Zure datuak» atalean zuri gehien dagozkizun onurak ikusteko.", n: "{n} onura", n1: "Onura 1", fuente: "Iturria" },
+  es: { intro: "Lo que han encontrado las revisiones de ensayos para su situación: la cifra, lo que significa y de dónde sale.", certeza: "Certeza {c}", ver_mas: "Ver las {n} tarjetas", ver_menos: "Ver menos", marque: "Marque su situación clínica en «Sus datos» para ver los beneficios que más le tocan.", n: "{n} beneficios", n1: "1 beneficio", fuente: "Fuente" },
+  en: { intro: "What reviews of trials have found for your situation: the figure, what it means and where it comes from.", certeza: "Certainty {c}", ver_mas: "See all {n} cards", ver_menos: "See less", marque: "Tick your clinical situation in “Your details” to see the benefits that matter most to you.", n: "{n} benefits", n1: "1 benefit", fuente: "Source" },
+  ca: { intro: "El que han trobat les revisions d'assajos per a la seva situació: la xifra, què vol dir i d'on surt.", certeza: "Certesa {c}", ver_mas: "Veure les {n} targetes", ver_menos: "Veure'n menys", marque: "Marqui la seva situació clínica a «Les seves dades» per veure els beneficis que més li toquen.", n: "{n} beneficis", n1: "1 benefici", fuente: "Font" },
+  gl: { intro: "O que atoparon as revisións de ensaios para a súa situación: a cifra, o que significa e de onde sae.", certeza: "Certeza {c}", ver_mas: "Ver as {n} tarxetas", ver_menos: "Ver menos", marque: "Marque a súa situación clínica en «Os seus datos» para ver os beneficios que máis lle tocan.", n: "{n} beneficios", n1: "1 beneficio", fuente: "Fonte" },
+  eu: { intro: "Saiakuntzen berrikuspenek zure egoerarako aurkitu dutena: zifra, zer esan nahi duen eta nondik datorren.", certeza: "Ziurtasuna: {c}", ver_mas: "Ikusi {n} txartelak", ver_menos: "Ikusi gutxiago", marque: "Markatu zure egoera klinikoa «Zure datuak» atalean zuri gehien dagozkizun onurak ikusteko.", n: "{n} onura", n1: "Onura 1", fuente: "Iturria" },
 };
 export function tx(k, vars) {
   const s = (TXT[idioma()] || TXT.es)[k] ?? TXT.es[k] ?? k;
@@ -96,7 +95,6 @@ const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").
 
 const CSS = `
 .ben-intro { margin: 0 0 6px; color: var(--muted); font-size: .9rem; }
-.ben-borrador { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 12px; padding: 3px 10px; border-radius: 999px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-size: .76rem; font-weight: 700; }
 .ben-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
 .ben-t { position: relative; display: grid; align-content: start; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-lg); background: linear-gradient(165deg, var(--surface), var(--surface-2)); overflow: hidden; }
 .ben-t::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--info)); opacity: .8; }
@@ -132,7 +130,7 @@ export const tarjetaHtml = (b) => `<li class="ben-t" data-ben="${b.id}"><span cl
 export function pintar(cont, c = {}) {
   estilos();
   const ids = situaciones(c), T = tarjetas(ids), soloGenerales = ids.every((id) => id === "todos" || id === "mayores");
-  cont.innerHTML = `<p class="ben-intro">${tx("intro")}</p><p class="ben-borrador">${tx("borrador")}</p>
+  cont.innerHTML = `<p class="ben-intro">${tx("intro")}</p>
     <ul class="ben-rejilla${T.length > 4 ? " cerrada" : ""}">${T.map(tarjetaHtml).join("")}</ul>
     ${T.length > 4 ? `<button type="button" class="btn-sec sm ben-mas" aria-expanded="false">${tx("ver_mas", { n: T.length })}</button>` : ""}
     ${soloGenerales ? `<p class="ben-marque">${tx("marque")}</p>` : ""}`;

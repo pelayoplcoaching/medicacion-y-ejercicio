@@ -10,7 +10,7 @@
    Su punto: la media de minutos a la semana de su diario (últimas 4 semanas); con el deslizador, «¿y si…?». Son estudios
    de observación: asociación, no prueba de causa (se dice). Gráficas según la guía de visualización (una serie sin
    leyenda, líneas de 2 px, puntos con anillo, rejilla fina, cruz y globo al pasar, tabla). Interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611220123";
+import { t, idioma } from "./i18n.js?v=202611220747";
 
 export const MINUTOS = [
   { desde: 0, hasta: 0, x: 0, hr: 1, k: "g0" },
