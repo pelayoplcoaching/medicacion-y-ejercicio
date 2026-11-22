@@ -914,3 +914,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H17 | `dialog.alta` y `dialog.sesion`: `overflow: clip` y cuerpo con `position: relative` (la ventana no se desplaza entera); el resto, en el módulo | `css/style.css`, `js/numeros.js` |
 | H18 | (sin estilos en `style.css`: todo en el módulo) | `js/enfermedad.js` |
 | H14 | (sin estilos en `style.css`: todo en el módulo) | `js/frid.js` |
+| H15 | (sin estilos en `style.css`: todo en el módulo) | `js/escalas.js` |

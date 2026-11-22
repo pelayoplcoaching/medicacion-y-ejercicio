@@ -2,6 +2,16 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.16 · 2026-11-22 · Segunda tanda de mejoras grandes (15): escalas rápidas
+- `js/escalas.js` (nuevo, bajo demanda): **«Escalas rápidas»**, cuatro cuestionarios cortos de cribado con su puntuación, su categoría y qué hacer después: **FRAIL** (fragilidad; Morley 2012), **SARC-F** (sarcopenia; Malmstrom 2016), las **tres preguntas clave de caídas** del algoritmo STEADI de los CDC y la **constante vital de actividad física** (días × minutos frente a 150; Greenwood 2010, Ball 2016), con una pregunta opcional de días de fuerza (OMS 2020).
+- Cada resultado enlaza el paso siguiente que ya tiene la aplicación: SPPB guiado, pruebas de forma física, programa de 12 semanas, paseo guiado y, en modo profesional, el panel de caídas.
+- Se guarda el último resultado de cada escala (y el anterior, para comparar) en `medex.escalas`, dentro de la copia de seguridad; «Copiar para la historia» da una línea con la puntuación, la categoría y los rasgos que puntúan.
+- En FRAIL, las enfermedades que ya constan en la situación clínica salen marcadas de entrada (y se avisa); en caídas, lo mismo con «alguna caída en el último año».
+- **No se reproduce la Short FES-I** (miedo a caer): es gratuita para clínicos si se cita, pero sus autores piden usar la traducción oficial y avisarles. Si a la persona le preocupa caerse, se enlaza su web oficial.
+- **Contenido nuevo, con la marca «Borrador pendiente de revisión clínica»**. Las preguntas son traducción de la aplicación del original en inglés (existen versiones validadas en español de México de FRAIL y SARC-F, citadas). La lista de las 11 enfermedades de FRAIL está en un apéndice que no se ha podido leer: es la que se reproduce habitualmente y queda señalada para revisar.
+- Botón «Escalas rápidas» junto a los datos del paciente y herramienta en el centro («Seguir»).
+- Pruebas: 17 comprobaciones unitarias, 9 de interfaz, 4 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.15 · 2026-11-22 · Segunda tanda de mejoras grandes (14): panel de caídas y carga anticolinérgica (modo profesional)
 - `js/frid.js` (nuevo, bajo demanda): **«Caídas y carga anticolinérgica»**, para la revisión de la medicación de una persona con riesgo de caídas. Solo en modo profesional: botón junto a los datos del paciente y herramienta en el centro («Consulta»).
 - **STOPPFall** (Seppala et al., Age Ageing 2021; consenso Delphi de 24 expertos europeos): qué fármacos de la lista están en sus 14 clases, las diferencias dentro de cada clase (tabla 1 del artículo), cuándo plantear la retirada, si conviene escalonarla y qué vigilar después (tabla 2). La asignación de cada familia de la base a una clase es de la aplicación y está marcada para revisar.

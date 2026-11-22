@@ -485,6 +485,38 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Escalas rápidas (segunda tanda, 15): lista, FRAIL con resultado guardado, actividad con números, copiar y borrar (se deja todo como estaba)
+  {
+    await p.evaluate(() => localStorage.removeItem("medex.escalas"));
+    await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "escalas"; document.body.append(b); b.click(); b.remove(); });
+    await p.waitForSelector("#escalas[open] #eq-lista", { timeout: 6000 }).catch(() => {});
+    check("«Escalas rápidas»: marca de borrador y cuatro escalas sin hacer", (await p.isVisible("#escalas .eq-borrador")) && (await p.$$("#eq-lista .eq-tarjeta")).length === 4 && (await p.$$eval("#eq-lista .eq-chip", (c) => c.every((x) => x.textContent === "Sin hacer"))));
+    await p.click('#escalas [data-eq-abre="frail"]'); await p.waitForSelector("#eq-form");
+    for (const c of await p.$$('#eq-form [data-eq-i="enfermedades"]:checked')) await c.uncheck();
+    check("FRAIL: cinco preguntas, las 11 enfermedades y, sin responder, dice cuántas faltan", (await p.$$("#eq-form fieldset")).length === 5 && (await p.$$('#eq-form [data-eq-i="enfermedades"]')).length === 11 && /Faltan 4 respuestas/.test(await p.textContent("#eq-res")) && !(await p.$("#eq-cifra")));
+    for (const [k, v] of [["fatiga", 1], ["resistencia", 0], ["deambulacion", 1], ["peso", 1]]) await p.check(`#escalas input[name="eq-${k}"][value="${v}"]`);
+    await p.waitForTimeout(150);
+    check("al completarla da la puntuación y la categoría, lo guarda y ofrece el SPPB", (await p.textContent("#eq-cifra")) === "2 de 5" && (await p.textContent("#eq-cat")) === "Prefrágil" && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.escalas")).frail.p)) === 2 && (await p.$$('#eq-res [data-eq="sppb"]')).length === 1 && /cribado/.test(await p.textContent("#eq-res")));
+    const cajasEq = await p.$$('#eq-form [data-eq-i="enfermedades"]');
+    for (let i = 0; i < 5; i++) await cajasEq[i].check();
+    await p.waitForTimeout(150);
+    check("con cinco enfermedades marcadas suma un punto y pasa a frágil", (await p.textContent("#eq-cifra")) === "3 de 5" && (await p.textContent("#eq-cat")) === "Frágil" && /5 de 11/.test(await p.textContent("#eq-n-enfermedades")) && (await p.$eval("#eq-res", (e) => e.classList.contains("v-alerta"))));
+    await p.evaluate(() => { window.__copiado = ""; Object.defineProperty(navigator, "clipboard", { value: { writeText: async (x) => { window.__copiado = x; } }, configurable: true }); });
+    await p.click('#escalas [data-eq="copiar"]'); await p.waitForTimeout(200);
+    check("«Copiar para la historia» lleva la puntuación, la categoría y los rasgos que puntúan", /^FRAIL: 3\/5 \(frágil\): fatiga, resistencia, enfermedades · \d\d\/\d\d\/\d{4}$/.test(await p.evaluate(() => window.__copiado)), await p.evaluate(() => window.__copiado));
+    await p.click('#escalas [data-eq="volver"]'); await p.waitForSelector("#eq-lista");
+    check("de vuelta en la lista, la tarjeta de FRAIL enseña el último resultado", /3 de 5 · Frágil/.test(await p.textContent('#eq-lista [data-eq-abre="frail"] .eq-chip')) && (await p.$$eval("#eq-lista .eq-chip", (c) => c.filter((x) => x.textContent === "Sin hacer").length)) === 3);
+    await p.click('#escalas [data-eq-abre="pavs"]'); await p.waitForSelector("#eq-form"); await p.fill("#eq-dias", "3"); await p.fill("#eq-min", "40"); await p.waitForTimeout(150);
+    check("actividad: 3 días × 40 minutos son 120 min/semana, por debajo de 150, y dice cuánto falta", (await p.textContent("#eq-cifra")) === "120 min/semana" && (await p.textContent("#eq-cat")) === "Por debajo de 150 minutos" && /Le faltan 30 minutos/.test(await p.textContent("#eq-res")) && (await p.$$('#eq-res [data-abre="paseo"]')).length === 1);
+    await p.fill("#eq-dias", "9"); await p.waitForTimeout(150);
+    check("un número imposible se marca y deja de dar resultado", (await p.$eval("#eq-dias", (e) => e.getAttribute("aria-invalid"))) === "true" && !(await p.$("#eq-cifra")));
+    await p.fill("#eq-dias", "5"); await p.fill("#eq-min", "30"); await p.fill("#eq-fuerza", "2"); await p.waitForTimeout(150);
+    check("5 días × 30 minutos llegan a 150 y, con 2 días de fuerza, cumple también esa recomendación", (await p.textContent("#eq-cat")) === "Llega a 150 minutos" && /fuerza 2 o más días/.test(await p.textContent("#eq-res")) && (await p.$eval("#eq-res", (e) => e.classList.contains("v-ok"))));
+    await p.click('#escalas [data-eq="borrar"]'); await p.waitForTimeout(150);
+    check("«Borrar este resultado» quita el de esa escala y conserva los demás", (await p.evaluate(() => Object.keys(JSON.parse(localStorage.getItem("medex.escalas") || "{}")).join())) === "frail" && !(await p.$("#eq-cifra")) && (await p.inputValue("#eq-dias")) === "");
+    await p.evaluate(() => { localStorage.removeItem("medex.escalas"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
+    await p.click("#eq-cerrar"); await p.waitForTimeout(150);
+  }
   // Panel de caídas y carga anticolinérgica (segunda tanda, 14): cifras coherentes con lo que se pinta, guía de retirada, copiar y paso al simulador
   {
     const abreFr = async () => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "frid"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#frid[open] #fr-cifras", { timeout: 6000 }).catch(() => {}); };

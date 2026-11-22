@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uw8nmfwzEeZ6/e0mc2Y7zkae6LaSLbeDBlPSS93MHd4=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-NYzRVeMmbLTqU9c9U7Y0PlwazXL7Jv5O+LzRP72k5hs=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611222236";document.head.appendChild(p)}}catch(e){}</script>
+<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611222304";document.head.appendChild(p)}}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Pauta Activa · Medicación y Ejercicio</title>
 <meta name="description" content="Pauta Activa: introduce tu medicación habitual con la dosis y descubre qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre tus fármacos. Herramienta gratuita del Dr. Pelayo Fdez. Cidón (Fuerza Basada en Evidencia).">
@@ -58,16 +58,16 @@
 }
 </script>
 <link rel="preload" href="assets/fonts/Archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="js/version.js?v=202611222236">
-<link rel="modulepreload" href="js/libs.js?v=202611222236">
-<link rel="modulepreload" href="js/i18n.js?v=202611222236">
-<link rel="modulepreload" href="js/pictos.js?v=202611222236">
-<link rel="modulepreload" href="js/engine.js?v=202611222236">
-<link rel="modulepreload" href="js/informes.js?v=202611222236">
+<link rel="modulepreload" href="js/version.js?v=202611222304">
+<link rel="modulepreload" href="js/libs.js?v=202611222304">
+<link rel="modulepreload" href="js/i18n.js?v=202611222304">
+<link rel="modulepreload" href="js/pictos.js?v=202611222304">
+<link rel="modulepreload" href="js/engine.js?v=202611222304">
+<link rel="modulepreload" href="js/informes.js?v=202611222304">
 <link rel="preload" href="data/kb.json" as="fetch" crossorigin>
 <link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#140B3A">
-<link rel="stylesheet" href="css/style.css?v=202611222236">
+<link rel="stylesheet" href="css/style.css?v=202611222304">
 </head>
 <body class="cargando" data-modo="paciente">
 
@@ -150,7 +150,7 @@
       </div>
       <div class="acciones sppb-acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-sppb" data-i18n="sppb.btn">Medir la forma física (SPPB guiado, 5 min)</button><button type="button" class="btn-ayuda" data-ayuda="sppb" aria-label="Ayuda: SPPB">?</button><small id="sppb-estado"></small></div>
       <div class="acciones sppb-acciones sft-acciones-datos"><button type="button" class="btn-sec sm" id="btn-sft" data-pruebas="" data-i18n="sft.btn">Pruebas de forma física (6 pruebas, 25 min)</button><small id="sft-estado"></small></div>
-      <div class="acciones sppb-acciones sft-acciones-datos solo-pro"><button type="button" class="btn-sec sm" id="btn-frid" data-abre="frid" data-i18n="frid.btn">Caídas y carga anticolinérgica</button></div>
+      <div class="acciones sppb-acciones sft-acciones-datos"><button type="button" class="btn-sec sm" id="btn-escalas" data-abre="escalas" data-i18n="escalas.btn">Escalas rápidas</button><button type="button" class="btn-sec sm solo-pro" id="btn-frid" data-abre="frid" data-i18n="frid.btn">Caídas y carga anticolinérgica</button></div>
       <details class="bloque" id="bloque-situacion" open>
       <summary><span class="sub-label" data-i18n="sit.titulo">Situación clínica (marque lo que tenga)</span><span class="flecha" aria-hidden="true">⌄</span></summary>
       <p class="ayuda-bloque"><button type="button" class="btn-ayuda" data-ayuda="situacion" aria-label="Ayuda: situación clínica">?</button> <small data-i18n="sit.ayuda_txt">¿Qué marcar y por qué?</small></p>
@@ -441,6 +441,6 @@
   <button type="button" data-centro="" data-ic="rejilla" aria-haspopup="dialog"><span data-i18n="nav.mas">Más</span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202611222236"></script>
+<script type="module" src="js/app.js?v=202611222304"></script>
 </body>
 </html>
