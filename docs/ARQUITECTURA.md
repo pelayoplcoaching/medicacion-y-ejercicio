@@ -55,6 +55,7 @@ app/
     biblioteca.js       biblioteca de ejercicios (45 con dibujo), filtros y «Cambiar» un ejercicio del plan; bajo demanda (v1.3.2)
     programa.js         programa de 12 semanas: dosis por nivel y semana, decisiones con el diario, ajuste de las sesiones, tarjeta y ventana; bajo demanda (v1.3.3)
     rato.js             «Hoy tengo…»: sesión a la medida (5-30 min) y píldoras de movimiento con contador; bajo demanda, por data-abre (v1.3.4)
+    paseo.js            paseo guiado: metrónomo, voz, prueba del habla, cuenta de pasos con el sensor y programa de 8 semanas; bajo demanda, por data-abre (v1.3.5)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

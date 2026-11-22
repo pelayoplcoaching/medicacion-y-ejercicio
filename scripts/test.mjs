@@ -765,6 +765,34 @@ console.log("\n«Hoy tengo…»: sesión a la medida y píldoras de movimiento (
   check("la interfaz común api() ofrece lo que usa el módulo", ["toast", "hoyISO", "esFragil", "planDeHoy", "sesionDe", "abrirSesion", "porquesDe", "vibrar", "anilloCrono", "cargarMov", "cargarBiblio"].every((k) => new RegExp(`const api = \\(\\) => \\(api\\.o \\|\\|= \\{[^}]*\\b${k}\\b`).test(appJs)) && /dibujo: \(id\)/.test(appJs) && /res: \(\) => evaluar/.test(appJs) && /cerrar: \(\) => t\(/.test(appJs));
 }
 
+console.log("\nPaseo guiado: planes, tramos, prueba del habla y cuenta de pasos (segunda tanda, 6)");
+{
+  const W = await import(pathToFileURL(path.join(ROOT, "app/js/paseo.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/paseo.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  check("paseo libre: dura lo pedido, con calentamiento, paso ligero y vuelta a la calma", W.DURACIONES.every((m) => { const p = W.planLibre(m); return W.duracion(p) === m * 60 && p.map((x) => x.k).join() === "calienta,ligero,enfria" && W.ligero(p) >= m * 60 * 0.65; }));
+  const sem = [...Array(8)].map((_, i) => W.planSemana(i + 1)), lig = sem.map((p) => W.ligero(p) / 60);
+  check(`programa de 8 semanas: el paso ligero nunca baja (${lig.join(", ")} min) y la última son 30 min seguidos`, lig.every((v, i) => i === 0 || v >= lig[i - 1]) && lig[0] === 10 && lig[7] === 30 && sem[7].filter((x) => x.k === "ligero").length === 1 && sem.every((p) => p[0].k === "calienta" && p[0].s === 180 && p.at(-1).k === "enfria" && W.duracion(p) <= 37 * 60));
+  check("programa: el tramo ligero más largo crece cada semana y entre tramos ligeros siempre hay uno tranquilo", sem.every((p, i) => i === 0 || Math.max(...p.filter((x) => x.k === "ligero").map((x) => x.s)) > Math.max(...sem[i - 1].filter((x) => x.k === "ligero").map((x) => x.s))) && sem.every((p) => p.every((x, i) => x.k !== "ligero" || p[i + 1]?.k !== "ligero")));
+  const p20 = W.planLibre(20);
+  check("tramo en curso, lo que queda de él y el final del paseo", W.tramoEn(p20, 0).tramo.k === "calienta" && W.tramoEn(p20, 180).tramo.k === "ligero" && W.tramoEn(p20, 200).resto === 880 && W.tramoEn(p20, 1199).tramo.k === "enfria" && W.tramoEn(p20, 1200) === null);
+  check("minutos a paso ligero ya caminados", W.ligeroHasta(p20, 100) === 0 && W.ligeroHasta(p20, 480) === 300 && W.ligeroHasta(p20, 5000) === 900 && W.ligeroHasta(sem[0], 9 * 60) === 240);
+  check("prueba del habla: dos veces, dentro de un tramo ligero y nunca en sus últimos 20 s; sin prueba en paseos muy cortos", [p20, ...sem].every((p) => { const m = W.momentosHabla(p); return m.length === 2 && m[0] < m[1] && m.every((t0) => { const x = W.tramoEn(p, t0); return x.tramo.k === "ligero" && x.resto >= 20; }); }) && W.momentosHabla([{ k: "ligero", s: 300 }]).length === 0);
+  check("la prueba del habla ajusta el ritmo: +5 si va sobrado, −10 si cuesta hablar, sin salir de 70-130", W.ajusteHabla(100, "facil") === 105 && W.ajusteHabla(100, "bien") === 100 && W.ajusteHabla(100, "cuesta") === 90 && W.ajusteHabla(130, "facil") === 130 && W.ajusteHabla(72, "cuesta") === 70);
+  const senal = (ppm, seg, amp = 3) => [...Array(seg * 50)].map((_, i) => { const t0 = i * 20, f = ppm / 60; return { t: t0, x: 0.3 * Math.sin(2 * Math.PI * f * t0 / 1000 + 1), y: 9.81 + amp * Math.sin(2 * Math.PI * f * t0 / 1000), z: 0.5 }; });
+  const e100 = W.contarPasos(senal(100, 60)), e80 = W.contarPasos(senal(80, 60)), e120 = W.contarPasos(senal(120, 60));
+  check(`cuenta de pasos con una señal sintética: 100, 80 y 120 por minuto dan ${e100.n}, ${e80.n} y ${e120.n}`, Math.abs(e100.n - 100) <= 2 && Math.abs(e80.n - 80) <= 2 && Math.abs(e120.n - 120) <= 2);
+  check("ritmo medido en los últimos 20 s; con el móvil quieto no cuenta pasos ni da ritmo", Math.abs(W.cadenciaMedida(e100, 60000) - 100) <= 3 && W.contarPasos(senal(100, 60, 0.05)).n === 0 && W.cadenciaMedida(W.contarPasos([]), 1000) === null);
+  const base = { modo: "prog", sem: 1, hechos: 0 };
+  check("programa: con tres paseos completos se pasa de semana; en la 8, se da por terminado", W.trasPaseo(base).o.hechos === 1 && !W.trasPaseo(base).nueva && W.trasPaseo({ ...base, hechos: 2 }).o.sem === 2 && W.trasPaseo({ ...base, hechos: 2 }).o.hechos === 0 && W.trasPaseo({ ...base, hechos: 2 }).nueva && W.trasPaseo({ ...base, sem: 8, hechos: 2 }).fin && W.trasPaseo({ ...base, sem: 8, hechos: 2 }).o.sem === 8);
+  check("preferencias por defecto: paseo libre de 20 min a 100 pasos por minuto, con metrónomo y voz, sin sensor", (() => { const o = W.leer(); return o.modo === "libre" && o.min === 20 && o.cad === 100 && o.metro && o.voz && !o.sensor && o.sem === 1; })());
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size > 90 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("etiquetas de ritmo para todas las cadencias, de tramo y de voz", W.CADENCIAS.every((c) => kEs.has("r_" + c)) && ["calienta", "ligero", "suave", "enfria"].every((k) => kEs.has("k_" + k)) && ["inicio", "ligero", "suave", "enfria", "mitad", "minuto", "fin", "habla"].every((k) => kEs.has("v_" + k)));
+  check("tres fuentes con DOI y su frase; cifras de los resúmenes de PubMed (100, 110 y 120 pasos = 3, 4 y 5 MET; 100 y 130)", W.FUENTES.length === 3 && W.FUENTES.every((f) => /^10\.\d{4,}\//.test(f.doi) && kEs.has("f_" + f.id)) && /100, 110 y 120 pasos por minuto corresponden a 3, 4 y 5 MET/.test(src) && /130 la vigorosa/.test(src) && kEs.has("f_prog"));
+  check("avisa de que el pulso no sirve de guía con fármacos que lo frenan, y el paseo se apunta en el diario como aeróbico", /fc_no_valida/.test(src) && /bradicardia/.test(src) && /registrarSesion\(\{ fecha: A\.hoyISO\(\), tipo: "aerobico"/.test(src) && /paseo: \(\) => import\("\.\/paseo\.js/.test(appJs));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

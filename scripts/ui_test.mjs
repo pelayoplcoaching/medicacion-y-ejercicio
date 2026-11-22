@@ -463,6 +463,34 @@ try {
     await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
     await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
   }
+  // Paseo guiado (segunda tanda, 6): preparar, andar con avisos, prueba del habla y guardar en el diario (se deja todo como estaba)
+  {
+    const diarioAntes = await p.evaluate(() => localStorage.getItem("medex.diario"));
+    await p.evaluate(() => { window.__paVoz = []; });
+    await p.click('.rato-enlaces [data-abre="paseo"]'); await p.waitForSelector("#paseo[open] .ps-barra", { timeout: 6000 }).catch(() => {});
+    await p.click('#paseo [data-ps="min"][data-v="10"]'); await p.waitForTimeout(100);
+    check("paseo guiado: 10 minutos son 2 de calentamiento, 7 ligeros y 1 de vuelta a la calma; ritmo de 100 por defecto", (await p.$$("#paseo .ps-barra i")).length === 3 && /7 min/.test(await p.textContent("#ps-resumen")) && (await p.$eval('#paseo [data-ps="cad"][data-v="100"]', (b) => b.getAttribute("aria-pressed"))) === "true" && (await p.$$('#paseo .ps-fuentes a[href^="https://doi.org/10."]')).length === 3);
+    await p.click('#paseo [data-ps="modo"][data-v="prog"]'); await p.waitForTimeout(100);
+    check("programa de 8 semanas: semana 1 con sus intervalos y la barra de avance", (await p.$$("#paseo .ps-pasos8 li")).length === 8 && (await p.$$("#paseo .ps-pasos8 li.actual")).length === 1 && (await p.$$("#paseo .ps-barra i.k-ligero")).length === 5);
+    await p.click('#paseo [data-ps="modo"][data-v="libre"]'); await p.waitForTimeout(100);
+    await p.click('#paseo [data-ps="empezar"]'); await p.waitForSelector("#paseo #ps-marcha", { timeout: 6000 }).catch(() => {}); await p.waitForTimeout(300);
+    check("al empezar: calentamiento, cuenta atrás de 10:00 y aviso por voz", (await p.textContent("#ps-seg")) === "Calentamiento" && /^(10:00|9:5\d)$/.test(await p.textContent("#ps-t")) && (await p.evaluate(() => (window.__paVoz || []).some((x) => /Empezamos/.test(x)))));
+    await p.evaluate(() => window.__paPaseo.saltar(125)); await p.waitForTimeout(250);
+    check("al cambiar de tramo pasa a «Paso ligero», lo dice y marca el ritmo", (await p.textContent("#ps-seg")) === "Paso ligero" && (await p.$eval("#ps-marcha", (e) => e.dataset.k === "ligero" && e.classList.contains("suena"))) && (await p.evaluate(() => (window.__paVoz || []).some((x) => /paso ligero/i.test(x)))));
+    await p.evaluate(() => window.__paPaseo.saltar(150)); await p.waitForTimeout(250);
+    const conHabla = await p.isVisible("#ps-habla");
+    await p.click('#ps-habla [data-v="cuesta"]').catch(() => {}); await p.waitForTimeout(200);
+    check("prueba del habla a un tercio del tramo ligero: «me cuesta hablar» baja el ritmo a 90", conHabla && (await p.textContent("#ps-cad")).trim() === "90" && !(await p.isVisible("#ps-habla")));
+    await p.click('#paseo [data-ps="pausa"]'); await p.waitForTimeout(150);
+    const enPausa = await p.textContent("#ps-t"); await p.waitForTimeout(1200);
+    check("en pausa el tiempo no corre y el botón pasa a «Seguir»", (await p.textContent("#ps-t")) === enPausa && (await p.textContent("#ps-pausa")) === "Seguir");
+    await p.click('#paseo [data-ps="pausa"]'); await p.evaluate(() => window.__paPaseo.saltar(400)); await p.waitForSelector("#paseo #ps-rpe", { timeout: 5000 }).catch(() => {});
+    await p.fill("#ps-rpe", "6"); await p.click('#paseo [data-ps="guardar"]'); await p.waitForTimeout(400);
+    const ultimo = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.diario") || "[]").at(-1));
+    check("al terminar se apunta en el diario como aeróbico, con sus minutos, el esfuerzo y el ritmo", ultimo?.tipo === "aerobico" && ultimo.min === 10 && ultimo.rpe === 6 && ultimo.paseo?.cad === 90 && !(await p.$eval("#paseo", (d) => d.open)));
+    await p.evaluate((d) => { if (d == null) localStorage.removeItem("medex.diario"); else localStorage.setItem("medex.diario", d); localStorage.removeItem("medex.paseo"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } }, diarioAntes);
+    await p.click('.tabs [data-tab="general"]'); await p.waitForTimeout(150); await p.click('.tabs [data-tab="plan"]'); await p.waitForTimeout(300); // repinta con el diario de antes
+  }
   // «Hoy tengo…» (segunda tanda, 5): sesión a la medida y píldoras de movimiento (se deja todo como estaba)
   {
     await p.click('.rato-enlaces [data-abre="rato"]:not([data-arg])'); await p.waitForSelector("#rato[open] #rt-lista li", { timeout: 6000 }).catch(() => {});

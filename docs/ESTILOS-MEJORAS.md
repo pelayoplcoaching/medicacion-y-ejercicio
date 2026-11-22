@@ -903,3 +903,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H4 | Botón «Cambiar» y nota «en lugar de…» en los ejercicios del plan; ficha de la biblioteca en Mi plan | `style.css` (final) y `js/biblioteca.js` |
 | H3 | Ficha para empezar el programa de 12 semanas en Mi plan | `style.css` (final) y `js/programa.js` |
 | H5 | Accesos a «Hoy tengo…» y a las píldoras bajo el día del plan | `style.css` (final) y `js/rato.js` |
+| H6 | (sin estilos en `style.css`: todo en el módulo) | `js/paseo.js` |

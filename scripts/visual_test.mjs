@@ -72,6 +72,8 @@ const PANTALLAS = [
   { n: "programa-elegir", w: 390, pasos: [prgEstado(""), async (p) => p.waitForSelector("#programa[open] .prg-niveles")] },
   { n: "programa-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [prgEstado("medio"), async (p) => p.waitForSelector("#programa[open] .prg-tabla")] },
   { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
+  { n: "paseo-preparar", w: 390, pasos: [abre("paseo"), async (p) => p.waitForSelector("#paseo .ps-barra")] },
+  { n: "paseo-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [abre("paseo"), async (p) => { await p.click('#paseo [data-ps="empezar"]'); await p.waitForSelector("#ps-marcha"); await p.evaluate(() => window.__paPaseo.fijar(400)); }] },
   { n: "rato-sesion", w: 390, pasos: [abre("rato"), async (p) => p.waitForSelector("#rato #rt-lista li")] },
   { n: "rato-pildoras-oscuro", w: 1280, tema: "dark", pasos: [abre("rato", "pildoras"), async (p) => p.waitForSelector("#rato .rt-pil")] },
   { n: "biblioteca-ejercicios", w: 390, pasos: [async (p) => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.biblioteca = ""; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#biblioteca[open] .bib-lista li"); }] },

@@ -1,6 +1,6 @@
 /* Recorrido guiado sobre los elementos reales (primera visita o desde «¿Cómo funciona?»).
    Sale de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1): se carga al iniciarlo. */
-import { t } from "./i18n.js?v=202611222003";
+import { t } from "./i18n.js?v=202611222014";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
