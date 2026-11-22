@@ -45,6 +45,7 @@ const esc0 = [
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
   { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
   { n: "vuelta-inicio-claro", w: 390, abre: "vuelta" }, { n: "vuelta-ingreso-oscuro", w: 1280, abre: "vuelta", vuelta: ["ingreso", "t2"], tema: "dark" }, { n: "vuelta-infeccion-contraste", w: 390, abre: "vuelta", vuelta: ["infeccion", "t3"], tema: "contrast" },
+  { n: "numeros-claro", w: 390, abre: "numeros" }, { n: "numeros-rojo-oscuro", w: 1280, abre: "numeros", numeros: { ta_s: 184, pulso: 124, temp: "38,4" }, tema: "dark" }, { n: "numeros-ambar-contraste", w: 390, abre: "numeros", numeros: { glucosa: 82, ta_s: 165, spo2: 96 }, tema: "contrast" }, { n: "numeros-verde-claro", w: 390, abre: "numeros", numeros: { ta_s: 128, ta_d: 78, pulso: 66 } },
   { n: "cien-claro", w: 390, abre: "cien" }, { n: "cien-oscuro", w: 1280, abre: "cien", arg: "fa", tema: "dark" }, { n: "cien-contraste", w: 390, abre: "cien", arg: "ci", tema: "contrast" },
   { n: "mitos-claro", w: 390, abre: "mitos", arg: "betabloqueante" }, { n: "mitos-oscuro", w: 1280, abre: "mitos", arg: "metformina", tema: "dark" }, { n: "mitos-contraste", w: 390, abre: "mitos", arg: "insulina", tema: "contrast" },
   { n: "preguntas-claro", w: 390, abre: "preguntas" }, { n: "preguntas-oscuro", w: 1280, abre: "preguntas", preguntas: true, tema: "dark" }, { n: "preguntas-contraste", w: 390, abre: "preguntas", preguntas: true, tema: "contrast" },
@@ -121,6 +122,7 @@ async function correr(e) {
     }
     // módulos de la segunda tanda que se abren con data-abre (y data-arg): se espera a su ventana, que lleva el mismo id que el módulo
     if (e.abre) { await p.evaluate(([n, arg]) => { const b = document.createElement("button"); b.dataset.abre = n; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, [e.abre, e.arg || ""]); await p.waitForSelector(`#${e.abre}[open] .ficha-cuerpo > *`); await p.waitForTimeout(600);
+      if (e.numeros) { for (const [k, v] of Object.entries(e.numeros)) await p.fill("#nm-" + k, String(v)); await p.click("#numeros button[type=submit]"); await p.waitForSelector("#nm-ver"); await p.waitForTimeout(300); }
       if (e.preguntas) { await p.click('#preguntas [data-pg="sugeridas"]'); await p.fill("#pg-nueva-i", "¿Puedo nadar?"); await p.press("#pg-nueva-i", "Enter"); await p.waitForTimeout(300); }
       if (e.primeros) { await p.click('#primeros [data-pr="empezar"]'); await p.waitForSelector("#primeros #pr-hoy"); await p.waitForTimeout(300); }
       if (e.vuelta) { await p.click(`#vuelta [data-vt="motivo"][data-v="${e.vuelta[0]}"]`); await p.click(`#vuelta [data-vt="tiempo"][data-v="${e.vuelta[1]}"]`); await p.waitForSelector("#vuelta #vt-esc"); await p.waitForTimeout(300); }

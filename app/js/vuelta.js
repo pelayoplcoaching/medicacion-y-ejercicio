@@ -5,7 +5,7 @@
    Estado en localStorage («medex.vuelta»): { motivo, tiempo, inicio (ISO) }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: los escalones y las reglas de espera son una propuesta de esta aplicación.
    Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en español. Fuentes comprobadas en PubMed (22/11/2026). */
-import { t, idioma } from "./i18n.js?v=202611222151";
+import { t, idioma } from "./i18n.js?v=202611222207";
 
 const TXT = {
   es: { titulo: "Volver tras un parón", borrador: "Borrador pendiente de revisión clínica", intro: "Parar pasa. Lo importante es cómo se vuelve: sin prisa y sin empezar donde lo dejó.", p_motivo: "¿Por qué paró?", p_tiempo: "¿Cuánto tiempo lleva sin entrenar?", p_hoy: "¿Cómo está hoy? Marque lo que le pase",

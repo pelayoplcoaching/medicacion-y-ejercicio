@@ -2,8 +2,8 @@
    Sale de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1): se carga al pulsar «Empezar sesión».
    app.js le pasa en «a» lo que necesita de la aplicación (estado evaluado, utilidades de pantalla y el registro
    de la sesión); el motor y los textos de la interfaz se importan aquí. Nada se guarda fuera del dispositivo. */
-import { t } from "./i18n.js?v=202611222151";
-import { sesionTipo, chequeoPrevio, veredictoChequeo, constantesRelevantes } from "./engine.js?v=202611222151";
+import { t } from "./i18n.js?v=202611222207";
+import { sesionTipo, chequeoPrevio, veredictoChequeo, constantesRelevantes } from "./engine.js?v=202611222207";
 
 const $ = (s) => document.querySelector(s);
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
@@ -47,7 +47,7 @@ export function abrir(tipo, fecha, a) {
     <section class="chequeo" id="chequeo">
       <img class="ses-img" src="assets/img/sesion-antes.webp" alt="" width="104" height="104" decoding="async">
       <h3>${t("chequeo.titulo")}</h3>
-      <p class="muted">${t("chequeo.intro")}</p>
+      <p class="muted">${t("chequeo.intro")} <button type="button" class="pq-mini" data-abre="numeros">${t("numeros.btn")}</button></p>
       <ul>${chequeo.map((c) => `<li class="nivel-${c.nivel === "rojo" ? "alerta" : "precaucion"}"><label><input type="checkbox" data-id="${c.id}"><span>${c.texto}${c.farmacos.length ? ` <small>(${t("chequeo.por", { f: c.farmacos.join(", ") })})</small>` : ""}</span></label></li>`).join("")}</ul>
       <div id="chequeo-resultado" class="chequeo-resultado" hidden></div>
       <div class="acciones"><button type="button" class="btn" id="chequeo-continuar">${t("chequeo.continuar")}</button><button type="button" class="btn-sec sm" id="chequeo-saltar">${t("chequeo.saltar")}</button></div>

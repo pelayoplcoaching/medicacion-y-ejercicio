@@ -485,6 +485,31 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // Números antes de entrenar (segunda tanda, 17): casillas, veredicto, número imposible, lo de hoy se recuerda (se deja todo como estaba)
+  {
+    const abreNm = async () => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "numeros"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#numeros[open] #nm-form", { timeout: 6000 }).catch(() => {}); };
+    const pon = async (v) => { for (const k of ["glucosa", "ta_s", "ta_d", "pulso", "spo2", "temp"]) await p.fill("#nm-" + k, v[k] != null ? String(v[k]) : ""); await p.click("#numeros button[type=submit]"); await p.waitForTimeout(150); };
+    const lineas = () => p.$$eval("#nm-lineas li", (ls) => ls.map((l) => l.dataset.c + ":" + l.dataset.n).join());
+    await p.evaluate(() => localStorage.removeItem("medex.numeros"));
+    await abreNm();
+    check("«Números antes de entrenar»: cinco casillas con nombre accesible, marca de borrador y ningún veredicto al abrir", (await p.$$("#numeros .nm-campo")).length === 5 && (await p.$$eval("#numeros .nm-in input", (is) => is.length === 6 && is.every((i) => (i.getAttribute("aria-label") || "").length > 5))) && (await p.isVisible("#numeros .nm-borrador")) && (await p.$$("#nm-ver")).length === 0);
+    await p.click("#numeros button[type=submit]"); await p.waitForTimeout(100);
+    check("sin ningún número pide escribir al menos uno", /al menos un número/.test(await p.textContent("#nm-err")) && (await p.$$("#nm-ver")).length === 0);
+    await pon({ ta_s: 128, ta_d: 78, pulso: 66, temp: "36,6" });
+    check("con números normales: «Adelante», una línea por número y el botón de la sesión de hoy", (await p.$eval("#nm-ver", (e) => e.dataset.n)) === "verde" && (await lineas()) === "ta:verde,pulso:verde,temp:verde" && (await p.$$('#numeros [data-nm="empezar"]')).length === 1 && /128\/78 mmHg/.test(await p.textContent("#nm-lineas")) && /36,6 °C/.test(await p.textContent("#nm-lineas")));
+    await pon({ ta_s: 165, pulso: 66 });
+    const ambar = await p.$eval("#nm-ver", (e) => e.dataset.n), lA = await lineas(), bA = (await p.$$('#numeros [data-abre="rato"]')).length;
+    await pon({ ta_s: 184, pulso: 124, temp: "38,4" });
+    check("manda el peor: 165 de tensión, «Hoy, suave» con sesión corta; 184, pulso de 124 o fiebre, «Hoy no entrene»", ambar === "ambar" && lA === "ta:ambar,pulso:verde" && bA === 1 && (await p.$eval("#nm-ver", (e) => e.dataset.n)) === "rojo" && (await lineas()) === "ta:rojo,pulso:rojo,temp:rojo" && (await p.$$('#numeros [data-nm="empezar"], #numeros [data-abre="rato"]')).length === 0);
+    await pon({ ta_s: 9999 });
+    check("un número imposible se marca y no deja a la vista el veredicto anterior", /no parece posible/.test(await p.textContent("#nm-err")) && (await p.$eval("#nm-ta_s", (i) => i.getAttribute("aria-invalid"))) === "true" && (await p.$$("#nm-ver")).length === 0);
+    await pon({ ta_s: 130 }); await p.click("#nm-cerrar"); await p.waitForTimeout(120); await abreNm();
+    check("lo escrito hoy se recuerda al volver a abrir, con su veredicto, y «Borrar» lo quita", (await p.inputValue("#nm-ta_s")) === "130" && (await p.$eval("#nm-ver", (e) => e.dataset.n)) === "verde" && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.numeros") || "{}").v?.ta_s)) === 130);
+    await p.click('#numeros [data-nm="borrar"]'); await p.waitForTimeout(120);
+    check("tras borrar no queda nada guardado", (await p.inputValue("#nm-ta_s")) === "" && (await p.$$("#nm-ver")).length === 0 && (await p.evaluate(() => localStorage.getItem("medex.numeros"))) === null);
+    check("la ventana no se desplaza entera aunque se baje hasta el final (un solo desplazamiento)", await p.evaluate(() => { const d = document.querySelector("#numeros"), c = d.querySelector(".ficha-cuerpo"); c.scrollTop = c.scrollHeight; c.lastElementChild.scrollIntoView(); return d.scrollTop === 0 && d.scrollHeight <= d.clientHeight + 1; }));
+    await p.click("#nm-cerrar"); await p.waitForTimeout(150);
+  }
   // «De cada 100 personas…» (segunda tanda, 10): seis cajas de datos con tabla, dibujo de 100 puntos y fuente
   {
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "cien"; document.body.append(b); b.click(); b.remove(); });

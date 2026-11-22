@@ -911,3 +911,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | H11 | `dialog.alta`: ventanas con cabecera fija y cuerpo flexible (un único desplazamiento); el resto, en el módulo | `css/style.css` (junto a `dialog.sesion`), `js/preguntas.js` |
 | H12 | (sin estilos en `style.css`: todo en el módulo) | `js/mitos.js` |
 | H10 | (sin estilos en `style.css`: todo en el módulo; `.ben-cien` en `js/beneficios.js`) | `js/cien.js` |
+| H17 | `dialog.alta` y `dialog.sesion`: `overflow: clip` y cuerpo con `position: relative` (la ventana no se desplaza entera); el resto, en el módulo | `css/style.css`, `js/numeros.js` |
