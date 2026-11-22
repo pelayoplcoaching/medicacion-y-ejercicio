@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.1 · 2026-11-22 · Segunda tanda de mejoras grandes (2): centro de herramientas con buscador
+- `js/centro.js` (nuevo, bajo demanda): **centro de herramientas**. Las 34 herramientas de la aplicación en una pantalla, ordenadas en cinco grupos (Entender, Moverse, Seguir, Para la consulta, Ajustes y ayuda), cada una con su icono y una línea que dice para qué sirve. Las que necesitan medicación salen atenuadas si la lista está vacía; las del modo profesional solo se ven en ese modo.
+- **Buscador único**: herramientas, medicamentos de la base (primero los de su lista, con acceso a su ficha), lecciones de «Aprende», explicaciones «¿Por qué?», ejercicios y glosario, sin tildes ni mayúsculas. Flechas y Enter para moverse; **Ctrl/⌘ + K** lo abre desde cualquier pantalla.
+- **«Para usted hoy»**: hasta tres sugerencias por orden de importancia (cribado sin hacer, calor, la sesión de hoy, interacciones importantes, hábitos sin responder, metas, pruebas de forma física, lecciones, pastillero, copia de seguridad…). Sin medicación propone añadirla, ver un ejemplo o el recorrido.
+- **Favoritas**: la estrella de cada herramienta la sube a «Sus favoritas» (se guarda en el dispositivo, `medex.favoritas`).
+- Entradas: quinto botón «Más» en la barra inferior del móvil, botón «Herramientas» en la cabecera en pantallas anchas y primera línea del menú «Más» («Todas las herramientas»).
+- Las herramientas se abren con los mismos atributos y botones que ya escuchaba la aplicación: `app.js` solo añade la carga del módulo, los hechos para las sugerencias y el icono de rejilla.
+- Pruebas: 18 unitarias (catálogo completo y coherente con la página, cinco idiomas con las mismas 156 claves, orden de las sugerencias, buscador), 6 de interfaz, 3 escenarios de accesibilidad y 2 pantallas en las pruebas visuales.
+
 ## 1.3.0 · 2026-11-22 · Segunda tanda de mejoras grandes (1): arranque más ligero y artefacto reparado
 - **JavaScript al abrir: de 439 a 386 KB.** Salen de `app.js`, a módulos que se cargan al usarlos: la sesión guiada (`sesion.js`), el SPPB guiado, el escáner de cajas, la copia cifrada y el paso a otro dispositivo (`ocasional.js`), el informe de evolución y los casos del modo profesional (`pro.js`) y el recorrido guiado (`tour.js`). El lector de listas pegadas y PDF (`parser.js`) y el de fotos (`ocr.js`) dejan de precargarse: se piden al leer una lista. `app.js` baja de 279 a 241 KB.
 - Los módulos nuevos reciben de `app.js` lo que necesitan (estado ya evaluado y funciones de pantalla) y siguen en la precarga del service worker: todo funciona igual sin conexión. `abrirSesion` admite una sesión ya armada (`extra.sesion`), que usarán las mejoras de ejercicio de esta tanda.

@@ -59,6 +59,8 @@ const PANTALLAS = [
   { n: "habitos-datos", w: 390, pasos: [verEl("#bloque-habitos")] },
   { n: "profesional", w: 1280, pro: true },
   { n: "guia-conversacion", w: 1280, pro: true, pasos: [async (p) => { await p.click("#consulta [data-conversa]"); await p.waitForSelector("#conversa[open] .cv-paso"); }] },
+  { n: "centro-herramientas", w: 390, pasos: [async (p) => { await p.evaluate(() => document.querySelector("[data-centro]").click()); await p.waitForSelector("#centro[open] .ce-hoy button"); }] },
+  { n: "centro-busqueda-oscuro", w: 1280, tema: "dark", pasos: [async (p) => { await p.evaluate(() => document.querySelector("[data-centro]").click()); await p.waitForSelector("#centro[open] .ce-hoy button"); await p.fill("#ce-q", "silla"); await p.waitForSelector("#centro .ce-res"); }] },
   { n: "pastillero", w: 390, pasos: [menu("data-pastillero"), async (p) => p.waitForSelector("#pastillero[open] .pt-cajas")] },
   { n: "simulador", w: 390, pasos: [menu("data-simula"), async (p) => { await p.waitForSelector("#simula[open] .sim-meds"); await p.click("#simula [data-sim-probar]"); }] },
   { n: "cuanto-hace-falta", w: 1280, pasos: [menu("data-dosis"), async (p) => p.waitForSelector("#dosis[open] .ds-svg")] },

@@ -899,3 +899,4 @@ Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo qu
 | N.º | Qué añade | Dónde |
 |---|---|---|
 | H1 | Sin estilos nuevos: la sesión guiada, el SPPB, el escáner, las copias, el recorrido y las herramientas del modo profesional pasan a módulos bajo demanda con los mismos estilos | — |
+| H2 | Centro de herramientas: quinto botón de la barra inferior (rejilla de 5), botón «Herramientas» de la cabecera desde 960 px y primera línea del menú «Más»; la ventana (buscador en píldora, tarjetas «Para usted hoy», tejas por grupo con icono teñido y estrella, resultados) lleva sus estilos en `js/centro.js` | final de `style.css` y `centro.js` |

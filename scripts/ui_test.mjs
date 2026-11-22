@@ -387,7 +387,7 @@ try {
   check("escáner de códigos de barras oculto sin códigos nacionales en el nomenclátor", await p.$eval("#btn-barras", (e) => e.hidden));
 
   console.log("Beta 1: experiencia de uso (menú, recorrido, hoja de añadir, completitud, ayuda, barra, letra, deshacer)");
-  check("cabecera limpia: solo «¿Cómo funciona?», idioma y «Más» a la vista", (await p.$$(".utiles > .btn-sec, .utiles > .idioma, .utiles > .menu-mas")).length === 3 && !(await p.isVisible("#btn-letra")));
+  check("cabecera limpia: solo «¿Cómo funciona?», idioma y «Más» a la vista (y «Herramientas» en pantallas anchas)", (await p.$$eval(".utiles > .btn-sec, .utiles > .idioma, .utiles > .menu-mas", (es) => es.filter((e) => getComputedStyle(e).display !== "none").length)) === (p.viewportSize().width >= 960 ? 4 : 3) && !(await p.isVisible("#btn-letra")));
   await p.click("#menu-mas summary"); await p.waitForTimeout(100);
   check("menú «Más» con letra, tema, glosario, guía, novedades, sugerencias, acerca y legal", await p.isVisible("#btn-letra") && (await p.$$(".menu-lista [role=menuitem]")).length >= 8);
   await p.click("#btn-letra"); await p.click("#btn-letra");
@@ -414,7 +414,25 @@ try {
   check("hoja «añadir» con seis vías visibles y el escáner oculto", (await p.$$eval(".hoja-opciones button", (bs) => bs.filter((b) => !b.hidden).length)) === 6 && await p.$eval("#btn-barras", (b) => b.hidden));
   await p.click("#btn-buscar-nombre"); await p.waitForTimeout(500);
   check("«Buscar por nombre» cierra la hoja y enfoca el buscador", !(await p.$eval("#hoja-anadir", (d) => d.open)) && (await p.evaluate(() => document.activeElement?.id)) === "buscar");
-  check("barra inferior con cuatro secciones e insignias (nº de fármacos y avisos)", (await p.$$("#barra-inferior button")).length === 4 && (await p.textContent('#barra-inferior [data-ir="medicacion"] .nav-badge')).trim() !== "" && !(await p.$eval("#barra-contador", (e) => e.hidden)));
+  check("barra inferior con cuatro secciones, «Más» e insignias (nº de fármacos y avisos)", (await p.$$("#barra-inferior button[data-ir]")).length === 4 && (await p.$$("#barra-inferior button[data-centro]")).length === 1 && (await p.textContent('#barra-inferior [data-ir="medicacion"] .nav-badge')).trim() !== "" && !(await p.$eval("#barra-contador", (e) => e.hidden)));
+  // Centro de herramientas (segunda tanda, 2)
+  const tabAntesCentro = await p.$eval('.tabs [role=tab][aria-selected="true"]', (b) => b.dataset.tab).catch(() => "general");
+  await p.click("#barra-inferior [data-centro]"); await p.waitForSelector("#centro[open] .ce-hoy button", { timeout: 5000 }).catch(() => {});
+  check("«Más» de la barra abre el centro de herramientas: «Para usted hoy» (hasta 3) y las herramientas por grupos", (await p.$$("#centro .ce-hoy button")).length >= 1 && (await p.$$("#centro .ce-hoy button")).length <= 3 && (await p.$$("#centro .ce-rejilla .ce-t")).length >= 30 && (await p.$$("#centro .ce-tit")).length >= 6);
+  await p.fill("#ce-q", "silla"); await p.waitForTimeout(200);
+  check("el buscador del centro encuentra herramientas, ejercicios y glosario a la vez", (await p.$$("#centro .ce-res [data-pruebas]")).length === 1 && (await p.$$("#centro .ce-res [data-ejercicio]")).length >= 2 && (await p.$$("#centro .ce-res li.glos")).length >= 1);
+  await p.fill("#ce-q", "zzzz"); await p.waitForTimeout(150);
+  check("sin resultados, el centro lo dice", await p.isVisible("#centro .ce-nada"));
+  await p.fill("#ce-q", ""); await p.waitForTimeout(150);
+  await p.click('#centro .ce-fav[data-fav="glosario"]'); await p.waitForTimeout(150);
+  check("la estrella guarda la favorita y la sube arriba", (await p.$$('#centro .ce-favs [data-id="glosario"]')).length === 1 && (await p.evaluate(() => localStorage.getItem("medex.favoritas"))) === '["glosario"]');
+  await p.click('#centro .ce-fav[data-fav="glosario"]'); await p.waitForTimeout(150);
+  await p.click('#centro .ce-t[data-id="plan"] .ce-b'); await p.waitForTimeout(500);
+  check("una herramienta del centro lo cierra y abre lo suyo (Mi plan)", !(await p.$eval("#centro", (d) => d.open)) && (await p.$eval('[data-tab="plan"]', (b) => b.getAttribute("aria-selected"))) === "true");
+  await p.keyboard.press("Control+k"); await p.waitForSelector("#centro[open]", { timeout: 5000 }).catch(() => {});
+  check("Ctrl + K abre el centro con el cursor en el buscador", (await p.evaluate(() => document.activeElement?.id)) === "ce-q");
+  await p.click("#ce-cerrar"); await p.waitForTimeout(200);
+  await p.click(`.tabs [data-tab="${tabAntesCentro}"]`).catch(() => {}); await p.waitForTimeout(200); // las pruebas siguientes cuentan con la pestaña que había
   await p.click('#barra-inferior [data-ir="datos"]'); await p.waitForTimeout(700);
   check("la barra inferior lleva a la sección y la marca activa", await p.$eval('#barra-inferior [data-ir="datos"]', (b) => b.classList.contains("activo")));
   const nAntes = (await p.$$("#lista-meds li")).length;

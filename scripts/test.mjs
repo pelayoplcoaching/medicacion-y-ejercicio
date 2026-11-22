@@ -602,6 +602,43 @@ console.log("\n«Guía de conversación» para la consulta (mejora grande 15)");
   check("interfaz en los cinco idiomas con las mismas variables; las cinco Aes traducidas", ["en", "ca", "gl", "eu"].every((l) => Object.keys(C.TXT[l]).length === ks.length && ks.every((x) => C.TXT[l][x] && vars(C.TXT[l][x]) === vars(C.TXT.es[x]))) && C.AES.every((a) => C.TXT.en[a] && C.TXT.en[a] !== C.TXT.es[a]));
 }
 
+console.log("\nCentro de herramientas: catálogo, buscador y «Para usted hoy» (segunda tanda, 2)");
+{
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/centro.js"), "utf8");
+  const APP = path.join(ROOT, "app");
+  const appJs = fs.readFileSync(path.join(APP, "js/app.js"), "utf8"), htmlApp = fs.readFileSync(path.join(APP, "index.html"), "utf8");
+  const es = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  const H = C.HERRAMIENTAS, ids = H.map((h) => h.id);
+  check(`catálogo: ${H.length} herramientas, sin ids repetidos y en cinco grupos`, H.length >= 30 && new Set(ids).size === H.length && new Set(H.map((h) => h.g)).size === 5);
+  const sinNombre = H.filter((h) => !(h.k ? es.includes(`"${h.k}":`) : src.includes(`${h.l}: "`)) || !src.includes(`d_${h.id}: "`) || [h.d, h.tab, h.clic, h.f, h.url, h.vista].filter(Boolean).length !== 1);
+  check("cada herramienta tiene nombre (clave de la app que existe, o del módulo), descripción y una sola forma de abrirse", sinNombre.length === 0, sinNombre.map((h) => h.id).join());
+  const sinDestino = [...H.filter((h) => h.clic && !(h.clic.startsWith("#") ? htmlApp.includes(`id="${h.clic.slice(1)}"`) : htmlApp.includes(h.clic.slice(1)))), ...H.filter((h) => h.d && !appJs.includes(`[data-${h.d}]`)), ...H.filter((h) => h.f && !new RegExp(`\\b${h.f}\\b`).test(appJs))];
+  check("los botones que pulsa existen en la página y los atributos y funciones que usa los tiene la aplicación", sinDestino.length === 0, sinDestino.map((h) => h.id).join());
+  check("las páginas enlazadas existen", H.filter((h) => h.url).every((h) => fs.existsSync(path.join(ROOT, "app", h.url))));
+  const claves = (l) => new Set([...src.split(`\n  ${l}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos del módulo en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size > 100 && ["en", "ca", "gl", "eu"].every((l) => { const k = claves(l); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((l) => `${l}:${claves(l).size}`).join(" "));
+  const base = { n: 6, pro: false, edad: 72, crib: "ok", calor: 0, tipoHoy: "fuerza", etiquetaHoy: "Fuerza", hecho: false, mayores: 0, hab: { alcohol: "no", tabaco: "no", cafe: "poco" }, metas: 2, sft: Date.now(), lecciones: 10, copia: Date.now(), hayDiario: true };
+  const sug = (x) => C.sugerencias({ ...base, ...x }).map((s) => s.id);
+  check("sin medicación: añadir, ejemplo y cómo funciona", sug({ n: 0 }).join() === "anadir,ejemplo,como");
+  check("nunca más de tres sugerencias y siempre alguna", sug({}).length >= 1 && sug({ crib: "sin_datos", calor: 3, mayores: 2, hab: null, metas: 0, lecciones: 0 }).length === 3);
+  check("orden de importancia: cribado sin hacer, calor y sesión de hoy por delante", sug({ crib: "sin_datos", calor: 2, mayores: 2 }).join() === "cribado,calor,sesion");
+  check("con la sesión de hoy hecha no se propone otra vez; en día de descanso tampoco", !sug({ hecho: true }).includes("sesion") && sug({ hecho: true })[0] === "plan" && !sug({ tipoHoy: "descanso" }).includes("sesion"));
+  check("interacciones importantes, hábitos sin responder y metas sin elegir", sug({ mayores: 1 })[1] === "mapa" && sug({ hab: { alcohol: null, tabaco: "no", cafe: "poco" } }).includes("habitos") && sug({ metas: 0 }).includes("metas"));
+  check("pruebas de forma física desde los 60 años si no hay o son de hace más de 12 semanas; copia tras 30 días con diario", sug({ sft: 0, tipoHoy: "descanso" }).includes("pruebas") && !sug({ sft: 0, edad: 45, tipoHoy: "descanso" }).includes("pruebas") && sug({ sft: Date.now() - 90 * 864e5, tipoHoy: "descanso" }).includes("pruebas") && sug({ copia: 0, tipoHoy: "descanso" }).includes("listas") && !sug({ copia: 0, hayDiario: false, tipoHoy: "descanso" }).includes("listas"));
+  check("la guía de conversación solo se sugiere en modo profesional", sug({ pro: true }).includes("conversa") && !sug({}).includes("conversa"));
+  const F = { indice, enLista: new Set(["bisoprolol"]), glosario: { RPE: "Escala de esfuerzo percibido", SPPB: "prueba de equilibrio, marcha y silla" }, porques: ["pulso", "azucar", "equilibrio"], ejercicios: C.ejerciciosTipo(), lecciones: [{ id: "caidas", titulo: "El equilibrio se entrena" }] };
+  const busca = (q, o) => C.buscarTodo(q, F, o);
+  const de = (q, g) => (busca(q).find((x) => x.id === g)?.items || []);
+  check("buscador: menos de dos letras no busca; sin tildes ni mayúsculas", busca("a").length === 0 && de("PASTILLERO", "herr")[0]?.h.id === "pastillero" && de("cafe", "herr").some((r) => r.h.id === "habitos"));
+  check("buscador: medicamentos de la base, primero los de su lista", de("biso", "meds")[0]?.e.pid === "bisoprolol" && de("biso", "meds")[0].enLista === true && de("metform", "meds")[0]?.enLista === false);
+  check("buscador: lecciones, explicaciones, ejercicios y glosario", de("equilibrio", "lecc").length === 1 && de("azucar", "porque").length === 1 && de("silla", "ejer").length >= 2 && de("rpe", "glos").length === 1);
+  check("buscador: lo del modo profesional solo aparece en modo profesional", !de("conversacion", "herr").some((r) => r.h.id === "conversa") && (busca("conversacion", { pro: true }).find((x) => x.id === "herr")?.items || []).some((r) => r.h.id === "conversa"));
+  check("los ejercicios del buscador son los de las sesiones tipo (se abren por su nombre)", C.ejerciciosTipo().length >= 12 && C.ejerciciosTipo().includes("Sentadilla a la silla"));
+  check("entradas del centro: barra inferior, cabecera y menú «Más»; atajo Ctrl + K", (htmlApp.match(/data-centro=""/g) || []).length === 3 && /key\.toLowerCase\(\) === "k"/.test(appJs));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
