@@ -5,7 +5,7 @@
    gravedad que hacen de leyenda, «Dónde se concentran» (los medicamentos que más participan) y una ficha con el efecto,
    qué hacer y la fuente al tocar un cruce, un arco o un medicamento. El texto completo sigue en la lista de debajo.
    Textos de la interfaz en cinco idiomas dentro del módulo. Se carga al abrir la pestaña de interacciones. */
-import { idioma } from "./i18n.js?v=202611212358";
+import { idioma } from "./i18n.js?v=202611220031";
 
 export const NIVELES = ["mayor", "moderada", "menor"];
 const PESO = { mayor: 3, moderada: 2, menor: 1 };

@@ -538,6 +538,43 @@ console.log("\n«¿Cuánto movimiento hace falta?»: dosis y respuesta (mejora g
   check("textos en los cinco idiomas con las mismas variables; aviso de que son estudios de observación", ["en", "ca", "gl", "eu"].every((l) => Object.keys(D.TXT[l]).length === ks.length && ks.every((x) => D.TXT[l][x] && vars(D.TXT[l][x]) === vars(D.TXT.es[x]))) && /asociación/.test(D.TXT.es.observ));
 }
 
+console.log("\n«Alcohol, tabaco y café con su medicación» (mejora grande 5)");
+{
+  const H = await import(pathToFileURL(path.join(ROOT, "app/js/habitos.js")).href);
+  const appSrc = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), esSrc = fs.readFileSync(path.join(ROOT, "app/js/i18n.js"), "utf8");
+  const CONDS = JSON.parse(appSrc.match(/const CONDICIONES = (\[[^\]]+\])/)[1]);
+  const principios = kb.clases.flatMap((c) => c.principios.map((p) => ({ ...p, senales: [...(c.senales || []), ...(p.senales_extra || [])] })));
+  const pidsKb = new Set(principios.map((p) => p.id));
+  const pidsReglas = H.REGLAS.flatMap((r) => [...(r.si.pids || []), ...(r.si.excluir || []), ...(r.si.sinPids || []), ...(r.extras || []).flatMap((e) => e.pids)]);
+  check("reglas: cada fármaco, señal y situación existe en la base; respuestas válidas («no» y «poco» no avisan); ids únicos", pidsReglas.every((p) => pidsKb.has(p)) && H.REGLAS.every((r) => (!r.si.senal || kb.senales[r.si.senal]) && [r.si.condicion, r.si.sinCondicion].every((c) => !c || CONDS.includes(c)) && r.v.length && r.v.every((v) => H.VALORES[r.h].includes(v) && v !== "no" && v !== "poco")) && new Set(H.REGLAS.map((r) => r.id)).size === H.REGLAS.length && H.REGLAS.length >= 25);
+  check("ninguna regla sin fuente: ficha técnica con su apartado, artículo con DOI o enlace", H.REGLAS.every((r) => r.fuentes?.length && r.fuentes.every((f) => (f.doi ? /^10\.\d{4,9}\/\S+$/.test(f.doi) : f.url ? /^https:\/\//.test(f.url) : /[Ff]ichas? técnicas?.*\d\.\d/.test(f.txt)))) && H.REGLAS.filter((r) => r.ft).every((r) => r.fuentes.some((f) => /[Ff]icha/.test(f.txt))));
+  const corre = (meds, hab, c = {}) => { const ctx = { edad: c.edad ?? null, condiciones: new Set(c.condiciones || []) }; return H.evaluar(evaluar(datos, meds.map((m) => (typeof m === "string" ? { pid: m, dosis: 1, tomas: 1 } : m)), ctx).items, hab, ctx); };
+  const ids = (a) => a.map((x) => x.id + ":" + x.nivel).join();
+  check("alcohol con medicamentos que dan sueño: precaución si a veces, atención si a diario; nada si no bebe o no responde", ids(corre(["lorazepam"], { alcohol: "aveces" })) === "alc_sedacion:precaucion" && ids(corre(["lorazepam"], { alcohol: "diario" })) === "alc_sedacion:alerta" && corre(["lorazepam"], { alcohol: "no" }).length === 0 && corre(["lorazepam"], {}).length === 0);
+  const sin = corre(["acenocumarol", "ibuprofeno", "gliclazida"], { alcohol: "diario" });
+  check("alcohol a diario: Sintrom y bajadas de azúcar en atención; el sangrado general no repite el Sintrom", sin.find((x) => x.id === "alc_acenocumarol")?.nivel === "alerta" && sin.find((x) => x.id === "alc_hipoglucemia")?.nivel === "alerta" && sin.find((x) => x.id === "alc_sangrado")?.implicados.map((it) => it.principio.id).join() === "ibuprofeno" && ORDEN[sin[0].nivel] >= ORDEN[sin[sin.length - 1].nivel]);
+  const cloz = corre(["clozapina"], { tabaco: "dejado", cafe: "mucho" });
+  check("clozapina: dejar de fumar en atención (los parches no lo evitan) y el café en precaución; primero el tabaco", cloz[0].id === "tab_cyp_fuerte" && cloz[0].nivel === "alerta" && /parches o chicles/.test(cloz[0].texto) && cloz.some((x) => x.id === "caf_clozapina" && x.nivel === "precaucion") && corre(["clozapina"], { tabaco: "si" })[0].nivel === "precaucion");
+  check("anticonceptivo combinado y tabaco: atención desde los 35; antes, o sin edad, precaución; nada si lo ha dejado", corre(["anticonceptivo_combinado"], { tabaco: "si" }, { edad: 38 })[0].id === "tab_ahc35" && corre(["anticonceptivo_combinado"], { tabaco: "si" }, { edad: 25 })[0].id === "tab_ahc" && corre(["anticonceptivo_combinado"], { tabaco: "si" })[0].id === "tab_ahc" && !corre(["anticonceptivo_combinado"], { tabaco: "dejado" }).some((x) => /ahc/.test(x.id)));
+  const emb = corre(["levotiroxina"], { cafe: "mucho" }, { condiciones: ["embarazo"] });
+  check("café: en el embarazo, el límite de 200 mg (y no el de 400); levotiroxina con agua y media hora antes", emb.some((x) => x.id === "caf_embarazo" && x.nivel === "precaucion" && /200 mg/.test(x.texto)) && !emb.some((x) => x.id === "caf_mucho") && emb.some((x) => x.id === "caf_levotiroxina") && corre([], { cafe: "mucho" }).map((x) => x.id).join() === "caf_mucho");
+  const sup = corre([{ pid: "cafeina", dosis: 200, tomas: 1 }], { cafe: "mucho" });
+  check("cafeína en suplementos: 200 mg y 4 tazas suman al menos 560 mg, por encima de 400 (sin repetir el aviso general)", sup.map((x) => x.id).join() === "caf_suplemento" && /al menos 560 mg/.test(sup[0].texto) && /por encima de 400/.test(sup[0].texto));
+  const hig = corre(["curcuma", "te_verde_extracto"], { alcohol: "diario" }).find((x) => x.id === "alc_higado");
+  check("textos: nombres en minúscula dentro de la frase y en mayúscula al empezar, y singular o plural según cuántos", /al de <b>lorazepam<\/b> y <b>tramadol<\/b>/.test(corre(["lorazepam", "tramadol"], { alcohol: "aveces" })[0].texto) && /^<b>Cúrcuma \/ curcumina<\/b> y <b>extracto de té verde<\/b> se han relacionado/.test(hig.texto) && /los necesita/.test(hig.texto) && /<\/b> se ha relacionado.*lo necesita/.test(corre(["curcuma"], { alcohol: "diario" })[0].texto));
+  const conSenal = (s, excl = []) => principios.find((p) => p.senales.includes(s) && !excl.includes(p.id))?.id;
+  const salta = H.REGLAS.every((r) => r.v.every((v) => {
+    const pid = r.si.pids?.[0] || (r.si.senal && conSenal(r.si.senal, r.si.excluir));
+    const a = corre(pid ? [{ pid, dosis: 100, tomas: 1 }] : [], { [r.h]: v }, { condiciones: r.si.condicion ? [r.si.condicion] : [], edad: r.si.edadMin ?? (r.si.edadMax != null ? r.si.edadMax - 5 : null) }).find((x) => x.id === r.id);
+    return a && a.titulo && ORDEN[a.nivel] && !/\{[^}]*\}/.test(a.texto + a.titulo);
+  }));
+  check("cada regla salta con su respuesta y su fármaco, y se lee sin huecos", salta);
+  const HAB = Function(`return ${appSrc.match(/const HAB = (\{[^;]+\});/)[1]}`)();
+  check("la app guarda las respuestas (estado, copia, pacientes y perfiles) con los mismos valores que el módulo", JSON.stringify(HAB) === JSON.stringify(H.VALORES) && (appSrc.match(/habitos: estado\.habitos/g) || []).length === 2 && (appSrc.match(/habitos: sanearHabitos\(/g) || []).length === 4 && Object.values(H.CLAVE).flatMap(Object.values).every((k) => esSrc.includes(`"${k}":`)));
+  const ks = Object.keys(H.TXT.es), vars = (s) => (s.match(/\{\w+\}/g) || []).sort().join();
+  check("interfaz en los cinco idiomas con las mismas variables", ["en", "ca", "gl", "eu"].every((l) => Object.keys(H.TXT[l]).length === ks.length && ks.every((x) => H.TXT[l][x] && vars(H.TXT[l][x]) === vars(H.TXT.es[x]))));
+}
+
 console.log("\nMi plan: días, tendencia, conciliación, constantes y chequeo previo (alfa 14)");
 {
   const p3 = planSemana([1, 3, 5]);

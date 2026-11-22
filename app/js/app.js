@@ -1,11 +1,11 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611212358";
-import { APP_VERSION } from "./version.js?v=202611212358";
-import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611212358";
-import { picto } from "./pictos.js?v=202611212358";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611212358";
-import { cargarScript } from "./libs.js?v=202611212358";
-import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611212358";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611212358";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611220031";
+import { APP_VERSION } from "./version.js?v=202611220031";
+import { extraerMedicacion, textoDePdf } from "./parser.js?v=202611220031";
+import { picto } from "./pictos.js?v=202611220031";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611220031";
+import { cargarScript } from "./libs.js?v=202611220031";
+import { textoDeImagen, textoDePdfEscaneado } from "./ocr.js?v=202611220031";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611220031";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -32,11 +32,11 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611212358"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611212358"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611212358"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611212358"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611212358"));
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611220031"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611220031"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611220031"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611220031"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611220031"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611212358"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611220031"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611212358"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611220031"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611212358"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611220031"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611212358"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611220031"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,7 +110,7 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
-const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611212358"));
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611220031"));
 const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
 /** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
 function abrirPastillero() {
@@ -124,11 +124,11 @@ function abrirPastillero() {
     .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
-const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611212358"));
+const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611220031"));
 /** «¿Cuánto movimiento hace falta?» (mejora grande 4): curvas de dosis y respuesta con su punto del diario. */
 function abrirDosis() { cargarDosis().then((D) => D.abrir({ diario: leerDiario(), edad: estado.edad })).catch(() => { cargarDosis.p = null; toast(t("pq.error"), { ms: 4000 }); }); }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-dosis]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirDosis(); } });
-const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611212358"));
+const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611220031"));
 /** «¿Qué cambia si…?» (mejora grande 16): el escenario se calcula en simula.js con el motor que se le pasa; la lista real no se toca. */
 function abrirSimula(quitar = []) {
   const meds = datos ? medsActivos().map((m) => { const ref = indice.porId.get(m.pid); return ref ? { pid: m.pid, nombre: ref.principio.nombre, clase: ref.clase.id, ic: iconoGrupo(ref.clase) } : null; }).filter(Boolean) : [];
@@ -317,7 +317,7 @@ $("#idioma").addEventListener("change", (e) => {
   if (document.startViewTransition && MOV.ok()) document.startViewTransition(cambiar); else cambiar();
 });
 
-const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null, sft: null, metas: null };
+const estado = { meds: [], edad: null, caidas: false, condiciones: [], modo: "paciente", pac: {}, pro: {}, horas: { ...HORA_MOMENTO }, tab: "general", plan: { dias: [1, 2, 3, 4, 5, 6] }, cribado: { regular: null, enfermedad: null, sintomas: [] }, prescrito: null, fcReposo: null, sppb: null, sft: null, metas: null, habitos: { alcohol: null, tabaco: null, cafe: null } };
 const sanearSppb = (x) => (x && Number.isFinite(Number(x.total)) ? { total: Math.max(0, Math.min(12, Number(x.total))), fecha: Number(x.fecha) || Date.now(), partes: x.partes || {}, velocidad: x.velocidad ?? null } : null);
 /** Pruebas de forma física guardadas: sexo para el baremo, prueba de resistencia elegida y hasta 20 baterías (fecha, edad, sexo y resultados). */
 const SFT_IDS = ["silla", "brazo", "paso2", "andar6", "sentado", "espalda", "levantarse"];
@@ -336,6 +336,9 @@ const sanearMetas = (x) => {
   for (const id of ids) { const h = Array.isArray(x.hitos?.[id]) ? x.hitos[id] : []; hitos[id] = [0, 1, 2, 3].map((k) => (Number.isFinite(Number(h[k])) && Number(h[k]) > 0 ? Number(h[k]) : null)); }
   return { ids, hitos };
 };
+/** Alcohol, tabaco y café (mejora grande 5): una respuesta por hábito o null. Igual que VALORES de js/habitos.js. */
+const HAB = { alcohol: ["no", "aveces", "diario"], tabaco: ["no", "si", "dejado"], cafe: ["poco", "medio", "mucho"] };
+const sanearHabitos = (x) => Object.fromEntries(Object.entries(HAB).map(([k, v]) => [k, v.includes(x?.[k]) ? x[k] : null]));
 const sanearCribado = (c) => ({ regular: c?.regular === true ? true : c?.regular === false ? false : null, enfermedad: c?.enfermedad === true ? true : c?.enfermedad === false ? false : null, sintomas: Array.isArray(c?.sintomas) ? c.sintomas.filter((x) => SINTOMAS_ACSM.some((y) => y.id === x)) : [] });
 const sanearPrescrito = (p) => (p && Number.isFinite(Number(p.fecha)) ? { fecha: Number(p.fecha), semanas: [4, 6, 8, 12].includes(Number(p.semanas)) ? Number(p.semanas) : 6, ...(p.base && typeof p.base === "object" ? { base: p.base } : {}) } : null);
 /** Plan semanal vigente (día 0–6 → tipo), según los días elegidos por el usuario. */
@@ -438,7 +441,7 @@ async function cargar() {
 /* ---------- persistencia local (solo en este navegador) ---------- */
 function guardar() {
   if (soloLectura) return; // vista de solo lectura (#ver=): no pisa los datos propios
-  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, metas: estado.metas, historialPresc: estado.historialPresc || [] })); } catch {}
+  try { localStorage.setItem("medex.estado", JSON.stringify({ meds: estado.meds, edad: estado.edad, caidas: estado.caidas, condiciones: estado.condiciones, modo: estado.modo, pac: estado.pac, pro: estado.pro, horas: estado.horas, plan: estado.plan, informeVisto: !!estado.informeVisto, cribado: estado.cribado, prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, metas: estado.metas, habitos: estado.habitos, historialPresc: estado.historialPresc || [] })); } catch {}
   if (estado.meds.length) datosGuardados(); // primera vez con datos: pedir almacenamiento persistente (los avisos esperan a la próxima visita)
 }
 /** Deja solo lo que la app sabe interpretar: evita que un estado corrupto o una copia antigua rompan la carga. */
@@ -458,7 +461,7 @@ function sanearMeds(meds) {
 function restaurar() {
   try {
     const s = JSON.parse(localStorage.getItem("medex.estado") || "null");
-    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb), sft: sanearSft(s.sft), metas: sanearMetas(s.metas), informeVisto: !!s.informeVisto, historialPresc: Array.isArray(s.historialPresc) ? s.historialPresc.slice(0, 12) : [] });
+    if (s && Array.isArray(s.meds)) Object.assign(estado, { meds: sanearMeds(s.meds), edad: numeroEntre(s.edad, 1, 120), caidas: !!s.caidas, condiciones: Array.isArray(s.condiciones) ? s.condiciones.filter((c) => CONDICIONES.includes(c)) : [], modo: s.modo === "profesional" ? "profesional" : "paciente", pac: s.pac || {}, pro: s.pro || {}, horas: { ...HORA_MOMENTO, ...(s.horas || {}) }, plan: sanearPlan(s.plan), cribado: sanearCribado(s.cribado), prescrito: sanearPrescrito(s.prescrito), fcReposo: numeroEntre(s.fcReposo, 30, 150), sppb: sanearSppb(s.sppb), sft: sanearSft(s.sft), metas: sanearMetas(s.metas), habitos: sanearHabitos(s.habitos), informeVisto: !!s.informeVisto, historialPresc: Array.isArray(s.historialPresc) ? s.historialPresc.slice(0, 12) : [] });
   } catch {}
   $("#edad").value = estado.edad ?? ""; $("#fc-reposo").value = estado.fcReposo ?? "";
   $("#caidas").checked = estado.caidas;
@@ -467,7 +470,7 @@ function restaurar() {
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
   { const nota = $("#vivifrail-auto"); const total = estado.pro.sppb ?? estado.sppb?.total ?? null; if (nota) { nota.hidden = !(total != null && estado.pro.vivifrail === vivifrailDeSppb(total)); if (!nota.hidden) nota.textContent = t("pro.vivi_auto", { n: total }); } }
-  pintarCribadoForm();
+  pintarCribadoForm(); pintarHabitosForm();
   aplicarModo();
 }
 function aplicarModo() {
@@ -819,7 +822,7 @@ function mostrarFicha(pid) {
 /* ---------- listas guardadas (solo en este dispositivo) ---------- */
 function leerPerfiles() { try { return JSON.parse(localStorage.getItem("medex.perfiles") || "[]"); } catch { return []; } }
 function escribirPerfiles(lista) { try { localStorage.setItem("medex.perfiles", JSON.stringify(lista)); } catch {} }
-function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, metas: estado.metas, historialPresc: estado.historialPresc || [] }; }
+function snapshot() { return { meds: structuredClone(estado.meds), edad: estado.edad, caidas: estado.caidas, condiciones: [...estado.condiciones], modo: estado.modo, pac: { ...estado.pac }, pro: { ...estado.pro }, horas: { ...estado.horas }, plan: sanearPlan(estado.plan), cribado: sanearCribado(estado.cribado), prescrito: estado.prescrito, fcReposo: estado.fcReposo, sppb: estado.sppb, sft: estado.sft, metas: estado.metas, habitos: estado.habitos, historialPresc: estado.historialPresc || [] }; }
 function renderPerfiles() {
   if (typeof pintarConsulta === "function") pintarConsulta();
   const ul = $("#perfiles-lista"); ul.innerHTML = "";
@@ -832,7 +835,7 @@ function renderPerfiles() {
     li.querySelector('[data-a="cargar"]').addEventListener("click", () => {
       const e = pf.estado;
       const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), metas: sanearMetas(e.metas), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
+      Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), metas: sanearMetas(e.metas), habitos: sanearHabitos(e.habitos), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
       if (e.modo) estado.modo = e.modo;
       restaurarFormulario(); guardar(); render(); $("#pegar-aviso").textContent = t("perf.cargada", { n: pf.nombre });
       mostrarCambios(previa);
@@ -856,7 +859,7 @@ function restaurarFormulario() {
   for (const c of CONDICIONES) { const el = $("#cond-" + c); if (el) el.checked = estado.condiciones.includes(c); }
   for (const k of PAC) { const el = $("#pac-" + k); if (el) el.checked = estado.pac[k] === true; }
   for (const k of PRO) { const el = $("#pro-" + k); if (el) el.value = estado.pro[k] ?? ""; }
-  pintarCribadoForm();
+  pintarCribadoForm(); pintarHabitosForm();
   aplicarModo();
 }
 
@@ -944,7 +947,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611212358").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611220031").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1488,7 +1491,7 @@ $("#btn-ver-enlace")?.addEventListener("click", async () => {
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo); el cálculo va en consulta.js, bajo demanda ---------- */
-const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611212358"));
+const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611220031"));
 function abrirEstadisticas() {
   const evaluarE = (e) => ({ ctx: ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} }), res: evaluarEstado(e), crib: cribadoACSM(sanearCribado(e.cribado)) });
   cargarConsulta().then((C) => C.abrir({ perfiles: leerPerfiles(), evaluar: evaluarE, sit: (c) => ETIQUETAS_CTX[c] || t("sit." + c), senales: datos.kb.senales, crib: (k) => t("crib.chip." + k), version: APP_VERSION, kbVersion: datos.kb.version, descargar: descargarTexto, toast, hoy: hoyISO() }))
@@ -1587,7 +1590,7 @@ function pintarAvisoKb() {
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
 
-const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611212358"));
+const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611220031"));
 /** «Lo que el ejercicio hace por usted» (mejora grande 3): cifras de revisiones para lo marcado; el contenido va en beneficios.js. */
 function seccionBeneficios() {
   const ctx = ctxActual(), sec = seccion(t("ben.titulo"), { clave: "beneficios", resumen: "…" }), cuerpo = sec.querySelector(".cuerpo-sec");
@@ -1595,9 +1598,21 @@ function seccionBeneficios() {
     .catch(() => { cargarBeneficios.p = null; sec.remove(); });
   return sec;
 }
+const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611220031"));
+function irHabitos() { const d = $("#bloque-habitos"); if (!d) return; d.open = true; desplazar(d); setTimeout(() => d.querySelector("input:checked, input")?.focus({ preventScroll: true }), 400); }
+/** «Alcohol, tabaco y café con su medicación» (mejora grande 5): abierta si alguna respuesta tiene algo que cruzar. */
+function seccionHabitos(res) {
+  const h = estado.habitos || {}, resp = Object.values(h).some(Boolean);
+  const sec = seccion(t("hab.seccion"), { clave: "habitos", abierta: Object.values(h).some((v) => v && v !== "no" && v !== "poco"), resumen: resp ? "…" : t("hab.sin_resp") }), cuerpo = sec.querySelector(".cuerpo-sec");
+  cargarHabitos().then((H) => {
+    const r = H.pintar(cuerpo, { items: res.items, habitos: h, ctx: ctxActual(), t, etiqueta, glosar, ficha: (p) => enlaceFicha(p, " " + nombreCorto(p)), responder: irHabitos });
+    if (r.respondido) sec.querySelector(".resumen-sec").innerHTML = r.n ? `${r.n} ${t("inf.avisos")} · ${resumenNiveles(r.alerta, r.precaucion, r.info)}` : H.tx("ninguno");
+  }).catch(() => { cargarHabitos.p = null; sec.remove(); });
+  return sec;
+}
 function renderTab(cont, res, tab) {
   if (tab === "general") {
-    cont.append(seccionBeneficios());
+    cont.append(seccionBeneficios(), seccionHabitos(res));
     const imp = seccionImpacto(res); if (imp) cont.append(imp);
     if (res.combinadas.length) {
       const na = res.combinadas.filter((c) => c.regla.nivel === "alerta").length, np = res.combinadas.length - na;
@@ -2131,7 +2146,7 @@ function celebrar() {
 /* ---------- entrenador por voz (js/voz.js, mejora grande 6): se carga al abrir la sesión; hasta entonces, uno mudo ---------- */
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };
 let VOZ = VOZ_MUDO;
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611212358").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611220031").then((m) => { VOZ = m.VOZ; return m.VOZ; }));
 
 /* ---------- sesión guiada: chequeo previo, bloques con cronómetro, en grande ---------- */
 let cronometro = null, cronoInicio = 0;
@@ -2358,7 +2373,7 @@ function renderInteracciones(cont, res) {
   cont.append(sec);
   if (res.interacciones.length) pintarMapaInter(sec.querySelector(".im-caja"), res);
 }
-const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611212358"));
+const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611220031"));
 /** Mapa de interacciones (mejora grande 17): tabla de cruces o red, con la ficha de cada cruce; el texto completo sigue en la lista. */
 function pintarMapaInter(caja, res) {
   const fuente = (x) => (x.fuente === "curada" ? x.fuenteTxt || t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : t("ddi.duplicidad"));
@@ -2454,6 +2469,15 @@ function leerCribadoForm() {
   guardar(); render();
 }
 $$('input[name="crib-regular"], input[name="crib-enfermedad"], [data-crib-sint]').forEach((el) => el.addEventListener("change", leerCribadoForm));
+/* Alcohol, tabaco y café (mejora grande 5): tres radios en «Sus datos»; la sección de cruces va en habitos.js. */
+function pintarHabitosForm() {
+  const h = estado.habitos || {};
+  for (const k of Object.keys(HAB)) $$(`input[name="hab-${k}"]`).forEach((r) => { r.checked = h[k] === r.value; });
+}
+$$('input[name^="hab-"]').forEach((el) => el.addEventListener("change", () => {
+  estado.habitos = sanearHabitos(Object.fromEntries(Object.keys(HAB).map((k) => [k, $(`input[name="hab-${k}"]:checked`)?.value ?? null])));
+  guardar(); render();
+}));
 /** Resultado del cribado para el estado actual (y sugerencia de enfermedad conocida a partir de la lista). */
 function cribadoActual(res) {
   const sug = enfermedadSugerida(res, ctxActual());
@@ -3074,7 +3098,7 @@ async function recibirSync(cod) {
 
 
 /* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
-const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611212358"));
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611220031"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();
@@ -3105,7 +3129,7 @@ function pintarConsulta() {
 function cargarPaciente(id) {
   const pf = leerPerfiles().find((p) => p.id === id); if (!pf) return;
   const e = pf.estado; const previa = estado.ejemplo ? [] : structuredClone(estado.meds);
-  Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), metas: sanearMetas(e.metas), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
+  Object.assign(estado, { meds: sanearMeds(e.meds), edad: numeroEntre(e.edad, 1, 120), caidas: !!e.caidas, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {}, horas: { ...HORA_MOMENTO, ...(e.horas || {}) }, plan: sanearPlan(e.plan), cribado: sanearCribado(e.cribado), prescrito: sanearPrescrito(e.prescrito), fcReposo: numeroEntre(e.fcReposo, 30, 150), sppb: sanearSppb(e.sppb), sft: sanearSft(e.sft), metas: sanearMetas(e.metas), habitos: sanearHabitos(e.habitos), historialPresc: Array.isArray(e.historialPresc) ? e.historialPresc.slice(0, 12) : [], ejemplo: false });
   pacienteActual = id; restaurarFormulario(); guardar(); render(); mostrarCambios(previa); pintarConsulta();
 }
 function guardarPaciente() {
@@ -3123,7 +3147,7 @@ function guardarPaciente() {
 }
 function nuevoPaciente() {
   pacienteActual = null;
-  Object.assign(estado, { meds: [], edad: null, caidas: false, condiciones: [], pac: {}, pro: {}, plan: sanearPlan(null), cribado: sanearCribado(null), prescrito: null, fcReposo: null, sppb: null, sft: null, metas: null, historialPresc: [], ejemplo: false });
+  Object.assign(estado, { meds: [], edad: null, caidas: false, condiciones: [], pac: {}, pro: {}, plan: sanearPlan(null), cribado: sanearCribado(null), prescrito: null, fcReposo: null, sppb: null, sft: null, metas: null, habitos: sanearHabitos(null), historialPresc: [], ejemplo: false });
   restaurarFormulario(); guardar(); render(); pintarConsulta();
 }
 $("#consulta-paciente")?.addEventListener("change", (ev) => { if (ev.target.value) cargarPaciente(ev.target.value); else nuevoPaciente(); });

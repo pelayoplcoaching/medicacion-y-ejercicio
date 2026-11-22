@@ -19,6 +19,8 @@ try { playwright = await import("playwright"); } catch { playwright = await impo
 const { chromium } = playwright;
 const navegador = await chromium.launch();
 const ctx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" });
+// El plan tipo descansa el domingo y las pruebas de «Mi plan» usan la sesión del día: en domingo, la página vive en lunes.
+await ctx.addInitScript(() => { if (new Date().getDay() !== 0) return; const D = Date, salto = 864e5; globalThis.Date = class extends D { constructor(...a) { super(...(a.length ? a : [D.now() + salto])); } static now() { return D.now() + salto; } }; });
 const p = await ctx.newPage();
 const errores = [];
 p.on("pageerror", (e) => errores.push(e.message));
@@ -83,6 +85,16 @@ try {
   check("glosario presente", (await p.$$("abbr.glos")).length >= 1);
   await p.waitForSelector('details[data-sec="beneficios"] .ben-t', { timeout: 5000 }).catch(() => {});
   check("«Lo que el ejercicio hace por usted»: tarjetas con cifra, tipo de estudio y enlace a la fuente (DOI), marcadas como borrador", (await p.$$('details[data-sec="beneficios"] .ben-t')).length >= 1 && (await p.$$eval('details[data-sec="beneficios"] .ben-fuentes a', (as) => as.length > 0 && as.every((a) => a.href.startsWith("https://doi.org/10.") && a.rel.includes("noopener")))) && /revisión clínica/.test(await p.textContent('details[data-sec="beneficios"] .ben-borrador').catch(() => "")) && /beneficio/.test(await p.textContent('details[data-sec="beneficios"] .resumen-sec').catch(() => "")));
+  const HABS = 'details[data-sec="habitos"]';
+  await p.waitForSelector(`${HABS} .hab-vacio`, { state: "attached", timeout: 5000 }).catch(() => {});
+  check("alcohol, tabaco y café: sin responder, la sección va plegada y lo dice", !(await p.$eval(HABS, (d) => d.open)) && /Sin responder/.test(await p.textContent(`${HABS} .resumen-sec`)));
+  await p.click(`${HABS} > summary`); await p.click(`${HABS} .hab-responder`); await p.waitForTimeout(500);
+  check("«Responder ahora» abre las tres preguntas en «Sus datos»", await p.$eval("#bloque-habitos", (d) => d.open) && (await p.$$('#bloque-habitos input[type="radio"]')).length === 9);
+  await p.click('input[name="hab-alcohol"][value="diario"]'); await p.click('input[name="hab-tabaco"][value="no"]'); await p.click('input[name="hab-cafe"][value="medio"]');
+  await p.waitForSelector(`${HABS} .hab-r`, { state: "attached", timeout: 5000 }).catch(() => {});
+  check("alcohol a diario con Sintrom, insulina y metformina: avisos con su nivel, sus fármacos y su fuente; se guarda", (await p.$$(`${HABS} .hab-r.nivel-alerta[data-hab-r="alc_acenocumarol"]`)).length === 1 && (await p.$$(`${HABS} .hab-r[data-hab-r="alc_hipoglucemia"]`)).length === 1 && (await p.$$(`${HABS} .hab-r[data-hab-r="alc_metformina"] .chip`)).length === 1 && /avisos/.test(await p.textContent(`${HABS} .resumen-sec`)) && (await p.textContent(`${HABS} .hab-p[data-h="alcohol"] b`)) === "A diario" && JSON.parse(await p.evaluate(() => localStorage.getItem("medex.estado"))).habitos.alcohol === "diario");
+  await p.click('input[name="hab-alcohol"][value="no"]'); await p.waitForTimeout(400);
+  check("si no bebe ni fuma y toma de 1 a 3 cafés, con esta lista no hay cruces destacados", (await p.$$(`${HABS} .hab-r`)).length === 0 && (await p.$$(`${HABS} .hab-bien`)).length === 1 && /Sin cruces/.test(await p.textContent(`${HABS} .resumen-sec`)));
   const tabs = await p.$$eval(".tabs [role=tab] .cnt", (es) => es.map((e) => e.textContent.trim()));
   check("recuentos en pestañas", tabs.some((x) => x !== ""));
   await p.click('[data-tab="interacciones"]'); await p.waitForTimeout(200);
