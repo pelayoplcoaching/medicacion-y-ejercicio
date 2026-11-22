@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.12 · 2026-11-22 · Segunda tanda de mejoras grandes (10): «De cada 100 personas…»
+- `js/cien.js` (nuevo, bajo demanda): **«De cada 100 personas…»**. Seis cajas de datos al estilo del Harding Center, en números absolutos: caídas en mayores (48 frente a 41 de cada 100 se caen en un año), insuficiencia cardiaca (24 frente a 17 ingresan en el primer año), enfermedad coronaria (8 ingresos y 1 infarto menos de cada 100), fibrilación auricular (20 frente a 40 siguen sin fibrilación al año), diabetes tipo 2 (26 frente a 74 pueden reducir medicación) y evitar la diabetes con la glucosa alta (11 frente a 5 cada año).
+- Cada caja: a quién se refiere, tabla «sin» y «con», dibujo de 100 puntos (llenos: les pasa; en anillo: la diferencia; apagados: no les pasa), frase de lectura, lo que no cambia, los efectos no deseados, el tipo de estudio, la certeza cuando la revisión la da y la fuente con DOI. Las de la situación clínica marcada (o las caídas desde los 60 años) salen primero.
+- Las cifras del estudio se guardan exactas y lo que se enseña es su redondeo a personas enteras; debajo de cada fila van las cifras tal como las da el resumen. La revisión de enfermedad coronaria solo da la diferencia (personas a tratar para evitar un caso): se enseña así, con una sola columna, y se explica.
+- **Contenido nuevo, con la marca «Borrador pendiente de revisión clínica»**. Fuentes comprobadas en PubMed el 22/11/2026: Sherrington 2019 y Long 2019 y Dibben 2021 (revisiones Cochrane), Elliott 2023, Johansen 2017 y Knowler 2002 (Diabetes Prevention Program).
+- Entradas: botón al final de «Lo que el ejercicio hace por usted» y herramienta en el centro («Entender»).
+- Pruebas: 11 comprobaciones unitarias (redondeos y cifras incluidos), 4 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.11 · 2026-11-22 · Segunda tanda de mejoras grandes (12): mitos sobre medicación y ejercicio
 - `js/mitos.js` (nuevo, bajo demanda): **«Mitos sobre medicación y ejercicio»**. Doce ideas muy extendidas (betabloqueantes, estatinas, anticoagulantes, insulina, ibuprofeno preventivo, pastillas de la tensión, osteoporosis, antidepresivos, pastillas para dormir, metformina, edad y fragilidad, dejar la medicación), cada una con su veredicto (diez falsos y dos a medias), lo que encontró el estudio, qué hacer, el tipo de estudio y la fuente con DOI.
 - **Los que tocan a su medicación, primero**: por familia (betabloqueantes, anticoagulantes, antidepresivos…), por efecto (estatina, hipoglucemia, AINE), por situación clínica (hipertensión, osteoporosis) o por edad y número de medicamentos.

@@ -485,6 +485,18 @@ try {
     await p.click("#rt-cerrar"); await p.waitForTimeout(150);
     await p.evaluate(() => { localStorage.removeItem("medex.vuelta"); const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
+  // «De cada 100 personas…» (segunda tanda, 10): seis cajas de datos con tabla, dibujo de 100 puntos y fuente
+  {
+    await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "cien"; document.body.append(b); b.click(); b.remove(); });
+    await p.waitForSelector("#cien[open] .cn-caja", { timeout: 6000 }).catch(() => {});
+    const nM = (await p.$$("#cn-mias .cn-caja")).length, nR = (await p.$$("#cn-resto .cn-caja")).length;
+    check("«De cada 100 personas…»: seis cajas con la marca de borrador, las de su situación en un grupo aparte", nM + nR === 6 && (await p.isVisible("#cien .cn-borrador")) && (await p.$$("#cien .cn-caja.mia")).length === nM, `${nM}+${nR}`);
+    check("cada caja tiene su tabla, su dibujo de 100 puntos con texto alternativo, la frase de lectura y la fuente con DOI", await p.$$eval("#cien .cn-caja", (cs) => cs.every((c) => c.querySelector("table tbody tr") && [...c.querySelectorAll(".cn-dibujo figure")].every((f) => f.querySelectorAll("circle").length === 100 && /\d/.test(f.getAttribute("aria-label") || "")) && c.querySelector(".cn-lee").textContent.length > 15 && c.querySelector('.cn-meta a[href^="https://doi.org/10."]'))));
+    const ic = await p.$eval("#cn-ic", (c) => ({ nums: [...c.querySelectorAll("tbody td b")].map((b) => b.textContent).join(), llenos: [...c.querySelectorAll(".cn-dibujo figure")].map((f) => f.querySelectorAll(".cn-p-si").length + "+" + f.querySelectorAll(".cn-p-dif").length).join() }));
+    check("insuficiencia cardiaca: 24 y 17 ingresos de cada 100, y el dibujo los enseña (24; 17 más 7 evitados)", ic.nums === "24,17,11,7,6,5" && ic.llenos === "24+0,17+7", JSON.stringify(ic));
+    check("tras un infarto solo hay una columna (la diferencia) y un dibujo", (await p.$$("#cn-ci .cn-dibujo figure")).length === 1 && (await p.$$eval("#cn-ci tbody td b", (bs) => bs.map((b) => b.textContent).join())) === "−8,−1" && (await p.$$("#cn-ci .cn-dibujo .cn-p-dif")).length === 8);
+    await p.click("#cn-cerrar"); await p.waitForTimeout(150);
+  }
   // Mitos sobre medicación y ejercicio (segunda tanda, 12): doce tarjetas, las de su medicación primero, leídos y enlaces (se deja todo como estaba)
   {
     const abreMt = async (arg) => { await p.evaluate((arg) => { const b = document.createElement("button"); b.dataset.abre = "mitos"; if (arg) b.dataset.arg = arg; document.body.append(b); b.click(); b.remove(); }, arg); await p.waitForSelector("#mitos[open] .mit-lista", { timeout: 6000 }).catch(() => {}); };

@@ -3,7 +3,7 @@
    desde los 65 años o tras una caída). Cada tarjeta: la cifra, qué significa en lenguaje llano, el tipo de estudio, la
    certeza cuando la revisión la da (GRADE) y la fuente con su DOI. Cifras comprobadas en PubMed el 21/11/2026, una a una,
    en el resumen de cada artículo. Contenido en español (como el resto del contenido clínico), revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611222142";
+import { idioma, t } from "./i18n.js?v=202611222151";
 
 const F = (txt, doi) => ({ txt, doi });
 /** Por situación: id de la situación (los de «Situación clínica») → tarjetas. «todos» y «mayores» se añaden solos. */
@@ -111,6 +111,8 @@ const CSS = `
 .ben-mas { margin-top: 10px; }
 .ben-rejilla.cerrada > li:nth-child(n+5) { display: none; }
 .ben-marque { margin: 10px 0 0; font-size: .84rem; color: var(--muted); }
+.ben-cien { margin: 12px 0 0; }
+@media print { .ben-cien { display: none; } }
 :root[data-theme="contrast"] .ben-t { background: var(--surface); }
 :root[data-theme="contrast"] .ben-t::before { display: none; }
 @media screen and (prefers-reduced-motion: no-preference) {
@@ -133,7 +135,8 @@ export function pintar(cont, c = {}) {
   cont.innerHTML = `<p class="ben-intro">${tx("intro")}</p>
     <ul class="ben-rejilla${T.length > 4 ? " cerrada" : ""}">${T.map(tarjetaHtml).join("")}</ul>
     ${T.length > 4 ? `<button type="button" class="btn-sec sm ben-mas" aria-expanded="false">${tx("ver_mas", { n: T.length })}</button>` : ""}
-    ${soloGenerales ? `<p class="ben-marque">${tx("marque")}</p>` : ""}`;
+    ${soloGenerales ? `<p class="ben-marque">${tx("marque")}</p>` : ""}
+    <p class="ben-cien"><button type="button" class="btn-sec sm" data-abre="cien">${t("cien.btn")}</button></p>`;
   cont.querySelector(".ben-mas")?.addEventListener("click", (ev) => {
     const ul = cont.querySelector(".ben-rejilla"), abierta = ul.classList.toggle("cerrada") === false;
     ev.currentTarget.setAttribute("aria-expanded", String(abierta));

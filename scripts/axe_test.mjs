@@ -45,6 +45,7 @@ const esc0 = [
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
   { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
   { n: "vuelta-inicio-claro", w: 390, abre: "vuelta" }, { n: "vuelta-ingreso-oscuro", w: 1280, abre: "vuelta", vuelta: ["ingreso", "t2"], tema: "dark" }, { n: "vuelta-infeccion-contraste", w: 390, abre: "vuelta", vuelta: ["infeccion", "t3"], tema: "contrast" },
+  { n: "cien-claro", w: 390, abre: "cien" }, { n: "cien-oscuro", w: 1280, abre: "cien", arg: "fa", tema: "dark" }, { n: "cien-contraste", w: 390, abre: "cien", arg: "ci", tema: "contrast" },
   { n: "mitos-claro", w: 390, abre: "mitos", arg: "betabloqueante" }, { n: "mitos-oscuro", w: 1280, abre: "mitos", arg: "metformina", tema: "dark" }, { n: "mitos-contraste", w: 390, abre: "mitos", arg: "insulina", tema: "contrast" },
   { n: "preguntas-claro", w: 390, abre: "preguntas" }, { n: "preguntas-oscuro", w: 1280, abre: "preguntas", preguntas: true, tema: "dark" }, { n: "preguntas-contraste", w: 390, abre: "preguntas", preguntas: true, tema: "contrast" },
   { n: "cuerpo-claro", w: 390, abre: "cuerpo" }, { n: "cuerpo-rinon-oscuro", w: 1280, abre: "cuerpo", arg: "rinon", tema: "dark" }, { n: "cuerpo-contraste", w: 390, abre: "cuerpo", arg: "higado", tema: "contrast" },

@@ -986,6 +986,29 @@ console.log("\nMitos sobre medicación y ejercicio (segunda tanda, 12)");
   check("módulo registrado, herramienta en el centro y clave en la copia de seguridad", /\n  mitos: \(\) => import\("\.\/mitos\.js/.test(appJs) && C.HERRAMIENTAS.some((h) => h.id === "mitos" && h.g === "entender") && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.mitos"'));
 }
 
+console.log("\n«De cada 100 personas…» (segunda tanda, 10)");
+{
+  const N = await import(pathToFileURL(path.join(ROOT, "app/js/cien.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/cien.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`interfaz en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 22 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }));
+  const caja = (id) => N.CAJAS.find((c) => c.id === id), n = (id, i = 0) => N.numeros(caja(id).filas[i]);
+  check("seis cajas, cada una con a quién se refiere, filas, notas, tipo de estudio y fuente con DOI", N.CAJAS.length === 6 && new Set(N.CAJAS.map((c) => c.id)).size === 6 && N.CAJAS.every((c) => /^De cada 100 personas/.test(c.quien) && c.filas.length >= 1 && c.notas.length >= 2 && c.tipo.length > 15 && /^10\.\d{4,}\/\S+$/.test(c.f.doi) && c.con.length > 10 && typeof c.aplica === "function"));
+  check("cada fila guarda las cifras del estudio y enseña su redondeo a personas enteras", N.CAJAS.every((c) => c.filas.every((f) => f.ex.length > 5 && (f.dif != null ? f.dif > 0 && f.dif < 100 : f.x.length === 2 && f.x.every((v) => v >= 0 && v <= 100)))) && n("caidas").sin === 48 && n("caidas").con === 41 && n("caidas").dif === 7 && n("ic").sin === 24 && n("ic").con === 17 && n("ic", 1).sin === 11 && n("ic", 1).con === 7 && n("ic", 2).sin === 6 && n("ic", 2).con === 5 && n("fa").sin === 20 && n("fa").con === 40 && n("fa").mas && n("dm2").sin === 26 && n("dm2").con === 74 && n("prediabetes").sin === 11 && n("prediabetes").con === 5);
+  check("cifras de los resúmenes de PubMed (comprobadas el 22/11/2026)", /480 y 408 de cada 1000/.test(src) && /850 por cada 1000 personas sin ejercicio y 655 con ejercicio, 195 menos/.test(src) && /23,7 % y 16,5 %/.test(src) && /11,1 % y 7,1 %/.test(src) && /5,8 % y 5,1 %/.test(src) && /por cada 12 personas \(riesgo relativo 0,58\)/.test(src) && /por cada 75 personas \(riesgo relativo 0,72\)/.test(src) && /26,4 % y 73,5 %/.test(src) && /11,0 y 4,8 casos por 100 personas y año/.test(src) && /fueron 8 \(7,8\)/.test(src) && /\(6,9\)/.test(src) && /3234 personas/.test(src) && /108 ensayos \(23 407 personas\)/.test(src) && /44 ensayos \(5783 personas\)/.test(src) && /85 ensayos \(23 430 personas\)/.test(src));
+  check("la cardiopatía isquémica solo enseña la diferencia (la revisión no da cada grupo) y lo explica", n("ci").solo && n("ci").dif === 8 && n("ci", 1).dif === 1 && /no las cifras de cada grupo/.test(caja("ci").notas[0]) && N.lectura(caja("ci").filas[0]) === "8 menos de cada 100.");
+  check("la frase de lectura: evitan, consiguen o sin diferencia clara", N.lectura(caja("caidas").filas[0]) === "7 de cada 100 lo evitan." && N.lectura(caja("fa").filas[0]) === "20 más de cada 100 lo consiguen." && N.lectura(caja("ic").filas[2]) === "Sin diferencia clara." && N.lectura(caja("prediabetes").filas[0]) === "6 de cada 100 lo evitan.");
+  check("lo que no cambia, los efectos no deseados y los límites van en cada caja", /apenas cambia: la calidad de vida/.test(src) && /Efectos no deseados: casi siempre leves/.test(src) && /Efectos no deseados: 32 en el grupo de ejercicio/.test(src) && /Es un solo ensayo, con 120 personas/.test(src) && /no se puede separar cuánto se debe a cada cosa/.test(src) && /puede deberse al azar/.test(src));
+  const d = (o = {}) => ({ conds: new Set(o.conds || []), edad: o.edad ?? 50, caidas: !!o.caidas });
+  check("las cajas de su situación salen primero: por edad o caídas y por situación clínica; la de evitar la diabetes, con obesidad y sin diabetes", N.propias(d()).length === 0 && N.propias(d({ edad: 70 })).join() === "caidas" && N.propias(d({ caidas: true })).join() === "caidas" && N.propias(d({ conds: ["insuficiencia_cardiaca", "cardiopatia_isquemica", "fibrilacion_auricular"] })).join() === "ic,ci,fa" && N.propias(d({ conds: ["obesidad"] })).join() === "prediabetes" && N.propias(d({ conds: ["obesidad", "diabetes"] })).join() === "dm2");
+  const pts = (si, dif, mas) => { const s = N.puntos(si, dif, mas); return [(s.match(/<circle/g) || []).length, (s.match(/cn-p-si/g) || []).length, (s.match(/cn-p-dif/g) || []).length, (s.match(/cn-p-no/g) || []).length].join(); };
+  check("el dibujo tiene siempre 100 puntos: llenos, en anillo (la diferencia) y apagados", pts(48, 0) === "100,48,0,52" && pts(41, 7) === "100,41,7,52" && pts(0, 8) === "100,0,8,92" && pts(20, 20, true) === "100,20,20,60" && /cn-p-si mas/.test(N.puntos(1, 0, true)));
+  check("lleva la marca de borrador y recuerda que son medias de grupos", /cn-borrador">\$\{tx\("borrador"\)\}/.test(src) && /nadie puede saber si usted será una de esas personas/.test(src));
+  check("módulo registrado, herramienta en el centro y botón en «Lo que el ejercicio hace por usted»", /\n  cien: \(\) => import\("\.\/cien\.js/.test(appJs) && C.HERRAMIENTAS.some((h) => h.id === "cien" && h.g === "entender") && /data-abre="cien">\$\{t\("cien\.btn"\)\}/.test(fs.readFileSync(path.join(ROOT, "app/js/beneficios.js"), "utf8")));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
