@@ -639,6 +639,45 @@ console.log("\nCentro de herramientas: catálogo, buscador y «Para usted hoy» 
   check("entradas del centro: barra inferior, cabecera y menú «Más»; atajo Ctrl + K", (htmlApp.match(/data-centro=""/g) || []).length === 3 && /key\.toLowerCase\(\) === "k"/.test(appJs));
 }
 
+console.log("\nBiblioteca de ejercicios: catálogo, dibujos, alternativas y cambios (segunda tanda, 4)");
+{
+  const B = await import(pathToFileURL(path.join(ROOT, "app/js/biblioteca.js")).href);
+  const M = await import(pathToFileURL(path.join(ROOT, "app/js/movimiento.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/biblioteca.js"), "utf8"), mov = fs.readFileSync(path.join(ROOT, "app/js/movimiento.js"), "utf8");
+  const appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const cat = B.catalogo();
+  check(`catálogo: ${cat.length} ejercicios, sin ids ni nombres repetidos`, cat.length === 45 && new Set(cat.map((e) => e.id)).size === 45 && new Set(cat.map((e) => e.nombre)).size === 45);
+  check("cada ejercicio tiene dibujo animado, tres errores frecuentes y algún cuidado según la medicación", cat.every((e) => M.IDS.includes(e.id) && M.postura(e.id, 0).includes("<svg") && M.errores(e.id).length === 3 && M.cuidados(e.id, ["pulso", "azucar", "sangrado", "tension", "agua", "calor", "equilibrio", "musculo", "tendon", "ritmo", "acelera", "fuerza_hueso", "sol", "tension_alta", "cansancio"]).length >= 1), cat.filter((e) => M.errores(e.id).length !== 3).map((e) => e.id).join());
+  check("cada ejercicio tiene cómo se hace, la clave, minutos y una variante más fácil", cat.every((e) => e.detalle?.length > 5 && (!e.nuevo || e.detalle.length > 40) && e.clave?.length > 10 && e.min >= 2 && e.facil?.length > 5), cat.filter((e) => !(e.detalle && e.clave && e.min && e.facil)).map((e) => e.id).join());
+  check("zonas, materiales, posturas y niveles son de las listas del módulo", cat.every((e) => B.ZONAS.includes(e.zona) && B.POSTURAS.includes(e.postura) && [1, 2, 3].includes(e.nivel) && e.material.every((m) => m === "bici" || B.MATERIALES.includes(m))) && B.ZONAS.every((z) => cat.some((e) => e.zona === z)));
+  // las dos posturas de cada dibujo tienen la misma estructura de trazo (si no, la animación salta)
+  const estructura = (d) => d.replace(/[-\d.\s,]+/g, "") + "/" + (d.match(/-?\d*\.?\d+/g) || []).length;
+  const figs = [...mov.matchAll(/^\s+(\w+): \{.*?fig: \["([^"]+)", "([^"]+)"\](.*)$/gm)];
+  const malas = figs.filter(([, , a, b, resto]) => estructura(a) !== estructura(b) || [...resto.matchAll(/attr: "d", v: \["([^"]+)", "([^"]+)"\]/g)].some((x) => estructura(x[1]) !== estructura(x[2]))).map((m) => m[1]);
+  check(`las dos posturas de los ${figs.length} dibujos animados tienen la misma estructura`, figs.length === 44 && malas.length === 0, malas.join());
+  check("el dibujo quieto usa el aspecto de los pictogramas de la lista", M.estatico("zancada").startsWith('<svg class="picto"') && M.estatico("escalon") === M.postura("escalon", 0).replace('class="ej-svg"', 'class="picto"'));
+  // los 13 primeros toman sus textos de las sesiones tipo del motor
+  const ses = sesionTipo("fuerza", { fragil: false });
+  check("los ejercicios de las sesiones tipo están en el catálogo con sus mismos textos", ses.bloques.filter((b) => b.clave).every((b) => { const e = B.porNombre(b.nombre); return e && e.detalle === b.detalle && e.clave === b.clave; }));
+  const alt = (n, p) => B.alternativas(n, p).map((e) => e.id);
+  check("alternativas: comparten patrón, no incluyen al propio ejercicio y hay al menos tres", ["Sentadilla a la silla", "Remo con banda elástica", "Press de hombro ligero", "Bisagra de cadera", "Apoyo sobre un pie", "Flexión de brazos con botella o banda", "Elevación de talones"].every((n) => { const a = B.alternativas(n), o = B.porNombre(n); return a.length >= (n === "Elevación de talones" ? 2 : 3) && !a.some((e) => e.id === o.id) && a.every((e) => e.pat.some((p) => o.pat.includes(p))); }));
+  check("alternativas: primero las del mismo patrón principal; para la sentadilla, levantarse de la silla va antes que la marcha sentado", alt("Sentadilla a la silla")[0] === "silla" && alt("Sentadilla a la silla").indexOf("silla") < alt("Sentadilla a la silla").indexOf("marcha_sentado"));
+  check("un bloque que no está en el catálogo por su nombre se reconoce por su dibujo", alt("Levantarse y sentarse", "silla").includes("sentadilla") && alt("Equilibrio (5 min)", "unpie").includes("tandem") && alt("No existe").length === 0);
+  check("se pueden cambiar los de fuerza y equilibrio; el bloque de marcha o bici y los de movilidad, no", B.cambiable("Sentadilla a la silla") && B.cambiable("Equilibrio (5 min)", "unpie") && !B.cambiable("Marcha, bici o elíptica", "bici") && !B.cambiable("Calentamiento", "marcha") && !B.cambiable("Enfriamiento", "estirar"));
+  const cambiada = B.aplicar(ses, { "Sentadilla a la silla": "zancada", "Remo con banda elástica": "no_existe" });
+  const z = cambiada.bloques.find((b) => b.de === "Sentadilla a la silla"), orig = ses.bloques.find((b) => b.nombre === "Sentadilla a la silla");
+  check("aplicar: mismo sitio y mismos minutos, otro ejercicio, y recuerda el original", !!z && z.nombre === "Zancada con apoyo" && z.min === orig.min && z.pict === "zancada" && z.dePict === "sentadilla" && cambiada.bloques.indexOf(z) === ses.bloques.indexOf(orig) && cambiada.min === ses.min);
+  check("aplicar: un id que no existe se ignora y sin cambios devuelve la misma sesión", cambiada.bloques.some((b) => b.nombre === "Remo con banda elástica") && B.aplicar(ses, {}) === ses);
+  const f = (x) => B.filtrar(x).map((e) => e.id);
+  check("filtros: sentado con banda, sin material, en el suelo y por zona", f({ postura: "sentado", material: "banda" }).join() === "remo_sentado,press_sentado,abduccion_sentado" && f({ material: "nada" }).every((id) => B.porId(id).material.length === 0) && f({ material: "nada" }).length >= 5 && f({ postura: "suelo" }).length === 5 && f({ zona: "tronco" }).length >= 4 && f({ q: "plancha" }).join() === "plancha");
+  const claves = (l) => new Set([...src.split(`\n  ${l}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos de la ventana en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size > 50 && ["en", "ca", "gl", "eu"].every((l) => { const k = claves(l); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((l) => `${l}:${claves(l).size}`).join(" "));
+  check("etiquetas de zona, material, postura y nivel de todo el catálogo", [...B.ZONAS.map((z2) => "z_" + z2), ...B.MATERIALES.map((m) => "m_" + m), "m_bici", ...B.POSTURAS.map((p) => "p_" + p), "niv_1", "niv_2", "niv_3"].every((k) => kEs.has(k)));
+  check("la aplicación aplica los cambios al plan, a «hoy», a la sesión guiada y a la hoja imprimible", (appJs.match(/sesionDe\(/g) || []).length >= 6 && /data-cambiar="\$\{b\.de \|\| b\.nombre\}"/.test(appJs) && appJs.includes("[data-biblioteca]") && appJs.includes('import("./biblioteca.js'));
+  check("el módulo no importa otros módulos bajo demanda (va en su propio ámbito en el artefacto)", [...src.matchAll(/^import .* from "\.\/([a-z0-9]+)\.js/gm)].every((m) => ["i18n", "engine", "pictos", "libs", "version"].includes(m[1])));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
@@ -808,7 +847,9 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 4100 desde las 20 mejoras grandes (v1.2, 21/11/2026): módulos bajo demanda (semana, voz, porque, movimiento, aprende…), que se precargan para usarse sin conexión
   // 4300 desde las mejoras grandes 8, 9 y 12 (pruebas, metas y resumen del mes, 21/11/2026): módulos bajo demanda que llevan sus textos en cinco idiomas
   // 4500 desde las mejoras grandes 14, 17, 16, 3 y 4 (pastillero, mapa, simulador, beneficios y dosis, 21/11/2026): módulos bajo demanda de 15-30 KB, precargados para usarse sin conexión; lo que se descarga al abrir sigue en ≤ 440 KB
-  check(`precarga total ≤ 4500 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 4500);
+  // 5200 desde la segunda tanda de mejoras grandes (v1.3, 22/11/2026): veinte módulos bajo demanda más (centro de herramientas, biblioteca de ejercicios, programa, paseo…),
+  // de 15-40 KB cada uno, precargados para usarse sin conexión; lo que se descarga al abrir no crece (JS inicial ≤ 400 KB)
+  check(`precarga total ≤ 5200 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 5200);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);

@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611221908";
-import { APP_VERSION } from "./version.js?v=202611221908";
-import { picto } from "./pictos.js?v=202611221908";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611221908";
-import { cargarScript } from "./libs.js?v=202611221908";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611221908";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611221934";
+import { APP_VERSION } from "./version.js?v=202611221934";
+import { picto } from "./pictos.js?v=202611221934";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611221934";
+import { cargarScript } from "./libs.js?v=202611221934";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611221934";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -30,13 +30,13 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611221908")); // lector de listas pegadas y PDF: solo al leer una lista
-const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611221908")); // lectura de fotos y escaneos
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611221908"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611221908"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611221908"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611221908"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611221908"));
+const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611221934")); // lector de listas pegadas y PDF: solo al leer una lista
+const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611221934")); // lectura de fotos y escaneos
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611221934"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611221934"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611221934"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611221934"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611221934"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611221908"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611221934"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611221908"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611221934"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611221908"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611221934"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611221908"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611221934"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,7 +110,7 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
-const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611221908"));
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611221934"));
 const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
 /** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
 function abrirPastillero() {
@@ -124,11 +124,11 @@ function abrirPastillero() {
     .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
-const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611221908"));
+const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611221934"));
 /** «¿Cuánto movimiento hace falta?» (mejora grande 4): curvas de dosis y respuesta con su punto del diario. */
 function abrirDosis() { cargarDosis().then((D) => D.abrir({ diario: leerDiario(), edad: estado.edad })).catch(() => { cargarDosis.p = null; toast(t("pq.error"), { ms: 4000 }); }); }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-dosis]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirDosis(); } });
-const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611221908"));
+const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611221934"));
 /** «¿Qué cambia si…?» (mejora grande 16): el escenario se calcula en simula.js con el motor que se le pasa; la lista real no se toca. */
 function abrirSimula(quitar = []) {
   const meds = datos ? medsActivos().map((m) => { const ref = indice.porId.get(m.pid); return ref ? { pid: m.pid, nombre: ref.principio.nombre, clase: ref.clase.id, ic: iconoGrupo(ref.clase) } : null; }).filter(Boolean) : [];
@@ -156,15 +156,39 @@ function abrirAprende(id = null) {
 const leccionesHechas = () => { try { return Object.keys(JSON.parse(localStorage.getItem("medex.aprende") || "{}")).length; } catch { return 0; } };
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-aprende]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; b.closest("dialog")?.close?.(); abrirAprende(b.dataset.aprende || null); } });
 document.addEventListener("aprende", () => { const n = $(".aprende-tile .apr-n"); if (n) n.textContent = t("apr.tile_n", { n: leccionesHechas() }); });
+/** Biblioteca de ejercicios (segunda tanda, 4): 45 ejercicios con dibujo y «Cambiar» uno del plan por otro del mismo tipo (js/biblioteca.js).
+    Lo cambiado va en localStorage («medex.cambios»); se aplica en cuanto la biblioteca ha cargado (al arrancar, solo si hay cambios). */
+let BIB = null, MOVM = null;
+const cargarBiblio = () => (cargarBiblio.p ||= Promise.all([import("./biblioteca.js?v=202611221934"), cargarMov()]).then(([B, M]) => { BIB = B; MOVM = M; return B; }));
+const hayCambios = () => { try { return (localStorage.getItem("medex.cambios") || "").length > 2; } catch { return false; } };
+function sesionDe(tipo, o) {
+  const s = sesionTipo(tipo, o); if (!s) return s;
+  if (BIB) return BIB.aplicar(s);
+  if (hayCambios() && !cargarBiblio.p) cargarBiblio().then(() => render(), () => { cargarBiblio.p = null; });
+  return s;
+}
+function abrirBiblioteca(cambiar = null) {
+  $("#menu-mas").open = false;
+  const presentes = () => (datos && medsActivos().length ? porquesDe(evaluar(datos, medsActivos(), ctxActual()).items.flatMap((it) => [...it.senales])) : []);
+  const enPlan = () => { try { const f = esFragil(); return [...new Set(Object.values(planActual()))].filter((x) => x && x !== "descanso").flatMap((x) => sesionDe(x, { fragil: f, minutosAer: f ? 10 : 30 }).bloques.map((b) => b.nombre)); } catch { return []; } };
+  cargarBiblio().then((B) => B.abrir({ cerrar: t("ficha.cerrar"), toast, enPlan, cambiado: () => render(), dibujo: (id) => picto(id) || MOVM.estatico(id),
+    verEjercicio: (b) => MOVM.abrir(b, { presentes: presentes(), variante: leerVariantes()[b.nombre] || "normal" }) }, { cambiar }))
+    .catch(() => { cargarBiblio.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+document.addEventListener("click", (ev) => {
+  const c = ev.target.closest("[data-cambiar]"); if (c) { ev.preventDefault(); ev.stopPropagation(); abrirBiblioteca({ nombre: c.dataset.cambiar, pict: c.dataset.pict }); return; }
+  const b = ev.target.closest("[data-biblioteca]"); if (b) { ev.preventDefault(); abrirBiblioteca(); }
+});
 /** Ejercicios animados (mejora grande 7): el pictograma de cada ejercicio es un botón que abre su ficha con el movimiento. */
-const botonPicto = (b) => `<button type="button" class="picto-btn" data-ejercicio="${b.nombre}" aria-label="${t("ej.ver")}: ${b.nombre}">${picto(b.pict)}</button>`;
-/** El bloque completo de un ejercicio por su nombre (en cualquiera de las sesiones tipo, de nivel estándar o frágil). */
+const botonPicto = (b) => `<button type="button" class="picto-btn" data-ejercicio="${b.nombre}" aria-label="${t("ej.ver")}: ${b.nombre}">${picto(b.pict) || MOVM?.estatico(b.pict) || ""}</button>`;
+/** El bloque completo de un ejercicio por su nombre (en cualquiera de las sesiones tipo, de nivel estándar o frágil, o en la biblioteca). */
 function buscarBloque(nombre) {
   for (const tipo of ["fuerza_eq", "fuerza", "aerobico", "equilibrio"]) for (const fragil of [false, true]) { const b = sesionTipo(tipo, { fragil, minutosAer: fragil ? 10 : 30 }).bloques.find((x) => x.nombre === nombre); if (b) return b; }
-  return null;
+  const e = BIB?.porNombre(nombre); return e ? BIB.bloqueDe(e.id) : null;
 }
-function abrirEjercicio(nombre) {
-  const b = buscarBloque(nombre); if (!b) return;
+function abrirEjercicio(nombre, reintento = false) {
+  const b = buscarBloque(nombre);
+  if (!b) { if (!reintento && !BIB) cargarBiblio().then(() => abrirEjercicio(nombre, true), () => { cargarBiblio.p = null; }); return; }
   const presentes = datos ? porquesDe(evaluar(datos, medsActivos(), ctxActual()).items.flatMap((it) => [...it.senales])) : [];
   cargarMov().then((m) => m.abrir(b, { presentes, variante: leerVariantes()[b.nombre] || "normal" })).catch(() => { cargarMov.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
@@ -183,11 +207,12 @@ function abrirPorque(id) {
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-porque]"); if (b) { ev.preventDefault(); abrirPorque(b.dataset.porque); } });
 /** Centro de herramientas (segunda tanda, 2): todo en una pantalla, con buscador, favoritas y «Para usted hoy» (js/centro.js). */
-const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611221908"));
+const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611221934"));
 function abrirCentro(foco = false) {
   $("#menu-mas").open = false;
   const aPlan = (tab) => { estado.tab = tab; render(); desplazar($(".tabs")); };
-  cargarCentro().then((C) => C.abrir({ indice, glosario: GLOSARIO, porques: PQ_ORDEN, enLista: new Set(estado.meds.map((m) => m.pid)), toast, cargarAprende, irHabitos, irTab: aPlan,
+  cargarBiblio().catch(() => { cargarBiblio.p = null; }); // para que el buscador encuentre también los ejercicios de la biblioteca
+  cargarCentro().then((C) => C.abrir({ masEjercicios: () => (BIB ? BIB.nombres() : []), indice, glosario: GLOSARIO, porques: PQ_ORDEN, enLista: new Set(estado.meds.map((m) => m.pid)), toast, cargarAprende, irHabitos, irTab: aPlan,
     hechos: () => { const res = datos && medsActivos().length ? evaluar(datos, medsActivos(), ctxActual()) : null, hoy = planDeHoy(), diario = leerDiario(); return { n: estado.meds.length, pro: estado.modo === "profesional", edad: estado.edad, crib: res ? cribadoActual(res).clave : null, calor: nivelCalorHoy(), tipoHoy: hoy.tipo, etiquetaHoy: hoy.etiqueta, hecho: diario.some((x) => x.fecha === hoyISO()), mayores: res ? res.interacciones.filter((x) => x.nivel === "mayor").length : 0, hab: estado.habitos, metas: estado.metas?.ids?.length || 0, sft: estado.sft?.hist?.at(-1)?.f || 0, lecciones: leccionesHechas(), copia: leerNum("medex.ultima_copia"), hayDiario: diario.length > 0 }; },
     verFicha: (pid) => { ficha.showModal(); fichaInput.value = indice.porId.get(pid)?.principio.nombre || ""; fichaLista.hidden = true; mostrarFicha(pid); },
     sesionHoy: () => { const h = planDeHoy(); if (h.tipo === "descanso") aPlan("plan"); else abrirSesion(h.tipo); },
@@ -264,6 +289,7 @@ const ICONS = {
   grafica: "M3 19h18v2H3v-2zm1.6-3.8 4.6-6.4 3.7 2.9 5.5-7.6 1.6 1.2-6.7 9.2-3.7-2.9-3.4 4.8-1.6-1.2z",
   pastillero: "M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 4v8h2.75V9H5zm3.75 0v8h2.75V9H8.75zm3.75 0v8h2.75V9H12.5zm3.75 0v8H19V9h-2.75z",
   rejilla: "M5 3h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm10 0h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM5 13h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2zm10 0h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z",
+  cambiar: "M7 3 2.5 7.5 7 12V8.5h11v-2H7V3zm10 9v3.5H6v2h11V21l4.5-4.5L17 12z",
 };
 const icono = (n, cls = "ic") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[n]}"/></svg>`;
 
@@ -963,7 +989,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611221908").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611221934").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1328,7 +1354,7 @@ const CUID_PRIO = {
 /** Lo de hoy: tipo de sesión, minutos, mejor franja, 3 cuidados según su medicación y lo ya hecho. */
 function datosHoy() {
   const plan = planDeHoy(), franja = franjaHoy();
-  const ses = plan.tipo === "descanso" ? null : sesionTipo(plan.tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
+  const ses = plan.tipo === "descanso" ? null : sesionDe(plan.tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 });
   const res = evaluar(datos, medsActivos(), ctxActual());
   const presentes = new Set(porquesDe(res.items.flatMap((it) => [...it.senales])));
   const cuidados = (CUID_PRIO[plan.tipo] || CUID_PRIO.aerobico).filter((id) => presentes.has(id)).slice(0, 3);
@@ -1507,7 +1533,7 @@ $("#btn-ver-enlace")?.addEventListener("click", async () => {
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo); el cálculo va en consulta.js, bajo demanda ---------- */
-const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611221908"));
+const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611221934"));
 function abrirEstadisticas() {
   const evaluarE = (e) => ({ ctx: ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} }), res: evaluarEstado(e), crib: cribadoACSM(sanearCribado(e.cribado)) });
   cargarConsulta().then((C) => C.abrir({ perfiles: leerPerfiles(), evaluar: evaluarE, sit: (c) => ETIQUETAS_CTX[c] || t("sit." + c), senales: datos.kb.senales, crib: (k) => t("crib.chip." + k), version: APP_VERSION, kbVersion: datos.kb.version, descargar: descargarTexto, toast, hoy: hoyISO() }))
@@ -1518,12 +1544,12 @@ $("#estadisticas-cerrar")?.addEventListener("click", () => $("#estadisticas").cl
 
 /* ---------- v1.0: hoja «Mi sesión» imprimible desde el navegador (sin librerías) ---------- */
 function imprimirSesion(tipo) {
-  const ses = sesionTipo(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 }); if (!ses) return;
+  const ses = sesionDe(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 }); if (!ses) return;
   const hoja = $("#hoja-sesion"); const variantes = leerVariantes();
   const res = evaluar(datos, medsActivos(), ctxActual()); const esencial = loEsencial(res, 3);
   hoja.innerHTML = `
     <header class="hoja-cab"><div><h1>${t("hoja.titulo")} · ${ses.titulo}</h1><p>${ses.min} min · ${t("hoja.nombre")}: ____________________ · ${t("hoja.fecha")}: ____ / ____ / ______</p></div><img src="assets/logo-80.png" alt="" width="48" height="48"></header>
-    <ol class="hoja-ej">${ses.bloques.map((b) => { const v = variantes[b.nombre] || "normal"; const det = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; return `<li>${picto(b.pict, { clase: "picto picto-hoja" })}<div><b>${b.nombre}</b> <em>${b.min} min</em><p>${det}</p>${b.clave ? `<small>${t("ej.clave")}: ${b.clave}</small>` : ""}</div><span class="hoja-check" aria-hidden="true"><i></i>${t("hoja.hecho")}</span></li>`; }).join("")}</ol>
+    <ol class="hoja-ej">${ses.bloques.map((b) => { const v = variantes[b.nombre] || "normal"; const det = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; return `<li>${picto(b.pict, { clase: "picto picto-hoja" }) || (MOVM?.estatico(b.pict) || "").replace('class="picto"', 'class="picto picto-hoja"')}<div><b>${b.nombre}</b> <em>${b.min} min</em><p>${det}</p>${b.clave ? `<small>${t("ej.clave")}: ${b.clave}</small>` : ""}</div><span class="hoja-check" aria-hidden="true"><i></i>${t("hoja.hecho")}</span></li>`; }).join("")}</ol>
     ${esencial.length ? `<ul class="hoja-esencial">${esencial.map((e) => `<li><b>${e.titulo}.</b> ${e.texto}</li>`).join("")}</ul>` : ""}
     <p class="hoja-alarma">${t("hoja.alarma")}</p>
     <footer><small>${t("hoja.nota")} · Pauta Activa v${APP_VERSION}</small></footer>`;
@@ -1606,7 +1632,7 @@ function pintarAvisoKb() {
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
 
-const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611221908"));
+const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611221934"));
 /** «Lo que el ejercicio hace por usted» (mejora grande 3): cifras de revisiones para lo marcado; el contenido va en beneficios.js. */
 function seccionBeneficios() {
   const ctx = ctxActual(), sec = seccion(t("ben.titulo"), { clave: "beneficios", resumen: "…" }), cuerpo = sec.querySelector(".cuerpo-sec");
@@ -1614,7 +1640,7 @@ function seccionBeneficios() {
     .catch(() => { cargarBeneficios.p = null; sec.remove(); });
   return sec;
 }
-const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611221908"));
+const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611221934"));
 function irHabitos() { const d = $("#bloque-habitos"); if (!d) return; d.open = true; desplazar(d); setTimeout(() => d.querySelector("input:checked, input")?.focus({ preventScroll: true }), 400); }
 /** «Alcohol, tabaco y café con su medicación» (mejora grande 5): abierta si alguna respuesta tiene algo que cruzar. */
 function seccionHabitos(res) {
@@ -1626,7 +1652,7 @@ function seccionHabitos(res) {
   }).catch(() => { cargarHabitos.p = null; sec.remove(); });
   return sec;
 }
-const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611221908"));
+const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611221934"));
 /** «Guía de conversación» (mejora grande 15, modo profesional): reúne lo que la guía adapta y la abre. */
 async function abrirConversa() {
   const ctx = ctxActual(), res = evaluar(datos, medsActivos(), ctx), M = estado.metas?.ids?.length ? await cargarMetas() : null;
@@ -2045,7 +2071,9 @@ function bloqueHtml(b, i, { grande = false } = {}) {
   const v = leerVariantes()[b.nombre] || "normal";
   const detalle = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle;
   const botones = b.facil || b.dificil ? `<span class="variantes" role="group" aria-label="${t("ej.variante")}">${["facil", "normal", "dificil"].filter((k) => k === "normal" || b[k]).map((k) => `<button type="button" data-v="${k}" data-ej="${b.nombre}" aria-pressed="${v === k}">${t("ej." + k)}</button>`).join("")}</span>` : "";
-  const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones}`;
+  // «Cambiar» (biblioteca de ejercicios): solo en la lista del plan y en ejercicios de fuerza o equilibrio; el de marcha o bici se ajusta con sus variantes
+  const cambiar = !grande && b.clave && !["marcha", "bici"].includes(b.dePict || b.pict) ? `<button type="button" class="ej-cambiar" data-cambiar="${b.de || b.nombre}" data-pict="${b.dePict || b.pict}" aria-label="${t("bib.cambiar")}: ${b.nombre}">${icono("cambiar")}${t("bib.cambiar")}</button>` : "";
+  const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}${b.de ? ` <small class="ej-de">${t("bib.en_lugar", { x: b.de })}</small>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones || cambiar ? `<span class="ej-botones">${botones}${cambiar}</span>` : ""}`;
   return grande
     ? `<li><label><input type="checkbox" data-i="${i}">${botonPicto(b)}<span>${cuerpo}</span></label></li>`
     : `<li><span class="min">${b.min}′</span>${botonPicto(b)}<span>${cuerpo}</span></li>`;
@@ -2078,7 +2106,7 @@ function renderPlan(cont) {
   const plan = planActual();
   const tipoSel = plan[sel.getDay()] || "descanso";
   const hechoSel = diario.filter((x) => x.fecha === hoyISO(sel));
-  const ses = tipoSel === "descanso" ? null : sesionTipo(tipoSel, { fragil, minutosAer: fragil ? 10 : 30 });
+  const ses = tipoSel === "descanso" ? null : sesionDe(tipoSel, { fragil, minutosAer: fragil ? 10 : 30 });
   const res = evaluar(datos, medsActivos(), ctxActual());
   const P = prescripcion(res, ctxActual());
   const fmtDia = (d) => d.toLocaleDateString(idioma(), { weekday: "short" }).replace(".", "");
@@ -2113,6 +2141,7 @@ function renderPlan(cont) {
     </div>
     <div class="plan-prog ${prog.clave}"><b>${t("prog.titulo")}</b> ${t("prog." + prog.clave, { n: prog.n, r: prog.rpe || "" })}</div>
     <div class="aprende-tile"><span class="apr-ic-t" aria-hidden="true">?</span><span><b>${t("apr.tile")}</b><small class="apr-n">${t("apr.tile_n", { n: leccionesHechas() })}</small></span><button type="button" class="btn-sec sm" data-aprende="">${t("apr.abrir")}</button></div>
+    <div class="aprende-tile bib-tile"><span class="apr-ic-t" aria-hidden="true">${icono("cambiar")}</span><span><b>${t("bib.tile")}</b><small>${t("bib.tile_n")}</small></span><button type="button" class="btn-sec sm" data-biblioteca="" aria-label="${t("apr.abrir")}: ${t("bib.tile")}">${t("apr.abrir")}</button></div>
     ${tileSft()}
     <div class="acciones"><button type="button" class="btn-sec sm" id="btn-cal2">${icono("calendario")} ${t("plan.calendario")}</button><button type="button" class="btn-sec sm" id="btn-semana-wa">${icono("whatsapp")} ${t("plan.compartir_semana")}</button><button type="button" class="btn-sec sm" id="btn-mes" data-mes="">${icono("calendario")} ${t("mes.btn")}</button>${constantesRelevantes(res, ctxActual()).length || diario.some((x) => x.const) ? `<button type="button" class="btn-sec sm" id="btn-constantes" data-constantes="">${icono("grafica")} ${t("ct.btn")}</button>` : ""}<button type="button" class="btn-sec sm" id="btn-diario-csv">${icono("guardar")} ${t("diario.csv")}</button></div>
     <p class="esencial-nota">${t("plan.nota")}</p>`;
@@ -2170,12 +2199,14 @@ function celebrar() {
 }
 
 /* ---------- entrenador por voz (js/voz.js) y sesión guiada (js/sesion.js): se cargan al abrir la sesión ---------- */
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611221908").then((m) => m.VOZ));
-const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611221908"));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611221934").then((m) => m.VOZ));
+const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611221934"));
 /** Sesión guiada: chequeo previo, bloques con cronómetro y voz. «extra» permite pasar una sesión ya armada (extra.sesion). */
 function abrirSesion(tipo, fecha = hoyISO(), extra = {}) {
-  const ctx = ctxActual();
-  cargarSesion().then((S) => S.abrir(tipo, fecha, { res: evaluar(datos, medsActivos(), ctx), ctx, fragil: esFragil(), hoyISO, nivelCalorHoy, abrirCalor, toast, icono, vibrar, MOV, ALARMA, anilloCrono, bloqueHtml, escalaRpe, camposConstantes, activarVariantes, leerVariantes, leerConstantes, registrarSesion, celebrar, cargarVoz: () => cargarVoz().catch((e) => { cargarVoz.p = null; throw e; }), ...extra }))
+  const ctx = ctxActual(), fragil = esFragil();
+  // con ejercicios cambiados (biblioteca), la sesión guiada usa los mismos que el plan
+  const antes = hayCambios() && !BIB ? cargarBiblio().catch(() => { cargarBiblio.p = null; }) : Promise.resolve();
+  antes.then(() => cargarSesion()).then((S) => S.abrir(tipo, fecha, { ...(BIB && hayCambios() ? { sesion: sesionDe(tipo, { fragil, minutosAer: fragil ? 10 : 30 }) } : {}), res: evaluar(datos, medsActivos(), ctx), ctx, fragil, hoyISO, nivelCalorHoy, abrirCalor, toast, icono, vibrar, MOV, ALARMA, anilloCrono, bloqueHtml, escalaRpe, camposConstantes, activarVariantes, leerVariantes, leerConstantes, registrarSesion, celebrar, cargarVoz: () => cargarVoz().catch((e) => { cargarVoz.p = null; throw e; }), ...extra }))
     .catch(() => { cargarSesion.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 /** Anillo de progreso del cronómetro respecto a la duración prevista (r = 18 → perímetro 113,1). */
@@ -2226,7 +2257,7 @@ function renderInteracciones(cont, res) {
   cont.append(sec);
   if (res.interacciones.length) pintarMapaInter(sec.querySelector(".im-caja"), res);
 }
-const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611221908"));
+const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611221934"));
 /** Mapa de interacciones (mejora grande 17): tabla de cruces o red, con la ficha de cada cruce; el texto completo sigue en la lista. */
 function pintarMapaInter(caja, res) {
   const fuente = (x) => (x.fuente === "curada" ? x.fuenteTxt || t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : t("ddi.duplicidad"));
@@ -2379,7 +2410,7 @@ function evolucionActual() {
 }
 function nombresPids() { const o = {}; for (const c of datos.kb.clases) for (const pr of c.principios) o[pr.id] = pr.nombre; return o; }
 // La ventana de evolución y los casos (exportar, importar, CSV, caso de prueba) viven en js/pro.js (se cargan al pulsar su botón)
-const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611221908"));
+const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611221934"));
 const pro = (f) => cargarPro().then(f, () => { cargarPro.p = null; toast(t("pq.error"), { ms: 4000 }); });
 function abrirEvolucion() {
   const evo = evolucionActual(); if (!evo) return;
@@ -2441,7 +2472,7 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
 
 /* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
 // El SPPB guiado, el escáner de cajas, la copia cifrada y el paso a otro dispositivo viven en js/ocasional.js (se cargan al pulsar su botón)
-const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611221908"));
+const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611221934"));
 const ocasional = (f) => cargarOcasional().then(f, () => { cargarOcasional.p = null; toast(t("pq.error"), { ms: 4000 }); });
 const apiOc = () => ({ estado, indice, toast, vibrar, anilloCrono, elegir, leerPerfiles, leerDiario,
   guardarSppb: (s) => { estado.sppb = s; estado.pro.sppb = s.total; $("#pro-sppb").value = s.total; aplicarVivifrailAuto(); guardar(); render(); },
@@ -2505,7 +2536,7 @@ $("#btn-glosario").addEventListener("click", () => {
 });
 
 // recorrido guiado sobre los elementos reales (primera visita o desde «¿Cómo funciona?»)
-const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611221908")); // vive en js/tour.js y se carga al iniciarlo
+const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611221934")); // vive en js/tour.js y se carga al iniciarlo
 function iniciarTour() { cargarTour().then((T) => T.iniciar({ MOV, conTransicion }), () => { cargarTour.p = null; }); }
 
 // «Su plan está al N %»: qué falta por rellenar para afinar el plan, con un botón directo
@@ -2673,7 +2704,7 @@ $("#btn-sync").addEventListener("click", () => ocasional((O) => O.abrirSync(apiO
 
 
 /* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
-const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611221908"));
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611221934"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();

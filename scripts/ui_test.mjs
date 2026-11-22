@@ -432,6 +432,37 @@ try {
   await p.keyboard.press("Control+k"); await p.waitForSelector("#centro[open]", { timeout: 5000 }).catch(() => {});
   check("Ctrl + K abre el centro con el cursor en el buscador", (await p.evaluate(() => document.activeElement?.id)) === "ce-q");
   await p.click("#ce-cerrar"); await p.waitForTimeout(200);
+  // Biblioteca de ejercicios (segunda tanda, 4): «Cambiar» un ejercicio del plan y la ventana con filtros (seguimos en Mi plan)
+  {
+    const isoF = await p.$$eval(".tira .dia", (ds) => ds.find((d) => /fuerza/i.test(d.querySelector(".tipo")?.textContent || ""))?.dataset.iso || null);
+    if (isoF) await p.click(`.tira .dia[data-iso="${isoF}"]`);
+    await p.waitForSelector(".plan .bloques .ej-cambiar", { timeout: 5000 }).catch(() => {});
+    const nCambiar = (await p.$$(".plan .bloques .ej-cambiar")).length;
+    check("cada ejercicio de fuerza del plan tiene «Cambiar»; el calentamiento, no", nCambiar >= 4 && (await p.$eval(".plan .bloques li", (li) => !li.querySelector(".ej-cambiar"))), String(nCambiar));
+    const original = await p.$eval(".plan .bloques .ej-cambiar", (b) => b.dataset.cambiar);
+    await p.click(".plan .bloques .ej-cambiar"); await p.waitForSelector("#biblioteca[open] [data-bib-usar]", { timeout: 6000 }).catch(() => {});
+    const nAlt = (await p.$$("#biblioteca [data-bib-usar]")).length;
+    check("«Cambiar» abre las alternativas del mismo tipo, con el ejercicio actual marcado", nAlt >= 3 && (await p.textContent("#bib-cab-t")).includes(original) && (await p.$$("#biblioteca .bib-t.actual")).length === 1, String(nAlt));
+    const elegido = await p.$eval("#biblioteca [data-bib-usar]", (b) => b.dataset.bibUsar);
+    await p.click("#biblioteca [data-bib-usar]"); await p.waitForSelector(".plan .bloques .ej-de", { timeout: 5000 }).catch(() => {});
+    check("al elegir otro, el plan lo muestra en su sitio con su dibujo y se guarda en el dispositivo", (await p.$$(".plan .bloques .ej-de")).length === 1 && (await p.$eval(".plan .bloques li:has(.ej-de) .picto-btn", (b) => !!b.querySelector("svg.picto"))) && (await p.evaluate(() => localStorage.getItem("medex.cambios"))) === JSON.stringify({ [original]: elegido }) && (await p.$$(".plan .bloques .ej-cambiar")).length === nCambiar);
+    await p.click(".plan .bloques li:has(.ej-de) .picto-btn"); await p.waitForSelector("#ejercicio[open] #ej-tit", { timeout: 5000 }).catch(() => {});
+    check("la ficha del ejercicio cambiado se abre con su dibujo y sus errores frecuentes", (await p.$$("#ejercicio .ej-escena svg")).length >= 1 && (await p.$$("#ejercicio .ej-errores li")).length === 3);
+    await p.click("#ej-cerrar"); await p.waitForTimeout(150);
+    await p.click(".plan .bloques li:has(.ej-de) .ej-cambiar"); await p.waitForSelector("#biblioteca[open] [data-bib-original]", { timeout: 5000 }).catch(() => {});
+    await p.click("#biblioteca [data-bib-original]"); await p.waitForTimeout(400);
+    check("«Volver al original» deshace el cambio", (await p.$$(".plan .bloques .ej-de")).length === 0 && (await p.evaluate(() => localStorage.getItem("medex.cambios"))) === null);
+    await p.click(".bib-tile [data-biblioteca]"); await p.waitForSelector("#biblioteca[open] .bib-lista li", { timeout: 5000 }).catch(() => {});
+    const nTodos = (await p.$$("#biblioteca .bib-lista li")).length;
+    await p.click('#biblioteca [data-bib-f="postura"][data-v="sentado"]'); await p.waitForTimeout(150);
+    const nSent = (await p.$$("#biblioteca .bib-lista li")).length;
+    await p.click('#biblioteca [data-bib-f="material"][data-v="banda"]'); await p.waitForTimeout(150);
+    check("la biblioteca enseña los 45 ejercicios y los filtra por postura y material", nTodos === 45 && nSent === 9 && (await p.$$("#biblioteca .bib-lista li")).length === 3 && (await p.textContent("#bib-n")).includes("3"), `${nTodos} ${nSent}`);
+    await p.click("#biblioteca .bib-t"); await p.waitForSelector("#ejercicio[open] #ej-tit", { timeout: 5000 }).catch(() => {});
+    check("tocar un ejercicio de la biblioteca abre su ficha encima", (await p.textContent("#ej-tit")).includes("Remo sentado con banda") && (await p.$eval("#biblioteca", (d) => d.open)));
+    await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
+    await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
+  }
   await p.click(`.tabs [data-tab="${tabAntesCentro}"]`).catch(() => {}); await p.waitForTimeout(200); // las pruebas siguientes cuentan con la pestaña que había
   await p.click('#barra-inferior [data-ir="datos"]'); await p.waitForTimeout(700);
   check("la barra inferior lleva a la sección y la marca activa", await p.$eval('#barra-inferior [data-ir="datos"]', (b) => b.classList.contains("activo")));

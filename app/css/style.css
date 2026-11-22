@@ -4002,3 +4002,13 @@ details.seccion[data-sec="beneficios"] { --ic: url("data:image/svg+xml;utf8,<svg
 .btn-centro { display: none; }
 @media (min-width: 960px) { .utiles .btn-centro { display: inline-flex; align-items: center; gap: 6px; } }
 .menu-lista .menu-centro { font-weight: 800; margin-bottom: 4px; border-bottom: 1px solid var(--line); border-radius: var(--r-sm) var(--r-sm) 0 0; }
+/* H4. Biblioteca de ejercicios (segunda tanda, 4): boton Cambiar de cada ejercicio del plan, nota del ejercicio sustituido y su ficha en la pestana Plan. La ventana lleva sus estilos en js/biblioteca.js */
+.ej-botones { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; }
+.bloques .ej-botones .variantes { margin-top: 0; }
+.ej-cambiar { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 3px 10px; border: 1px dashed var(--line-strong); border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: .74rem; font-weight: 700; cursor: pointer; }
+.ej-cambiar .ic { width: 13px; height: 13px; }
+.ej-cambiar:hover { border-style: solid; border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
+.ej-cambiar:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.ej-de { display: inline-block; margin-left: 2px; padding: 0 7px; border-radius: 999px; background: var(--info-soft); color: var(--info-ink); font-size: .72rem; font-weight: 600; }
+.bib-tile .apr-ic-t .ic { width: 20px; height: 20px; }
+@media print { .ej-cambiar, .bib-tile { display: none !important; } }
