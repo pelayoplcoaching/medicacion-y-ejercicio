@@ -27,6 +27,60 @@ p.on("pageerror", (e) => errores.push(e.message));
 p.on("console", (m) => { if (m.type() === "error" && !/cdn|Failed to load resource|tessdata/i.test(m.text())) errores.push(m.text()); });
 p.on("dialog", (d) => d.dismiss());
 
+/* Bloques independientes, cada uno con su propio contexto: empiezan a la vez que el flujo principal (mejora grande 20)
+   y su resultado se escribe al final, en orden, para que la salida no se mezcle. */
+const checkEn = (buf) => (nombre, cond, detalle = "") => { total++; if (cond) buf.push(`  ✔ ${nombre}`); else { fallos++; buf.push(`  ✘ ${nombre} ${detalle}`); } };
+async function bloque(titulo, fn) { const buf = [titulo]; try { await fn(checkEn(buf)); } catch (e) { fallos++; buf.push(`  ✘ excepción en «${titulo}»: ${e.message}`); } return buf; }
+const paralelos = Promise.all([
+  bloque("Escritorio e inglés (en paralelo)", async (check) => {
+    const anchoCtx = await navegador.newContext({ viewport: { width: 1400, height: 900 }, locale: "es-ES" }); const pa = await anchoCtx.newPage();
+    await pa.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pa.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("principios"), null, { timeout: 15000 });
+    await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
+    check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 6);
+    check("recorrido: con medicación y sin datos, el paso actual es «sus datos» y «Siguiente» lo indica", (await pa.$eval("#recorrido-pasos li[aria-current=step]", (e) => e.textContent)).includes("datos") && (await pa.textContent("#btn-siguiente")).includes("datos"));
+    await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
+    check("recorrido en escritorio: con datos y medicación el plan ya está a la vista, los tres pasos quedan hechos y «Siguiente» desaparece", (await pa.$$("#recorrido-pasos li.hecho")).length === 3 && await pa.$eval("#btn-siguiente", (b) => b.hidden) && (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
+    check("barra inferior oculta en escritorio", !(await pa.isVisible("#barra-inferior")));
+    await pa.click('[data-modo="profesional"]'); await pa.waitForTimeout(200); await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(400);
+    check("pantalla de consulta: siete bloques seguidos, sin pestañas, columna izquierda fija", (await pa.$$("#contenido-tab .consulta-bloque")).length === 7 && !(await pa.isVisible(".tabs")) && (await pa.$eval("main > aside", (e) => getComputedStyle(e).position)) === "sticky");
+    await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(300);
+    check("vuelta a la vista normal con pestañas", await pa.isVisible(".tabs") && (await pa.$$("#contenido-tab .consulta-bloque")).length === 0);
+    await anchoCtx.close();
+    const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();
+    await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
+    check("navegador en inglés: interfaz traducida y visible (sin la clase de espera)", (await pe.textContent('[data-tab="cuando"]')).includes("When") && !(await pe.evaluate(() => document.documentElement.classList.contains("i18n-espera"))) && (await pe.$eval("main", (m) => getComputedStyle(m).visibility)) === "visible");
+    await enCtx.close();
+  }),
+  bloque("Sin conexión (service worker, en paralelo)", async (check) => {
+    const offCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" });
+    await offCtx.addInitScript(() => { try { localStorage.setItem("medex.guia", "1"); } catch {} });
+    const po = await offCtx.newPage();
+    po.on("pageerror", (e) => errores.push("sin conexión: " + e.message));
+    await po.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" });
+    // en local (http) la app no registra el service worker; aquí se registra a mano y se espera a que tome el control
+    await po.evaluate(async () => { await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready; });
+    await po.reload({ waitUntil: "networkidle" });
+    check("service worker instalado y controlando la página", await po.evaluate(() => !!navigator.serviceWorker.controller));
+    const cache = await po.evaluate(async () => { const ks = (await caches.keys()).filter((k) => k.startsWith("medex-")); const c = await caches.open(ks[0]); return (await c.keys()).map((r) => new URL(r.url).pathname + new URL(r.url).search); });
+    check("la precarga incluye ilustraciones, idiomas y PDF, pero no las capturas de la guía", cache.some((u) => u.includes("/assets/img/sppb-silla.webp")) && cache.some((u) => /\/js\/i18n\/en\.js\?v=/.test(u)) && cache.some((u) => /\/js\/pdf\.js\?v=/.test(u)) && !cache.some((u) => u.includes("/assets/guia/")));
+    await offCtx.setOffline(true);
+    await po.reload({ waitUntil: "domcontentloaded" });
+    await po.waitForFunction(() => /principios/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 15000 });
+    await po.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
+    check("sin conexión: la app arranca con la base de conocimiento", await po.isVisible("#buscar"));
+    await po.waitForFunction(() => { const i = document.querySelector("#ilustracion img"); return i && i.complete; }, null, { timeout: 5000 }).catch(() => {});
+    check("sin conexión: la ilustración de inicio se ve", await po.$eval("#ilustracion img", (i) => i.complete && i.naturalWidth > 0));
+    await po.waitForFunction(() => /\d/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 5000 });
+    await po.fill("#buscar", "sintrom"); await po.waitForSelector("#sugerencias li", { timeout: 8000 });
+    check("sin conexión: busca por marca comercial (nomenclátor en caché)", /sintrom|acenocumarol/i.test(await po.textContent("#sugerencias")));
+    await po.keyboard.press("Escape");
+    await po.selectOption("#idioma", "en"); await po.waitForTimeout(500);
+    check("sin conexión: se puede cambiar a inglés (diccionario precargado)", await po.evaluate(() => document.documentElement.lang) === "en" && (await po.textContent('[data-tab="cuando"]')).includes("When"));
+    await offCtx.setOffline(false);
+    await offCtx.close();
+  }),
+]);
+
 try {
   await p.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" });
   await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
@@ -577,54 +631,11 @@ try {
   check("legal.html con las cinco secciones y la versión", (await p.$$("#regulatorio, #aviso, #privacidad, #accesibilidad, #metodologia")).length === 5 && /^v\d+\.\d+/.test(await p.textContent("#app-version")));
   await p.goto(`http://localhost:${PORT}/acerca.html`, { waitUntil: "networkidle" }); await p.waitForFunction(() => /casos clínicos/.test(document.querySelector("#validacion-txt").textContent), null, { timeout: 15000 });
   check("acerca.html ejecuta los casos de validación", (await p.$$("#validacion-lista li")).length >= 10 && !(await p.textContent("#validacion-lista")).includes("✘"));
-  const anchoCtx = await navegador.newContext({ viewport: { width: 1400, height: 900 }, locale: "es-ES" }); const pa = await anchoCtx.newPage();
-  await pa.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pa.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("principios"), null, { timeout: 15000 });
-  await pa.click("#guia-cerrar").catch(() => {}); await pa.fill("#buscar", "bisoprolol"); await pa.waitForSelector("#sugerencias li"); await pa.click("#sugerencias li"); await pa.fill("#dosis", "5"); await pa.click("#form-med button[type=submit]"); await pa.waitForTimeout(300);
-  check("índice lateral del informe visible en escritorio", await pa.isVisible("#indice-informe") && (await pa.$$("#indice-informe a")).length === 6);
-  check("recorrido: con medicación y sin datos, el paso actual es «sus datos» y «Siguiente» lo indica", (await pa.$eval("#recorrido-pasos li[aria-current=step]", (e) => e.textContent)).includes("datos") && (await pa.textContent("#btn-siguiente")).includes("datos"));
-  await pa.fill("#edad", "60"); await pa.$eval("#edad", (e) => e.dispatchEvent(new Event("change"))); await pa.waitForTimeout(200);
-  check("recorrido en escritorio: con datos y medicación el plan ya está a la vista, los tres pasos quedan hechos y «Siguiente» desaparece", (await pa.$$("#recorrido-pasos li.hecho")).length === 3 && await pa.$eval("#btn-siguiente", (b) => b.hidden) && (await pa.evaluate(() => JSON.parse(localStorage.getItem("medex.estado")).informeVisto)) === true);
-  check("barra inferior oculta en escritorio", !(await pa.isVisible("#barra-inferior")));
-  await pa.click('[data-modo="profesional"]'); await pa.waitForTimeout(200); await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(400);
-  check("pantalla de consulta: siete bloques seguidos, sin pestañas, columna izquierda fija", (await pa.$$("#contenido-tab .consulta-bloque")).length === 7 && !(await pa.isVisible(".tabs")) && (await pa.$eval("main > aside", (e) => getComputedStyle(e).position)) === "sticky");
-  await pa.click("#btn-consulta-pantalla"); await pa.waitForTimeout(300);
-  check("vuelta a la vista normal con pestañas", await pa.isVisible(".tabs") && (await pa.$$("#contenido-tab .consulta-bloque")).length === 0);
-  await anchoCtx.close();
-  const enCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" }); const pe = await enCtx.newPage();
-  await pe.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await pe.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
-  check("navegador en inglés: interfaz traducida y visible (sin la clase de espera)", (await pe.textContent('[data-tab="cuando"]')).includes("When") && !(await pe.evaluate(() => document.documentElement.classList.contains("i18n-espera"))) && (await pe.$eval("main", (m) => getComputedStyle(m).visibility)) === "visible");
-  await enCtx.close();
 
-  console.log("Sin conexión (service worker)");
-  const offCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES" });
-  await offCtx.addInitScript(() => { try { localStorage.setItem("medex.guia", "1"); } catch {} });
-  const po = await offCtx.newPage();
-  po.on("pageerror", (e) => errores.push("sin conexión: " + e.message));
-  await po.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" });
-  // en local (http) la app no registra el service worker; aquí se registra a mano y se espera a que tome el control
-  await po.evaluate(async () => { await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready; });
-  await po.reload({ waitUntil: "networkidle" });
-  check("service worker instalado y controlando la página", await po.evaluate(() => !!navigator.serviceWorker.controller));
-  const cache = await po.evaluate(async () => { const ks = (await caches.keys()).filter((k) => k.startsWith("medex-")); const c = await caches.open(ks[0]); return (await c.keys()).map((r) => new URL(r.url).pathname + new URL(r.url).search); });
-  check("la precarga incluye ilustraciones, idiomas y PDF, pero no las capturas de la guía", cache.some((u) => u.includes("/assets/img/sppb-silla.webp")) && cache.some((u) => /\/js\/i18n\/en\.js\?v=/.test(u)) && cache.some((u) => /\/js\/pdf\.js\?v=/.test(u)) && !cache.some((u) => u.includes("/assets/guia/")));
-  await offCtx.setOffline(true);
-  await po.reload({ waitUntil: "domcontentloaded" });
-  await po.waitForFunction(() => /principios/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 15000 });
-  await po.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
-  check("sin conexión: la app arranca con la base de conocimiento", await po.isVisible("#buscar"));
-  await po.waitForFunction(() => { const i = document.querySelector("#ilustracion img"); return i && i.complete; }, null, { timeout: 5000 }).catch(() => {});
-  check("sin conexión: la ilustración de inicio se ve", await po.$eval("#ilustracion img", (i) => i.complete && i.naturalWidth > 0));
-  await po.waitForFunction(() => /\d/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 5000 });
-  await po.fill("#buscar", "sintrom"); await po.waitForSelector("#sugerencias li", { timeout: 8000 });
-  check("sin conexión: busca por marca comercial (nomenclátor en caché)", /sintrom|acenocumarol/i.test(await po.textContent("#sugerencias")));
-  await po.keyboard.press("Escape");
-  await po.selectOption("#idioma", "en"); await po.waitForTimeout(500);
-  check("sin conexión: se puede cambiar a inglés (diccionario precargado)", await po.evaluate(() => document.documentElement.lang) === "en" && (await po.textContent('[data-tab="cuando"]')).includes("When"));
-  await offCtx.setOffline(false);
-  await offCtx.close();
 } catch (e) {
   fallos++; console.log("  ✘ excepción en las pruebas:", e.message);
 }
+for (const buf of await paralelos) for (const l of buf) console.log(l);
 check("sin errores de JavaScript en la página", errores.length === 0, errores.join(" | ").slice(0, 300));
 await navegador.close();
 servidor.kill();

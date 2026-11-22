@@ -5,3 +5,5 @@ data/propuestas/*.json
 
 # Documentación legal privada (RGPD) — no publicar
 docs/legal/
+.visual/
+.pruebas/
