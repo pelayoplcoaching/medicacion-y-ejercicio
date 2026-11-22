@@ -1,9 +1,9 @@
-import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611221934";
-import { APP_VERSION } from "./version.js?v=202611221934";
-import { picto } from "./pictos.js?v=202611221934";
-import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611221934";
-import { cargarScript } from "./libs.js?v=202611221934";
-import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611221934";
+import { construirIndice, buscar, evaluar, informeTexto, ORDEN_NIVEL, MOMENTOS, MOMENTO_TXT, HORA_MOMENTO, momentosPorDefecto, ventanaEntrenamiento, loEsencial, ALARMA, sintomasPosibles, SINTOMAS, sesionTipo, objetivoSemanal, rachaSemanas, progresion, planSemana, minutosPorSemana, compararListas, constantesRelevantes, chequeoPrevio, veredictoChequeo, SINTOMAS_ACSM, enfermedadSugerida, cribadoACSM, CRIBADO_TXT, nivelEvidencia, EVIDENCIA, seccionFT, comprobarCaso, zonaIntensidad, impactoPorFarmaco, puntuarSPPB, vivifrailDeSppb, evolucion, textoEvolucion, tipoProducto, unidadPorDia, unidadPorToma, normalizar } from "./engine.js?v=202611221954";
+import { APP_VERSION } from "./version.js?v=202611221954";
+import { picto } from "./pictos.js?v=202611221954";
+import { textoHistoria, prescripcion, listasVistazo, ritmoTexto, filasPlanPaciente } from "./informes.js?v=202611221954";
+import { cargarScript } from "./libs.js?v=202611221954";
+import { t, tEs, aplicarIdioma, detectarIdioma, idioma } from "./i18n.js?v=202611221954";
 
 // Si la hoja de estilos aún no ha llegado (los módulos se precargan en paralelo), esperar: así la primera maquetación ya es la definitiva y no hay saltos.
 await new Promise((ok) => { const l = document.querySelector('link[rel="stylesheet"]'); if (!l || l.sheet) ok(); else { l.addEventListener("load", ok, { once: true }); l.addEventListener("error", ok, { once: true }); setTimeout(ok, 4000); } });
@@ -30,13 +30,13 @@ if (navigator.webdriver) document.documentElement.classList.add("pa-quieto"); //
 const medsActivos = () => estado.meds.filter((m) => !m.pausado && !m.libre);
 const medsLibres = () => estado.meds.filter((m) => m.libre);
 /** Módulos que no hacen falta al abrir (se piden la primera vez que se usan y se precargan cuando el navegador está libre). */
-const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611221934")); // lector de listas pegadas y PDF: solo al leer una lista
-const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611221934")); // lectura de fotos y escaneos
-const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611221934"));
-const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611221934"));
-const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611221934"));
-const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611221934"));
-const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611221934"));
+const cargarParser = () => (cargarParser.p ||= import("./parser.js?v=202611221954")); // lector de listas pegadas y PDF: solo al leer una lista
+const cargarOcr = () => (cargarOcr.p ||= import("./ocr.js?v=202611221954")); // lectura de fotos y escaneos
+const cargarSemana = () => (cargarSemana.p ||= import("./semana.js?v=202611221954"));
+const cargarPorque = () => (cargarPorque.p ||= import("./porque.js?v=202611221954"));
+const cargarMov = () => (cargarMov.p ||= import("./movimiento.js?v=202611221954"));
+const cargarAprende = () => (cargarAprende.p ||= import("./aprende.js?v=202611221954"));
+const cargarPruebas = () => (cargarPruebas.p ||= import("./pruebas.js?v=202611221954"));
 /** Pruebas de forma física (mejora grande 8): Senior Fitness Test con baremos por edad y sexo. El historial va en el estado (y con cada paciente guardado). */
 function abrirPruebas() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, c = ctxActual(), crib = cribadoACSM(estado.cribado).clave;
@@ -44,7 +44,7 @@ function abrirPruebas() {
   cargarPruebas().then((m) => m.abrir(ctxP)).catch(() => { cargarPruebas.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pruebas]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPruebas(); } });
-const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611221934"));
+const cargarMetas = () => (cargarMetas.p ||= import("./metas.js?v=202611221954"));
 /** Metas de la vida diaria (mejora grande 9): hasta 3, con 4 hitos cada una; el plan las señala en los ejercicios que las trabajan. */
 const METAS_IDS = ["escaleras", "suelo", "compra", "caminar", "nietos", "seguro", "vestirse", "viajar"];
 let metaRecien = null; // la meta que acaba de avanzar (su icono «salta» una vez)
@@ -65,7 +65,7 @@ document.addEventListener("click", (ev) => {
     toast(M.tx("hito_ok", { x: M.POR_ID[id].hitos[k] }), { accion: M.tx("deshacer"), onAccion: () => { estado.metas = antes; guardar(); render(); }, ms: 6000 });
   }).catch(() => { cargarMetas.p = null; });
 });
-const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611221934"));
+const cargarMes = () => (cargarMes.p ||= import("./mes.js?v=202611221954"));
 /** Resumen del mes (mejora grande 12): comparado con el mes anterior y con imagen para la familia o el médico. */
 function abrirMes() {
   Promise.all([cargarMes(), cargarMetas(), cargarPruebas(), cargarSemana()]).then(([Mm, M, S, Se]) => {
@@ -77,7 +77,7 @@ function abrirMes() {
   }).catch(() => { cargarMes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-mes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirMes(); } });
-const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611221934"));
+const cargarCalor = () => (cargarCalor.p ||= import("./calor.js?v=202611221954"));
 /** «Hoy hace calor» (mejora grande 10): la persona dice qué tiempo hace (nada de ubicación); se recuerda solo ese día, en este dispositivo. */
 function nivelCalorHoy() { try { const c = JSON.parse(localStorage.getItem("medex.calor") || "null"); return c?.fecha === hoyISO() && Number.isInteger(c.nivel) && c.nivel >= 0 && c.nivel <= 3 ? c.nivel : null; } catch { return null; } }
 function escribirCalor(nivel) { try { localStorage.setItem("medex.calor", JSON.stringify({ fecha: hoyISO(), nivel })); } catch {} }
@@ -101,7 +101,7 @@ document.addEventListener("click", (ev) => {
   escribirCalor(Number(b.dataset.calor)); renderHoy(); vibrar(10);
   $(`.hoy-calor [data-calor="${b.dataset.calor}"]`)?.focus({ preventScroll: true });
 });
-const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611221934"));
+const cargarConstantes = () => (cargarConstantes.p ||= import("./constantes.js?v=202611221954"));
 /** Mis constantes (mejora grande 13): gráficas de lo anotado en el diario con las franjas de su situación y valores para comentar. */
 function abrirConstantes() {
   const res = datos ? evaluar(datos, medsActivos(), ctxActual()) : null, sen = new Set(res ? res.items.flatMap((it) => [...it.senales]) : []);
@@ -110,7 +110,7 @@ function abrirConstantes() {
     .catch(() => { cargarConstantes.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-constantes]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirConstantes(); } });
-const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611221934"));
+const cargarPastillero = () => (cargarPastillero.p ||= import("./pastillero.js?v=202611221954"));
 const ICONO_TIPO = { aerobico: "aerobico", fuerza: "fuerza", fuerza_eq: "fuerza", equilibrio: "equilibrio", descanso: "paseo", paseo: "paseo" };
 /** Mi pastillero (mejora grande 14): las tomas por momentos del día con la ventana de entrenamiento y la hoja de la semana para imprimir. */
 function abrirPastillero() {
@@ -124,11 +124,11 @@ function abrirPastillero() {
     .catch(() => { cargarPastillero.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-pastillero]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirPastillero(); } });
-const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611221934"));
+const cargarDosis = () => (cargarDosis.p ||= import("./dosis.js?v=202611221954"));
 /** «¿Cuánto movimiento hace falta?» (mejora grande 4): curvas de dosis y respuesta con su punto del diario. */
 function abrirDosis() { cargarDosis().then((D) => D.abrir({ diario: leerDiario(), edad: estado.edad })).catch(() => { cargarDosis.p = null; toast(t("pq.error"), { ms: 4000 }); }); }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-dosis]"); if (b) { ev.preventDefault(); $("#menu-mas").open = false; abrirDosis(); } });
-const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611221934"));
+const cargarSimula = () => (cargarSimula.p ||= import("./simula.js?v=202611221954"));
 /** «¿Qué cambia si…?» (mejora grande 16): el escenario se calcula en simula.js con el motor que se le pasa; la lista real no se toca. */
 function abrirSimula(quitar = []) {
   const meds = datos ? medsActivos().map((m) => { const ref = indice.porId.get(m.pid); return ref ? { pid: m.pid, nombre: ref.principio.nombre, clase: ref.clase.id, ic: iconoGrupo(ref.clase) } : null; }).filter(Boolean) : [];
@@ -159,13 +159,50 @@ document.addEventListener("aprende", () => { const n = $(".aprende-tile .apr-n")
 /** Biblioteca de ejercicios (segunda tanda, 4): 45 ejercicios con dibujo y «Cambiar» uno del plan por otro del mismo tipo (js/biblioteca.js).
     Lo cambiado va en localStorage («medex.cambios»); se aplica en cuanto la biblioteca ha cargado (al arrancar, solo si hay cambios). */
 let BIB = null, MOVM = null;
-const cargarBiblio = () => (cargarBiblio.p ||= Promise.all([import("./biblioteca.js?v=202611221934"), cargarMov()]).then(([B, M]) => { BIB = B; MOVM = M; return B; }));
+const cargarBiblio = () => (cargarBiblio.p ||= Promise.all([import("./biblioteca.js?v=202611221954"), cargarMov()]).then(([B, M]) => { BIB = B; MOVM = M; return B; }));
 const hayCambios = () => { try { return (localStorage.getItem("medex.cambios") || "").length > 2; } catch { return false; } };
+/** Programa de 12 semanas (segunda tanda, 3; js/programa.js): fija los minutos de paseo y las series de la semana, y avanza solo con el diario.
+    El estado va en localStorage («medex.programa»); el módulo se carga al arrancar solo si hay un programa en marcha. */
+let PRG = null;
+const cargarPrograma = () => (cargarPrograma.p ||= import("./programa.js?v=202611221954").then((m) => { PRG = m; return m; }));
+const hayPrograma = () => { try { return !!localStorage.getItem("medex.programa"); } catch { return false; } };
+const diasConSesion = () => Object.values(planActual()).filter((x) => x && x !== "descanso");
+/** Semana del programa en vigor (o null). Una vez al día pone el programa al día con el diario y avisa de lo decidido. */
+function semPrograma() {
+  if (!PRG) { if (hayPrograma() && !cargarPrograma.p) cargarPrograma().then(() => render(), () => { cargarPrograma.p = null; }); return null; }
+  if (semPrograma.dia !== hoyISO()) {
+    semPrograma.dia = hoyISO();
+    const d = PRG.actualizar(leerDiario(), { sesPlan: diasConSesion().length }).at(-1);
+    if (d) { const v = PRG.veredicto(d); setTimeout(() => toast(`<b>${t("prg.tile")}:</b> ${v.titulo.toLowerCase()}. ${v.texto}`, { ms: 9000 }), 600); }
+  }
+  return PRG.semanaActual();
+}
+/** Objetivo de la semana del programa: sesiones y minutos según los días y las sesiones del plan. */
+function objetivoPrograma(sem = semPrograma()) { if (!sem) return null; const f = esFragil(); return PRG.objetivo(sem, diasConSesion().map((x) => sesionDe(x, { fragil: f, minutosAer: f ? 10 : 30 }).min)); }
+function abrirPrograma() {
+  $("#menu-mas").open = false;
+  cargarPrograma().then((M) => M.abrir({ cerrar: t("ficha.cerrar"), fragil: esFragil(), diario: leerDiario, toast, cambiado: () => { semPrograma.dia = null; render(); },
+    contexto: () => { const l = lunesDe(); return { obj: objetivoPrograma(), hechas: leerDiario().filter((x) => new Date(x.fecha + "T12:00") >= l).length }; },
+    abrirPruebas: () => { const b = document.createElement("button"); b.dataset.pruebas = ""; document.body.append(b); b.click(); b.remove(); } }))
+    .catch(() => { cargarPrograma.p = null; toast(t("pq.error"), { ms: 4000 }); });
+}
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-programa]"); if (b) { ev.preventDefault(); b.closest("dialog")?.close?.(); abrirPrograma(); } });
+/** Módulos bajo demanda de la segunda tanda (desde la mejora 5): se abren con data-abre="nombre" (y data-arg opcional) y reciben todos
+    la misma interfaz de la aplicación, api(). Así cada módulo nuevo solo añade aquí su línea de import y app.js no crece. */
+const MODULOS = {};
+const api = () => (api.o ||= { toast, icono, render, guardar, hoyISO, lunesDe, leerDiario, escribirDiario, registrarSesion, celebrar, esFragil, ctxActual, medsActivos, planActual, planDeHoy, franjaHoy, nivelCalorHoy, sesionDe, abrirSesion, abrirEjercicio, abrirBiblioteca, abrirPrograma, porquesDe, cribadoActual, glosar, leerVariantes, descargarTexto, vibrar, anilloCrono, desplazar, leerNum, ponerNum, cargarVoz, cargarMov, cargarBiblio, cargarPrograma, MOV, abrir: abrirModulo,
+  get estado() { return estado; }, get datos() { return datos; }, get indice() { return indice; }, res: () => evaluar(datos, medsActivos(), ctxActual()), cerrar: () => t("ficha.cerrar"),
+  dibujo: (id) => picto(id) || MOVM?.estatico(id) || "", irTab: (tab) => { estado.tab = tab; render(); desplazar($(".tabs")); },
+  verFicha: (pid) => { ficha.showModal(); fichaInput.value = indice.porId.get(pid)?.principio.nombre || ""; fichaLista.hidden = true; mostrarFicha(pid); } });
+const cargarModulo = (n) => (MODULOS[n].p ||= MODULOS[n]());
+function abrirModulo(n, arg = null) { $("#menu-mas").open = false; return cargarModulo(n).then((M) => M.abrir(api(), arg), () => { MODULOS[n].p = null; toast(t("pq.error"), { ms: 4000 }); }); }
+document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-abre]"); if (b && MODULOS[b.dataset.abre]) { ev.preventDefault(); b.closest("dialog")?.close?.(); abrirModulo(b.dataset.abre, b.dataset.arg || null); } });
 function sesionDe(tipo, o) {
-  const s = sesionTipo(tipo, o); if (!s) return s;
-  if (BIB) return BIB.aplicar(s);
-  if (hayCambios() && !cargarBiblio.p) cargarBiblio().then(() => render(), () => { cargarBiblio.p = null; });
-  return s;
+  const sem = semPrograma();
+  let s = sesionTipo(tipo, sem ? { ...o, aer: sem.aer } : o); if (!s) return s;
+  if (BIB) s = BIB.aplicar(s);
+  else if (hayCambios() && !cargarBiblio.p) cargarBiblio().then(() => render(), () => { cargarBiblio.p = null; });
+  return sem ? PRG.ajustar(s, sem) : s;
 }
 function abrirBiblioteca(cambiar = null) {
   $("#menu-mas").open = false;
@@ -207,7 +244,7 @@ function abrirPorque(id) {
 }
 document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-porque]"); if (b) { ev.preventDefault(); abrirPorque(b.dataset.porque); } });
 /** Centro de herramientas (segunda tanda, 2): todo en una pantalla, con buscador, favoritas y «Para usted hoy» (js/centro.js). */
-const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611221934"));
+const cargarCentro = () => (cargarCentro.p ||= import("./centro.js?v=202611221954"));
 function abrirCentro(foco = false) {
   $("#menu-mas").open = false;
   const aPlan = (tab) => { estado.tab = tab; render(); desplazar($(".tabs")); };
@@ -989,7 +1026,7 @@ const normalizarTxt = (s) => (s || "").normalize("NFD").replace(/[\u0300-\u036f]
 /* ---------- Resúmenes en PDF ---------- */
 // El maquetador de PDF (60 KB) se descarga solo la primera vez que se pide un documento.
 let modPdf = null;
-const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611221934").catch((e) => { modPdf = null; throw e; }));
+const cargarPdf = () => (modPdf ??= import("./pdf.js?v=202611221954").catch((e) => { modPdf = null; throw e; }));
 async function descargarPdf(tipo) {
   const btn = { medico: $("#btn-pdf-medico"), paciente: $("#btn-pdf-paciente"), entrenador: $("#btn-pdf-entrenador"), tarjeta: $("#btn-pdf-tarjeta") }[tipo];
   btn.disabled = true; btn.setAttribute("aria-busy", "true"); toast(t("pdf.generando"), { ms: 20000 });
@@ -1148,49 +1185,10 @@ function horaPlan() {
   const ok = v.horas.find((h) => h.nivel !== "rojo" && h.h >= 9 && h.h <= 19);
   return ok ? ok.h : 10;
 }
-function eventoReeval(stamp, esc, fmt) {
-  const f = fechaReeval(); const f2 = new Date(f); f2.setDate(f2.getDate() + 1);
-  return ["BEGIN:VEVENT", `UID:medex-reeval-${stamp}@fuerzabasadaenevidencia.com`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${fmt(f)}`, `DTEND;VALUE=DATE:${fmt(f2)}`, `SUMMARY:${esc(t("presc.ics_titulo"))}`, `DESCRIPTION:${esc(t("presc.estado", { d: new Date(estado.prescrito.fecha).toLocaleDateString("es-ES"), r: f.toLocaleDateString("es-ES") }))}`, "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", `DESCRIPTION:${esc(t("presc.ics_titulo"))}`, "END:VALARM", "END:VEVENT"];
-}
-$("#btn-reeval-ics")?.addEventListener("click", () => {
-  if (!estado.prescrito) return;
-  const esc = (x) => String(x).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
-  const fmt = (d) => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  descargarTexto("reevaluacion-pauta-activa.ics", ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", ...eventoReeval(stamp, esc, fmt), "END:VCALENDAR"].join("\r\n"), "text/calendar");
-});
-
-function icsPlan() {
-  const res = evaluar(datos, medsActivos(), ctxActual());
-  const P = prescripcion(res, ctxActual());
-  const hora = horaPlan();
-  const esencial = loEsencial(res, 5).map((p) => `${p.titulo}: ${p.texto}`).join("\n");
-  const esc = (x) => String(x).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
-  const hoy = new Date(); const lunes = new Date(hoy); lunes.setDate(hoy.getDate() + ((8 - hoy.getDay()) % 7 || 7));
-  const fmt = (d) => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
-  const DIA = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
-  for (const [dow, tipo, etiqueta] of diasPlan()) {
-    const d = new Date(lunes); d.setDate(lunes.getDate() + dow - 1);
-    const titulo = { aerobico: t("plan.aerobico"), fuerza: etiqueta.includes("equilibrio") ? t("plan.fuerza_eq") : t("plan.fuerza") }[tipo];
-    const detalle = tipo === "aerobico" ? `${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}` : `${P.fue.int} ${P.fue.tiempo}. ${P.fue.tipo}${etiqueta.includes("equilibrio") ? ` ${t("plan.mas_eq")}: ${P.eq.tipo}` : ""}`;
-    const dur = tipo === "aerobico" ? 45 : 40;
-    L.push("BEGIN:VEVENT", `UID:medex-${tipo}-${dow}-${stamp}@fuerzabasadaenevidencia.com`, `DTSTAMP:${stamp}`,
-      `DTSTART:${fmt(d)}T${String(hora).padStart(2, "0")}0000`, `DTEND:${fmt(d)}T${String(hora).padStart(2, "0")}${String(dur).padStart(2, "0")}00`,
-      `RRULE:FREQ=WEEKLY;COUNT=8;BYDAY=${DIA[d.getDay()]}`, `SUMMARY:${esc(titulo)}`,
-      `DESCRIPTION:${esc(detalle)}\\n\\n${esc(t("esencial.titulo"))}:\\n${esc(esencial)}\\n\\n${esc(t("plan.pie"))}`, "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", `DESCRIPTION:${esc(titulo)}`, "END:VALARM", "END:VEVENT");
-  }
-  if (estado.prescrito) L.push(...eventoReeval(stamp, esc, fmt));
-  L.push("END:VCALENDAR");
-  return L.join("\r\n");
-}
-$("#btn-calendario").addEventListener("click", () => {
-  const blob = new Blob([icsPlan()], { type: "text/calendar;charset=utf-8" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "plan-ejercicio.ics"; document.body.append(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  toast(t("plan.descargado", { n: diasPlan().length, h: String(horaPlan()).padStart(2, "0") + ":00" }), { ms: 7000 });
-});
+// los ficheros .ics (plan y reevaluación) los escribe js/ocasional.js, bajo demanda (v1.3.3)
+const apiIcs = () => { const res = evaluar(datos, medsActivos(), ctxActual()); return { P: prescripcion(res, ctxActual()), esencial: loEsencial(res, 5), hora: horaPlan(), dias: diasPlan(), prescrito: estado.prescrito, fechaReeval: estado.prescrito ? fechaReeval() : null, descargarTexto, toast }; };
+$("#btn-reeval-ics")?.addEventListener("click", () => { if (estado.prescrito) ocasional((O) => O.icsReeval(apiIcs())); });
+$("#btn-calendario").addEventListener("click", () => ocasional((O) => O.calendario(apiIcs())));
 
 /* ---------- instalar como aplicación ---------- */
 let promptInstalar = null;
@@ -1533,7 +1531,7 @@ $("#btn-ver-enlace")?.addEventListener("click", async () => {
 });
 
 /* ---------- v1.0: estadísticas y exportación de la consulta (pacientes guardados en este dispositivo); el cálculo va en consulta.js, bajo demanda ---------- */
-const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611221934"));
+const cargarConsulta = () => (cargarConsulta.p ||= import("./consulta.js?v=202611221954"));
 function abrirEstadisticas() {
   const evaluarE = (e) => ({ ctx: ctxDe({ ...estado, ...e, condiciones: e.condiciones || [], pac: e.pac || {}, pro: e.pro || {} }), res: evaluarEstado(e), crib: cribadoACSM(sanearCribado(e.cribado)) });
   cargarConsulta().then((C) => C.abrir({ perfiles: leerPerfiles(), evaluar: evaluarE, sit: (c) => ETIQUETAS_CTX[c] || t("sit." + c), senales: datos.kb.senales, crib: (k) => t("crib.chip." + k), version: APP_VERSION, kbVersion: datos.kb.version, descargar: descargarTexto, toast, hoy: hoyISO() }))
@@ -1545,18 +1543,7 @@ $("#estadisticas-cerrar")?.addEventListener("click", () => $("#estadisticas").cl
 /* ---------- v1.0: hoja «Mi sesión» imprimible desde el navegador (sin librerías) ---------- */
 function imprimirSesion(tipo) {
   const ses = sesionDe(tipo, { fragil: esFragil(), minutosAer: esFragil() ? 10 : 30 }); if (!ses) return;
-  const hoja = $("#hoja-sesion"); const variantes = leerVariantes();
-  const res = evaluar(datos, medsActivos(), ctxActual()); const esencial = loEsencial(res, 3);
-  hoja.innerHTML = `
-    <header class="hoja-cab"><div><h1>${t("hoja.titulo")} · ${ses.titulo}</h1><p>${ses.min} min · ${t("hoja.nombre")}: ____________________ · ${t("hoja.fecha")}: ____ / ____ / ______</p></div><img src="assets/logo-80.png" alt="" width="48" height="48"></header>
-    <ol class="hoja-ej">${ses.bloques.map((b) => { const v = variantes[b.nombre] || "normal"; const det = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; return `<li>${picto(b.pict, { clase: "picto picto-hoja" }) || (MOVM?.estatico(b.pict) || "").replace('class="picto"', 'class="picto picto-hoja"')}<div><b>${b.nombre}</b> <em>${b.min} min</em><p>${det}</p>${b.clave ? `<small>${t("ej.clave")}: ${b.clave}</small>` : ""}</div><span class="hoja-check" aria-hidden="true"><i></i>${t("hoja.hecho")}</span></li>`; }).join("")}</ol>
-    ${esencial.length ? `<ul class="hoja-esencial">${esencial.map((e) => `<li><b>${e.titulo}.</b> ${e.texto}</li>`).join("")}</ul>` : ""}
-    <p class="hoja-alarma">${t("hoja.alarma")}</p>
-    <footer><small>${t("hoja.nota")} · Pauta Activa v${APP_VERSION}</small></footer>`;
-  document.body.classList.add("imprimir-sesion");
-  const fin = () => { document.body.classList.remove("imprimir-sesion"); window.removeEventListener("afterprint", fin); };
-  window.addEventListener("afterprint", fin);
-  setTimeout(() => { try { window.print(); } catch { fin(); } }, 120);
+  ocasional((O) => O.hojaSesion({ ses, variantes: leerVariantes(), esencial: loEsencial(evaluar(datos, medsActivos(), ctxActual()), 3), dibujo: (id) => picto(id, { clase: "picto picto-hoja" }) || (MOVM?.estatico(id) || "").replace('class="picto"', 'class="picto picto-hoja"') }));
 }
 
 /* ---------- v1.0: pantalla de consulta (dos columnas sin pestañas; modo profesional, ≥ 960 px) ---------- */
@@ -1632,7 +1619,7 @@ function pintarAvisoKb() {
 }
 $("#kbcambios-cerrar")?.addEventListener("click", () => $("#kbcambios").close());
 
-const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611221934"));
+const cargarBeneficios = () => (cargarBeneficios.p ||= import("./beneficios.js?v=202611221954"));
 /** «Lo que el ejercicio hace por usted» (mejora grande 3): cifras de revisiones para lo marcado; el contenido va en beneficios.js. */
 function seccionBeneficios() {
   const ctx = ctxActual(), sec = seccion(t("ben.titulo"), { clave: "beneficios", resumen: "…" }), cuerpo = sec.querySelector(".cuerpo-sec");
@@ -1640,7 +1627,7 @@ function seccionBeneficios() {
     .catch(() => { cargarBeneficios.p = null; sec.remove(); });
   return sec;
 }
-const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611221934"));
+const cargarHabitos = () => (cargarHabitos.p ||= import("./habitos.js?v=202611221954"));
 function irHabitos() { const d = $("#bloque-habitos"); if (!d) return; d.open = true; desplazar(d); setTimeout(() => d.querySelector("input:checked, input")?.focus({ preventScroll: true }), 400); }
 /** «Alcohol, tabaco y café con su medicación» (mejora grande 5): abierta si alguna respuesta tiene algo que cruzar. */
 function seccionHabitos(res) {
@@ -1652,7 +1639,7 @@ function seccionHabitos(res) {
   }).catch(() => { cargarHabitos.p = null; sec.remove(); });
   return sec;
 }
-const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611221934"));
+const cargarConversa = () => (cargarConversa.p ||= import("./conversa.js?v=202611221954"));
 /** «Guía de conversación» (mejora grande 15, modo profesional): reúne lo que la guía adapta y la abre. */
 async function abrirConversa() {
   const ctx = ctxActual(), res = evaluar(datos, medsActivos(), ctx), M = estado.metas?.ids?.length ? await cargarMetas() : null;
@@ -2073,7 +2060,7 @@ function bloqueHtml(b, i, { grande = false } = {}) {
   const botones = b.facil || b.dificil ? `<span class="variantes" role="group" aria-label="${t("ej.variante")}">${["facil", "normal", "dificil"].filter((k) => k === "normal" || b[k]).map((k) => `<button type="button" data-v="${k}" data-ej="${b.nombre}" aria-pressed="${v === k}">${t("ej." + k)}</button>`).join("")}</span>` : "";
   // «Cambiar» (biblioteca de ejercicios): solo en la lista del plan y en ejercicios de fuerza o equilibrio; el de marcha o bici se ajusta con sus variantes
   const cambiar = !grande && b.clave && !["marcha", "bici"].includes(b.dePict || b.pict) ? `<button type="button" class="ej-cambiar" data-cambiar="${b.de || b.nombre}" data-pict="${b.dePict || b.pict}" aria-label="${t("bib.cambiar")}: ${b.nombre}">${icono("cambiar")}${t("bib.cambiar")}</button>` : "";
-  const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}${b.de ? ` <small class="ej-de">${t("bib.en_lugar", { x: b.de })}</small>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones || cambiar ? `<span class="ej-botones">${botones}${cambiar}</span>` : ""}`;
+  const cuerpo = `<b>${b.nombre}</b>${grande ? ` <em>${b.min}′</em>` : ""}${b.de ? ` <small class="ej-de">${t("bib.en_lugar", { x: b.de })}</small>` : ""}${b.series && v !== "normal" ? ` <small class="ej-de">${PRG.seriesTexto(b.series)}</small>` : ""}<br><small class="detalle">${detalle}</small>${b.clave ? `<br><small class="clave">${t("ej.clave")}: ${b.clave}</small>` : ""}${botones || cambiar ? `<span class="ej-botones">${botones}${cambiar}</span>` : ""}`;
   return grande
     ? `<li><label><input type="checkbox" data-i="${i}">${botonPicto(b)}<span>${cuerpo}</span></label></li>`
     : `<li><span class="min">${b.min}′</span>${botonPicto(b)}<span>${cuerpo}</span></li>`;
@@ -2093,13 +2080,15 @@ function activarVariantes(raiz) {
 function renderPlan(cont) {
   const diario = leerDiario();
   const fragil = esFragil();
-  const obj = objetivoSemanal({ fragil });
+  // con el programa de 12 semanas en marcha, el objetivo de la semana es el suyo; la racha y el mapa siguen con el objetivo de salud
+  const oficial = objetivoSemanal({ fragil }), objProg = objetivoPrograma();
+  const obj = objProg ? { min: objProg.min, sesiones: objProg.ses } : oficial;
   const lunes = lunesDe();
   const hoy = hoyISO();
   const dias = [...Array(7)].map((_, i) => { const d = new Date(lunes); d.setDate(lunes.getDate() + i); return d; });
   const semana = diario.filter((x) => { const d = new Date(x.fecha + "T12:00"); return d >= lunes && d < new Date(lunes.getTime() + 7 * 864e5); });
   const minSem = semana.reduce((n, x) => n + (x.min || 0), 0), nSem = semana.length;
-  const racha = rachaSemanas(diario, obj.min);
+  const racha = rachaSemanas(diario, oficial.min);
   const prog = progresion(diario);
   if (!diaPlan) diaPlan = hoy;
   const sel = dias.find((d) => hoyISO(d) === diaPlan) || new Date();
@@ -2121,6 +2110,7 @@ function renderPlan(cont) {
       </div>
     </div>
     <div class="metas-plan" hidden></div>
+    <div class="prg-plan">${PRG?.leer() ? PRG.tarjeta({ obj: objProg, hechas: nSem }) : hayPrograma() ? "" : `<div class="aprende-tile prg-tile"><span class="apr-ic-t" aria-hidden="true">12</span><span><b>${t("prg.tile")}</b><small>${t("prg.tile_txt")}</small></span><button type="button" class="btn-sec sm" data-programa="" aria-label="${t("prg.empezar")}: ${t("prg.tile")}">${t("prg.empezar")}</button></div>`}</div>
     <div class="mapa-semanas" hidden></div>
     <div class="tendencia">${tendenciaSemanas(diario, obj.min)}</div>
     <details class="bloque mis-dias"${estado.secciones?.misdias ? " open" : ""}><summary><span class="sub-label">${t("plan.dias")} <span class="dias-resumen">${[1, 2, 3, 4, 5, 6, 0].map((d) => `<b class="${estado.plan.dias.includes(d) ? "on" : "off"}">${new Date(2024, 0, 7 + d).toLocaleDateString(idioma(), { weekday: "narrow" })}</b>`).join("")}</span></span><span class="flecha" aria-hidden="true">⌄</span></summary>
@@ -2150,13 +2140,14 @@ function renderPlan(cont) {
   cargarSemana().then((S) => {
     if (!sec.isConnected) return;
     const l = S.lunesDe(), r = S.resumen(diario, l, new Date(l.getFullYear(), l.getMonth(), l.getDate() + 7));
-    const o = S.objetivos({ fragil, eq: P.eq.n });
+    const o = S.objetivos({ fragil, eq: P.eq.n }), minOficial = o.min;
+    if (objProg) o.min = objProg.min;
     const cab = sec.querySelector(".plan-cab");
     cab.classList.add("con-anillos");
     cab.innerHTML = `<div class="anillos-caja">${S.htmlAnillos(r, o)}</div>
-      <div class="plan-obj"><h3>${t("plan.objetivo")} <button type="button" class="btn-ayuda" data-ayuda="semana" aria-label="${t("sem.ayuda_aria")}">?</button></h3>${S.htmlLeyenda(r, o)}<p class="plan-racha">${S.textoRacha(S.rachaAmable(diario, o.min))}</p><button type="button" class="btn-sec sm ds-btn" data-dosis="">${icono("grafica")} ${t("ds.btn")}</button></div>`;
+      <div class="plan-obj"><h3>${t("plan.objetivo")} <button type="button" class="btn-ayuda" data-ayuda="semana" aria-label="${t("sem.ayuda_aria")}">?</button></h3>${S.htmlLeyenda(r, o)}<p class="plan-racha">${S.textoRacha(S.rachaAmable(diario, minOficial))}</p><button type="button" class="btn-sec sm ds-btn" data-dosis="">${icono("grafica")} ${t("ds.btn")}</button></div>`;
     const m = sec.querySelector(".mapa-semanas");
-    m.innerHTML = `<h4 class="m12-tit">${t("sem.mapa")}</h4>${S.htmlMapa(S.mapaSemanas(diario, o.min))}`; m.hidden = false; S.activarMapa(m);
+    m.innerHTML = `<h4 class="m12-tit">${t("sem.mapa")}</h4>${S.htmlMapa(S.mapaSemanas(diario, minOficial))}`; m.hidden = false; S.activarMapa(m);
   }).catch(() => { cargarSemana.p = null; });
   // Mejora grande 9: «Mis metas» arriba del plan e insignias en los ejercicios del día que las trabajan
   Promise.all([cargarMetas(), cargarPruebas()]).then(([M, S]) => {
@@ -2199,14 +2190,14 @@ function celebrar() {
 }
 
 /* ---------- entrenador por voz (js/voz.js) y sesión guiada (js/sesion.js): se cargan al abrir la sesión ---------- */
-const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611221934").then((m) => m.VOZ));
-const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611221934"));
+const cargarVoz = () => (cargarVoz.p ||= import("./voz.js?v=202611221954").then((m) => m.VOZ));
+const cargarSesion = () => (cargarSesion.p ||= import("./sesion.js?v=202611221954"));
 /** Sesión guiada: chequeo previo, bloques con cronómetro y voz. «extra» permite pasar una sesión ya armada (extra.sesion). */
 function abrirSesion(tipo, fecha = hoyISO(), extra = {}) {
   const ctx = ctxActual(), fragil = esFragil();
   // con ejercicios cambiados (biblioteca), la sesión guiada usa los mismos que el plan
-  const antes = hayCambios() && !BIB ? cargarBiblio().catch(() => { cargarBiblio.p = null; }) : Promise.resolve();
-  antes.then(() => cargarSesion()).then((S) => S.abrir(tipo, fecha, { ...(BIB && hayCambios() ? { sesion: sesionDe(tipo, { fragil, minutosAer: fragil ? 10 : 30 }) } : {}), res: evaluar(datos, medsActivos(), ctx), ctx, fragil, hoyISO, nivelCalorHoy, abrirCalor, toast, icono, vibrar, MOV, ALARMA, anilloCrono, bloqueHtml, escalaRpe, camposConstantes, activarVariantes, leerVariantes, leerConstantes, registrarSesion, celebrar, cargarVoz: () => cargarVoz().catch((e) => { cargarVoz.p = null; throw e; }), ...extra }))
+  const antes = Promise.all([hayCambios() && !BIB ? cargarBiblio().catch(() => { cargarBiblio.p = null; }) : null, hayPrograma() && !PRG ? cargarPrograma().catch(() => { cargarPrograma.p = null; }) : null]);
+  antes.then(() => cargarSesion()).then((S) => S.abrir(tipo, fecha, { sesion: sesionDe(tipo, { fragil, minutosAer: fragil ? 10 : 30 }), res: evaluar(datos, medsActivos(), ctx), ctx, fragil, hoyISO, nivelCalorHoy, abrirCalor, toast, icono, vibrar, MOV, ALARMA, anilloCrono, bloqueHtml, escalaRpe, camposConstantes, activarVariantes, leerVariantes, leerConstantes, registrarSesion, celebrar, cargarVoz: () => cargarVoz().catch((e) => { cargarVoz.p = null; throw e; }), ...extra }))
     .catch(() => { cargarSesion.p = null; toast(t("pq.error"), { ms: 4000 }); });
 }
 /** Anillo de progreso del cronómetro respecto a la duración prevista (r = 18 → perímetro 113,1). */
@@ -2257,7 +2248,7 @@ function renderInteracciones(cont, res) {
   cont.append(sec);
   if (res.interacciones.length) pintarMapaInter(sec.querySelector(".im-caja"), res);
 }
-const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611221934"));
+const cargarMapa = () => (cargarMapa.p ||= import("./mapa.js?v=202611221954"));
 /** Mapa de interacciones (mejora grande 17): tabla de cruces o red, con la ficha de cada cruce; el texto completo sigue en la lista. */
 function pintarMapaInter(caja, res) {
   const fuente = (x) => (x.fuente === "curada" ? x.fuenteTxt || t("ddi.fuente_propia") : x.fuente === "ddinter" ? "DDInter 2.0" : t("ddi.duplicidad"));
@@ -2410,7 +2401,7 @@ function evolucionActual() {
 }
 function nombresPids() { const o = {}; for (const c of datos.kb.clases) for (const pr of c.principios) o[pr.id] = pr.nombre; return o; }
 // La ventana de evolución y los casos (exportar, importar, CSV, caso de prueba) viven en js/pro.js (se cargan al pulsar su botón)
-const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611221934"));
+const cargarPro = () => (cargarPro.p ||= import("./pro.js?v=202611221954"));
 const pro = (f) => cargarPro().then(f, () => { cargarPro.p = null; toast(t("pq.error"), { ms: 4000 }); });
 function abrirEvolucion() {
   const evo = evolucionActual(); if (!evo) return;
@@ -2472,7 +2463,7 @@ $("#btn-imprimir").addEventListener("click", () => { estado.tab = "general"; ren
 
 /* ---------- SPPB guiado (Guralnik 1994): equilibrio, marcha 4 m y 5 levantadas de la silla ---------- */
 // El SPPB guiado, el escáner de cajas, la copia cifrada y el paso a otro dispositivo viven en js/ocasional.js (se cargan al pulsar su botón)
-const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611221934"));
+const cargarOcasional = () => (cargarOcasional.p ||= import("./ocasional.js?v=202611221954"));
 const ocasional = (f) => cargarOcasional().then(f, () => { cargarOcasional.p = null; toast(t("pq.error"), { ms: 4000 }); });
 const apiOc = () => ({ estado, indice, toast, vibrar, anilloCrono, elegir, leerPerfiles, leerDiario,
   guardarSppb: (s) => { estado.sppb = s; estado.pro.sppb = s.total; $("#pro-sppb").value = s.total; aplicarVivifrailAuto(); guardar(); render(); },
@@ -2536,7 +2527,7 @@ $("#btn-glosario").addEventListener("click", () => {
 });
 
 // recorrido guiado sobre los elementos reales (primera visita o desde «¿Cómo funciona?»)
-const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611221934")); // vive en js/tour.js y se carga al iniciarlo
+const cargarTour = () => (cargarTour.p ||= import("./tour.js?v=202611221954")); // vive en js/tour.js y se carga al iniciarlo
 function iniciarTour() { cargarTour().then((T) => T.iniciar({ MOV, conTransicion }), () => { cargarTour.p = null; }); }
 
 // «Su plan está al N %»: qué falta por rellenar para afinar el plan, con un botón directo
@@ -2704,7 +2695,7 @@ $("#btn-sync").addEventListener("click", () => ocasional((O) => O.abrirSync(apiO
 
 
 /* ---------- beta 3: exportación FHIR R4 (Bundle de colección; el constructor va en fhir.js, bajo demanda) y versión en texto accesible ---------- */
-const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611221934"));
+const cargarFhir = () => (cargarFhir.p ||= import("./fhir.js?v=202611221954"));
 $("#btn-fhir").addEventListener("click", () => {
   if (!estado.meds.length) return;
   const res = evaluar(datos, medsActivos(), ctxActual()), ctx = ctxActual();

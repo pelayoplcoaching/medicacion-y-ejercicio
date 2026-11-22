@@ -338,7 +338,7 @@ try {
   await p.click('[data-tab="plan"]'); await p.waitForTimeout(300);
   check("los bloques de la sesión llevan ilustración propia (SVG 96×96 con figura y apoyo)", (await p.$$('#contenido-tab .bloques .picto[viewBox="0 0 96 96"] .fig')).length >= 3);
   await p.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed++; setTimeout(() => window.dispatchEvent(new Event("afterprint")), 50); }; });
-  await p.click("#btn-hoja-sesion"); await p.waitForTimeout(400);
+  await p.click("#btn-hoja-sesion"); await p.waitForFunction(() => window.__printed === 1, null, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(150); // la hoja la escribe js/ocasional.js, que se carga al pulsar
   check("«Imprimir mi sesión» rellena la hoja con los ejercicios y llama a imprimir", (await p.evaluate(() => window.__printed)) === 1 && (await p.$$("#hoja-sesion .hoja-ej li")).length >= 3 && !(await p.$eval("body", (b) => b.classList.contains("imprimir-sesion"))));
   await p.click('[data-tab="general"]'); await p.waitForTimeout(200);
 
@@ -462,6 +462,31 @@ try {
     check("tocar un ejercicio de la biblioteca abre su ficha encima", (await p.textContent("#ej-tit")).includes("Remo sentado con banda") && (await p.$eval("#biblioteca", (d) => d.open)));
     await p.click("#ej-cerrar"); await p.waitForTimeout(100); await p.click("#bib-cerrar"); await p.waitForTimeout(150);
     await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
+  }
+  // Programa de 12 semanas (segunda tanda, 3): empezar, dosis de la semana en el plan y dejarlo (el resto de pruebas sigue sin programa)
+  {
+    await p.click(".prg-tile [data-programa]"); await p.waitForSelector("#programa[open] .prg-niveles", { timeout: 6000 }).catch(() => {});
+    check("el programa se ofrece con tres niveles, uno recomendado, la marca de borrador y sus seis fuentes con DOI", (await p.$$('#programa input[name="prg-nivel"]')).length === 3 && (await p.$$('#programa input[name="prg-nivel"]:checked')).length === 1 && (await p.$$("#programa .prg-niv .prg-chip")).length === 1 && (await p.isVisible("#programa .prg-borrador")) && (await p.$$('#programa .prg-fuentes a[href^="https://doi.org/10."]')).length === 6);
+    await p.check('#programa input[name="prg-nivel"][value="medio"]', { force: true });
+    await p.click('#programa [data-prg="empezar"]'); await p.waitForSelector("#programa .prg-tabla", { timeout: 5000 }).catch(() => {});
+    const est = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.programa") || "null"));
+    check("al empezar se guarda en el dispositivo y la ventana enseña las 12 semanas con la que está en curso", est?.nivel === "medio" && est.paso === 1 && (await p.$$("#programa .prg-tabla li")).length === 12 && (await p.$$("#programa .prg-tabla li.actual")).length <= 1 && (await p.$$("#programa .prg-reglas li")).length === 5);
+    await p.click("#prg-cerrar"); await p.waitForSelector(".plan .prg-card", { timeout: 5000 }).catch(() => {});
+    check("Mi plan muestra la tarjeta del programa con la semana y sus dosis", (await p.textContent(".plan .prg-card")).includes("12") && (await p.$$(".plan .prg-card .prg-pasos li")).length === 12 && (await p.$$(".plan .prg-tile")).length === 0);
+    const isoF = await p.$$eval(".tira .dia", (ds) => ds.find((d) => /fuerza/i.test(d.querySelector(".tipo")?.textContent || ""))?.dataset.iso || null);
+    if (isoF) await p.click(`.tira .dia[data-iso="${isoF}"]`); await p.waitForTimeout(300);
+    const det1 = await p.$$eval(".plan .bloques .detalle", (ds) => ds.map((d) => d.textContent).join(" | "));
+    const isoA = await p.$$eval(".tira .dia", (ds) => ds.find((d) => /aer/i.test(d.querySelector(".tipo")?.textContent || ""))?.dataset.iso || null);
+    if (isoA) await p.click(`.tira .dia[data-iso="${isoA}"]`); await p.waitForTimeout(300);
+    const minA = await p.$$eval(".plan .bloques .min", (ds) => ds.map((d) => parseInt(d.textContent, 10)));
+    check("la semana 1 pone una serie en los ejercicios de fuerza y 10 minutos en el paseo", /1 serie de|1 × /.test(det1) && !/2–3 series|2–3 ×/.test(det1) && minA[1] === 10, `${det1.slice(0, 80)} · ${minA.join()}`);
+    await p.click(".plan .prg-card [data-programa]"); await p.waitForSelector('#programa[open] [data-prg="dejar"]', { timeout: 5000 }).catch(() => {});
+    await p.click('#programa [data-prg="dejar"]'); await p.waitForTimeout(500);
+    if (isoF) await p.click(`.tira .dia[data-iso="${isoF}"]`); await p.waitForTimeout(300);
+    const det2 = await p.$$eval(".plan .bloques .detalle", (ds) => ds.map((d) => d.textContent).join(" | "));
+    check("«Dejar el programa» lo retira y el plan vuelve a las dosis de siempre", (await p.evaluate(() => localStorage.getItem("medex.programa"))) === null && (await p.$$(".plan .prg-tile")).length === 1 && /2–3 series|2 series|2 × /.test(det2));
+    await p.click(`.tira .dia.hoy`).catch(() => {}); await p.waitForTimeout(150);
+    await p.evaluate(() => { const t = document.querySelector("#toast"); if (t) { t.classList.remove("visible"); t.hidden = true; } });
   }
   await p.click(`.tabs [data-tab="${tabAntesCentro}"]`).catch(() => {}); await p.waitForTimeout(200); // las pruebas siguientes cuentan con la pestaña que había
   await p.click('#barra-inferior [data-ir="datos"]'); await p.waitForTimeout(700);

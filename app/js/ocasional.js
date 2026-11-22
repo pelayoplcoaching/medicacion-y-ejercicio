@@ -1,11 +1,11 @@
 /* Herramientas de uso ocasional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo. Se cargan al pulsar su botón;
    app.js les pasa en «a» lo que necesitan de la aplicación. Nada sale del dispositivo. */
-import { t, idioma } from "./i18n.js?v=202611221934";
-import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611221934";
-import { picto } from "./pictos.js?v=202611221934";
-import { cargarScript } from "./libs.js?v=202611221934";
-import { APP_VERSION } from "./version.js?v=202611221934";
+import { t, idioma } from "./i18n.js?v=202611221954";
+import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611221954";
+import { picto } from "./pictos.js?v=202611221954";
+import { cargarScript } from "./libs.js?v=202611221954";
+import { APP_VERSION } from "./version.js?v=202611221954";
 
 const $ = (s) => document.querySelector(s);
 const hechos = new Set();
@@ -89,7 +89,7 @@ export async function abrirBarras(a) {
 }
 
 /* ---------- copia cifrada (AES-GCM 256; clave derivada de la contraseña con PBKDF2-SHA-256, 250 000 iteraciones) ---------- */
-const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes", "medex.aviso"];
+const CLAVES_LOCALES = ["medex.estado", "medex.perfiles", "medex.diario", "medex.prescriptor", "medex.variantes", "medex.letra", "medex.tema", "medex.idioma", "medex.recientes", "medex.aviso", "medex.favoritas", "medex.aprende", "medex.cambios", "medex.programa"]; // las cuatro últimas, desde la v1.3.3
 export function empaquetarTodo() { const o = {}; for (const k of CLAVES_LOCALES) { try { const v = localStorage.getItem(k); if (v != null) o[k] = v; } catch {} } return { app: "pauta-activa", v: 1, fecha: new Date().toISOString(), version_app: APP_VERSION, datos: o }; }
 export function aplicarTodo(paq, { fusionar = false } = {}) {
   if (!paq || paq.app !== "pauta-activa" || !paq.datos || typeof paq.datos !== "object") throw new Error("formato");
@@ -197,4 +197,58 @@ export async function recibirSync(cod, a) {
   if (hay && !window.confirm(t("sync.confirmar"))) return false;
   try { aplicarTodo(paq); } catch { a.toast(t("sync.error"), { ms: 6000 }); return false; }
   history.replaceState(null, "", location.pathname); a.toast(t("sync.hecho"), { ms: 3000 }); setTimeout(() => location.reload(), 500); return true;
+}
+
+/* ---------- plan semanal y reevaluación en el calendario (.ics); antes en app.js (v1.3.3) ---------- */
+const escIcs = (x) => String(x).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+const fmtIcs = (d) => `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+const selloIcs = () => new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+const CAB_ICS = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pauta Activa//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+/** Evento de todo el día en la fecha de reevaluación, con alarma el día anterior. a = { prescrito, fechaReeval }. */
+function eventoReeval(a, stamp) {
+  const f = a.fechaReeval, f2 = new Date(f); f2.setDate(f2.getDate() + 1);
+  return ["BEGIN:VEVENT", `UID:medex-reeval-${stamp}@fuerzabasadaenevidencia.com`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${fmtIcs(f)}`, `DTEND;VALUE=DATE:${fmtIcs(f2)}`, `SUMMARY:${escIcs(t("presc.ics_titulo"))}`, `DESCRIPTION:${escIcs(t("presc.estado", { d: new Date(a.prescrito.fecha).toLocaleDateString("es-ES"), r: f.toLocaleDateString("es-ES") }))}`, "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", `DESCRIPTION:${escIcs(t("presc.ics_titulo"))}`, "END:VALARM", "END:VEVENT"];
+}
+export function icsReeval(a) { a.descargarTexto("reevaluacion-pauta-activa.ics", [...CAB_ICS, ...eventoReeval(a, selloIcs()), "END:VCALENDAR"].join("\r\n"), "text/calendar"); }
+/** Plan semanal como texto .ics: un evento semanal por día de ejercicio (8 semanas), a la mejor hora según la medicación.
+    a = { P (prescripción), esencial ([{ titulo, texto }]), hora, dias ([díaSemana, tipo, etiqueta]), prescrito, fechaReeval }. */
+export function icsPlan(a, hoy = new Date()) {
+  const P = a.P, esencial = a.esencial.map((p) => `${p.titulo}: ${p.texto}`).join("\n"), stamp = selloIcs();
+  const lunes = new Date(hoy); lunes.setDate(hoy.getDate() + ((8 - hoy.getDay()) % 7 || 7));
+  const L = [...CAB_ICS], DIA = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+  for (const [dow, tipo, etiqueta] of a.dias) {
+    const d = new Date(lunes); d.setDate(lunes.getDate() + dow - 1);
+    const titulo = { aerobico: t("plan.aerobico"), fuerza: etiqueta.includes("equilibrio") ? t("plan.fuerza_eq") : t("plan.fuerza") }[tipo];
+    const detalle = tipo === "aerobico" ? `${P.aer.int} ${P.aer.tiempo}. ${P.aer.tipo}` : `${P.fue.int} ${P.fue.tiempo}. ${P.fue.tipo}${etiqueta.includes("equilibrio") ? ` ${t("plan.mas_eq")}: ${P.eq.tipo}` : ""}`;
+    const dur = tipo === "aerobico" ? 45 : 40, hh = String(a.hora).padStart(2, "0");
+    L.push("BEGIN:VEVENT", `UID:medex-${tipo}-${dow}-${stamp}@fuerzabasadaenevidencia.com`, `DTSTAMP:${stamp}`,
+      `DTSTART:${fmtIcs(d)}T${hh}0000`, `DTEND:${fmtIcs(d)}T${hh}${String(dur).padStart(2, "0")}00`,
+      `RRULE:FREQ=WEEKLY;COUNT=8;BYDAY=${DIA[d.getDay()]}`, `SUMMARY:${escIcs(titulo)}`,
+      `DESCRIPTION:${escIcs(detalle)}\\n\\n${escIcs(t("esencial.titulo"))}:\\n${escIcs(esencial)}\\n\\n${escIcs(t("plan.pie"))}`, "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", `DESCRIPTION:${escIcs(titulo)}`, "END:VALARM", "END:VEVENT");
+  }
+  if (a.prescrito) L.push(...eventoReeval(a, stamp));
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+export function calendario(a) {
+  const blob = new Blob([icsPlan(a)], { type: "text/calendar;charset=utf-8" });
+  const e = document.createElement("a"); e.href = URL.createObjectURL(blob); e.download = "plan-ejercicio.ics"; document.body.append(e); e.click(); e.remove();
+  setTimeout(() => URL.revokeObjectURL(e.href), 2000);
+  a.toast(t("plan.descargado", { n: a.dias.length, h: String(a.hora).padStart(2, "0") + ":00" }), { ms: 7000 });
+}
+
+/* ---------- hoja «Mi sesión» imprimible desde el navegador (sin librerías); antes en app.js (v1.3.3) ---------- */
+/** a = { ses (sesión ya armada), variantes ({ nombre: "facil" | "dificil" }), esencial ([{ titulo, texto }]), dibujo(id) -> svg }. */
+export function hojaSesion(a) {
+  const hoja = $("#hoja-sesion"), ses = a.ses;
+  hoja.innerHTML = `
+    <header class="hoja-cab"><div><h1>${t("hoja.titulo")} · ${ses.titulo}</h1><p>${ses.min} min · ${t("hoja.nombre")}: ____________________ · ${t("hoja.fecha")}: ____ / ____ / ______</p></div><img src="assets/logo-80.png" alt="" width="48" height="48"></header>
+    <ol class="hoja-ej">${ses.bloques.map((b) => { const v = a.variantes[b.nombre] || "normal"; const det = v === "facil" && b.facil ? b.facil : v === "dificil" && b.dificil ? b.dificil : b.detalle; return `<li>${a.dibujo(b.pict)}<div><b>${b.nombre}</b> <em>${b.min} min</em><p>${det}</p>${b.clave ? `<small>${t("ej.clave")}: ${b.clave}</small>` : ""}</div><span class="hoja-check" aria-hidden="true"><i></i>${t("hoja.hecho")}</span></li>`; }).join("")}</ol>
+    ${a.esencial.length ? `<ul class="hoja-esencial">${a.esencial.map((e) => `<li><b>${e.titulo}.</b> ${e.texto}</li>`).join("")}</ul>` : ""}
+    <p class="hoja-alarma">${t("hoja.alarma")}</p>
+    <footer><small>${t("hoja.nota")} · Pauta Activa v${APP_VERSION}</small></footer>`;
+  document.body.classList.add("imprimir-sesion");
+  const fin = () => { document.body.classList.remove("imprimir-sesion"); window.removeEventListener("afterprint", fin); };
+  window.addEventListener("afterprint", fin);
+  setTimeout(() => { try { window.print(); } catch { fin(); } }, 120);
 }

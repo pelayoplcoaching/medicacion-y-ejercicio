@@ -678,6 +678,61 @@ console.log("\nBiblioteca de ejercicios: catálogo, dibujos, alternativas y camb
   check("el módulo no importa otros módulos bajo demanda (va en su propio ámbito en el artefacto)", [...src.matchAll(/^import .* from "\.\/([a-z0-9]+)\.js/gm)].every((m) => ["i18n", "engine", "pictos", "libs", "version"].includes(m[1])));
 }
 
+console.log("\nPrograma de 12 semanas: dosis, decisiones y ajuste de las sesiones (segunda tanda, 3)");
+{
+  const G = await import(pathToFileURL(path.join(ROOT, "app/js/programa.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/programa.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const todas = G.NIVELES.flatMap((n) => [...Array(12)].map((_, i) => G.semana(n, i + 1)));
+  check("tres niveles de 12 semanas: sesiones de 3 a 6, series de 1 a 3 y paseos de 5 a 45 minutos", G.NIVELES.length === 3 && todas.length === 36 && todas.every((s) => s.ses >= 3 && s.ses <= 6 && s.ser >= 1 && s.ser <= 3 && s.aer >= 5 && s.aer <= 45));
+  check("tres fases de cuatro semanas; descarga en la 4 y la 8, y la 12 de pruebas", todas.every((s) => s.fase === Math.ceil(s.paso / 4) && s.descarga === (s.paso === 4 || s.paso === 8) && s.pruebas === (s.paso === 12)));
+  const sube = (n, k) => { const l = [...Array(12)].map((_, i) => G.semana(n, i + 1)); return l.every((s, i) => i === 0 || s.descarga || s.pruebas || s[k] >= l.slice(0, i).filter((x) => !x.descarga).at(-1)[k]); };
+  check("fuera de las semanas de descarga y de pruebas, el paseo, las series y las sesiones nunca bajan", G.NIVELES.every((n) => sube(n, "aer") && sube(n, "ser") && sube(n, "ses")));
+  check("las semanas de descarga piden menos que la anterior", G.NIVELES.every((n) => [4, 8].every((p) => { const a = G.semana(n, p - 1), d = G.semana(n, p); return d.aer < a.aer && d.ses <= a.ses && d.ser <= a.ser; })));
+  check("cada nivel empieza por debajo del siguiente y el esfuerzo objetivo sube con las fases", G.semana("suave", 1).aer < G.semana("medio", 1).aer && G.semana("medio", 1).aer < G.semana("activo", 1).aer && G.NIVELES.every((n) => G.semana(n, 1).rpe[1] <= G.semana(n, 5).rpe[1] && G.semana(n, 5).rpe[1] <= G.semana(n, 9).rpe[1] && G.semana(n, 9).rpe[1] <= 7));
+  // minutos semanales con las sesiones tipo: ningún nivel pasa de 300 min y el suave no pasa de 150
+  const minutos = (n) => [...Array(12)].map((_, i) => { const s = G.semana(n, i + 1), fr = n === "suave"; return G.objetivo(s, ["fuerza_eq", "aerobico", "fuerza", "aerobico", "fuerza_eq", "aerobico"].map((x) => G.ajustar(sesionTipo(x, { fragil: fr, aer: s.aer }), s).min)).min; });
+  const mS = minutos("suave"), mM = minutos("medio"), mA = minutos("activo");
+  check(`minutos por semana: suave ${mS[0]}–${Math.max(...mS)}, medio ${mM[0]}–${Math.max(...mM)}, activo ${mA[0]}–${Math.max(...mA)}`, mS[0] <= 60 && Math.max(...mS) <= 150 && mM[0] <= 90 && Math.max(...mM) >= 150 && Math.max(...mA) <= 300);
+  const saltos = [mS, mM, mA].flatMap((l) => l.map((v, i) => (i && ![3, 7, 11].includes(i) && ![4, 8].includes(i) ? v / l[i - 1] : 1)));
+  check("de una semana a la siguiente (sin contar las de descarga) el objetivo no sube más de un 40 %", Math.max(...saltos) <= 1.4, Math.max(...saltos).toFixed(2));
+  check("el motor acepta los minutos de paseo del programa también en el nivel frágil, sin cambiar lo de siempre", sesionTipo("aerobico", { fragil: true, aer: 6 }).bloques[1].min === 6 && sesionTipo("aerobico", { fragil: true }).bloques[1].min === 10 && sesionTipo("aerobico", { fragil: true, minutosAer: 30 }).bloques[1].min === 10 && sesionTipo("aerobico", {}).bloques[1].min === 30);
+  check("las series de la semana se escriben en el texto del ejercicio", G.conSeries("2–3 series de 8–15; bajar despacio", 1) === "1 serie de 8–15; bajar despacio" && G.conSeries("Apoyado en el respaldo, 2 × 10–15", 3) === "Apoyado en el respaldo, 3 × 10–15" && G.conSeries("Estirar la pierna y aguantar 2 s, 2 × 10 cada lado", 1) === "Estirar la pierna y aguantar 2 s, 1 × 10 cada lado" && G.conSeries("Aguante de 10 a 30 segundos, 3 veces", 1) === "Aguante de 10 a 30 segundos, 3 veces");
+  const f0 = sesionTipo("fuerza_eq", {}), f1 = G.ajustar(f0, G.semana("medio", 1)), f3 = G.ajustar(f0, G.semana("medio", 10));
+  check("ajustar: con una serie la sesión de fuerza es más corta y con tres más larga; el calentamiento y el equilibrio no cambian", f1.min < f0.min && f3.min > f0.min && f1.bloques[0].min === f0.bloques[0].min && f1.bloques.at(-1).min === f0.bloques.at(-1).min && f1.min === f1.bloques.reduce((n, b) => n + b.min, 0) && f1.bloques.filter((b) => b.series === 1).length >= 5);
+  check("ajustar: con dos series la sesión queda como la de siempre y la de paseo solo lleva la marca del programa", G.ajustar(f0, G.semana("medio", 5)).min === f0.min && G.ajustar(sesionTipo("aerobico", { aer: 12 }), G.semana("medio", 2)).min === 22 && G.ajustar(f0, null) === f0);
+  // decisiones
+  const r = (ses, rpe = 5, sint = false) => ({ ses, min: ses * 30, rpe, sint });
+  check("decidir: dos de cada tres sesiones y esfuerzo por debajo de 7,5 -> avanza", G.decidir(r(2), 3) === "avanza" && G.decidir(r(4), 5) === "avanza" && G.decidir(r(4), 6) === "avanza" && G.decidir(r(3, 7.4), 4) === "avanza" && G.decidir(r(3, null), 4) === "avanza");
+  check("decidir: menos sesiones o esfuerzo de 7,5 o más -> repite; síntomas de alarma -> no sube", G.decidir(r(1), 3) === "poco" && G.decidir(r(3), 5) === "poco" && G.decidir(r(4, 7.5), 4) === "duro" && G.decidir(r(4, 5, true), 4) === "sintomas");
+  check("decidir: una semana vacía es pausa; desde la segunda seguida, un paso atrás", G.decidir(r(0), 3, 0) === "pausa" && G.decidir(r(0), 3, 1) === "atras" && G.decidir(r(0), 3, 3) === "atras");
+  // arranque: lunes a miércoles empieza esta semana; de jueves a domingo, el lunes siguiente
+  check("nuevo: de lunes a miércoles la semana 1 es esta; de jueves a domingo empieza el lunes siguiente", G.nuevo("medio", new Date("2026-11-23T10:00")).lunes === "2026-11-23" && G.nuevo("medio", new Date("2026-11-25T23:00")).lunes === "2026-11-23" && G.nuevo("medio", new Date("2026-11-26T08:00")).lunes === "2026-11-30" && G.nuevo("medio", new Date("2026-11-29T08:00")).lunes === "2026-11-30");
+  const mas = (s, n) => { const d = new Date(s + "T12:00"); d.setDate(d.getDate() + n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+  const D = [], pon = (l, n, rpe = 5, sintomas = []) => { for (let i = 0; i < n; i++) D.push({ fecha: mas(l, i), min: 30, rpe, sintomas }); };
+  G._poner(G.nuevo("medio", new Date("2026-11-23T10:00")));
+  check("antes de que acabe la semana no se decide nada", G.actualizar(D, { hoy: new Date("2026-11-29T22:00") }).length === 0 && G.semanaActual(new Date("2026-11-29T22:00")).paso === 1);
+  let l = "2026-11-23"; const pasos = [];
+  for (const k of ["ok", "ok", "vacia", "vacia", "dura", "mareo", "poca", ...Array(11).fill("ok")]) { if (k === "ok") pon(l, 4); else if (k === "dura") pon(l, 4, 8); else if (k === "mareo") pon(l, 4, 5, ["mareo"]); else if (k === "poca") pon(l, 1); l = mas(l, 7); pasos.push(...G.actualizar(D, { sesPlan: 6, hoy: new Date(l + "T09:00") }).map((h) => h.clave)); }
+  check("simulación: avanza, pausa, atrás, duro, síntomas, poco y termina tras 12 pasos superados", pasos.join() === ["avanza", "avanza", "pausa", "atras", "duro", "sintomas", "poco", ...Array(10).fill("avanza"), "fin"].join(), pasos.join());
+  check("al terminar, el plan vuelve a las dosis de siempre hasta decidir cómo seguir, y la revisión compara principio y final", G.semanaActual(new Date(l + "T09:00")) === null && !!G.leer().fin && G.revision().semanas === 18 && G.revision().ses === 61 && G.revision().min === 61 * 30 && G.revision().ini.min === 120);
+  G._poner({ ...G.leer(), mant: true });
+  check("mantenimiento: se queda con las dosis de la semana 11 y ya no avanza", G.semanaActual().mant === true && G.semanaActual().aer === G.semana("medio", 11).aer && G.actualizar(D, { hoy: new Date("2028-01-01T09:00") }).length === 0);
+  G._poner(G.nuevo("suave", new Date("2026-11-27T10:00")));
+  check("empezado en viernes: hasta el lunes rige la semana 1 como previa y no se evalúa", G.semanaActual(new Date("2026-11-28T10:00")).previa === true && G.actualizar([], { hoy: new Date("2026-11-30T10:00") }).length === 0 && !G.semanaActual(new Date("2026-11-30T10:00")).previa);
+  G._poner(G.nuevo("medio", new Date("2026-11-23T10:00")));
+  check("un parón muy largo retrocede como mucho hasta la semana 1 y no bloquea", G.actualizar([], { hoy: new Date("2027-11-23T10:00") }).length === 52 && G.leer().paso === 1 && G.leer().hist.length <= 80);
+  check("con menos días en el plan que sesiones pide la semana, el objetivo son los días del plan", G.sesionesObjetivo(G.semana("activo", 10), 3) === 3 && G.objetivo(G.semana("medio", 6), [30, 40]).ses === 2 && G.objetivo(G.semana("medio", 1), [28, 20, 23, 20, 28, 20]).min === 70);
+  check("nivel recomendado: frágil -> suave; 120 min o más de media en cuatro semanas -> activo; si no, medio", G.recomendar({ fragil: true }) === "suave" && G.recomendar({ diario: [] }) === "medio" && G.recomendar({ diario: [..."0123"].flatMap((w) => [0, 2, 4, 5].map((k) => ({ fecha: mas("2026-10-26", w * 7 + k), min: 35 }))), hoy: new Date("2026-11-24T10:00") }) === "activo");
+  G._poner(null);
+  check("sin programa no hay semana, ni tarjeta, ni decisiones", G.semanaActual() === null && G.tarjeta() === "" && G.actualizar(D).length === 0);
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`textos en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size > 100 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }), ["en", "ca", "gl", "eu"].map((lg) => `${lg}:${claves(lg).size}`).join(" "));
+  check("cada decisión tiene título y explicación, y cada fuente su DOI y su frase", ["avanza", "poco", "duro", "sintomas", "pausa", "atras", "fin"].every((k) => kEs.has("v_" + k) && kEs.has("v_" + k + "_x")) && G.FUENTES.length === 6 && G.FUENTES.every((f) => /^10\.\d{4,}\//.test(f.doi) && kEs.has("f_" + f.id)));
+  check("el contenido nuevo lleva la marca de borrador pendiente de revisión clínica", kEs.has("borrador") && (src.match(/prg-borrador">\$\{tx\("borrador"\)\}/g) || []).length === 3);
+  check("la aplicación usa la semana del programa en las sesiones y en el objetivo, y lo pone al día una vez al día", /sesionTipo\(tipo, sem \? \{ \.\.\.o, aer: sem\.aer \} : o\)/.test(appJs) && appJs.includes("PRG.ajustar(s, sem)") && appJs.includes("PRG.actualizar(leerDiario()") && appJs.includes("[data-programa]") && appJs.includes('import("./programa.js'));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

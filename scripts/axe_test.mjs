@@ -43,6 +43,7 @@ const esc0 = [
   { n: "ben-claro", w: 390, ben: ["diabetes", "hipertension", "artrosis"] }, { n: "ben-oscuro", w: 1280, ben: ["insuficiencia_cardiaca", "osteoporosis", "epoc_asma", "cancer"], tema: "dark" }, { n: "ben-contraste", w: 390, ben: ["embarazo", "renal"], tema: "contrast" },
   { n: "ds-min", w: 390, tab: "plan", diario: true, ds: "min" }, { n: "ds-pasos-oscuro", w: 1280, tab: "plan", diario: true, ds: "pasos", tema: "dark" }, { n: "ds-contraste", w: 390, tab: "plan", diario: true, ds: "min", tema: "contrast" },
   { n: "centro-claro", w: 390, ce: "" }, { n: "centro-oscuro", w: 1280, ce: "", tema: "dark" }, { n: "centro-busca-contraste", w: 390, ce: "silla", tema: "contrast" },
+  { n: "programa-elegir-claro", w: 390, prg: "" }, { n: "programa-en-marcha-oscuro", w: 1280, prg: "medio", tema: "dark" }, { n: "programa-revision-contraste", w: 390, prg: "fin", tema: "contrast" },
   { n: "biblioteca-claro", w: 390, bib: "" }, { n: "biblioteca-oscuro", w: 1280, bib: "", tema: "dark" }, { n: "biblioteca-cambiar-contraste", w: 390, bib: "Sentadilla a la silla", tema: "contrast" },
   { n: "hab-claro", w: 390, hab: ["diario", "si", "mucho"] }, { n: "hab-oscuro", w: 1280, hab: ["aveces", "dejado", "medio"], tema: "dark" }, { n: "hab-contraste", w: 390, hab: ["diario", "si", "mucho"], tema: "contrast" }, { n: "hab-vacio", w: 390, hab: [] },
   { n: "cv-uno", w: 390, pro: true, cv: "uno" }, { n: "cv-cinco-oscuro", w: 1280, pro: true, cv: "cinco", tema: "dark" }, { n: "cv-mas-contraste", w: 390, pro: true, cv: "mas", tema: "contrast" }, { n: "cv-cinco-claro", w: 390, pro: true, cv: "cinco" },
@@ -97,6 +98,18 @@ async function correr(e) {
     if (e.sim != null) { await p.evaluate(() => { document.querySelector("#menu-mas").open = true; document.querySelector("#menu-mas [data-simula]").click(); }); await p.waitForSelector("#simula[open] .sim-meds"); if (e.sim) await p.click("#simula [data-sim-probar]"); await p.waitForTimeout(800); }
     if (e.ben) { for (const id of e.ben) { await p.evaluate((id) => { const i = document.getElementById("cond-" + id); if (i && !i.checked) i.click(); }, id); await p.waitForTimeout(120); } await p.click('.tabs [data-tab="general"]').catch(() => {}); await p.waitForSelector('details[data-sec="beneficios"] .ben-t'); await p.evaluate(() => document.querySelector('details[data-sec="beneficios"] .ben-mas')?.click()); await p.waitForTimeout(900); }
     if (e.cv) { await p.click('#consulta [data-conversa]'); await p.waitForSelector('#conversa[open] .cv-paso'); if (e.cv !== "uno") await p.click(`#conversa [data-cv-tab="${e.cv}"]`); if (e.cv === "cinco") { await p.click('#conversa input[name="cv-bar"][value="caidas"]'); } await p.waitForTimeout(800); }
+    if (e.prg != null) {
+      // programa de 12 semanas: sin empezar, en la semana 3 con historial o terminado (revisión)
+      await p.evaluate((k) => {
+        const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`, l = new Date(); l.setHours(12, 0, 0, 0); l.setDate(l.getDate() - ((l.getDay() + 6) % 7));
+        const mas = (n) => { const d = new Date(l); d.setDate(d.getDate() + n); return iso(d); };
+        const hist = (n) => [...Array(n)].map((_, i) => ({ lunes: mas((i - n) * 7), paso: i + 1, ses: 3 + (i % 2), obj: 4, min: 80 + i * 10, rpe: 4.5, clave: k === "fin" && i === n - 1 ? "fin" : i === 1 ? "poco" : "avanza", a: Math.min(12, i + 2) }));
+        if (k === "medio") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 3, lunes: mas(0), hist: hist(2), fin: null, mant: false, ciclo: 1, creado: mas(-14) }));
+        if (k === "fin") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 12, lunes: mas(0), hist: hist(12), fin: mas(-1), mant: false, ciclo: 1, creado: mas(-84) }));
+        const b = document.createElement("button"); b.dataset.programa = ""; document.body.append(b); b.click(); b.remove();
+      }, e.prg);
+      await p.waitForSelector(e.prg === "" ? "#programa[open] .prg-niveles" : e.prg === "fin" ? "#programa[open] .prg-sig" : "#programa[open] .prg-tabla"); await p.waitForTimeout(500);
+    }
     if (e.bib != null) { await p.evaluate((n) => { const b = document.createElement("button"); if (n) { b.dataset.cambiar = n; b.dataset.pict = "sentadilla"; } else b.dataset.biblioteca = ""; document.body.append(b); b.click(); b.remove(); }, e.bib); await p.waitForSelector("#biblioteca[open] .bib-lista li"); await p.waitForTimeout(500); }
     if (e.ce != null) { await p.evaluate(() => document.querySelector("[data-centro]").click()); await p.waitForSelector("#centro[open] .ce-hoy button"); if (e.ce) { await p.fill("#ce-q", e.ce); await p.waitForSelector("#centro .ce-res"); } await p.waitForTimeout(500); }
     if (e.hab) { const H = ["alcohol", "tabaco", "cafe"]; await p.evaluate(() => { document.querySelector("#bloque-habitos").open = true; }); for (let i = 0; i < e.hab.length; i++) { await p.click(`input[name="hab-${H[i]}"][value="${e.hab[i]}"]`); await p.waitForTimeout(150); } await p.click('.tabs [data-tab="general"]').catch(() => {}); await p.waitForSelector('details[data-sec="habitos"] .cuerpo-sec > *', { state: "attached" }); await p.evaluate(() => { document.querySelector('details[data-sec="habitos"]').open = true; }); await p.waitForTimeout(900); }

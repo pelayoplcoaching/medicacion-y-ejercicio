@@ -38,6 +38,13 @@ await new Promise((r) => setTimeout(r, 900));
 const menu = (attr) => async (p) => { await p.evaluate((a) => { document.querySelector("#menu-mas").open = true; document.querySelector(`#menu-mas [${a}]`).click(); }, attr); };
 const tab = (t) => async (p) => { await p.click(`.tabs [data-tab="${t}"]`); await p.waitForTimeout(400); };
 const verEl = (sel) => async (p) => { await p.evaluate((s) => { const el = document.querySelector(s); if (el) { if (el.tagName === "DETAILS") el.open = true; el.scrollIntoView({ block: "start" }); } }, sel); await p.waitForTimeout(400); };
+const prgEstado = (k) => async (p) => { await p.evaluate((k) => {
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`, l = new Date(); l.setHours(12, 0, 0, 0); l.setDate(l.getDate() - ((l.getDay() + 6) % 7));
+  const mas = (n) => { const d = new Date(l); d.setDate(d.getDate() + n); return iso(d); };
+  const hist = (n) => [...Array(n)].map((_, i) => ({ lunes: mas((i - n) * 7), paso: i + 1, ses: 3 + (i % 2), obj: 4, min: 80 + i * 10, rpe: 4.5, clave: k === "fin" && i === n - 1 ? "fin" : i === 1 ? "poco" : "avanza", a: Math.min(12, i + 2) }));
+  if (k === "medio") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 3, lunes: mas(0), hist: hist(2), fin: null, mant: false, ciclo: 1, creado: mas(-14) }));
+  if (k === "fin") localStorage.setItem("medex.programa", JSON.stringify({ v: 1, nivel: "medio", paso: 12, lunes: mas(0), hist: hist(12), fin: mas(-1), mant: false, ciclo: 1, creado: mas(-84) }));
+  const b = document.createElement("button"); b.dataset.programa = ""; document.body.append(b); b.click(); b.remove(); }, k); };
 const PANTALLAS = [
   { n: "inicio-vacio-movil", w: 390, vacio: true },
   { n: "inicio-vacio-escritorio", w: 1280, vacio: true },
@@ -61,6 +68,9 @@ const PANTALLAS = [
   { n: "guia-conversacion", w: 1280, pro: true, pasos: [async (p) => { await p.click("#consulta [data-conversa]"); await p.waitForSelector("#conversa[open] .cv-paso"); }] },
   { n: "centro-herramientas", w: 390, pasos: [async (p) => { await p.evaluate(() => document.querySelector("[data-centro]").click()); await p.waitForSelector("#centro[open] .ce-hoy button"); }] },
   { n: "centro-busqueda-oscuro", w: 1280, tema: "dark", pasos: [async (p) => { await p.evaluate(() => document.querySelector("[data-centro]").click()); await p.waitForSelector("#centro[open] .ce-hoy button"); await p.fill("#ce-q", "silla"); await p.waitForSelector("#centro .ce-res"); }] },
+  { n: "programa-elegir", w: 390, pasos: [prgEstado(""), async (p) => p.waitForSelector("#programa[open] .prg-niveles")] },
+  { n: "programa-en-marcha-oscuro", w: 1280, tema: "dark", pasos: [prgEstado("medio"), async (p) => p.waitForSelector("#programa[open] .prg-tabla")] },
+  { n: "programa-revision", w: 390, pasos: [prgEstado("fin"), async (p) => p.waitForSelector("#programa[open] .prg-sig")] },
   { n: "biblioteca-ejercicios", w: 390, pasos: [async (p) => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.biblioteca = ""; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#biblioteca[open] .bib-lista li"); }] },
   { n: "biblioteca-cambiar-oscuro", w: 1280, tema: "dark", pasos: [async (p) => { await p.evaluate(() => { const b = document.createElement("button"); b.dataset.cambiar = "Sentadilla a la silla"; b.dataset.pict = "sentadilla"; document.body.append(b); b.click(); b.remove(); }); await p.waitForSelector("#biblioteca[open] .bib-lista li"); }] },
   { n: "pastillero", w: 390, pasos: [menu("data-pastillero"), async (p) => p.waitForSelector("#pastillero[open] .pt-cajas")] },

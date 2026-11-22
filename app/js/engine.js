@@ -491,9 +491,9 @@ export function sintomasPosibles(res) {
 export const PLAN_SEMANA = { 1: "fuerza_eq", 2: "aerobico", 3: "fuerza", 4: "aerobico", 5: "fuerza_eq", 6: "aerobico", 0: "descanso" };
 
 /** Bloques de una sesión según tipo y nivel (fragil / estándar). Tiempos en minutos. */
-export function sesionTipo(tipo, { fragil = false, minutosAer = 30 } = {}) {
+export function sesionTipo(tipo, { fragil = false, minutosAer = 30, aer = null } = {}) {
   if (tipo === "aerobico") {
-    const principal = fragil ? 10 : minutosAer;
+    const principal = aer ?? (fragil ? 10 : minutosAer); // «aer»: minutos que fija el programa de 12 semanas, también en el nivel frágil
     return { tipo, titulo: "Aeróbico", min: principal + 10, bloques: [
       { nombre: "Calentamiento", detalle: "Caminar suave, mover brazos y tobillos", min: 5, pict: "marcha" },
       { nombre: fragil ? "Marcha a paso cómodo" : "Marcha, bici o elíptica", detalle: fragil ? "Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere." : "Ritmo en el que puede hablar pero no cantar (RPE 4–6).", min: principal, pict: fragil ? "marcha" : "bici", clave: "Hombros relajados, mirada al frente; el ritmo lo marca la respiración, no el reloj.", facil: "Tramos de 3–5 minutos con pausas de 1 minuto; vale caminar por casa o el pasillo.", dificil: "Intervalos: 3 min a ritmo cómodo y 1 min algo más rápido (puede hablar con frases cortas), 5–6 veces." },

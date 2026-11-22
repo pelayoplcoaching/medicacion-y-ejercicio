@@ -4012,3 +4012,7 @@ details.seccion[data-sec="beneficios"] { --ic: url("data:image/svg+xml;utf8,<svg
 .ej-de { display: inline-block; margin-left: 2px; padding: 0 7px; border-radius: 999px; background: var(--info-soft); color: var(--info-ink); font-size: .72rem; font-weight: 600; }
 .bib-tile .apr-ic-t .ic { width: 20px; height: 20px; }
 @media print { .ej-cambiar, .bib-tile { display: none !important; } }
+/* H3. Programa de 12 semanas (segunda tanda, 3): ficha para empezarlo en la pestana Plan. La tarjeta del programa en marcha y la ventana llevan sus estilos en js/programa.js */
+.prg-tile .apr-ic-t { font-family: var(--mono); font-size: 1rem; }
+.prg-plan:empty { display: none; }
+@media print { .prg-tile { display: none !important; } }
