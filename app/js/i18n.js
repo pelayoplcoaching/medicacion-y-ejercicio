@@ -226,10 +226,10 @@ const ES = {
 // Las claves que falten en un idioma se muestran en español.
 const DICC = { es: ES };
 const CARGAR = {
-  en: () => import("./i18n/en.js?v=202611221836"),
-  ca: () => import("./i18n/ca.js?v=202611221836"),
-  gl: () => import("./i18n/gl.js?v=202611221836"),
-  eu: () => import("./i18n/eu.js?v=202611221836"),
+  en: () => import("./i18n/en.js?v=202611221848"),
+  ca: () => import("./i18n/ca.js?v=202611221848"),
+  gl: () => import("./i18n/gl.js?v=202611221848"),
+  eu: () => import("./i18n/eu.js?v=202611221848"),
 };
 let actual = "es";
 

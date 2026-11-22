@@ -89,11 +89,12 @@ El script detecta solas las etiquetas del XML; con `--inspeccionar` muestra la e
 node scripts/test.mjs            # motor, parser, base de conocimiento, idiomas, casos de validación, zona de intensidad, SPPB, fuentes de interacciones, evolución, legibilidad (316 comprobaciones)
 npm i -D playwright && npx playwright install chromium
 node scripts/ui_test.mjs         # flujo completo en Chromium contra un servidor local (226 comprobaciones)
+node scripts/artifact_test.mjs   # el artefacto de claude.ai (dist/artifact.html) arranca y sus módulos responden
 node scripts/axe_test.mjs        # accesibilidad WCAG 2.1 AA con axe-core en 85 escenarios
 node scripts/visual_test.mjs     # 32 pantallas comparadas con la última versión guardada (informe en .visual/index.html)
-node scripts/pruebas.mjs         # las cuatro a la vez, con resumen (unos 2 min y medio)
+node scripts/pruebas.mjs         # todas a la vez, con resumen (unos 2 min y medio)
 ```
-Las tres primeras se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
+Las cuatro primeras se ejecutan en GitHub Actions en cada cambio (`.github/workflows/tests.yml`).
 
 ## Ampliar la base de conocimiento
 

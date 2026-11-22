@@ -891,3 +891,11 @@ Bloque «20 MEJORAS GRANDES (v1.2)» al final de la hoja; cada mejora lleva un c
 | G15 | «Guía de conversación»: botón en la barra de consulta y en «Más» (solo profesional); la ventana (pestañas de 1, 5 y 20-30 min, pasos numerados en línea de tiempo con su A, frases para decir en bocadillo con comillas latinas, bloques «Su caso» con filete, escalas de 0 a 10 con su pregunta, barreras con insignia «frecuente», pie fijo con la hoja y la nota) y la hoja A4 impresa llevan sus estilos en `js/conversa.js` | — |
 | G18 | PDF con infografías (jsPDF, en `js/pdf.js`): fichas «en un vistazo» con icono y QR, fichas de mecanismo en rejilla de 3, calendario semanal de 7 tarjetas con icono y minutos, barra de intensidad de tres tramos con el objetivo marcado; iconos de trazo en rejilla de 24 dibujados en lienzo y reutilizados; colores de la paleta de los PDF (morado, verde y ámbar suaves) | — |
 | G20 | Sin estilos nuevos. Para vigilar los existentes: `scripts/visual_test.mjs` fotografía 32 pantallas (claro, oscuro, alto contraste, móvil, escritorio y cada ventana) con fecha, azar y animaciones fijos y las compara con otra versión; el informe `.visual/index.html` marca en rojo lo que cambia. Úsese tras cada tanda de estilos (`--base` con el commit anterior a la tanda) | — |
+
+## Segunda tanda de 20 mejoras grandes (v1.3)
+
+Cada mejora lleva sus estilos en su módulo (se inyectan al abrirla) salvo lo que se ve en las pantallas principales, que va al final de `style.css` con la marca `H<n>`.
+
+| N.º | Qué añade | Dónde |
+|---|---|---|
+| H1 | Sin estilos nuevos: la sesión guiada, el SPPB, el escáner, las copias, el recorrido y las herramientas del modo profesional pasan a módulos bajo demanda con los mismos estilos | — |

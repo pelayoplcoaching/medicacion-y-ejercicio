@@ -777,7 +777,11 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
   const inicialJs = ["js/app.js", ...precargados].reduce((s, f) => s + kbs(f), 0);
   // 440 KB desde las 20 mejoras grandes (v1.2): lo que tiene que estar al abrir (pantalla «Hoy», modo sencillo, enlaces a los explicadores); lo demás va en módulos bajo demanda
-  check(`JavaScript inicial ≤ 440 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 440);
+  // 400 KB desde la v1.3.0 (segunda tanda, 1): la sesión guiada, el lector de listas y de fotos, el SPPB, el escáner, las copias, el recorrido y las herramientas del modo profesional se cargan al usarlos
+  check(`JavaScript inicial ≤ 400 KB (ahora ${Math.round(inicialJs)} KB)`, inicialJs <= 400);
+  check("el lector de listas y el de fotos no se descargan al abrir (se cargan al leer una lista)", !precargados.includes("js/parser.js") && !precargados.includes("js/ocr.js") && !/from "\.\/(parser|ocr)\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
+  { const appJs = fs.readFileSync(path.join(APP, "js/app.js"), "utf8"); const pedidos = [...new Set([...appJs.matchAll(/import\("\.\/([a-z0-9]+)\.js/g)].map((m) => `js/${m[1]}.js`))]; const faltan = pedidos.filter((u) => !sw.SELLADOS.includes(u));
+    check(`los ${pedidos.length} módulos bajo demanda de app.js están en la lista del service worker (funcionan sin conexión)`, pedidos.length >= 25 && faltan.length === 0, faltan.join()); }
   check("el maquetador de PDF no se descarga al abrir (se carga al pedir un PDF)", !precargados.includes("js/pdf.js") && !/from "\.\/pdf\.js/.test(fs.readFileSync(path.join(APP, "js/app.js"), "utf8")));
   // 70 KB desde las 20 mejoras grandes (v1.2): textos de la interfaz de la voz, la semana, los «¿Por qué?», «Hoy», los ejercicios y «Aprende» (el contenido largo va en sus módulos)
   check(`i18n.js ≤ 70 KB (ahora ${Math.round(kbs("js/i18n.js"))} KB)`, kbs("js/i18n.js") <= 70);

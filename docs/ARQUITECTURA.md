@@ -47,6 +47,10 @@ app/
     habitos.js          «Alcohol, tabaco y café con su medicación»: 28 reglas con su fuente (fichas técnicas, EFSA, PubMed) que cruzan tres hábitos con la lista, la edad y la situación (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
     conversa.js         «Guía de conversación» (modo profesional): consejo breve en 1, 5 y 20-30 minutos con las 5 Aes, barreras, nota para la historia y hoja imprimible para el paciente (contenido en borrador); interfaz en 5 idiomas (bajo demanda, v1.2)
                         Se carga con import() la primera vez que se pide un PDF (no viaja en la carga inicial)
+    sesion.js           sesión guiada: chequeo previo, bloques con cronómetro y entrenador por voz; sale de app.js en la v1.3.0 (bajo demanda)
+    ocasional.js        SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo; salen de app.js en la v1.3.0 (bajo demanda)
+    pro.js              informe de evolución y casos (exportar, importar, CSV, caso de prueba) del modo profesional; salen de app.js en la v1.3.0 (bajo demanda)
+    tour.js             recorrido guiado de la primera visita; sale de app.js en la v1.3.0 (bajo demanda)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas
@@ -60,7 +64,7 @@ app/
     casos.json          casos clínicos de validación (viñetas con resultado esperado)
 data/ext/               bloques fuente de la base (01…11, ddi_02…04); merge_kb.py los funde en kb.json y add_ddi.py añade las interacciones.
                         El 11 (suplementos y plantas) y el ddi_04 se generan con scripts/gen_suplementos_plantas.py y gen_ddi_suplementos_plantas.py
-scripts/                merge_kb, build_cima (nomenclátor), build_ddi, export/import_revision, bump_version, build_artifact, test.mjs, ui_test.mjs, axe_test.mjs, visual_test.mjs, pruebas.mjs (las cuatro a la vez)
+scripts/                merge_kb, build_cima (nomenclátor), build_ddi, export/import_revision, bump_version, build_artifact, test.mjs, ui_test.mjs, artifact_test.mjs, axe_test.mjs, visual_test.mjs, pruebas.mjs (todas a la vez)
 docs/                   auditorías y documentación técnica
 ```
 
@@ -90,9 +94,10 @@ Principios "sintéticos" (`atc:<nombre>`): presentaciones del nomenclátor cuyo 
 - `node scripts/test.mjs` — motor, lector, integridad de datos, idiomas (paridad de claves y uso en `app.js`), casos de validación, zona de intensidad, SPPB. Se ejecuta antes de cada commit.
 - `node scripts/ui_test.mjs` — flujo completo en Chromium (Playwright) contra un servidor local: medicación, pegar/leer, informe, Mi plan, conciliación, cribado, SPPB, zona, modo profesional, persistencia, idiomas, accesibilidad básica, sin errores de consola.
 - `node scripts/axe_test.mjs [prefijo]` — axe-core (WCAG 2.1 A y AA) en 85 escenarios: claro, oscuro y alto contraste, móvil y escritorio, paciente y profesional, cada ventana y las páginas estáticas; servidor propio (8803) y 4 escenarios a la vez. Lighthouse (`docs/lighthouse-*.md`).
+- `node scripts/artifact_test.mjs` — prueba de humo de `dist/artifact.html` (el artefacto de claude.ai): arranca, sin errores de JavaScript y con el lector de listas, la sesión guiada y el pastillero respondiendo dentro del empaquetado. Servidor propio (8804).
 - `node scripts/visual_test.mjs [--base <commit>] [--solo <texto>] [--estricto]` — capturas de 32 pantallas de esta versión y de otra (HEAD por defecto), con fecha, azar y animaciones fijos, comparadas píxel a píxel; informe en `.visual/index.html` (fuera del repositorio). Servidores propios (8801 y 8802).
 - `node scripts/pruebas.mjs` — las cuatro anteriores a la vez, cada una con su servidor (unos 2 min y medio); salidas en `.pruebas/`. `ui_test.mjs` corre además en paralelo sus bloques independientes (escritorio e inglés; sin conexión). Las pruebas con navegador desplazan la fecha al lunes si es domingo (descanso del plan tipo).
-- GitHub Actions (`.github/workflows/tests.yml`): base coherente, `test.mjs`, `ui_test.mjs` y `axe_test.mjs` en cada cambio.
+- GitHub Actions (`.github/workflows/tests.yml`): base coherente, `test.mjs`, `ui_test.mjs`, `artifact_test.mjs` y `axe_test.mjs` en cada cambio.
 - `acerca.html` ejecuta los casos de validación en el navegador del usuario, de modo que cualquiera puede comprobar que la base publicada supera sus propias viñetas.
 
 ## 6. Persistencia y privacidad

@@ -21,5 +21,7 @@ jobs:
           npm i --no-save playwright@1.63.0
           npx playwright install --with-deps chromium
           node scripts/ui_test.mjs
+      - name: Artefacto de claude.ai (empaquetado)
+        run: node scripts/artifact_test.mjs
       - name: Accesibilidad (axe-core)
         run: node scripts/axe_test.mjs
