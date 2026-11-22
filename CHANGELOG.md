@@ -2,6 +2,15 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.14 · 2026-11-22 · Segunda tanda de mejoras grandes (18): plan para los días de enfermedad
+- `js/enfermedad.js` (nuevo, bajo demanda): **«Plan para los días de enfermedad»**. Con vómitos o diarrea (dos o más veces) o fiebre con sudores o tiritona, algunos medicamentos conviene pausarlos y retomarlos al recuperarse. La aplicación dice cuáles de la lista están en esa pauta y por qué: inhibidores de SGLT2, IECA y ARA-II, diuréticos, metformina y antiinflamatorios; las sulfonilureas, aparte, según la glucosa.
+- **No indica dejar ningún medicamento por cuenta propia.** Es una pauta que se pacta: la persona marca lo que ya ha acordado con su médico y se lleva la hoja impresa, que distingue «pausar esos días (acordado)» de «preguntar en la consulta».
+- Cuándo retomarlos (tras 24–48 horas comiendo y bebiendo con normalidad, sin dosis de más), cuándo consultar (si dura más de 72 horas), el aviso de cetoacidosis con iSGLT2, la cautela en la insuficiencia cardiaca, la nota de que la pauta no habla de la insulina y qué hacer con el ejercicio (la regla ya revisada: descanso con fiebre y vuelta suave), con enlaces a «Volver tras un parón» y a «Números antes de entrenar».
+- «Qué se sabe»: una revisión de 74 documentos (Watson 2022) encontró muchas guías que la recomiendan y casi ningún estudio que mida si evita complicaciones; por eso se pacta persona a persona.
+- **Contenido nuevo, con la marca «Borrador pendiente de revisión clínica»**. Fuente: «Medicines and acute dehydrating illness. Medication Sick Day Guidance», versión 4 (2026), Gobierno de Escocia y Healthcare Improvement Scotland (hoja para pacientes y hoja para profesionales, consultadas el 22/11/2026).
+- Lo acordado se guarda en `medex.enfermedad` (en la copia de seguridad); si un medicamento sale de la lista, su acuerdo no se arrastra. Herramienta en el centro («Consulta»).
+- Pruebas: 12 comprobaciones unitarias, 5 de interfaz, 3 escenarios de accesibilidad y 2 pantallas visuales.
+
 ## 1.3.13 · 2026-11-22 · Segunda tanda de mejoras grandes (17): números antes de entrenar
 - `js/numeros.js` (nuevo, bajo demanda): **«Números antes de entrenar»**. La persona escribe los que tenga hoy (glucosa, tensión, pulso en reposo, saturación de oxígeno, temperatura; ninguno es obligatorio) y la aplicación responde «Adelante», «Hoy, suave» u «Hoy no entrene», con una línea por número que explica el porqué y qué hacer. Manda el peor número.
 - La lectura depende de la persona: la glucosa se lee distinto con insulina o sulfonilureas, un pulso de 40 a 49 es lo esperable con fármacos que lo frenan y una saturación de 88 a 91 % no significa lo mismo con enfermedad respiratoria. Los números que conviene mirar según la medicación y la situación salen primero, marcados.

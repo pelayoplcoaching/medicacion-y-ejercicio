@@ -1040,6 +1040,31 @@ console.log("\nNúmeros antes de entrenar (segunda tanda, 17)");
   check("las ventanas altas no dejan que se desplace la ventana entera (cuerpo como bloque de referencia y recorte)", /dialog\.alta\[open\] \{ display: flex; flex-direction: column; overflow: hidden; overflow: clip; \}/.test(css) && /dialog\.alta > \.ficha-cuerpo \{ flex: 1 1 auto; min-height: 0; max-height: none; position: relative; \}/.test(css));
 }
 
+console.log("\nPlan para los días de enfermedad (segunda tanda, 18)");
+{
+  const S = await import(pathToFileURL(path.join(ROOT, "app/js/enfermedad.js")).href);
+  const C = await import(pathToFileURL(path.join(ROOT, "app/js/centro.js")).href);
+  const src = fs.readFileSync(path.join(ROOT, "app/js/enfermedad.js"), "utf8"), appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8");
+  const claves = (lg) => new Set([...src.split(`\n  ${lg}: {`)[1].split("\n  },")[0].matchAll(/(?:^|[ ,{])([a-z_0-9]+): "/g)].map((m) => m[1]));
+  const kEs = claves("es");
+  check(`interfaz en cinco idiomas con las mismas ${kEs.size} claves`, kEs.size >= 25 && ["en", "ca", "gl", "eu"].every((lg) => { const k = claves(lg); return k.size === kEs.size && [...kEs].every((x) => k.has(x)); }));
+  check("los seis grupos de la tarjeta, en su orden (iSGLT2, IECA y ARA-II juntos, diuréticos, metformina, antiinflamatorios), cada uno con su motivo; las sulfonilureas, aparte", S.GRUPOS.map((g) => g.id).join() === "isglt2,ieca,diuretico,metformina,aine" && S.GRUPOS.every((g) => g.nombre.length > 8 && g.porque.length > 30 && typeof g.es === "function") && S.SULFONILUREAS.id === "sulfonilurea" && /mirando la glucosa/.test(S.SULFONILUREAS.porque));
+  check("las familias y señales que se miran existen en la base", ["isglt2", "metformina", "sulfonilureas", "insulina"].every((c) => datos.kb.clases.some((x) => x.id === c)) && ["ieca_ara", "diuretico", "aine"].every((s) => datos.kb.senales[s] && datos.kb.clases.some((c) => (c.senales || []).includes(s))));
+  const ev = (pids) => evaluar(datos, pids.filter((pid) => indice.porId.has(pid)).map((pid) => ({ pid, dosis: null, tomas: 1 })), { edad: 70, condiciones: new Set() }).items;
+  const pl = S.plan(ev(["empagliflozina", "enalapril", "losartan", "furosemida", "hidroclorotiazida", "espironolactona", "metformina", "ibuprofeno", "gliclazida", "insulina_basal", "bisoprolol", "atorvastatina"]));
+  const de = (id) => (pl.grupos.find((g) => g.id === id)?.meds || []).join("+");
+  check("reparte la lista: gliflozina, IECA y sartán, los tres tipos de diurético, metformina e ibuprofeno; el betabloqueante y la estatina no entran", de("isglt2") === "Empagliflozina" && /Enalapril/.test(de("ieca")) && /Losartán|Losartan/.test(de("ieca")) && /Furosemida/.test(de("diuretico")) && /Hidroclorotiazida/.test(de("diuretico")) && /Espironolactona/.test(de("diuretico")) && de("metformina") === "Metformina" && de("aine") === "Ibuprofeno" && !JSON.stringify(pl.grupos).includes("Bisoprolol") && !JSON.stringify(pl.grupos).includes("Atorvastatina"), pl.grupos.map((g) => g.id + ":" + g.meds.join("+")).join(" "));
+  check("las sulfonilureas van aparte, la insulina solo se señala y se cuentan los medicamentos distintos", pl.sulfonilureas.join() === "Gliclazida" && pl.insulina === true && pl.n === 8 && !pl.grupos.some((g) => g.meds.includes("Gliclazida")));
+  const vacio = S.plan(ev(["paracetamol", "omeprazol"]));
+  check("con una lista sin ninguno de esos fármacos no sale ningún grupo", vacio.grupos.length === 0 && vacio.sulfonilureas.length === 0 && !vacio.insulina && vacio.n === 0 && S.plan([]).n === 0);
+  check("cifras de la pauta escocesa (versión 4, 2026): dos o más veces, 24–48 horas, sin dosis de más y 72 horas", /\(dos o más veces\)/.test(S.CONT.que_es) && /no unas décimas/.test(S.CONT.que_es) && /24–48 horas comiendo y bebiendo con normalidad/.test(S.CONT.retomar) && /no tome dosis de más/.test(S.CONT.retomar) && /más de 72 horas/.test(S.CONT.consultar) && /versión 4 \(2026\)/.test(S.FUENTES[0].txt) && /^https:\/\/www\.healthcareimprovementscotland\.scot\//.test(S.FUENTES[0].url));
+  check("nunca indica dejar un medicamento por cuenta propia: es una pauta que se pacta", /se acuerda de antemano con su médico, enfermera o farmacéutico/.test(S.CONT.pacto) && /No la aplique por su cuenta/.test(S.CONT.pacto) && /Acordado con mi médico/.test(src) && /sd-pacto">\$\{CONT\.pacto\}/.test(src));
+  check("avisos propios: cetoacidosis con iSGLT2, cautela en la insuficiencia cardiaca y la insulina no se toca", /cetoacidosis aunque el azúcar esté normal/.test(S.CONT.isglt2_aviso) && /insuficiencia cardiaca moderada o grave/.test(S.CONT.ic) && /no habla de la insulina: no la cambie sin las instrucciones/.test(S.CONT.insulina));
+  check("dice lo que se sabe de su eficacia (Watson 2022: 74 documentos, sin beneficio demostrado) y el descanso con fiebre de la base", /revisión de 74 documentos/.test(S.CONT.sabe) && /ninguno que lo demostrara/.test(S.CONT.sabe) && S.FUENTES[1].doi === "10.1016/j.xkme.2022.100491" && /24–48 horas sin fiebre, a intensidad baja/.test(S.CONT.ejercicio));
+  check("lleva la marca de borrador y la hoja para imprimir distingue lo acordado de lo que hay que preguntar", /sd-borrador">\$\{tx\("borrador"\)\}/.test(src) && kEs.has("hoja_pausar") && kEs.has("hoja_preguntar") && /sd-imprime/.test(src));
+  check("módulo registrado, herramienta en el centro y clave en la copia de seguridad", /\n  enfermedad: \(\) => import\("\.\/enfermedad\.js/.test(appJs) && C.HERRAMIENTAS.some((h) => h.id === "enfermedad" && h.g === "consulta") && fs.readFileSync(path.join(ROOT, "app/js/ocasional.js"), "utf8").includes('"medex.enfermedad"'));
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);
