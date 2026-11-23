@@ -9,8 +9,8 @@
    bebiendo con normalidad, sin dosis de más, consultar si dura más de 72 horas y la cautela en la insuficiencia cardiaca.
    Lo que se sabe de su eficacia: Watson 2022 (PubMed). El descanso con fiebre es la regla ya revisada de la aplicación.
    Contenido en español, como la base; la interfaz, en cinco idiomas. Estado: «medex.enfermedad» = { acordado: [ids] }. */
-import { idioma, t } from "./i18n.js?v=202611231056";
-import { APP_VERSION } from "./version.js?v=202611231056";
+import { idioma, t } from "./i18n.js?v=202611231104";
+import { APP_VERSION } from "./version.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Plan para los días de enfermedad", borrador: "Borrador pendiente de revisión clínica", de_su_lista: "De su lista", ninguno: "Ninguno de sus medicamentos está en esta pauta.", sin_meds: "Añada su medicación y verá cuáles entran en esta pauta.", todos: "Los grupos de la pauta", otros: "Los demás grupos de la pauta", segun: "Según la glucosa", acordado: "Acordado con mi médico: pausarlo esos días", por_acordar: "Por acordar", ya: "Acordado", retomar: "Cuándo retomarlos", consultar: "Cuándo consultar", ejercicio: "¿Y el ejercicio?", sabe: "Qué se sabe", fuentes: "Fuentes",
@@ -162,7 +162,7 @@ function tarjeta(g) {
 function pintar() {
   dlg.querySelector("#sd-cab-t").textContent = tx("titulo");
   const hayMeds = A.estado.meds.length > 0, mios = new Set(P.grupos.map((g) => g.id)), resto = GRUPOS.filter((g) => !mios.has(g.id));
-  cu().innerHTML = `<p class="sd-borrador">${tx("borrador")}</p><p class="sd-que">${CONT.que_es}</p><p class="sd-pacto">${CONT.pacto}</p>
+  cu().innerHTML = `<p class="sd-que">${CONT.que_es}</p><p class="sd-pacto">${CONT.pacto}</p>
     <h3>${tx("de_su_lista")} <span class="sd-n" id="sd-n" aria-live="polite"></span></h3>
     ${P.grupos.length ? `<ul class="sd-lista" id="sd-mios">${P.grupos.map(tarjeta).join("")}</ul>` : `<p class="sd-caja" id="sd-ninguno">${hayMeds ? tx("ninguno") : tx("sin_meds")}</p>`}
     ${P.sulfonilureas.length ? `<h3>${tx("segun")}</h3><ul class="sd-lista" id="sd-su">${tarjeta({ id: SULFONILUREAS.id, nombre: SULFONILUREAS.nombre, porque: SULFONILUREAS.porque, meds: P.sulfonilureas })}</ul>` : ""}

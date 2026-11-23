@@ -13,7 +13,7 @@
    - Sedantes, hipotensores y efecto anticolinérgico «según la base»: las señales ya revisadas; anticoagulantes: su familia en la base
      (que ya dice que con ellos una caída puede tener consecuencias graves). No son una escala.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611231056";
+import { idioma, t } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Caídas y carga anticolinérgica", borrador: "Borrador pendiente de revisión clínica", intro: "Para revisar la medicación de una persona con riesgo de caídas. No decide por usted: ordena lo que hay en la lista.", sin_meds: "Añada la medicación para ver el panel.", c_frid: "en clases de STOPPFall", c_cals: "carga anticolinérgica (CALS)", c_sed: "con efecto sedante", c_hipo: "que bajan la tensión", relevante: "clínicamente relevante (3 o más)", no_relevante: "por debajo de 3",
@@ -203,9 +203,9 @@ function clase(c) {
 const medidor = (c) => { const n = Math.max(UMBRAL_CALS * 2, c.total); return `<div class="fr-medidor" aria-hidden="true">${Array.from({ length: n }, (_, i) => `<i class="${i < c.total ? "on" : ""}${i >= UMBRAL_CALS - 1 ? " u" : ""}"${i === UMBRAL_CALS - 1 ? ` data-u="${UMBRAL_CALS}+"` : ""}></i>`).join("")}</div>`; };
 function pintar() {
   dlg.querySelector("#fr-cab-t").textContent = tx("titulo");
-  if (!A.estado.meds.length) { cu().innerHTML = `<p class="fr-borrador">${tx("borrador")}</p><p class="fr-vacio">${tx("sin_meds")}</p>`; return; }
+  if (!A.estado.meds.length) { cu().innerHTML = `<p class="fr-vacio">${tx("sin_meds")}</p>`; return; }
   const lista = (id, l) => `<dd id="${id}">${esc(l.join(", ")) || tx("ninguno")}</dd>`;
-  cu().innerHTML = `<p class="fr-borrador">${tx("borrador")}</p><p class="fr-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="fr-intro">${tx("intro")}</p>
     <ul class="fr-cifras" id="fr-cifras"><li${P.nFrid ? ' class="aviso"' : ""}><b id="fr-n-frid">${P.nFrid}</b><span>${tx("c_frid")}</span></li><li${P.cals.relevante ? ' class="aviso"' : ""}><b id="fr-n-cals">${P.cals.total}</b><span>${tx("c_cals")}</span><small>${P.cals.relevante ? tx("relevante") : tx("no_relevante")}</small></li><li><b id="fr-n-sed">${P.sedantes.length}</b><span>${tx("c_sed")}</span></li><li><b id="fr-n-hipo">${P.hipotensores.length}</b><span>${tx("c_hipo")}</span></li></ul>
     <h3>${tx("h_stopp")}</h3>
     ${P.stopp.length ? `<ul class="fr-clases" id="fr-stopp">${P.stopp.map(clase).join("")}</ul><p class="fr-nota" id="fr-siempre">${SIEMPRE.retirar} ${SIEMPRE.vigilar}</p><p class="fr-nota">${SIEMPRE.nota}</p>` : `<p class="fr-vacio" id="fr-stopp-0">${tx("ninguno_stopp")}</p>`}

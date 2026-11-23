@@ -2,6 +2,10 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.28 · 2026-11-23 · Fuera la marca de borrador de las herramientas validadas
+- **Se quita «Borrador pendiente de revisión clínica»** de las diez herramientas de la segunda tanda que pasaron la validación externa del 23/11/2026: programa de 12 semanas, receta de ejercicio, números antes de entrenar, «Me duele…», volver tras un parón, mitos, «De cada 100», escalas rápidas, días de enfermedad y caídas y carga anticolinérgica.
+- Las pruebas comprueban ahora que la marca no vuelve a salir.
+
 ## 1.3.27 · 2026-11-23 · Ilustraciones de las herramientas (las 12 que faltaban)
 - **Banda ilustrada en ocho herramientas más:** escalas rápidas, preguntas para la consulta, días de enfermedad, caídas y carga anticolinérgica, «¿Qué cambia si…?», guía de conversación, pastillero y metas. También encabeza la sección de hábitos.
 - **Tres ilustraciones cuadradas:** cuando el buscador de herramientas no encuentra nada, al terminar el programa de 12 semanas y en el síntoma «Dolor u opresión en el pecho».

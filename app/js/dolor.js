@@ -9,7 +9,7 @@
    Estado en localStorage («medex.dolor»): { zona, hist: [{ f, z, n }], aplicado: { zona, cambios, variantes } | null }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA. Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en
    español como el resto de reglas de la aplicación. Fuentes comprobadas en PubMed (22/11/2026). */
-import { idioma } from "./i18n.js?v=202611231056";
+import { idioma } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Me duele…", borrador: "Borrador pendiente de revisión clínica", intro: "Con dolor casi siempre se puede seguir moviéndose, de otra manera. Diga dónde le duele y cuánto, y le digo qué hacer con su plan.", donde: "¿Dónde le duele?",
@@ -341,7 +341,7 @@ function pintar() {
   dlg.querySelector("#dl-cab-t").textContent = tx("titulo");
   const z = S.zona, Z = z ? CONT.zonas[z] : null;
   const chips = `<div class="dl-chips" role="group" aria-labelledby="dl-l-zona">${ZONAS.map((k) => `<button type="button" data-dl="zona" data-v="${k}" aria-pressed="${String(z === k)}">${tx("z_" + k)}</button>`).join("")}</div>`;
-  let cuerpo = `<span class="dl-borrador">${tx("borrador")}</span><p class="dl-intro">${tx("intro")}</p>
+  let cuerpo = `<p class="dl-intro">${tx("intro")}</p>
     ${S.aplicado ? `<div class="dl-activo"><span>${tx("activo", { x: tx("z_" + S.aplicado.zona).toLowerCase() })}</span><button type="button" class="btn-sec sm" data-dl="quitar">${tx("quitar")}</button></div>` : ""}
     <h3 id="dl-l-zona">${tx("donde")}</h3><div class="dl-donde">${figura(z)}${chips}</div>`;
   if (Z) {

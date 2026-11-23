@@ -14,8 +14,8 @@
      y avisarles; solo se enlaza su web.
    Las preguntas son traducción de la aplicación del original en inglés (hay versiones validadas en español de México de FRAIL y SARC-F).
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611231056";
-import { tL } from "./tr.js?v=202611231056";
+import { idioma, t } from "./i18n.js?v=202611231104";
+import { tL } from "./tr.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Escalas rápidas", borrador: "Borrador pendiente de revisión clínica", intro: "Cuatro cuestionarios cortos de cribado, traducidos por esta aplicación. Orientan, no diagnostican.", preguntas: "{n} preguntas", ultimo: "Último: {x} · {f}", sin_hacer: "Sin hacer", volver: "Todas las escalas", faltan: "Faltan {n} respuestas", resultado: "Resultado", de: "{p} de {m}", anterior: "La vez anterior: {x} ({f})", guardado: "Guardado en este dispositivo.", borrar: "Borrar este resultado", borrado: "Resultado borrado.",
@@ -317,7 +317,7 @@ function pintar() {
   dlg.querySelector("#eq-cab-t").textContent = tx("titulo");
   const G = leer();
   if (vista === "lista") {
-    cu().innerHTML = `<p class="eq-borrador">${tx("borrador")}</p><p class="eq-intro">${tx("intro")}</p>
+    cu().innerHTML = `<p class="eq-intro">${tx("intro")}</p>
       <ul class="eq-lista" id="eq-lista">${ESCALAS.map((e) => { const g = G[e.id], c = g && CATEGORIAS[e.id][g.cat]; return `<li><button type="button" class="eq-tarjeta" data-eq-abre="${e.id}"><b>${e.n}</b><span>${e.que}</span><small>${tx("preguntas", { n: String(e.items.length) })}</small>${c ? `<em class="eq-chip v-${c.v}">${tx("ultimo", { x: `${cifra(e.id, g)} · ${c.n}`, f: fecha(g.f) })}</em>` : `<em class="eq-chip">${tx("sin_hacer")}</em>`}${anillo(e, g, c)}</button></li>`; }).join("")}</ul>
       <p class="eq-pie">${CONT.cribado} ${tx("traduccion")}</p>`;
     return;

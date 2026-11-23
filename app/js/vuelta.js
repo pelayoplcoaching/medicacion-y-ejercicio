@@ -5,7 +5,7 @@
    Estado en localStorage («medex.vuelta»): { motivo, tiempo, inicio (ISO) }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: los escalones y las reglas de espera son una propuesta de esta aplicación.
    Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en español. Fuentes comprobadas en PubMed (22/11/2026). */
-import { t, idioma } from "./i18n.js?v=202611231056";
+import { t, idioma } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Volver tras un parón", borrador: "Borrador pendiente de revisión clínica", intro: "Parar pasa. Lo importante es cómo se vuelve: sin prisa y sin empezar donde lo dejó.", p_motivo: "¿Por qué paró?", p_tiempo: "¿Cuánto tiempo lleva sin entrenar?", p_hoy: "¿Cómo está hoy? Marque lo que le pase",
@@ -263,7 +263,7 @@ function pintar() {
   dlg.querySelector("#vt-cab-t").textContent = tx("titulo");
   const op = (k, v, txt, sub) => `<button type="button" data-vt="${k}" data-v="${v}" aria-pressed="${String(S[k] === v)}"><span>${txt}</span>${sub ? `<small>${sub}</small>` : ""}</button>`;
   const preg = S.motivo ? preguntasHoy(S.motivo) : [];
-  cu().innerHTML = `<span class="vt-borrador">${tx("borrador")}</span><p class="vt-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="vt-intro">${tx("intro")}</p>
     <h3 id="vt-l-m">${tx("p_motivo")}</h3><div class="vt-ops" role="group" aria-labelledby="vt-l-m">${MOTIVOS.map((m) => op("motivo", m, tx("m_" + m), TXT.es["m_" + m + "_x"] ? tx("m_" + m + "_x") : "")).join("")}</div>
     ${S.motivo ? `<h3 id="vt-l-t">${tx("p_tiempo")}</h3><div class="vt-ops cortas" role="group" aria-labelledby="vt-l-t">${TIEMPOS.map((x) => op("tiempo", x, tx("t_" + x))).join("")}</div>` : ""}
     ${S.motivo && S.tiempo && preg.length ? `<h3>${tx("p_hoy")}</h3><ul class="vt-hoy">${preg.map((x) => `<li><label><input type="checkbox" data-vt-hoy="${x.id}"${checks.includes(x.id) ? " checked" : ""}><span>${x.t}</span></label></li>`).join("")}</ul>` : ""}

@@ -5,7 +5,7 @@
    hoja de la semana en A4 apaisado: una casilla por toma y por día para marcarla, y la sesión de cada día.
    Los fármacos semanales o mensuales nunca se ponen en las casillas diarias (el metotrexato semanal tomado a diario
    es un error grave y conocido). Textos de la interfaz en los cinco idiomas dentro del módulo. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611231056";
+import { t, idioma } from "./i18n.js?v=202611231104";
 
 export const MOMENTOS = ["desayuno", "comida", "cena", "noche"];
 const hh = (h) => `${String(h).padStart(2, "0")}:00`;

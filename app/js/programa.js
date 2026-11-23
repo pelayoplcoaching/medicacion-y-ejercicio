@@ -6,8 +6,8 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611231056";
-import { tC } from "./tr.js?v=202611231056";
+import { idioma } from "./i18n.js?v=202611231104";
+import { tC } from "./tr.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -389,7 +389,7 @@ function tablaHtml(nivel, paso, { fin = false } = {}) {
 function elegirHtml(rec) {
   const hoy = A.hoy?.() || new Date(), n = nuevo("medio", hoy), tarde = n.lunes > lunesDe(hoy);
   const dia = fecha(n.lunes).toLocaleDateString(idioma(), { day: "numeric", month: "long" });
-  return `<span class="prg-borrador">${tx("borrador")}</span><p class="prg-intro">${tx("intro")}</p>
+  return `<p class="prg-intro">${tx("intro")}</p>
     <fieldset class="prg-niveles"><legend>${tx("elegir")}</legend>${NIVELES.map((k) => `<label class="prg-niv"><input type="radio" name="prg-nivel" value="${k}"${k === rec ? " checked" : ""}><b>${tx("n_" + k)}</b>${k === rec ? `<span class="prg-chip">${tx("recomendado")}</span>` : ""}<small>${tx("n_" + k + "_x")}</small>${k === rec ? `<em>${tx("rec_" + k)}</em>` : ""}</label>`).join("")}</fieldset>
     <p class="prg-cuando">${tarde ? tx("empieza_lunes", { d: dia }) : tx("empieza_hoy")}</p>
     <div class="prg-acc"><button type="button" class="btn" data-prg="empezar">${tx("empezar")}</button>${leer() ? `<button type="button" class="btn-sec" data-prg="volver">${tx("volver")}</button>` : ""}</div>
@@ -403,7 +403,7 @@ export function revision(p = leer()) {
 }
 function revisionHtml(p) {
   const r = revision(p), sig = NIVELES[Math.min(2, NIVELES.indexOf(p.nivel) + 1)], rp = (x) => (x != null ? " · " + tx("rev_rpe", { r: num(Math.round(x * 10) / 10) }) : "");
-  return `<img class="prg-fin-img" src="assets/img/programa-fin.webp" alt="" width="160" height="160" decoding="async"><span class="prg-borrador">${tx("borrador")}</span><p class="prg-intro">${tx("rev_intro")}</p>
+  return `<img class="prg-fin-img" src="assets/img/programa-fin.webp" alt="" width="160" height="160" decoding="async"><p class="prg-intro">${tx("rev_intro")}</p>
     <div class="prg-cifras"><div><b>${r.semanas}</b><small>${tx("rev_semanas")}</small></div><div><b>${r.ses}</b><small>${tx("rev_ses")}</small></div><div><b>${r.min}</b><small>${tx("rev_min")}</small></div></div>
     <div class="prg-comp"><div><b>${tx("rev_ini")}</b>${tx("rev_min_sem", { n: r.ini.min })}${rp(r.ini.rpe)}</div><div><b>${tx("rev_fin")}</b>${tx("rev_min_sem", { n: r.fin.min })}${rp(r.fin.rpe)}</div></div>
     <p class="prg-nota">${tx("rev_pruebas")}</p><div class="prg-acc pegada"><button type="button" class="btn-sec" data-prg="pruebas">${tx("rev_pruebas_btn")}</button></div>
@@ -417,7 +417,7 @@ function pintar() {
   if (!p || vista === "elegir") { cu().innerHTML = elegirHtml(p?.nivel || recomendar({ fragil: A.fragil, diario: A.diario?.() || [], hoy: A.hoy?.() || new Date() })); return; }
   if (p.fin && !p.mant) { cu().innerHTML = revisionHtml(p); return; }
   const s = semanaActual(A.hoy?.() || new Date());
-  cu().innerHTML = `<span class="prg-borrador">${tx("borrador")}</span>${tarjeta(A.contexto?.() || {}, A.hoy?.() || new Date()).replace(/<div class="acciones">.*?<\/div>/s, "")}
+  cu().innerHTML = `${tarjeta(A.contexto?.() || {}, A.hoy?.() || new Date()).replace(/<div class="acciones">.*?<\/div>/s, "")}
     <h3>${tx("tabla")} · ${tx("n_" + p.nivel)}</h3>${tablaHtml(p.nivel, s.mant ? 13 : s.previa ? 0 : s.paso, { fin: !!s.mant })}
     ${reglasHtml()}${historialHtml(p)}
     <div class="prg-acc"><button type="button" class="btn-sec" data-prg="nivel">${tx("cambiar_nivel")}</button><button type="button" class="btn-sec" data-prg="dejar">${tx("dejar")}</button></div>

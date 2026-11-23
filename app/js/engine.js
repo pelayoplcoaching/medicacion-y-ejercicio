@@ -1,6 +1,6 @@
 /* Motor de reglas: medicación + dosis + contexto → informe.
    Sin dependencias. Se usa igual en la app y en tests. */
-import { tC, tL } from "./tr.js?v=202611231056";
+import { tC, tL } from "./tr.js?v=202611231104";
 
 export const ORDEN_NIVEL = { alerta: 3, precaucion: 2, info: 1 };
 export const ORDEN_DDI = { mayor: 3, moderada: 2, menor: 1 };

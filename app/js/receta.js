@@ -10,9 +10,9 @@
      (Kanaley 2022, Brooke-Wavell 2022, Campbell 2019, Mottola 2018).
    CONTENIDO CLÍNICO NUEVO (el resumen en celdas y las frases de las guías): BORRADOR PENDIENTE DE REVISIÓN CLÍNICA.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611231056";
-import { ALARMA } from "./engine.js?v=202611231056";
-import { APP_VERSION } from "./version.js?v=202611231056";
+import { idioma, t } from "./i18n.js?v=202611231104";
+import { ALARMA } from "./engine.js?v=202611231104";
+import { APP_VERSION } from "./version.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Receta de ejercicio por enfermedad", borrador: "Borrador pendiente de revisión clínica", intro: "La dosis de ejercicio de referencia para cada situación y lo que cambia con ella. Es orientativa: no sustituye la valoración de su médico.", sus: "Sus situaciones", otras: "Otras situaciones", todas: "Elija una situación", dosis: "Dosis de referencia", th_f: "Frecuencia", th_i: "Intensidad", th_t: "Tiempo", th_tipo: "Tipo", aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio", leyenda: "En negrita, lo que cambia con esta situación; el resto es la recomendación general de la OMS.", manda: "Lo específico de abajo manda sobre la tabla.",
@@ -213,7 +213,7 @@ function pintar() {
   dlg.querySelector("#rx-cab-t").textContent = tx("titulo");
   const m = new Set(mias()), chip = (s) => `<li><button type="button" data-rx-sit="${s.id}" aria-pressed="${sel === s.id}"${m.has(s.id) ? ' class="mia"' : ""}>${t(s.k)}</button></li>`;
   const sus = SITUACIONES.filter((s) => m.has(s.id)), otras = SITUACIONES.filter((s) => !m.has(s.id));
-  cu().innerHTML = `<p class="rx-borrador">${tx("borrador")}</p><p class="rx-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="rx-intro">${tx("intro")}</p>
     ${sus.length ? `<p class="rx-grupo">${tx("sus")}</p><ul class="rx-chips" id="rx-sus">${sus.map(chip).join("")}</ul>` : ""}
     <p class="rx-grupo">${sus.length ? tx("otras") : tx("todas")}</p><ul class="rx-chips" id="rx-otras">${otras.map(chip).join("")}</ul>
     ${sel ? ficha(sel) : ""}`;

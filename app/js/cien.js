@@ -6,7 +6,7 @@
    el 22/11/2026) y se guardan exactas en «x»; lo que se enseña es su redondeo a personas enteras. La revisión de cardiopatía
    isquémica no da las cifras de cada grupo, solo la diferencia (NNT): se enseña así. Contenido en español, como la base;
    la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611231056";
+import { idioma } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "De cada 100 personas…", borrador: "Borrador pendiente de revisión clínica", intro: "Los porcentajes engañan; las personas se cuentan mejor. Aquí verá qué les pasa a 100 personas sin ejercicio y con ejercicio, según los mejores estudios.", para_usted: "Para su situación", otras: "Otras situaciones", todas: "Las seis cajas",
@@ -170,7 +170,7 @@ function crear() {
 function pintar() {
   dlg.querySelector("#cn-cab-t").textContent = tx("titulo");
   const a = CAJAS.filter((c) => mias.includes(c.id)), b = CAJAS.filter((c) => !mias.includes(c.id));
-  cu().innerHTML = `<p class="cn-borrador">${tx("borrador")}</p><p class="cn-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="cn-intro">${tx("intro")}</p>
     ${a.length ? `<h3>${tx("para_usted")}</h3><div id="cn-mias">${a.map(caja).join("")}</div>` : ""}
     <h3>${a.length ? tx("otras") : tx("todas")}</h3><div id="cn-resto">${b.map(caja).join("")}</div>
     <p class="cn-nota">${tx("nota")}</p>`;

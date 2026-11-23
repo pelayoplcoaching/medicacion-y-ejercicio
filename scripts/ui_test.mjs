@@ -536,7 +536,7 @@ try {
   {
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "vuelta"; document.body.append(b); b.click(); b.remove(); });
     await p.waitForSelector("#vuelta[open] .vt-ops", { timeout: 6000 }).catch(() => {});
-    check("«Volver tras un parón» empieza por el motivo (cinco), con la marca de borrador y sus fuentes", (await p.$$('#vuelta [data-vt="motivo"]')).length === 5 && (await p.$$('#vuelta [data-vt="tiempo"]')).length === 0 && (await p.isVisible("#vuelta .vt-borrador")) && (await p.$$('#vuelta .vt-fuentes a[href^="https://doi.org/10."]')).length === 3);
+    check("«Volver tras un parón» empieza por el motivo (cinco), ya sin la marca de borrador y sus fuentes", (await p.$$('#vuelta [data-vt="motivo"]')).length === 5 && (await p.$$('#vuelta [data-vt="tiempo"]')).length === 0 && !(await p.isVisible("#vuelta .vt-borrador")) && (await p.$$('#vuelta .vt-fuentes a[href^="https://doi.org/10."]')).length === 3);
     await p.click('#vuelta [data-vt="motivo"][data-v="infeccion"]'); await p.click('#vuelta [data-vt="tiempo"][data-v="t2"]'); await p.waitForSelector("#vuelta #vt-ver", { timeout: 4000 }).catch(() => {});
     const nEsc = (await p.$$("#vt-esc li")).length, pcts = await p.$$eval("#vt-esc .vt-pct strong", (ss) => ss.map((s) => parseInt(s.textContent, 10)));
     check("tras una infección de 2 a 4 semanas: puede volver, en tres semanas que suben hasta el 90 % y después su plan de siempre", (await p.$eval("#vt-ver", (e) => e.dataset.k)) === "adelante" && nEsc === 4 && ["55,75,90,100", "45,70,90,100"].includes(pcts.join()) && (await p.$$("#vuelta [data-vt-hoy]")).length >= 4, pcts.join()); // 10 puntos menos de partida con fragilidad o desde los 75 años
@@ -558,7 +558,7 @@ try {
   {
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "receta"; b.dataset.arg = "hipertension"; document.body.append(b); b.click(); b.remove(); });
     await p.waitForSelector("#receta[open] #rx-ficha", { timeout: 6000 }).catch(() => {});
-    check("«Receta de ejercicio por enfermedad»: marca de borrador, las 18 situaciones y la pedida ya abierta", (await p.isVisible("#receta .rx-borrador")) && (await p.$$("#receta [data-rx-sit]")).length === 18 && (await p.$eval("#rx-ficha", (f) => f.dataset.id)) === "hipertension" && (await p.$eval('#receta [data-rx-sit="hipertension"]', (b) => b.getAttribute("aria-pressed"))) === "true");
+    check("«Receta de ejercicio por enfermedad»: sin marca de borrador, las 18 situaciones y la pedida ya abierta", !(await p.isVisible("#receta .rx-borrador")) && (await p.$$("#receta [data-rx-sit]")).length === 18 && (await p.$eval("#rx-ficha", (f) => f.dataset.id)) === "hipertension" && (await p.$eval('#receta [data-rx-sit="hipertension"]', (b) => b.getAttribute("aria-pressed"))) === "true");
     check("tabla FITT de la hipertensión: tres filas por cuatro columnas, con sus celdas propias en negrita y el aviso de que lo específico manda", (await p.$$("#rx-ficha .rx-tabla tbody tr")).length === 3 && (await p.$$("#rx-ficha .rx-tabla tbody td")).length === 12 && (await p.$$("#rx-ficha .rx-tabla td.propio")).length === 6 && /La mayoría de los días, mejor todos/.test(await p.textContent("#rx-ficha .rx-tabla")) && /manda sobre la tabla/.test(await p.textContent("#rx-ficha .rx-nota")));
     check("lo específico es la regla revisada de la base, con su fuente, y debajo van las señales de alarma y las fuentes con DOI", /180\/110/.test(await p.textContent('#rx-propias [data-regla="hipertension_cond"]')) && /Fuente: ESC 2024/.test(await p.textContent('#rx-propias [data-regla="hipertension_cond"]')) && (await p.$$("#rx-alarma li")).length === 6 && (await p.$$eval('#rx-fuentes a[href^="https://doi.org/"]', (a) => a.length)) === 3);
     await p.click('#receta [data-rx-sit="aneurisma_aorta"]'); await p.waitForTimeout(150);
@@ -574,7 +574,7 @@ try {
     await p.evaluate(() => localStorage.removeItem("medex.escalas"));
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "escalas"; document.body.append(b); b.click(); b.remove(); });
     await p.waitForSelector("#escalas[open] #eq-lista", { timeout: 6000 }).catch(() => {});
-    check("«Escalas rápidas»: marca de borrador y cuatro escalas sin hacer", (await p.isVisible("#escalas .eq-borrador")) && (await p.$$("#eq-lista .eq-tarjeta")).length === 4 && (await p.$$eval("#eq-lista .eq-chip", (c) => c.every((x) => x.textContent === "Sin hacer"))));
+    check("«Escalas rápidas»: sin marca de borrador y cuatro escalas sin hacer", !(await p.isVisible("#escalas .eq-borrador")) && (await p.$$("#eq-lista .eq-tarjeta")).length === 4 && (await p.$$eval("#eq-lista .eq-chip", (c) => c.every((x) => x.textContent === "Sin hacer"))));
     await p.click('#escalas [data-eq-abre="frail"]'); await p.waitForSelector("#eq-form");
     for (const c of await p.$$('#eq-form [data-eq-i="enfermedades"]:checked')) await c.uncheck();
     check("FRAIL: cinco preguntas, las 11 enfermedades y, sin responder, dice cuántas faltan", (await p.$$("#eq-form fieldset")).length === 5 && (await p.$$('#eq-form [data-eq-i="enfermedades"]')).length === 11 && /Faltan 4 respuestas/.test(await p.textContent("#eq-res")) && !(await p.$("#eq-cifra")));
@@ -610,7 +610,7 @@ try {
     await abreFr();
     const fr = await p.evaluate(() => ({ n: Number(document.querySelector("#fr-n-frid").textContent), chips: new Set([...document.querySelectorAll("#fr-stopp .fr-chip")].map((c) => c.dataset.simula)).size, clases: [...document.querySelectorAll("#fr-stopp > li")].map((l) => ({ id: l.dataset.id, chips: l.querySelectorAll(".fr-chip").length, txt: l.querySelector(".fr-det").textContent.length })), cals: Number(document.querySelector("#fr-n-cals").textContent), filas: [...document.querySelectorAll("#fr-cals tbody td:nth-child(2)")].map((t) => Number(t.textContent)), pie: document.querySelector("#fr-cals tfoot")?.textContent || "", sed: Number(document.querySelector("#fr-n-sed").textContent), sedTxt: document.querySelector("#fr-sed").textContent, hipo: Number(document.querySelector("#fr-n-hipo").textContent), hipoTxt: document.querySelector("#fr-hipo").textContent }));
     const cuenta = (s) => (/^(ninguno|none|cap|ningún|bat ere ez)$/.test(s.trim()) ? 0 : s.split(", ").length);
-    check("«Caídas y carga anticolinérgica»: marca de borrador y las clases de STOPPFall de su lista, cada una con sus fármacos y su texto", (await p.isVisible("#frid .fr-borrador")) && fr.n >= 1 && fr.n === fr.chips && fr.clases.length >= 1 && fr.clases.every((c) => c.chips >= 1 && c.txt > 20), JSON.stringify(fr.clases));
+    check("«Caídas y carga anticolinérgica»: sin marca de borrador y las clases de STOPPFall de su lista, cada una con sus fármacos y su texto", !(await p.isVisible("#frid .fr-borrador")) && fr.n >= 1 && fr.n === fr.chips && fr.clases.length >= 1 && fr.clases.every((c) => c.chips >= 1 && c.txt > 20), JSON.stringify(fr.clases));
     check("la carga anticolinérgica es la suma de sus filas, de más a menos, y dice si llega a 3", fr.filas.length >= 1 && fr.filas.reduce((a, b) => a + b, 0) === fr.cals && fr.filas.every((x, i) => i === 0 || x <= fr.filas[i - 1]) && (fr.cals >= 3 ? /clínicamente relevante/.test(fr.pie) : /por debajo de 3/.test(fr.pie)), `${fr.cals} · ${fr.filas.join()}`);
     check("mejoras 875–876: el medidor enciende tantas casillas como puntos (hasta el doble del umbral o el total) y cada fila lleva su potencia en puntos", (await p.$$("#frid .fr-medidor i.on")).length === fr.cals && (await p.$$("#frid .fr-medidor i")).length === Math.max(6, fr.cals) && (await p.$$("#frid .fr-medidor i[data-u]")).length === 1 && (await p.$$("#fr-cals tbody .fr-pot")).length === fr.filas.length);
     check("los sedantes y los que bajan la tensión se cuentan igual que se listan", fr.sed === cuenta(fr.sedTxt) && fr.hipo === cuenta(fr.hipoTxt) && fr.hipo >= 1, `${fr.sed} «${fr.sedTxt}» · ${fr.hipo} «${fr.hipoTxt}»`);
@@ -632,7 +632,7 @@ try {
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "enfermedad"; document.body.append(b); b.click(); b.remove(); });
     await p.waitForSelector("#enfermedad[open] #sd-retomar", { timeout: 6000 }).catch(() => {});
     const nG = (await p.$$("#sd-mios .sd-g")).length;
-    check("«Plan para los días de enfermedad»: marca de borrador, el aviso de que se pacta con el médico y los grupos de su lista sin nada acordado", (await p.isVisible("#enfermedad .sd-borrador")) && /No la aplique por su cuenta/.test(await p.textContent("#enfermedad .sd-pacto")) && nG >= 1 && (await p.$$("#enfermedad [data-sd-g]:checked")).length === 0 && (await p.$$eval("#sd-mios .sd-g", (gs) => gs.every((g) => g.querySelectorAll(".sd-meds li").length >= 1 && g.querySelector("p").textContent.length > 30))), String(nG));
+    check("«Plan para los días de enfermedad»: sin marca de borrador, el aviso de que se pacta con el médico y los grupos de su lista sin nada acordado", !(await p.isVisible("#enfermedad .sd-borrador")) && /No la aplique por su cuenta/.test(await p.textContent("#enfermedad .sd-pacto")) && nG >= 1 && (await p.$$("#enfermedad [data-sd-g]:checked")).length === 0 && (await p.$$eval("#sd-mios .sd-g", (gs) => gs.every((g) => g.querySelectorAll(".sd-meds li").length >= 1 && g.querySelector("p").textContent.length > 30))), String(nG));
     check("dice cuándo retomarlos (24–48 horas, sin dosis de más), cuándo consultar (72 horas) y qué hacer con el ejercicio", /24–48 horas/.test(await p.textContent("#sd-retomar")) && /dosis de más/.test(await p.textContent("#sd-retomar")) && /72 horas/.test(await p.textContent("#sd-consultar")) && (await p.$$('#enfermedad [data-abre="vuelta"], #enfermedad [data-abre="numeros"]')).length === 2);
     const g1 = await p.$eval("#sd-mios .sd-g", (g) => g.dataset.id);
     await p.click(`#enfermedad [data-sd-g="${g1}"]`); await p.waitForTimeout(120);
@@ -652,7 +652,7 @@ try {
     const lineas = () => p.$$eval("#nm-lineas li", (ls) => ls.map((l) => l.dataset.c + ":" + l.dataset.n).join());
     await p.evaluate(() => localStorage.removeItem("medex.numeros"));
     await abreNm();
-    check("«Números antes de entrenar»: cinco casillas con nombre accesible, marca de borrador y ningún veredicto al abrir", (await p.$$("#numeros .nm-campo")).length === 5 && (await p.$$eval("#numeros .nm-in input", (is) => is.length === 6 && is.every((i) => (i.getAttribute("aria-label") || "").length > 5))) && (await p.isVisible("#numeros .nm-borrador")) && (await p.$$("#nm-ver")).length === 0);
+    check("«Números antes de entrenar»: cinco casillas con nombre accesible, marca de borrador y ningún veredicto al abrir", (await p.$$("#numeros .nm-campo")).length === 5 && (await p.$$eval("#numeros .nm-in input", (is) => is.length === 6 && is.every((i) => (i.getAttribute("aria-label") || "").length > 5))) && !(await p.isVisible("#numeros .nm-borrador")) && (await p.$$("#nm-ver")).length === 0);
     await p.click("#numeros button[type=submit]"); await p.waitForTimeout(100);
     check("sin ningún número pide escribir al menos uno", /al menos un número/.test(await p.textContent("#nm-err")) && (await p.$$("#nm-ver")).length === 0);
     await pon({ ta_s: 128, ta_d: 78, pulso: 66, temp: "36,6" });
@@ -678,7 +678,7 @@ try {
     await p.evaluate(() => { const b = document.createElement("button"); b.dataset.abre = "cien"; document.body.append(b); b.click(); b.remove(); });
     await p.waitForSelector("#cien[open] .cn-caja", { timeout: 6000 }).catch(() => {});
     const nM = (await p.$$("#cn-mias .cn-caja")).length, nR = (await p.$$("#cn-resto .cn-caja")).length;
-    check("«De cada 100 personas…»: seis cajas con la marca de borrador, las de su situación en un grupo aparte", nM + nR === 6 && (await p.isVisible("#cien .cn-borrador")) && (await p.$$("#cien .cn-caja.mia")).length === nM, `${nM}+${nR}`);
+    check("«De cada 100 personas…»: seis cajas ya sin la marca de borrador, las de su situación en un grupo aparte", nM + nR === 6 && !(await p.isVisible("#cien .cn-borrador")) && (await p.$$("#cien .cn-caja.mia")).length === nM, `${nM}+${nR}`);
     check("cada caja tiene su tabla, su dibujo de 100 puntos con texto alternativo, la frase de lectura y la fuente con DOI", await p.$$eval("#cien .cn-caja", (cs) => cs.every((c) => c.querySelector("table tbody tr") && [...c.querySelectorAll(".cn-dibujo figure")].every((f) => f.querySelectorAll("circle").length === 100 && /\d/.test(f.getAttribute("aria-label") || "")) && c.querySelector(".cn-lee").textContent.length > 15 && c.querySelector('.cn-meta a[href^="https://doi.org/10."]'))));
     const ic = await p.$eval("#cn-ic", (c) => ({ nums: [...c.querySelectorAll("tbody td b")].map((b) => b.textContent).join(), llenos: [...c.querySelectorAll(".cn-dibujo figure")].map((f) => f.querySelectorAll(".cn-p-si").length + "+" + f.querySelectorAll(".cn-p-dif").length).join() }));
     check("insuficiencia cardiaca: 24 y 16 ingresos de cada 100 (Molloy 2024), y el dibujo los enseña (24; 16 más 8 evitados)", ic.nums === "24,16,6,6,6,5" && ic.llenos === "24+0,16+8", JSON.stringify(ic));
@@ -691,7 +691,7 @@ try {
     await p.evaluate(() => localStorage.removeItem("medex.mitos"));
     await abreMt();
     const nMios = (await p.$$("#mit-mios .mit-m")).length, nResto = (await p.$$("#mit-resto .mit-m")).length;
-    check("«Mitos»: doce tarjetas cerradas, las que tocan a su medicación en un grupo aparte, con la marca de borrador y cero leídos", nMios + nResto === 12 && nMios >= 1 && (await p.$$("#mitos .mit-m[open]")).length === 0 && (await p.isVisible("#mitos .mit-borrador")) && /0 de 12/.test(await p.textContent("#mit-leidos")) && /10/.test(await p.textContent("#mit-resumen")));
+    check("«Mitos»: doce tarjetas cerradas, las que tocan a su medicación en un grupo aparte, ya sin la marca de borrador y cero leídos", nMios + nResto === 12 && nMios >= 1 && (await p.$$("#mitos .mit-m[open]")).length === 0 && !(await p.isVisible("#mitos .mit-borrador")) && /0 de 12/.test(await p.textContent("#mit-leidos")) && /10/.test(await p.textContent("#mit-resumen")));
     const id1 = await p.$eval("#mit-mios .mit-m", (d) => d.dataset.id);
     await p.click(`#mit-${id1} summary`); await p.waitForTimeout(200);
     check("al abrir uno se ve la explicación, qué hacer, el tipo de estudio y la fuente con su DOI, y cuenta como leído", (await p.isVisible(`#mit-${id1} .mit-hacer`)) && (await p.$$(`#mit-${id1} .mit-meta a[href^="https://doi.org/10."]`)).length >= 1 && (await p.$$(`#mit-${id1} .mit-meta dt`)).length >= 2 && /1/.test(await p.textContent("#mit-leidos")) && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.mitos") || "{}").leidos?.length)) === 1 && (await p.$eval(`#mit-${id1}`, (d) => d.classList.contains("leido"))), id1);
@@ -786,7 +786,7 @@ try {
   // «Me duele…» (segunda tanda, 7): zona, semáforo, adaptar el plan y quitar las adaptaciones (se deja todo como estaba)
   {
     await p.click('.rato-enlaces [data-abre="dolor"]'); await p.waitForSelector("#dolor[open] .dl-chips", { timeout: 6000 }).catch(() => {});
-    check("«Me duele…» ofrece siete zonas, con la marca de borrador y sus fuentes", (await p.$$('#dolor .dl-chips [data-dl="zona"]')).length === 7 && (await p.isVisible("#dolor .dl-borrador")) && (await p.$$('#dolor .dl-fuentes a[href^="https://doi.org/10."]')).length === 3 && (await p.$$("#dolor #dl-ver")).length === 0);
+    check("«Me duele…» ofrece siete zonas, ya sin la marca de borrador y sus fuentes", (await p.$$('#dolor .dl-chips [data-dl="zona"]')).length === 7 && !(await p.isVisible("#dolor .dl-borrador")) && (await p.$$('#dolor .dl-fuentes a[href^="https://doi.org/10."]')).length === 3 && (await p.$$("#dolor #dl-ver")).length === 0);
     await p.click('#dolor .dl-chips [data-dl="zona"][data-v="lumbar"]'); await p.waitForSelector("#dolor #dl-ver", { timeout: 4000 }).catch(() => {});
     const k3 = await p.$eval("#dl-ver", (e) => e.dataset.k);
     await p.fill("#dl-n", "7"); const k7 = await p.$eval("#dl-ver", (e) => e.dataset.k);
@@ -867,7 +867,7 @@ try {
   // Programa de 12 semanas (segunda tanda, 3): empezar, dosis de la semana en el plan y dejarlo (el resto de pruebas sigue sin programa)
   {
     await p.click(".prg-tile [data-programa]"); await p.waitForSelector("#programa[open] .prg-niveles", { timeout: 6000 }).catch(() => {});
-    check("el programa se ofrece con tres niveles, uno recomendado, la marca de borrador y sus seis fuentes con DOI", (await p.$$('#programa input[name="prg-nivel"]')).length === 3 && (await p.$$('#programa input[name="prg-nivel"]:checked')).length === 1 && (await p.$$("#programa .prg-niv .prg-chip")).length === 1 && (await p.isVisible("#programa .prg-borrador")) && (await p.$$('#programa .prg-fuentes a[href^="https://doi.org/10."]')).length === 6);
+    check("el programa se ofrece con tres niveles, uno recomendado, sin marca de borrador y sus seis fuentes con DOI", (await p.$$('#programa input[name="prg-nivel"]')).length === 3 && (await p.$$('#programa input[name="prg-nivel"]:checked')).length === 1 && (await p.$$("#programa .prg-niv .prg-chip")).length === 1 && !(await p.isVisible("#programa .prg-borrador")) && (await p.$$('#programa .prg-fuentes a[href^="https://doi.org/10."]')).length === 6);
     await p.check('#programa input[name="prg-nivel"][value="medio"]', { force: true });
     await p.click('#programa [data-prg="empezar"]'); await p.waitForSelector("#programa .prg-tabla", { timeout: 5000 }).catch(() => {});
     const est = await p.evaluate(() => JSON.parse(localStorage.getItem("medex.programa") || "null"));

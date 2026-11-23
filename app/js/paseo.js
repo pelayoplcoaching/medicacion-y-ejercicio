@@ -6,7 +6,7 @@
    - Con fármacos que frenan el pulso avisa de que el pulso no sirve de guía. Al terminar, lo apunta en el diario.
    Preferencias y avance del programa en localStorage («medex.paseo»). Cifras de cadencia y prueba del habla comprobadas en
    PubMed (22/11/2026). El programa de 8 semanas es una progresión orientativa propia, no la de un estudio. */
-import { t, idioma } from "./i18n.js?v=202611231056";
+import { t, idioma } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Paseo guiado", m_libre: "Paseo libre", m_prog: "Programa de 8 semanas", intro: "Un paseo con ritmo: el móvil marca el paso, avisa de los cambios y cuenta el tiempo.", cuanto: "¿Cuánto rato?", min: "{n} min",

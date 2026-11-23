@@ -7,9 +7,9 @@
    sin fiebre). Son NUEVOS y están por revisar: la tensión diastólica (100 y 110), el pulso en reposo (40, 50, 100 y 120),
    las décimas (37,5 °C), la saturación sin enfermedad respiratoria (92 %) y la redacción de todos los consejos.
    Los umbrales están en UMBRALES; los textos, en CONT (en español, como la base); la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611231056";
-import { ALARMA } from "./engine.js?v=202611231056";
-import { tC } from "./tr.js?v=202611231056";
+import { idioma } from "./i18n.js?v=202611231104";
+import { ALARMA } from "./engine.js?v=202611231104";
+import { tC } from "./tr.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Números antes de entrenar", borrador: "Borrador pendiente de revisión clínica", intro: "Escriba los números que tenga hoy. No hace falta ninguno para entrenar: sirven si ya se los mide.", para_usted: "Le conviene", ver: "Ver qué toca hoy", borrar: "Borrar", falta: "Escriba al menos un número.", rango: "Revise este número: no parece posible.",
@@ -243,7 +243,7 @@ function pintar() {
   const campo = (id, cuerpo, doble = false) => `<div class="nm-campo${rec.includes(id) ? " rec" : ""}${doble ? " doble" : ""}" data-c="${id}"${niv[id] ? ` data-n="${niv[id]}"` : ""}><b>${tx(id)}${rec.includes(id) ? `<em>${tx("para_usted")}</em>` : ""}</b>${cuerpo}</div>`;
   const bloques = { glucosa: campo("glucosa", casilla("glucosa", "", tx("glucosa"))), ta: campo("ta", `<div class="nm-par">${casilla("ta_s", tx("ta_s"), `${tx("ta")}: ${tx("ta_s")}`)}${casilla("ta_d", tx("ta_d"), `${tx("ta")}: ${tx("ta_d")}`)}</div>`, true), pulso: campo("pulso", casilla("pulso", "", tx("pulso"))), spo2: campo("spo2", casilla("spo2", "", tx("spo2"))), temp: campo("temp", casilla("temp", "", tx("temp"))) };
   const orden = [...rec, ...["glucosa", "ta", "pulso", "spo2", "temp"].filter((k) => !rec.includes(k))];
-  cu().innerHTML = `<p class="nm-borrador">${tx("borrador")}</p><p class="nm-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="nm-intro">${tx("intro")}</p>
     <form id="nm-form" novalidate><div class="nm-campos">${orden.map((k) => bloques[k]).join("")}</div><p class="nm-err" id="nm-err" role="alert"></p>
     <div class="nm-acc"><button type="submit" class="btn">${tx("ver")}</button>${Object.keys(V).length ? `<button type="button" class="btn-sec" data-nm="borrar">${tx("borrar")}</button>` : ""}</div></form>
     <div id="nm-res">${visto ? resultado() : ""}</div>

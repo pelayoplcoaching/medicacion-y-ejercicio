@@ -4,7 +4,7 @@
    CONTENIDO CLÍNICO NUEVO: BORRADOR PENDIENTE DE REVISIÓN CLÍNICA. Las cifras son las de los resúmenes de PubMed, comprobadas
    el 22/11/2026 (el posicionamiento de la ADA de 2016 no tiene resumen en PubMed: se cita sin cifras). El contenido va en
    español, como la base; la interfaz, en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611231056";
+import { t, idioma } from "./i18n.js?v=202611231104";
 
 const TXT = {
   es: { titulo: "Mitos sobre medicación y ejercicio", borrador: "Borrador pendiente de revisión clínica", intro: "Doce ideas muy extendidas y lo que encontraron los estudios. Toque una para ver la explicación y la fuente.", v_falso: "Falso", v_medias: "A medias",
@@ -177,7 +177,7 @@ function tarjeta(m, abierto) {
 function pintar(abierto) {
   dlg.querySelector("#mit-cab-t").textContent = tx("titulo");
   const r = recuento(), a = MITOS.filter((m) => mios.includes(m.id)), b = MITOS.filter((m) => !mios.includes(m.id));
-  cu().innerHTML = `<p class="mit-borrador">${tx("borrador")}</p><p class="mit-intro">${tx("intro")}</p>
+  cu().innerHTML = `<p class="mit-intro">${tx("intro")}</p>
     <p class="mit-cifras"><span id="mit-resumen">${tx("resumen", { f: r.falso, m: r.medias })}</span><span id="mit-leidos" aria-live="polite"></span><span class="mit-barra" aria-hidden="true"><i></i></span></p>
     ${a.length ? `<h3>${tx("por_su")}</h3><div class="mit-lista" id="mit-mios">${a.map((m) => tarjeta(m, m.id === abierto)).join("")}</div>` : ""}
     <h3>${a.length ? tx("resto") : tx("todos")}</h3><div class="mit-lista" id="mit-resto">${b.map((m) => tarjeta(m, m.id === abierto)).join("")}</div>

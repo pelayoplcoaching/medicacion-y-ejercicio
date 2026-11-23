@@ -3,8 +3,8 @@
    desde los 65 años o tras una caída). Cada tarjeta: la cifra, qué significa en lenguaje llano, el tipo de estudio, la
    certeza cuando la revisión la da (GRADE) y la fuente con su DOI. Cifras comprobadas en PubMed el 21/11/2026, una a una,
    en el resumen de cada artículo. Tras la validación externa del 23/11/2026 se pasaron a la última versión de sus revisiones Cochrane la insuficiencia cardiaca (Molloy 2024), la fibrilación auricular (Buckley 2024) y la artrosis (Lawford 2024 y Hall 2026), comprobadas de nuevo en PubMed. Contenido en español (como el resto del contenido clínico), revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
-import { idioma, t } from "./i18n.js?v=202611231056";
-import { tC } from "./tr.js?v=202611231056";
+import { idioma, t } from "./i18n.js?v=202611231104";
+import { tC } from "./tr.js?v=202611231104";
 
 const F = (txt, doi) => ({ txt, doi });
 /** Por situación: id de la situación (los de «Situación clínica») → tarjetas. «todos» y «mayores» se añaden solos. */
