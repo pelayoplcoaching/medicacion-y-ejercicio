@@ -5,19 +5,20 @@
    Incluye las barreras más frecuentes con una respuesta para cada una, una nota para la historia clínica y una hoja
    imprimible para el paciente. Nada se guarda fuera de este dispositivo. Contenido en español, revisado por un clínico el
    22/11/2026; la interfaz, en cinco idiomas. Se carga al abrirla. */
-import { idioma } from "./i18n.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { tC, tL } from "./tr.js?v=202611230120";
 
-export const FUENTES = [
+export const FUENTES = tC([
   { txt: "Ministerio de Sanidad 2015, Consejo integral en estilo de vida en Atención Primaria (modelo de las 5 Aes)", url: "https://www.sanidad.gob.es/areas/promocionPrevencion/envejecimientoSaludable/activo/consejoIntegralAP.htm" },
   { txt: "OMS 2020, directrices sobre actividad física y hábitos sedentarios (Bull, Br J Sports Med)", doi: "10.1136/bjsports-2020-102955" },
   { txt: "Orrow 2012, BMJ: promoción de la actividad física en atención primaria (metaanálisis de 15 ensayos)", doi: "10.1136/bmj.e1389" },
   { txt: "Rubak 2005, Br J Gen Pract: entrevista motivacional (metaanálisis de 72 ensayos)", url: "https://pubmed.ncbi.nlm.nih.gov/15826439/" },
-];
+]);
 export const LOCALIZA = { txt: "LOCALIZA salud", url: "https://localizasalud.sanidad.gob.es/" };
 export const AES = ["averiguar", "aconsejar", "acordar", "ayudar", "asegurar"];
 
 /** Barreras frecuentes: lo que suele decir la persona, una respuesta para la consulta y una línea para su hoja. */
-export const BARRERAS = [
+export const BARRERAS = tC([
   { id: "tiempo", txt: "No tengo tiempo", resp: "Valen los ratos cortos: varios a lo largo del día suman igual. ¿En qué momento de su día encajaría uno de 10 minutos?", hoja: "Varios ratos cortos al día también suman: busque el suyo (después de comer, al ir a comprar…)." },
   { id: "dolor", txt: "Me duelen las articulaciones o la espalda", resp: "Un dolor leve durante el ejercicio, que se pasa al día siguiente, es aceptable. Empiece con poco y suba despacio; en la artrosis, el ejercicio suele aliviar el dolor.", hoja: "Un dolor leve que se pasa al día siguiente es aceptable; si va a más, baje un poco y coméntelo." },
   { id: "caidas", txt: "Me da miedo caerme", resp: "Los ejercicios de equilibrio reducen las caídas. Empiece con un apoyo cerca (una silla firme o la encimera) y, al principio, con alguien al lado.", hoja: "Haga el equilibrio con un apoyo cerca: una silla firme o la encimera." },
@@ -28,10 +29,10 @@ export const BARRERAS = [
   { id: "compania", txt: "Me falta ánimo o compañía", resp: "Con alguien es más fácil: un paseo fijo con un familiar o un amigo, o los grupos del centro de salud, del ayuntamiento o del centro de mayores.", hoja: "Quede con alguien para moverse o pregunte por grupos en su centro de salud o su ayuntamiento." },
   { id: "dinero", txt: "Cuesta dinero", resp: "Caminar y los ejercicios en casa no cuestan nada, y muchos ayuntamientos tienen actividades gratuitas o baratas.", hoja: "Caminar y los ejercicios en casa no cuestan nada." },
   { id: "activo", txt: "Ya me muevo bastante", resp: "¡Bien! Lo que más suele faltar es la fuerza y el equilibrio: dos días por semana de ejercicios con el propio peso.", hoja: "Añada a lo que ya hace dos días de fuerza por semana y algo de equilibrio." },
-];
+]);
 
 /** Derivaciones que conviene valorar en la consulta programada, según la situación. */
-export const DERIVAR = {
+export const DERIVAR = tC({
   insuficiencia_cardiaca: "Rehabilitación cardiaca: programa de ejercicio supervisado.",
   cardiopatia_isquemica: "Rehabilitación cardiaca tras un infarto, un stent o un bypass.",
   epoc_asma: "Rehabilitación respiratoria si la falta de aire le limita.",
@@ -41,7 +42,7 @@ export const DERIVAR = {
   ictus: "Fisioterapia o rehabilitación si quedan secuelas.",
   osteoporosis: "Fisioterapia para aprender la fuerza y el impacto adaptados.",
   cancer: "Programa de ejercicio oncológico si su hospital lo ofrece.",
-};
+});
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const minus = (s = "") => (/^[A-ZÁÉÍÓÚÑ][a-záéíóúñü]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
@@ -65,63 +66,63 @@ export function barreras(d = {}) {
     clima: c.senales.has("calor") || c.senales.has("deshidratacion"),
     saber: !(d.diarioN > 0),
   };
-  return BARRERAS.map((b) => ({ ...b, frecuente: !!frec[b.id], resp: b.resp.replace("{cuidados}", cuidados.length ? cuidados.join(" ") : "empiece suave y suba un poco cada semana.") }))
+  return BARRERAS.map((b) => ({ ...b, frecuente: !!frec[b.id], resp: b.resp.replace("{cuidados}", cuidados.length ? cuidados.join(" ") : tL("empiece suave y suba un poco cada semana.")) }))
     .sort((a, b) => Number(b.frecuente) - Number(a.frecuente));
 }
 
 /** Objetivo de partida, en primera persona, para escribir con sus palabras. */
 export function objetivoSugerido(d = {}, actividad = null) {
   const c = contexto(d);
-  if (c.fragil) return "Levantarme de la silla 5 veces seguidas, dos veces al día, y caminar 5 minutos después de comer.";
-  if (c.nyha) return "Caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.";
-  if (actividad === "si") return "Añadir dos días por semana de fuerza: levantarme de la silla, subir escalones y empujar contra la pared.";
-  return "Caminar 10 minutos después de comer, 5 días esta semana, a un ritmo que me deje hablar.";
+  if (c.fragil) return tL("Levantarme de la silla 5 veces seguidas, dos veces al día, y caminar 5 minutos después de comer.");
+  if (c.nyha) return tL("Caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.");
+  if (actividad === "si") return tL("Añadir dos días por semana de fuerza: levantarme de la silla, subir escalones y empujar contra la pared.");
+  return tL("Caminar 10 minutos después de comer, 5 días esta semana, a un ritmo que me deje hablar.");
 }
 
 /** Pregunta de seguimiento para las escalas de importancia y confianza, y la pista para la consulta. */
 export function escalas(imp, conf) {
   const i = Number(imp), cf = Number(conf);
-  const pImp = `¿Por qué un ${i} y no un ${Math.max(0, i - 2)}?`;
-  const pConf = `¿Qué le haría pasar de un ${cf} a un ${Math.min(10, cf + 2)}?`;
-  const pista = i <= 3 ? "Importancia baja: informe sin presionar y deje la puerta abierta («Si cambia de idea, lo retomamos»)."
-    : cf <= 4 ? "Confianza baja: un objetivo más pequeño y ensayarlo ahora en la consulta (por ejemplo, levantarse de la silla cinco veces)."
-    : "Buena disposición: pase a acordar un objetivo concreto.";
+  const pImp = tL`¿Por qué un ${i} y no un ${Math.max(0, i - 2)}?`;
+  const pConf = tL`¿Qué le haría pasar de un ${cf} a un ${Math.min(10, cf + 2)}?`;
+  const pista = i <= 3 ? tL("Importancia baja: informe sin presionar y deje la puerta abierta («Si cambia de idea, lo retomamos»).")
+    : cf <= 4 ? tL("Confianza baja: un objetivo más pequeño y ensayarlo ahora en la consulta (por ejemplo, levantarse de la silla cinco veces).")
+    : tL("Buena disposición: pase a acordar un objetivo concreto.");
   return { pImp, pConf, pista };
 }
 
 /** Nota para la historia clínica (texto plano). s: { actividad, sentado, imp, conf, barreras, objetivo, semanas }. */
 export function nota(d = {}, s = {}) {
-  const L = ["Consejo sobre actividad física (modelo de las 5 Aes)."];
-  const act = s.actividad === "si" ? "llega a 30 min/día de actividad moderada 5 o más días" : s.actividad === "no" ? "no llega a la recomendación de actividad" : "no preguntada";
-  L.push(`- Actividad actual: ${act}${s.sentado ? "; más de 2 h seguidas sentado" : ""}.`);
-  if (s.imp != null && s.conf != null) L.push(`- Importancia ${s.imp}/10 · confianza ${s.conf}/10.`);
+  const L = [tL("Consejo sobre actividad física (modelo de las 5 Aes).")];
+  const act = s.actividad === "si" ? tL("llega a 30 min/día de actividad moderada 5 o más días") : s.actividad === "no" ? tL("no llega a la recomendación de actividad") : tL("no preguntada");
+  L.push(tL`- Actividad actual: ${act}${s.sentado ? tL("; más de 2 h seguidas sentado") : ""}.`);
+  if (s.imp != null && s.conf != null) L.push(tL`- Importancia ${s.imp}/10 · confianza ${s.conf}/10.`);
   const bs = BARRERAS.filter((b) => (s.barreras || []).includes(b.id)).map((b) => minus(b.txt));
-  if (bs.length) L.push(`- Barreras: ${bs.join("; ")}.`);
-  if (s.objetivo) L.push(`- Acuerdo: ${s.objetivo.trim().replace(/\s+/g, " ")}`);
+  if (bs.length) L.push(tL`- Barreras: ${bs.join("; ")}.`);
+  if (s.objetivo) L.push(tL`- Acuerdo: ${s.objetivo.trim().replace(/\s+/g, " ")}`);
   const seg = (d.esencial || []).filter((x) => x.nivel !== "info").map((x) => x.titulo);
-  if (seg.length) L.push(`- Seguridad por la medicación: ${seg.join("; ")}.`);
-  if (d.crib?.clave && d.crib.clave !== "sin_datos" && d.crib.texto) L.push(`- Cribado ACSM: ${String(d.crib.texto).replace(/<[^>]+>/g, "")}`);
+  if (seg.length) L.push(tL`- Seguridad por la medicación: ${seg.join("; ")}.`);
+  if (d.crib?.clave && d.crib.clave !== "sin_datos" && d.crib.texto) L.push(tL`- Cribado ACSM: ${String(d.crib.texto).replace(/<[^>]+>/g, "")}`);
   const hab = (d.habAvisos || []).filter((x) => x.nivel !== "info").map((x) => x.titulo);
-  if (hab.length) L.push(`- Hábitos: ${hab.join("; ")}.`);
-  L.push(`- Seguimiento: en ${s.semanas || 4} semanas.`);
-  L.push(`(Pauta Activa v${d.version || "?"}; orientativo, no sustituye la valoración clínica.)`);
+  if (hab.length) L.push(tL`- Hábitos: ${hab.join("; ")}.`);
+  L.push(tL`- Seguimiento: en ${s.semanas || 4} semanas.`);
+  L.push(tL`(Pauta Activa v${d.version || "?"}; orientativo, no sustituye la valoración clínica.)`);
   return L.join("\n");
 }
 
-const fecha = (ms) => new Date(ms).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+const fecha = (ms) => new Date(ms).toLocaleDateString(tL("es-ES"), { day: "numeric", month: "long", year: "numeric" });
 /** Hoja para el paciente (HTML para imprimir en A4). */
 export function hoja(d = {}, s = {}, ahora = Date.now()) {
-  const plan = (d.plan || []).map(([k, frec, tiempo, como]) => `<tr><th>${{ aer: "Caminar o similar", fue: "Fuerza", eq: "Equilibrio" }[k] || esc(k)}</th><td>${esc(frec)}</td><td>${esc(tiempo)}</td><td>${esc(como)}</td></tr>`).join("");
-  const cuidados = [...(d.vistazo?.cuidado || []).slice(0, 3), ...(d.vistazo?.evite || []).slice(0, 2).map((x) => "Evite: " + minus(x))];
+  const plan = (d.plan || []).map(([k, frec, tiempo, como]) => `<tr><th>${{ aer: tL("Caminar o similar"), fue: tL("Fuerza"), eq: tL("Equilibrio") }[k] || esc(k)}</th><td>${esc(frec)}</td><td>${esc(tiempo)}</td><td>${esc(como)}</td></tr>`).join("");
+  const cuidados = [...(d.vistazo?.cuidado || []).slice(0, 3), ...(d.vistazo?.evite || []).slice(0, 2).map((x) => tL("Evite: ") + minus(x))];
   const bs = BARRERAS.filter((b) => (s.barreras || []).includes(b.id));
   const sem = s.semanas || 4, rev = new Date(ahora + sem * 7 * 864e5);
-  return `<div class="hc-cab"><div><h1>Lo que hemos hablado</h1><p>Su plan para moverse más, con su medicación en cuenta.</p></div><p>${esc(fecha(ahora))}<br><span class="hc-nombre">Nombre: </span></p></div>
+  return tL`<div class="hc-cab"><div><h1>Lo que hemos hablado</h1><p>Su plan para moverse más, con su medicación en cuenta.</p></div><p>${esc(fecha(ahora))}<br><span class="hc-nombre">Nombre: </span></p></div>
   <section class="hc-obj"><h2>Mi objetivo para las próximas semanas</h2><p>${esc((s.objetivo || objetivoSugerido(d, s.actividad)).trim())}</p></section>
-  ${plan ? `<section><h2>Mi semana</h2><table><thead><tr><th></th><th>Cuántos días</th><th>Cuánto tiempo</th><th>Cómo</th></tr></thead><tbody>${plan}</tbody></table></section>` : ""}
+  ${plan ? tL`<section><h2>Mi semana</h2><table><thead><tr><th></th><th>Cuántos días</th><th>Cuánto tiempo</th><th>Cómo</th></tr></thead><tbody>${plan}</tbody></table></section>` : ""}
   ${["valoracion_antes", "valoracion_vigoroso", "parar"].includes(d.crib?.clave) && d.crib.texto ? `<p class="hc-aviso"><b>Importante:</b> ${esc(String(d.crib.texto).replace(/<[^>]+>/g, ""))}</p>` : ""}
-  <div class="hc-dos"><section><h2>Con mi medicación, cuidado con</h2><ul>${cuidados.map((x) => `<li>${esc(x)}</li>`).join("") || "<li>Empiece suave y suba un poco cada semana.</li>"}</ul></section>
+  <div class="hc-dos"><section><h2>Con mi medicación, cuidado con</h2><ul>${cuidados.map((x) => `<li>${esc(x)}</li>`).join("") || tL("<li>Empiece suave y suba un poco cada semana.</li>")}</ul></section>
   <section class="hc-alarma"><h2>Pare y consulte si nota</h2><ul>${(d.alarma || []).map((x) => `<li>${esc(x)}</li>`).join("")}</ul></section></div>
-  ${bs.length ? `<section><h2>Si me cuesta</h2><ul>${bs.map((b) => `<li><b>${esc(b.txt)}:</b> ${esc(b.hoja)}</li>`).join("")}</ul></section>` : ""}
+  ${bs.length ? tL`<section><h2>Si me cuesta</h2><ul>${bs.map((b) => `<li><b>${esc(b.txt)}:</b> ${esc(b.hoja)}</li>`).join("")}</ul></section>` : ""}
   <section class="hc-rev"><h2>Próxima revisión</h2><p>Dentro de ${sem} semanas, hacia el ${esc(fecha(rev.getTime()))}. Anote lo que hace en la aplicación y tráigalo a la consulta.</p></section>
   <p class="hc-pie">Pauta Activa · v${esc(d.version || "")} · Orientativo: no sustituye la valoración de su médico.</p>`;
 }
@@ -151,47 +152,47 @@ export function pasos(d = {}, modo = "uno", s = {}) {
   if (modo === "uno") {
     const b = ben.find((x) => x.sit !== "todos") || ben[0];
     return [
-      { a: "averiguar", titulo: "Pida permiso y pregunte", html: q("¿Le parece bien que hablemos un minuto de cuánto se mueve?") + q("En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?") + pnota("Es la pregunta de cribado del consejo integral del Ministerio de Sanidad.") },
-      { a: "aconsejar", titulo: "Un mensaje que le toque", html: (b ? caso(benLinea(b)) + q(`En su situación, moverse tiene un efecto real: ${esc(minus(b.titulo))}.`) : "") + q("Algo es mejor que nada, y más es mejor: hasta un paseo de 10 minutos cuenta.") + (cuid[0] ? caso(`<b>Con su medicación:</b> ${esc(cuid[0])}`) : "") },
-      { a: "asegurar", titulo: "Un primer paso y volver a preguntar", html: q("¿Qué pequeño cambio podría hacer esta semana?") + `<p>Entregue la hoja con su plan (abajo) y pregunte cómo le ha ido en la próxima visita.</p>` },
+      { a: "averiguar", titulo: tL("Pida permiso y pregunte"), html: q(tL("¿Le parece bien que hablemos un minuto de cuánto se mueve?")) + q(tL("En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?")) + pnota(tL("Es la pregunta de cribado del consejo integral del Ministerio de Sanidad.")) },
+      { a: "aconsejar", titulo: tL("Un mensaje que le toque"), html: (b ? caso(benLinea(b)) + q(tL`En su situación, moverse tiene un efecto real: ${esc(minus(b.titulo))}.`) : "") + q(tL("Algo es mejor que nada, y más es mejor: hasta un paseo de 10 minutos cuenta.")) + (cuid[0] ? caso(tL`<b>Con su medicación:</b> ${esc(cuid[0])}`) : "") },
+      { a: "asegurar", titulo: tL("Un primer paso y volver a preguntar"), html: q(tL("¿Qué pequeño cambio podría hacer esta semana?")) + tL`<p>Entregue la hoja con su plan (abajo) y pregunte cómo le ha ido en la próxima visita.</p>` },
     ];
   }
   if (modo === "cinco") {
     const e = escalas(s.imp ?? 5, s.conf ?? 5);
     const seg = (d.esencial || []).slice(0, 3);
-    const crib = d.crib?.clave && d.crib.clave !== "sin_datos" ? String(d.crib.texto || "").replace(/<[^>]+>/g, "") : "Cribado de seguridad sin hacer: tres preguntas en «Sus datos».";
+    const crib = d.crib?.clave && d.crib.clave !== "sin_datos" ? String(d.crib.texto || "").replace(/<[^>]+>/g, "") : tL("Cribado de seguridad sin hacer: tres preguntas en «Sus datos».");
     const hab = (d.habAvisos || []).filter((x) => x.nivel !== "info");
-    const habHtml = hab.length ? caso(`<b>Hábitos:</b> ${hab.map((x) => esc(x.titulo)).join(" · ")}`) : !Object.values(d.hab || {}).some(Boolean) ? pnota("Pregunte también por alcohol, tabaco y café: se cruzan con su medicación (en «Sus datos»).") : "";
+    const habHtml = hab.length ? caso(tL`<b>Hábitos:</b> ${hab.map((x) => esc(x.titulo)).join(" · ")}`) : !Object.values(d.hab || {}).some(Boolean) ? pnota(tL("Pregunte también por alcohol, tabaco y café: se cruzan con su medicación (en «Sus datos»).")) : "";
     const bs = barreras(d);
     const P = d.plan || [];
     return [
-      { a: "averiguar", titulo: "Qué hace ahora y qué le importa", html: `<fieldset class="cv-campo"><legend>${tx("act")}</legend><label class="check"><input type="radio" name="cv-act" value="si"${s.actividad === "si" ? " checked" : ""}> <span>${tx("act_si")}</span></label><label class="check"><input type="radio" name="cv-act" value="no"${s.actividad === "no" ? " checked" : ""}> <span>${tx("act_no")}</span></label><label class="check"><input type="checkbox" name="cv-sentado"${s.sentado ? " checked" : ""}> <span>${tx("sentado")}</span></label></fieldset>`
-          + q("¿Qué le gustaría poder hacer mejor? Subir escaleras, llevar la compra, jugar con los nietos…") + ((d.metas || []).length ? caso(`<b>Sus metas:</b> ${d.metas.map(esc).join(" · ")}`) : "")
-          + `<div class="cv-escalas"><label class="cv-esc"><span>${q("Del 0 al 10, ¿cuánto le importa moverse más?")}</span><span class="cv-esc-fila"><input type="range" min="0" max="10" step="1" name="cv-imp" value="${s.imp ?? 5}" aria-label="${tx("imp")}"><output data-cv-out="imp">${s.imp ?? 5}</output></span><small data-cv-p="imp">${esc(e.pImp)}</small></label>`
-          + `<label class="cv-esc"><span>${q("Y del 0 al 10, ¿cuánta confianza tiene en conseguirlo?")}</span><span class="cv-esc-fila"><input type="range" min="0" max="10" step="1" name="cv-conf" value="${s.conf ?? 5}" aria-label="${tx("conf")}"><output data-cv-out="conf">${s.conf ?? 5}</output></span><small data-cv-p="conf">${esc(e.pConf)}</small></label></div>`
-          + `<p class="cv-pista" data-cv-pista>${esc(e.pista)}</p>` + pnota("Escalas de importancia y confianza de la entrevista motivacional.") },
-      { a: "aconsejar", titulo: "Beneficios y seguridad en su caso", html: (ben.length ? caso(`<ul>${ben.slice(0, 3).map((b) => `<li>${benLinea(b)} <small>(${esc(b.estudio)})</small></li>`).join("")}</ul>`) : q("Algo es mejor que nada, y más es mejor."))
-          + (seg.length ? caso(`<ul class="cv-seg">${seg.map((x) => `<li class="nivel-${x.nivel}"><span class="punto"></span><span><b>${esc(x.titulo)}.</b> ${esc(x.texto)}</span></li>`).join("")}</ul>`) : pnota("Sin avisos importantes por su medicación: puede empezar de forma progresiva."))
-          + caso(`<b>Cribado:</b> ${esc(crib)}`) + habHtml },
-      { a: "acordar", titulo: "Un objetivo pequeño y concreto", html: `<label class="cv-campo cv-obj"><span>${tx("objetivo")}</span><textarea name="cv-obj" rows="3">${esc(s.objetivo ?? objetivoSugerido(d, s.actividad))}</textarea></label>`
-          + pnota("Que sea concreto (qué, cuándo y cuánto), pequeño y dicho con sus palabras. Mejor quedarse corto que fallar.")
-          + (P.length ? caso(`<b>Su plan:</b> ${P.map(([k, frec]) => `${{ aer: "caminar o similar", fue: "fuerza", eq: "equilibrio" }[k] || esc(k)}, ${esc(minus(frec))}`).join(" · ")}`) : "") },
-      { a: "ayudar", titulo: "Barreras y cómo responder", html: `<fieldset class="cv-campo cv-barreras"><legend>${tx("barreras")}</legend>${bs.map((b) => `<label class="check"><input type="checkbox" name="cv-bar" value="${b.id}"${(s.barreras || []).includes(b.id) ? " checked" : ""}> <span>${esc(b.txt)}${b.frecuente ? ` <small class="cv-frec">${tx("frecuente")}</small>` : ""}</span></label>`).join("")}</fieldset>`
+      { a: "averiguar", titulo: tL("Qué hace ahora y qué le importa"), html: `<fieldset class="cv-campo"><legend>${tx("act")}</legend><label class="check"><input type="radio" name="cv-act" value="si"${s.actividad === "si" ? " checked" : ""}> <span>${tx("act_si")}</span></label><label class="check"><input type="radio" name="cv-act" value="no"${s.actividad === "no" ? " checked" : ""}> <span>${tx("act_no")}</span></label><label class="check"><input type="checkbox" name="cv-sentado"${s.sentado ? " checked" : ""}> <span>${tx("sentado")}</span></label></fieldset>`
+          + q(tL("¿Qué le gustaría poder hacer mejor? Subir escaleras, llevar la compra, jugar con los nietos…")) + ((d.metas || []).length ? caso(tL`<b>Sus metas:</b> ${d.metas.map(esc).join(" · ")}`) : "")
+          + `<div class="cv-escalas"><label class="cv-esc"><span>${q(tL("Del 0 al 10, ¿cuánto le importa moverse más?"))}</span><span class="cv-esc-fila"><input type="range" min="0" max="10" step="1" name="cv-imp" value="${s.imp ?? 5}" aria-label="${tx("imp")}"><output data-cv-out="imp">${s.imp ?? 5}</output></span><small data-cv-p="imp">${esc(e.pImp)}</small></label>`
+          + `<label class="cv-esc"><span>${q(tL("Y del 0 al 10, ¿cuánta confianza tiene en conseguirlo?"))}</span><span class="cv-esc-fila"><input type="range" min="0" max="10" step="1" name="cv-conf" value="${s.conf ?? 5}" aria-label="${tx("conf")}"><output data-cv-out="conf">${s.conf ?? 5}</output></span><small data-cv-p="conf">${esc(e.pConf)}</small></label></div>`
+          + `<p class="cv-pista" data-cv-pista>${esc(e.pista)}</p>` + pnota(tL("Escalas de importancia y confianza de la entrevista motivacional.")) },
+      { a: "aconsejar", titulo: tL("Beneficios y seguridad en su caso"), html: (ben.length ? caso(`<ul>${ben.slice(0, 3).map((b) => `<li>${benLinea(b)} <small>(${esc(b.estudio)})</small></li>`).join("")}</ul>`) : q(tL("Algo es mejor que nada, y más es mejor.")))
+          + (seg.length ? caso(`<ul class="cv-seg">${seg.map((x) => `<li class="nivel-${x.nivel}"><span class="punto"></span><span><b>${esc(x.titulo)}.</b> ${esc(x.texto)}</span></li>`).join("")}</ul>`) : pnota(tL("Sin avisos importantes por su medicación: puede empezar de forma progresiva.")))
+          + caso(tL`<b>Cribado:</b> ${esc(crib)}`) + habHtml },
+      { a: "acordar", titulo: tL("Un objetivo pequeño y concreto"), html: `<label class="cv-campo cv-obj"><span>${tx("objetivo")}</span><textarea name="cv-obj" rows="3">${esc(s.objetivo ?? objetivoSugerido(d, s.actividad))}</textarea></label>`
+          + pnota(tL("Que sea concreto (qué, cuándo y cuánto), pequeño y dicho con sus palabras. Mejor quedarse corto que fallar."))
+          + (P.length ? caso(tL`<b>Su plan:</b> ${P.map(([k, frec]) => `${{ aer: tL("caminar o similar"), fue: "fuerza", eq: "equilibrio" }[k] || esc(k)}, ${esc(minus(frec))}`).join(" · ")}`) : "") },
+      { a: "ayudar", titulo: tL("Barreras y cómo responder"), html: `<fieldset class="cv-campo cv-barreras"><legend>${tx("barreras")}</legend>${bs.map((b) => `<label class="check"><input type="checkbox" name="cv-bar" value="${b.id}"${(s.barreras || []).includes(b.id) ? " checked" : ""}> <span>${esc(b.txt)}${b.frecuente ? ` <small class="cv-frec">${tx("frecuente")}</small>` : ""}</span></label>`).join("")}</fieldset>`
           + `<ul class="cv-resp" data-cv-resp>${bs.filter((b) => (s.barreras || []).includes(b.id)).map((b) => `<li><b>${esc(b.txt)}</b>${q(esc(b.resp))}</li>`).join("")}</ul>` },
-      { a: "asegurar", titulo: "Seguimiento", html: `<label class="cv-campo cv-sem"><span>${tx("semanas")}</span><select name="cv-sem">${[2, 4, 8, 12].map((n) => `<option value="${n}"${(s.semanas || 4) === n ? " selected" : ""}>${tx("sem_n", { n })}</option>`).join("")}</select></label>`
-          + `<ul><li>Que anote lo que hace en la aplicación: el diario y los anillos de la semana dan para hablar en la próxima visita.</li><li>Recursos de su barrio o municipio: <a href="${LOCALIZA.url}" target="_blank" rel="noopener">${LOCALIZA.txt}</a> (mapa de recursos comunitarios del Ministerio de Sanidad, si su ayuntamiento participa).</li><li>Si hace falta, derive (lo tiene en «20-30 minutos»).</li></ul>` },
+      { a: "asegurar", titulo: tL("Seguimiento"), html: `<label class="cv-campo cv-sem"><span>${tx("semanas")}</span><select name="cv-sem">${[2, 4, 8, 12].map((n) => `<option value="${n}"${(s.semanas || 4) === n ? " selected" : ""}>${tx("sem_n", { n })}</option>`).join("")}</select></label>`
+          + tL`<ul><li>Que anote lo que hace en la aplicación: el diario y los anillos de la semana dan para hablar en la próxima visita.</li><li>Recursos de su barrio o municipio: <a href="${LOCALIZA.url}" target="_blank" rel="noopener">${LOCALIZA.txt}</a> (mapa de recursos comunitarios del Ministerio de Sanidad, si su ayuntamiento participa).</li><li>Si hace falta, derive (lo tiene en «20-30 minutos»).</li></ul>` },
     ];
   }
   // consulta programada
   const der = Object.keys(DERIVAR).filter((k) => c.cond.has(k)).map((k) => DERIVAR[k]);
   const P = d.P;
-  const fitt = P ? `<table class="cv-fitt"><thead><tr><th></th><th>Frecuencia</th><th>Intensidad</th><th>Tiempo</th></tr></thead><tbody>${[["Aeróbico", P.aer], ["Fuerza", P.fue], ["Equilibrio", P.eq]].map(([n, x]) => `<tr><th>${n}</th><td>${esc(x.frec)}</td><td>${esc(x.int)}</td><td>${esc(x.tiempo)}</td></tr>`).join("")}</tbody></table>` : "";
+  const fitt = P ? `<table class="cv-fitt"><thead><tr><th></th><th>Frecuencia</th><th>Intensidad</th><th>Tiempo</th></tr></thead><tbody>${[[tL("Aeróbico"), P.aer], [tL("Fuerza"), P.fue], [tL("Equilibrio"), P.eq]].map(([n, x]) => `<tr><th>${n}</th><td>${esc(x.frec)}</td><td>${esc(x.int)}</td><td>${esc(x.tiempo)}</td></tr>`).join("")}</tbody></table>` : "";
   return [
-    { a: "averiguar", titulo: "Medir el punto de partida", html: `<p>Una prueba objetiva da un punto de partida y una cifra que mejorar.</p><div class="cv-acciones">${accion('data-cv-accion="sppb"', tx("sppb"))}${accion('data-pruebas=""', tx("pruebas"))}</div>` + (d.sppbTxt ? caso(esc(d.sppbTxt)) : "") },
-    { a: "acordar", titulo: "Metas de la vida diaria, con hitos", html: `<p>Ordenar el plan alrededor de 1 a 3 metas que le importen (escaleras, la compra, los nietos) da sentido a cada ejercicio.</p>` + ((d.metas || []).length ? caso(`<b>Sus metas:</b> ${d.metas.map(esc).join(" · ")}`) : "") + `<div class="cv-acciones">${accion('data-metas=""', tx("metas"))}</div>` },
-    { a: "aconsejar", titulo: "La prescripción completa", html: fitt + pnota("Derivada de su medicación y su situación; la tiene también en «Mi plan» y en los PDF.") },
-    { a: "ayudar", titulo: "La medicación, pensando en el ejercicio", html: `<p>${d.nMeds ? `${d.nMeds} medicamentos en la lista${d.nMayor ? `, ${d.nMayor} con interacciones de nivel mayor` : ""}.` : esc(tx("sin_meds"))} Si se plantea retirar o cambiar alguno, mire antes qué cambia en los avisos y en el plan.</p><div class="cv-acciones">${accion('data-simula=""', tx("simula"))}${accion('data-cv-accion="habitos"', tx("habitos"))}</div>` },
-    { a: "asegurar", titulo: "Seguimiento y derivación", html: `<p>Revise el diario y el resumen del mes en la próxima cita.</p><div class="cv-acciones">${accion('data-mes=""', tx("mes"))}</div>` + (der.length ? caso(`<b>Valorar derivación:</b><ul>${der.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`) : "") + `<p>Si no hay un programa específico, grupos de actividad del centro de salud o del municipio (<a href="${LOCALIZA.url}" target="_blank" rel="noopener">${LOCALIZA.txt}</a>).</p>` },
+    { a: "averiguar", titulo: tL("Medir el punto de partida"), html: tL`<p>Una prueba objetiva da un punto de partida y una cifra que mejorar.</p><div class="cv-acciones">${accion('data-cv-accion="sppb"', tx("sppb"))}${accion('data-pruebas=""', tx("pruebas"))}</div>` + (d.sppbTxt ? caso(esc(d.sppbTxt)) : "") },
+    { a: "acordar", titulo: tL("Metas de la vida diaria, con hitos"), html: tL`<p>Ordenar el plan alrededor de 1 a 3 metas que le importen (escaleras, la compra, los nietos) da sentido a cada ejercicio.</p>` + ((d.metas || []).length ? caso(tL`<b>Sus metas:</b> ${d.metas.map(esc).join(" · ")}`) : "") + `<div class="cv-acciones">${accion('data-metas=""', tx("metas"))}</div>` },
+    { a: "aconsejar", titulo: tL("La prescripción completa"), html: fitt + pnota(tL("Derivada de su medicación y su situación; la tiene también en «Mi plan» y en los PDF.")) },
+    { a: "ayudar", titulo: tL("La medicación, pensando en el ejercicio"), html: tL`<p>${d.nMeds ? tL`${d.nMeds} medicamentos en la lista${d.nMayor ? tL`, ${d.nMayor} con interacciones de nivel mayor` : ""}.` : esc(tx("sin_meds"))} Si se plantea retirar o cambiar alguno, mire antes qué cambia en los avisos y en el plan.</p><div class="cv-acciones">${accion('data-simula=""', tx("simula"))}${accion('data-cv-accion="habitos"', tx("habitos"))}</div>` },
+    { a: "asegurar", titulo: tL("Seguimiento y derivación"), html: tL`<p>Revise el diario y el resumen del mes en la próxima cita.</p><div class="cv-acciones">${accion('data-mes=""', tx("mes"))}</div>` + (der.length ? caso(tL`<b>Valorar derivación:</b><ul>${der.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`) : "") + tL`<p>Si no hay un programa específico, grupos de actividad del centro de salud o del municipio (<a href="${LOCALIZA.url}" target="_blank" rel="noopener">${LOCALIZA.txt}</a>).</p>` },
   ];
 }
 
@@ -345,7 +346,7 @@ function leerCampos(ev) {
 function pintar() {
   const tabs = [["uno", "t1"], ["cinco", "t5"], ["mas", "tm"]];
   const P = pasos(d, modo, s);
-  cu().innerHTML = `<p class="cv-intro">${tx("sub")}</p>
+  cu().innerHTML = tL`<p class="cv-intro">${tx("sub")}</p>
     <p class="cv-porque">En atención primaria, por cada <b>12</b> personas sedentarias que reciben consejo, una más llega a la actividad recomendada al cabo de un año (<a href="https://doi.org/10.1136/bmj.e1389" target="_blank" rel="noopener">Orrow 2012</a>).</p>
     <div class="cv-tabs" role="tablist" aria-label="${esc(tx("titulo"))}">${tabs.map(([id, k]) => `<button type="button" role="tab" class="cv-tab" id="cv-tab-${id}" data-cv-tab="${id}" aria-selected="${modo === id}" aria-controls="cv-panel" tabindex="${modo === id ? 0 : -1}"><b>${tx(k)}</b><small>${tx(k + "s")}</small></button>`).join("")}</div>
     <div class="cv-panel" id="cv-panel" role="tabpanel" aria-labelledby="cv-tab-${modo}">${d.nMeds ? "" : `<p class="cv-nota">${tx("sin_meds")}</p>`}

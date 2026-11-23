@@ -71,6 +71,7 @@ app/
     enciclopedia/       enciclopedia pública «X y ejercicio»: 460 páginas estáticas generadas desde la base revisada por scripts/build_enciclopedia.py (repetir cuando cambie kb.json), con enc.css y enc.js propios; fuera de la precarga (v1.3.18)
     js/contenido.js     contenido clínico en inglés, bajo demanda (solo con la interfaz en inglés): descarga data/en/contenido.json (huella del texto en español → inglés) y traduce en sitio la base, las interacciones y el contenido de los módulos de MODULOS; traducción sin revisión clínica, avisada en el aviso de la base (v1.3.19)
     data/en/            contenido.json: diccionario que monta scripts/contenido_en.py desde scripts/trad_en/memoria.json; fuera de la precarga (v1.3.19)
+    js/tr.js            marcas del contenido que escribe el código: tC(tabla) y tL("texto") / tL`texto ${x}`; sin traductor no hacen nada, y js/contenido.js lo instala con la interfaz en inglés. tC(tabla, true) = tabla de rótulos (se traducen también las palabras sueltas). En el artefacto va en línea con los módulos fijos (v1.3.20)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

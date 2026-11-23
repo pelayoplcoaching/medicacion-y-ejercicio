@@ -6,7 +6,8 @@
    Guarda en el dispositivo la última elección («medex.rato») y las píldoras de cada día («medex.pildoras»: { "AAAA-MM-DD": n }).
    Las cifras de las fuentes están comprobadas en PubMed (22/11/2026). Textos de la interfaz en cinco idiomas; los de cada
    píldora, en español como el resto del contenido de ejercicios. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Hoy tengo…", p_sesion: "Una sesión", p_pildoras: "Píldoras de movimiento", cuanto: "¿Cuánto tiempo tiene?", que: "¿De qué?", min: "{n} min", t_hoy: "Lo de hoy", t_fuerza: "Fuerza", t_paseo: "Paseo", t_equilibrio: "Equilibrio",
@@ -88,8 +89,8 @@ const guardarPildoras = (o) => { try { localStorage.setItem(K_PIL, JSON.stringif
 export function ultimos7(reg, hoy = new Date()) { return [...Array(7)].map((_, i) => { const d = new Date(hoy); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - (6 - i)); const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; return { dia: k, fecha: d, n: reg[k] || 0 }; }); }
 
 /* --- sesión a la medida --- */
-const RE_DOSIS = /(\d)(?:–\d)? (series de|×) /;
-const conSeries = (detalle, ser) => String(detalle).replace(RE_DOSIS, (_, a, b) => `${ser} ${b === "series de" && ser === 1 ? "serie de" : b} `);
+const RE_DOSIS = /(\d)(?:–\d)? (series de|sets of|×) /; // «sets of»: el mismo texto con el contenido en inglés
+const conSeries = (detalle, ser) => String(detalle).replace(RE_DOSIS, (_, a, b) => `${ser} ${ser !== 1 ? b : b === "series de" ? "serie de" : b === "sets of" ? "set of" : b} `);
 const reparto = (total, n, minimo = 1) => { const base = Math.max(minimo, Math.floor(total / n)); let resto = Math.max(0, total - base * n); return [...Array(n)].map(() => base + (resto-- > 0 ? 1 : 0)); };
 /** Arma una sesión de `min` minutos a partir de una sesión del plan.
     base: sesión de paseo (aerobico), de fuerza (fuerza o fuerza_eq) o de equilibrio. Devuelve { tipo, titulo, min, bloques, corta }. */
@@ -103,13 +104,13 @@ export function armar(base, min) {
     bloques = [{ ...B[0], min: calienta }, { ...B[1], min: T - calienta - fin }, { ...B.at(-1), min: fin }];
   } else if (base.tipo === "equilibrio") {
     const ej = B.slice(0, T <= 5 ? 2 : 4), mins = reparto(T - (T <= 5 ? 0 : 2), ej.length, 2);
-    bloques = [...(T <= 5 ? [] : [{ nombre: "Calentamiento", detalle: "Marcha suave en el sitio y movilidad de tobillos", min: 2, pict: "marcha" }]), ...ej.map((b, i) => ({ ...b, min: mins[i] }))];
+    bloques = [...(T <= 5 ? [] : [{ nombre: tL("Calentamiento"), detalle: tL("Marcha suave en el sitio y movilidad de tobillos"), min: 2, pict: "marcha" }]), ...ej.map((b, i) => ({ ...b, min: mins[i] }))];
   } else {
     // fuerza: los ejercicios por series, en el orden del plan (piernas, empuje, tracción…); el bloque de equilibrio va al final si cabe
-    const porSeries = B.filter((b) => b.clave && !/^Equilibrio/.test(b.nombre)), eq = B.find((b) => /^Equilibrio/.test(b.nombre));
+    const porSeries = B.filter((b) => b.clave && !/^(Equilibrio|Balance)\b/.test(b.nombre)), eq = B.find((b) => /^(Equilibrio|Balance)\b/.test(b.nombre));
     const n = Math.min(porSeries.length, T <= 5 ? 2 : T <= 10 ? 3 : T <= 20 ? 5 : porSeries.length), conEq = !!eq && T >= 20, minEq = conEq ? (T >= 30 ? 4 : 3) : 0;
     const mins = reparto(T - calienta - minEq, n, 2), ser = T <= 10 ? 1 : T <= 20 ? 2 : null;
-    bloques = [{ ...B[0], min: calienta }, ...porSeries.slice(0, n).map((b, i) => ({ ...b, min: mins[i], detalle: ser ? conSeries(b.detalle, ser) : b.detalle })), ...(conEq ? [{ ...eq, nombre: "Apoyo sobre un pie", min: minEq }] : [])]; // con su nombre de ejercicio, para que abra su ficha
+    bloques = [{ ...B[0], min: calienta }, ...porSeries.slice(0, n).map((b, i) => ({ ...b, min: mins[i], detalle: ser ? conSeries(b.detalle, ser) : b.detalle })), ...(conEq ? [{ ...eq, nombre: tL("Apoyo sobre un pie"), min: minEq }] : [])]; // con su nombre de ejercicio, para que abra su ficha
   }
   return { tipo: base.tipo, titulo: base.titulo, min: bloques.reduce((s, b) => s + b.min, 0), bloques, corta: true };
 }

@@ -2,7 +2,8 @@
    Contenido de la base de conocimiento (en español, como las reglas), coherente con los textos de las reglas de esas señales
    y con sus mismas fuentes. Cada explicador: escena SVG en cuatro pasos (se avanza a mano; el movimiento es de una vez y se
    apaga con «reducir movimiento»), qué hacer y fuentes. Se carga al pulsar un «¿Por qué?», no al abrir la aplicación. */
-import { t } from "./i18n.js?v=202611230006";
+import { t } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 /* ---------- piezas de dibujo (trazo lineal como los pictogramas de los ejercicios) ---------- */
 const P = (d, c = "q-l", extra = "") => `<path class="${c}" d="${d}"${extra}/>`;
@@ -27,7 +28,7 @@ const medidor = (cx, cy, r) => P(`M${cx - r} ${cy}A${r} ${r} 0 0 1 ${cx + r} ${c
 const figura = (x, y, c = "") => G(c, C(x, y - 108, 10, "q-l"), P(`M${x} ${y - 96}V${y - 50}M${x} ${y - 86}l-13 22M${x} ${y - 86}l13 22M${x} ${y - 50}l-8 48M${x} ${y - 50}l8 48`));
 
 /* ---------- escenas: cada una en un lienzo de 320 × 180; clases q-dN (desde el paso N), q-sN (solo el paso N), q-hN (hasta antes del N) ---------- */
-const ESCENAS = {
+const ESCENAS = tC({
   pulso: G("",
     G("adr q-h4", flecha(8, 62, 38, 76, "q-o"), flecha(6, 96, 40, 96, "q-o"), flecha(8, 130, 38, 116, "q-o")),
     G("escudo q-d2 q-h4", P("M46 74L60 68L74 74V92C74 104 66 112 60 116C54 112 46 104 46 92Z", "q-fb"), P("M53 92L58 97L67 86", "q-l2")),
@@ -150,7 +151,7 @@ const ESCENAS = {
     T(232, 18, "cuánto cuesta", "middle"), `<rect class="q-pista2" x="220" y="26" width="24" height="124" rx="12"/>`, `<rect class="q-fo esfuerzo" x="220" y="26" width="24" height="124" rx="12"/>`,
     G("q-s3", C(88, 140, 16, "q-fo"), P("M88 116v-6M88 170v-6M64 140h-6M118 140h-6", "q-o"), reloj(150, 140, 12)),
     G("q-s4", P("M152 150h18v-16h18v-16h18v-16", "q-m"))),
-};
+});
 
 /* Pasos de cada escena que cambian valores (agujas, niveles, posiciones) además de mostrar u ocultar piezas. */
 const CSS = `
@@ -256,7 +257,7 @@ const CSS = `
 `;
 
 /* ---------- contenido ---------- */
-export const PORQUE = {
+export const PORQUE = tC({
   pulso: { titulo: "¿Por qué el pulso no sirve para medir el esfuerzo?",
     pasos: ["Al moverse, la adrenalina acelera el corazón y el pulso sube con el esfuerzo. En eso se basan las «zonas de pulso» de relojes y máquinas.",
       "Su medicación frena esa señal: el pulso sube menos de lo normal para el mismo esfuerzo (con los betabloqueantes, unos 20 o 30 latidos menos).",
@@ -362,7 +363,7 @@ export const PORQUE = {
       "Progrese despacio y valore la constancia. Si el cansancio es nuevo o va a más, coméntelo con su médico."],
     hacer: ["Guíese por la sensación de esfuerzo, no por lo que hacía antes.", "Varias sesiones cortas, de 10 minutos, también suman.", "Cansancio nuevo, intenso o que va a más: consulte."],
     fuentes: ["FT AEMPS 4.4", "ACSM 2019 ejercicio y cáncer (Campbell)"] },
-};
+});
 export const PQ_IDS = Object.keys(PORQUE);
 /** Lección de «Aprende» relacionada con cada explicador (js/aprende.js). */
 const LECCION = { pulso: "intensidad", acelera: "intensidad", azucar: "azucar", tension: "tension", tension_alta: "tension", equilibrio: "caidas", sangrado: "caidas", fuerza_hueso: "fuerza", musculo: "fuerza", agua: "medicacion", calor: "medicacion", ritmo: "alarma", cansancio: "constancia" };

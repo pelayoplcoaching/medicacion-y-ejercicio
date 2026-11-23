@@ -5,8 +5,9 @@
    original -> id del que lo sustituye) y la aplicación lo aplica al plan, a la sesión guiada y a la hoja imprimible.
    Los dibujos y la ficha animada viven en movimiento.js; la aplicación se los pasa (un módulo bajo demanda no importa a otro).
    Textos de la interfaz en cinco idiomas; los de cada ejercicio, en español como el resto del contenido de las sesiones. */
-import { idioma } from "./i18n.js?v=202611230006";
-import { sesionTipo, normalizar } from "./engine.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { sesionTipo, normalizar } from "./engine.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Biblioteca de ejercicios", intro: "{n} ejercicios con su dibujo. Toque uno para ver cómo se hace.", zona: "Zona", material: "Con qué", postura: "Postura", todo: "Todo", cualquiera: "Cualquiera",
@@ -56,7 +57,7 @@ export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; i
    pat = patrones de movimiento (dos ejercicios que comparten uno se pueden cambiar entre sí); de = nombre del bloque de las
    sesiones tipo del que salen los textos (los 13 primeros); n, d, c, f, x, min = nombre, cómo se hace, la clave, más fácil,
    más difícil y minutos orientativos de los demás. */
-const CAT = [
+const CAT = tC([
   { id: "silla", de: "Levantarse de la silla", z: "piernas", m: ["silla"], p: "pie", niv: 1, pat: ["piernas"] },
   { id: "sentadilla", de: "Sentadilla a la silla", z: "piernas", m: ["silla"], p: "pie", niv: 2, pat: ["piernas"] },
   { id: "talones", de: "Elevación de talones", z: "piernas", m: ["silla"], p: "pie", niv: 1, pat: ["pantorrilla"] },
@@ -103,7 +104,7 @@ const CAT = [
   { id: "tandem", n: "De pie con un pie delante del otro", z: "equilibrio", m: ["silla"], p: "pie", niv: 1, pat: ["equilibrio"], min: 3, d: "Junto a un apoyo, coloque un pie justo delante del otro, talón con punta, y aguante 10–30 segundos. 3 veces con cada pie delante.", c: "Mirada al frente, a un punto fijo; la mano roza el apoyo.", f: "Los pies medio solapados, uno algo adelantado.", x: "Sin apoyo y girando la cabeza despacio a los lados, o con los ojos cerrados unos segundos." },
   { id: "puntillas", n: "Caminar de puntillas y de talones", z: "equilibrio", m: ["pared"], p: "pie", niv: 2, pat: ["equilibrio", "pantorrilla"], min: 3, d: "Junto a una pared o una encimera, camine 10 pasos de puntillas y vuelva sobre los talones. 3 idas y vueltas.", c: "Pasos cortos, cuerpo erguido y la mano cerca del apoyo.", f: "Solo de puntillas, con la mano en el apoyo.", x: "Sin apoyo, o más despacio." },
   { id: "estirar_gemelo", n: "Estirar la pantorrilla en la pared", z: "movilidad", m: ["pared"], p: "pie", niv: 1, pat: ["movilidad", "pantorrilla"], min: 3, d: "Con las manos en la pared, una pierna atrás con la rodilla estirada y el talón en el suelo. Acérquese a la pared hasta notar que tira la pantorrilla. 20–30 segundos, 2 veces por pierna.", c: "El talón de atrás no se levanta; sin rebotes.", f: "Menos paso atrás.", x: "Después, doble un poco la rodilla de atrás para estirar más abajo." },
-];
+]);
 export const ZONAS = ["piernas", "cadera", "empuje", "traccion", "brazos", "tronco", "equilibrio", "corazon", "movilidad"];
 export const MATERIALES = ["nada", "silla", "banda", "peso", "pared", "escalon", "suelo", "pelota"];
 export const POSTURAS = ["sentado", "pie", "suelo"];

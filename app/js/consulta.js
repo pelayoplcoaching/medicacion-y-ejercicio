@@ -1,7 +1,8 @@
 /* Estadísticas y exportación de la consulta (v1.0; modo profesional): resumen de los pacientes guardados en este
    dispositivo, CSV anonimizado y texto para copiar. Sale de app.js en la v1.2.13 para no cargarlo al abrir: se carga al
    pulsar «Estadísticas». app.js le pasa los datos y las funciones del motor (d). */
-import { t } from "./i18n.js?v=202611230006";
+import { t } from "./i18n.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 
 /** d: { perfiles, evaluar(e) → { ctx, res, crib }, sit(c), senales, crib(k) }. */
 export function estadisticas(d) {
@@ -43,14 +44,14 @@ export function csvConsulta(st) {
 }
 export function resumenConsulta(st, version, kbVersion) {
   const top = (xs, k = 5) => xs.slice(0, k).map(([a, n]) => `${a} (${n})`).join(", ") || "—";
-  return [`PAUTA ACTIVA · RESUMEN DE LA CONSULTA · ${new Date().toLocaleDateString("es-ES")} · v${version} · base ${kbVersion}`,
-    `Pacientes guardados: ${st.n}${st.edadMedia != null ? ` · edad media ${st.edadMedia} años (${st.edadMin}–${st.edadMax}); ≥ 65 años: ${st.mayores}` : ""} · con caídas en el último año: ${st.caidas}.`,
-    `Medicación: ${st.farmacosMedia ?? "—"} fármacos por paciente. Avisos: ${st.alertasMedia ?? "—"} de atención y ${st.precMedia ?? "—"} de precaución por paciente; ${st.conMayor} paciente(s) con alguna interacción mayor.`,
-    `Situaciones clínicas: ${top(st.situaciones)}.`, `Grupos más frecuentes: ${top(st.grupos)}.`, `Principios activos más frecuentes: ${top(st.principios, 8)}.`,
-    `Efectos a vigilar más frecuentes: ${top(st.senales)}.`, `Interacciones más frecuentes: ${top(st.ddi)}.`, `Avisos por combinación o situación: ${top(st.combinadas)}.`,
-    `Cribado ACSM: ${top(st.cribado)}.${st.sppbMedia != null ? ` SPPB medio ${st.sppbMedia}/12.` : ""}`,
-    `Prescripciones de ejercicio: ${st.prescritos} activas, ${st.vencidas} con reevaluación vencida.`,
-    "Datos calculados en el dispositivo a partir de listas anonimizadas; sin nombres ni números de historia."].join("\n");
+  return [tL`PAUTA ACTIVA · RESUMEN DE LA CONSULTA · ${new Date().toLocaleDateString(tL("es-ES"))} · v${version} · base ${kbVersion}`,
+    tL`Pacientes guardados: ${st.n}${st.edadMedia != null ? tL` · edad media ${st.edadMedia} años (${st.edadMin}–${st.edadMax}); ≥ 65 años: ${st.mayores}` : ""} · con caídas en el último año: ${st.caidas}.`,
+    tL`Medicación: ${st.farmacosMedia ?? "—"} fármacos por paciente. Avisos: ${st.alertasMedia ?? "—"} de atención y ${st.precMedia ?? "—"} de precaución por paciente; ${st.conMayor} paciente(s) con alguna interacción mayor.`,
+    tL`Situaciones clínicas: ${top(st.situaciones)}.`, tL`Grupos más frecuentes: ${top(st.grupos)}.`, tL`Principios activos más frecuentes: ${top(st.principios, 8)}.`,
+    tL`Efectos a vigilar más frecuentes: ${top(st.senales)}.`, tL`Interacciones más frecuentes: ${top(st.ddi)}.`, tL`Avisos por combinación o situación: ${top(st.combinadas)}.`,
+    tL`Cribado ACSM: ${top(st.cribado)}.${st.sppbMedia != null ? tL` SPPB medio ${st.sppbMedia}/12.` : ""}`,
+    tL`Prescripciones de ejercicio: ${st.prescritos} activas, ${st.vencidas} con reevaluación vencida.`,
+    tL("Datos calculados en el dispositivo a partir de listas anonimizadas; sin nombres ni números de historia.")].join("\n");
 }
 /** Rellena y abre el diálogo #estadisticas. d: lo de «estadisticas» más { version, kbVersion, descargar(nombre, texto, tipo), toast, hoy }. */
 export function abrir(d) {
@@ -63,7 +64,7 @@ export function abrir(d) {
       <div class="tile tile-ddi"><span class="num">${st.farmacosMedia ?? "—"}</span><span>${t("stats.farmacos")}</span></div>
       <div class="tile tile-${st.alertasMedia >= 2 ? "alerta" : "precaucion"}"><span class="num">${st.alertasMedia ?? "—"}</span><span>${t("stats.alertas")}</span></div>
     </div>
-    <p class="muted">${t("stats.mayores")}: <b>${st.conMayor}</b> · ${t("stats.presc", { n: st.prescritos, v: st.vencidas })}${st.sppbMedia != null ? ` · SPPB ${st.sppbMedia}/12` : ""}</p>
+    <p class="muted">${t("stats.mayores")}: <b>${st.conMayor}</b> · ${t("stats.presc", { n: st.prescritos, v: st.vencidas })}${st.sppbMedia != null ? tL` · SPPB ${st.sppbMedia}/12` : ""}</p>
     <div class="stats-cols">${lista(t("stats.sit"), st.situaciones)}${lista(t("stats.grupos"), st.grupos)}${lista(t("stats.principios"), st.principios, 8)}${lista(t("stats.senales"), st.senales)}${lista(t("stats.ddi"), st.ddi)}${lista(t("stats.comb"), st.combinadas)}${lista(t("stats.crib"), st.cribado, 5)}</div>
     <div class="acciones"><button type="button" class="btn-sec sm" id="stats-csv">${t("stats.csv")}</button><button type="button" class="btn-sec sm" id="stats-resumen">${t("stats.resumen")}</button></div>
     <p class="muted"><small>${t("stats.nota")}</small></p>`;

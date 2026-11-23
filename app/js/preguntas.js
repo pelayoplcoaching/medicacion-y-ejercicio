@@ -3,8 +3,8 @@
    llevar al médico, la enfermera o el farmacéutico. La persona elige, añade las suyas y las imprime, las comparte o las copia.
    Son preguntas, no consejos: no dicen qué hacer, sino qué preguntar. Estado en localStorage («medex.preguntas»):
    { sel: [ids], propias: [{ t, s }], lista: bool }. Textos en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230006";
-import { APP_VERSION } from "./version.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { APP_VERSION } from "./version.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Mis preguntas para la consulta", intro: "Elija las que quiera llevar a su médico, enfermera o farmacéutico. Con dos o tres basta: la consulta es corta.", sin_meds: "Añada su medicación y las preguntas se ajustarán a ella. Mientras tanto, estas sirven para cualquier consulta.",

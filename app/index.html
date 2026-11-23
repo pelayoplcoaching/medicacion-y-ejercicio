@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6oFL6dvEBvY3YgWxSH+ubneqDLnQVtMTHhLf5GRD968=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-OJRi6y2cfRFdaxFcnFoDPLbNiVfmMQRtmwYvT5SKzso=' https://cdnjs.cloudflare.com blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com https://tessdata.projectnaptha.com blob: data:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611230006";document.head.appendChild(p)}}catch(e){}</script>
+<script>try{var l=localStorage.getItem("medex.idioma")||navigator.language||"es";if(/^(en|ca|gl|eu)/i.test(l)){document.documentElement.classList.add("i18n-espera");setTimeout(function(){document.documentElement.classList.remove("i18n-espera")},2500);var p=document.createElement("link");p.rel="modulepreload";p.href="js/i18n/"+l.slice(0,2).toLowerCase()+".js?v=202611230120";document.head.appendChild(p)}}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Pauta Activa · Medicación y Ejercicio</title>
 <meta name="description" content="Pauta Activa: introduce tu medicación habitual con la dosis y descubre qué tener en cuenta para hacer ejercicio aeróbico, de fuerza y de equilibrio, y las interacciones entre tus fármacos. Herramienta gratuita del Dr. Pelayo Fdez. Cidón (Fuerza Basada en Evidencia).">
@@ -58,16 +58,17 @@
 }
 </script>
 <link rel="preload" href="assets/fonts/Archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="js/version.js?v=202611230006">
-<link rel="modulepreload" href="js/libs.js?v=202611230006">
-<link rel="modulepreload" href="js/i18n.js?v=202611230006">
-<link rel="modulepreload" href="js/pictos.js?v=202611230006">
-<link rel="modulepreload" href="js/engine.js?v=202611230006">
-<link rel="modulepreload" href="js/informes.js?v=202611230006">
+<link rel="modulepreload" href="js/version.js?v=202611230120">
+<link rel="modulepreload" href="js/libs.js?v=202611230120">
+<link rel="modulepreload" href="js/i18n.js?v=202611230120">
+<link rel="modulepreload" href="js/tr.js?v=202611230120">
+<link rel="modulepreload" href="js/pictos.js?v=202611230120">
+<link rel="modulepreload" href="js/engine.js?v=202611230120">
+<link rel="modulepreload" href="js/informes.js?v=202611230120">
 <link rel="preload" href="data/kb.json" as="fetch" crossorigin>
 <link rel="preload" href="data/ddi_curated.json" as="fetch" crossorigin>
 <meta name="theme-color" content="#140B3A">
-<link rel="stylesheet" href="css/style.css?v=202611230006">
+<link rel="stylesheet" href="css/style.css?v=202611230120">
 </head>
 <body class="cargando" data-modo="paciente">
 
@@ -146,7 +147,7 @@
       <small class="modo-nota" data-i18n="datos.nota">Rellene solo lo que sepa: lo que quede en blanco no se tiene en cuenta.</small>
       <div class="fila" style="margin-top:10px">
         <label for="edad"><span class="lbl"><span data-i18n="datos.edad">Edad</span><button type="button" class="btn-ayuda" data-ayuda="edad" aria-label="Ayuda: edad">?</button></span> <input type="number" id="edad" min="1" max="120" inputmode="numeric" placeholder="años" data-i18n-ph="datos.edad.ph"></label>
-        <label for="fc-reposo"><span class="lbl"><span data-i18n="datos.fcreposo">Pulso en reposo</span> <span class="unidad-mini">lpm, opcional</span><button type="button" class="btn-ayuda" data-ayuda="fcreposo" aria-label="Ayuda: pulso en reposo">?</button></span><input type="number" id="fc-reposo" min="30" max="150" inputmode="numeric"></label>
+        <label for="fc-reposo"><span class="lbl"><span data-i18n="datos.fcreposo">Pulso en reposo</span> <span class="unidad-mini" data-i18n="datos.fcreposo_u">lpm, opcional</span><button type="button" class="btn-ayuda" data-ayuda="fcreposo" aria-label="Ayuda: pulso en reposo">?</button></span><input type="number" id="fc-reposo" min="30" max="150" inputmode="numeric"></label>
         <label class="check"><input type="checkbox" id="caidas"> <span data-i18n="datos.caidas">Alguna caída en el último año</span></label><button type="button" class="btn-ayuda" data-ayuda="caidas" aria-label="Ayuda: caídas">?</button>
       </div>
       <div class="acciones sppb-acciones" style="margin-top:8px"><button type="button" class="btn-sec sm" id="btn-sppb" data-i18n="sppb.btn">Medir la forma física (SPPB guiado, 5 min)</button><button type="button" class="btn-ayuda" data-ayuda="sppb" aria-label="Ayuda: SPPB">?</button><small id="sppb-estado"></small></div>
@@ -226,7 +227,7 @@
         <div class="fila">
           <label><span class="lbl">SPPB <span class="unidad-mini">0–12</span></span><input type="number" id="pro-sppb" min="0" max="12" inputmode="numeric"></label>
           <label>Vivifrail <select id="pro-vivifrail"><option value="">—</option><option value="A" data-i18n="pro.vA">A (discapacidad)</option><option value="B" data-i18n="pro.vB">B (frágil)</option><option value="C" data-i18n="pro.vC">C (prefrágil)</option><option value="D" data-i18n="pro.vD">D (robusto)</option></select><small class="muted" id="vivifrail-auto" hidden></small></label>
-          <label><span class="lbl"><span data-i18n="pro.dai">FC detección DAI</span> <span class="unidad-mini">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
+          <label><span class="lbl"><span data-i18n="pro.dai">FC detección DAI</span> <span class="unidad-mini" data-i18n="pro.dai_u">lpm</span></span><input type="number" id="pro-dai" min="100" max="250" inputmode="numeric"></label>
         </div>
         <small data-i18n="pro.nota">Con FG &lt; 45 o &lt; 30, NYHA III–IV, FEVI &lt; 40 % o SPPB ≤ 9 se activan reglas específicas. La prescripción FITT del informe clínico se adapta a la fragilidad y a la FC del DAI.</small>
         <div class="fila plantilla-fila"><label style="flex:1 1 240px"><span class="lbl"><span data-i18n="plantilla.titulo">Plantilla de perfil</span><button type="button" class="btn-ayuda" data-ayuda="plantilla" aria-label="Ayuda: plantillas">?</button></span><select id="plantilla"><option value="" data-i18n="plantilla.ninguna">— Elegir una plantilla —</option></select></label><button type="button" class="btn-sec sm" id="btn-plantilla" data-i18n="plantilla.aplicar">Aplicar</button></div>
@@ -443,6 +444,6 @@
   <button type="button" data-centro="" data-ic="rejilla" aria-haspopup="dialog"><span data-i18n="nav.mas">Más</span></button>
 </nav>
 
-<script type="module" src="js/app.js?v=202611230006"></script>
+<script type="module" src="js/app.js?v=202611230120"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 /* Motor de reglas: medicación + dosis + contexto → informe.
    Sin dependencias. Se usa igual en la app y en tests. */
+import { tC, tL } from "./tr.js?v=202611230120";
 
 export const ORDEN_NIVEL = { alerta: 3, precaucion: 2, info: 1 };
 export const ORDEN_DDI = { mayor: 3, moderada: 2, menor: 1 };
@@ -42,7 +43,7 @@ export function construirIndice(kb, marcas = []) {
       const pid = "atc:" + normalizar(m.pa).replace(/[^a-z0-9]+/g, "_");
       if (!porId.has(pid)) {
         const principio = { id: pid, nombre: m.pa, marcas: [], atc: m.atc, sintetico: true, ficha: m.ft || null,
-          nota: `Clasificado automáticamente por su código ATC (${m.atc}) en el grupo «${clase.nombre}»: se aplican las precauciones generales del grupo, sin reglas específicas revisadas para este fármaco ni umbral de dosis.` };
+          nota: tL`Clasificado automáticamente por su código ATC (${m.atc}) en el grupo «${clase.nombre}»: se aplican las precauciones generales del grupo, sin reglas específicas revisadas para este fármaco ni umbral de dosis.` };
         clase.principios.push(principio);
         porId.set(pid, { principio, clase });
         entradas.push({ texto: m.pa, tipo: "principio", pid });
@@ -72,9 +73,9 @@ export function construirIndice(kb, marcas = []) {
 }
 
 /** Unidad de una dosis diaria para mostrarla: «mg» → «mg/día»; «g/día», «mcg/h» o «mg/24 h» ya lo dicen (no «g/día/día»). */
-export function unidadPorDia(u = "mg") { return /\/(día|h|24 h|min)$/.test(u) ? u : u + "/día"; }
+export function unidadPorDia(u = "mg") { return /\/(h|24 h|min)$/.test(u) ? u : u.replace(/\/día$/, "") + tL("/día"); }
 /** Unidad de una toma: «g/día» → «g», «inhalaciones/día» → «inhalaciones». */
-export function unidadPorToma(u = "mg") { return u.replace(/\/día$/, ""); }
+export function unidadPorToma(u = "mg") { return u.replace(/\/(día|day)$/, ""); }
 
 /** «suplemento» | «planta» | null: lo que no es un medicamento (el principio puede precisar el tipo de su clase). */
 export function tipoProducto(principio, clase) { return principio?.tipo || clase?.tipo || null; }
@@ -226,7 +227,7 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
       if (vistos.has(par)) continue;
       vistos.add(par);
       if (a.principio.id === b.principio.id) {
-        interacciones.push({ a, b, nivel: "moderada", fuente: "duplicidad", efecto: "El mismo principio activo aparece dos veces.", accion: "Compruebe que no está tomando dos presentaciones del mismo fármaco (p. ej. marca y genérico)." });
+        interacciones.push({ a, b, nivel: "moderada", fuente: "duplicidad", efecto: tL("El mismo principio activo aparece dos veces."), accion: tL("Compruebe que no está tomando dos presentaciones del mismo fármaco (p. ej. marca y genérico).") });
         continue;
       }
       let hit = null;
@@ -237,12 +238,12 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
         }
       }
       if (!hit && a.clase.id === b.clase.id && a.clase.principios.length > 1 && !a.clase.combinable) {
-        hit = { nivel: "moderada", fuente: "duplicidad", efecto: `Dos fármacos de la misma clase (${a.clase.nombre}).`, accion: "Suele ser una duplicidad terapéutica; coméntelo con su médico o farmacéutico." };
+        hit = { nivel: "moderada", fuente: "duplicidad", efecto: tL`Dos fármacos de la misma clase (${a.clase.nombre}).`, accion: tL("Suele ser una duplicidad terapéutica; coméntelo con su médico o farmacéutico.") };
       }
       if (!hit && ddi?.pares?.length) {
         const [x, y] = [a.principio.id, b.principio.id].sort();
         const p = ddi.pares.find((q) => q[0] === x && q[1] === y);
-        if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: `Interacción de nivel ${p[2] === "mayor" ? "mayor" : p[2] === "moderada" ? "moderado" : "menor"} registrada en la base internacional DDInter 2.0; esta base no incluye el mecanismo ni el texto en español.`, accion: p[2] === "mayor" ? "Pregunte a su médico o farmacéutico antes de combinarlos; consulte la sección 4.5 (interacciones) de las fichas técnicas." : "Suele bastar con comentarlo en la próxima consulta; el detalle está en la sección 4.5 de las fichas técnicas." };
+        if (p) hit = { nivel: p[2], fuente: "ddinter", efecto: tL`Interacción de nivel ${p[2] === "mayor" ? tL("mayor") : p[2] === "moderada" ? tL("moderado") : tL("menor")} registrada en la base internacional DDInter 2.0; esta base no incluye el mecanismo ni el texto en español.`, accion: p[2] === "mayor" ? tL("Pregunte a su médico o farmacéutico antes de combinarlos; consulte la sección 4.5 (interacciones) de las fichas técnicas.") : tL("Suele bastar con comentarlo en la próxima consulta; el detalle está en la sección 4.5 de las fichas técnicas.") };
       }
       if (hit) interacciones.push({ nivel: hit.nivel, fuente: hit.fuente, fuenteTxt: hit.fuenteTxt || "", efecto: hit.efecto, accion: hit.accion, a, b, ...(hit.fuente === "curada" ? { revisado: hit.revisado !== false } : {}) });
     }
@@ -265,20 +266,20 @@ export function evaluar({ kb, ddiCurado, ddi, indice }, meds, ctx = {}) {
 export function informeTexto(kb, res, ctx) {
   const L = [];
   const nivel = (n) => kb.niveles[n]?.etiqueta?.toUpperCase() || n;
-  L.push("MEDICACIÓN Y EJERCICIO — informe orientativo");
-  L.push(new Date().toLocaleDateString("es-ES"));
-  if (ctx.edad) L.push(`Edad: ${ctx.edad}${ctx.caidas ? " · caídas en el último año" : ""}`);
+  L.push(tL("MEDICACIÓN Y EJERCICIO — informe orientativo"));
+  L.push(new Date().toLocaleDateString(tL("es-ES")));
+  if (ctx.edad) L.push(tL`Edad: ${ctx.edad}${ctx.caidas ? tL(" · caídas en el último año") : ""}`);
   L.push("");
-  L.push("MEDICACIÓN");
+  L.push(tL("MEDICACIÓN"));
   for (const it of res.items) {
-    const d = it.dosisTotal != null ? ` — ${it.dosisTotal} ${it.esDiaria ? unidadPorDia(it.unidad) : it.unidad}${it.dosisCat === "alta" ? " (dosis alta)" : ""}` : "";
+    const d = it.dosisTotal != null ? ` — ${it.dosisTotal} ${it.esDiaria ? unidadPorDia(it.unidad) : it.unidad}${it.dosisCat === "alta" ? tL(" (dosis alta)") : ""}` : "";
     L.push(`• ${it.principio.nombre}${d}`);
   }
   if (res.combinadas.length) {
-    L.push("", "COMBINACIONES A TENER EN CUENTA");
+    L.push("", tL("COMBINACIONES A TENER EN CUENTA"));
     for (const c of res.combinadas) L.push(`[${nivel(c.regla.nivel)}] ${c.regla.titulo}: ${c.texto}`);
   }
-  for (const [amb, titulo] of [["general", "ANTES DE EMPEZAR"], ["aerobico", "EJERCICIO AERÓBICO"], ["fuerza", "FUERZA"], ["equilibrio", "EQUILIBRIO"]]) {
+  for (const [amb, titulo] of [["general", tL("ANTES DE EMPEZAR")], ["aerobico", tL("EJERCICIO AERÓBICO")], ["fuerza", tL("FUERZA")], ["equilibrio", tL("EQUILIBRIO")]]) {
     if (!res.ambitos[amb].length) continue;
     L.push("", titulo);
     for (const g of res.ambitos[amb]) {
@@ -287,17 +288,17 @@ export function informeTexto(kb, res, ctx) {
     }
   }
   if (res.interacciones.length) {
-    L.push("", "INTERACCIONES ENTRE FÁRMACOS");
+    L.push("", tL("INTERACCIONES ENTRE FÁRMACOS"));
     for (const x of res.interacciones) L.push(`[${x.nivel.toUpperCase()}] ${x.a.principio.nombre} + ${x.b.principio.nombre}: ${x.efecto} ${x.accion || ""}`.trim());
   }
-  L.push("", kb.aviso, "", "By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia");
+  L.push("", kb.aviso, "", tL("By Pelayo Fdez. Cidón. Médico especialista en Medicina Interna y prescriptor de ejercicio físico · Fuerza Basada en Evidencia"));
   return L.join("\n");
 }
 
 /* ---------- ¿Cuándo entrenar? ---------- */
 export const MOMENTOS = ["desayuno", "comida", "cena", "noche"];
 export const HORA_MOMENTO = { desayuno: 8, comida: 14, cena: 21, noche: 23 };
-export const MOMENTO_TXT = { desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Al acostarse" };
+export const MOMENTO_TXT = tC({ desayuno: "Desayuno", comida: "Comida", cena: "Cena", noche: "Al acostarse" });
 
 /** Momentos por defecto a partir del número de tomas (cuando no se han indicado). */
 export function momentosPorDefecto(tomas) {
@@ -354,14 +355,14 @@ export function ventanaEntrenamiento(indice, meds, horasMomento = HORA_MOMENTO) 
 }
 
 /** Señales de alarma universales: cuándo parar y consultar (ACSM / Exercise is Medicine). */
-export const ALARMA = [
+export const ALARMA = tC([
   "Dolor, opresión o quemazón en el pecho, el cuello, la mandíbula o el brazo.",
   "Mareo intenso, desmayo o sensación de que se va a desmayar.",
   "Falta de aire desproporcionada para el esfuerzo, o que no mejora al parar.",
   "Palpitaciones rápidas o irregulares que no ceden en unos minutos.",
   "Sudor frío, palidez, náuseas o confusión; en diabetes, temblor o hambre súbita (hipoglucemia).",
   "Dolor articular u óseo agudo, o un golpe en la cabeza si toma anticoagulantes.",
-];
+]);
 
 const ACCION = /\b(enfriamiento|mida|evite|evitar|beba|lleve|no entrene|no haga|no use|haga|tome|consulte|pare|use|guíese|hidrat|pésese|reduzca|espere|prefiera|comente|acuda|respete|póngase|descanse|avise|pida|cambios de posición|siempre con|suspenda|levántese|mantenga|aumente|avoid|drink|carry|do not|use|take|check|stop|ask|measure|keep|go by|cool down|wear|reduce|wait|prefer|tell|rest|always|make sure|stand up|increase)\b/i;
 
@@ -443,29 +444,29 @@ export function evolucion(diario, prescrito, { planDias = [1, 2, 3, 4, 5, 6], ac
 export function textoEvolucion(evo, { nombres = {} } = {}) {
   if (!evo) return "";
   const f = (iso) => { const [a, m, d] = iso.split("-"); return `${d}/${m}/${a}`; };
-  const L = [`EVOLUCIÓN DEL PLAN DE EJERCICIO · ${f(evo.desde)} → ${f(evo.hasta)} (${evo.semanas} semanas; reevaluación prevista ${f(evo.prevista)})`];
-  L.push(`Adherencia: ${evo.sesiones} sesiones registradas de ${evo.previstas} previstas${evo.adherencia != null ? ` (${evo.adherencia} %, ${{ buena: "buena", parcial: "parcial", baja: "baja", sin_plan: "sin plan de referencia" }[evo.valoracion]})` : ""}; ${evo.minutos} min en total, ${evo.minutosSemana} min/semana de media${evo.rpeMedio != null ? `; RPE medio ${evo.rpeMedio}/10` : ""}.`);
-  const tipos = Object.entries(evo.porTipo).map(([k, n]) => `${{ aerobico: "aeróbico", fuerza: "fuerza", fuerza_eq: "fuerza y equilibrio", equilibrio: "equilibrio" }[k] || k} ${n}`).join(", ");
-  if (tipos) L.push(`Por tipo: ${tipos}.`);
+  const L = [tL`EVOLUCIÓN DEL PLAN DE EJERCICIO · ${f(evo.desde)} → ${f(evo.hasta)} (${evo.semanas} semanas; reevaluación prevista ${f(evo.prevista)})`];
+  L.push(tL`Adherencia: ${evo.sesiones} sesiones registradas de ${evo.previstas} previstas${evo.adherencia != null ? ` (${evo.adherencia} %, ${{ buena: tL("buena"), parcial: tL("parcial"), baja: tL("baja"), sin_plan: tL("sin plan de referencia") }[evo.valoracion]})` : ""}; ${evo.minutos} min en total, ${evo.minutosSemana} min/semana de media${evo.rpeMedio != null ? tL`; RPE medio ${evo.rpeMedio}/10` : ""}.`);
+  const tipos = Object.entries(evo.porTipo).map(([k, n]) => `${{ aerobico: tL("aeróbico"), fuerza: tL("fuerza"), fuerza_eq: tL("fuerza y equilibrio"), equilibrio: tL("equilibrio") }[k] || k} ${n}`).join(", ");
+  if (tipos) L.push(tL`Por tipo: ${tipos}.`);
   const sint = Object.entries(evo.sintomas).map(([k, n]) => `${k} (${n})`).join(", ");
-  L.push(`Síntomas durante las sesiones: ${sint || "ninguno registrado"}.${evo.chequeosNo ? ` Chequeo previo desfavorable en ${evo.chequeosNo} sesión(es).` : ""}`);
-  if (evo.constantes.glucosa) L.push(`Glucemias registradas (${evo.constantes.glucosa.n}): media ${evo.constantes.glucosa.media} mg/dL (${evo.constantes.glucosa.min}–${evo.constantes.glucosa.max}); ${evo.constantes.glucosa.hipos} valor(es) < 70 mg/dL.`);
-  if (evo.constantes.ta) L.push(`TA sistólica registrada (${evo.constantes.ta.n}): media ${evo.constantes.ta.media}, máxima ${evo.constantes.ta.max} mmHg.`);
+  L.push(tL`Síntomas durante las sesiones: ${sint || tL("ninguno registrado")}.${evo.chequeosNo ? tL` Chequeo previo desfavorable en ${evo.chequeosNo} sesión(es).` : ""}`);
+  if (evo.constantes.glucosa) L.push(tL`Glucemias registradas (${evo.constantes.glucosa.n}): media ${evo.constantes.glucosa.media} mg/dL (${evo.constantes.glucosa.min}–${evo.constantes.glucosa.max}); ${evo.constantes.glucosa.hipos} valor(es) < 70 mg/dL.`);
+  if (evo.constantes.ta) L.push(tL`TA sistólica registrada (${evo.constantes.ta.n}): media ${evo.constantes.ta.media}, máxima ${evo.constantes.ta.max} mmHg.`);
   const c = evo.comp;
   const cmp = [];
-  if (c.sppb.antes != null || c.sppb.ahora != null) cmp.push(`SPPB ${c.sppb.antes ?? "—"} → ${c.sppb.ahora ?? "—"}${c.sppb.delta != null ? ` (${c.sppb.delta >= 0 ? "+" : ""}${c.sppb.delta}${Math.abs(c.sppb.delta) >= 1 ? ", cambio clínicamente relevante" : ""})` : ""}`);
-  if (c.fcReposo.antes != null || c.fcReposo.ahora != null) cmp.push(`FC en reposo ${c.fcReposo.antes ?? "—"} → ${c.fcReposo.ahora ?? "—"} lpm`);
-  if (cmp.length) L.push(`Comparativa: ${cmp.join("; ")}.`);
+  if (c.sppb.antes != null || c.sppb.ahora != null) cmp.push(`SPPB ${c.sppb.antes ?? "—"} → ${c.sppb.ahora ?? "—"}${c.sppb.delta != null ? ` (${c.sppb.delta >= 0 ? "+" : ""}${c.sppb.delta}${Math.abs(c.sppb.delta) >= 1 ? tL(", cambio clínicamente relevante") : ""})` : ""}`);
+  if (c.fcReposo.antes != null || c.fcReposo.ahora != null) cmp.push(tL`FC en reposo ${c.fcReposo.antes ?? "—"} → ${c.fcReposo.ahora ?? "—"} lpm`);
+  if (cmp.length) L.push(tL`Comparativa: ${cmp.join("; ")}.`);
   if (c.medicacion) {
     const n = (m) => nombres[m.pid] || m.pid;
-    const partes = [c.medicacion.nuevos.length ? `nuevos: ${c.medicacion.nuevos.map(n).join(", ")}` : "", c.medicacion.retirados.length ? `retirados: ${c.medicacion.retirados.map(n).join(", ")}` : "", c.medicacion.cambios.length ? `dosis cambiada: ${c.medicacion.cambios.map(n).join(", ")}` : ""].filter(Boolean);
-    L.push(`Medicación respecto a la prescripción: ${partes.length ? partes.join("; ") : "sin cambios"}.`);
-  } else if (!evo.conBase) L.push("Sin foto de la medicación al prescribir (prescripción anterior a esta versión): la comparativa de medicación no está disponible.");
+    const partes = [c.medicacion.nuevos.length ? `nuevos: ${c.medicacion.nuevos.map(n).join(", ")}` : "", c.medicacion.retirados.length ? `retirados: ${c.medicacion.retirados.map(n).join(", ")}` : "", c.medicacion.cambios.length ? tL`dosis cambiada: ${c.medicacion.cambios.map(n).join(", ")}` : ""].filter(Boolean);
+    L.push(tL`Medicación respecto a la prescripción: ${partes.length ? partes.join("; ") : tL("sin cambios")}.`);
+  } else if (!evo.conBase) L.push(tL("Sin foto de la medicación al prescribir (prescripción anterior a esta versión): la comparativa de medicación no está disponible."));
   return L.join("\n");
 }
 
 /** Síntomas frecuentes al entrenar y las señales farmacológicas que pueden explicarlos. */
-export const SINTOMAS = [
+export const SINTOMAS = tC([
   { id: "mareo", nombre: "Mareo al levantarme o al terminar", senales: ["hipotension", "bradicardia", "sedacion", "hipoglucemia", "deshidratacion"], consejo: "Termine siempre con 5–10 minutos suaves, levántese despacio, beba agua y no entrene en ayunas si toma medicación para el azúcar. Si se repite o llega a desmayarse, consulte: puede que haya que ajustar alguna dosis.", alarma: "Si el mareo va con dolor en el pecho, desmayo o palpitaciones, deje de entrenar y consulte hoy." },
   { id: "calambres", nombre: "Calambres o dolor muscular", senales: ["miopatia", "hipopotasemia", "deshidratacion", "estatina", "diuretico"], consejo: "Hidratación con algo de sal en sesiones largas, progresión lenta de la carga y estiramientos suaves. Si el dolor muscular es generalizado, con debilidad o la orina oscura, deje de entrenar y consulte: hay que descartar un efecto del fármaco (analítica de CK y potasio)." },
   { id: "cansancio", nombre: "Me canso mucho más de lo normal", senales: ["fatiga", "bradicardia", "fc_no_valida", "sedacion", "perdida_muscular", "hipotension"], consejo: "Algunos fármacos limitan el pulso o la energía disponible: guíese por la sensación de esfuerzo, no por el reloj, y entrene en la franja del día en que se encuentre mejor (pestaña ¿Cuándo?). Si el cansancio es nuevo o va a más, coméntelo con su médico." },
@@ -476,7 +477,7 @@ export const SINTOMAS = [
   { id: "tendon", nombre: "Dolor en un tendón (talón, hombro)", senales: ["tendon", "corticoide"], consejo: "Algunos antibióticos (quinolonas) y los corticoides debilitan los tendones. Pare la actividad que lo provoca, no estire con dolor y consulte: con dolor agudo en el talón hay que descartar rotura del Aquiles." },
   { id: "inestabilidad", nombre: "Inestabilidad o miedo a caerme", senales: ["caidas", "sedacion", "hipotension", "anticolinergico"], consejo: "El entrenamiento de equilibrio es la mejor prevención, siempre con apoyo al alcance. Revise con su médico los fármacos que dan sueño o bajan la tensión: a menudo se puede reducir alguno. Zapatillas con suela firme y luz suficiente." },
   { id: "piel", nombre: "Quemaduras solares con poco sol", senales: ["fotosensibilidad"], consejo: "Fotosensibilidad por el fármaco: entrene a la sombra o a primera hora, con protector solar 50 y ropa que cubra; si aparece una erupción, consulte." },
-];
+]);
 
 /** Para cada síntoma, los fármacos de la lista que podrían explicarlo (por sus señales). */
 export function sintomasPosibles(res) {
@@ -494,39 +495,39 @@ export const PLAN_SEMANA = { 1: "fuerza_eq", 2: "aerobico", 3: "fuerza", 4: "aer
 export function sesionTipo(tipo, { fragil = false, minutosAer = 30, aer = null } = {}) {
   if (tipo === "aerobico") {
     const principal = aer ?? (fragil ? 10 : minutosAer); // «aer»: minutos que fija el programa de 12 semanas, también en el nivel frágil
-    return { tipo, titulo: "Aeróbico", min: principal + 10, bloques: [
-      { nombre: "Calentamiento", detalle: "Caminar suave, mover brazos y tobillos", min: 5, pict: "marcha" },
-      { nombre: fragil ? "Marcha a paso cómodo" : "Marcha, bici o elíptica", detalle: fragil ? "Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere." : "Ritmo en el que puede hablar pero no cantar (RPE 4–6).", min: principal, pict: fragil ? "marcha" : "bici", clave: "Hombros relajados, mirada al frente; el ritmo lo marca la respiración, no el reloj.", facil: "Tramos de 3–5 minutos con pausas de 1 minuto; vale caminar por casa o el pasillo.", dificil: "Intervalos: 3 min a ritmo cómodo y 1 min algo más rápido (puede hablar con frases cortas), 5–6 veces." },
-      { nombre: "Enfriamiento", detalle: "Bajar el ritmo poco a poco; no pararse de golpe", min: 5, pict: "estirar" },
+    return { tipo, titulo: tL("Aeróbico"), min: principal + 10, bloques: [
+      { nombre: tL("Calentamiento"), detalle: tL("Caminar suave, mover brazos y tobillos"), min: 5, pict: "marcha" },
+      { nombre: fragil ? tL("Marcha a paso cómodo") : tL("Marcha, bici o elíptica"), detalle: fragil ? tL("Puede hablar con frases largas. Si se cansa, pare y siga cuando se recupere.") : tL("Ritmo en el que puede hablar pero no cantar (RPE 4–6)."), min: principal, pict: fragil ? "marcha" : "bici", clave: tL("Hombros relajados, mirada al frente; el ritmo lo marca la respiración, no el reloj."), facil: tL("Tramos de 3–5 minutos con pausas de 1 minuto; vale caminar por casa o el pasillo."), dificil: tL("Intervalos: 3 min a ritmo cómodo y 1 min algo más rápido (puede hablar con frases cortas), 5–6 veces.") },
+      { nombre: tL("Enfriamiento"), detalle: tL("Bajar el ritmo poco a poco; no pararse de golpe"), min: 5, pict: "estirar" },
     ] };
   }
   if (tipo === "equilibrio") {
-    return { tipo, titulo: "Equilibrio", min: 12, bloques: [
-      { nombre: "Levantarse y sentarse", detalle: "De una silla, 8–10 veces, con las manos en el pecho si puede", min: 3, pict: "silla", clave: "Pies bajo las rodillas, tronco hacia delante y empuje con las piernas.", facil: "Con las manos en los reposabrazos y una silla algo más alta (cojín).", dificil: "Sin manos, bajando en 3 segundos; o con los pies juntos." },
-      { nombre: "Apoyo sobre un pie", detalle: "Junto a una pared o silla, 10–20 s cada pierna, 3 veces", min: 3, pict: "unpie", clave: "Mirada fija en un punto; la mano roza el apoyo sin agarrarlo.", facil: "Con las dos manos en el respaldo, 5–10 s.", dificil: "Sin apoyo y con los ojos cerrados unos segundos, o sobre un cojín." },
-      { nombre: "Marcha talón-punta", detalle: "10 pasos en línea, con apoyo cerca; ida y vuelta 3 veces", min: 3, pict: "talonpunta", clave: "Despacio: el talón toca la punta del otro pie; brazos abiertos si hace falta.", facil: "Pasos medio solapados junto a la pared.", dificil: "Hacia atrás, o girando la cabeza a los lados mientras camina." },
-      { nombre: "Giros lentos y alcances", detalle: "Girar 90° a cada lado y alcanzar objetos a distintas alturas", min: 3, pict: "giro", clave: "Gire primero la cabeza, luego el tronco; vuelva al centro antes de cambiar de lado.", facil: "Sentado, alcanzando objetos sobre la mesa.", dificil: "De pie sobre una línea estrecha, alcanzando más lejos." },
+    return { tipo, titulo: tL("Equilibrio"), min: 12, bloques: [
+      { nombre: tL("Levantarse y sentarse"), detalle: tL("De una silla, 8–10 veces, con las manos en el pecho si puede"), min: 3, pict: "silla", clave: tL("Pies bajo las rodillas, tronco hacia delante y empuje con las piernas."), facil: tL("Con las manos en los reposabrazos y una silla algo más alta (cojín)."), dificil: tL("Sin manos, bajando en 3 segundos; o con los pies juntos.") },
+      { nombre: tL("Apoyo sobre un pie"), detalle: tL("Junto a una pared o silla, 10–20 s cada pierna, 3 veces"), min: 3, pict: "unpie", clave: tL("Mirada fija en un punto; la mano roza el apoyo sin agarrarlo."), facil: tL("Con las dos manos en el respaldo, 5–10 s."), dificil: tL("Sin apoyo y con los ojos cerrados unos segundos, o sobre un cojín.") },
+      { nombre: tL("Marcha talón-punta"), detalle: tL("10 pasos en línea, con apoyo cerca; ida y vuelta 3 veces"), min: 3, pict: "talonpunta", clave: tL("Despacio: el talón toca la punta del otro pie; brazos abiertos si hace falta."), facil: tL("Pasos medio solapados junto a la pared."), dificil: tL("Hacia atrás, o girando la cabeza a los lados mientras camina.") },
+      { nombre: tL("Giros lentos y alcances"), detalle: tL("Girar 90° a cada lado y alcanzar objetos a distintas alturas"), min: 3, pict: "giro", clave: tL("Gire primero la cabeza, luego el tronco; vuelva al centro antes de cambiar de lado."), facil: tL("Sentado, alcanzando objetos sobre la mesa."), dificil: tL("De pie sobre una línea estrecha, alcanzando más lejos.") },
     ] };
   }
   const fuerzaFragil = [
-    { nombre: "Levantarse de la silla", detalle: "2 series de 8–12; si es fácil, sin manos", min: 5, pict: "silla", clave: "Tronco hacia delante («nariz sobre los pies») y empuje con los talones.", facil: "Con las manos en los reposabrazos; silla más alta con un cojín.", dificil: "Sin manos y bajando despacio en 3 segundos; con una mochila ligera." },
-    { nombre: "Elevación de talones", detalle: "Apoyado en el respaldo, 2 × 10–15", min: 3, pict: "talones", clave: "Suba despacio hasta la punta de los pies y baje en 2 segundos.", facil: "Sentado, levantando los talones con las manos sobre los muslos.", dificil: "Sobre una sola pierna, o en el borde de un escalón." },
-    { nombre: "Extensión de rodilla sentado", detalle: "Estirar la pierna y aguantar 2 s, 2 × 10 cada lado", min: 4, pict: "rodilla", clave: "Punta del pie hacia usted; espalda apoyada en el respaldo.", facil: "Sin aguantar arriba; menos repeticiones.", dificil: "Con una tobillera lastrada de 0,5–1 kg o una banda en el tobillo." },
-    { nombre: "Flexión de brazos con botella o banda", detalle: "2 × 10–12 cada brazo", min: 4, pict: "brazo", clave: "Codo pegado al cuerpo; suba y baje sin balancear el tronco.", facil: "Botella de medio litro, o sin peso.", dificil: "Botella de 1,5 L o banda más dura; los dos brazos a la vez." },
-    { nombre: "Puente de glúteo o marcha en el sitio", detalle: "2 × 10, o 1 minuto de marcha levantando rodillas", min: 4, pict: "puente", clave: "Apriete los glúteos arriba; no arquee la espalda.", facil: "Marcha en el sitio sentado, levantando las rodillas.", dificil: "Puente con una pierna estirada; marcha levantando más las rodillas, 2 minutos." },
+    { nombre: tL("Levantarse de la silla"), detalle: tL("2 series de 8–12; si es fácil, sin manos"), min: 5, pict: "silla", clave: tL("Tronco hacia delante («nariz sobre los pies») y empuje con los talones."), facil: tL("Con las manos en los reposabrazos; silla más alta con un cojín."), dificil: tL("Sin manos y bajando despacio en 3 segundos; con una mochila ligera.") },
+    { nombre: tL("Elevación de talones"), detalle: tL("Apoyado en el respaldo, 2 × 10–15"), min: 3, pict: "talones", clave: tL("Suba despacio hasta la punta de los pies y baje en 2 segundos."), facil: tL("Sentado, levantando los talones con las manos sobre los muslos."), dificil: tL("Sobre una sola pierna, o en el borde de un escalón.") },
+    { nombre: tL("Extensión de rodilla sentado"), detalle: tL("Estirar la pierna y aguantar 2 s, 2 × 10 cada lado"), min: 4, pict: "rodilla", clave: tL("Punta del pie hacia usted; espalda apoyada en el respaldo."), facil: tL("Sin aguantar arriba; menos repeticiones."), dificil: tL("Con una tobillera lastrada de 0,5–1 kg o una banda en el tobillo.") },
+    { nombre: tL("Flexión de brazos con botella o banda"), detalle: tL("2 × 10–12 cada brazo"), min: 4, pict: "brazo", clave: tL("Codo pegado al cuerpo; suba y baje sin balancear el tronco."), facil: tL("Botella de medio litro, o sin peso."), dificil: tL("Botella de 1,5 L o banda más dura; los dos brazos a la vez.") },
+    { nombre: tL("Puente de glúteo o marcha en el sitio"), detalle: tL("2 × 10, o 1 minuto de marcha levantando rodillas"), min: 4, pict: "puente", clave: tL("Apriete los glúteos arriba; no arquee la espalda."), facil: tL("Marcha en el sitio sentado, levantando las rodillas."), dificil: tL("Puente con una pierna estirada; marcha levantando más las rodillas, 2 minutos.") },
   ];
   const fuerzaStd = [
-    { nombre: "Sentadilla a la silla", detalle: "2–3 series de 8–15; bajar despacio, subir sin impulso", min: 6, pict: "sentadilla", clave: "Rodillas en la dirección de los pies, peso en los talones; la silla es solo referencia.", facil: "Sentarse del todo y levantarse con ayuda de las manos.", dificil: "Sin tocar la silla, con una mochila o mancuernas; o sentadilla búlgara ligera." },
-    { nombre: "Empuje (flexiones en pared o inclinadas)", detalle: "2–3 × 8–15", min: 5, pict: "pared", clave: "Cuerpo en línea recta, codos a 45°, baje el pecho hacia el apoyo.", facil: "Más cerca de la pared, manos más altas.", dificil: "Manos en una mesa baja o en el suelo con rodillas apoyadas." },
-    { nombre: "Remo con banda elástica", detalle: "2–3 × 10–15, hombros atrás", min: 5, pict: "remo", clave: "Lleve los codos hacia atrás y junte las escápulas; cuello largo.", facil: "Banda más suave, o con una sola mano.", dificil: "Banda más dura, aguantando 2 s atrás; o con mancuerna inclinado." },
-    { nombre: "Bisagra de cadera", detalle: "Con mancuerna ligera o botella, 2–3 × 8–12; espalda recta", min: 5, pict: "bisagra", clave: "Cadera atrás como para cerrar un cajón con el trasero; rodillas poco flexionadas.", facil: "Sin peso, con las manos deslizando por los muslos.", dificil: "Peso muerto con mancuernas o garrafa; una pierna si tiene buen equilibrio." },
-    { nombre: "Elevación de talones", detalle: "2 × 12–15", min: 3, pict: "talones", clave: "Suba despacio hasta la punta de los pies y baje en 2 segundos.", facil: "Con las dos manos en el respaldo.", dificil: "A una pierna, o en el borde de un escalón." },
-    { nombre: "Press de hombro ligero", detalle: "2 × 10–12; respire siempre, nunca aguante el aire", min: 5, pict: "hombro", clave: "Expulse el aire al subir; no arquee la espalda baja.", facil: "Sentado, con botellas pequeñas, sin llegar a estirar del todo.", dificil: "Mancuernas de 3–5 kg o banda bajo los pies; de pie." },
+    { nombre: tL("Sentadilla a la silla"), detalle: tL("2–3 series de 8–15; bajar despacio, subir sin impulso"), min: 6, pict: "sentadilla", clave: tL("Rodillas en la dirección de los pies, peso en los talones; la silla es solo referencia."), facil: tL("Sentarse del todo y levantarse con ayuda de las manos."), dificil: tL("Sin tocar la silla, con una mochila o mancuernas; o sentadilla búlgara ligera.") },
+    { nombre: tL("Empuje (flexiones en pared o inclinadas)"), detalle: "2–3 × 8–15", min: 5, pict: "pared", clave: tL("Cuerpo en línea recta, codos a 45°, baje el pecho hacia el apoyo."), facil: tL("Más cerca de la pared, manos más altas."), dificil: tL("Manos en una mesa baja o en el suelo con rodillas apoyadas.") },
+    { nombre: tL("Remo con banda elástica"), detalle: tL("2–3 × 10–15, hombros atrás"), min: 5, pict: "remo", clave: tL("Lleve los codos hacia atrás y junte las escápulas; cuello largo."), facil: tL("Banda más suave, o con una sola mano."), dificil: tL("Banda más dura, aguantando 2 s atrás; o con mancuerna inclinado.") },
+    { nombre: tL("Bisagra de cadera"), detalle: tL("Con mancuerna ligera o botella, 2–3 × 8–12; espalda recta"), min: 5, pict: "bisagra", clave: tL("Cadera atrás como para cerrar un cajón con el trasero; rodillas poco flexionadas."), facil: tL("Sin peso, con las manos deslizando por los muslos."), dificil: tL("Peso muerto con mancuernas o garrafa; una pierna si tiene buen equilibrio.") },
+    { nombre: tL("Elevación de talones"), detalle: "2 × 12–15", min: 3, pict: "talones", clave: tL("Suba despacio hasta la punta de los pies y baje en 2 segundos."), facil: tL("Con las dos manos en el respaldo."), dificil: tL("A una pierna, o en el borde de un escalón.") },
+    { nombre: tL("Press de hombro ligero"), detalle: tL("2 × 10–12; respire siempre, nunca aguante el aire"), min: 5, pict: "hombro", clave: tL("Expulse el aire al subir; no arquee la espalda baja."), facil: tL("Sentado, con botellas pequeñas, sin llegar a estirar del todo."), dificil: tL("Mancuernas de 3–5 kg o banda bajo los pies; de pie.") },
   ];
   const bloques = (fragil ? fuerzaFragil : fuerzaStd).map((b) => ({ ...b }));
   const conEq = tipo === "fuerza_eq";
-  if (conEq) bloques.push({ nombre: "Equilibrio (5 min)", detalle: "Apoyo sobre un pie y marcha talón-punta, con apoyo cerca", min: 5, pict: "unpie", clave: "Mirada fija en un punto; la mano roza el apoyo sin agarrarlo.", facil: "Con las dos manos en el respaldo, pies algo separados.", dificil: "Sin apoyo, ojos cerrados unos segundos o sobre un cojín." });
-  return { tipo, titulo: conEq ? "Fuerza y equilibrio" : "Fuerza", min: bloques.reduce((n, b) => n + b.min, 0) + 5, bloques: [{ nombre: "Calentamiento", detalle: "Marcha suave y movilidad de hombros, caderas y tobillos", min: 5, pict: "marcha" }, ...bloques] };
+  if (conEq) bloques.push({ nombre: tL("Equilibrio (5 min)"), detalle: tL("Apoyo sobre un pie y marcha talón-punta, con apoyo cerca"), min: 5, pict: "unpie", clave: tL("Mirada fija en un punto; la mano roza el apoyo sin agarrarlo."), facil: tL("Con las dos manos en el respaldo, pies algo separados."), dificil: tL("Sin apoyo, ojos cerrados unos segundos o sobre un cojín.") });
+  return { tipo, titulo: conEq ? tL("Fuerza y equilibrio") : tL("Fuerza"), min: bloques.reduce((n, b) => n + b.min, 0) + 5, bloques: [{ nombre: tL("Calentamiento"), detalle: tL("Marcha suave y movilidad de hombros, caderas y tobillos"), min: 5, pict: "marcha" }, ...bloques] };
 }
 
 /** Objetivo semanal: minutos y sesiones (OMS/ACSM: 150 min aeróbico + 2 fuerza; en fragilidad se empieza por 90 min). */
@@ -590,15 +591,15 @@ export function constantesRelevantes(res, ctx = {}) {
   const cond = ctx.condiciones || new Set();
   const tiene = (...s) => res.items.some((it) => s.some((x) => it.senales.has(x)));
   const out = [];
-  if (tiene("hipoglucemia", "enmascara_hipoglucemia") || cond.has("diabetes")) out.push({ id: "glucosa", etiqueta: "Glucosa antes / después", unidad: "mg/dL", min: 20, max: 600, doble: true });
-  if (tiene("hipotension", "hipertension") || cond.has("insuficiencia_cardiaca")) out.push({ id: "ta", etiqueta: "Tensión (sistólica)", unidad: "mmHg", min: 60, max: 260 });
-  if (tiene("bradicardia", "fc_no_valida", "taquicardia", "qt") || cond.has("marcapasos")) out.push({ id: "fc", etiqueta: "Pulso al terminar", unidad: "lpm", min: 30, max: 220 });
+  if (tiene("hipoglucemia", "enmascara_hipoglucemia") || cond.has("diabetes")) out.push({ id: "glucosa", etiqueta: tL("Glucosa antes / después"), unidad: "mg/dL", min: 20, max: 600, doble: true });
+  if (tiene("hipotension", "hipertension") || cond.has("insuficiencia_cardiaca")) out.push({ id: "ta", etiqueta: tL("Tensión (sistólica)"), unidad: "mmHg", min: 60, max: 260 });
+  if (tiene("bradicardia", "fc_no_valida", "taquicardia", "qt") || cond.has("marcapasos")) out.push({ id: "fc", etiqueta: tL("Pulso al terminar"), unidad: "lpm", min: 30, max: 220 });
   return out;
 }
 
 /** Chequeo previo a la sesión: afirmaciones que conviene confirmar antes de empezar, según la medicación y la situación.
     Cada punto: si el usuario NO lo marca, aplica `nivel` (rojo = no entrene hoy; ambar = sesión suave) y `consejo`. */
-const CHEQUEO = [
+const CHEQUEO = tC([
   { id: "pecho", universal: true, nivel: "rojo", texto: "No tengo dolor en el pecho, palpitaciones ni más falta de aire de lo habitual", consejo: "No entrene hoy y consulte: con estos síntomas el ejercicio debe esperar a una valoración." },
   { id: "fiebre", universal: true, nivel: "rojo", texto: "No tengo fiebre ni me encuentro enfermo", consejo: "Con fiebre o infección aguda, descanse; retome el plan cuando lleve 24–48 h sin fiebre." },
   { id: "glucosa", senales: ["hipoglucemia"], nivel: "ambar", texto: "He comido en las últimas 2–3 horas y llevo azúcar encima (zumo, terrones)", consejo: "No entrene en ayunas: tome algo de hidratos y lleve 15 g de azúcar rápido. Si usa insulina o sulfonilureas, mida la glucosa antes (objetivo 100–250 mg/dL)." },
@@ -609,7 +610,7 @@ const CHEQUEO = [
   { id: "tendon", senales: ["tendon"], nivel: "ambar", texto: "No tengo dolor en ningún tendón (talón, hombro, codo)", consejo: "Evite saltos y carrera; si el dolor es agudo en el talón, consulte antes de seguir." },
   { id: "aire", condiciones: ["epoc_asma", "oxigeno"], nivel: "ambar", texto: "Respiro como de costumbre y tengo el inhalador de rescate (u oxígeno) a mano", consejo: "No entrene si hoy respira peor de lo normal; con el inhalador de rescate a mano, empiece despacio." },
   { id: "apoyo", condiciones: ["fragil", "prefragil"], caidas: true, nivel: "ambar", texto: "Tengo un apoyo firme cerca (silla, pared) o alguien conmigo", consejo: "Haga la sesión junto a una silla o una pared y, si puede, acompañado." },
-];
+]);
 export function chequeoPrevio(res, ctx = {}) {
   const cond = ctx.condiciones || new Set();
   const tiene = (s) => res.items.filter((it) => s.some((x) => it.senales.has(x))).map((it) => it.principio.nombre);
@@ -642,7 +643,7 @@ export function progresion(diario, ahora = Date.now()) {
 
 /* ---------- Cribado preparticipación (algoritmo ACSM 2015, Riebe et al. MSSE 2015) ---------- */
 /** Síntomas o signos sugestivos de enfermedad cardiovascular, metabólica o renal (ACSM). */
-export const SINTOMAS_ACSM = [
+export const SINTOMAS_ACSM = tC([
   { id: "dolor_pecho", texto: "Dolor, opresión o molestia en el pecho, cuello, mandíbula o brazos con el esfuerzo" },
   { id: "disnea", texto: "Falta de aire en reposo o con esfuerzos pequeños" },
   { id: "sincope", texto: "Mareos intensos o desmayos" },
@@ -652,7 +653,7 @@ export const SINTOMAS_ACSM = [
   { id: "claudicacion", texto: "Dolor en las piernas al caminar que cede al parar" },
   { id: "soplo", texto: "Le han dicho que tiene un soplo cardíaco" },
   { id: "fatiga", texto: "Cansancio o falta de aire inusuales con actividades normales" },
-];
+]);
 /** Clases cuya presencia sugiere enfermedad cardiovascular, metabólica o renal conocida (para prerrellenar la pregunta). */
 const CLASES_ENFERMEDAD = /^(nitratos|digoxina|amiodarona|antiarritmicos_ic|sotalol_dronedarona|antianginosos_otros|ic_nuevos|ivabradina|anticoagulantes|antiagregantes|antiagregantes_vasculares|insulina|sulfonilureas|metformina|isglt2|aglp1|idpp4|pioglitazona|antidiabeticos_otros|epo_hematinicos|potasio_magnesio)$/;
 export function enfermedadSugerida(res, ctx = {}) {
@@ -675,30 +676,30 @@ export function cribadoACSM(r = {}) {
   if (!r.regular) return r.enfermedad ? { clave: "valoracion_antes", nivel: "precaucion" } : { clave: "empezar", nivel: "info" };
   return r.enfermedad ? { clave: "valoracion_vigoroso", nivel: "precaucion" } : { clave: "continuar", nivel: "info" };
 }
-export const CRIBADO_TXT = {
+export const CRIBADO_TXT = tC({
   sin_datos: "Cribado previo sin completar.",
   empezar: "Puede empezar a intensidad ligera-moderada y aumentar poco a poco; no hace falta una valoración médica previa.",
   continuar: "Puede continuar con ejercicio moderado o vigoroso y progresar como venía haciendo.",
   valoracion_vigoroso: "Puede seguir con ejercicio moderado; antes de pasar a intensidad vigorosa conviene una valoración médica.",
   valoracion_antes: "Conviene una valoración médica antes de empezar; mientras tanto, actividad ligera (caminar a paso cómodo).",
   parar: "Tiene síntomas que hay que valorar: deje el ejercicio moderado o intenso y consulte antes de retomarlo.",
-};
+});
 
 /* ---------- Nivel de evidencia de una regla, a partir de su fuente declarada ---------- */
-export const EVIDENCIA = {
+export const EVIDENCIA = tC({
   ft: { etiqueta: "Ficha técnica", orden: 4 },
   guia: { etiqueta: "Guía / consenso", orden: 3 },
   criterios: { etiqueta: "Criterios explícitos", orden: 3 },
   base: { etiqueta: "Base de interacciones", orden: 2 },
   revision: { etiqueta: "Revisión clínica", orden: 1 },
   borrador: { etiqueta: "Borrador", orden: 0 },
-};
+});
 export function nivelEvidencia(regla) {
   if (regla.evidencia && EVIDENCIA[regla.evidencia]) return regla.evidencia;
   const f = (regla.fuente || "").toLowerCase();
-  if (/^ft\b|ficha t[eé]cnica|smpc|aemps/.test(f)) return "ft";
+  if (/^ft\b|ficha t[eé]cnica|smpc|summary of product characteristics|aemps/.test(f)) return "ft";
   if (/beers|stopp|start|priscus/.test(f)) return "criterios";
-  if (/acsm|\besc\b|\bada\b|kdigo|\bgold\b|\bnice\b|\boms\b|\bwho\b|vivifrail|gu[ií]a|consenso|\bers\b|\beha\b/.test(f)) return "guia";
+  if (/acsm|\besc\b|\bada\b|kdigo|\bgold\b|\bnice\b|\boms\b|\bwho\b|vivifrail|gu[ií]a|guideline|consens[ou]s?|\bers\b|\beha\b/.test(f)) return "guia";
   if (/lexicomp|micromedex|ddinter|bot\b|uptodate|stockley/.test(f)) return "base";
   return regla.revisado ? "revision" : "borrador";
 }
@@ -712,16 +713,16 @@ export function comprobarCaso(datos, caso, utils = {}) {
   const res = evaluar(datos, caso.meds, ctx);
   const e = caso.esperado || {};
   const fallos = [];
-  for (const m of caso.meds || []) if (datos.indice?.porId && !datos.indice.porId.has(m.pid)) fallos.push(`principio desconocido «${m.pid}»`);
-  if (e.alerta_min != null && res.resumen.alerta < e.alerta_min) fallos.push(`alertas ${res.resumen.alerta} < ${e.alerta_min}`);
-  if (e.precaucion_min != null && res.resumen.precaucion < e.precaucion_min) fallos.push(`precauciones ${res.resumen.precaucion} < ${e.precaucion_min}`);
-  if (e.mayores_min != null && res.interacciones.filter((x) => x.nivel === "mayor").length < e.mayores_min) fallos.push(`interacciones mayores < ${e.mayores_min}`);
+  for (const m of caso.meds || []) if (datos.indice?.porId && !datos.indice.porId.has(m.pid)) fallos.push(tL`principio desconocido «${m.pid}»`);
+  if (e.alerta_min != null && res.resumen.alerta < e.alerta_min) fallos.push(tL`alertas ${res.resumen.alerta} < ${e.alerta_min}`);
+  if (e.precaucion_min != null && res.resumen.precaucion < e.precaucion_min) fallos.push(tL`precauciones ${res.resumen.precaucion} < ${e.precaucion_min}`);
+  if (e.mayores_min != null && res.interacciones.filter((x) => x.nivel === "mayor").length < e.mayores_min) fallos.push(tL`interacciones mayores < ${e.mayores_min}`);
   const esencial = loEsencial(res, 5).map((p) => `${p.titulo} ${p.texto}`).join(" | ").toLowerCase();
-  for (const s of e.esencial_incluye || []) if (!esencial.includes(s.toLowerCase())) fallos.push(`lo esencial no menciona «${s}»`);
-  for (const s of e.senales || []) if (!res.items.some((it) => it.senales.has(s))) fallos.push(`falta la señal ${s}`);
-  for (const s of e.sin_senales || []) if (res.items.some((it) => it.senales.has(s))) fallos.push(`señal no esperada ${s}`);
-  if (e.cribado && caso.cribado) { const c = cribadoACSM(caso.cribado).clave; if (c !== e.cribado) fallos.push(`cribado ${c} ≠ ${e.cribado}`); }
-  if (e.combinadas_incluye) for (const s of e.combinadas_incluye) if (!res.combinadas.some((c) => c.regla.titulo.toLowerCase().includes(s.toLowerCase()))) fallos.push(`falta la regla combinada «${s}»`);
+  for (const s of e.esencial_incluye || []) if (!esencial.includes(s.toLowerCase())) fallos.push(tL`lo esencial no menciona «${s}»`);
+  for (const s of e.senales || []) if (!res.items.some((it) => it.senales.has(s))) fallos.push(tL`falta la señal ${s}`);
+  for (const s of e.sin_senales || []) if (res.items.some((it) => it.senales.has(s))) fallos.push(tL`señal no esperada ${s}`);
+  if (e.cribado && caso.cribado) { const c = cribadoACSM(caso.cribado).clave; if (c !== e.cribado) fallos.push(tL`cribado ${c} ≠ ${e.cribado}`); }
+  if (e.combinadas_incluye) for (const s of e.combinadas_incluye) if (!res.combinadas.some((c) => c.regla.titulo.toLowerCase().includes(s.toLowerCase()))) fallos.push(tL`falta la regla combinada «${s}»`);
   return { ok: !fallos.length, fallos, res };
 }
 
@@ -731,11 +732,11 @@ export function zonaIntensidad(res, ctx = {}, { fcReposo = null } = {}) {
   const cond = ctx.condiciones || new Set();
   const motivos = [];
   for (const it of res.items) if (it.senales.has("fc_no_valida") || it.senales.has("bradicardia")) motivos.push(it.principio.nombre);
-  if (cond.has("fibrilacion_auricular")) motivos.push("fibrilación auricular");
-  if (cond.has("marcapasos")) motivos.push("marcapasos/DAI");
+  if (cond.has("fibrilacion_auricular")) motivos.push(tL("fibrilación auricular"));
+  if (cond.has("marcapasos")) motivos.push(tL("marcapasos/DAI"));
   const edad = ctx.edad;
   const fcmax = edad ? Math.round(208 - 0.7 * edad) : null;
-  const out = { metodo: motivos.length || !fcmax ? "rpe" : "fc", motivos: [...new Set(motivos)], fcmax, fcReposo: fcReposo ?? null, rpe: { ligera: "RPE 9–11 (puede cantar)", moderada: "RPE 12–13 (puede hablar, no cantar)", vigorosa: "RPE 14–17 (frases cortas)" }, habla: "Prueba del habla: moderado = puede hablar pero no cantar; vigoroso = solo frases cortas." };
+  const out = { metodo: motivos.length || !fcmax ? "rpe" : "fc", motivos: [...new Set(motivos)], fcmax, fcReposo: fcReposo ?? null, rpe: { ligera: tL("RPE 9–11 (puede cantar)"), moderada: tL("RPE 12–13 (puede hablar, no cantar)"), vigorosa: tL("RPE 14–17 (frases cortas)") }, habla: tL("Prueba del habla: moderado = puede hablar pero no cantar; vigoroso = solo frases cortas.") };
   if (out.metodo === "fc") {
     const rep = fcReposo ?? 70;
     const z = (lo, hi) => [Math.round(rep + (fcmax - rep) * lo), Math.round(rep + (fcmax - rep) * hi)];

@@ -5,39 +5,40 @@
    de temperatura son orientativas: sirven para que cada uno sitúe su día, no son umbrales oficiales (esos dependen de la
    provincia). Textos de la interfaz en los cinco idiomas dentro del módulo; el consejo, en español como el resto de
    explicadores. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tC, tL } from "./tr.js?v=202611230120";
 
 export const NIVELES = 4; // 0 fresco o templado · 1 calor · 2 mucho calor · 3 calor extremo
 /** Mecanismos de su lista que importan con calor: el calor en sí, el agua y las sales, y el sol. */
 export const MECANISMOS = ["calor", "agua", "sol"];
 /** Cuándo moverse, según el nivel del día. */
-const CUANDO = [
+const CUANDO = tC([
   "Puede moverse a la hora que le venga bien. Si sale al sol, con gorra y una botella de agua.",
   "Mejor a primera hora de la mañana o al caer la tarde, y por la sombra; evite las horas centrales del día.",
   "Solo a primera hora de la mañana, antes de que apriete, o dentro de casa en un sitio fresco. Baje la intensidad (que pueda hablar con frases largas) y acorte la sesión si lo nota.",
   "Hoy, mejor sin ejercicio intenso fuera: una sesión corta y suave dentro, en la habitación más fresca, o déjela para mañana temprano. Intente pasar 2 o 3 horas del día en un sitio fresco.",
-];
-const AGUA = [
+]);
+const AGUA = tC([
   "Beba agua a menudo, antes, durante (a sorbos) y después, aunque no tenga sed; evite el alcohol y las bebidas azucaradas o con cafeína.",
   "Al hacer ejercicio, lo que se busca es no perder más del 2 % del peso por el sudor: si suda mucho, pésese antes y después y reponga lo perdido.",
-];
+]);
 const AGUA_LIMITE = "Si su médico le ha limitado los líquidos (por el corazón o el riñón), siga su indicación y pregúntele qué hacer los días de calor.";
 const AGUA_MAYOR = "Con los años se nota menos la sed: beba con horario, sin esperar a tenerla.";
-const ROPA = ["Ropa ligera, holgada y de colores claros; gorra o sombrero si sale.", "Busque la sombra y, al volver, una ducha templada o paños húmedos ayudan a bajar la temperatura."];
+const ROPA = tC(["Ropa ligera, holgada y de colores claros; gorra o sombrero si sale.", "Busque la sombra y, al volver, una ducha templada o paños húmedos ayudan a bajar la temperatura."]);
 const SOL = "Alguno de sus medicamentos aumenta la sensibilidad al sol: protector solar alto y manga larga si va a estar al aire libre.";
-const PARAR = ["Si nota mareo, dolor de cabeza, náuseas, calambres o un cansancio fuera de lo normal: pare, póngase a la sombra o en un sitio fresco, beba y refrésquese.", "Si alguien tiene la piel caliente y seca, está confuso, convulsiona o pierde el conocimiento: llame al 112 y refrésquele mientras llega la ayuda."];
-export const FUENTES = [
+const PARAR = tC(["Si nota mareo, dolor de cabeza, náuseas, calambres o un cansancio fuera de lo normal: pare, póngase a la sombra o en un sitio fresco, beba y refrésquese.", "Si alguien tiene la piel caliente y seca, está confuso, convulsiona o pierde el conocimiento: llame al 112 y refrésquele mientras llega la ayuda."]);
+export const FUENTES = tC([
   { txt: "OMS Europa. #KeepCool in the heat (hoja informativa, 8 de junio de 2026)" },
   { txt: "Sawka et al. ACSM position stand: exercise and fluid replacement. Med Sci Sports Exerc 2007", doi: "10.1249/mss.0b013e31802ca597" },
   { txt: "Armstrong et al. ACSM position stand: exertional heat illness during training and competition. Med Sci Sports Exerc 2007", doi: "10.1249/MSS.0b013e31802fa199" },
-];
+]);
 /** El consejo del día: { cuando, agua[], ropa[], sol, parar[] } según el nivel, la edad, si tiene limitados los líquidos y los mecanismos de su lista. */
 export function consejo(nivel, { edad = null, limiteLiquidos = false, mecanismos = [] } = {}) {
   const n = Math.max(0, Math.min(NIVELES - 1, Number(nivel) || 0));
   return {
     nivel: n, cuando: CUANDO[n],
-    agua: [...AGUA, ...(edad != null && edad >= 65 ? [AGUA_MAYOR] : []), ...(limiteLiquidos ? [AGUA_LIMITE] : [])],
-    ropa: ROPA, sol: mecanismos.includes("sol") ? SOL : "", parar: PARAR, limiteLiquidos,
+    agua: [...AGUA, ...(edad != null && edad >= 65 ? [tL(AGUA_MAYOR)] : []), ...(limiteLiquidos ? [tL(AGUA_LIMITE)] : [])],
+    ropa: ROPA, sol: mecanismos.includes("sol") ? tL(SOL) : "", parar: PARAR, limiteLiquidos,
   };
 }
 /** Los fármacos de su lista que importan con calor, con sus mecanismos (de los que hay «¿Por qué?»). */
@@ -107,7 +108,7 @@ function pintar() {
   cu().innerHTML = `<p class="cal-priv">${tx("privado")}</p>
     <div class="cal-chips" role="group" aria-label="${tx("pregunta")}">${[0, 1, 2, 3].map((i) => `<button type="button" class="n${i}" data-nivel="${i}" aria-pressed="${n === i}"><b>${tx("n" + i)}</b><small>${tx("h" + i)}</small></button>`).join("")}</div>
     ${k ? `<div class="cal-cab n${k.nivel}"><span class="cal-ic">${ic(TERM)}</span><div><h2>${tx("hoy", { x: tx("n" + k.nivel).toLowerCase() })}</h2><p>${k.cuando}</p></div></div>
-      <h3>${tx("agua")}</h3><ul class="cal-lista">${k.agua.map((x) => `<li${x === AGUA_LIMITE ? ' class="fuerte"' : ""}>${x}</li>`).join("")}</ul>
+      <h3>${tx("agua")}</h3><ul class="cal-lista">${k.agua.map((x) => `<li${x === tL(AGUA_LIMITE) ? ' class="fuerte"' : ""}>${x}</li>`).join("")}</ul>
       <h3>${tx("ropa")}</h3><ul class="cal-lista">${[...k.ropa, ...(k.sol ? [k.sol] : [])].map((x) => `<li>${x}</li>`).join("")}</ul>
       <h3>${tx("meds")}</h3>${meds.length ? `<ul class="cal-meds">${meds.map((m) => `<li><b>${m.nombre}</b>${m.ids.map((id) => `<button type="button" class="chip chip-btn pq-btn" data-porque="${id}">${t("pq.b." + id)}</button>`).join("")}</li>`).join("")}</ul>` : `<p>${tx("sin_meds")}</p>`}
       <h3>${tx("parar")}</h3><ul class="cal-parar">${k.parar.map((x) => `<li>${x}</li>`).join("")}</ul>

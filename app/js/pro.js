@@ -1,9 +1,10 @@
 /* Herramientas del modo profesional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    informe de evolución para la reevaluación y casos (exportar, importar, lista en CSV y caso de prueba).
    Se cargan al pulsar su botón; app.js les pasa en «a» el estado ya evaluado y lo que toca la aplicación. */
-import { t, idioma } from "./i18n.js?v=202611230006";
-import { SINTOMAS, textoEvolucion, cribadoACSM, comprobarCaso, momentosPorDefecto } from "./engine.js?v=202611230006";
-import { APP_VERSION } from "./version.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { SINTOMAS, textoEvolucion, cribadoACSM, comprobarCaso, momentosPorDefecto } from "./engine.js?v=202611230120";
+import { APP_VERSION } from "./version.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 
 const $ = (s) => document.querySelector(s);
 let preparado = false;
@@ -71,7 +72,7 @@ export function listaCsv(a) {
   const filas = [["principio_activo", "grupo", "dosis_por_toma", "unidad", "tomas_dia", "dosis_diaria", "categoria_dosis", "momentos", "a_demanda", "en_pausa", "senales"]];
   let k = 0;
   for (const m of a.meds) {
-    if (m.libre) { filas.push([m.nombre, "(sin información)", m.dosis ?? "", "mg", m.tomas || 1, "", "", "", "", "", ""]); continue; }
+    if (m.libre) { filas.push([m.nombre, tL("(sin información)"), m.dosis ?? "", "mg", m.tomas || 1, "", "", "", "", "", ""]); continue; }
     const it = a.res.items[k++]; if (!it) continue;
     filas.push([it.principio.nombre, it.clase.nombre, it.dosisPorToma ?? "", it.unidad, it.tomas, it.dosisTotal ?? "", it.dosisCat, (m.momentos || []).join("|"), it.aDemanda ? "sí" : "no", m.pausado ? "sí" : "no", [...it.senales].join("|")]);
   }
@@ -84,7 +85,7 @@ export function listaCsv(a) {
 export function casoPrueba(a) {
   const { ctx, res } = a;
   const senales = [...new Set(res.items.flatMap((it) => [...it.senales]))].filter((s) => !/^(ieca_ara|diuretico|aine|estatina|fibrato|corticoide)$/.test(s));
-  const caso = { id: "c" + Date.now().toString(36), titulo: prompt(t("caso.titulo_prompt"), "") || "Caso sin título", descripcion: `${ctx.edad ? ctx.edad + " años, " : ""}${res.items.map((i) => i.principio.nombre).join(" + ")}`,
+  const caso = { id: "c" + Date.now().toString(36), titulo: prompt(t("caso.titulo_prompt"), "") || tL("Caso sin título"), descripcion: `${ctx.edad ? ctx.edad + tL(" años, ") : ""}${res.items.map((i) => i.principio.nombre).join(" + ")}`,
     meds: a.meds.map((m) => ({ pid: m.pid, dosis: m.dosis, tomas: m.tomas, ...(m.unidad ? { unidad: m.unidad } : {}), ...(m.aDemanda ? { aDemanda: true } : {}) })),
     ctx: { edad: ctx.edad, caidas: ctx.caidas, condiciones: [...ctx.condiciones], ...(ctx.fg != null ? { fg: ctx.fg } : {}), ...(ctx.fevi != null ? { fevi: ctx.fevi } : {}), ...(ctx.nyha != null ? { nyha: ctx.nyha } : {}) },
     ...(a.cribado ? { cribado: a.cribado } : {}),

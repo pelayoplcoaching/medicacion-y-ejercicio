@@ -1,5 +1,6 @@
 /* OCR en el navegador con Tesseract.js (se carga bajo demanda; el modelo en español se descarga la primera vez). */
-import { tesseract, pdfjs } from "./libs.js?v=202611230006";
+import { tesseract, pdfjs } from "./libs.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 const LANG_PATH = "https://tessdata.projectnaptha.com/4.0.0_fast";
 
 let worker = null;
@@ -12,9 +13,9 @@ async function obtenerWorker(progreso) {
     langPath: LANG_PATH,
     logger: (m) => {
       if (!progreso) return;
-      if (m.status === "loading language traineddata") progreso("Descargando el modelo de español…");
-      else if (m.status === "recognizing text") progreso(`Leyendo la imagen… ${Math.round((m.progress || 0) * 100)} %`);
-      else if (m.status) progreso("Preparando el lector…");
+      if (m.status === "loading language traineddata") progreso(tL("Descargando el modelo de español…"));
+      else if (m.status === "recognizing text") progreso(tL`Leyendo la imagen… ${Math.round((m.progress || 0) * 100)} %`);
+      else if (m.status) progreso(tL("Preparando el lector…"));
     },
   });
   return worker;
@@ -57,7 +58,7 @@ export async function textoDePdfEscaneado(file, progreso, maxPaginas = 6) {
   const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
   const partes = [];
   for (let p = 1; p <= Math.min(pdf.numPages, maxPaginas); p++) {
-    progreso?.(`Página ${p} de ${Math.min(pdf.numPages, maxPaginas)}…`);
+    progreso?.(tL`Página ${p} de ${Math.min(pdf.numPages, maxPaginas)}…`);
     const page = await pdf.getPage(p);
     const vp = page.getViewport({ scale: 2 });
     const c = document.createElement("canvas"); c.width = vp.width; c.height = vp.height;

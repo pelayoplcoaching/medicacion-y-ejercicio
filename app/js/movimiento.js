@@ -2,7 +2,8 @@
    y la de llegada, con cómo se hace, versión más fácil y más difícil, errores frecuentes y, según su medicación, con qué
    tener cuidado. El movimiento empieza al abrir o al pulsar «Ver otra vez» (animación SVG, también en Safari) y, con
    «reducir movimiento», se ven las dos posturas quietas, una junto a otra. Se carga al abrir un ejercicio. */
-import { t } from "./i18n.js?v=202611230006";
+import { t } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 /* ---------- piezas (mismo trazo que pictos.js: figura gruesa, apoyos finos, movimiento en el color de acento) ---------- */
 const prop = (d) => `<path class="prop" d="${d}"/>`;
@@ -78,7 +79,7 @@ const RITMOS = {
 };
 
 /** Errores frecuentes por ejercicio (técnica general; lo personal va en «con su medicación»). */
-const ERRORES = {
+const ERRORES = tC({
   silla: ["Impulsarse echando el tronco hacia atrás o tirando de los brazos.", "Dejarse caer al sentarse en lugar de bajar controlando.", "Dejar que las rodillas se vayan hacia dentro."],
   sentadilla: ["Levantar los talones del suelo.", "Juntar las rodillas hacia dentro al bajar o al subir.", "Redondear la espalda."],
   talones: ["Subir y bajar de golpe, sin controlar la bajada.", "Cargar todo el peso en el respaldo.", "Doblar las rodillas para subir."],
@@ -124,7 +125,7 @@ const ERRORES = {
   tandem: ["Mirarse los pies.", "Agarrarse con fuerza al apoyo.", "Ponerse rígido: las rodillas, sueltas."],
   puntillas: ["Ir deprisa.", "Inclinar el tronco hacia delante.", "Alejarse del apoyo."],
   estirar_gemelo: ["Rebotar.", "Levantar el talón de atrás.", "Estirar hasta notar dolor."],
-};
+});
 /** Mecanismos de su medicación que importan en cada ejercicio (orden de prioridad; se muestran los 2 primeros de su lista). */
 const CUIDA = {
   silla: ["tension", "equilibrio", "tension_alta"], sentadilla: ["tension", "equilibrio", "tension_alta"],

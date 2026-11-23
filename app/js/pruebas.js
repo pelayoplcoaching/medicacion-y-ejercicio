@@ -6,7 +6,8 @@
    compararse consigo mismo y complementa al SPPB (que mide fragilidad). Los textos de la interfaz van en los cinco
    idiomas dentro del propio módulo (no engordan i18n.js); el contenido de las pruebas, en español, como el resto de
    explicadores. Nada sale del dispositivo: el historial va en el estado de la aplicación. Se carga al abrirla. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 /* ---------- baremos ---------- */
 /** Orden del manual: la de 6 minutos, al final. La resistencia se mide con una de las dos (paso2 o andar6). */
@@ -73,7 +74,7 @@ export function resumen(r, edad, sexo) {
 }
 
 /* ---------- las pruebas (contenido en español, como los demás explicadores) ---------- */
-export const PRUEBAS = {
+export const PRUEBAS = tC({
   silla: { tipo: "cuenta", tiempo: 30, max: 60, ud: "reps", mat: ["silla"], cuida: ["tension", "tension_alta", "equilibrio"], ej: ["Levantarse de la silla", "Sentadilla a la silla"],
     nombre: "Levantarse de la silla (30 segundos)", corto: "Piernas", mide: "Fuerza de piernas",
     pasos: ["Siéntese en el centro de la silla, con la espalda recta, los pies apoyados en el suelo y los brazos cruzados sobre el pecho.", "Al oír «¡Ya!», levántese del todo y vuelva a sentarse del todo, tantas veces como pueda en 30 segundos.", "Cuenta cada vez que queda de pie del todo. Si al acabar el tiempo ya ha subido más de la mitad, cuenta como una más.", "Antes, pruebe una o dos veces despacio para coger el movimiento."] },
@@ -97,8 +98,8 @@ export const PRUEBAS = {
   andar6: { tipo: "vueltas", tiempo: 360, ud: "m", mat: ["recorrido"], cuida: ["pulso", "azucar", "acelera", "calor", "agua"], ej: ["Marcha, bici o elíptica", "Marcha a paso cómodo"],
     nombre: "Andar 6 minutos", corto: "Resistencia", mide: "Resistencia: corazón y pulmones",
     pasos: ["Al oír «¡Ya!», camine lo más rápido que pueda, sin correr, durante 6 minutos, dando vueltas al recorrido.", "Puede parar a descansar y seguir: el reloj no se para.", "Cuente las vueltas con el botón. Al acabar, sume los metros de la última vuelta a medias.", "Pare si nota mareo, dolor en el pecho, mucha falta de aire o dolor."] },
-};
-const MATERIAL = {
+});
+const MATERIAL = tC({
   silla: "Una silla sin brazos, de unos 43 cm de alto, apoyada contra la pared.",
   pesa: "Una pesa de 2,3 kg (mujeres) o de 3,6 kg (hombres).",
   cinta: "Cinta adhesiva para marcar la pared a media altura del muslo.",
@@ -107,15 +108,15 @@ const MATERIAL = {
   ayuda: "Alguien que le ayude a medir y a contar.",
   marca: "Una marca (un cono o una botella) a 2,44 m del borde del asiento.",
   recorrido: "Un recorrido llano y medido: por ejemplo, un rectángulo de 18,3 × 4,6 m (45,7 m por vuelta, como el original) con marcas, o una pista.",
-};
+});
 /** Fuentes (las de estudios, con DOI). */
-export const FUENTES = [
+export const FUENTES = tC([
   { txt: "Rikli y Jones. Functional fitness normative scores for community-residing older adults, ages 60-94. J Aging Phys Act 1999 (7183 personas)", doi: "10.1123/japa.7.2.162" },
   { txt: "Rikli y Jones. Senior Fitness Test Manual, 2.ª ed. Human Kinetics, 2013 (rangos habituales)" },
   { txt: "Jones y Rikli. Measuring functional fitness of older adults. The Journal on Active Aging, 2002 (zona de riesgo)" },
   { txt: "Rikli y Jones. Criterion-referenced clinically relevant fitness standards for maintaining physical independence in later years. Gerontologist 2013 (meta de autonomía)", doi: "10.1093/geront/gns071" },
   { txt: "Jones, Rikli y Beam. A 30-s chair-stand test as a measure of lower body strength in community-residing older adults. Res Q Exerc Sport 1999", doi: "10.1080/02701367.1999.10608028" },
-];
+]);
 
 /* ---------- textos de la interfaz en los cinco idiomas ---------- */
 export const TXT = {

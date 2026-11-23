@@ -26,8 +26,12 @@ def fnv(s):
     return f"{h:08x}"
 
 
+IDENT = re.compile(r"^[a-z0-9_.:-]+$")  # una sola palabra en minúsculas y sin acentos: puede ser un identificador
+ES_FUENTE = re.compile(r"[áéíóúñª]|\b(el|la|los|las|que|con|para|una|del|por|sus|de|sin|tras|y|en|FT|OMS)\b")
+
+
 def textos():
-    """Todo lo que la aplicación enseña en español y sale de la base, las interacciones revisadas o los módulos: [(grupo, texto)], sin repetir."""
+    """Todo lo que la aplicación enseña en español y sale de la base, las interacciones revisadas o el código (tablas y textos marcados): [(grupo, texto)], sin repetir."""
     kb = json.loads((APP / "data/kb.json").read_text(encoding="utf-8"))
     ddi = json.loads((APP / "data/ddi_curated.json").read_text(encoding="utf-8"))
     out, vistos = [], set()
@@ -37,6 +41,11 @@ def textos():
             vistos.add(s)
             out.append((grupo, s))
 
+    def add_fuente(s):
+        # las citas que ya están en inglés (autor, revista y año) no necesitan traducción: solo entran las que llevan texto en español
+        if isinstance(s, str) and ES_FUENTE.search(s):
+            add("fuente", s)
+
     add("aviso", kb.get("aviso"))
     for n in kb["niveles"].values():
         add("nivel", n["etiqueta"])
@@ -45,26 +54,43 @@ def textos():
     for c in kb["clases"]:
         add("clase", c["nombre"])
         add("resumen", c["resumen"])
+        for lado in ("evitar", "preferir"):
+            for h in (c.get("horario") or {}).get(lado, []):
+                add("motivo", h.get("motivo"))
+        for f in c.get("fuentes", []):
+            add_fuente(f)
         for a in AMBITOS:
             for r in c.get(a, []):
                 add("regla", r["texto"])
+                add_fuente(r.get("fuente"))
         for p in c["principios"]:
             add("principio", p["nombre"])
             add("nota", p.get("nota"))
-            for h in (p.get("horario") or {}).get("evitar", []):
-                add("motivo", h.get("motivo"))
+            for lado in ("evitar", "preferir"):
+                for h in (p.get("horario") or {}).get(lado, []):
+                    add("motivo", h.get("motivo"))
     for r in kb["reglas_combinadas"]:
         add("comb_titulo", r["titulo"])
         add("comb_texto", r["texto"])
+        add_fuente(r.get("fuente"))
     for n in (ddi.get("niveles") or {}).values():
         add("nivel", n.get("etiqueta") if isinstance(n, dict) else n)
     for x in ddi["interacciones"]:
         add("ddi_efecto", x.get("efecto"))
         add("ddi_accion", x.get("accion"))
-    mods = json.loads(subprocess.run(["node", str(ROOT / "scripts/contenido_modulos.mjs")], check=True, capture_output=True, text=True).stdout)
-    for m, lista in mods.items():
+        add_fuente(x.get("fuente"))
+    cod = json.loads(subprocess.run(["node", str(ROOT / "scripts/contenido_modulos.mjs"), "--claves"], check=True, capture_output=True, text=True).stdout)
+    for m, lista in cod["mods"].items():
         for s in lista:
             add("mod_" + m, s)
+    for s in cod["tablas"]:
+        add("tabla", s)
+    for m, c in cod["sueltos"].items():
+        for s in c["claves"]:
+            add("suelto_" + m, s)
+    for s in cod["app"]:
+        add("suelto_app", s)
+    textos.sueltos = {m: {"n": c["n"], "claves": c["claves"]} for m, c in cod["sueltos"].items()}
     return out, kb["version"]
 
 
@@ -79,7 +105,7 @@ norm_num = lambda s: sorted(x.replace(",", ".") for x in NUM.findall(s))
 def comprobar(es, en):
     """Avisos de una pareja: marcadores {…} y cifras deben conservarse."""
     av = []
-    if sorted(re.findall(r"\{[a-z_]+\}", es)) != sorted(re.findall(r"\{[a-z_]+\}", en)):
+    if sorted(re.findall(r"\{[a-z_0-9]+\}", es)) != sorted(re.findall(r"\{[a-z_0-9]+\}", en)) or sorted(re.findall(r"</?[a-z][^>]*>", es)) != sorted(re.findall(r"</?[a-z][^>]*>", en)):
         av.append("marcadores")
     if norm_num(es) != norm_num(en):
         av.append(f"cifras {norm_num(es)} ≠ {norm_num(en)}")
@@ -122,17 +148,22 @@ def main():
         MEM.write_text(json.dumps(mem, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
         print(f"{nuevos} textos incorporados · {avisos} con avisos · memoria: {len(mem)}")
     else:
-        h, falta = {}, 0
+        # h: textos; s: palabras sueltas con pinta de identificador («fuerza», «mayor», «artrosis»…). Las de s solo se aplican
+        # donde el código lo pide (tL, o una tabla de rótulos tC(tabla, true)): al recorrer la base o una tabla no se tocan,
+        # porque ahí esas mismas palabras son identificadores (ámbitos, niveles, situaciones, señales).
+        h, sueltas, falta = {}, {}, 0
         for _, s in tx:
             k = fnv(s)
-            assert k not in h or mem.get(k, {}).get("es") == s, f"choque de huella: {s[:60]}"
+            assert (k not in h and k not in sueltas) or mem.get(k, {}).get("es") == s, f"choque de huella: {s[:60]}"
             if k in mem and mem[k]["es"] == s:
-                h[k] = mem[k]["en"]
+                (sueltas if IDENT.match(s) else h)[k] = mem[k]["en"]
             else:
                 falta += 1
         sal = APP / "data/en/contenido.json"; sal.parent.mkdir(parents=True, exist_ok=True)
-        sal.write_text(json.dumps({"version": version, "n": len(h), "total": len(tx), "h": h}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        print(f"app/data/en/contenido.json: {len(h)} de {len(tx)} textos ({falta} sin traducir) · {sal.stat().st_size // 1024} KB · base {version}")
+        sal.write_text(json.dumps({"version": version, "n": len(h) + len(sueltas), "total": len(tx), "h": h, "s": sueltas}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        print(f"app/data/en/contenido.json: {len(h) + len(sueltas)} de {len(tx)} textos ({falta} sin traducir; {len(sueltas)} palabras sueltas) · {sal.stat().st_size // 1024} KB · base {version}")
+        # claves de lo marcado con tL(), para que las pruebas (sin acorn) comprueben que están todas traducidas y que no hay marcas nuevas sin montar
+        (ROOT / "scripts/trad_en/claves.json").write_text(json.dumps(textos.sueltos, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
 
 
 if __name__ == "__main__":

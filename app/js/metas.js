@@ -4,11 +4,12 @@
    prueba de forma física que las mide (con su último resultado) y una insignia en los ejercicios de la sesión que las
    trabajan. Los hitos son pasos funcionales, no cifras clínicas. Los textos de la interfaz van en los cinco idiomas
    dentro del módulo; el contenido de las metas, en español como el resto de explicadores. Se guarda en el estado. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 /* ---------- las metas ---------- */
 export const MAX_METAS = 3;
-export const METAS = [
+export const METAS = tC([
   { id: "escaleras", corto: "Escaleras", titulo: "Subir escaleras sin pararme", por: "fuerza de piernas y resistencia", icono: "M4 20h4v-4h4v-4h4V8h4",
     hitos: ["Subo un tramo agarrado a la barandilla, a mi ritmo.", "Subo un piso entero parando una vez como mucho.", "Subo un piso sin parar, usando la barandilla solo para rozarla.", "Subo dos pisos sin parar y al llegar puedo hablar."],
     pruebas: ["silla", "paso2", "andar6"], ej: ["Levantarse de la silla", "Sentadilla a la silla", "Elevación de talones", "Marcha, bici o elíptica", "Marcha a paso cómodo"] },
@@ -33,7 +34,7 @@ export const METAS = [
   { id: "viajar", corto: "Viajar", titulo: "Viajar y hacer excursiones", por: "resistencia y fuerza de piernas", icono: "M4 8h16v11H4zM9 8V5h6v3M4 13h16",
     hitos: ["Paseo una hora, con paradas.", "Aguanto una mañana de visita con algún descanso.", "Subo una cuesta larga a mi ritmo.", "Hago una excursión de medio día."],
     pruebas: ["andar6", "paso2", "silla"], ej: ["Marcha, bici o elíptica", "Marcha a paso cómodo", "Levantarse de la silla", "Elevación de talones"] },
-];
+]);
 export const POR_ID = Object.fromEntries(METAS.map((m) => [m.id, m]));
 
 /* ---------- estado ---------- */

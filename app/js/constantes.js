@@ -3,7 +3,8 @@
    base: ADA 2024 para la glucosa alrededor del ejercicio, ESC 2024 y ACSM para la tensión; Tanaka 2001 y ACSM 2011 para
    el pulso) y una lista de valores para comentar con su médico, sin diagnosticar. Cada gráfica tiene lectura al pasar el
    dedo o el ratón y su tabla. Textos de la interfaz en los cinco idiomas dentro del módulo. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 /* ---------- datos ---------- */
 const DIA = 864e5;
@@ -61,12 +62,12 @@ export function tx(k, vars) {
   const s = (TXT[idioma()] || TXT.es)[k] ?? TXT.es[k] ?? k;
   return vars ? s.replace(/\{(\w+)\}/g, (m, n) => (vars[n] ?? m)) : s;
 }
-export const FUENTES = [
+export const FUENTES = tC([
   { txt: "ADA Standards of Care 2024 (glucosa alrededor del ejercicio; bajada de azúcar por debajo de 70 mg/dL) · Riddell 2017, Lancet Diabetes Endocrinol" },
   { txt: "ESC 2024, guía de hipertensión arterial · ACSM, Guidelines for Exercise Testing and Prescription, 11.ª ed." },
   { txt: "Tanaka et al. Age-predicted maximal heart rate revisited. J Am Coll Cardiol 2001", doi: "10.1016/s0735-1097(00)01054-8" },
   { txt: "Garber et al. ACSM position stand: quantity and quality of exercise. Med Sci Sports Exerc 2011", doi: "10.1249/MSS.0b013e318213fefb" },
-];
+]);
 
 /* ---------- gráfica (SVG; lectura al pasar el dedo o el ratón) ---------- */
 const fechaCorta = (f) => new Date(f).toLocaleDateString(idioma(), { day: "numeric", month: "short" });

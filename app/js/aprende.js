@@ -2,10 +2,11 @@
    Contenido en español, como la base, con sus fuentes (las cifras, comprobadas en PubMed el 21/11/2026: OMS 2020,
    Arem 2015, Sherrington 2019, Fragala 2019, Colberg 2016, Gardner 2012) o las mismas guías que citan las reglas.
    Lo que se acierta se guarda solo en este dispositivo («medex.aprende»). Se carga al abrir «Aprende». */
-import { t } from "./i18n.js?v=202611230006";
+import { t } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
-const OMS = { txt: "OMS 2020: guía de actividad física y sedentarismo (Bull et al., Br J Sports Med 2020)", doi: "10.1136/bjsports-2020-102955" };
-export const LECCIONES = [
+const OMS = tC({ txt: "OMS 2020: guía de actividad física y sedentarismo (Bull et al., Br J Sports Med 2020)", doi: "10.1136/bjsports-2020-102955" });
+export const LECCIONES = tC([
   { id: "moverse", icono: "M12 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-2 6h4l2 5-2 1-1-2v9h-2v-6h-1v6H8v-9l-1 2-2-1z", titulo: "Moverse también es un tratamiento",
     tarjetas: ["El ejercicio regular reduce el riesgo de enfermedad del corazón, diabetes, algunos cánceres, depresión y caídas, y ayuda a controlar casi todas las enfermedades crónicas.",
       "El salto que más cuenta es empezar: en un análisis de más de 660 000 personas, quienes se movían menos del mínimo recomendado ya tenían un 20 % menos de mortalidad que quienes no se movían nada.",
@@ -106,7 +107,7 @@ export const LECCIONES = [
       { p: "¿Qué es un plan «cuando-entonces»?", o: ["Decidir cuándo y dónde: «cuando termine de desayunar, caminaré»", "Hacerlo cuando sobre tiempo", "Pagar un gimnasio"], ok: 0, x: "Atar el ejercicio a algo que ya hace cada día es de lo que mejor funciona." },
       { p: "Lleva dos días sin moverse. ¿Qué hace?", o: ["Dejarlo hasta el mes que viene", "Compensar con una sesión el doble de larga", "Retomarlo hoy, aunque sea poco"], ok: 2, x: "Fallar un día no rompe la costumbre; abandonar sí. Vuelva hoy, con poco." }],
     fuentes: [{ txt: "Gardner, Lally y Wardle, «Making health habitual», Br J Gen Pract 2012", doi: "10.3399/bjgp12X659466" }, OMS] },
-];
+]);
 const POR_ID = Object.fromEntries(LECCIONES.map((l) => [l.id, l]));
 
 /** Lecciones recomendadas según los mecanismos de su lista y su edad (primero las suyas, luego el resto en orden). */

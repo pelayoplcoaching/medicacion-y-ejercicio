@@ -7,8 +7,9 @@
    sin fiebre). Son NUEVOS y están por revisar: la tensión diastólica (100 y 110), el pulso en reposo (40, 50, 100 y 120),
    las décimas (37,5 °C), la saturación sin enfermedad respiratoria (92 %) y la redacción de todos los consejos.
    Los umbrales están en UMBRALES; los textos, en CONT (en español, como la base); la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230006";
-import { ALARMA } from "./engine.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { ALARMA } from "./engine.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Números antes de entrenar", borrador: "Borrador pendiente de revisión clínica", intro: "Escriba los números que tenga hoy. No hace falta ninguno para entrenar: sirven si ya se los mide.", para_usted: "Le conviene", ver: "Ver qué toca hoy", borrar: "Borrar", falta: "Escriba al menos un número.", rango: "Revise este número: no parece posible.",
@@ -45,7 +46,7 @@ export const UMBRALES = {
 };
 /** Lo que se acepta en cada casilla (fuera de esto se pide revisar el número). */
 export const RANGOS = { glucosa: [20, 600], ta_s: [60, 260], ta_d: [30, 160], pulso: [25, 220], spo2: [60, 100], temp: [35, 42] };
-export const UNIDADES = { glucosa: "mg/dL", ta_s: "mmHg", ta_d: "mmHg", pulso: "lpm", spo2: "%", temp: "°C" };
+export const UNIDADES = tC({ glucosa: "mg/dL", ta_s: "mmHg", ta_d: "mmHg", pulso: "lpm", spo2: "%", temp: "°C" }, true);
 
 /* Textos clínicos (en español). Los marcados con (R) reproducen una regla ya revisada de la aplicación. */
 export const CONT = {

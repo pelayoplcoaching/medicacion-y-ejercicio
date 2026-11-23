@@ -3,11 +3,12 @@
    desde los 65 años o tras una caída). Cada tarjeta: la cifra, qué significa en lenguaje llano, el tipo de estudio, la
    certeza cuando la revisión la da (GRADE) y la fuente con su DOI. Cifras comprobadas en PubMed el 21/11/2026, una a una,
    en el resumen de cada artículo. Contenido en español (como el resto del contenido clínico), revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas. Se carga al pintar «Antes de empezar». */
-import { idioma, t } from "./i18n.js?v=202611230006";
+import { idioma, t } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 const F = (txt, doi) => ({ txt, doi });
 /** Por situación: id de la situación (los de «Situación clínica») → tarjetas. «todos» y «mayores» se añaden solos. */
-export const BENEFICIOS = {
+export const BENEFICIOS = tC({
   todos: [
     { id: "animo", cifra: "Igual", unidad: "que la psicoterapia (10 ensayos)", titulo: "Mejor ánimo", texto: "En personas con depresión, el ejercicio reduce los síntomas con un efecto moderado (certeza baja) y, en los 10 ensayos que lo comparan con psicoterapia, probablemente funciona igual de bien (certeza moderada).", estudio: "Revisión Cochrane de 73 ensayos", certeza: "baja a moderada", fuentes: [F("Clegg 2026, Cochrane", "10.1002/14651858.CD004366.pub7")] },
   ],
@@ -65,10 +66,10 @@ export const BENEFICIOS = {
   marcapasos: [
     { id: "dai", cifra: "−53 %", unidad: "probabilidad de descargas del DAI", titulo: "Más forma y menos descargas", texto: "En personas con desfibrilador (DAI) e insuficiencia cardiaca, entrenar mejoró la forma física y se asoció a menos descargas del desfibrilador.", estudio: "Metaanálisis de 6 ensayos", fuentes: [F("Pandey 2017, JACC Clin Electrophysiol", "10.1016/j.jacep.2016.06.008")] },
   ],
-};
+});
 /* el oxígeno en casa va casi siempre con una enfermedad respiratoria: se le enseña la de la EPOC */
 const ALIAS = { oxigeno: "epoc_asma" };
-export const SIT = { todos: "Para todos", mayores: "Desde los 65", diabetes: "Diabetes", hipertension: "Hipertensión", insuficiencia_cardiaca: "Insuficiencia cardiaca", cardiopatia_isquemica: "Infarto, stent o angina", fibrilacion_auricular: "Fibrilación auricular", epoc_asma: "EPOC o asma", renal: "Enfermedad renal", osteoporosis: "Osteoporosis", artrosis: "Artrosis", ictus: "Ictus", cancer: "Cáncer", obesidad: "Obesidad", embarazo: "Embarazo", epilepsia: "Epilepsia", hepatopatia: "Hepatopatía", marcapasos: "Marcapasos o DAI" };
+export const SIT = tC({ todos: "Para todos", mayores: "Desde los 65", diabetes: "Diabetes", hipertension: "Hipertensión", insuficiencia_cardiaca: "Insuficiencia cardiaca", cardiopatia_isquemica: "Infarto, stent o angina", fibrilacion_auricular: "Fibrilación auricular", epoc_asma: "EPOC o asma", renal: "Enfermedad renal", osteoporosis: "Osteoporosis", artrosis: "Artrosis", ictus: "Ictus", cancer: "Cáncer", obesidad: "Obesidad", embarazo: "Embarazo", epilepsia: "Epilepsia", hepatopatia: "Hepatopatía", marcapasos: "Marcapasos o DAI" });
 /** Qué grupos de tarjetas tocan: las situaciones marcadas (sin repetir), «mayores» desde los 65 o con caídas, y «todos». */
 export function situaciones({ condiciones = [], edad = null, caidas = false } = {}) {
   const ids = [];

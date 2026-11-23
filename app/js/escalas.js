@@ -14,7 +14,8 @@
      y avisarles; solo se enlaza su web.
    Las preguntas son traducción de la aplicación del original en inglés (hay versiones validadas en español de México de FRAIL y SARC-F).
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611230006";
+import { idioma, t } from "./i18n.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Escalas rápidas", borrador: "Borrador pendiente de revisión clínica", intro: "Cuatro cuestionarios cortos y validados. Son de cribado: orientan, no diagnostican.", preguntas: "{n} preguntas", ultimo: "Último: {x} · {f}", sin_hacer: "Sin hacer", volver: "Todas las escalas", faltan: "Faltan {n} respuestas", resultado: "Resultado", de: "{p} de {m}", anterior: "La vez anterior: {x} ({f})", guardado: "Guardado en este dispositivo.", borrar: "Borrar este resultado", borrado: "Resultado borrado.",
@@ -36,7 +37,7 @@ const TXT = {
 export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; if (vars) for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, b); return s; };
 
 const SI_NO = [["Sí", 1], ["No", 0]];
-const TRES = (dos) => [["Ninguna", 0], ["Alguna", 1], [dos, 2]];
+const TRES = (dos) => [[tL("Ninguna"), 0], [tL("Alguna"), 1], [dos, 2]];
 /** Las 11 enfermedades del componente «Illnesses» de FRAIL (apéndice 1 de Morley 2012; por comprobar). cond = situación clínica de la aplicación que la marca de entrada. */
 export const ENFERMEDADES = [
   { n: "Hipertensión", cond: "hipertension" }, { n: "Diabetes", cond: "diabetes" }, { n: "Cáncer (salvo un cáncer de piel menor)", cond: "cancer" }, { n: "Enfermedad pulmonar crónica" },
@@ -139,7 +140,7 @@ export function puntuar(id, r = {}) {
 export function textos(id, res) {
   if (!res?.completo) return [];
   const C = CONT[id];
-  if (id === "pavs") return [C[res.cat].replace("{n}", `${res.extra.falta} minutos`), ...(res.extra.fuerza == null ? [] : [res.extra.fuerza >= META_FUERZA ? C.fuerza_si : C.fuerza_no]), C.corta];
+  if (id === "pavs") return [C[res.cat].replace("{n}", tL`${res.extra.falta} minutos`), ...(res.extra.fuerza == null ? [] : [res.extra.fuerza >= META_FUERZA ? C.fuerza_si : C.fuerza_no]), C.corta];
   return [C[res.cat], ...(id === "caidas" && res.extra.miedo ? [C.miedo] : []), CONT.cribado];
 }
 const fecha = (iso) => (iso ? iso.split("-").reverse().join("/") : "");
@@ -148,7 +149,7 @@ export const cifra = (id, g) => (id === "pavs" ? tx("min_sem", { n: String(g.p) 
 /** Una línea para la historia clínica. g = resultado guardado o recién calculado ({ p, cat, positivos, extra, f }). */
 export function lineaHistoria(id, g) {
   const e = escala(id), cat = CATEGORIAS[id][g.cat]?.n || "";
-  if (id === "pavs") return `${e.n}: ${g.p} min/semana de actividad moderada o intensa (${cat.toLowerCase()})${g.extra?.fuerza != null ? `; fuerza ${g.extra.fuerza} días/semana` : ""}${g.f ? ` · ${fecha(g.f)}` : ""}`;
+  if (id === "pavs") return tL`${e.n}: ${g.p} min/semana de actividad moderada o intensa (${cat.toLowerCase()})${g.extra?.fuerza != null ? tL`; fuerza ${g.extra.fuerza} días/semana` : ""}${g.f ? ` · ${fecha(g.f)}` : ""}`;
   return `${e.n}: ${g.p}/${e.max} (${cat.toLowerCase()})${g.positivos?.length ? `: ${g.positivos.join(", ").toLowerCase()}` : ""}${g.f ? ` · ${fecha(g.f)}` : ""}`;
 }
 

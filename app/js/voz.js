@@ -1,7 +1,8 @@
 /* Entrenador por voz de la sesión guiada (mejora grande 6). Se carga al abrir la sesión, no al arrancar la aplicación.
    Usa la síntesis de voz del propio navegador (nada sale del dispositivo). Las frases de la interfaz van en el idioma
-   elegido; el contenido de la sesión está en español y se lee con voz española. Sin voz para el idioma elegido, todo en español. */
-import { t, tEs, idioma } from "./i18n.js?v=202611230006";
+   elegido; el contenido de la sesión se lee con voz española (o inglesa, cuando js/contenido.js lo ha traducido). Sin voz para el idioma elegido, todo en español. */
+import { t, tEs, idioma } from "./i18n.js?v=202611230120";
+import { tL } from "./tr.js?v=202611230120";
 
 const VOZ_LANG = { es: "es-ES", en: "en-GB", ca: "ca-ES", gl: "gl-ES", eu: "eu-ES" };
 export const VOZ = {
@@ -26,9 +27,9 @@ export const VOZ = {
   /** Contenido de la sesión preparado para oírlo: sin «RPE», rangos y unidades dichos con palabras. */
   contenido(s) {
     const txt = String(s || "").replace(/\s*\(RPE[^)]*\)/g, "").replace(/[()«»]/g, "")
-      .replace(/(\d)\s*[–-]\s*(\d)/g, "$1 a $2").replace(/\s×\s/g, " por ")
-      .replace(/(\d)\s?s\b/g, "$1 segundos").replace(/(\d)\s?kg\b/g, "$1 kilos").replace(/(\d)\s?L\b/g, "$1 litros").replace(/(\d)\s?°/g, "$1 grados").replace(/(\d)\s?min\b/g, "$1 minutos");
-    return { t: txt, lang: "es-ES" };
+      .replace(/(\d)\s*[–-]\s*(\d)/g, tL("$1 a $2")).replace(/\s×\s/g, tL(" por "))
+      .replace(/(\d)\s?s\b/g, tL("$1 segundos")).replace(/(\d)\s?kg\b/g, tL("$1 kilos")).replace(/(\d)\s?L\b/g, tL("$1 litros")).replace(/(\d)\s?°/g, tL("$1 grados")).replace(/(\d)\s?min\b/g, tL("$1 minutos"));
+    return { t: txt, lang: tL("es-ES") };
   },
   /** Dice una lista de frases ({t, lang}); corta = interrumpe lo que estuviera diciendo. Frases cortas: Chrome corta las locuciones largas. */
   decir(partes, { corta = false } = {}) {

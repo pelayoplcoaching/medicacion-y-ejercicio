@@ -6,7 +6,8 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -103,14 +104,14 @@ const TXT = {
 export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; if (vars) for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, b); return s; };
 
 /* Fuentes (comprobadas en PubMed el 22/11/2026). */
-export const FUENTES = [
+export const FUENTES = tC([
   { id: "garber", cita: "Garber CE et al. Med Sci Sports Exerc 2011;43:1334-59", doi: "10.1249/MSS.0b013e318213fefb" },
   { id: "acsm09", cita: "American College of Sports Medicine. Med Sci Sports Exerc 2009;41:687-708", doi: "10.1249/MSS.0b013e3181915670" },
   { id: "fragala", cita: "Fragala MS et al. J Strength Cond Res 2019;33:2019-52", doi: "10.1519/JSC.0000000000003230" },
   { id: "izquierdo", cita: "Izquierdo M et al. J Nutr Health Aging 2021;25:824-53", doi: "10.1007/s12603-021-1665-8" },
   { id: "bull", cita: "Bull FC et al. Br J Sports Med 2020;54:1451-62", doi: "10.1136/bjsports-2020-102955" },
   { id: "casas", cita: "Casas-Herrero Á et al. J Cachexia Sarcopenia Muscle 2022;13:884-93", doi: "10.1002/jcsm.12925" },
-];
+]);
 
 /* Dosis por nivel y semana: [sesiones, minutos del bloque principal del paseo, series de fuerza]. Semanas 4 y 8, de descarga; la 12, de pruebas. */
 export const NIVELES = ["suave", "medio", "activo"];
@@ -211,9 +212,9 @@ export function objetivo(sem, minutosSesiones = []) {
 }
 /* --- ajuste de las sesiones --- */
 const FACTOR = { 1: 0.6, 2: 1, 3: 1.35 };
-const RE_DOSIS = /(\d)(?:–\d)? (series de|×) /;
+const RE_DOSIS = /(\d)(?:–\d)? (series de|sets of|×) /; // «sets of»: el mismo texto con el contenido en inglés
 /** Pone las series de la semana en el texto de un ejercicio: «2–3 series de 8–15» -> «1 serie de 8–15»; «2 × 10» -> «3 × 10». */
-export function conSeries(detalle, ser) { return String(detalle).replace(RE_DOSIS, (_, a, b) => `${ser} ${b === "series de" && ser === 1 ? "serie de" : b} `); }
+export function conSeries(detalle, ser) { return String(detalle).replace(RE_DOSIS, (_, a, b) => `${ser} ${ser !== 1 ? b : b === "series de" ? "serie de" : b === "sets of" ? "set of" : b} `); }
 /** Ajusta una sesión de fuerza a las series de la semana (texto y minutos de los ejercicios que van por series). La de paseo llega ya con sus minutos. */
 export function ajustar(ses, sem) {
   if (!ses || !sem) return ses;

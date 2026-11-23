@@ -4,7 +4,8 @@
    para la cafeína y, para el tabaco y el café con levotiroxina, artículos con su DOI comprobados en PubMed. Contenido en
    español (como el resto del contenido clínico) revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas.
    Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611230006";
+import { idioma } from "./i18n.js?v=202611230120";
+import { tC, tL } from "./tr.js?v=202611230120";
 
 /** Respuestas posibles de cada hábito, en el orden del formulario. */
 export const VALORES = { alcohol: ["no", "aveces", "diario"], tabaco: ["no", "si", "dejado"], cafe: ["poco", "medio", "mucho"] };
@@ -22,7 +23,7 @@ const KROON = D("Kroon 2007, Am J Health Syst Pharm (revisión de interacciones 
  * pueden depender de la respuesta ({ aveces: …, diario: … }); {farmacos} se sustituye por los fármacos implicados;
  * extras: frases que se añaden si está alguno de sus pids; calc: frase calculada; ft: enlazar la ficha de cada implicado.
  */
-export const REGLAS = [
+export const REGLAS = tC([
   // ---------- alcohol ----------
   { id: "alc_sedacion", h: "alcohol", v: ["aveces", "diario"], si: { senal: "sedacion" }, nivel: { aveces: "precaucion", diario: "alerta" }, ft: true,
     titulo: { aveces: "Alcohol y medicamentos que dan sueño", diario: "Alcohol a diario con medicamentos que dan sueño" },
@@ -153,7 +154,7 @@ export const REGLAS = [
       const d = imp.reduce((s, it) => s + (Number(it.dosisTotal) || 0), 0);
       if (!d) return "";
       const t = Math.round(d + (v === "mucho" ? 360 : 90));
-      return ` Con ${Math.round(d)} mg al día del suplemento y su café, la suma es de al menos ${t} mg al día${t > 400 ? ", por encima de 400 mg" : ""}.`;
+      return tL` Con ${Math.round(d)} mg al día del suplemento y su café, la suma es de al menos ${t} mg al día${t > 400 ? tL(", por encima de 400 mg") : ""}.`;
     },
     fuentes: [EFSA] },
   { id: "caf_embarazo", h: "cafe", v: ["medio", "mucho"], si: { condicion: "embarazo" }, nivel: { medio: "info", mucho: "precaucion" },
@@ -167,7 +168,7 @@ export const REGLAS = [
     titulo: "¿Cuánto café es razonable?",
     texto: "Para un adulto sano, la EFSA considera seguro hasta 400 mg de cafeína al día (unas 4 tazas de café de filtro) y hasta 200 mg de una vez, incluso menos de 2 horas antes de un ejercicio intenso. Si toma más, o nota palpitaciones, nervios o mal sueño, redúzcalo poco a poco.",
     fuentes: [EFSA] },
-];
+]);
 
 /** Nombre para la frase: sin el paréntesis final y en minúscula si es un nombre común («Insulina basal (…)» → «insulina basal»). */
 export function corto(nombre = "") {

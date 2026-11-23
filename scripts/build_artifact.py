@@ -16,7 +16,7 @@ for f in sorted((app / "js" / "i18n").glob("*.js")):
 # módulos bajo demanda (v1.2): en la web se piden con import(); aquí cada uno va en su propio ámbito (sus nombres no chocan).
 # Desde la v1.3 también el lector de listas (parser) y el de fotos (ocr), que usan nombres de libs.js y engine.js, ya en línea antes.
 LAZY = [f.stem for f in sorted((app / "js").glob("*.js")) if re.search(r'import\("\./' + f.stem + r'\.js', (app / "js/app.js").read_text(encoding="utf-8"))]
-FIJOS = ["version", "libs", "i18n", "engine", "pictos", "informes"]  # van en línea tal cual, antes que los demás
+FIJOS = ["version", "libs", "i18n", "tr", "engine", "pictos", "informes"]  # van en línea tal cual, antes que los demás
 # pdf.js va como los demás módulos bajo demanda, en su propio ámbito: en línea chocaba con app.js (PQ_SENAL y PQ_ORDEN están en los dos
 # desde la v1.2.18) y el artefacto no arrancaba. scripts/artifact_test.mjs lo comprueba desde la v1.3.0.
 for nombre in [*FIJOS, *[n for n in LAZY if n not in FIJOS], "app"]:

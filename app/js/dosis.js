@@ -10,7 +10,8 @@
    Su punto: la media de minutos a la semana de su diario (últimas 4 semanas); con el deslizador, «¿y si…?». Son estudios
    de observación: asociación, no prueba de causa (se dice). Gráficas según la guía de visualización (una serie sin
    leyenda, líneas de 2 px, puntos con anillo, rejilla fina, cruz y globo al pasar, tabla). Interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230006";
+import { t, idioma } from "./i18n.js?v=202611230120";
+import { tC } from "./tr.js?v=202611230120";
 
 export const MINUTOS = [
   { desde: 0, hasta: 0, x: 0, hr: 1, k: "g0" },
@@ -22,10 +23,10 @@ export const MINUTOS = [
 ];
 export const PASOS = [{ x: 3553, hr: 1 }, { x: 5801, hr: 0.6 }, { x: 7842, hr: 0.55 }, { x: 10901, hr: 0.47 }];
 export const MESETA = { mayores: [6000, 8000], jovenes: [8000, 10000] };
-export const FUENTES = {
+export const FUENTES = tC({
   minutos: { txt: "Arem H, et al. Leisure time physical activity and mortality: a detailed pooled analysis of the dose-response relationship. JAMA Intern Med. 2015;175:959-67", doi: "10.1001/jamainternmed.2015.0533" },
   pasos: { txt: "Paluch AE, et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. Lancet Public Health. 2022;7:e219-e228", doi: "10.1016/S2468-2667(21)00302-9" },
-};
+});
 /* la gráfica de minutos va por grupos, a intervalos iguales (son grupos, no una curva continua); el de 750-1499 no tiene cifra */
 export const SLOTS = [{ a: 0, b: 0, etq: "0" }, { a: 1, b: 149, etq: "<150" }, { a: 150, b: 299, etq: "150+" }, { a: 300, b: 449, etq: "300+" }, { a: 450, b: 749, etq: "450+" }, { a: 750, b: 1499, etq: "750+" }, { a: 1500, b: 1800, etq: "1500+" }];
 /** Posición de unos minutos en el eje de grupos (con un poco de recorrido dentro de cada grupo). */

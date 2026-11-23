@@ -104,9 +104,21 @@ const paralelos = Promise.all([
     await pi.fill("#buscar", ""); await pi.keyboard.press("Escape");
     const mitos = await abre("mitos"), escalas = await abre("escalas"), dolor = await abre("dolor");
     check("los módulos que se abren con data-abre traducen su contenido al abrirse (mitos, escalas, «Me duele…»)", /With a beta-blocker the pulse does not rise, so exercise does nothing for me/.test(mitos) && /Sarcopenia \(low muscle strength\)/.test(escalas) && /Physical activity vital sign/.test(escalas) && /Lower back/.test(dolor) && !/Con un betabloqueante|poca fuerza muscular/.test(mitos + escalas));
+    // segunda parte: lo que escribe el propio código (tablas y textos marcados con js/tr.js)
+    await pi.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
+    await pi.fill("#edad", "72"); await pi.$eval("#edad", (e) => e.dispatchEvent(new Event("change", { bubbles: true }))); await pi.waitForTimeout(300);
+    check("los datos de la persona y los síntomas del cribado (que se pintan antes de traducir) salen en inglés", /72 years/.test(await pi.textContent("#contexto")) && /Pain, tightness or discomfort in the chest/.test(await pi.textContent("#crib-sintomas")) && !/Dolor, opresión/.test(await pi.textContent("#crib-sintomas")));
+    const pestana = async (t) => { await pi.evaluate((t) => document.querySelector(`[role=tab][data-tab="${t}"]`).click(), t); await pi.waitForTimeout(300); return informe(); };
+    const aer = await pestana("aerobico"), cua = await pestana("cuando");
+    check("la zona de intensidad, la cita de la fuente y el horario de las tomas, también", /RPE 12–13 \(can talk, not sing\)/.test(aer) && /Talk test: moderate = can talk but not sing/.test(aer) && /AEMPS SmPC 4\.4/.test(aer) && !/FT AEMPS/.test(aer) && /peak diuretic effect/.test(cua) && !/efecto diurético|molestias digestivas/.test(cua), (aer + cua).slice(0, 200));
+    const herr = async (id) => { await pi.evaluate(() => { document.querySelectorAll("dialog[open]").forEach((d) => d.close()); document.querySelector("[data-centro]").click(); }); await pi.waitForSelector("dialog[open] .ce-t", { timeout: 8000 }); await pi.evaluate((id) => document.querySelector(`dialog[open] .ce-t[data-id="${id}"] .ce-b`).click(), id); await pi.waitForTimeout(700); return pi.evaluate(() => [...document.querySelectorAll("dialog[open]")].map((d) => d.innerText).join(" ").replace(/\s+/g, " ")); };
+    const ses = await herr("sesion"), apr = await herr("aprende"), glo = await herr("glosario"), pas = await herr("pastillero"), bib = await herr("biblioteca");
+    check("la sesión guiada, Aprende, el glosario, el pastillero y la biblioteca de ejercicios salen en inglés", /I have no fever and do not feel ill/.test(ses) && /Blood sugar and exercise/.test(apr) && /Left ventricular ejection fraction/.test(glo) && /LVEF/.test(glo) && /stomach upset just after the dose/.test(pas) && /Standing up from a chair/.test(bib), [ses, apr, glo, pas, bib].map((x) => x.slice(0, 60)).join(" | "));
+    const restos = (ses + apr + glo + pas + bib + aer + cua).match(/[^.]{0,30}(?:[¿¡]|\b(?:días|semana|ejercicios|consulte|evite|fármacos?|también)\b)[^.]{0,30}/);
+    check("y sin restos de español en esas pantallas", !restos, restos?.[0]);
     await pi.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
     await Promise.all([pi.waitForEvent("load", { timeout: 15000 }), pi.selectOption("#idioma", "es")]); await lista(); await pi.waitForTimeout(400);
-    check("al volver a español se recarga y todo vuelve al original", /Betabloqueantes/.test(await informe()) && !/translation has not/.test(await pi.textContent("#aviso")) && (await pi.$$("#lista-meds li")).length === 4 && /Con un betabloqueante el pulso no sube/.test(await abre("mitos")));
+    check("al volver a español se recarga y todo vuelve al original", /Betabloqueantes/.test(await informe()) && !/translation has not/.test(await pi.textContent("#aviso")) && (await pi.$$("#lista-meds li")).length === 4 && /Con un betabloqueante el pulso no sube/.test(await abre("mitos")) && /72 años/.test(await pi.textContent("#contexto")) && /Dolor, opresión o molestia/.test(await pi.textContent("#crib-sintomas")));
     check("sin errores de JavaScript en ninguno de los dos sentidos", errI.length === 0, errI.join(" | ").slice(0, 200));
     await iCtx.close();
   }),
