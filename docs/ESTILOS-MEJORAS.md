@@ -886,7 +886,7 @@ No tocan `style.css` (esta al limite de su presupuesto): el marco comun y el cen
 | 843 | Centro: la busqueda sin resultados, con su icono | `.ce-nada` |
 | 844 | Centro: respuesta al pulsar y al pasar el raton | `.ce-t:active`, `.ce-t:hover` |
 | 845 | Centro: rotulos de grupo que se quedan pegados, con punto de color y recuento | `.ce-tit`, `.ce-tit small` |
-| 846 | Centro: marca «Ultima» en la herramienta usada por ultima vez | `.ce-ult` |
+| 846 | Centro: marca «Ultima» en la herramienta usada por ultima vez, sobre el borde de la tarjeta como «Nuevo»; en el movil, el nombre va debajo del medallon (v1.3.22) | `.ce-ult`, `.ce-rejilla .ce-t > .ce-b` |
 | 847 | Programa: la tira de 12 semanas, con el color de cada fase | `js/programa.js` |
 | 848 | Programa: la dosis de la semana, en cuatro fichas con icono | `.prg-dosis` |
 | 849 | Programa: etiquetas de estado en pastilla | `.prg-e` |

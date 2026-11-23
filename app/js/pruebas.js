@@ -6,8 +6,8 @@
    compararse consigo mismo y complementa al SPPB (que mide fragilidad). Los textos de la interfaz van en los cinco
    idiomas dentro del propio módulo (no engordan i18n.js); el contenido de las pruebas, en español, como el resto de
    explicadores. Nada sale del dispositivo: el historial va en el estado de la aplicación. Se carga al abrirla. */
-import { t, idioma } from "./i18n.js?v=202611230207";
-import { tC } from "./tr.js?v=202611230207";
+import { t, idioma } from "./i18n.js?v=202611230223";
+import { tC } from "./tr.js?v=202611230223";
 
 /* ---------- baremos ---------- */
 /** Orden del manual: la de 6 minutos, al final. La resistencia se mide con una de las dos (paso2 o andar6). */

@@ -3,8 +3,8 @@
    «Para usted hoy»: hasta tres sugerencias según la lista, el plan y lo que queda por hacer.
    Se carga al abrirlo (botón «Más» de la barra inferior, «Herramientas» de la cabecera o Ctrl/⌘ + K). No guarda nada fuera
    del dispositivo: las favoritas van en localStorage («medex.favoritas»). Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230207";
-import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230207";
+import { t, idioma } from "./i18n.js?v=202611230223";
+import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230223";
 
 const TXT = {
   es: { titulo: "Herramientas", nuevo: "Nuevo", ultima: "Última", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",
@@ -370,11 +370,12 @@ const CSS = `
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .ce-hoy button { animation: ce-entra .32s var(--ease-salida, ease-out) both; } html:not(.pa-quieto) .ce-hoy button:nth-child(2) { animation-delay: .05s; } html:not(.pa-quieto) .ce-hoy button:nth-child(3) { animation-delay: .1s; } }
 @keyframes ce-entra { from { opacity: 0; translate: 0 8px; } }
 /* 839-846: color por grupo, medallones, «Para usted hoy», Nuevo, vacio, pulsar, rotulos pegados y «ultima» */
-.ce-tit[data-g] { position: sticky; top: -2px; z-index: 1; margin: 12px -4px 8px; padding: 6px 4px; background: linear-gradient(var(--surface) 78%, transparent); color: var(--hg-ink, var(--muted)); }
+.ce-tit[data-g] { position: sticky; top: -2px; z-index: 3; margin: 12px -4px 8px; padding: 6px 4px; background: linear-gradient(var(--surface) 78%, transparent); color: var(--hg-ink, var(--muted)); }
 .ce-tit[data-g]::before { content: ""; flex: none; align-self: center; width: 8px; height: 8px; border-radius: 3px; background: var(--hg, var(--accent)); }
 .ce-tit[data-g] small { margin-left: auto; padding: 0 7px; border-radius: 999px; background: var(--hg-soft, var(--surface-2)); color: var(--hg-ink, var(--muted)); font-size: .7rem; line-height: 1.6; opacity: 1; }
 .ce-t[data-g] .ce-b .ce-ic { width: 38px; height: 38px; border-radius: 12px; background: var(--hg-soft, var(--accent-soft)); color: var(--hg-ink, var(--accent)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hg, var(--accent)) 24%, transparent); }
 .ce-t > .ce-b { grid-template-columns: 38px minmax(0, 1fr); min-height: 64px; transition: border-color .15s, background-color .15s, translate .15s, box-shadow .15s, scale .1s; }
+@media (max-width: 520px) { .ce-rejilla .ce-t > .ce-b, .ce-favs .ce-t > .ce-b { grid-template-columns: minmax(0, 1fr); gap: 8px; align-content: start; padding: 10px 10px 12px; } .ce-rejilla .ce-b .ce-ic, .ce-favs .ce-b .ce-ic { grid-row: auto; } } /* en el movil, el nombre va debajo del medallon y usa todo el ancho (los nombres largos ya no tocan la estrella) */
 .ce-t > .ce-b:active { scale: .97; }
 @media (hover: hover) { .ce-t > .ce-b:hover { border-color: var(--hg, var(--line-strong)); translate: 0 -2px; box-shadow: 0 6px 16px -10px color-mix(in srgb, var(--hg, var(--accent)) 60%, transparent); } }
 .ce-hoy button { position: relative; padding-right: 34px; border-color: color-mix(in srgb, var(--hg, var(--accent)) 55%, var(--line)); background: linear-gradient(135deg, var(--hg-soft, var(--accent-soft)), var(--surface) 72%); transition: translate .15s, box-shadow .15s, scale .1s; }
@@ -383,10 +384,10 @@ const CSS = `
 .ce-hoy button:active { scale: .98; }
 @media (hover: hover) { .ce-hoy button:hover { translate: 0 -2px; box-shadow: 0 8px 20px -12px color-mix(in srgb, var(--hg, var(--accent)) 70%, transparent); } .ce-hoy button:hover::after { translate: 3px -50%; } }
 .ce-nuevo { position: absolute; top: -6px; left: 10px; z-index: 1; padding: 0 7px; border-radius: 999px; background: var(--hg, var(--accent)); color: var(--surface); font-family: var(--mono); font-size: .62rem; font-style: normal; font-weight: 700; letter-spacing: .06em; line-height: 1.7; text-transform: uppercase; pointer-events: none; }
-.ce-ult { position: absolute; right: 34px; top: 9px; padding: 0 6px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--muted); font-family: var(--mono); font-size: .6rem; font-style: normal; line-height: 1.6; pointer-events: none; }
+.ce-ult { position: absolute; left: 10px; top: -8px; z-index: 1; padding: 0 7px; border: 1px solid var(--hg, var(--line-strong)); border-radius: 999px; background: var(--surface); color: var(--muted); font-family: var(--mono); font-size: .6rem; font-style: normal; line-height: 1.6; pointer-events: none; }
 .ce-nada { display: grid; justify-items: center; gap: 8px; padding: 22px 16px; text-align: center; }
 .ce-nada .ce-i { width: 38px; height: 38px; padding: 9px; border-radius: 50%; background: var(--surface-2); color: var(--muted); box-sizing: content-box; }
-@media (max-width: 520px) { .ce-t > .ce-b { min-height: 58px; } .ce-ult { display: none; } }
+@media (max-width: 520px) { .ce-t > .ce-b { min-height: 58px; } }
 :root[data-theme="contrast"] .ce-tit[data-g] { background: var(--surface); }
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .ce-t > .ce-b:active .ce-ic { animation: ce-salta .3s var(--ease-salida, ease-out); } html:not(.pa-quieto) .ce-nuevo { animation: ce-entra .4s var(--ease-salida, ease-out) .2s both; } }
 @keyframes ce-salta { 40% { translate: 0 -4px; scale: 1.08; } }

@@ -6,7 +6,7 @@
    Un texto sin traducción, o que ha cambiado después de traducirse, se queda en español.
    TRADUCCIÓN SIN REVISIÓN CLÍNICA: se avisa en el propio aviso de la base mientras la interfaz esté en inglés. */
 /** Huella FNV-1a de 32 bits del texto (bytes UTF-8), en ocho cifras hexadecimales: la misma de scripts/contenido_en.py. */
-import { instalarTraductor } from "./tr.js?v=202611230207";
+import { instalarTraductor } from "./tr.js?v=202611230223";
 export function huella(s) { let h = 0x811c9dc5; for (const b of new TextEncoder().encode(s)) h = Math.imul(h ^ b, 0x01000193) >>> 0; return h.toString(16).padStart(8, "0"); }
 export const NOTA = "The clinical content has been translated from Spanish and the translation has not been clinically reviewed yet.";
 /** Traductor sobre un diccionario { huella: inglés }: tr(texto) y trObj(objeto), que recorre un objeto y traduce en sitio sus cadenas

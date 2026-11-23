@@ -1,11 +1,11 @@
 /* Herramientas de uso ocasional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo. Se cargan al pulsar su botón;
    app.js les pasa en «a» lo que necesitan de la aplicación. Nada sale del dispositivo. */
-import { t, idioma } from "./i18n.js?v=202611230207";
-import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611230207";
-import { picto } from "./pictos.js?v=202611230207";
-import { cargarScript } from "./libs.js?v=202611230207";
-import { APP_VERSION } from "./version.js?v=202611230207";
+import { t, idioma } from "./i18n.js?v=202611230223";
+import { puntuarSPPB, vivifrailDeSppb } from "./engine.js?v=202611230223";
+import { picto } from "./pictos.js?v=202611230223";
+import { cargarScript } from "./libs.js?v=202611230223";
+import { APP_VERSION } from "./version.js?v=202611230223";
 
 const $ = (s) => document.querySelector(s);
 const hechos = new Set();

@@ -5,9 +5,9 @@
    original -> id del que lo sustituye) y la aplicación lo aplica al plan, a la sesión guiada y a la hoja imprimible.
    Los dibujos y la ficha animada viven en movimiento.js; la aplicación se los pasa (un módulo bajo demanda no importa a otro).
    Textos de la interfaz en cinco idiomas; los de cada ejercicio, en español como el resto del contenido de las sesiones. */
-import { idioma } from "./i18n.js?v=202611230207";
-import { sesionTipo, normalizar } from "./engine.js?v=202611230207";
-import { tC } from "./tr.js?v=202611230207";
+import { idioma } from "./i18n.js?v=202611230223";
+import { sesionTipo, normalizar } from "./engine.js?v=202611230223";
+import { tC } from "./tr.js?v=202611230223";
 
 const TXT = {
   es: { titulo: "Biblioteca de ejercicios", intro: "{n} ejercicios con su dibujo. Toque uno para ver cómo se hace.", zona: "Zona", material: "Con qué", postura: "Postura", todo: "Todo", cualquiera: "Cualquiera",

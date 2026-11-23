@@ -3,7 +3,7 @@
    a su «¿Por qué?». No añade contenido clínico: los efectos son las señales de la base revisada (kb.senales) tal como están,
    los cuidados son los del panel de hoy («cuid.*») y las explicaciones, las de js/porque.js. Aquí solo se reparten por zonas.
    Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230207";
+import { t, idioma } from "./i18n.js?v=202611230223";
 
 const TXT = {
   es: { titulo: "Su medicación en el cuerpo", intro: "Toque una zona para ver qué hacen ahí sus medicamentos y qué conviene cuidar al moverse.", resumen: "Su medicación actúa en <b>{a}</b> de {b} zonas.", resumen0: "Con su lista de hoy, ninguna zona pide un cuidado especial al moverse.",

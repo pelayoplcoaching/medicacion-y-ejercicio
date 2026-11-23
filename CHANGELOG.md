@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.22 · 2026-11-23 · Centro de herramientas: retoques tras las 50 mejoras visuales
+- En el móvil, el nombre de cada herramienta va debajo de su medallón y usa todo el ancho de la tarjeta: los nombres largos («Interacciones entre sus fármacos») ya no llegan a la estrella de favoritas.
+- La marca «Última» va sobre el borde de la tarjeta, como «Nuevo» (en el escritorio tapaba el principio del nombre) y se ve también en el móvil.
+- Los rótulos de grupo, que se quedan pegados al bajar, pasan por encima de las marcas «Nuevo» y «Última».
+- Una prueba de interfaz nueva comprueba que las marcas no pisan el nombre, el icono ni la estrella.
+
 ## 1.3.21 · 2026-11-23 · 50 mejoras visuales (831–880): marco común de las herramientas, centro, fichas y enciclopedia
 - **Marco común de las herramientas (831–838).** Cada ventana de herramienta se abre con un medallón con su icono, el color de su grupo (entender, moverse, seguir, consulta, ajustes; azul nuevo con versión oscura y de contraste), la entradilla como texto de entrada, la marca de borrador como cinta con lápiz, las fuentes en fichas numeradas con el DOI en pastilla y un fundido al pie cuando queda contenido. Lo pone `decorar(d)` de `js/centro.js`, que la aplicación llama al abrirse cualquier `dialog.ficha` (un `MutationObserver` del atributo `open`); sin tocar los módulos ni `style.css`.
 - **Centro de herramientas (839–846).** Tarjetas y rótulos con el color de su grupo, medallones más grandes, «Para usted hoy» con degradado y flecha, rótulos pegados con recuento, búsqueda vacía con icono, respuesta al pulsar y dos marcas nuevas: «Nuevo» en las herramientas que aún no se han abierto y «Última» en la última usada (clave nueva `medex.herr`, incluida en la copia de seguridad).
