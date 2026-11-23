@@ -9,8 +9,8 @@
    bebiendo con normalidad, sin dosis de más, consultar si dura más de 72 horas y la cautela en la insuficiencia cardiaca.
    Lo que se sabe de su eficacia: Watson 2022 (PubMed). El descanso con fiebre es la regla ya revisada de la aplicación.
    Contenido en español, como la base; la interfaz, en cinco idiomas. Estado: «medex.enfermedad» = { acordado: [ids] }. */
-import { idioma, t } from "./i18n.js?v=202611230223";
-import { APP_VERSION } from "./version.js?v=202611230223";
+import { idioma, t } from "./i18n.js?v=202611230752";
+import { APP_VERSION } from "./version.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Plan para los días de enfermedad", borrador: "Borrador pendiente de revisión clínica", de_su_lista: "De su lista", ninguno: "Ninguno de sus medicamentos está en esta pauta.", sin_meds: "Añada su medicación y verá cuáles entran en esta pauta.", todos: "Los grupos de la pauta", otros: "Los demás grupos de la pauta", segun: "Según la glucosa", acordado: "Acordado con mi médico: pausarlo esos días", por_acordar: "Por acordar", ya: "Acordado", retomar: "Cuándo retomarlos", consultar: "Cuándo consultar", ejercicio: "¿Y el ejercicio?", sabe: "Qué se sabe", fuentes: "Fuentes",
@@ -46,7 +46,7 @@ export const CONT = {
   que_es: "Cuando tiene vómitos o diarrea (dos o más veces) o fiebre con sudores o tiritona (no unas décimas), el cuerpo pierde líquido. Algunos medicamentos conviene pausarlos esos días y retomarlos al recuperarse.",
   pacto: "Es una pauta que se acuerda de antemano con su médico, enfermera o farmacéutico. No la aplique por su cuenta: prepárela aquí y llévela a la consulta.",
   retomar: "Al recuperarse: normalmente tras 24–48 horas comiendo y bebiendo con normalidad. Tómelos como siempre; no tome dosis de más para compensar las que no tomó.",
-  consultar: "Si la enfermedad dura más de 72 horas, consulte para que le revisen.",
+  consultar: "Si la enfermedad dura más de 72 horas, consulte para que le revisen. Consulte antes si no consigue retener líquidos, orina muy poco, o está muy decaído o confuso.",
   isglt2_aviso: "Con un inhibidor de SGLT2, si come o bebe poco hay riesgo de cetoacidosis aunque el azúcar esté normal: náuseas, vómitos, dolor de barriga o respiración acelerada obligan a consultar.",
   ic: "Con insuficiencia cardiaca moderada o grave esta pauta puede no ser adecuada: pida antes consejo a su especialista.",
   insulina: "Esta pauta no habla de la insulina: no la cambie sin las instrucciones de su equipo de diabetes.",

@@ -348,7 +348,7 @@ try {
   check("racha amable y mapa de 12 semanas con hoy marcado", /semana activa/.test(await p.textContent(".plan-racha")) && (await p.$$(".m12-rejilla i")).length === 84 && (await p.$$(".m12-rejilla i.d-hoy")).length === 1);
   check("tendencia de 8 semanas", (await p.$$(".tend rect")).length === 8);
   await p.click(".plan-obj .ds-btn"); await p.waitForSelector("#dosis[open] .ds-svg", { timeout: 5000 }).catch(() => {});
-  check("¿cuánto hace falta?: su media de minutos del diario, su grupo frente a no hacer nada y la curva con su línea", /min\/semana/.test(await p.textContent("#dosis .ds-su").catch(() => "")) && /% menos de riesgo/.test(await p.textContent("#dosis .ds-frase")) && (await p.$$("#dosis .ds-p")).length === 6 && (await p.$$("#dosis .ds-usted")).length === 1 && /observación/.test(await p.textContent("#dosis .ds-observ")));
+  check("¿cuánto hace falta?: su media de minutos del diario, su grupo frente a no hacer nada y la curva con su línea", /min\/semana/.test(await p.textContent("#dosis .ds-su").catch(() => "")) && /% menos de riesgo/.test(await p.textContent("#dosis .ds-frase")) && (await p.$$("#dosis .ds-p")).length === 7 && (await p.$$("#dosis .ds-usted")).length === 1 && /observación/.test(await p.textContent("#dosis .ds-observ")));
   await p.fill("#ds-rango", "200"); await p.dispatchEvent("#ds-rango", "input"); await p.waitForTimeout(100);
   check("al mover el deslizador cambia la frase (150-299 min: −31 %) y se marca su fila en la tabla", /31 %/.test(await p.textContent("#dosis .ds-frase")) && (await p.$$('#dosis .ds-tabla tr.ds-su-fila[data-k="g2"]')).length === 1);
   await p.click('#dosis [data-ds-vista="pasos"]'); await p.waitForTimeout(150);
@@ -681,7 +681,7 @@ try {
     check("«De cada 100 personas…»: seis cajas con la marca de borrador, las de su situación en un grupo aparte", nM + nR === 6 && (await p.isVisible("#cien .cn-borrador")) && (await p.$$("#cien .cn-caja.mia")).length === nM, `${nM}+${nR}`);
     check("cada caja tiene su tabla, su dibujo de 100 puntos con texto alternativo, la frase de lectura y la fuente con DOI", await p.$$eval("#cien .cn-caja", (cs) => cs.every((c) => c.querySelector("table tbody tr") && [...c.querySelectorAll(".cn-dibujo figure")].every((f) => f.querySelectorAll("circle").length === 100 && /\d/.test(f.getAttribute("aria-label") || "")) && c.querySelector(".cn-lee").textContent.length > 15 && c.querySelector('.cn-meta a[href^="https://doi.org/10."]'))));
     const ic = await p.$eval("#cn-ic", (c) => ({ nums: [...c.querySelectorAll("tbody td b")].map((b) => b.textContent).join(), llenos: [...c.querySelectorAll(".cn-dibujo figure")].map((f) => f.querySelectorAll(".cn-p-si").length + "+" + f.querySelectorAll(".cn-p-dif").length).join() }));
-    check("insuficiencia cardiaca: 24 y 17 ingresos de cada 100, y el dibujo los enseña (24; 17 más 7 evitados)", ic.nums === "24,17,11,7,6,5" && ic.llenos === "24+0,17+7", JSON.stringify(ic));
+    check("insuficiencia cardiaca: 24 y 16 ingresos de cada 100 (Molloy 2024), y el dibujo los enseña (24; 16 más 8 evitados)", ic.nums === "24,16,6,6,6,5" && ic.llenos === "24+0,16+8", JSON.stringify(ic));
     check("tras un infarto solo hay una columna (la diferencia) y un dibujo", (await p.$$("#cn-ci .cn-dibujo figure")).length === 1 && (await p.$$eval("#cn-ci tbody td b", (bs) => bs.map((b) => b.textContent).join())) === "−8,−1" && (await p.$$("#cn-ci .cn-dibujo .cn-p-dif")).length === 8);
     await p.click("#cn-cerrar"); await p.waitForTimeout(150);
   }

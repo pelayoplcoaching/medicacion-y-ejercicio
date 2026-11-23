@@ -2,6 +2,18 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.23 · 2026-11-23 · Validación clínica externa: 60 correcciones en avisos, cifras y fuentes
+- Se aplican los cambios de la validación externa del 23/11/2026 sobre el contenido de la v1.2 (134 filas: 22 cambios, 4 dudas) y sobre las herramientas de la segunda tanda (551 filas: 43 cambios, 17 dudas). Las herramientas de la segunda tanda conservan la marca «Borrador pendiente de revisión clínica».
+- **Seguridad: cuándo consultar o llamar al 112.** Números antes de entrenar (tensión, pulso muy alto o muy bajo, saturación; escalón nuevo de glucosa por debajo de 54 mg/dL y tratamiento de la bajada de azúcar con 15–20 g de azúcar rápido), calor (el golpe de calor ya no exige piel «seca»), «Me duele…» (el dolor de pecho que no cede al parar), alcohol con sedantes y con disulfiram, daño hepático, días de enfermedad, dolor de espalda brusco, insuficiencia cardiaca en clase III-IV, programa de 12 semanas y la variante difícil de un ejercicio de equilibrio.
+- **Cifras a la última versión de sus revisiones Cochrane, comprobadas en PubMed:** insuficiencia cardiaca (Molloy 2024: 15,9 % frente a 23,8 %, 60 ensayos; también en «De cada 100 personas…»), fibrilación auricular (Buckley 2024: la tarjeta pasa a «−30 % de recaídas», certeza moderada), artrosis (Lawford 2024 y Hall 2026: entre 9 y 13 puntos, certeza baja a moderada; fuera la comparación con los antiinflamatorios) y depresión («parecido a la psicoterapia», 10 ensayos pequeños). La tarjeta del DAI aclara que no vale para marcapasos.
+- **¿Cuánto movimiento hace falta?:** el tramo de 750 a 1499 minutos ya tiene cifra (HR 0,61, del texto completo de Arem 2015) y se dice que son minutos de actividad moderada.
+- **Caídas y carga anticolinérgica:** entra el mononitrato de isosorbida (1 punto) y se avisa en las entradas agrupadas de qué fármaco puntúa y cuál no (ranitidina 2; senósidos, picosulfato, flunarizina, opicapona y fenilefrina no figuran en la escala).
+- **Receta de ejercicio:** osteoporosis (el impacto moderado no es caminar rápido, y con fractura vertebral no se pasa de caminar a paso ligero), hipertensión (aeróbico y fuerza al mismo nivel), insuficiencia cardiaca con su propio tiempo, e ictus y oxígeno en casa sin la opción de ejercicio intenso.
+- **Escalas:** SARC-F con 5 kg (versión validada en España); la pregunta de fuerza de la constante vital se marca como añadida; la entrada ya no dice «validados» de las traducciones.
+- **Simulador:** los antiepilépticos puros pasan a «imprescindible»; bupropión, agomelatina y moclobemida salen de «no se deja de golpe».
+- Fuentes corregidas: aspirina y alcohol (Adiro, 4.5), ropinirol (4.5) y los umbrales de tensión y saturación, que pasan a figurar como criterio propio de la aplicación.
+- 75 textos nuevos traducidos al inglés (4773 de 4773). Pruebas actualizadas a las cifras nuevas.
+
 ## 1.3.22 · 2026-11-23 · Centro de herramientas: retoques tras las 50 mejoras visuales
 - En el móvil, el nombre de cada herramienta va debajo de su medallón y usa todo el ancho de la tarjeta: los nombres largos («Interacciones entre sus fármacos») ya no llegan a la estrella de favoritas.
 - La marca «Última» va sobre el borde de la tarjeta, como «Nuevo» (en el escritorio tapaba el principio del nombre) y se ve también en el móvil.

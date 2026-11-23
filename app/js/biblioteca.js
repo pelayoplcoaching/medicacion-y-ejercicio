@@ -5,9 +5,9 @@
    original -> id del que lo sustituye) y la aplicación lo aplica al plan, a la sesión guiada y a la hoja imprimible.
    Los dibujos y la ficha animada viven en movimiento.js; la aplicación se los pasa (un módulo bajo demanda no importa a otro).
    Textos de la interfaz en cinco idiomas; los de cada ejercicio, en español como el resto del contenido de las sesiones. */
-import { idioma } from "./i18n.js?v=202611230223";
-import { sesionTipo, normalizar } from "./engine.js?v=202611230223";
-import { tC } from "./tr.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
+import { sesionTipo, normalizar } from "./engine.js?v=202611230752";
+import { tC } from "./tr.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Biblioteca de ejercicios", intro: "{n} ejercicios con su dibujo. Toque uno para ver cómo se hace.", zona: "Zona", material: "Con qué", postura: "Postura", todo: "Todo", cualquiera: "Cualquiera",
@@ -101,7 +101,7 @@ const CAT = tC([
   { id: "silla_rapida", n: "Levantarse rápido de la silla", z: "piernas", m: ["silla"], p: "pie", niv: 2, pat: ["piernas"], min: 4, d: "Como levantarse de la silla, pero subiendo lo más rápido que pueda con seguridad y bajando despacio, en 3 segundos. 2 series de 6–8, con un descanso largo entre ellas.", c: "Rápido solo al subir. La serie termina cuando ya no sube rápido, no cuando no puede más.", f: "Silla más alta (con un cojín) y manos en los reposabrazos.", x: "Con una mochila ligera, o sin llegar a sentarse del todo." },
   { id: "paseo_carga", n: "Paseo con carga", z: "brazos", m: ["peso"], p: "pie", niv: 2, pat: ["brazos"], min: 4, d: "Con una bolsa o una garrafa en cada mano, camine erguido 20–30 pasos, descanse y repita 3–4 veces.", c: "Hombros atrás y abajo; el peso, repartido en las dos manos.", f: "Peso ligero y recorrido corto, por el pasillo.", x: "Más peso, o todo en una mano y cambiando a la vuelta, sin inclinarse." },
   { id: "agarre", n: "Apretar una pelota o una toalla", z: "brazos", m: ["pelota"], p: "sentado", niv: 1, pat: ["brazos"], min: 3, d: "Con una pelota blanda o una toalla enrollada en la mano, apriete fuerte 3–5 segundos y suelte. 10 veces con cada mano.", c: "Respire mientras aprieta; el hombro, relajado.", f: "Menos fuerza y menos tiempo.", x: "Retuerza la toalla como para escurrirla, 10 veces hacia cada lado." },
-  { id: "tandem", n: "De pie con un pie delante del otro", z: "equilibrio", m: ["silla"], p: "pie", niv: 1, pat: ["equilibrio"], min: 3, d: "Junto a un apoyo, coloque un pie justo delante del otro, talón con punta, y aguante 10–30 segundos. 3 veces con cada pie delante.", c: "Mirada al frente, a un punto fijo; la mano roza el apoyo.", f: "Los pies medio solapados, uno algo adelantado.", x: "Sin apoyo y girando la cabeza despacio a los lados, o con los ojos cerrados unos segundos." },
+  { id: "tandem", n: "De pie con un pie delante del otro", z: "equilibrio", m: ["silla"], p: "pie", niv: 1, pat: ["equilibrio"], min: 3, d: "Junto a un apoyo, coloque un pie justo delante del otro, talón con punta, y aguante 10–30 segundos. 3 veces con cada pie delante.", c: "Mirada al frente, a un punto fijo; la mano roza el apoyo.", f: "Los pies medio solapados, uno algo adelantado.", x: "Sin tocar el apoyo, pero con él al alcance de la mano, girando la cabeza despacio a los lados o cerrando los ojos unos segundos." },
   { id: "puntillas", n: "Caminar de puntillas y de talones", z: "equilibrio", m: ["pared"], p: "pie", niv: 2, pat: ["equilibrio", "pantorrilla"], min: 3, d: "Junto a una pared o una encimera, camine 10 pasos de puntillas y vuelva sobre los talones. 3 idas y vueltas.", c: "Pasos cortos, cuerpo erguido y la mano cerca del apoyo.", f: "Solo de puntillas, con la mano en el apoyo.", x: "Sin apoyo, o más despacio." },
   { id: "estirar_gemelo", n: "Estirar la pantorrilla en la pared", z: "movilidad", m: ["pared"], p: "pie", niv: 1, pat: ["movilidad", "pantorrilla"], min: 3, d: "Con las manos en la pared, una pierna atrás con la rodilla estirada y el talón en el suelo. Acérquese a la pared hasta notar que tira la pantorrilla. 20–30 segundos, 2 veces por pierna.", c: "El talón de atrás no se levanta; sin rebotes.", f: "Menos paso atrás.", x: "Después, doble un poco la rodilla de atrás para estirar más abajo." },
 ]);

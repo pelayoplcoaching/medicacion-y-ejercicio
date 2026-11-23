@@ -4,8 +4,8 @@
    para la cafeína y, para el tabaco y el café con levotiroxina, artículos con su DOI comprobados en PubMed. Contenido en
    español (como el resto del contenido clínico) revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas.
    Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611230223";
-import { tC, tL } from "./tr.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
+import { tC, tL } from "./tr.js?v=202611230752";
 
 /** Respuestas posibles de cada hábito, en el orden del formulario. */
 export const VALORES = { alcohol: ["no", "aveces", "diario"], tabaco: ["no", "si", "dejado"], cafe: ["poco", "medio", "mucho"] };
@@ -29,7 +29,7 @@ export const REGLAS = tC([
     titulo: { aveces: "Alcohol y medicamentos que dan sueño", diario: "Alcohol a diario con medicamentos que dan sueño" },
     texto: {
       aveces: "El alcohol suma su efecto al de {farmacos}: más sueño, reflejos más lentos y más riesgo de caídas. No beba antes de hacer ejercicio ni de conducir, y los días que beba deje para otro día los ejercicios de equilibrio más exigentes.",
-      diario: "Beber a diario con {farmacos} suma sueño y torpeza y aumenta el riesgo de caídas y de accidentes. Coméntelo con su médico. Mientras tanto, no beba antes de hacer ejercicio ni de conducir.",
+      diario: "Beber a diario con {farmacos} suma sueño y torpeza y aumenta el riesgo de caídas y de accidentes; con los opioides y con los tranquilizantes o las pastillas para dormir puede además frenar la respiración. Coméntelo con su médico. Mientras tanto, no beba antes de hacer ejercicio ni de conducir.",
     },
     fuentes: [FT("Fichas técnicas, apartado 4.5 (p. ej., lorazepam: «El efecto sedante puede potenciarse cuando se administra el producto en combinación con alcohol»)")] },
   { id: "alc_hipoglucemia", h: "alcohol", v: ["aveces", "diario"], si: { senal: "hipoglucemia" }, nivel: "alerta", ft: true,
@@ -47,7 +47,7 @@ export const REGLAS = tC([
   { id: "alc_sangrado", h: "alcohol", v: ["diario"], si: { senal: "sangrado", excluir: ["acenocumarol"] }, nivel: "precaucion", ft: true,
     titulo: "Alcohol a diario y riesgo de sangrado",
     texto: "Beber a diario suma riesgo de sangrado al de {farmacos}: el alcohol irrita el estómago (más aún con la aspirina y los antiinflamatorios) y facilita las caídas y los golpes. Beba poco y nunca antes de hacer ejercicio.",
-    fuentes: [FT("Ficha técnica de ácido acetilsalicílico, 4.4: en quienes toman «tres o más bebidas alcohólicas al día puede provocar hemorragia gástrica»")] },
+    fuentes: [FT("Ficha técnica de Adiro 100 mg, 4.5: «la administración conjunta de alcohol con ácido acetilsalicílico aumenta el riesgo de hemorragia digestiva»")] },
   { id: "alc_hipotension", h: "alcohol", v: ["aveces", "diario"], si: { senal: "hipotension" }, nivel: "info", ft: true,
     titulo: "Alcohol y medicamentos que bajan la tensión",
     texto: "El alcohol dilata los vasos y suma su efecto al de {farmacos}: más mareo al levantarse o al terminar el ejercicio, sobre todo con calor. Si bebe, que no sea antes de entrenar; levántese despacio y beba agua.",
@@ -62,7 +62,7 @@ export const REGLAS = tC([
     fuentes: [FT("Ficha técnica de Flagyl, 4.4 y 4.5")] },
   { id: "alc_disulfiram", h: "alcohol", v: ["aveces", "diario"], si: { pids: ["disulfiram"] }, nivel: "alerta", ft: true,
     titulo: "Disulfiram y alcohol",
-    texto: "Con disulfiram, incluso una cantidad mínima de alcohol provoca a los pocos minutos una reacción intensa, con sofoco, palpitaciones y malestar. Ojo con el alcohol escondido en salsas, vinagre, enjuagues bucales o jarabes. Si está bebiendo mientras lo toma, hable cuanto antes con su médico.",
+    texto: "Con disulfiram, incluso una cantidad mínima de alcohol provoca a los pocos minutos una reacción intensa, con sofoco, palpitaciones y malestar, que a veces es grave. Puede ocurrir hasta 2 semanas después de dejar el disulfiram. Ojo con el alcohol escondido en salsas, vinagre, enjuagues bucales o jarabes. Si está bebiendo mientras lo toma, hable cuanto antes con su médico; si tras beber nota dolor en el pecho, ahogo o se desmaya, llame al 112.",
     fuentes: [FT("Ficha técnica de Antabus, 4.3 y 4.4")] },
   { id: "alc_metotrexato", h: "alcohol", v: ["aveces", "diario"], si: { pids: ["metotrexato"] }, nivel: { aveces: "precaucion", diario: "alerta" }, ft: true,
     titulo: "Alcohol y metotrexato",
@@ -74,7 +74,7 @@ export const REGLAS = tC([
     fuentes: [FT("Ficha técnica de Valdoxan, 4.4 y 4.5")] },
   { id: "alc_higado", h: "alcohol", v: ["diario"], si: { senal: "hepatotoxico" }, nivel: "precaucion",
     titulo: "Alcohol a diario y productos que pueden dañar el hígado",
-    texto: "{farmacos} {se ha|se han} relacionado con casos de daño en el hígado, y beber a diario le suma carga. Valore con su médico si de verdad {lo necesita|los necesita}. Señales de alarma: cansancio intenso, orina oscura y piel u ojos amarillos.",
+    texto: "{farmacos} {se ha|se han} relacionado con casos de daño en el hígado, y beber a diario le suma carga. Valore con su médico si de verdad {lo necesita|los necesita}. Señales de alarma: cansancio intenso, orina oscura y piel u ojos amarillos; si aparecen, consulte ese mismo día.",
     fuentes: [{ txt: "LiverTox (NIH)", url: "https://www.ncbi.nlm.nih.gov/books/NBK547852/" }] },
 
   // ---------- tabaco ----------
@@ -91,8 +91,8 @@ export const REGLAS = tC([
       si: "El tabaco acelera la eliminación de {farmacos}. Si deja de fumar, el efecto puede aumentar: coméntelo con su médico por si hay que ajustar la dosis.",
       dejado: "Mientras fumaba, el tabaco aceleraba la eliminación de {farmacos}. Tras dejarlo, el efecto puede aumentar (por ejemplo, más mareo o sueño): coméntelo con su médico por si hay que ajustar la dosis.",
     },
-    extras: [{ pids: ["duloxetina"], v: ["si"], texto: " Con la duloxetina, los fumadores tienen niveles en la sangre casi un 50 % más bajos." }],
-    fuentes: [FT("Fichas técnicas de duloxetina, 4.5, ropinirol, 4.4, y Valdoxan, 4.5")] },
+    extras: [{ pids: ["duloxetina"], v: ["si"], texto: " Con la duloxetina, los fumadores tienen niveles en la sangre casi un 50 % más bajos." }, { pids: ["duloxetina"], v: ["dejado"], texto: " Con la duloxetina, los fumadores tienen niveles en la sangre casi un 50 % más bajos, así que al dejar de fumar pueden subir." }],
+    fuentes: [FT("Fichas técnicas de duloxetina, 4.5, ropinirol, 4.5, y Valdoxan, 4.5")] },
   { id: "tab_ahc35", h: "tabaco", v: ["si"], si: { pids: ["anticonceptivo_combinado"], edadMin: 35 }, nivel: "alerta", ft: true,
     titulo: "Tabaco y anticonceptivo combinado a partir de los 35",
     texto: "Fumar con la píldora, el parche o el anillo combinados aumenta el riesgo de trombosis arterial (infarto, ictus), sobre todo a partir de los 35 años. La ficha técnica aconseja encarecidamente a las mujeres de más de 35 años que siguen fumando que usen otro método: hable con su médico o su matrona.",
@@ -139,7 +139,7 @@ export const REGLAS = tC([
     texto: "Tome {farmacos} solo con agua y espere antes de tomar café o desayunar: el café reduce mucho su absorción.",
     extras: [
       { pids: ["alendronato"], texto: " Con el alendronato, espere al menos media hora: tomarlo con café redujo su absorción alrededor de un 60 %." },
-      { pids: ["risedronato"], texto: " Con el risedronato, espere al menos media hora." },
+      { pids: ["risedronato"], texto: " Con el risedronato, espere al menos media hora; si su comprimido semanal es «gastrorresistente», es al revés: se toma justo después del desayuno." },
       { pids: ["ibandronato"], texto: " Con el ibandronato, espere una hora." },
     ],
     fuentes: [FT("Fichas técnicas de alendronato, 4.2 y 5.2; risedronato, 4.2; e ibandronato, 4.2")] },
@@ -166,7 +166,7 @@ export const REGLAS = tC([
     fuentes: [EFSA] },
   { id: "caf_mucho", h: "cafe", v: ["mucho"], si: { sinCondicion: "embarazo", sinPids: ["cafeina"] }, nivel: "info",
     titulo: "¿Cuánto café es razonable?",
-    texto: "Para un adulto sano, la EFSA considera seguro hasta 400 mg de cafeína al día (unas 4 tazas de café de filtro) y hasta 200 mg de una vez, incluso menos de 2 horas antes de un ejercicio intenso. Si toma más, o nota palpitaciones, nervios o mal sueño, redúzcalo poco a poco.",
+    texto: "Para un adulto sano, la EFSA considera seguro hasta 400 mg de cafeína al día (unas 4 tazas de café de filtro) y hasta 200 mg de una vez. Si toma más, o nota palpitaciones, nervios o mal sueño, redúzcalo poco a poco. Si tiene una enfermedad del corazón o la tensión alta, pregunte a su médico cuánto le conviene.",
     fuentes: [EFSA] },
 ]);
 

@@ -7,9 +7,9 @@
    sin fiebre). Son NUEVOS y están por revisar: la tensión diastólica (100 y 110), el pulso en reposo (40, 50, 100 y 120),
    las décimas (37,5 °C), la saturación sin enfermedad respiratoria (92 %) y la redacción de todos los consejos.
    Los umbrales están en UMBRALES; los textos, en CONT (en español, como la base); la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230223";
-import { ALARMA } from "./engine.js?v=202611230223";
-import { tC } from "./tr.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
+import { ALARMA } from "./engine.js?v=202611230752";
+import { tC } from "./tr.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Números antes de entrenar", borrador: "Borrador pendiente de revisión clínica", intro: "Escriba los números que tenga hoy. No hace falta ninguno para entrenar: sirven si ya se los mide.", para_usted: "Le conviene", ver: "Ver qué toca hoy", borrar: "Borrar", falta: "Escriba al menos un número.", rango: "Revise este número: no parece posible.",
@@ -37,7 +37,7 @@ export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; i
 
 /* Umbrales. «rev: true» = ya estaba revisado en la aplicación; «rev: false» = nuevo, por revisar. */
 export const UMBRALES = {
-  glucosa: { baja: 70, justa: 90, aerobico: 125, alta: 250, rev: true }, // mg/dL · regla de la insulina de la base y franjas de «Mis constantes»
+  glucosa: { muy_baja: 54, baja: 70, justa: 90, aerobico: 125, alta: 250, rev: true }, // mg/dL · 54 = hipoglucemia de nivel 2 (ADA), añadido tras la validación externa del 23/11/2026 · regla de la insulina de la base y franjas de «Mis constantes»
   ta_s: { baja: 90, media: 160, alta: 180, rev: true }, // mmHg · franjas de «Mis constantes»
   ta_d: { media: 100, alta: 110, rev: false }, // mmHg
   pulso: { muy_bajo: 40, bajo: 50, alto: 100, muy_alto: 120, rev: false }, // lpm en reposo
@@ -52,26 +52,27 @@ export const UNIDADES = tC({ glucosa: "mg/dL", ta_s: "mmHg", ta_d: "mmHg", pulso
 export const CONT = {
   veredicto: { verde: "Con estos números puede hacer su sesión de hoy.", ambar: "Hoy toca una sesión más suave. Mire el porqué en cada número.", rojo: "Hoy no entrene. Mire qué hacer en cada número." },
   nota: "Los números no lo dicen todo: si se encuentra mal, no entrene aunque salgan bien. Y si le salen bien pero no son los suyos de siempre, coméntelo.",
-  g_baja_hipo: "Es una bajada de azúcar. Tome 10–20 g de hidratos de absorción rápida (zumo, 3–4 galletas, plátano) y espere a que suba. No entrene con la glucosa baja.", // (R) + cierre nuevo
+  g_muy_baja: "Muy baja. Trátela ya: tome 15–20 g de azúcar de absorción rápida (un vaso de zumo o de refresco con azúcar, o 3 sobres de azúcar) y repita la medida a los 15 minutos. Hoy no entrene; si no se recupera o se encuentra mal, pida ayuda médica.",
+  g_baja_hipo: "Es una bajada de azúcar. Tome 15–20 g de azúcar de absorción rápida (un vaso de zumo o de refresco con azúcar, o 3 sobres de azúcar) y repita la medida a los 15 minutos; si sigue por debajo de 70, repita la toma. No empiece hasta pasar de 90 y encontrarse bien. Si baja de 54 o no se recupera, hoy no entrene y consulte.", // (R) + cierre nuevo
   g_justa_hipo: "Justa para empezar. Tome 10–20 g de hidratos de absorción rápida y espere a que suba antes de empezar.", // (R)
-  g_bien_125: "Bien para moverse. Tome 10 g de hidratos si va a hacer ejercicio aeróbico.", // (R)
+  g_bien_125: "Bien para moverse. Si usa insulina o una sulfonilurea y va a hacer ejercicio aeróbico de más de media hora, tome antes unos 10 g de hidratos.", // (R)
   g_bien: "Bien para moverse: puede empezar.", // (R)
-  g_alta_hipo: "Alta. Compruebe cetonas; con cetonas o malestar, no entrene y consulte. Sin cetonas y encontrándose bien, sesión suave y beba agua.", // (R) + cierre nuevo
+  g_alta_hipo: "Alta. Si usa insulina o toma una «-gliflozina» y puede medirse las cetonas, mídalas. Con cetonas, vómitos, dolor de barriga o malestar, no entrene y consulte hoy. Sin cetonas y encontrándose bien, sesión suave y beba agua.", // (R) + cierre nuevo
   g_baja: "Baja. Coma algo antes de empezar y, si puede, repita la medida. Si nota temblor, sudor frío o debilidad, espere a que pase.",
   g_alta: "Alta. Si se encuentra bien, sesión suave y beba agua; con malestar, mucha sed o náuseas, no entrene y consulte.",
-  t_alta: "Demasiado alta para entrenar hoy. Repose 5 minutos sentado y repita la medida; si sigue igual, no entrene y consulte.",
+  t_alta: "Demasiado alta para entrenar hoy. Repose 5 minutos sentado y repita la medida; si sigue igual, no entrene y consulte. Si además tiene dolor de pecho, falta de aire, dolor de cabeza muy fuerte, visión borrosa o debilidad en un lado del cuerpo, llame al 112.",
   t_media: "Alta. Hoy, solo actividad ligera o moderada, sin esfuerzos máximos ni aguantar el aire.",
   t_baja: "Baja. Si se nota mareado o débil, hoy no. Si se encuentra bien, empiece sentado, levántese despacio y beba agua.",
   t_bien: "Bien para moverse.",
-  p_muy_alto: "Muy rápido para estar en reposo. Repose 10 minutos y repita; si sigue en 120 o más, no entrene hoy y consulte.",
+  p_muy_alto: "Muy rápido para estar en reposo. Repose 10 minutos y repita; si sigue en 120 o más, no entrene hoy y consulte. Si además nota dolor de pecho, falta de aire o mareo, llame al 112.",
   p_alto: "Más rápido de lo normal en reposo (puede ser por fiebre, falta de agua, nervios o café). Hoy, suave; si no es habitual en usted, coméntelo.",
   p_bien: "Bien para moverse.",
   p_bajo_bb: "Lento, lo esperable con su medicación. Si no se marea, puede empezar.",
   p_bajo: "Lento. Si es su pulso de siempre y se encuentra bien, puede entrenar suave; si es nuevo o se marea, consulte.",
-  p_muy_bajo: "Muy lento. Si no es su pulso de siempre o nota mareo o cansancio, no entrene y consulte.",
-  s_muy_baja: "Baja. Compruebe que el dedo está caliente y sin esmalte y repita. Si sigue por debajo de 88 %, no entrene; si le falta el aire o es más baja de lo habitual en usted, consulte hoy.",
+  p_muy_bajo: "Muy lento. No entrene hoy y consulte, salvo que su médico ya conozca ese pulso y usted se encuentre bien. Con mareo, desmayo o dolor de pecho, llame al 112.",
+  s_muy_baja: "Baja. Compruebe que el dedo está caliente y sin esmalte y repita. Si sigue por debajo de 88 %, no entrene y consulte hoy, salvo que sea su cifra de siempre y su médico la conozca. Si le falta el aire en reposo o tiene los labios azulados, llame al 112.",
   s_baja_resp: "En su límite. Si es su cifra de siempre, sesión suave por intervalos cortos, con el oxígeno pautado si lo tiene; pare si baja del valor que le indicó su neumólogo.",
-  s_baja: "Más baja de lo normal. Repita la medida con el dedo caliente y sin esmalte; si se confirma, hoy descanse y coméntelo con su médico.",
+  s_baja: "Más baja de lo normal. Repita la medida con el dedo caliente y sin esmalte; si se confirma, hoy no entrene y consulte hoy mismo. Si le falta el aire, llame al 112.",
   s_bien: "Bien para moverse.",
   f_fiebre: "Fiebre. No entrene: descanse hasta llevar 24–48 horas sin fiebre y retome a intensidad baja.", // (R)
   f_decimas: "Décimas. Si se encuentra bien, como mucho un paseo suave; si la temperatura sube o aparece malestar, descanse.",
@@ -79,8 +80,8 @@ export const CONT = {
 };
 export const FUENTES = [
   { txt: "Glucosa: ADA Standards of Care 2024 (ejercicio) y consenso de ejercicio en diabetes tipo 1 (Riddell 2017, Lancet Diabetes Endocrinol)", doi: "10.1016/S2213-8587(17)30014-1" },
-  { txt: "Tensión y pulso: ESC 2024, guía de hipertensión arterial · ACSM, Guidelines for Exercise Testing and Prescription, 11.ª ed. (criterios para no iniciar una sesión de rehabilitación)" },
-  { txt: "Saturación: GOLD 2024 y guías de rehabilitación respiratoria (mantener la saturación por encima de 88–90 % con el esfuerzo)" },
+  { txt: "Tensión y pulso: criterio de la aplicación, más prudente que el que se atribuye al ACSM (no hacer ejercicio con más de 200/110 mmHg en reposo)" },
+  { txt: "Saturación: criterio de la aplicación para el reposo; durante el esfuerzo, las guías de rehabilitación respiratoria piden mantenerla por encima de 88–90 %" },
   { txt: "Fiebre: regla de la aplicación (con infección activa y fiebre, no entrenar; retomar tras 24–48 h sin fiebre)" },
 ];
 
@@ -91,7 +92,8 @@ export function evaluar(v = {}, d = {}) {
   const U = UMBRALES, L = [], hay = (k) => v[k] != null && v[k] !== "" && Number.isFinite(Number(v[k]));
   const pon = (campo, nivel, clave) => L.push({ campo, nivel, clave });
   if (hay("glucosa")) { const g = Number(v.glucosa), u = U.glucosa;
-    if (d.hipo) g < u.baja ? pon("glucosa", "rojo", "g_baja_hipo") : g < u.justa ? pon("glucosa", "ambar", "g_justa_hipo") : g <= u.aerobico ? pon("glucosa", "verde", "g_bien_125") : g <= u.alta ? pon("glucosa", "verde", "g_bien") : pon("glucosa", "ambar", "g_alta_hipo");
+    if (g < u.muy_baja) pon("glucosa", "rojo", "g_muy_baja");
+    else if (d.hipo) g < u.baja ? pon("glucosa", "rojo", "g_baja_hipo") : g < u.justa ? pon("glucosa", "ambar", "g_justa_hipo") : g <= u.aerobico ? pon("glucosa", "verde", "g_bien_125") : g <= u.alta ? pon("glucosa", "verde", "g_bien") : pon("glucosa", "ambar", "g_alta_hipo");
     else g < u.baja ? pon("glucosa", "ambar", "g_baja") : g <= u.alta ? pon("glucosa", "verde", "g_bien") : pon("glucosa", "ambar", "g_alta"); }
   if (hay("ta_s") || hay("ta_d")) { const s = hay("ta_s") ? Number(v.ta_s) : null, di = hay("ta_d") ? Number(v.ta_d) : null;
     if ((s != null && s >= U.ta_s.alta) || (di != null && di >= U.ta_d.alta)) pon("ta", "rojo", "t_alta");

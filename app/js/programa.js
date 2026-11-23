@@ -6,8 +6,8 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611230223";
-import { tC } from "./tr.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
+import { tC } from "./tr.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -19,7 +19,7 @@ const TXT = {
     obj_ses: "{n} sesiones", obj_ses_1: "1 sesión", obj_aer: "paseo de {n} min", obj_ser: "{n} series", obj_ser_1: "1 serie", obj_rpe: "esfuerzo {a}–{b} de 10", obj_min: "unos {n} min",
     esta: "Esta semana", lleva: "Sesiones hechas: {a}. Objetivo: {b}.", hint_dificil: "Pruebe la versión «más difícil» en dos ejercicios.", hint_descarga: "Semana más ligera a propósito, para asimilar lo trabajado.", hint_pruebas: "Semana de pruebas: repita las pruebas de forma física y compare.", hint_mant: "Se mantienen las dosis de la semana 11.",
     v_avanza: "Sube un paso", v_avanza_x: "Sesiones hechas: {a} (objetivo: {b}). Pasa a la semana {n}.", v_poco: "Se repite", v_poco_x: "Sesiones hechas: {a} (objetivo: {b}). Sin prisa: la semana {n} se repite.", v_duro: "Se repite", v_duro_x: "El esfuerzo medio fue de {r} sobre 10, alto para subir. La semana {n} se repite.",
-    v_sintomas: "Se repite", v_sintomas_x: "Apuntó mareo, palpitaciones, bajada de azúcar o sangrado. No se sube; si se repite, coméntelo con su médico.", v_pausa: "En pausa", v_pausa_x: "Semana sin sesiones. Se retoma donde estaba.", v_atras: "Un paso atrás", v_atras_x: "Dos semanas o más sin sesiones: se retoma en la semana {n}.", v_fin: "Programa completado", v_fin_x: "Ha terminado las 12 semanas.", v_vuelta: "Vuelta tras un parón", v_vuelta_x: "Retrocedido a la semana {n} para volver poco a poco.",
+    v_sintomas: "Se repite", v_sintomas_x: "Apuntó mareo, palpitaciones, bajada de azúcar o sangrado. No se sube; si se repite, coméntelo con su médico. Si tuvo dolor en el pecho, o palpitaciones con mareo, consulte antes de la próxima sesión.", v_pausa: "En pausa", v_pausa_x: "Semana sin sesiones. Se retoma donde estaba.", v_atras: "Un paso atrás", v_atras_x: "Dos semanas o más sin sesiones: se retoma en la semana {n}.", v_fin: "Programa completado", v_fin_x: "Ha terminado las 12 semanas.", v_vuelta: "Vuelta tras un parón", v_vuelta_x: "Retrocedido a la semana {n} para volver poco a poco.",
     anterior: "La semana pasada", como: "Cómo decide el programa", regla_1: "Cada lunes mira la semana anterior en su diario.", regla_2: "Si hizo al menos dos de cada tres sesiones previstas y el esfuerzo medio no llegó a 7,5 sobre 10, sube un paso.", regla_3: "Si hizo menos sesiones, o el esfuerzo fue de 7,5 o más, la semana se repite.", regla_4: "Si apuntó mareo, palpitaciones, bajada de azúcar o sangrado, no sube.", regla_5: "Una semana sin sesiones no cambia nada. A partir de la segunda seguida, retrocede un paso por semana.",
     tabla: "Las 12 semanas", hecha: "Hecha", actual: "En curso", historial: "Lo que ha pasado", h_sem: "Semana {n}", h_ses: "sesiones: {a} (objetivo: {b})", h_min: "{n} min",
     cambiar_nivel: "Cambiar de nivel", dejar: "Dejar el programa", dejado: "Programa retirado. Su plan vuelve a las dosis de siempre.", deshacer: "Deshacer", empezado: "Programa en marcha: {x}",

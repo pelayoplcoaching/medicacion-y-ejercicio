@@ -9,7 +9,7 @@
    Estado en localStorage («medex.dolor»): { zona, hist: [{ f, z, n }], aplicado: { zona, cambios, variantes } | null }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA. Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en
    español como el resto de reglas de la aplicación. Fuentes comprobadas en PubMed (22/11/2026). */
-import { idioma } from "./i18n.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Me duele…", borrador: "Borrador pendiente de revisión clínica", intro: "Con dolor casi siempre se puede seguir moviéndose, de otra manera. Diga dónde le duele y cuánto, y le digo qué hacer con su plan.", donde: "¿Dónde le duele?",
@@ -105,7 +105,7 @@ export const CONT = {
       adapta: { pared: "Manos más bajas que los hombros y menos recorrido.", press_sentado: "Banda suave y sin llegar a estirar del todo.", brazo: "Codo pegado al cuerpo y peso ligero.", remo: "Codos pegados al cuerpo y hombros lejos de las orejas.", remo_sentado: "Codos pegados al cuerpo y hombros lejos de las orejas.", estirar: "Suba los brazos solo hasta donde no duela.", triceps: "Codos pegados; si molesta, banda más suave." },
       conviene: "Movimientos por debajo de la altura del hombro: remo con banda suave y todo el trabajo de piernas, que no cambia.",
       general: ["No duerma sobre ese hombro mientras duela.", "Evite por ahora levantar peso por encima de la cabeza."],
-      alarma: [{ id: "corazon", t: "El dolor en el hombro o el brazo izquierdo, el pecho o la mandíbula aparece con el esfuerzo y cede al parar.", u: true }],
+      alarma: [{ id: "corazon", t: "Dolor u opresión en el pecho, el hombro o el brazo izquierdo o la mandíbula, con el esfuerzo o en reposo; sobre todo si no cede en pocos minutos al parar o viene con sudor frío, náuseas o falta de aire.", u: true }],
     },
     cuello: {
       cambia: { hombro: "remo_sentado", plancha: "cuadrupedia", elevacion_lateral: "remo", jalon_banda: "remo_sentado" },

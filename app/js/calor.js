@@ -5,8 +5,8 @@
    de temperatura son orientativas: sirven para que cada uno sitúe su día, no son umbrales oficiales (esos dependen de la
    provincia). Textos de la interfaz en los cinco idiomas dentro del módulo; el consejo, en español como el resto de
    explicadores. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611230223";
-import { tC, tL } from "./tr.js?v=202611230223";
+import { t, idioma } from "./i18n.js?v=202611230752";
+import { tC, tL } from "./tr.js?v=202611230752";
 
 export const NIVELES = 4; // 0 fresco o templado · 1 calor · 2 mucho calor · 3 calor extremo
 /** Mecanismos de su lista que importan con calor: el calor en sí, el agua y las sales, y el sol. */
@@ -26,7 +26,7 @@ const AGUA_LIMITE = "Si su médico le ha limitado los líquidos (por el corazón
 const AGUA_MAYOR = "Con los años se nota menos la sed: beba con horario, sin esperar a tenerla.";
 const ROPA = tC(["Ropa ligera, holgada y de colores claros; gorra o sombrero si sale.", "Busque la sombra y, al volver, una ducha templada o paños húmedos ayudan a bajar la temperatura."]);
 const SOL = "Alguno de sus medicamentos aumenta la sensibilidad al sol: protector solar alto y manga larga si va a estar al aire libre.";
-const PARAR = tC(["Si nota mareo, dolor de cabeza, náuseas, calambres o un cansancio fuera de lo normal: pare, póngase a la sombra o en un sitio fresco, beba y refrésquese.", "Si alguien tiene la piel caliente y seca, está confuso, convulsiona o pierde el conocimiento: llame al 112 y refrésquele mientras llega la ayuda."]);
+const PARAR = tC(["Si nota mareo, dolor de cabeza, náuseas, calambres o un cansancio fuera de lo normal: pare, póngase a la sombra o en un sitio fresco, beba y refrésquese. Si no mejora en media hora o va a peor, pida ayuda médica.", "Si alguien está confuso, se comporta de forma extraña, convulsiona o pierde el conocimiento, o tiene la piel muy caliente (seca o empapada en sudor): llame al 112 y refrésquele mientras llega la ayuda."]);
 export const FUENTES = tC([
   { txt: "OMS Europa. #KeepCool in the heat (hoja informativa, 8 de junio de 2026)" },
   { txt: "Sawka et al. ACSM position stand: exercise and fluid replacement. Med Sci Sports Exerc 2007", doi: "10.1249/mss.0b013e31802ca597" },

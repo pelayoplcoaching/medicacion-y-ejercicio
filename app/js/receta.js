@@ -10,9 +10,9 @@
      (Kanaley 2022, Brooke-Wavell 2022, Campbell 2019, Mottola 2018).
    CONTENIDO CLÍNICO NUEVO (el resumen en celdas y las frases de las guías): BORRADOR PENDIENTE DE REVISIÓN CLÍNICA.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611230223";
-import { ALARMA } from "./engine.js?v=202611230223";
-import { APP_VERSION } from "./version.js?v=202611230223";
+import { idioma, t } from "./i18n.js?v=202611230752";
+import { ALARMA } from "./engine.js?v=202611230752";
+import { APP_VERSION } from "./version.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Receta de ejercicio por enfermedad", borrador: "Borrador pendiente de revisión clínica", intro: "La dosis de ejercicio de referencia para cada situación y lo que cambia con ella. Es orientativa: no sustituye la valoración de su médico.", sus: "Sus situaciones", otras: "Otras situaciones", todas: "Elija una situación", dosis: "Dosis de referencia", th_f: "Frecuencia", th_i: "Intensidad", th_t: "Tiempo", th_tipo: "Tipo", aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio", leyenda: "En negrita, lo que cambia con esta situación; el resto es la recomendación general de la OMS.", manda: "Lo específico de abajo manda sobre la tabla.",
@@ -35,8 +35,8 @@ export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; i
 
 /** Recomendación general de la OMS 2020 para adultos (también con enfermedades crónicas) y, desde los 65 años, equilibrio. */
 export const BASE = {
-  aer: { f: "Repartido en la semana, como mejor le venga", i: "Moderada (o intensa)", t: "150–300 minutos a la semana (o 75–150 si es intensa)", tipo: "Caminar a paso ligero, bicicleta, nadar, bailar", t_sin: "150–300 minutos a la semana" },
-  fue: { f: "Al menos 2 días a la semana", i: "Moderada o mayor", t: "Los grandes grupos musculares", tipo: "Propio peso, bandas, mancuernas o máquinas" },
+  aer: { f: "Repartido en la semana, como mejor le venga", i: "Moderada (o intensa)", t: "150–300 minutos a la semana (o 75–150 si es intensa)", tipo: "Caminar a paso ligero, bicicleta, nadar, bailar", t_sin: "Hasta 150–300 minutos a la semana, subiendo poco a poco" },
+  fue: { f: "Al menos 2 días a la semana", i: "Moderada o mayor", t: "Sin un tiempo fijo: lo que cuenta es trabajar los grandes grupos musculares", tipo: "Propio peso, bandas, mancuernas o máquinas" },
   eq: { f: "3 o más días a la semana, desde los 65 años", i: "—", t: "—", tipo: "Actividad variada que combine equilibrio y fuerza" },
 };
 /** Tiempo general cuando la situación fija su propia intensidad (no se ofrece la variante «intensa»). Vive en BASE.aer.t_sin para que se pueda traducir. */
@@ -58,21 +58,21 @@ export const FUENTES = {
 export const SITUACIONES = [
   { id: "diabetes", k: "sit.diabetes", reglas: ["diabetes_pies"], cien: "dm2", c: { aer: { tipo: "Con pérdida de sensibilidad en los pies: bicicleta, natación o elíptica antes que correr" } },
     notas: [{ f: "kanaley", x: ["En la diabetes tipo 2 valen las recomendaciones generales de actividad física, con pocas excepciones.", "Reduzca el tiempo sentado e interrúmpalo con pausas activas frecuentes.", "También ayudan los ejercicios de flexibilidad y de equilibrio."] }] },
-  { id: "insuficiencia_cardiaca", k: "sit.ic", reglas: ["ic_ejercicio"], cien: "ic", c: { aer: { i: "Por la sensación de esfuerzo: debe poder hablar" } } },
+  { id: "insuficiencia_cardiaca", k: "sit.ic", reglas: ["ic_ejercicio"], cien: "ic", c: { aer: { i: "Por la sensación de esfuerzo: debe poder hablar", t: "Hasta 150 minutos a la semana, empezando por ratos cortos y según tolere" } } },
   { id: "renal", k: "sit.renal.pac", reglas: [], f: "kdigo", c: { aer: { i: "Moderada", t: "Al menos 150 minutos a la semana, o hasta donde lo permita su tolerancia cardiovascular y física" } } },
   { id: "marcapasos", k: "sit.marcapasos", reglas: ["marcapasos_fc", "dai_fc"], c: { aer: { i: "Por la sensación de esfuerzo; con DAI, 10–20 latidos por debajo de la frecuencia de detección" }, fue: { tipo: "Sin cargar ni estirar con fuerza el hombro del dispositivo las primeras 6–8 semanas" } } },
-  { id: "osteoporosis", k: "sit.osteoporosis", reglas: ["osteoporosis_plan"], c: { aer: { tipo: "Impacto moderado: caminar rápido, escaleras" }, fue: { tipo: "Piernas y extensores de la espalda; sin flexiones de columna con carga" }, eq: { tipo: "Equilibrio para prevenir caídas" } },
+  { id: "osteoporosis", k: "sit.osteoporosis", reglas: ["osteoporosis_plan"], c: { aer: { tipo: "Sin fracturas vertebrales: impacto moderado (trote suave, saltitos, pisar fuerte). Con fractura vertebral o varias fracturas: no pasar de caminar a paso ligero" }, fue: { tipo: "Piernas y extensores de la espalda; sin flexiones de columna con carga" }, eq: { tipo: "Equilibrio para prevenir caídas" } },
     notas: [{ f: "brooke", x: ["Fuerza e impacto para el hueso, fuerza y equilibrio para evitar caídas, y ejercicios de extensión de la columna para la postura.", "Evite las posturas con mucha flexión de la columna, al hacer ejercicio y en el día a día.", "Con fractura vertebral o varias fracturas por traumatismos leves, el impacto no debe pasar, en general, del de caminar a paso ligero.", "Si hay riesgo de caídas, empiece por fuerza y equilibrio."] }] },
   { id: "epoc_asma", k: "sit.epoc", reglas: ["epoc_plan"], c: { aer: { i: "Por la escala de disnea: debe poder hablar frases cortas" }, fue: { tipo: "Sobre todo piernas" } } },
-  { id: "oxigeno", k: "sit.oxigeno", reglas: ["oxigeno_cond"], c: { aer: { tipo: "Intervalos cortos, con el oxígeno al flujo pautado para el esfuerzo" }, fue: { tipo: "Sobre todo piernas" } } },
+  { id: "oxigeno", k: "sit.oxigeno", reglas: ["oxigeno_cond"], c: { aer: { i: "Ligera o moderada, por la falta de aire", tipo: "Intervalos cortos, con el oxígeno al flujo pautado para el esfuerzo" }, fue: { tipo: "Sobre todo piernas" } } },
   { id: "embarazo", k: "sit.embarazo", reglas: ["embarazo"], eq: false, c: { aer: { i: "Moderada", t: "150 minutos a la semana", tipo: "Sin contacto ni riesgo de caída" } },
     notas: [{ f: "mottola", x: ["En la guía canadiense, los beneficios de la actividad física en el embarazo son moderados y no se identificaron daños."] }] },
-  { id: "hipertension", k: "sit.hipertension", reglas: ["hipertension_cond"], f: "pescatello", c: { aer: { f: "La mayoría de los días, mejor todos", i: "Moderada (40–<60 % de la reserva)", t: "30 minutos o más al día, seguidos o sumando ratos", tipo: "Sobre todo resistencia aeróbica" }, fue: { i: "Moderada, sin cargas máximas y sin aguantar el aire", tipo: "Como complemento del aeróbico" } },
+  { id: "hipertension", k: "sit.hipertension", reglas: ["hipertension_cond"], f: "pescatello", c: { aer: { f: "La mayoría de los días, mejor todos", i: "Moderada (40–<60 % de la reserva)", t: "30 minutos o más al día, seguidos o sumando ratos", tipo: "Aeróbico y fuerza: los dos bajan la tensión" }, fue: { i: "Moderada, sin cargas máximas y sin aguantar el aire", tipo: "Fuerza dinámica, al mismo nivel que el aeróbico" } },
     notas: [{ f: "pescatello", x: ["Tras una sesión de ejercicio aeróbico, la bajada de la tensión puede durar hasta 22 horas."] }] },
   { id: "cardiopatia_isquemica", k: "sit.cardiopatia", reglas: ["cardiopatia_isquemica"], cien: "ci", c: { aer: { i: "Ligera-moderada al empezar; progrese despacio", tipo: "Con calentamiento y enfriamiento de al menos 10 minutos" }, fue: { i: "Sin esfuerzos máximos, isométricos intensos ni aguantar la respiración" } } },
   { id: "fibrilacion_auricular", k: "sit.fa", reglas: ["fibrilacion_auricular"], cien: "fa", c: { aer: { i: "Moderada, por la sensación de esfuerzo o la prueba del habla (el pulso no sirve)" } } },
   { id: "aneurisma_aorta", k: "sit.aneurisma", reglas: ["aneurisma_aorta"], c: { aer: { i: "Moderada" }, fue: { i: "Ligera: la carga máxima la fija su cardiólogo o cirujano vascular", tipo: "Sin pesos pesados, isométricos intensos ni aguantar la respiración" } } },
-  { id: "ictus", k: "sit.ictus", reglas: ["ictus"], c: { fue: { tipo: "También el lado afectado" }, eq: { tipo: "Siempre con apoyo" } } },
+  { id: "ictus", k: "sit.ictus", reglas: ["ictus"], c: { aer: { i: "Moderada" }, fue: { tipo: "También el lado afectado" }, eq: { tipo: "Siempre con apoyo" } } },
   { id: "cancer", k: "sit.cancer", reglas: ["cancer_cond"], c: { aer: { f: "3 sesiones a la semana", t: "30 minutos por sesión" }, fue: { f: "2 sesiones a la semana", tipo: "Sin cargar un segmento con metástasis en el hueso" } },
     notas: [{ f: "campbell", x: ["Evite la inactividad: el ejercicio es, en general, seguro para quien tiene o ha tenido un cáncer.", "Con dosis concretas de ejercicio aeróbico, de fuerza o de ambos mejoran la ansiedad, el ánimo, el cansancio, la función física y la calidad de vida."] }] },
   { id: "artrosis", k: "sit.artrosis", reglas: ["artrosis"], c: { aer: { tipo: "Bajo impacto: bicicleta, piscina, caminar" }, fue: { tipo: "Cuádriceps y glúteo" } } },

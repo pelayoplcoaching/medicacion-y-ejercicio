@@ -5,7 +5,7 @@
    Estado en localStorage («medex.vuelta»): { motivo, tiempo, inicio (ISO) }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: los escalones y las reglas de espera son una propuesta de esta aplicación.
    Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en español. Fuentes comprobadas en PubMed (22/11/2026). */
-import { t, idioma } from "./i18n.js?v=202611230223";
+import { t, idioma } from "./i18n.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "Volver tras un parón", borrador: "Borrador pendiente de revisión clínica", intro: "Parar pasa. Lo importante es cómo se vuelve: sin prisa y sin empezar donde lo dejó.", p_motivo: "¿Por qué paró?", p_tiempo: "¿Cuánto tiempo lleva sin entrenar?", p_hoy: "¿Cómo está hoy? Marque lo que le pase",
@@ -100,7 +100,7 @@ export const CONT = {
     lesion: "Si paró por una lesión o un dolor, la vuelta depende de la zona: mírelo en «Me duele…».",
   },
   perdido: {
-    t1: "En menos de dos semanas apenas se pierde nada. Puede notar el primer día algo más de fatiga, nada más.",
+    t1: "En menos de dos semanas se pierde poco, salvo que haya estado en cama o ingresado. Puede notar algo más de fatiga los primeros días.",
     t2: "Entre dos y cuatro semanas la fuerza aguanta bastante; lo primero que se nota es el fondo: se cansará antes.",
     t3: "De uno a tres meses se pierde parte de la fuerza y bastante fondo, más a partir de los 65 años y si antes se movía poco.",
     t4: "Con más de tres meses conviene tomárselo casi como un comienzo, con calma. Volver compensa a cualquier edad.",
@@ -110,7 +110,7 @@ export const CONT = {
     ingreso: "Tras un ingreso se pierde más de lo que parece, sobre todo en las piernas. Empiece por levantarse de la silla, caminar por casa y ejercicios sentado.",
     corazon: "Lo habitual es volver dentro de un programa de rehabilitación, con la intensidad que le marquen. No se guíe por el pulso si toma fármacos que lo frenan.",
   },
-  prox: "La próxima vez que no pueda entrenar, no lo deje del todo: una sesión corta por semana, con una serie de cada ejercicio, mantiene casi todo lo ganado.",
+  prox: "La próxima vez que no pueda entrenar, no lo deje del todo: una o dos sesiones cortas por semana, sin bajar la intensidad, mantienen buena parte de lo ganado. A partir de los 65 años, mejor dos.",
 };
 
 /* --- lógica --- */

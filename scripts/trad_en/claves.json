@@ -32,7 +32,7 @@
 "claves": [
 "empiece suave y suba un poco cada semana.",
 "Levantarme de la silla 5 veces seguidas, dos veces al día, y caminar 5 minutos después de comer.",
-"Caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.",
+"Si estoy estable, caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.",
 "Añadir dos días por semana de fuerza: levantarme de la silla, subir escalones y empujar contra la pared.",
 "Caminar 10 minutos después de comer, 5 días esta semana, a un ritmo que me deje hablar.",
 "¿Por qué un {0} y no un {1}?",
@@ -66,7 +66,7 @@
 "Pida permiso y pregunte",
 "¿Le parece bien que hablemos un minuto de cuánto se mueve?",
 "En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?",
-"Es la pregunta de cribado del consejo integral del Ministerio de Sanidad.",
+"Equivale a los 150 minutos a la semana que recomienda la OMS.",
 "Un mensaje que le toque",
 "En su situación, moverse tiene un efecto real: {0}.",
 "Algo es mejor que nada, y más es mejor: hasta un paseo de 10 minutos cuenta.",
@@ -86,6 +86,7 @@
 "Beneficios y seguridad en su caso",
 "Algo es mejor que nada, y más es mejor.",
 "Sin avisos importantes por su medicación: puede empezar de forma progresiva.",
+"Aún no ha añadido la medicación: añádala para ver los avisos.",
 "<b>Cribado:</b> {0}",
 "Un objetivo pequeño y concreto",
 "Que sea concreto (qué, cuándo y cuánto), pequeño y dicho con sus palabras. Mejor quedarse corto que fallar.",
@@ -111,7 +112,7 @@
 "<p>Si no hay un programa específico, grupos de actividad del centro de salud o del municipio (<a href=\"{0}\" target=\"_blank\" rel=\"noopener\">{1}</a>).</p>",
 "<p class=\"cv-intro\">{0}</p>\n    <p class=\"cv-porque\">En atención primaria, por cada <b>12</b> personas sedentarias que reciben consejo, una más llega a la actividad recomendada al cabo de un año (<a href=\"https://doi.org/10.1136/bmj.e1389\" target=\"_blank\" rel=\"noopener\">Orrow 2012</a>).</p>\n    <div class=\"cv-tabs\" role=\"tablist\" aria-label=\"{1}\">{2}</div>\n    <div class=\"cv-panel\" id=\"cv-panel\" role=\"tabpanel\" aria-labelledby=\"cv-tab-{3}\">{4}\n      <ol class=\"cv-pasos\" aria-label=\"{5}\">{6}</ol></div>\n    <details class=\"cv-fuentes\"><summary>{7}</summary><ul>{8}<li>Beneficios, avisos y hábitos de esta persona: la fuente de cada uno está en su tarjeta.</li></ul></details>\n    <div class=\"cv-pie\"><button type=\"button\" class=\"btn sm\" data-cv-imprimir>{9}</button><button type=\"button\" class=\"btn-sec sm\" data-cv-nota title=\"{10}\">{11}</button></div>"
 ],
-"n": 83
+"n": 84
 },
 "engine": {
 "claves": [

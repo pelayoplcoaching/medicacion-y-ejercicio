@@ -6,7 +6,7 @@
    el 22/11/2026) y se guardan exactas en «x»; lo que se enseña es su redondeo a personas enteras. La revisión de cardiopatía
    isquémica no da las cifras de cada grupo, solo la diferencia (NNT): se enseña así. Contenido en español, como la base;
    la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
 
 const TXT = {
   es: { titulo: "De cada 100 personas…", borrador: "Borrador pendiente de revisión clínica", intro: "Los porcentajes engañan; las personas se cuentan mejor. Aquí verá qué les pasa a 100 personas sin ejercicio y con ejercicio, según los mejores estudios.", para_usted: "Para su situación", otras: "Otras situaciones", todas: "Las seis cajas",
@@ -46,15 +46,15 @@ export const CAJAS = [
     notas: ["Contando todas las caídas (una persona puede caerse varias veces): 850 por cada 1000 personas sin ejercicio y 655 con ejercicio, 195 menos.", "Los programas que las reducen son sobre todo los de equilibrio y ejercicios funcionales, solos o con fuerza.", "Lo que apenas cambia: la calidad de vida (certeza baja).", "Efectos no deseados: casi siempre leves, sobre todo molestias de músculos y articulaciones."],
     tipo: "Revisión Cochrane de 108 ensayos (23 407 personas)", f: { cita: "Sherrington et al., Cochrane Database Syst Rev 2019", doi: "10.1002/14651858.CD012424.pub2" }, aplica: (d) => (d.edad || 0) >= 60 || !!d.caidas },
   { id: "ic", titulo: "Insuficiencia cardiaca", quien: "De cada 100 personas con insuficiencia cardiaca, en el primer año:", con: "Con rehabilitación con ejercicio",
-    filas: [{ t: "Ingresan en el hospital por cualquier causa", x: [23.7, 16.5], ex: "23,7 % y 16,5 %", cert: "moderada" }, { t: "Ingresan por la insuficiencia cardiaca", x: [11.1, 7.1], ex: "11,1 % y 7,1 %", cert: "baja" }, { t: "Fallecen", x: [5.8, 5.1], ex: "5,8 % y 5,1 %", cert: "baja", igual: true }],
-    notas: ["La diferencia en la mortalidad del primer año no es clara: puede deberse al azar.", "La calidad de vida puede mejorar de forma apreciable (certeza baja)."],
-    tipo: "Revisión Cochrane de 44 ensayos (5783 personas)", f: { cita: "Long et al., Cochrane Database Syst Rev 2019", doi: "10.1002/14651858.CD003331.pub5" }, aplica: (d) => d.conds.has("insuficiencia_cardiaca") },
+    filas: [{ t: "Ingresan en el hospital por cualquier causa", x: [23.8, 15.9], ex: "23,8 % y 15,9 %", cert: "moderada" }, { t: "Ingresan por la insuficiencia cardiaca", x: [6.4, 5.6], ex: "6,4 % y 5,6 %", cert: "moderada", igual: true }, { t: "Fallecen", x: [5.8, 5.0], ex: "5,8 % y 5,0 %", cert: "baja", igual: true }],
+    notas: ["La diferencia en los ingresos por la propia insuficiencia cardiaca y en la mortalidad del primer año no es clara: puede deberse al azar.", "La calidad de vida probablemente mejora de forma apreciable (certeza moderada)."],
+    tipo: "Revisión Cochrane de 60 ensayos (8728 personas)", f: { cita: "Molloy et al., Cochrane Database Syst Rev 2024", doi: "10.1002/14651858.CD003331.pub6" }, aplica: (d) => d.conds.has("insuficiencia_cardiaca") },
   { id: "ci", titulo: "Tras un infarto, un stent o un bypass", quien: "De cada 100 personas con enfermedad coronaria (infarto, stent, bypass o angina), entre 6 y 12 meses después:", con: "Con rehabilitación con ejercicio",
     filas: [{ t: "Ingresos en el hospital por cualquier causa", dif: 100 / 12, ex: "uno evitado por cada 12 personas (riesgo relativo 0,58)", cert: "moderada" }, { t: "Infartos", dif: 100 / 75, ex: "uno evitado por cada 75 personas (riesgo relativo 0,72)", cert: "alta" }],
     notas: ["La revisión da la diferencia (a cuántas personas hay que tratar para evitar un caso), no las cifras de cada grupo: por eso aquí no hay dos columnas.", "Mortalidad cardiovascular en el primer año: poca o ninguna diferencia (certeza moderada); a más largo plazo puede reducirse."],
     tipo: "Revisión Cochrane de 85 ensayos (23 430 personas)", f: { cita: "Dibben et al., Cochrane Database Syst Rev 2021", doi: "10.1002/14651858.CD001800.pub4" }, aplica: (d) => d.conds.has("cardiopatia_isquemica") },
   { id: "fa", titulo: "Fibrilación auricular", quien: "De cada 100 personas con fibrilación auricular con síntomas, al cabo de un año:", con: "Con 6 meses de ejercicio aeróbico",
-    filas: [{ t: "Siguen sin fibrilación", x: [20, 40], ex: "20 % y 40 %", mejor: "mas" }],
+    filas: [{ t: "Sin recaídas de la fibrilación (sin antiarrítmicos ni ablación)", x: [20, 40], ex: "20 % y 40 %", mejor: "mas" }],
     notas: ["También se redujeron los síntomas.", "Es un solo ensayo, con 120 personas: la cifra puede cambiar con más estudios."],
     tipo: "Ensayo aleatorizado (120 personas)", f: { cita: "Elliott et al., JACC Clin Electrophysiol 2023", doi: "10.1016/j.jacep.2022.12.002" }, aplica: (d) => d.conds.has("fibrilacion_auricular") },
   { id: "dm2", titulo: "Diabetes tipo 2: menos medicación", quien: "De cada 100 personas con diabetes tipo 2 de menos de diez años y sin insulina, al cabo de un año:", con: "Con ejercicio intensivo (5 o 6 sesiones por semana) y dieta", sin: "Con los cuidados habituales",

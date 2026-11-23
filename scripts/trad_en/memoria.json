@@ -291,6 +291,10 @@
 "en": "<b>Their goals:</b> {0}",
 "es": "<b>Sus metas:</b> {0}"
 },
+"03d30e10": {
+"en": "only bisacodyl is on the scale (1); senna glycosides and picosulfate are not",
+"es": "solo el bisacodilo figura en la escala (1); los senósidos y el picosulfato, no"
+},
 "03da0189": {
 "en": "Increased risk of seizures.",
 "es": "Riesgo de convulsiones aumentado."
@@ -538,6 +542,10 @@
 "06da2d9a": {
 "en": "Adds to the loss of fluids and salts.",
 "es": "Suma pérdida de líquidos y sales."
+},
+"06e0802a": {
+"en": "Hall 2026, Cochrane (hip)",
+"es": "Hall 2026, Cochrane (cadera)"
 },
 "06fa8293": {
 "en": "Chest pain or tightness with effort is a warning sign: always stop.",
@@ -1027,6 +1035,10 @@
 "en": "More is somewhat better, with no proven harm even at very high amounts; the essentials are achieved with the minimum.",
 "es": "Más es algo mejor, sin daño demostrado incluso con cantidades muy altas; lo esencial se consigue con el mínimo."
 },
+"0c860bf3": {
+"en": "Summaries of product characteristics of duloxetine, 4.5, ropinirole, 4.5, and Valdoxan, 4.5",
+"es": "Fichas técnicas de duloxetina, 4.5, ropinirol, 4.5, y Valdoxan, 4.5"
+},
 "0c86b390": {
 "en": "The most widely used diabetes medicine. On its own it does not cause hypoglycaemia and exercise is safe. Significant dehydration must be avoided.",
 "es": "El antidiabético más usado. Por sí sola no provoca hipoglucemias y el ejercicio es seguro. Hay que evitar la deshidratación importante."
@@ -1130,6 +1142,10 @@
 "0e1773b5": {
 "en": "Reduced ejection fraction",
 "es": "Fracción de eyección reducida"
+},
+"0e31a22e": {
+"en": "In knee osteoarthritis, exercise reduces pain by between 9 and 13 points out of 100 and improves function by between 11 and 13; in hip osteoarthritis, by about 7 and 9 points. It is a modest improvement, and participants knew which treatment they were receiving, which may have influenced it.",
+"es": "En la artrosis de rodilla, el ejercicio reduce el dolor entre 9 y 13 puntos sobre 100 y mejora la función entre 11 y 13; en la de cadera, unos 7 y 9 puntos. Es una mejoría modesta, y los participantes sabían qué tratamiento recibían, lo que pudo influir."
 },
 "0e3908f1": {
 "en": "You take {n} medicines that can lower sodium, and prolonged exercise while drinking a lot of water without salts makes it worse. Drink according to thirst, not beyond it, and in sessions of more than an hour use drinks with electrolytes. Confusion, nausea or headache after exercise: seek advice.",
@@ -1251,6 +1267,10 @@
 "en": "EFSA 2018 (green tea catechins) · Regulation (EU) 2022/2340",
 "es": "EFSA 2018 (catequinas del té verde) · Reglamento (UE) 2022/2340"
 },
+"0fe92173": {
+"en": "In people with depression, exercise reduces symptoms with a moderate effect (low certainty) and, in the 10 small trials comparing it with psychotherapy, it probably works similarly (moderate certainty). It is one more help: do not stop your treatment because of it.",
+"es": "En personas con depresión, el ejercicio reduce los síntomas con un efecto moderado (certeza baja) y, en los 10 ensayos pequeños que lo comparan con psicoterapia, probablemente funciona de forma parecida (certeza moderada). Es una ayuda más: no deje por ello su tratamiento."
+},
 "0ff062ef": {
 "en": "Denosumab",
 "es": "Denosumab"
@@ -1306,6 +1326,10 @@
 "10af314b": {
 "en": "Finasteride, dutasteride and mirabegron",
 "es": "Finasterida, dutasterida y mirabegrón"
+},
+"10b01a25": {
+"en": "No fixed time: what counts is working the major muscle groups",
+"es": "Sin un tiempo fijo: lo que cuenta es trabajar los grandes grupos musculares"
 },
 "10b1cb51": {
 "en": "Indicated and recommended for chronic pain; start with short walks and increase gradually.",
@@ -1398,6 +1422,10 @@
 "11b1b4fa": {
 "en": "Less range: sit down onto a high chair. Knees pointing in the direction of your feet.",
 "es": "Menos recorrido: siéntese en una silla alta. Las rodillas, en la dirección de los pies."
+},
+"11beee7c": {
+"en": "Aerobic and strength: both lower blood pressure",
+"es": "Aeróbico y fuerza: los dos bajan la tensión"
 },
 "11c8afc1": {
 "en": "Oral budesonide",
@@ -1626,6 +1654,10 @@
 "146cbc0f": {
 "en": "Alfuzosin",
 "es": "Alfuzosina"
+},
+"147149dc": {
+"en": "If someone is confused, behaves strangely, has a seizure or loses consciousness, or has very hot skin (dry or drenched in sweat): call 112 and cool them down while help arrives.",
+"es": "Si alguien está confuso, se comporta de forma extraña, convulsiona o pierde el conocimiento, o tiene la piel muy caliente (seca o empapada en sudor): llame al 112 y refrésquele mientras llega la ayuda."
 },
 "148ec6f1": {
 "en": "Breathe out as you lift; do not arch your lower back.",
@@ -1866,6 +1898,10 @@
 "17a8e415": {
 "en": "Dose",
 "es": "Dosis"
+},
+"17c3b851": {
+"en": "Saturation: the app's own criterion for rest; during exertion, pulmonary rehabilitation guidelines ask to keep it above 88–90%",
+"es": "Saturación: criterio de la aplicación para el reposo; durante el esfuerzo, las guías de rehabilitación respiratoria piden mantenerla por encima de 88–90 %"
 },
 "17ce63ec": {
 "en": "With this medicine you tire sooner, because it acidifies the blood. Train at light or moderate intensity.",
@@ -2339,6 +2375,10 @@
 "en": "Tricyclics, more than the rest; the risk varies with the sedative effect, the tendency to orthostatic hypotension and anticholinergic activity.",
 "es": "Los tricíclicos, más que el resto; el riesgo varía con el efecto sedante, la tendencia a la hipotensión ortostática y la actividad anticolinérgica."
 },
+"1e56d848": {
+"en": "If the illness lasts more than 72 hours, see a doctor to be checked. Seek advice sooner if you cannot keep fluids down, are passing very little urine, or are very drowsy or confused.",
+"es": "Si la enfermedad dura más de 72 horas, consulte para que le revisen. Consulte antes si no consigue retener líquidos, orina muy poco, o está muy decaído o confuso."
+},
 "1e5a92b8": {
 "en": "Pitavastatin",
 "es": "Pitavastatina"
@@ -2354,6 +2394,10 @@
 "1e685bd4": {
 "en": "Walking with your arms loose and gentle rowing with relaxed shoulders.",
 "es": "Caminar con los brazos sueltos y el remo suave con los hombros relajados."
+},
+"1e7a6b99": {
+"en": "Too high to train today. Rest seated for 5 minutes and measure again; if it is still the same, do not train and seek advice. If you also have chest pain, shortness of breath, a very severe headache, blurred vision or weakness on one side of the body, call 112.",
+"es": "Demasiado alta para entrenar hoy. Repose 5 minutos sentado y repita la medida; si sigue igual, no entrene y consulte. Si además tiene dolor de pecho, falta de aire, dolor de cabeza muy fuerte, visión borrosa o debilidad en un lado del cuerpo, llame al 112."
 },
 "1e85828f": {
 "en": "If you also take diuretics, dehydration and potassium loss can make digoxin toxic. Nausea, loss of appetite, yellowish vision or a very slow or irregular pulse after exercise are reasons to seek urgent advice.",
@@ -2394,6 +2438,10 @@
 "1edfe55a": {
 "en": "Malhi et al. Lancet Psychiatry 2017 (lithium management)",
 "es": "Malhi et al. Lancet Psychiatry 2017 (manejo del litio)"
+},
+"1f15c82e": {
+"en": "Pain or pressure in the chest, the left shoulder or arm, or the jaw, on exertion or at rest; especially if it does not ease within a few minutes of stopping or comes with a cold sweat, nausea or shortness of breath.",
+"es": "Dolor u opresión en el pecho, el hombro o el brazo izquierdo o la mandíbula, con el esfuerzo o en reposo; sobre todo si no cede en pocos minutos al parar o viene con sudor frío, náuseas o falta de aire."
 },
 "1f323451": {
 "en": "Antacids, H2 blockers, prokinetics and antidiarrhoeals",
@@ -2867,6 +2915,10 @@
 "en": "Start with supervision and careful technique. If you have had vertebral fractures, ask first which loads and movements suit you.",
 "es": "Empiece con supervisión y técnica cuidada. Si ha tenido fracturas vertebrales, pregunte antes qué cargas y qué movimientos le convienen."
 },
+"24c0f1db": {
+"en": "This is a low blood sugar. Take 15–20 g of fast-acting sugar (a glass of juice or of a sugary soft drink, or 3 sachets of sugar) and measure again after 15 minutes; if it is still below 70, take the same again. Do not start until you are above 90 and feel well. If it drops below 54 or you do not recover, do not train today and seek advice.",
+"es": "Es una bajada de azúcar. Tome 15–20 g de azúcar de absorción rápida (un vaso de zumo o de refresco con azúcar, o 3 sobres de azúcar) y repita la medida a los 15 minutos; si sigue por debajo de 70, repita la toma. No empiece hasta pasar de 90 y encontrarse bien. Si baja de 54 o no se recupera, hoy no entrene y consulte."
+},
 "24c1f496": {
 "en": "Bladder anticholinergics (oxybutynin, solifenacin, tolterodine)",
 "es": "Anticolinérgicos para la vejiga (oxibutinina, solifenacina, tolterodina)"
@@ -2938,6 +2990,10 @@
 "2592496d": {
 "en": "Say so if you start or stop it.",
 "es": "Avise si la empieza o la deja."
+},
+"25b0d67b": {
+"en": "With disulfiram, even a tiny amount of alcohol causes an intense reaction within minutes, with flushing, palpitations and feeling unwell, which is sometimes serious. It can happen up to 2 weeks after stopping disulfiram. Watch out for alcohol hidden in sauces, vinegar, mouthwashes or syrups. If you are drinking while taking it, talk to your doctor as soon as possible; if after drinking you notice chest pain, breathlessness or you faint, call 112.",
+"es": "Con disulfiram, incluso una cantidad mínima de alcohol provoca a los pocos minutos una reacción intensa, con sofoco, palpitaciones y malestar, que a veces es grave. Puede ocurrir hasta 2 semanas después de dejar el disulfiram. Ojo con el alcohol escondido en salsas, vinagre, enjuagues bucales o jarabes. Si está bebiendo mientras lo toma, hable cuanto antes con su médico; si tras beber nota dolor en el pecho, ahogo o se desmaya, llame al 112."
 },
 "25b1f71f": {
 "en": "Leg strength training and aerobic exercise in short intervals (1–2 minutes of effort, 1–2 of rest) are the best tolerated with a respiratory limitation.",
@@ -3063,6 +3119,10 @@
 "en": "Looking at the floor instead of at a fixed point.",
 "es": "Mirar al suelo en lugar de a un punto fijo."
 },
+"2731456b": {
+"en": "recurrences of fibrillation",
+"es": "recaídas de la fibrilación"
+},
 "27343c68": {
 "en": "Muscle and bone",
 "es": "Músculo y hueso"
@@ -3086,6 +3146,10 @@
 "2744ecf7": {
 "en": "Angina",
 "es": "Angina de pecho"
+},
+"274675b1": {
+"en": "Drinking daily with {farmacos} adds sleepiness and clumsiness and increases the risk of falls and accidents; with opioids and with tranquillisers or sleeping pills it can also slow your breathing. Discuss it with your doctor. Meanwhile, do not drink before exercising or driving.",
+"es": "Beber a diario con {farmacos} suma sueño y torpeza y aumenta el riesgo de caídas y de accidentes; con los opioides y con los tranquilizantes o las pastillas para dormir puede además frenar la respiración. Coméntelo con su médico. Mientras tanto, no beba antes de hacer ejercicio ni de conducir."
 },
 "2747c1ca": {
 "en": "With your medication the muscle may be somewhat more sensitive to new or very intense exercise. It is no reason not to train: you progress little by little.",
@@ -3927,6 +3991,10 @@
 "en": "You can talk",
 "es": "Puede hablar"
 },
+"32916f2f": {
+"en": "Summary of product characteristics of Adiro 100 mg, 4.5: taking alcohol together with acetylsalicylic acid increases the risk of gastrointestinal bleeding",
+"es": "Ficha técnica de Adiro 100 mg, 4.5: «la administración conjunta de alcohol con ácido acetilsalicílico aumenta el riesgo de hemorragia digestiva»"
+},
 "32c64805": {
 "en": "Bicarbonate as a supplement (about 0.2 to 0.3 g per kilo, 1 to 3 hours beforehand) often causes diarrhoea and tummy pain. It contains a lot of salt: do not use it if you have high blood pressure, heart failure or kidney disease.",
 "es": "El bicarbonato como suplemento (unos 0,2 a 0,3 g por kilo, de 1 a 3 horas antes) suele dar diarrea y dolor de tripa. Aporta mucha sal: no lo use si tiene hipertensión, insuficiencia cardíaca o enfermedad del riñón."
@@ -4270,6 +4338,10 @@
 "37b77fcf": {
 "en": "Safe with moderate loads and controlled repetitions. Do not hold your breath.",
 "es": "Seguro con cargas moderadas y repeticiones controladas. No aguante la respiración."
+},
+"37cff306": {
+"en": "How many days a week do you do strength exercises? (optional; question added by this app, not part of the original questionnaire)",
+"es": "¿Cuántos días a la semana hace ejercicios de fuerza? (opcional; pregunta añadida por esta aplicación, no es del cuestionario original)"
 },
 "37d27406": {
 "en": "No limitation; avoid sudden changes in head position at first.",
@@ -4635,6 +4707,10 @@
 "en": "Leaning forward, with one hand resting on a firm chair or a table and your back straight. With the other hand, lift the bottle or dumbbell towards your hip. 2 sets of 10–12 per arm.",
 "es": "Inclinado, con una mano apoyada en una silla firme o una mesa y la espalda recta. Con la otra mano, suba la botella o la mancuerna hacia la cadera. 2 series de 10–12 por brazo."
 },
+"3c1596ac": {
+"en": "If I am stable, walk 5-10 minutes, twice a day, at a pace that lets me talk.",
+"es": "Si estoy estable, caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar."
+},
 "3c2aca46": {
 "en": "Bempedoic acid (alone or with ezetimibe)",
 "es": "Ácido bempedoico (solo o con ezetimiba)"
@@ -4834,6 +4910,10 @@
 "3f0273e2": {
 "en": "AEMPS SmPC 4.5 · EMA HMPC (St John's wort, CYP3A4/P-gp inducer)",
 "es": "FT AEMPS 4.5 · EMA HMPC (hipérico, inductor CYP3A4/P-gp)"
+},
+"3f14d274": {
+"en": "Meta-analysis of 6 studies (5 of them randomised trials)",
+"es": "Metaanálisis de 6 estudios (5 de ellos, ensayos aleatorizados)"
 },
 "3f1ae90c": {
 "en": "- ACSM screening: {0}",
@@ -5074,6 +5154,10 @@
 "424b3f3a": {
 "en": "Repaglinide and acarbose",
 "es": "Repaglinida y acarbosa"
+},
+"42591dd6": {
+"en": " With risedronate, wait at least half an hour; if your weekly tablet is “gastro-resistant”, it is the other way round: take it straight after breakfast.",
+"es": " Con el risedronato, espere al menos media hora; si su comprimido semanal es «gastrorresistente», es al revés: se toma justo después del desayuno."
 },
 "425b3c05": {
 "en": "If you notice dizziness, headache, nausea, cramps or unusual tiredness: stop, get into the shade or somewhere cool, drink and cool yourself down.",
@@ -5903,6 +5987,10 @@
 "en": "Creatine (3–5 g/day) is safe with normal kidney function and slightly raises creatinine in blood tests without damaging the kidneys: tell your doctor that you take it. With kidney disease or with medicines that affect the kidneys (metformin, ACE inhibitors, NSAIDs, lithium, tacrolimus) seek advice first.",
 "es": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes."
 },
+"4cf45464": {
+"en": "5.8% and 5.0%",
+"es": "5,8 % y 5,0 %"
+},
 "4d0f0e24": {
 "en": "EXERCISE RECOMMENDATION (adapted to drug treatment)",
 "es": "RECOMENDACIÓN DE EJERCICIO FÍSICO (adaptada al tratamiento farmacológico)"
@@ -5934,6 +6022,10 @@
 "4d686d60": {
 "en": "Creatine monohydrate",
 "es": "Creatina monohidrato"
+},
+"4d6f151d": {
+"en": "only entacapone is on the scale (1); opicapone is not",
+"es": "solo la entacapona figura en la escala (1); la opicapona, no"
 },
 "4d75d57f": {
 "en": "and what to do in each case",
@@ -6091,6 +6183,10 @@
 "en": "NSAIDs reduce the elimination of methotrexate and increase its toxicity, especially at high doses or with kidney failure.",
 "es": "Los AINE reducen la eliminación de metotrexato y aumentan su toxicidad, sobre todo a dosis altas o con insuficiencia renal."
 },
+"4fb468dd": {
+"en": "Molloy et al., Cochrane Database Syst Rev 2024",
+"es": "Molloy et al., Cochrane Database Syst Rev 2024"
+},
 "4fc16959": {
 "en": "longer QT",
 "es": "QT más largo"
@@ -6110,6 +6206,10 @@
 "4ff06856": {
 "en": " as needed",
 "es": " si precisa"
+},
+"4ffc0258": {
+"en": "Dynamic strength training, on a par with aerobic exercise",
+"es": "Fuerza dinámica, al mismo nivel que el aeróbico"
 },
 "4fff4c7b": {
 "en": "Getting dressed and putting on my shoes easily",
@@ -6142,6 +6242,10 @@
 "5047d76f": {
 "en": "Cirrhosis or advanced chronic liver disease",
 "es": "Cirrosis o hepatopatía crónica avanzada"
+},
+"504c485a": {
+"en": "Similar",
+"es": "Parecido"
 },
 "504d286c": {
 "en": "Standing, with one hand on a backrest or a table. Take a long step forwards, lower the back knee towards the floor and return. 2 sets of 6–10 per leg.",
@@ -6182,6 +6286,10 @@
 "50cc3af9": {
 "en": "Short Physical Performance Battery: a test of balance, 4 m walk and standing up from a chair 5 times, from 0 to 12 points (≤ 6 frailty; 7–9 pre-frailty; ≥ 10 robust).",
 "es": "Short Physical Performance Battery: prueba de equilibrio, marcha de 4 m y levantarse de la silla 5 veces, de 0 a 12 puntos (≤ 6 fragilidad; 7–9 prefragilidad; ≥ 10 robusto)."
+},
+"50cf8b09": {
+"en": "Up to 150 minutes a week, starting with short bouts and as tolerated",
+"es": "Hasta 150 minutos a la semana, empezando por ratos cortos y según tolere"
 },
 "50d69b02": {
 "en": "Medication and exercise: what can change",
@@ -6347,6 +6455,10 @@
 "en": "Moderate (40–<60 % of reserve)",
 "es": "Moderada (40–<60 % de la reserva)"
 },
+"52b19a08": {
+"en": "You have not added your medication yet: add it to see the warnings.",
+"es": "Aún no ha añadido la medicación: añádala para ver los avisos."
+},
 "52bfad85": {
 "en": "Rhodiola rosea",
 "es": "Rhodiola rosea"
@@ -6458,6 +6570,10 @@
 "53f3fbd9": {
 "en": "Prepare a 'when-then' plan: 'When I finish breakfast, I will go out for a 15-minute walk'. The more specific it is, the better it works.",
 "es": "Prepare un plan «cuando-entonces»: «Cuando termine de desayunar, saldré a caminar 15 minutos». Cuanto más concreto, mejor funciona."
+},
+"540708c7": {
+"en": "6.4% and 5.6%",
+"es": "6,4 % y 5,6 %"
 },
 "5407eeec": {
 "en": "5–10 min, 2–4 times a day; progress to 20–30 continuous min",
@@ -6719,6 +6835,10 @@
 "en": "Do you feel unsteady when standing or walking?",
 "es": "¿Se siente inestable al estar de pie o al caminar?"
 },
+"57808e1e": {
+"en": "the scale lists levodopa with carbidopa (1); with benserazide it is not listed",
+"es": "la escala recoge la levodopa con carbidopa (1); con benserazida no figura"
+},
 "57a49e3b": {
 "en": "{0} · Medication and Exercise · {1}",
 "es": "{0} · Medicación y Ejercicio · {1}"
@@ -6882,6 +7002,10 @@
 "5acfb398": {
 "en": "Tudor-Locke C et al. Int J Behav Nutr Phys Act 2021;18:129",
 "es": "Tudor-Locke C et al. Int J Behav Nutr Phys Act 2021;18:129"
+},
+"5ad0d8a6": {
+"en": "Molloy 2024, Cochrane",
+"es": "Molloy 2024, Cochrane"
 },
 "5aee2ef2": {
 "en": "Do not combine them. If you take an antidepressant, do not add St John's wort.",
@@ -7106,6 +7230,10 @@
 "5e2a76f8": {
 "en": "Severe low blood pressure: nicorandil has a nitrate effect and the PDE5 inhibitor enhances it.",
 "es": "Hipotensión grave: nicorandil tiene efecto nitrato y el inhibidor de la PDE5 lo potencia."
+},
+"5e49e230": {
+"en": "only pseudoephedrine is on the scale (1); phenylephrine is not",
+"es": "solo la pseudoefedrina figura en la escala (1); la fenilefrina, no"
 },
 "5e4b0a51": {
 "en": "Bupropion, agomelatine and moclobemide",
@@ -7615,6 +7743,10 @@
 "en": "Other antiparkinsonian medicines (safinamide, amantadine, biperiden, rotigotine)",
 "es": "Otros antiparkinsonianos (safinamida, amantadina, biperideno, rotigotina)"
 },
+"64358a31": {
+"en": "Blood pressure and pulse: the app's own criterion, more cautious than the one attributed to the ACSM (no exercise above 200/110 mmHg at rest)",
+"es": "Tensión y pulso: criterio de la aplicación, más prudente que el que se atribuye al ACSM (no hacer ejercicio con más de 200/110 mmHg en reposo)"
+},
 "643ab8c7": {
 "en": "ACSM 2015 preparticipation screening",
 "es": "Cribado preparticipación ACSM 2015"
@@ -7738,6 +7870,10 @@
 "65bfb132": {
 "en": "At 75",
 "es": "A los 75"
+},
+"65c239fe": {
+"en": "Lower than normal. Measure again with a warm finger and no nail polish; if it is confirmed, do not train today and seek advice today. If you are short of breath, call 112.",
+"es": "Más baja de lo normal. Repita la medida con el dedo caliente y sin esmalte; si se confirma, hoy no entrene y consulte hoy mismo. Si le falta el aire, llame al 112."
 },
 "65d6a5e8": {
 "en": "Cumulative effects",
@@ -8327,6 +8463,10 @@
 "en": "Flaring the elbows out wide.",
 "es": "Abrir los codos en cruz."
 },
+"6e60b424": {
+"en": "It is equivalent to the 150 minutes a week recommended by the WHO.",
+"es": "Equivale a los 150 minutos a la semana que recomienda la OMS."
+},
 "6e69e4bb": {
 "en": "EMA HMPC, EU monograph (black cohosh) 4.4",
 "es": "EMA HMPC, monografía de la UE (cimicífuga) 4.4"
@@ -8418,6 +8558,10 @@
 "6f69e77e": {
 "en": "Two medicines of the same class ({0}).",
 "es": "Dos fármacos de la misma clase ({0})."
+},
+"6f6db1fd": {
+"en": "Quality of life probably improves appreciably (moderate certainty).",
+"es": "La calidad de vida probablemente mejora de forma apreciable (certeza moderada)."
 },
 "6f8464b5": {
 "en": "150–300 min/week; start with 10–20 min and increase by 5–10 min/week",
@@ -8602,6 +8746,10 @@
 "71be7ac9": {
 "en": "At a pace that lets you talk in short sentences (do not look at your pulse). ",
 "es": "A un ritmo que le permita hablar con frases cortas (no mire el pulso). "
+},
+"71cf7743": {
+"en": "to psychotherapy (10 small trials)",
+"es": "a la psicoterapia (10 ensayos pequeños)"
 },
 "71d101fa": {
 "en": "Most frequent active substances: {0}.",
@@ -9155,6 +9303,10 @@
 "en": "Leave it until next month",
 "es": "Dejarlo hasta el mes que viene"
 },
+"78ea14f0": {
+"en": "In chronic kidney disease (also on dialysis or with a transplant), regular exercise improves fitness and walking capacity, lowers blood pressure (systolic by 6 mmHg) and resting pulse, and improves quality of life. The studies are small and many are of limited quality.",
+"es": "En la enfermedad renal crónica (también en diálisis o con trasplante), el ejercicio regular mejora la forma física y la capacidad de andar, baja la tensión (6 mmHg la sistólica) y el pulso en reposo y mejora la calidad de vida. Son estudios pequeños y muchos de calidad limitada."
+},
 "78f5a39e": {
 "en": "AEMPS SmPC 4.5 (bisphosphonates)",
 "es": "FT AEMPS 4.5 (bifosfonatos)"
@@ -9403,6 +9555,10 @@
 "en": "↓Na",
 "es": "↓Na"
 },
+"7caffe76": {
+"en": "Fewer recurrences",
+"es": "Menos recaídas"
+},
 "7cb2fc1c": {
 "en": "Your medication can raise blood pressure.",
 "es": "Su medicación puede subir la tensión arterial."
@@ -9410,6 +9566,10 @@
 "7cb33bf2": {
 "en": "Your medication stimulates it: the pulse is faster at rest and rises more than the effort calls for.",
 "es": "Su medicación lo estimula: el pulso va más rápido en reposo y sube más de lo que pide el esfuerzo."
+},
+"7cbcb988": {
+"en": "Up to 150–300 minutes a week, building up gradually",
+"es": "Hasta 150–300 minutos a la semana, subiendo poco a poco"
 },
 "7cbfd7c6": {
 "en": "Suggests sarcopenia",
@@ -9531,9 +9691,17 @@
 "en": "Regular exercise has a proven antidepressant effect and enhances the treatment. The first weeks can bring nausea, dizziness or sweating: start at a gentle intensity.",
 "es": "El ejercicio regular tiene un efecto antidepresivo demostrado y potencia el tratamiento. Las primeras semanas pueden dar náuseas, mareo o sudoración: empiece con intensidad suave."
 },
+"7e5603de": {
+"en": "Fine for moving. If you use insulin or a sulfonylurea and are going to do more than half an hour of aerobic exercise, take about 10 g of carbohydrate first.",
+"es": "Bien para moverse. Si usa insulina o una sulfonilurea y va a hacer ejercicio aeróbico de más de media hora, tome antes unos 10 g de hidratos."
+},
 "7e588d11": {
 "en": "Type and notes",
 "es": "Tipo y observaciones"
+},
+"7e5d0c0e": {
+"en": "Exercise-based rehabilitation probably reduces hospital admissions for any cause in the first year (15.9% versus 23.8%: one avoided for every 13 people) and improves quality of life; its effect on admissions for heart failure itself is less certain.",
+"es": "La rehabilitación con ejercicio probablemente reduce los ingresos hospitalarios por cualquier causa en el primer año (15,9 % frente a 23,8 %: uno evitado por cada 13 personas) y mejora la calidad de vida; su efecto sobre los ingresos por la propia insuficiencia cardiaca es menos seguro."
 },
 "7e5ec518": {
 "en": "The wall or a chair beside you, in case you need support.",
@@ -9886,6 +10054,10 @@
 "82e7ecbb": {
 "en": "Expert consensus and position statement of a scientific society",
 "es": "Consenso de expertos y posicionamiento de una sociedad científica"
+},
+"82ef276e": {
+"en": "If you have a defibrillator (ICD): fitter and fewer shocks",
+"es": "Si lleva un desfibrilador (DAI): más forma y menos descargas"
 },
 "832e4ad1": {
 "en": "Antidepressants that make you sleepy; they are often used for sleep. They can cause drowsiness in the morning. With trazodone, dizziness on getting up.",
@@ -10627,6 +10799,10 @@
 "en": "Meta-analysis of 8 trials (220 people)",
 "es": "Metaanálisis de 8 ensayos (220 personas)"
 },
+"8d3a916a": {
+"en": "In under two weeks little is lost, unless you have been in bed or in hospital. You may notice a little more fatigue over the first few days.",
+"es": "En menos de dos semanas se pierde poco, salvo que haya estado en cama o ingresado. Puede notar algo más de fatiga los primeros días."
+},
 "8d3af75a": {
 "en": "Copied for the record",
 "es": "Copiado para la historia"
@@ -10646,6 +10822,10 @@
 "8d6db51d": {
 "en": "Aciclovir",
 "es": "Aciclovir"
+},
+"8d8b5f2b": {
+"en": "No recurrence of fibrillation (without antiarrhythmic drugs or ablation)",
+"es": "Sin recaídas de la fibrilación (sin antiarrítmicos ni ablación)"
 },
 "8d8c75d0": {
 "en": "With antidepressants such as sertraline, with triptans or with tramadol it can cause an excess of serotonin. The signs are tremor, sweating, fever and agitation. Do not mix them unless your doctor tells you to.",
@@ -11159,6 +11339,10 @@
 "en": "Testosterone raises the haematocrit and can raise blood pressure: regular blood tests and, if you train at altitude or dehydrated, careful hydration.",
 "es": "La testosterona sube el hematocrito y puede subir la tensión: controles analíticos periódicos y, si entrena en altitud o con deshidratación, hidratación cuidadosa."
 },
+"94e6d24a": {
+"en": "famotidine scores 1; ranitidine scores 2",
+"es": "la famotidina puntúa 1; la ranitidina puntúa 2"
+},
 "9508c891": {
 "en": "Cetirizine can cause some drowsiness in sensitive people; bilastine and loratadine do not. Useful for rhinitis when exercising outdoors.",
 "es": "Cetirizina puede dar algo de somnolencia en personas sensibles; bilastina y loratadina no. Útiles para la rinitis del ejercicio al aire libre."
@@ -11302,6 +11486,10 @@
 "9734ac78": {
 "en": "Do not take it.",
 "es": "No lo tome."
+},
+"9737c482": {
+"en": "Without touching the support, but with it within arm's reach, turning your head slowly from side to side or closing your eyes for a few seconds.",
+"es": "Sin tocar el apoyo, pero con él al alcance de la mano, girando la cabeza despacio a los lados o cerrando los ojos unos segundos."
 },
 "975adea9": {
 "en": "They lower blood pressure by acting on the brain. They cause drowsiness, dry mouth and dizziness on standing; clonidine also slows the pulse and must not be stopped suddenly.",
@@ -11594,6 +11782,10 @@
 "9b664111": {
 "en": "Antifungals that block the metabolism of many medicines (statins, anticoagulants, benzodiazepines, colchicine, tacrolimus) and lengthen the QT interval. Oral terbinafine does not have these problems.",
 "es": "Antifúngicos que bloquean el metabolismo de muchos fármacos (estatinas, anticoagulantes, benzodiacepinas, colchicina, tacrolimus) y alargan el QT. La terbinafina oral no tiene estos problemas."
+},
+"9b67d14a": {
+"en": "If you notice dizziness, headache, nausea, cramps or unusual tiredness: stop, get into the shade or a cool place, drink and cool down. If you do not improve within half an hour or get worse, seek medical help.",
+"es": "Si nota mareo, dolor de cabeza, náuseas, calambres o un cansancio fuera de lo normal: pare, póngase a la sombra o en un sitio fresco, beba y refrésquese. Si no mejora en media hora o va a peor, pida ayuda médica."
 },
 "9b6c8c3d": {
 "en": "Reduces the levels of many antiretrovirals.",
@@ -12355,6 +12547,10 @@
 "en": "ESC/ERS: supervised rehabilitation",
 "es": "ESC/ERS: rehabilitación supervisada"
 },
+"a67c58e6": {
+"en": "only cinnarizine is on the scale (1); flunarizine is not",
+"es": "solo la cinarizina figura en la escala (1); la flunarizina, no"
+},
 "a6817aac": {
 "en": "AEMPS SmPC 4.4 (fractures) · Beck 2017 (ESSA)",
 "es": "FT AEMPS 4.4 (fracturas) · Beck 2017 (ESSA)"
@@ -12715,6 +12911,10 @@
 "en": "None of your medicines affects when you should train: choose the time of day that suits you best and be consistent.",
 "es": "Ninguno de sus medicamentos condiciona la hora de entrenar: elija el momento del día que mejor le encaje y sea constante."
 },
+"ab1e3d9e": {
+"en": "For a healthy adult, EFSA considers up to 400 mg of caffeine a day (about 4 cups of filter coffee) and up to 200 mg in one go to be safe. If you take more, or notice palpitations, nervousness or poor sleep, cut down gradually. If you have heart disease or high blood pressure, ask your doctor how much suits you.",
+"es": "Para un adulto sano, la EFSA considera seguro hasta 400 mg de cafeína al día (unas 4 tazas de café de filtro) y hasta 200 mg de una vez. Si toma más, o nota palpitaciones, nervios o mal sueño, redúzcalo poco a poco. Si tiene una enfermedad del corazón o la tensión alta, pregunte a su médico cuánto le conviene."
+},
 "ab231f5c": {
 "en": "Several medicines that lower sodium",
 "es": "Varios fármacos que bajan el sodio"
@@ -12991,6 +13191,10 @@
 "en": "GOLD 2024 / pulmonary rehabilitation",
 "es": "GOLD 2024 / rehabilitación respiratoria"
 },
+"aed50cc5": {
+"en": "Cochrane reviews of the knee (139 trials) and of the hip",
+"es": "Revisiones Cochrane de rodilla (139 ensayos) y de cadera"
+},
 "aeec431a": {
 "en": "sedation",
 "es": "sedación"
@@ -13219,6 +13423,10 @@
 "en": "Deadlift with dumbbells or a jug; on one leg if your balance is good.",
 "es": "Peso muerto con mancuernas o garrafa; una pierna si tiene buen equilibrio."
 },
+"b1a595fd": {
+"en": "Light or moderate, guided by breathlessness",
+"es": "Ligera o moderada, por la falta de aire"
+},
 "b1a63a45": {
 "en": "EMA HMPC (echinacea) 4.3/4.5",
 "es": "EMA HMPC (equinácea) 4.3/4.5"
@@ -13246,6 +13454,10 @@
 "b1d5a247": {
 "en": "ACOG 2020 · WHO 2020",
 "es": "ACOG 2020 · OMS 2020"
+},
+"b1eab235": {
+"en": "Low. Check that your finger is warm and free of nail polish and measure again. If it is still below 88%, do not train and seek advice today, unless it is your usual figure and your doctor knows about it. If you are short of breath at rest or your lips look bluish, call 112.",
+"es": "Baja. Compruebe que el dedo está caliente y sin esmalte y repita. Si sigue por debajo de 88 %, no entrene y consulte hoy, salvo que sea su cifra de siempre y su médico la conozca. Si le falta el aire en reposo o tiene los labios azulados, llame al 112."
 },
 "b1f23cf7": {
 "en": "AEMPS SmPC 4.5 (antiretrovirals) · EMA HMPC (St John's wort, CYP3A4/P-gp inducer)",
@@ -13374,6 +13586,10 @@
 "b3aeed54": {
 "en": "Herbal laxatives (senna, cascara, frangula, aloe)",
 "es": "Laxantes de plantas (sen, cáscara sagrada, frángula, aloe)"
+},
+"b3b80218": {
+"en": "High. If you use insulin or take a “-gliflozin” and can measure your ketones, measure them. With ketones, vomiting, tummy pain or feeling unwell, do not train and seek advice today. Without ketones and feeling well, a gentle session and drink water.",
+"es": "Alta. Si usa insulina o toma una «-gliflozina» y puede medirse las cetonas, mídalas. Con cetonas, vómitos, dolor de barriga o malestar, no entrene y consulte hoy. Sin cetonas y encontrándose bien, sesión suave y beba agua."
 },
 "b3bee23b": {
 "en": "how hard it feels",
@@ -13595,6 +13811,10 @@
 "en": "Thyroid hormone replacement. Well adjusted, it does not interfere with exercise; poorly adjusted, it changes the pulse, heat tolerance and strength.",
 "es": "Hormona tiroidea de sustitución. Bien ajustada no interfiere con el ejercicio; mal ajustada cambia el pulso, la tolerancia al calor y la fuerza."
 },
+"b68e0e3d": {
+"en": "Lawford 2024, Cochrane (knee)",
+"es": "Lawford 2024, Cochrane (rodilla)"
+},
 "b6a2f98f": {
 "en": "With an aortic aneurysm, avoid lifting heavy weights, holding your breath while straining (Valsalva), intense isometric exercises and contact sports or those with sudden rises in blood pressure: they increase the risk of growth or rupture. Moderate aerobic exercise is beneficial. The maximum load you can use in strength work (in general light, one with which you can talk) must be set by your cardiologist or vascular surgeon according to the size of the aneurysm.",
 "es": "Con un aneurisma de aorta, evite levantar pesos pesados, aguantar la respiración haciendo fuerza (Valsalva), los ejercicios isométricos intensos y los deportes de contacto o con subidas bruscas de tensión: aumentan el riesgo de crecimiento o rotura. El ejercicio aeróbico moderado sí es beneficioso. La carga máxima que puede usar en fuerza (en general ligera, con la que pueda hablar) la debe fijar su cardiólogo o cirujano vascular según el tamaño del aneurisma."
@@ -13634,6 +13854,10 @@
 "b6ed728f": {
 "en": "Sit with your hands on your thighs and one foot slightly in front of the other.",
 "es": "Siéntese con las manos sobre los muslos y un pie un poco por delante del otro."
+},
+"b6fa641b": {
+"en": "Very slow. Do not train today and seek advice, unless your doctor already knows about that pulse and you feel well. With dizziness, fainting or chest pain, call 112.",
+"es": "Muy lento. No entrene hoy y consulte, salvo que su médico ya conozca ese pulso y usted se encuentre bien. Con mareo, desmayo o dolor de pecho, llame al 112."
 },
 "b6fbdeca": {
 "en": "I carry a 3–5 kg bag in each hand around the house.",
@@ -13935,6 +14159,10 @@
 "en": "Contact sports or those with a risk of knocks and falls at speed.",
 "es": "Deportes de contacto o con riesgo de golpes y caídas a velocidad."
 },
+"ba851ea3": {
+"en": "{farmacos} {has|have} been linked to cases of liver damage, and drinking daily adds to the load. Discuss with your doctor whether you really need {it|them}. Warning signs: intense tiredness, dark urine and yellow skin or eyes; if they appear, seek advice that same day.",
+"es": "{farmacos} {se ha|se han} relacionado con casos de daño en el hígado, y beber a diario le suma carga. Valore con su médico si de verdad {lo necesita|los necesita}. Señales de alarma: cansancio intenso, orina oscura y piel u ojos amarillos; si aparecen, consulte ese mismo día."
+},
 "ba90c7eb": {
 "en": "For erectile dysfunction and, daily at a low dose, for the prostate. They lower blood pressure a little; their only dangerous interaction is with nitrates.",
 "es": "Para la disfunción eréctil y, a diario a dosis baja, para la próstata. Bajan algo la tensión; su única interacción peligrosa es con los nitratos."
@@ -14214,6 +14442,10 @@
 "be3a50ea": {
 "en": "Stimulants for ADHD (methylphenidate, lisdexamfetamine) and atomoxetine",
 "es": "Estimulantes para el TDAH (metilfenidato, lisdexanfetamina) y atomoxetina"
+},
+"be3fc38e": {
+"en": "Next time you cannot train, do not stop completely: one or two short sessions a week, without lowering the intensity, keep a good part of what you have gained. From the age of 65, better two.",
+"es": "La próxima vez que no pueda entrenar, no lo deje del todo: una o dos sesiones cortas por semana, sin bajar la intensidad, mantienen buena parte de lo ganado. A partir de los 65 años, mejor dos."
 },
 "be482999": {
 "en": "Risk to the kidneys if you become dehydrated",
@@ -14971,6 +15203,10 @@
 "en": "No heavy weights, intense isometrics or holding your breath",
 "es": "Sin pesos pesados, isométricos intensos ni aguantar la respiración"
 },
+"c8170394": {
+"en": "Very fast for being at rest. Rest for 10 minutes and measure again; if it is still 120 or more, do not train today and seek advice. If you also notice chest pain, shortness of breath or dizziness, call 112.",
+"es": "Muy rápido para estar en reposo. Repose 10 minutos y repita; si sigue en 120 o más, no entrene hoy y consulte. Si además nota dolor de pecho, falta de aire o mareo, llame al 112."
+},
 "c81b5c79": {
 "en": "AEMPS SmPC 4.5 · ADA Standards of Care 2024 (hypoglycaemia)",
 "es": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)"
@@ -15314,6 +15550,10 @@
 "cc90d22f": {
 "en": "Partial adherence: review barriers (pain, fear, schedule, transport) and simplify the plan if needed.",
 "es": "Adherencia parcial: revisar barreras (dolor, miedo, horario, transporte) y simplificar el plan si hace falta."
+},
+"cca01cad": {
+"en": "Buckley 2024, Cochrane",
+"es": "Buckley 2024, Cochrane"
 },
 "cca4a572": {
 "en": "Possible unsteadiness or mild tremor; train with support nearby.",
@@ -16131,6 +16371,10 @@
 "en": "Stop the session and get help if any of these appears…",
 "es": "Pare la sesión y avise si aparece…"
 },
+"d836efc0": {
+"en": "23.8% and 15.9%",
+"es": "23,8 % y 15,9 %"
+},
 "d8464a9a": {
 "en": "None of the time",
 "es": "Nunca"
@@ -16266,6 +16510,10 @@
 "da2183bd": {
 "en": "Risk of serotonin syndrome (low).",
 "es": "Riesgo de síndrome serotoninérgico (bajo)."
+},
+"da274d60": {
+"en": "Exercise-based rehabilitation probably reduces recurrences of atrial fibrillation (moderate certainty) and may improve exercise capacity and symptoms (low certainty). No clear effect on mortality has been seen.",
+"es": "La rehabilitación con ejercicio probablemente reduce las recaídas de la fibrilación auricular (certeza moderada) y puede mejorar la capacidad de esfuerzo y los síntomas (certeza baja). No se ha visto un efecto claro en la mortalidad."
 },
 "da479dd0": {
 "en": "ESC 2021 heart failure",
@@ -16891,6 +17139,10 @@
 "en": "Roxadustat",
 "es": "Roxadustat"
 },
+"e2c6033d": {
+"en": "Mild pain during exercise that has gone by the next day is acceptable. Start with little and build up slowly; in osteoarthritis, exercise usually eases pain. Sudden, severe back pain needs to be checked.",
+"es": "Un dolor leve durante el ejercicio, que se pasa al día siguiente, es aceptable. Empiece con poco y suba despacio; en la artrosis, el ejercicio suele aliviar el dolor. Un dolor de espalda brusco e intenso hay que consultarlo."
+},
 "e2d18e3d": {
 "en": "; readings recorded: ",
 "es": "; constantes anotadas: "
@@ -17319,6 +17571,10 @@
 "en": "If you have epilepsy: regular exercise reduces the frequency of seizures in many people. Avoid triggers (lack of sleep, dehydration, missing doses) and do not swim or do activities at height without company.",
 "es": "Si tiene epilepsia: el ejercicio regular reduce la frecuencia de crisis en muchas personas. Evite factores desencadenantes (falta de sueño, deshidratación, saltarse tomas) y no haga natación ni actividades en altura sin compañía."
 },
+"e830faf0": {
+"en": "In people with a defibrillator (ICD) and heart failure, training improved fitness and was associated with fewer defibrillator shocks. The figure does not apply to people who only have a pacemaker.",
+"es": "En personas con desfibrilador (DAI) e insuficiencia cardiaca, entrenar mejoró la forma física y se asoció a menos descargas del desfibrilador. El dato no vale para quien lleva solo un marcapasos."
+},
 "e85137f2": {
 "en": "Summary of product characteristics of Valdoxan, 4.4 and 4.5",
 "es": "Ficha técnica de Valdoxan, 4.4 y 4.5"
@@ -17374,6 +17630,10 @@
 "e93c3a61": {
 "en": "A softer band, or one arm at a time.",
 "es": "Banda más suave, o un brazo cada vez."
+},
+"e942dc05": {
+"en": "−9 to −13",
+"es": "−9 a −13"
 },
 "e951c7dc": {
 "en": "Indicated. Keep well hydrated; with topiramate, take special care in the heat.",
@@ -17486,6 +17746,10 @@
 "ea86ebe0": {
 "en": "You take {n} medicine(s) that increase the risk of falling and you have fragile bones: a fall can mean a fracture. Balance with support and supervision, a medication review with your doctor and a review of the home (rugs, lighting).",
 "es": "Toma {n} fármaco(s) que aumentan el riesgo de caída y tiene fragilidad ósea: una caída puede significar una fractura. Equilibrio con apoyo y supervisión, revisión de la medicación con su médico y de la casa (alfombras, iluminación)."
+},
+"eaa7f8a1": {
+"en": "return of pain; also consider musculoskeletal symptoms, restlessness, gastrointestinal symptoms, anxiety, insomnia, sweating, anger and chills",
+"es": "reaparición del dolor; valorar también síntomas musculoesqueléticos, inquietud, síntomas digestivos, ansiedad, insomnio, sudoración, enfado y escalofríos"
 },
 "eaaae5f8": {
 "en": "hypertension",
@@ -17602,6 +17866,10 @@
 "ec73d8b7": {
 "en": "EMA HMPC, EU monograph (St John's wort) 4.4",
 "es": "EMA HMPC, monografía de la UE (hipérico) 4.4"
+},
+"ec7dd288": {
+"en": "How much difficulty do you have lifting and carrying a weight of 5 kg?",
+"es": "¿Cuánta dificultad tiene para levantar y llevar un peso de 5 kg?"
 },
 "ecb9ef31": {
 "en": "Key points",
@@ -17846,6 +18114,10 @@
 "f049963b": {
 "en": "major",
 "es": "mayor"
+},
+"f057ed39": {
+"en": "Very low. Treat it now: take 15–20 g of fast-acting sugar (a glass of juice or of a sugary soft drink, or 3 sachets of sugar) and measure again after 15 minutes. Do not train today; if you do not recover or feel unwell, seek medical help.",
+"es": "Muy baja. Trátela ya: tome 15–20 g de azúcar de absorción rápida (un vaso de zumo o de refresco con azúcar, o 3 sobres de azúcar) y repita la medida a los 15 minutos. Hoy no entrene; si no se recupera o se encuentra mal, pida ayuda médica."
 },
 "f0679e8a": {
 "en": "How to make it a habit",
@@ -18271,6 +18543,10 @@
 "en": "Increases the risk of myopathy.",
 "es": "Aumenta el riesgo de miopatía."
 },
+"f638c324": {
+"en": "Without vertebral fractures: moderate impact (gentle jogging, small jumps, stamping). With a vertebral fracture or several fractures: no more than brisk walking",
+"es": "Sin fracturas vertebrales: impacto moderado (trote suave, saltitos, pisar fuerte). Con fractura vertebral o varias fracturas: no pasar de caminar a paso ligero"
+},
 "f639da22": {
 "en": "Clinical review (ISSN 2017 creatine; product information of the medicines cited)",
 "es": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)"
@@ -18659,6 +18935,10 @@
 "en": "Walking is safe and useful; avoid cycling in traffic or risky activities if you have active vertigo.",
 "es": "Caminar es seguro y útil; evite bici en tráfico o actividades con riesgo si tiene vértigo activo."
 },
+"fab2f574": {
+"en": " With duloxetine, smokers have blood levels almost 50% lower, so they may rise when you stop smoking.",
+"es": " Con la duloxetina, los fumadores tienen niveles en la sangre casi un 50 % más bajos, así que al dejar de fumar pueden subir."
+},
 "fab3e430": {
 "en": "Any blow to the head, even if you feel fine, or large bruises without a knock.",
 "es": "Cualquier golpe en la cabeza, aunque se encuentre bien, o hematomas grandes sin golpe."
@@ -18698,6 +18978,10 @@
 "fafe82a3": {
 "en": "Fragala et al., NSCA position statement on resistance training for older adults, J Strength Cond Res 2019",
 "es": "Fragala et al., posicionamiento de la NSCA sobre fuerza en mayores, J Strength Cond Res 2019"
+},
+"fb0885ce": {
+"en": "moderate (recurrences)",
+"es": "moderada (recaídas)"
 },
 "fb1ac15b": {
 "en": "AEMPS SmPC 4.8 · WHO 2020",
@@ -18739,6 +19023,10 @@
 "en": "I climb a floor without stopping, only brushing the handrail.",
 "es": "Subo un piso sin parar, usando la barandilla solo para rozarla."
 },
+"fbb4081d": {
+"en": "Mild pain that has gone by the next day is acceptable; if it gets worse, ease off a little and mention it. If it is sudden and severe, seek advice.",
+"es": "Un dolor leve que se pasa al día siguiente es aceptable; si va a más, baje un poco y coméntelo. Si es brusco e intenso, consulte."
+},
 "fbcbcf26": {
 "en": "Watson et al., J Bone Miner Res 2018 (LIFTMOR trial)",
 "es": "Watson et al., J Bone Miner Res 2018 (ensayo LIFTMOR)"
@@ -18762,6 +19050,10 @@
 "fbf1980b": {
 "en": "Use herbal laxatives for a few days only (no more than 1 or 2 weeks) and not daily. Taken continuously they lower potassium, especially with diuretics, corticosteroids or liquorice, and they are dangerous if you take digoxin or heart rhythm medicines. If you often need a laxative, fibre, water and movement are better.",
 "es": "Use los laxantes de plantas solo unos días (no más de 1 o 2 semanas) y no a diario. Tomados de forma continuada bajan el potasio, sobre todo con diuréticos, corticoides o regaliz, y son peligrosos si toma digoxina o fármacos para el ritmo del corazón. Si necesita un laxante a menudo, mejor fibra, agua y movimiento."
+},
+"fbf5aa15": {
+"en": "Cochrane review of 20 trials (2039 people)",
+"es": "Revisión Cochrane de 20 ensayos (2039 personas)"
 },
 "fc1f4fb0": {
 "en": "Casas-Herrero Á et al. J Cachexia Sarcopenia Muscle 2022;13:884-93",
@@ -18931,6 +19223,10 @@
 "en": "At bedtime",
 "es": "Al acostarse"
 },
+"fe8ab724": {
+"en": "The difference in admissions for heart failure itself and in first-year mortality is not clear: it may be due to chance.",
+"es": "La diferencia en los ingresos por la propia insuficiencia cardiaca y en la mortalidad del primer año no es clara: puede deberse al azar."
+},
 "fe8c54fe": {
 "en": "Good! What is most often missing is strength and balance: two days a week of body-weight exercises.",
 "es": "¡Bien! Lo que más suele faltar es la fuerza y el equilibrio: dos días por semana de ejercicios con el propio peso."
@@ -19014,6 +19310,10 @@
 "ff870959": {
 "en": "Bending at the hip: the body stays straight, like a board.",
 "es": "Doblar la cadera: el cuerpo va recto, como una tabla."
+},
+"ff894b10": {
+"en": "Cochrane review of 60 trials (8728 people)",
+"es": "Revisión Cochrane de 60 ensayos (8728 personas)"
 },
 "ff92f027": {
 "en": "Indacaterol",

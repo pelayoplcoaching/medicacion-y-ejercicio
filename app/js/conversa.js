@@ -5,8 +5,8 @@
    Incluye las barreras más frecuentes con una respuesta para cada una, una nota para la historia clínica y una hoja
    imprimible para el paciente. Nada se guarda fuera de este dispositivo. Contenido en español, revisado por un clínico el
    22/11/2026; la interfaz, en cinco idiomas. Se carga al abrirla. */
-import { idioma } from "./i18n.js?v=202611230223";
-import { tC, tL } from "./tr.js?v=202611230223";
+import { idioma } from "./i18n.js?v=202611230752";
+import { tC, tL } from "./tr.js?v=202611230752";
 
 export const FUENTES = tC([
   { txt: "Ministerio de Sanidad 2015, Consejo integral en estilo de vida en Atención Primaria (modelo de las 5 Aes)", url: "https://www.sanidad.gob.es/areas/promocionPrevencion/envejecimientoSaludable/activo/consejoIntegralAP.htm" },
@@ -20,7 +20,7 @@ export const AES = ["averiguar", "aconsejar", "acordar", "ayudar", "asegurar"];
 /** Barreras frecuentes: lo que suele decir la persona, una respuesta para la consulta y una línea para su hoja. */
 export const BARRERAS = tC([
   { id: "tiempo", txt: "No tengo tiempo", resp: "Valen los ratos cortos: varios a lo largo del día suman igual. ¿En qué momento de su día encajaría uno de 10 minutos?", hoja: "Varios ratos cortos al día también suman: busque el suyo (después de comer, al ir a comprar…)." },
-  { id: "dolor", txt: "Me duelen las articulaciones o la espalda", resp: "Un dolor leve durante el ejercicio, que se pasa al día siguiente, es aceptable. Empiece con poco y suba despacio; en la artrosis, el ejercicio suele aliviar el dolor.", hoja: "Un dolor leve que se pasa al día siguiente es aceptable; si va a más, baje un poco y coméntelo." },
+  { id: "dolor", txt: "Me duelen las articulaciones o la espalda", resp: "Un dolor leve durante el ejercicio, que se pasa al día siguiente, es aceptable. Empiece con poco y suba despacio; en la artrosis, el ejercicio suele aliviar el dolor. Un dolor de espalda brusco e intenso hay que consultarlo.", hoja: "Un dolor leve que se pasa al día siguiente es aceptable; si va a más, baje un poco y coméntelo. Si es brusco e intenso, consulte." },
   { id: "caidas", txt: "Me da miedo caerme", resp: "Los ejercicios de equilibrio reducen las caídas. Empiece con un apoyo cerca (una silla firme o la encimera) y, al principio, con alguien al lado.", hoja: "Haga el equilibrio con un apoyo cerca: una silla firme o la encimera." },
   { id: "cansancio", txt: "Estoy muy cansado", resp: "Empezar con muy poco ayuda. Si el cansancio es nuevo o va a más, conviene revisarlo; algunos fármacos también cansan.", hoja: "Empiece con muy poco; si el cansancio es nuevo o va a más, dígalo en la consulta." },
   { id: "saber", txt: "No sé qué hacer ni por dónde empezar", resp: "Le dejo un plan sencillo para esta semana. La aplicación le guía en cada sesión con dibujos y voz, y anota lo que hace.", hoja: "Siga el plan de esta hoja; la aplicación le guía en cada sesión con dibujos y voz." },
@@ -74,7 +74,7 @@ export function barreras(d = {}) {
 export function objetivoSugerido(d = {}, actividad = null) {
   const c = contexto(d);
   if (c.fragil) return tL("Levantarme de la silla 5 veces seguidas, dos veces al día, y caminar 5 minutos después de comer.");
-  if (c.nyha) return tL("Caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.");
+  if (c.nyha) return tL("Si estoy estable, caminar 5-10 minutos, dos veces al día, a un ritmo que me deje hablar.");
   if (actividad === "si") return tL("Añadir dos días por semana de fuerza: levantarme de la silla, subir escalones y empujar contra la pared.");
   return tL("Caminar 10 minutos después de comer, 5 días esta semana, a un ritmo que me deje hablar.");
 }
@@ -152,7 +152,7 @@ export function pasos(d = {}, modo = "uno", s = {}) {
   if (modo === "uno") {
     const b = ben.find((x) => x.sit !== "todos") || ben[0];
     return [
-      { a: "averiguar", titulo: tL("Pida permiso y pregunte"), html: q(tL("¿Le parece bien que hablemos un minuto de cuánto se mueve?")) + q(tL("En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?")) + pnota(tL("Es la pregunta de cribado del consejo integral del Ministerio de Sanidad.")) },
+      { a: "averiguar", titulo: tL("Pida permiso y pregunte"), html: q(tL("¿Le parece bien que hablemos un minuto de cuánto se mueve?")) + q(tL("En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?")) + pnota(tL("Equivale a los 150 minutos a la semana que recomienda la OMS.")) },
       { a: "aconsejar", titulo: tL("Un mensaje que le toque"), html: (b ? caso(benLinea(b)) + q(tL`En su situación, moverse tiene un efecto real: ${esc(minus(b.titulo))}.`) : "") + q(tL("Algo es mejor que nada, y más es mejor: hasta un paseo de 10 minutos cuenta.")) + (cuid[0] ? caso(tL`<b>Con su medicación:</b> ${esc(cuid[0])}`) : "") },
       { a: "asegurar", titulo: tL("Un primer paso y volver a preguntar"), html: q(tL("¿Qué pequeño cambio podría hacer esta semana?")) + tL`<p>Entregue la hoja con su plan (abajo) y pregunte cómo le ha ido en la próxima visita.</p>` },
     ];
@@ -172,7 +172,7 @@ export function pasos(d = {}, modo = "uno", s = {}) {
           + `<label class="cv-esc"><span>${q(tL("Y del 0 al 10, ¿cuánta confianza tiene en conseguirlo?"))}</span><span class="cv-esc-fila"><input type="range" min="0" max="10" step="1" name="cv-conf" value="${s.conf ?? 5}" aria-label="${tx("conf")}"><output data-cv-out="conf">${s.conf ?? 5}</output></span><small data-cv-p="conf">${esc(e.pConf)}</small></label></div>`
           + `<p class="cv-pista" data-cv-pista>${esc(e.pista)}</p>` + pnota(tL("Escalas de importancia y confianza de la entrevista motivacional.")) },
       { a: "aconsejar", titulo: tL("Beneficios y seguridad en su caso"), html: (ben.length ? caso(`<ul>${ben.slice(0, 3).map((b) => `<li>${benLinea(b)} <small>(${esc(b.estudio)})</small></li>`).join("")}</ul>`) : q(tL("Algo es mejor que nada, y más es mejor.")))
-          + (seg.length ? caso(`<ul class="cv-seg">${seg.map((x) => `<li class="nivel-${x.nivel}"><span class="punto"></span><span><b>${esc(x.titulo)}.</b> ${esc(x.texto)}</span></li>`).join("")}</ul>`) : pnota(tL("Sin avisos importantes por su medicación: puede empezar de forma progresiva.")))
+          + (seg.length ? caso(`<ul class="cv-seg">${seg.map((x) => `<li class="nivel-${x.nivel}"><span class="punto"></span><span><b>${esc(x.titulo)}.</b> ${esc(x.texto)}</span></li>`).join("")}</ul>`) : pnota(d.nMeds ? tL("Sin avisos importantes por su medicación: puede empezar de forma progresiva.") : tL("Aún no ha añadido la medicación: añádala para ver los avisos.")))
           + caso(tL`<b>Cribado:</b> ${esc(crib)}`) + habHtml },
       { a: "acordar", titulo: tL("Un objetivo pequeño y concreto"), html: `<label class="cv-campo cv-obj"><span>${tx("objetivo")}</span><textarea name="cv-obj" rows="3">${esc(s.objetivo ?? objetivoSugerido(d, s.actividad))}</textarea></label>`
           + pnota(tL("Que sea concreto (qué, cuándo y cuánto), pequeño y dicho con sus palabras. Mejor quedarse corto que fallar."))
