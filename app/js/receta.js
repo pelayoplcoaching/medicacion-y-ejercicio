@@ -10,9 +10,9 @@
      (Kanaley 2022, Brooke-Wavell 2022, Campbell 2019, Mottola 2018).
    CONTENIDO CLÍNICO NUEVO (el resumen en celdas y las frases de las guías): BORRADOR PENDIENTE DE REVISIÓN CLÍNICA.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611231042";
-import { ALARMA } from "./engine.js?v=202611231042";
-import { APP_VERSION } from "./version.js?v=202611231042";
+import { idioma, t } from "./i18n.js?v=202611231056";
+import { ALARMA } from "./engine.js?v=202611231056";
+import { APP_VERSION } from "./version.js?v=202611231056";
 
 const TXT = {
   es: { titulo: "Receta de ejercicio por enfermedad", borrador: "Borrador pendiente de revisión clínica", intro: "La dosis de ejercicio de referencia para cada situación y lo que cambia con ella. Es orientativa: no sustituye la valoración de su médico.", sus: "Sus situaciones", otras: "Otras situaciones", todas: "Elija una situación", dosis: "Dosis de referencia", th_f: "Frecuencia", th_i: "Intensidad", th_t: "Tiempo", th_tipo: "Tipo", aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio", leyenda: "En negrita, lo que cambia con esta situación; el resto es la recomendación general de la OMS.", manda: "Lo específico de abajo manda sobre la tabla.",

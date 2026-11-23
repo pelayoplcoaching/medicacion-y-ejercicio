@@ -1,7 +1,7 @@
 /* Exportación FHIR R4 (beta 3): Bundle de colección con el paciente anónimo, sus observaciones (edad, pulso en reposo,
    filtrado, FEVI, SPPB, NYHA, caídas, cribado ACSM), condiciones, medicación (con ATC y momentos de toma) y el plan de
    ejercicio FITT. Sale de app.js en la v1.2.11 para no cargarlo al abrir: se carga al pedir la exportación. */
-import { tL } from "./tr.js?v=202611231042";
+import { tL } from "./tr.js?v=202611231056";
 const MOMENTO_FHIR = { desayuno: "MORN", comida: "NOON", cena: "EVE", noche: "NIGHT" };
 const CODIGOS_FHIR = { fcReposo: ["40443-4", "Heart rate --resting"], fg: ["62238-1", "Glomerular filtration rate/1.73 sq M.predicted"], fevi: ["10230-1", "Left ventricular Ejection fraction"], edad: ["30525-0", "Age"] };
 /** d: { res, ctx, P, presc, estado, crib, cribTxt, cond(c), ent(pid), esencial, version, kbVersion }. */

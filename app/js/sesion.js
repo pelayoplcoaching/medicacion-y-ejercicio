@@ -2,8 +2,8 @@
    Sale de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1): se carga al pulsar «Empezar sesión».
    app.js le pasa en «a» lo que necesita de la aplicación (estado evaluado, utilidades de pantalla y el registro
    de la sesión); el motor y los textos de la interfaz se importan aquí. Nada se guarda fuera del dispositivo. */
-import { t } from "./i18n.js?v=202611231042";
-import { sesionTipo, chequeoPrevio, veredictoChequeo, constantesRelevantes } from "./engine.js?v=202611231042";
+import { t } from "./i18n.js?v=202611231056";
+import { sesionTipo, chequeoPrevio, veredictoChequeo, constantesRelevantes } from "./engine.js?v=202611231056";
 
 const $ = (s) => document.querySelector(s);
 const VOZ_MUDO = { on: false, disponible: () => false, preferida: () => false, guardar() {}, frase: () => null, contenido: () => null, decir() {}, callar() {}, preparar() {}, pitar() {}, cerrar() {} };

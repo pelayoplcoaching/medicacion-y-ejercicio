@@ -5,8 +5,8 @@
    de temperatura son orientativas: sirven para que cada uno sitúe su día, no son umbrales oficiales (esos dependen de la
    provincia). Textos de la interfaz en los cinco idiomas dentro del módulo; el consejo, en español como el resto de
    explicadores. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611231042";
-import { tC, tL } from "./tr.js?v=202611231042";
+import { t, idioma } from "./i18n.js?v=202611231056";
+import { tC, tL } from "./tr.js?v=202611231056";
 
 export const NIVELES = 4; // 0 fresco o templado · 1 calor · 2 mucho calor · 3 calor extremo
 /** Mecanismos de su lista que importan con calor: el calor en sí, el agua y las sales, y el sol. */

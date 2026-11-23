@@ -14,8 +14,8 @@
      y avisarles; solo se enlaza su web.
    Las preguntas son traducción de la aplicación del original en inglés (hay versiones validadas en español de México de FRAIL y SARC-F).
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611231042";
-import { tL } from "./tr.js?v=202611231042";
+import { idioma, t } from "./i18n.js?v=202611231056";
+import { tL } from "./tr.js?v=202611231056";
 
 const TXT = {
   es: { titulo: "Escalas rápidas", borrador: "Borrador pendiente de revisión clínica", intro: "Cuatro cuestionarios cortos de cribado, traducidos por esta aplicación. Orientan, no diagnostican.", preguntas: "{n} preguntas", ultimo: "Último: {x} · {f}", sin_hacer: "Sin hacer", volver: "Todas las escalas", faltan: "Faltan {n} respuestas", resultado: "Resultado", de: "{p} de {m}", anterior: "La vez anterior: {x} ({f})", guardado: "Guardado en este dispositivo.", borrar: "Borrar este resultado", borrado: "Resultado borrado.",

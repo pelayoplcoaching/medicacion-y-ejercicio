@@ -3,8 +3,8 @@
    «Para usted hoy»: hasta tres sugerencias según la lista, el plan y lo que queda por hacer.
    Se carga al abrirlo (botón «Más» de la barra inferior, «Herramientas» de la cabecera o Ctrl/⌘ + K). No guarda nada fuera
    del dispositivo: las favoritas van en localStorage («medex.favoritas»). Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611231042";
-import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611231042";
+import { t, idioma } from "./i18n.js?v=202611231056";
+import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611231056";
 
 const TXT = {
   es: { titulo: "Herramientas", nuevo: "Nuevo", ultima: "Última", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",
@@ -195,7 +195,7 @@ export function leerUltima() { try { return JSON.parse(localStorage.getItem("med
 function apuntarUso(id) { if (!POR_ID[id]) return; try { const v = leerVistas(); localStorage.setItem("medex.herr", JSON.stringify({ vistas: v.includes(id) ? v : [...v, id], ultima: id })); } catch { /* sin almacenamiento: no pasa nada */ } }
 /* Banda ilustrada de cada herramienta (bloque de imagenes PA2): assets/img/herr-<id>.webp, 960 x 360.
    Va la primera dentro del cuerpo de la ventana; como cada herramienta repinta su cuerpo, se repone sola. */
-const BANDAS = new Set(["primeros", "programa", "receta", "rato", "pildoras", "numeros", "paseo", "dolor", "vuelta", "biblioteca", "cuerpo", "mitos", "cien", "dosis", "calor"]);
+const BANDAS = new Set(["primeros", "programa", "receta", "rato", "pildoras", "numeros", "paseo", "dolor", "vuelta", "biblioteca", "cuerpo", "mitos", "cien", "dosis", "calor", "escalas", "preguntas", "enfermedad", "frid", "simula", "conversa", "pastillero", "metas"]);
 export const tieneBanda = (id) => BANDAS.has(id);
 function ponBanda(d, h) {
   const cu = d.querySelector(":scope > .ficha-cuerpo"); if (!cu) return;
@@ -411,6 +411,7 @@ const CSS = `
 .ce-nuevo { position: absolute; top: -6px; left: 10px; z-index: 1; padding: 0 7px; border-radius: 999px; background: var(--hg, var(--accent)); color: var(--surface); font-family: var(--mono); font-size: .62rem; font-style: normal; font-weight: 700; letter-spacing: .06em; line-height: 1.7; text-transform: uppercase; pointer-events: none; }
 .ce-ult { position: absolute; left: 10px; top: -8px; z-index: 1; padding: 0 7px; border: 1px solid var(--hg, var(--line-strong)); border-radius: 999px; background: var(--surface); color: var(--muted); font-family: var(--mono); font-size: .6rem; font-style: normal; line-height: 1.6; pointer-events: none; }
 .ce-nada { display: grid; justify-items: center; gap: 8px; padding: 22px 16px; text-align: center; }
+.ce-nada-img { width: 120px; height: 120px; border-radius: 22px; }
 .ce-nada .ce-i { width: 38px; height: 38px; padding: 9px; border-radius: 50%; background: var(--surface-2); color: var(--muted); box-sizing: content-box; }
 @media (max-width: 520px) { .ce-t > .ce-b { min-height: 58px; } }
 :root[data-theme="contrast"] .ce-tit[data-g] { background: var(--surface); }
@@ -493,7 +494,7 @@ function pintar() {
     const grupos = buscarTodo(q, fuentes, { pro: hechos.pro });
     const n = grupos.reduce((s, g) => s + g.items.length, 0);
     cu().innerHTML = n ? `<p class="sr-only" role="status">${tx("n_res", { n })}</p>` + grupos.map((g) => `<h3 class="ce-tit">${tx("r_" + g.id)} <small>${g.items.length}</small></h3><ul class="ce-res">${g.items.map((r) => resultado(r, hechos)).join("")}</ul>`).join("")
-      : `<p class="ce-nada" role="status">${ic("lupa")}<span>${tx("nada", { q: q.replace(/[<>&"]/g, "") })}</span></p>`;
+      : `<p class="ce-nada" role="status"><img class="ce-nada-img" src="assets/img/centro-nada.webp" alt="" width="120" height="120" decoding="async"><span>${tx("nada", { q: q.replace(/[<>&"]/g, "") })}</span></p>`;
     cu().querySelector(".ce-res button, .ce-res a")?.classList.add("activo");
     return;
   }

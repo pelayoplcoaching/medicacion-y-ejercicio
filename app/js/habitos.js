@@ -4,8 +4,8 @@
    para la cafeína y, para el tabaco y el café con levotiroxina, artículos con su DOI comprobados en PubMed. Contenido en
    español (como el resto del contenido clínico) revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas.
    Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611231042";
-import { tC, tL } from "./tr.js?v=202611231042";
+import { idioma } from "./i18n.js?v=202611231056";
+import { tC, tL } from "./tr.js?v=202611231056";
 
 /** Respuestas posibles de cada hábito, en el orden del formulario. */
 export const VALORES = { alcohol: ["no", "aveces", "diario"], tabaco: ["no", "si", "dejado"], cafe: ["poco", "medio", "mucho"] };
@@ -242,6 +242,9 @@ export const ICONO = {
 export const CLAVE = { alcohol: { no: "hab.a_no", aveces: "hab.a_aveces", diario: "hab.a_diario" }, tabaco: { no: "hab.t_no", si: "hab.t_si", dejado: "hab.t_dejado" }, cafe: { poco: "hab.c_poco", medio: "hab.c_medio", mucho: "hab.c_mucho" } };
 
 const CSS = `
+.hab-banda { display: block; width: 100%; height: auto; aspect-ratio: 8 / 3; max-height: 190px; object-fit: cover; margin: 0 0 12px; border-radius: var(--r-md, 12px); background: var(--surface-2); }
+@media (max-width: 520px) { .hab-banda { max-height: 132px; } }
+@media print { .hab-banda { display: none !important; } }
 .hab-intro { margin: 0 0 6px; color: var(--muted); font-size: .9rem; }
 .hab-cab { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 6px; }
 .hab-tira { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 420px; margin: 0; padding: 0; list-style: none; }
@@ -308,7 +311,7 @@ export function pintar(cont, c = {}) {
     const pill = (h) => `<li class="hab-p" data-h="${h}" data-v="${hab[h] || ""}">${ICONO[h]}<span><small>${tx("g_" + h)}</small><b>${esc(hab[h] ? t(CLAVE[h][hab[h]]) : tx("sin"))}</b></span></li>`;
     const grupos = ORDEN_H.filter((h) => avisos.some((a) => a.h === h))
       .map((h) => `<p class="hab-g">${ICONO[h]}${tx("g_" + h)}</p>${avisos.filter((a) => a.h === h).map((a) => tarjeta(a, c)).join("")}`).join("");
-    cont.innerHTML = `<p class="hab-intro">${tx("intro")}</p>
+    cont.innerHTML = `<img class="hab-banda" src="assets/img/herr-habitos.webp" alt="" width="960" height="360" loading="lazy" decoding="async"><p class="hab-intro">${tx("intro")}</p>
       <div class="hab-cab"><ul class="hab-tira" aria-label="${esc(tx("tira"))}">${ORDEN_H.map(pill).join("")}</ul><button type="button" class="btn-sec sm hab-responder">${tx("cambiar")}</button></div>
       ${grupos || `<div class="hab-bien"><p>${tx("ninguno_txt")}</p></div>`}`;
   }

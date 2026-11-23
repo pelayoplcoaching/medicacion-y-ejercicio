@@ -1,6 +1,6 @@
 /* Motor de reglas: medicación + dosis + contexto → informe.
    Sin dependencias. Se usa igual en la app y en tests. */
-import { tC, tL } from "./tr.js?v=202611231042";
+import { tC, tL } from "./tr.js?v=202611231056";
 
 export const ORDEN_NIVEL = { alerta: 3, precaucion: 2, info: 1 };
 export const ORDEN_DDI = { mayor: 3, moderada: 2, menor: 1 };
@@ -483,7 +483,7 @@ export const SINTOMAS = tC([
 
 /** Para cada síntoma, los fármacos de la lista que podrían explicarlo (por sus señales). */
 export function sintomasPosibles(res) {
-  return SINTOMAS.filter((s) => !s.soloDiario).map((s) => {
+  return SINTOMAS.map((s) => {
     const farmacos = res.items.filter((it) => s.senales.some((x) => it.senales.has(x))).map((it) => it.principio.nombre);
     return { ...s, farmacos };
   });

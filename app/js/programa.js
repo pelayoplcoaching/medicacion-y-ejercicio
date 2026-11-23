@@ -6,8 +6,8 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611231042";
-import { tC } from "./tr.js?v=202611231042";
+import { idioma } from "./i18n.js?v=202611231056";
+import { tC } from "./tr.js?v=202611231056";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -240,6 +240,8 @@ export function veredicto(h) {
 }
 
 const CSS = `
+.prg-fin-img { display: block; width: 160px; height: 160px; margin: 0 auto 12px; border-radius: 26px; }
+@media print { .prg-fin-img { display: none !important; } }
 .prg-card { margin: 10px 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%); }
 .prg-cab { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 8px; }
 .prg-cab b { font-size: 1rem; }
@@ -401,7 +403,7 @@ export function revision(p = leer()) {
 }
 function revisionHtml(p) {
   const r = revision(p), sig = NIVELES[Math.min(2, NIVELES.indexOf(p.nivel) + 1)], rp = (x) => (x != null ? " · " + tx("rev_rpe", { r: num(Math.round(x * 10) / 10) }) : "");
-  return `<span class="prg-borrador">${tx("borrador")}</span><p class="prg-intro">${tx("rev_intro")}</p>
+  return `<img class="prg-fin-img" src="assets/img/programa-fin.webp" alt="" width="160" height="160" decoding="async"><span class="prg-borrador">${tx("borrador")}</span><p class="prg-intro">${tx("rev_intro")}</p>
     <div class="prg-cifras"><div><b>${r.semanas}</b><small>${tx("rev_semanas")}</small></div><div><b>${r.ses}</b><small>${tx("rev_ses")}</small></div><div><b>${r.min}</b><small>${tx("rev_min")}</small></div></div>
     <div class="prg-comp"><div><b>${tx("rev_ini")}</b>${tx("rev_min_sem", { n: r.ini.min })}${rp(r.ini.rpe)}</div><div><b>${tx("rev_fin")}</b>${tx("rev_min_sem", { n: r.fin.min })}${rp(r.fin.rpe)}</div></div>
     <p class="prg-nota">${tx("rev_pruebas")}</p><div class="prg-acc pegada"><button type="button" class="btn-sec" data-prg="pruebas">${tx("rev_pruebas_btn")}</button></div>

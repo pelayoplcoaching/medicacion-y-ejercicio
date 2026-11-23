@@ -2,10 +2,10 @@
    Dos documentos: "Informe clínico" para el médico y "Su plan" para el paciente.
    Sistema de maquetación propio: cabecera, bandas, tablas con zebra, tarjetas con acento, pastillas de nivel.
    Se carga bajo demanda (import dinámico) la primera vez que se pide un PDF. */
-import { jspdf, cargarScript } from "./libs.js?v=202611231042";
-import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, SINTOMAS } from "./engine.js?v=202611231042";
-import { AMBITOS, CRIBADO_PDF, WEB, cuenta, dosisTxt, filasPlanPaciente, listasVistazo, prescripcion, ritmoTexto, sppbTxt, tiene, zonaTxt } from "./informes.js?v=202611231042";
-import { tC, tL } from "./tr.js?v=202611231042";
+import { jspdf, cargarScript } from "./libs.js?v=202611231056";
+import { ORDEN_NIVEL, ORDEN_DDI, MOMENTO_TXT, loEsencial, ALARMA, PLAN_SEMANA, sesionTipo, planSemana, SINTOMAS } from "./engine.js?v=202611231056";
+import { AMBITOS, CRIBADO_PDF, WEB, cuenta, dosisTxt, filasPlanPaciente, listasVistazo, prescripcion, ritmoTexto, sppbTxt, tiene, zonaTxt } from "./informes.js?v=202611231056";
+import { tC, tL } from "./tr.js?v=202611231056";
 
 const AUTOR = "Dr. Pelayo Fdez. Cidón · Medicina Interna · prescriptor de ejercicio físico";
 const MARCA = "Fuerza Basada en Evidencia";

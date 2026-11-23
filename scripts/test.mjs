@@ -1481,6 +1481,7 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
     const cjs = fs.readFileSync(path.join(APP, "js/centro.js"), "utf8"), ids = JSON.parse(cjs.match(/const BANDAS = new Set\((\[[^\]]+\])\)/)[1]);
     check(`las ${ids.length} herramientas con banda tienen su ilustración`, ids.length >= 15 && ids.every((id) => imgs.includes(`herr-${id}.webp`)), ids.filter((id) => !imgs.includes(`herr-${id}.webp`)).join());
     check("beneficios, mapa de interacciones y enciclopedia llevan su banda", fs.readFileSync(path.join(APP, "js/beneficios.js"), "utf8").includes("herr-beneficios.webp") && fs.readFileSync(path.join(APP, "js/mapa.js"), "utf8").includes("herr-mapa.webp") && fs.readFileSync(path.join(APP, "enciclopedia/index.html"), "utf8").includes("../assets/img/enc-portada.webp"));
+    check("las tres cuadradas del bloque PA2 están en su sitio y dolor en el pecho sale también en «Si nota algo al entrenar»", cjs.includes("assets/img/centro-nada.webp") && fs.readFileSync(path.join(APP, "js/programa.js"), "utf8").includes("assets/img/programa-fin.webp") && fs.readFileSync(path.join(APP, "js/habitos.js"), "utf8").includes("herr-habitos.webp") && imgs.includes("sintoma-dolor_pecho.webp") && ids.length === 23);
     check("la banda se quita con un paseo en marcha y no se imprime", cjs.includes(".ps-marcha") && /@media print \{ \.mh-banda \{ display: none/.test(cjs));
   }
   check("cada ilustración ≤ 40 KB", pesadas.length === 0, pesadas.join());

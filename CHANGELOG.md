@@ -2,6 +2,12 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.27 · 2026-11-23 · Ilustraciones de las herramientas (las 12 que faltaban)
+- **Banda ilustrada en ocho herramientas más:** escalas rápidas, preguntas para la consulta, días de enfermedad, caídas y carga anticolinérgica, «¿Qué cambia si…?», guía de conversación, pastillero y metas. También encabeza la sección de hábitos.
+- **Tres ilustraciones cuadradas:** cuando el buscador de herramientas no encuentra nada, al terminar el programa de 12 semanas y en el síntoma «Dolor u opresión en el pecho».
+- **Dolor en el pecho** sale ahora también en «Si nota algo al entrenar» (antes solo se podía apuntar en el diario), con el mismo aviso.
+- Bloque de imágenes PA2 completo: 30 de 30.
+
 ## 1.3.26 · 2026-11-23 · Ilustraciones de las herramientas (primeras 18)
 - **Banda ilustrada en 15 herramientas:** al abrir «Los primeros 14 días», el programa de 12 semanas, la receta de ejercicio, «Hoy tengo…» (con otra para las píldoras de movimiento), los números antes de entrenar, el paseo guiado, «Me duele…», volver tras un parón, la biblioteca, el cuerpo, los mitos, «De cada 100», «¿Cuánto movimiento hace falta?» y el calor. Se quita sola con un paseo en marcha, en pantallas muy bajas y al imprimir.
 - **También** encabezan los beneficios, el mapa de interacciones y la portada de la enciclopedia.

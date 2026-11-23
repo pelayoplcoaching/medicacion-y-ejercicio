@@ -4,7 +4,7 @@
    CONTENIDO CLÍNICO NUEVO: BORRADOR PENDIENTE DE REVISIÓN CLÍNICA. Las cifras son las de los resúmenes de PubMed, comprobadas
    el 22/11/2026 (el posicionamiento de la ADA de 2016 no tiene resumen en PubMed: se cita sin cifras). El contenido va en
    español, como la base; la interfaz, en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611231042";
+import { t, idioma } from "./i18n.js?v=202611231056";
 
 const TXT = {
   es: { titulo: "Mitos sobre medicación y ejercicio", borrador: "Borrador pendiente de revisión clínica", intro: "Doce ideas muy extendidas y lo que encontraron los estudios. Toque una para ver la explicación y la fuente.", v_falso: "Falso", v_medias: "A medias",
