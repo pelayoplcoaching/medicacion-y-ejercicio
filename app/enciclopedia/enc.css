@@ -60,5 +60,36 @@ ul.indice a { display: block; height: 100%; padding: 10px 12px; border: 1px soli
 ul.indice b { display: block; line-height: 1.3; }
 .etq-q { display: block; margin-top: 14px; }
 ul.indice small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.35; }
+/* Mejoras 877-880 (23/11/2026): cabecera de noche con cifras y buscador, icono del nivel en cada regla, letras fijas con recuento y tarjetas del indice con flecha. */
+.hero, .cta { background: radial-gradient(60% 130% at 92% -20%, #4a2fd0 0, transparent 62%), radial-gradient(45% 90% at 0 120%, #2a1a7a 0, transparent 70%), var(--noche); }
+.hero { color: #fff; border-radius: 0 0 28px 28px; }
+.hero > div { max-width: 860px; margin: 0 auto; padding: 14px 16px 26px; }
+.hero .miga, .hero .sub, .hero .cuenta { color: #cfcaf5; } .hero .sub b { color: #fff; }
+.hero .etq { border-color: #fff6; color: #fff; }
+.hero :focus-visible { outline-color: #fff; }
+.cifras { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.cifras li { flex: 1 1 96px; padding: 9px 12px; border-radius: 14px; background: #ffffff14; border: 1px solid #ffffff2e; color: #dcd8ff; font-size: .88rem; line-height: 1.3; }
+.cifras b { display: block; font: 800 1.6rem/1.1 var(--mono); color: #fff; }
+.hero .busca { margin-bottom: 0; padding-left: 48px; border-color: transparent; color: #151423; box-shadow: 0 12px 30px #0006; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23593ede' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") 14px 50% / 22px no-repeat; }
+.hero .cuenta { margin: 8px 0 0; min-height: 0; }
+.niv { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
+.niv::before { content: ""; width: 16px; height: 16px; background: currentColor; -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+.n-info { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 8h2v7h-2zm0-4h2v2h-2z'/%3E%3C/svg%3E"); }
+.n-precaucion { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2 1 21h22zm-1 7h2v6h-2zm0 8h2v2h-2z'/%3E%3C/svg%3E"); }
+.n-alerta { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M8 2h8l6 6v8l-6 6H8l-6-6V8zm3 5h2v7h-2zm0 9h2v2h-2z'/%3E%3C/svg%3E"); }
+ul.efectos li { border-left: 3px solid var(--accent); }
+.letras { position: sticky; top: 0; z-index: 2; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 10px; padding: 8px 16px; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.letras li { flex: none; }
+section.grupo { scroll-margin-top: 64px; }
+h2.letra { display: flex; align-items: center; gap: 10px; }
+h2.letra small { padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font: 700 .74rem/1 var(--mono); }
+h2.letra::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+ul.indice a { position: relative; padding-right: 30px; transition: translate .15s, border-color .15s, box-shadow .15s; }
+ul.indice a::after { content: "\203a"; position: absolute; right: 12px; top: 50%; translate: 0 -55%; color: var(--line-strong); font-size: 1.4rem; line-height: 1; }
+ul.indice a:hover { translate: 0 -2px; box-shadow: 0 8px 18px #593ede24; } ul.indice a:hover::after { color: var(--accent); }
+#situaciones ul.indice a { border-left: 4px solid var(--accent); }
+.tp { display: inline-block; margin: 2px 0; padding: 0 7px; border-radius: 999px; background: var(--info-soft); color: var(--info); font: 700 .66rem/1.7 var(--mono); font-style: normal; letter-spacing: .04em; text-transform: uppercase; }
+@media (min-width: 700px) { .letras { overflow: visible; margin-inline: 0; padding-inline: 0; } .letras li { flex: 1 1 0; } .letras a { min-width: 0; } }
+@media (prefers-reduced-motion: reduce) { ul.indice a { transition: none; } }
 [hidden] { display: none !important; }
-@media print { .cab nav, .cta, .busca, .letras { display: none; } body { background: #fff; } }
+@media print { .cab nav, .cta, .busca, .letras, .cifras { display: none; } body, .hero { background: #fff; } .hero, .hero .sub, .hero .sub b, .hero .miga, .hero .etq { color: #000; } }

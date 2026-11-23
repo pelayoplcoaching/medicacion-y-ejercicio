@@ -3,7 +3,7 @@
    a su «¿Por qué?». No añade contenido clínico: los efectos son las señales de la base revisada (kb.senales) tal como están,
    los cuidados son los del panel de hoy («cuid.*») y las explicaciones, las de js/porque.js. Aquí solo se reparten por zonas.
    Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Su medicación en el cuerpo", intro: "Toque una zona para ver qué hacen ahí sus medicamentos y qué conviene cuidar al moverse.", resumen: "Su medicación actúa en <b>{a}</b> de {b} zonas.", resumen0: "Con su lista de hoy, ninguna zona pide un cuidado especial al moverse.",
@@ -103,6 +103,15 @@ const CSS = `
 @media (min-width: 760px) { .cp-cuerpo { grid-template-columns: 200px 220px minmax(0, 1fr); gap: 18px; } .cp-fig { width: 200px; } .cp-det { grid-column: auto; } .cp-p { width: 30px; height: 30px; } .cp-zonas button { min-height: 36px; } }
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .cp-p { transition: box-shadow .18s, scale .18s; } html:not(.pa-quieto) .cp-p.activa { scale: 1.12; } }
 @media (forced-colors: active) { .cp-p.con, .cp-zonas button.con i { background: Highlight; color: HighlightText; } .cp-p.activa, .cp-zonas button[aria-pressed="true"] { outline: 3px solid Highlight; } .cp-fig .cp-sil { fill: GrayText; stroke: GrayText; } }
+/* 859-860: la figura con degradado; los puntos con medicamentos brillan y el elegido late una vez */
+.cp-fig .cp-sil { fill: color-mix(in srgb, var(--accent) 16%, var(--surface)); stroke: color-mix(in srgb, var(--accent) 16%, var(--surface)); filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--accent) 22%, transparent)); }
+.cp-p { transition: scale .15s, box-shadow .2s; }
+.cp-p.con { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+.cp-p.con.activa { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--accent), 0 0 16px 6px color-mix(in srgb, var(--accent) 45%, transparent); }
+@media (hover: hover) { .cp-p:hover { scale: 1.12; } }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .cp-p.activa { animation: cp-late .5s var(--ease-salida, ease-out); } }
+@keyframes cp-late { 40% { scale: 1.25; } }
+:root[data-theme="contrast"] .cp-fig .cp-sil { filter: none; } :root[data-theme="contrast"] .cp-p.con { box-shadow: none; }
 `;
 /* Figura de frente: cabeza, tronco y extremidades de trazo grueso. Es solo el fondo de los puntos (decorativa). */
 const FIGURA = `<svg viewBox="0 0 200 440" aria-hidden="true" focusable="false"><g class="cp-sil"><circle cx="100" cy="38" r="26" stroke-width="2"/><path d="M92 58h16v24H92z" stroke-width="6"/><path d="M68 82h64q16 0 16 16l-8 138q-1 14-14 14H74q-13 0-14-14L52 98q0-16 16-16z" stroke-width="2"/><path d="M60 100 44 172l-4 62M140 100l16 72 4 62" fill="none" stroke-width="24"/><path d="M84 244l-2 86 2 84M116 244l2 86-2 84" fill="none" stroke-width="30"/></g></svg>`;

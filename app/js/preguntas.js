@@ -3,8 +3,8 @@
    llevar al médico, la enfermera o el farmacéutico. La persona elige, añade las suyas y las imprime, las comparte o las copia.
    Son preguntas, no consejos: no dicen qué hacer, sino qué preguntar. Estado en localStorage («medex.preguntas»):
    { sel: [ids], propias: [{ t, s }], lista: bool }. Textos en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230120";
-import { APP_VERSION } from "./version.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
+import { APP_VERSION } from "./version.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Mis preguntas para la consulta", intro: "Elija las que quiera llevar a su médico, enfermera o farmacéutico. Con dos o tres basta: la consulta es corta.", sin_meds: "Añada su medicación y las preguntas se ajustarán a ella. Mientras tanto, estas sirven para cualquier consulta.",
@@ -210,6 +210,12 @@ const CSS = `
   #pg-hoja ul { margin: 0; padding-left: 16pt; columns: 2; font-size: 10.5pt; }
   #pg-hoja footer { margin-top: 18pt; padding-top: 6pt; border-top: .6pt solid #888; font-size: 9pt; color: #333; }
 }
+/* 867: las sugeridas con filo y estrella; el boton de imprimir lleva en un globo cuantas van en la hoja */
+.pg-q:has(.pg-sug) { border-left: 4px solid color-mix(in srgb, var(--accent) 55%, var(--surface)); }
+.pg-sug::before { content: "\\2605"; margin-right: 4px; }
+.pg-pie [data-n]::after { content: attr(data-n); display: inline-grid; place-items: center; min-width: 22px; height: 22px; margin-left: 8px; padding: 0 6px; border-radius: 999px; background: var(--surface); color: var(--accent-deep, var(--accent)); font: 700 .78rem/1 var(--mono); vertical-align: 1px; }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .pg-q:has(input:checked) { animation: pg-elige .22s ease-out; } }
+@keyframes pg-elige { 50% { scale: 1.012; } }
 `;
 
 let dlg = null, A = null, P = [], estado = { sel: [], propias: [], lista: true };
@@ -289,6 +295,7 @@ async function compartir() {
 function pie() {
   const n = lista().length, e = dlg.querySelector("#pg-n"); if (e) e.textContent = n === 0 ? tx("elegidas0") : n === 1 ? tx("elegidas1") : tx("elegidas", { n });
   dlg.querySelectorAll(".pg-pie button").forEach((b) => { b.setAttribute("aria-disabled", String(!n)); });
+  const bi = dlg.querySelector('.pg-pie [data-pg="imprimir"]'); if (bi) { if (n) bi.dataset.n = String(n); else delete bi.dataset.n; }
 }
 function pintar() {
   dlg.querySelector("#pg-cab-t").textContent = tx("titulo");

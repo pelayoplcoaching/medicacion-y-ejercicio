@@ -4,8 +4,8 @@
    para la cafeína y, para el tabaco y el café con levotiroxina, artículos con su DOI comprobados en PubMed. Contenido en
    español (como el resto del contenido clínico) revisado por un clínico el 22/11/2026; la interfaz, en cinco idiomas.
    Se carga al pintar «Antes de empezar». */
-import { idioma } from "./i18n.js?v=202611230120";
-import { tC, tL } from "./tr.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
+import { tC, tL } from "./tr.js?v=202611230207";
 
 /** Respuestas posibles de cada hábito, en el orden del formulario. */
 export const VALORES = { alcohol: ["no", "aveces", "diario"], tabaco: ["no", "si", "dejado"], cafe: ["poco", "medio", "mucho"] };

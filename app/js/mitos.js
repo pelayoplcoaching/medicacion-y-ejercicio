@@ -4,7 +4,7 @@
    CONTENIDO CLÍNICO NUEVO: BORRADOR PENDIENTE DE REVISIÓN CLÍNICA. Las cifras son las de los resúmenes de PubMed, comprobadas
    el 22/11/2026 (el posicionamiento de la ADA de 2016 no tiene resumen en PubMed: se cita sin cifras). El contenido va en
    español, como la base; la interfaz, en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Mitos sobre medicación y ejercicio", borrador: "Borrador pendiente de revisión clínica", intro: "Doce ideas muy extendidas y lo que encontraron los estudios. Toque una para ver la explicación y la fuente.", v_falso: "Falso", v_medias: "A medias",
@@ -127,6 +127,16 @@ const CSS = `
 .mit-nota { margin: 14px 0 0; font-size: .84rem; color: var(--muted); }
 @media (max-width: 520px) { .mit-m summary { grid-template-columns: minmax(0, 1fr); } .mit-v { justify-self: start; } }
 @media (forced-colors: active) { .mit-barra i { background: Highlight; } .mit-m[open] { outline: 2px solid Highlight; } }
+/* 864-866: el veredicto como sello, la frase del mito con comillas grandes y la barra de leidos con degradado */
+.mit-v { rotate: -3deg; border-width: 2px; border-radius: 6px; padding: 3px 9px; box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 3px currentColor; font-size: .72rem; letter-spacing: .1em; }
+.mit-m summary q { position: relative; display: block; padding-left: 26px; quotes: none; }
+.mit-m summary q::before { content: "\\201c"; position: absolute; left: 0; top: -6px; font-family: Georgia, "Times New Roman", serif; font-size: 2.4rem; line-height: 1; color: color-mix(in srgb, var(--accent) 55%, var(--surface)); }
+.mit-m summary q::after { content: none; }
+.mit-barra { height: 10px; }
+.mit-barra i { background: linear-gradient(90deg, var(--accent), var(--info)); transition: width .5s var(--ease-salida, ease-out); }
+@media (max-width: 520px) { .mit-v { rotate: -2deg; } }
+:root[data-theme="contrast"] .mit-v { rotate: none; box-shadow: none; }
+@media (forced-colors: active) { .mit-v { rotate: none; box-shadow: none; } }
 `;
 
 let dlg = null, A = null, estado = { leidos: [] }, mios = [];

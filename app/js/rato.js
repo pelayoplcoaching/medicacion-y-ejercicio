@@ -6,8 +6,8 @@
    Guarda en el dispositivo la última elección («medex.rato») y las píldoras de cada día («medex.pildoras»: { "AAAA-MM-DD": n }).
    Las cifras de las fuentes están comprobadas en PubMed (22/11/2026). Textos de la interfaz en cinco idiomas; los de cada
    píldora, en español como el resto del contenido de ejercicios. */
-import { t, idioma } from "./i18n.js?v=202611230120";
-import { tL } from "./tr.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
+import { tL } from "./tr.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Hoy tengo…", p_sesion: "Una sesión", p_pildoras: "Píldoras de movimiento", cuanto: "¿Cuánto tiempo tiene?", que: "¿De qué?", min: "{n} min", t_hoy: "Lo de hoy", t_fuerza: "Fuerza", t_paseo: "Paseo", t_equilibrio: "Equilibrio",
@@ -169,6 +169,15 @@ const CSS = `
 :root[data-theme="contrast"] .rt-hoy { background: var(--surface); }
 @media (max-width: 520px) { .rt-pil { grid-template-columns: 72px minmax(0, 1fr); } .rt-pil .picto { width: 72px; height: 72px; } .rt-lista li { grid-template-columns: 38px 44px minmax(0, 1fr); } }
 @media (forced-colors: active) { .rt-puntos i.on { background: Highlight; } .rt-chips button[aria-pressed="true"], .rt-tabs button[aria-selected="true"] { border: 3px solid Highlight; } }
+/* 852-853: la sesion como linea de tiempo; las pildoras del dia, como anillos que se marcan */
+.rt-lista li { position: relative; }
+.rt-lista li + li::before { content: ""; position: absolute; left: 31px; top: -7px; width: 2px; height: 7px; background: var(--line-strong); }
+.rt-lista .rt-m { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--accent-soft); font-size: .84rem; }
+.rt-puntos { gap: 8px; }
+.rt-puntos i { position: relative; width: 26px; height: 26px; border-width: 2.5px; transition: background-color .25s; }
+.rt-puntos i.on::after { content: ""; position: absolute; left: 6.500px; top: 2.500px; width: 6px; height: 11px; border-right: 2.5px solid var(--surface); border-bottom: 2.5px solid var(--surface); rotate: 45deg; }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .rt-puntos i.on:not(:has(~ i.on)) { animation: rt-marca .4s var(--ease-salida, ease-out); } }
+@keyframes rt-marca { from { scale: .5; } 60% { scale: 1.2; } }
 `;
 
 let dlg = null, A = null, MOV = null, vista = "sesion", sel = { min: 10, tipo: "hoy" }, iPil = 0, crono = null;

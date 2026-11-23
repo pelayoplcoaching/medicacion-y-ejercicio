@@ -4,7 +4,7 @@
    silla, sesión de fuerza, píldoras, lección, programa); todos se pueden marcar a mano. No caducan: se adelantan o se atrasan.
    Estado en localStorage («medex.primeros»): { inicio (ISO), hechos: { id: ISO }, fin (ISO) | null }.
    No contiene contenido clínico: solo ordena lo que la aplicación ya ofrece. Textos en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Los primeros 14 días", intro: "Un paso pequeño cada día, sin prisa. En dos semanas tendrá su medicación revisada, un plan a su medida y las primeras sesiones hechas.", empezar: "Empezar hoy", dia: "Día {n}", de: "{a} de 14", hoy: "El paso de hoy", hecho: "Hecho", marcar: "Marcar como hecho", desmarcar: "Desmarcar", solo: "Se marca solo al hacerlo.", todos: "Los 14 pasos",
@@ -161,6 +161,10 @@ const CSS = `
 :root[data-theme="contrast"] .pr-hoy { background: var(--surface); }
 @media (max-width: 520px) { .pr-lista li { grid-template-columns: 34px minmax(0, 1fr); } .pr-lista .pr-b { grid-column: 2; grid-row: auto; justify-content: flex-start; margin-top: 4px; } }
 @media (forced-colors: active) { .pr-anillo .v { stroke: Highlight; } .pr-lista li.hecho .pr-n { background: Highlight; } }
+/* 855: los catorce pasos unidos por un hilo; lo ya hecho, en el color de la marca */
+.pr-lista li { position: relative; }
+.pr-lista li + li::before { content: ""; position: absolute; left: 26px; top: -7px; width: 2px; height: 7px; background: var(--line-strong); }
+.pr-lista li.hecho + li::before { background: var(--accent); }
 `;
 
 let dlg = null, A = null;

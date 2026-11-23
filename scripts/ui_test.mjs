@@ -127,6 +127,7 @@ const paralelos = Promise.all([
     const errE = []; pe.on("pageerror", (e) => errE.push(e.message));
     await pe.goto(`http://localhost:${PORT}/enciclopedia/`, { waitUntil: "load" });
     check("índice de la enciclopedia: título, buscador y un enlace por cada página (441 + 18)", (await pe.textContent("h1")) === "Medicamentos y ejercicio físico" && (await pe.$$("ul.indice li a")).length === 459 && (await pe.isVisible("#q")));
+    check("mejoras 877–880: cabecera de noche con las tres cifras y el buscador dentro, letras que se quedan fijas al bajar y sin desbordes en el móvil", (await pe.$$(".hero .cifras li")).length === 3 && (await pe.isVisible(".hero #q")) && (await pe.$eval(".letras", (l) => getComputedStyle(l).position)) === "sticky" && (await pe.$$("h2.letra small")).length >= 20 && (await pe.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)));
     await pe.fill("#q", "sintrom"); await pe.waitForTimeout(150);
     check("buscar por la marca (Sintrom) deja solo ese medicamento", (await pe.textContent("#cuenta")) === "1 resultado" && (await pe.$$eval("ul.indice li:not([hidden]) b", (x) => x.map((y) => y.textContent).join())) === "Acenocumarol");
     await pe.fill("#q", "estatinas"); await pe.waitForTimeout(150);
@@ -484,6 +485,7 @@ try {
   const tabAntesCentro = await p.$eval('.tabs [role=tab][aria-selected="true"]', (b) => b.dataset.tab).catch(() => "general");
   await p.click("#barra-inferior [data-centro]"); await p.waitForSelector("#centro[open] .ce-hoy button", { timeout: 5000 }).catch(() => {});
   check("«Más» de la barra abre el centro de herramientas: «Para usted hoy» (hasta 3) y las herramientas por grupos", (await p.$$("#centro .ce-hoy button")).length >= 1 && (await p.$$("#centro .ce-hoy button")).length <= 3 && (await p.$$("#centro .ce-rejilla .ce-t")).length >= 30 && (await p.$$("#centro .ce-tit")).length >= 6);
+  check("mejoras 839–846: cada herramienta lleva el color de su grupo, las recientes van marcadas «Nuevo» y los rótulos dicen cuántas hay", (await p.$$("#centro .ce-rejilla .ce-t[data-g]")).length === (await p.$$("#centro .ce-rejilla .ce-t")).length && (await p.$$("#centro .ce-rejilla .ce-nuevo")).length >= 10 && (await p.$$eval("#centro .ce-tit[data-g] small", (s) => s.length >= 4 && s.every((x) => Number(x.textContent) >= 1))) && (await p.$$("#centro .ce-ult")).length === 0);
   await p.fill("#ce-q", "silla"); await p.waitForTimeout(200);
   check("el buscador del centro encuentra herramientas, ejercicios y glosario a la vez", (await p.$$("#centro .ce-res [data-pruebas]")).length === 1 && (await p.$$("#centro .ce-res [data-ejercicio]")).length >= 2 && (await p.$$("#centro .ce-res li.glos")).length >= 1);
   await p.fill("#ce-q", "zzzz"); await p.waitForTimeout(150);
@@ -496,6 +498,7 @@ try {
   check("una herramienta del centro lo cierra y abre lo suyo (Mi plan)", !(await p.$eval("#centro", (d) => d.open)) && (await p.$eval('[data-tab="plan"]', (b) => b.getAttribute("aria-selected"))) === "true");
   await p.keyboard.press("Control+k"); await p.waitForSelector("#centro[open]", { timeout: 5000 }).catch(() => {});
   check("Ctrl + K abre el centro con el cursor en el buscador", (await p.evaluate(() => document.activeElement?.id)) === "ce-q");
+  check("la última herramienta usada desde el centro queda marcada («Última») y se guarda en medex.herr", (await p.$$('#centro .ce-rejilla .ce-t[data-id="plan"] .ce-ult')).length === 1 && (await p.$$("#centro .ce-rejilla .ce-ult")).length === 1 && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.herr") || "{}").ultima)) === "plan");
   await p.click("#ce-cerrar"); await p.waitForTimeout(200);
   // Biblioteca de ejercicios (segunda tanda, 4): «Cambiar» un ejercicio del plan y la ventana con filtros (seguimos en Mi plan)
   {
@@ -577,6 +580,9 @@ try {
     for (const [k, v] of [["fatiga", 1], ["resistencia", 0], ["deambulacion", 1], ["peso", 1]]) await p.check(`#escalas input[name="eq-${k}"][value="${v}"]`);
     await p.waitForTimeout(150);
     check("al completarla da la puntuación y la categoría, lo guarda y ofrece el SPPB", (await p.textContent("#eq-cifra")) === "2 de 5" && (await p.textContent("#eq-cat")) === "Prefrágil" && (await p.evaluate(() => JSON.parse(localStorage.getItem("medex.escalas")).frail.p)) === 2 && (await p.$$('#eq-res [data-eq="sppb"]')).length === 1 && /cribado/.test(await p.textContent("#eq-res")));
+    await p.waitForSelector('#escalas[data-marco="1"] .mh-ico', { timeout: 4000 }).catch(() => {});
+    check("mejoras 831–838: la ventana de la herramienta lleva el marco común (medallón con su icono y color de su grupo)", (await p.$eval("#escalas", (d) => `${d.dataset.marco}|${d.dataset.g}`)) === "1|seguir" && (await p.$$("#escalas .mh-ico svg")).length === 1);
+    check("mejora 874: el resultado trae su regla de colores, una casilla por punto y la suya marcada, como adorno", (await p.$$("#eq-res .eq-regla i")).length === 6 && (await p.$eval("#eq-res .eq-regla i.aqui", (i) => `${i.textContent}|${i.classList.contains("v-aviso")}`)) === "2|true" && (await p.$eval("#eq-res .eq-regla", (r) => r.getAttribute("aria-hidden"))) === "true");
     const cajasEq = await p.$$('#eq-form [data-eq-i="enfermedades"]');
     for (let i = 0; i < 5; i++) await cajasEq[i].check();
     await p.waitForTimeout(150);
@@ -605,6 +611,7 @@ try {
     const cuenta = (s) => (/^(ninguno|none|cap|ningún|bat ere ez)$/.test(s.trim()) ? 0 : s.split(", ").length);
     check("«Caídas y carga anticolinérgica»: marca de borrador y las clases de STOPPFall de su lista, cada una con sus fármacos y su texto", (await p.isVisible("#frid .fr-borrador")) && fr.n >= 1 && fr.n === fr.chips && fr.clases.length >= 1 && fr.clases.every((c) => c.chips >= 1 && c.txt > 20), JSON.stringify(fr.clases));
     check("la carga anticolinérgica es la suma de sus filas, de más a menos, y dice si llega a 3", fr.filas.length >= 1 && fr.filas.reduce((a, b) => a + b, 0) === fr.cals && fr.filas.every((x, i) => i === 0 || x <= fr.filas[i - 1]) && (fr.cals >= 3 ? /clínicamente relevante/.test(fr.pie) : /por debajo de 3/.test(fr.pie)), `${fr.cals} · ${fr.filas.join()}`);
+    check("mejoras 875–876: el medidor enciende tantas casillas como puntos (hasta el doble del umbral o el total) y cada fila lleva su potencia en puntos", (await p.$$("#frid .fr-medidor i.on")).length === fr.cals && (await p.$$("#frid .fr-medidor i")).length === Math.max(6, fr.cals) && (await p.$$("#frid .fr-medidor i[data-u]")).length === 1 && (await p.$$("#fr-cals tbody .fr-pot")).length === fr.filas.length);
     check("los sedantes y los que bajan la tensión se cuentan igual que se listan", fr.sed === cuenta(fr.sedTxt) && fr.hipo === cuenta(fr.hipoTxt) && fr.hipo >= 1, `${fr.sed} «${fr.sedTxt}» · ${fr.hipo} «${fr.hipoTxt}»`);
     const hayGuia = (await p.$$("#fr-stopp details.fr-como")).length;
     if (hayGuia) await p.click("#fr-stopp details.fr-como summary");
@@ -651,6 +658,9 @@ try {
     check("con números normales: «Adelante», una línea por número y el botón de la sesión de hoy", (await p.$eval("#nm-ver", (e) => e.dataset.n)) === "verde" && (await lineas()) === "ta:verde,pulso:verde,temp:verde" && (await p.$$('#numeros [data-nm="empezar"]')).length === 1 && /128\/78 mmHg/.test(await p.textContent("#nm-lineas")) && /36,6 °C/.test(await p.textContent("#nm-lineas")));
     await pon({ ta_s: 165, pulso: 66 });
     const ambar = await p.$eval("#nm-ver", (e) => e.dataset.n), lA = await lineas(), bA = (await p.$$('#numeros [data-abre="rato"]')).length;
+    const cA = await p.$$eval("#numeros .nm-campo[data-n]", (c) => c.map((x) => `${x.dataset.c}:${x.dataset.n}`).sort().join());
+    await p.fill("#nm-ta_s", "150");
+    check("mejora 871: cada casilla toma el color de su resultado y lo pierde en cuanto se cambia el número", cA === "pulso:verde,ta:ambar" && (await p.$$('#numeros .nm-campo[data-c="ta"][data-n]')).length === 0 && (await p.$$('#numeros .nm-campo[data-c="pulso"][data-n]')).length === 1);
     await pon({ ta_s: 184, pulso: 124, temp: "38,4" });
     check("manda el peor: 165 de tensión, «Hoy, suave» con sesión corta; 184, pulso de 124 o fiebre, «Hoy no entrene»", ambar === "ambar" && lA === "ta:ambar,pulso:verde" && bA === 1 && (await p.$eval("#nm-ver", (e) => e.dataset.n)) === "rojo" && (await lineas()) === "ta:rojo,pulso:rojo,temp:rojo" && (await p.$$('#numeros [data-nm="empezar"], #numeros [data-abre="rato"]')).length === 0);
     await pon({ ta_s: 9999 });

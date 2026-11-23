@@ -5,9 +5,9 @@
    original -> id del que lo sustituye) y la aplicación lo aplica al plan, a la sesión guiada y a la hoja imprimible.
    Los dibujos y la ficha animada viven en movimiento.js; la aplicación se los pasa (un módulo bajo demanda no importa a otro).
    Textos de la interfaz en cinco idiomas; los de cada ejercicio, en español como el resto del contenido de las sesiones. */
-import { idioma } from "./i18n.js?v=202611230120";
-import { sesionTipo, normalizar } from "./engine.js?v=202611230120";
-import { tC } from "./tr.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
+import { sesionTipo, normalizar } from "./engine.js?v=202611230207";
+import { tC } from "./tr.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Biblioteca de ejercicios", intro: "{n} ejercicios con su dibujo. Toque uno para ver cómo se hace.", zona: "Zona", material: "Con qué", postura: "Postura", todo: "Todo", cualquiera: "Cualquiera",
@@ -195,6 +195,10 @@ div.bib-t .btn-sec, div.bib-t .btn { grid-row: 1 / span 3; grid-column: 3; align
 @media (forced-colors: active) { .bib-chips button[aria-pressed="true"] { border: 3px solid Highlight; } }
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .bib-lista > li { animation: bib-entra .26s var(--ease-salida, ease-out) both; } }
 @keyframes bib-entra { from { opacity: 0; translate: 0 6px; } }
+/* 854: la dificultad, en tres barras que suben */
+.bib-niv i { align-items: flex-end; gap: 2px; height: 12px; }
+.bib-niv i u { width: 5px; height: 5px; border-radius: 2px; }
+.bib-niv i u:nth-child(2) { height: 8.500px; } .bib-niv i u:nth-child(3) { height: 12px; }
 `;
 
 let dlg = null, A = null, modo = null, fil = { zona: null, material: null, postura: null };

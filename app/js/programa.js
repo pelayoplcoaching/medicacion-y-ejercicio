@@ -6,8 +6,8 @@
    hist: [{ lunes, paso, ses, obj, min, rpe, clave }], fin, mant, ciclo, creado }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: las tablas de dosis y las reglas de decisión son una propuesta elaborada a
    partir de las recomendaciones citadas en FUENTES (comprobadas en PubMed); no salen de un estudio concreto. */
-import { idioma } from "./i18n.js?v=202611230120";
-import { tC } from "./tr.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
+import { tC } from "./tr.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Programa de 12 semanas", borrador: "Borrador pendiente de revisión clínica", intro: "De menos a más y a su ritmo: cada semana, un poco más de paseo y de fuerza. El programa mira su diario y decide solo si toca subir, repetir o aflojar.",
@@ -312,6 +312,22 @@ const CSS = `
 @media (max-width: 520px) { .prg-tabla li { grid-template-columns: 30px minmax(0, 1fr); } .prg-tabla li .prg-e { grid-column: 2; } .prg-cifras b { font-size: 1.25rem; } }
 @media (forced-colors: active) { .prg-pasos li.hecha, .prg-pasos li.actual { background: Highlight; } .prg-pasos li { border: 1px solid CanvasText; } }
 @media print { .prg-card .acciones { display: none; } }
+/* 847-849: la tira de 12 semanas con el color de cada fase, la dosis de la semana en fichas con icono y etiquetas de estado */
+.prg-pasos li:nth-child(n+5):nth-child(-n+8) { --f: var(--info); } .prg-pasos li:nth-child(n+9) { --f: var(--oro, var(--precaucion)); }
+.prg-pasos li { background: color-mix(in srgb, var(--f, var(--accent)) 22%, var(--line)); }
+.prg-pasos li.hecha { background: var(--f, var(--accent)); }
+.prg-pasos li.actual { background: var(--f, var(--accent)); box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--f, var(--accent)); }
+.prg-pasos li.ligera:not(.hecha):not(.actual) { background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--f, var(--accent)) 45%, var(--line)) 0 4px, transparent 4px 7px); }
+.prg-dosis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 2px 0 8px; }
+@media (min-width: 560px) { .prg-dosis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.prg-dosis > div { display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); font-size: .86rem; font-weight: 700; line-height: 1.25; }
+.prg-dosis svg { width: 30px; height: 30px; padding: 6px; border-radius: 9px; background: var(--accent-soft); color: var(--accent-deep, var(--accent)); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.prg-dosis small { display: block; font-weight: 500; color: var(--muted); font-size: .76rem; }
+.prg-tabla li .prg-e { padding: 1px 8px; border-radius: 999px; background: var(--surface-2); font-family: var(--mono); font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; justify-self: start; }
+.prg-tabla li .prg-e:empty { display: none; }
+.prg-tabla li.actual .prg-e { background: var(--accent); color: var(--surface); }
+.prg-tabla li.hecha .prg-e { background: var(--info-soft); color: var(--info-ink); }
+@media (forced-colors: active) { .prg-tabla li .prg-e { border: 1px solid CanvasText; } }
 `;
 export function estilos() { if (typeof document !== "undefined" && !document.getElementById("prg-css")) { const st = document.createElement("style"); st.id = "prg-css"; st.textContent = CSS; document.head.append(st); } }
 
@@ -326,7 +342,7 @@ export function tarjeta(c = {}, hoy = new Date()) {
   const hint = s.mant ? tx("hint_mant") : s.descarga ? tx("hint_descarga") : s.pruebas ? tx("hint_pruebas") : s.dificil ? tx("hint_dificil") : "";
   const ses = c.obj?.ses ?? s.ses;
   return `<div class="prg-card"><div class="prg-cab">${cab}</div>${s.mant ? "" : pasosHtml(s.previa ? 0 : s.paso)}
-    <p class="prg-obj"><b>${tx("esta")}</b>${[tSes(ses) + (c.obj?.min ? ` (${tx("obj_min", { n: c.obj.min })})` : ""), tx("obj_aer", { n: s.aer }), tSer(s.ser), rpeTexto(s)].join(" · ")}</p>
+    <p class="prg-obj"><b>${tx("esta")}</b></p><div class="prg-dosis">${[["M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM9 15l2 2 4-4", tSes(ses), c.obj?.min ? tx("obj_min", { n: c.obj.min }) : ""], ["M13 4.500a1.500 1.500 0 1 0 0-.01M9 21l2-6-2-3 1-4 4 2 3 1M11 15l3 2 1 4M8 11l2-3", tx("obj_aer", { n: s.aer }), ""], ["M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12", tSer(s.ser), ""], ["M4 16a8 8 0 1 1 16 0M12 16l4-6", rpeTexto(s), ""]].filter((x) => x[1]).map(([d, a, b]) => `<div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg><span>${a}${b ? `<small>${b}</small>` : ""}</span></div>`).join("")}</div>
     ${c.hechas != null && !s.previa ? `<p class="prg-sub">${tx("lleva", { a: c.hechas, b: ses })}${hint ? " " + hint : ""}</p>` : hint ? `<p class="prg-sub">${hint}</p>` : ""}
     ${ult && !s.previa && !s.mant ? `<p class="prg-sub"><b>${tx("anterior")}:</b> ${esc(veredicto(ult).texto)}</p>` : ""}
     <div class="acciones"><button type="button" class="btn-sec sm" data-programa="">${tx("ver")}</button></div></div>`;

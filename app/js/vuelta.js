@@ -5,7 +5,7 @@
    Estado en localStorage («medex.vuelta»): { motivo, tiempo, inicio (ISO) }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA: los escalones y las reglas de espera son una propuesta de esta aplicación.
    Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en español. Fuentes comprobadas en PubMed (22/11/2026). */
-import { t, idioma } from "./i18n.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Volver tras un parón", borrador: "Borrador pendiente de revisión clínica", intro: "Parar pasa. Lo importante es cómo se vuelve: sin prisa y sin empezar donde lo dejó.", p_motivo: "¿Por qué paró?", p_tiempo: "¿Cuánto tiempo lleva sin entrenar?", p_hoy: "¿Cómo está hoy? Marque lo que le pase",
@@ -199,6 +199,14 @@ const CSS = `
 .vt-fuentes a { color: var(--accent-deep, var(--accent)); }
 @media (max-width: 520px) { .vt-esc li { grid-template-columns: 78px minmax(0, 1fr); } .vt-esc .vt-pct strong { font-size: 1.25rem; } }
 @media (forced-colors: active) { .vt-esc .vt-barra i { background: Highlight; } .vt-ops button[aria-pressed="true"] { border: 3px solid Highlight; } }
+/* 856: la vuelta como una escalera: cada semana, un peldaño mas alto */
+.vt-esc { counter-reset: vt-e; }
+.vt-esc li { position: relative; overflow: hidden; }
+.vt-esc li::after { content: ""; position: absolute; right: 0; bottom: 0; width: 34px; background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 34%, transparent), color-mix(in srgb, var(--accent) 8%, transparent)); border-top-left-radius: 6px; height: 25%; pointer-events: none; }
+.vt-esc li:nth-child(2)::after { height: 45%; } .vt-esc li:nth-child(3)::after { height: 65%; } .vt-esc li:nth-child(4)::after { height: 85%; } .vt-esc li:nth-child(n+5)::after { height: 100%; }
+.vt-esc .vt-barra { height: 8px; }
+.vt-esc .vt-barra i { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, var(--surface)), var(--accent)); }
+@media (forced-colors: active) { .vt-esc li::after { display: none; } }
 `;
 
 let dlg = null, A = null, PRG = null, S = null, checks = [];

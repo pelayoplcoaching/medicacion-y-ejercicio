@@ -13,7 +13,7 @@
    - Sedantes, hipotensores y efecto anticolinérgico «según la base»: las señales ya revisadas; anticoagulantes: su familia en la base
      (que ya dice que con ellos una caída puede tener consecuencias graves). No son una escala.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611230120";
+import { idioma, t } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Caídas y carga anticolinérgica", borrador: "Borrador pendiente de revisión clínica", intro: "Para revisar la medicación de una persona con riesgo de caídas. No decide por usted: ordena lo que hay en la lista.", sin_meds: "Añada la medicación para ver el panel.", c_frid: "en clases de STOPPFall", c_cals: "carga anticolinérgica (CALS)", c_sed: "con efecto sedante", c_hipo: "que bajan la tensión", relevante: "clínicamente relevante (3 o más)", no_relevante: "por debajo de 3",
@@ -154,6 +154,22 @@ const CSS = `
 .fr-dlg button:focus-visible, .fr-dlg a:focus-visible, .fr-dlg summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 520px) { .fr-cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fr-senales div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
 @media (forced-colors: active) { .fr-cifras li.aviso { border-width: 3px; } }
+/* 875: medidor de la carga anticolinergica, con el umbral marcado */
+.fr-medidor { display: flex; gap: 4px; margin: 26px 0 4px; }
+.fr-medidor i { position: relative; flex: 1 1 0; height: 14px; border-radius: 4px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.fr-medidor i.on { background: var(--accent); box-shadow: none; }
+.fr-medidor i.on.u { background: var(--precaucion); }
+.fr-medidor i[data-u]::before { content: attr(data-u); position: absolute; left: -2px; top: -20px; font: 700 .74rem/1 var(--mono); color: var(--muted); }
+.fr-medidor i[data-u]::after { content: ""; position: absolute; left: -3px; top: -6px; bottom: -6px; width: 2px; border-radius: 2px; background: var(--line-strong); }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .fr-medidor i.on { animation: fr-llena .3s ease-out both; } html:not(.pa-quieto) .fr-medidor i.on:nth-child(n+2) { animation-delay: .06s; } html:not(.pa-quieto) .fr-medidor i.on:nth-child(n+3) { animation-delay: .12s; } html:not(.pa-quieto) .fr-medidor i.on:nth-child(n+4) { animation-delay: .18s; } }
+@keyframes fr-llena { from { opacity: 0; scale: .6 1; } }
+/* 876: la potencia de cada farmaco, en tres puntos */
+.fr-pot { display: inline-block; width: 34px; height: 8px; margin-right: 8px; vertical-align: 1px; --c1: var(--accent); --c2: var(--line-strong); --c3: var(--line-strong); background: radial-gradient(circle 4px at 4px 50%, var(--c1) 94%, transparent), radial-gradient(circle 4px at 17px 50%, var(--c2) 94%, transparent), radial-gradient(circle 4px at 30px 50%, var(--c3) 94%, transparent); }
+.fr-pot[data-s="2"] { --c2: var(--accent); }
+.fr-pot[data-s="3"] { --c1: var(--precaucion); --c2: var(--precaucion); --c3: var(--precaucion); }
+.fr-tabla td:nth-child(2), .fr-tabla th:nth-child(2) { width: 7em; white-space: nowrap; }
+@media (forced-colors: active) { .fr-pot { display: none; } .fr-medidor i.on { background: Highlight; } }
+@media print { .fr-pot, .fr-medidor { display: none; } }
 `;
 
 let dlg = null, A = null, P = null;
@@ -180,6 +196,8 @@ function clase(c) {
   const como = c.indic || escal || c.vigilar ? `<details class="fr-como"><summary>${tx("como")}</summary><dl class="fr-det">${fila("indic", c.indic && c.indic + ".")}${fila("escal", escal && escal + ".")}${fila("vigilar", c.vigilar && c.vigilar + ".")}</dl></details>` : "";
   return `<li data-id="${c.id}"><b>${c.n}</b>${chips}<dl class="fr-det">${fila("dentro", c.dif)}${fila("retirar", c.cuando && c.cuando + ".")}</dl>${como}</li>`;
 }
+/** Medidor de la carga anticolinérgica: una casilla por punto (hasta el doble del umbral, o el total si es mayor); las que llegan al umbral van en ámbar. Solo adorno: el total y su lectura están en la tabla. */
+const medidor = (c) => { const n = Math.max(UMBRAL_CALS * 2, c.total); return `<div class="fr-medidor" aria-hidden="true">${Array.from({ length: n }, (_, i) => `<i class="${i < c.total ? "on" : ""}${i >= UMBRAL_CALS - 1 ? " u" : ""}"${i === UMBRAL_CALS - 1 ? ` data-u="${UMBRAL_CALS}+"` : ""}></i>`).join("")}</div>`; };
 function pintar() {
   dlg.querySelector("#fr-cab-t").textContent = tx("titulo");
   if (!A.estado.meds.length) { cu().innerHTML = `<p class="fr-borrador">${tx("borrador")}</p><p class="fr-vacio">${tx("sin_meds")}</p>`; return; }
@@ -189,7 +207,7 @@ function pintar() {
     <h3>${tx("h_stopp")}</h3>
     ${P.stopp.length ? `<ul class="fr-clases" id="fr-stopp">${P.stopp.map(clase).join("")}</ul><p class="fr-nota" id="fr-siempre">${SIEMPRE.retirar} ${SIEMPRE.vigilar}</p><p class="fr-nota">${SIEMPRE.nota}</p>` : `<p class="fr-vacio" id="fr-stopp-0">${tx("ninguno_stopp")}</p>`}
     <h3>${tx("h_cals")}</h3>
-    ${P.cals.filas.length ? `<table class="fr-tabla" id="fr-cals"><thead><tr><th scope="col">${tx("farmaco")}</th><th scope="col">${tx("puntos")}</th><th scope="col">${tx("potencia")}</th></tr></thead><tbody>${P.cals.filas.map((f) => `<tr><th scope="row">${esc(f.nombre)}${f.grupo ? `<small>${tx("nota_grupo")} (${f.grupo})</small>` : ""}</th><td>${f.s}</td><td>${tx("p" + f.s)}</td></tr>`).join("")}</tbody><tfoot><tr><th scope="row">${tx("total")}</th><td>${P.cals.total}</td><td>${P.cals.relevante ? tx("relevante") : tx("no_relevante")}</td></tr></tfoot></table>` : `<p class="fr-vacio" id="fr-cals-0">${tx("ninguno_cals")}</p>`}
+    ${P.cals.filas.length ? `<table class="fr-tabla" id="fr-cals"><thead><tr><th scope="col">${tx("farmaco")}</th><th scope="col">${tx("puntos")}</th><th scope="col">${tx("potencia")}</th></tr></thead><tbody>${P.cals.filas.map((f) => `<tr><th scope="row">${esc(f.nombre)}${f.grupo ? `<small>${tx("nota_grupo")} (${f.grupo})</small>` : ""}</th><td><span class="fr-pot" data-s="${f.s}" aria-hidden="true"></span>${f.s}</td><td>${tx("p" + f.s)}</td></tr>`).join("")}</tbody><tfoot><tr><th scope="row">${tx("total")}</th><td>${P.cals.total}</td><td>${P.cals.relevante ? tx("relevante") : tx("no_relevante")}</td></tr></tfoot></table>${medidor(P.cals)}` : `<p class="fr-vacio" id="fr-cals-0">${tx("ninguno_cals")}</p>`}
     <h3>${tx("h_senales")}</h3>
     <dl class="fr-senales"><div><dt>${tx("sedantes")}</dt>${lista("fr-sed", P.sedantes)}</div><div><dt>${tx("hipotensores")}</dt>${lista("fr-hipo", P.hipotensores)}</div><div><dt>${tx("s_anticol")}</dt>${lista("fr-anticol", P.anticol)}</div><div><dt>${tx("s_acod")}</dt>${lista("fr-acod", P.anticoag)}</div></dl>
     <div class="fr-acc"><button type="button" class="btn" data-simula="">${tx("simular")}</button><button type="button" class="btn-sec" data-fr="copiar">${tx("copiar")}</button><button type="button" class="btn-sec" data-pruebas="">${t("sft.menu")}</button></div>

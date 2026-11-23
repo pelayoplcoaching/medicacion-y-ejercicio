@@ -134,8 +134,39 @@ ul.indice a { display: block; height: 100%; padding: 10px 12px; border: 1px soli
 ul.indice b { display: block; line-height: 1.3; }
 .etq-q { display: block; margin-top: 14px; }
 ul.indice small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.35; }
+/* Mejoras 877-880 (23/11/2026): cabecera de noche con cifras y buscador, icono del nivel en cada regla, letras fijas con recuento y tarjetas del indice con flecha. */
+.hero, .cta { background: radial-gradient(60% 130% at 92% -20%, #4a2fd0 0, transparent 62%), radial-gradient(45% 90% at 0 120%, #2a1a7a 0, transparent 70%), var(--noche); }
+.hero { color: #fff; border-radius: 0 0 28px 28px; }
+.hero > div { max-width: 860px; margin: 0 auto; padding: 14px 16px 26px; }
+.hero .miga, .hero .sub, .hero .cuenta { color: #cfcaf5; } .hero .sub b { color: #fff; }
+.hero .etq { border-color: #fff6; color: #fff; }
+.hero :focus-visible { outline-color: #fff; }
+.cifras { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.cifras li { flex: 1 1 96px; padding: 9px 12px; border-radius: 14px; background: #ffffff14; border: 1px solid #ffffff2e; color: #dcd8ff; font-size: .88rem; line-height: 1.3; }
+.cifras b { display: block; font: 800 1.6rem/1.1 var(--mono); color: #fff; }
+.hero .busca { margin-bottom: 0; padding-left: 48px; border-color: transparent; color: #151423; box-shadow: 0 12px 30px #0006; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23593ede' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") 14px 50% / 22px no-repeat; }
+.hero .cuenta { margin: 8px 0 0; min-height: 0; }
+.niv { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
+.niv::before { content: ""; width: 16px; height: 16px; background: currentColor; -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+.n-info { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 8h2v7h-2zm0-4h2v2h-2z'/%3E%3C/svg%3E"); }
+.n-precaucion { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2 1 21h22zm-1 7h2v6h-2zm0 8h2v2h-2z'/%3E%3C/svg%3E"); }
+.n-alerta { --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M8 2h8l6 6v8l-6 6H8l-6-6V8zm3 5h2v7h-2zm0 9h2v2h-2z'/%3E%3C/svg%3E"); }
+ul.efectos li { border-left: 3px solid var(--accent); }
+.letras { position: sticky; top: 0; z-index: 2; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 10px; padding: 8px 16px; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.letras li { flex: none; }
+section.grupo { scroll-margin-top: 64px; }
+h2.letra { display: flex; align-items: center; gap: 10px; }
+h2.letra small { padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font: 700 .74rem/1 var(--mono); }
+h2.letra::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+ul.indice a { position: relative; padding-right: 30px; transition: translate .15s, border-color .15s, box-shadow .15s; }
+ul.indice a::after { content: "\\203a"; position: absolute; right: 12px; top: 50%; translate: 0 -55%; color: var(--line-strong); font-size: 1.4rem; line-height: 1; }
+ul.indice a:hover { translate: 0 -2px; box-shadow: 0 8px 18px #593ede24; } ul.indice a:hover::after { color: var(--accent); }
+#situaciones ul.indice a { border-left: 4px solid var(--accent); }
+.tp { display: inline-block; margin: 2px 0; padding: 0 7px; border-radius: 999px; background: var(--info-soft); color: var(--info); font: 700 .66rem/1.7 var(--mono); font-style: normal; letter-spacing: .04em; text-transform: uppercase; }
+@media (min-width: 700px) { .letras { overflow: visible; margin-inline: 0; padding-inline: 0; } .letras li { flex: 1 1 0; } .letras a { min-width: 0; } }
+@media (prefers-reduced-motion: reduce) { ul.indice a { transition: none; } }
 [hidden] { display: none !important; }
-@media print { .cab nav, .cta, .busca, .letras { display: none; } body { background: #fff; } }
+@media print { .cab nav, .cta, .busca, .letras, .cifras { display: none; } body, .hero { background: #fff; } .hero, .hero .sub, .hero .sub b, .hero .miga, .hero .etq { color: #000; } }
 """
 
 JS = """// Buscador del índice de la enciclopedia (sin dependencias): por nombre o marca y, si no hay ninguno, por familia. Sin tildes.
@@ -155,7 +186,7 @@ if (q.value) filtrar();
 """
 
 
-def pagina(archivo, titulo, descripcion, cuerpo, ld, miga):
+def pagina(archivo, titulo, descripcion, cuerpo, ld, miga, cab):
     canon = f"{SITIO}/enciclopedia/{archivo}" if archivo != "index.html" else f"{SITIO}/enciclopedia/"
     return f"""<!doctype html>
 <html lang="es">
@@ -181,8 +212,11 @@ def pagina(archivo, titulo, descripcion, cuerpo, ld, miga):
 </head>
 <body>
 <header class="cab"><div><a class="marca" href="../"><img src="../assets/logo-80.png" alt="" width="32" height="32">Pauta Activa</a><nav><a href="./">Enciclopedia</a><a class="btn" href="../">Abrir la aplicación</a></nav></div></header>
-<main>
+<div class="hero"><div>
 {miga}
+{cab}
+</div></div>
+<main>
 {cuerpo}
 <footer class="pie">
 <p>{e(kb['aviso'])}</p>
@@ -234,10 +268,10 @@ def main():
             efectos_html = '<section id="efectos"><h2>Qué puede notar al moverse</h2><ul class="efectos">' + "".join("<li>" + e(kb["senales"][x]) + "</li>" for x in senales) + "</ul></section>" if senales else ""
             hermanos_html = '<section id="familia"><h2>Otros de la misma familia</h2><ul class="lista">' + "".join('<li><a href="' + slug(q["id"]) + '.html">' + e(q["nombre"]) + "</a></li>" for q in hermanos) + "</ul></section>" if hermanos else ""
             fuentes_html = "".join("<li>" + e(x) + "</li>" for x in fuentes) + ('<li><a href="' + e(ft) + '" rel="noopener nofollow">Ficha técnica de ' + e(corto) + " (AEMPS, CIMA)</a></li>" if ft else "")
-            cuerpo = f"""<h1>{e(nom)} y ejercicio físico</h1>
+            cab = f"""<h1>{e(nom)} y ejercicio físico</h1>
 {marcas_html}
-<p class="sub">{etq}Familia: <b>{e(c['nombre'])}</b></p>
-<p class="resumen">{e(c['resumen'])}</p>
+<p class="sub">{etq}Familia: <b>{e(c['nombre'])}</b></p>"""
+            cuerpo = f"""<p class="resumen">{e(c['resumen'])}</p>
 {nota_html}{horario}
 {efectos_html}
 {''.join(secciones)}
@@ -252,7 +286,7 @@ def main():
                   "audience": {"@type": "Patient"}, "lastReviewed": kb["fecha"], "dateModified": kb["fecha"], "author": persona(), "reviewedBy": persona(),
                   "publisher": {"@type": "Organization", "name": "Fuerza Basada en Evidencia", "url": "https://fuerzabasadaenevidencia.com/"}, "isPartOf": {"@type": "WebSite", "name": "Pauta Activa", "url": SITIO + "/"}}
             miga = f'<p class="miga"><a href="./">Enciclopedia</a> › {e(c["nombre"])} › {e(nom)}</p>'
-            (SAL / archivo).write_text(pagina(archivo, f"{nom} y ejercicio físico: qué tener en cuenta · Pauta Activa", desc, cuerpo, ld, miga), encoding="utf-8")
+            (SAL / archivo).write_text(pagina(archivo, f"{nom} y ejercicio físico: qué tener en cuenta · Pauta Activa", desc, cuerpo, ld, miga, cab), encoding="utf-8")
             urls.append(archivo)
             entradas.append({"archivo": archivo, "nombre": nom, "marcas": marcas, "familia": c["nombre"], "tipo": ptipo, "n": n_reglas})
 
@@ -268,9 +302,9 @@ def main():
         cruces_html = ('<section id="cruces"><h2>Y según su medicación</h2><p>Pauta Activa cruza además esta situación con lo que toma. Entre otras cosas, avisa de:</p><ul class="lista">'
                        + "".join('<li><a href="../#abre=receta:' + sid + '">' + e(r["titulo"]) + "</a></li>" for r in cruces) + "</ul></section>") if cruces else ""
         fuentes_html = "".join("<li>" + e(x) + "</li>" for x in dict.fromkeys(r["fuente"] for r in rs if r.get("fuente")))
-        cuerpo = f"""<h1>{e(nom)} y ejercicio físico</h1>
-<p class="sub"><span class="etq">Situación clínica</span>Qué cambia al hacer ejercicio</p>
-<section id="especifico"><h2>Lo que conviene saber</h2><ul class="reglas">{bloque}</ul></section>
+        cab = f"""<h1>{e(nom)} y ejercicio físico</h1>
+<p class="sub"><span class="etq">Situación clínica</span>Qué cambia al hacer ejercicio</p>"""
+        cuerpo = f"""<section id="especifico"><h2>Lo que conviene saber</h2><ul class="reglas">{bloque}</ul></section>
 {cruces_html}
 <section class="cta"><h2>Su receta de ejercicio</h2><p>En la aplicación tiene la dosis de referencia para esta situación (frecuencia, intensidad, tiempo y tipo), cruzada con su medicación, y un plan semanal. Sin registro: sus datos no salen de su dispositivo.</p><a class="btn" href="../#abre=receta:{sid}">Ver la receta en Pauta Activa</a></section>
 <section id="fuentes"><h2>Fuentes</h2><ol class="fuentes">{fuentes_html}</ol></section>"""
@@ -279,7 +313,7 @@ def main():
               "about": {"@type": "MedicalCondition", "name": nom}, "audience": {"@type": "Patient"}, "lastReviewed": kb["fecha"], "dateModified": kb["fecha"], "author": persona(), "reviewedBy": persona(),
               "publisher": {"@type": "Organization", "name": "Fuerza Basada en Evidencia", "url": "https://fuerzabasadaenevidencia.com/"}, "isPartOf": {"@type": "WebSite", "name": "Pauta Activa", "url": SITIO + "/"}}
         miga = f'<p class="miga"><a href="./">Enciclopedia</a> › Situaciones clínicas › {e(nom)}</p>'
-        (SAL / archivo).write_text(pagina(archivo, f"{nom} y ejercicio físico: qué tener en cuenta · Pauta Activa", desc, cuerpo, ld, miga), encoding="utf-8")
+        (SAL / archivo).write_text(pagina(archivo, f"{nom} y ejercicio físico: qué tener en cuenta · Pauta Activa", desc, cuerpo, ld, miga, cab), encoding="utf-8")
         urls.append(archivo)
         sit_entradas.append((archivo, nom))
 
@@ -289,17 +323,18 @@ def main():
     grupos = {}
     for x in entradas:
         grupos.setdefault(sin_tilde(x["nombre"])[0].upper(), []).append(x)
-    item = lambda x: ("<li data-b=\"" + e(" ".join([x["nombre"], *x["marcas"]])) + "\" data-f=\"" + e(x["familia"]) + "\"><a href=\"" + x["archivo"] + "\"><b>" + e(x["nombre"]) + "</b><small>" + e(x["familia"]) + (" · " + e(", ".join(x["marcas"][:3])) if x["marcas"] else "") + "</small></a></li>")
+    item = lambda x: ("<li data-b=\"" + e(" ".join([x["nombre"], *x["marcas"]])) + "\" data-f=\"" + e(x["familia"]) + "\"><a href=\"" + x["archivo"] + "\"><b>" + e(x["nombre"]) + "</b>" + ('<i class="tp">' + TIPO[x["tipo"]] + "</i>" if x["tipo"] in TIPO else "") + "<small>" + e(x["familia"]) + (" · " + e(", ".join(x["marcas"][:3])) if x["marcas"] else "") + "</small></a></li>")
     n_f = sum(1 for x in entradas if x["tipo"] == "farmaco")
     sit_html = "".join('<li data-b="' + e(n) + '"><a href="' + a + '"><b>' + e(n) + "</b><small>Qué cambia al hacer ejercicio</small></a></li>" for a, n in sit_entradas)
     letras_html = "".join('<li><a href="#l-' + k + '">' + k + "</a></li>" for k in sorted(grupos))
-    grupos_html = "".join('<section class="grupo" id="l-' + k + '"><h2 class="letra">' + k + '</h2><ul class="indice">' + "".join(item(x) for x in grupos[k]) + "</ul></section>" for k in sorted(grupos))
-    cuerpo = f"""<h1>Medicamentos y ejercicio físico</h1>
-<p class="sub">Qué tener en cuenta al moverse con cada medicamento: {n_f} principios activos, {len(entradas) - n_f} suplementos y plantas, y {len(sit_entradas)} situaciones clínicas. Con sus fuentes.</p>
+    grupos_html = "".join('<section class="grupo" id="l-' + k + '"><h2 class="letra">' + k + " <small>" + str(len(grupos[k])) + '</small></h2><ul class="indice">' + "".join(item(x) for x in grupos[k]) + "</ul></section>" for k in sorted(grupos))
+    cab = f"""<h1>Medicamentos y ejercicio físico</h1>
+<p class="sub">Qué tener en cuenta al moverse con cada medicamento y en cada situación clínica. Con sus fuentes.</p>
+<ul class="cifras"><li><b>{n_f}</b> principios activos</li><li><b>{len(entradas) - n_f}</b> suplementos y plantas</li><li><b>{len(sit_entradas)}</b> situaciones clínicas</li></ul>
 <label for="q" class="sub etq-q"><b>Busque su medicamento</b> por el nombre, la marca o la familia</label>
 <input class="busca" id="q" type="search" placeholder="Por ejemplo: bisoprolol, Sintrom, estatinas…" autocomplete="off">
-<p class="cuenta" id="cuenta" role="status" aria-live="polite"></p>
-<section class="grupo" id="situaciones"><h2>Situaciones clínicas</h2><ul class="indice">{sit_html}</ul></section>
+<p class="cuenta" id="cuenta" role="status" aria-live="polite"></p>"""
+    cuerpo = f"""<section class="grupo" id="situaciones"><h2>Situaciones clínicas</h2><ul class="indice">{sit_html}</ul></section>
 <h2 id="az">Medicamentos, suplementos y plantas</h2>
 <ul class="letras">{letras_html}</ul>
 {grupos_html}
@@ -308,7 +343,7 @@ def main():
     desc = f"Qué tener en cuenta al hacer ejercicio con {len(entradas)} medicamentos, suplementos y plantas y en {len(sit_entradas)} situaciones clínicas. Con sus fuentes y buscador."
     ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Medicamentos y ejercicio físico: enciclopedia de Pauta Activa", "description": desc, "inLanguage": "es", "url": f"{SITIO}/enciclopedia/", "author": persona(),
           "isPartOf": {"@type": "WebSite", "name": "Pauta Activa", "url": SITIO + "/"}}
-    (SAL / "index.html").write_text(pagina("index.html", "Medicamentos y ejercicio físico: enciclopedia · Pauta Activa", desc, cuerpo, ld, '<p class="miga"><a href="../">Pauta Activa</a> › Enciclopedia</p>'), encoding="utf-8")
+    (SAL / "index.html").write_text(pagina("index.html", "Medicamentos y ejercicio físico: enciclopedia · Pauta Activa", desc, cuerpo, ld, '<p class="miga"><a href="../">Pauta Activa</a> › Enciclopedia</p>', cab), encoding="utf-8")
 
     # sitemap: se quitan las direcciones anteriores de la enciclopedia y se vuelven a poner
     sm = APP / "sitemap.xml"

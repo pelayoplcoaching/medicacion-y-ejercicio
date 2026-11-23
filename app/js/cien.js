@@ -6,7 +6,7 @@
    el 22/11/2026) y se guardan exactas en «x»; lo que se enseña es su redondeo a personas enteras. La revisión de cardiopatía
    isquémica no da las cifras de cada grupo, solo la diferencia (NNT): se enseña así. Contenido en español, como la base;
    la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "De cada 100 personas…", borrador: "Borrador pendiente de revisión clínica", intro: "Los porcentajes engañan; las personas se cuentan mejor. Aquí verá qué les pasa a 100 personas sin ejercicio y con ejercicio, según los mejores estudios.", para_usted: "Para su situación", otras: "Otras situaciones", todas: "Las seis cajas",
@@ -117,14 +117,23 @@ const CSS = `
 .cn-nota { margin: 14px 0 0; font-size: .84rem; color: var(--muted); }
 @media (max-width: 520px) { .cn-tabla td { width: 27%; } .cn-tabla td b { font-size: 1.3rem; } }
 @media (forced-colors: active) { .cn-p-si { fill: CanvasText; } .cn-p-no { fill: GrayText; } .cn-p-dif { stroke: Highlight; } }
+/* 861-863: figuras de persona en lugar de puntos, la columna «con ejercicio» resaltada y las figuras que entran contando */
+.cn-p-dif { stroke-width: .9; fill: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cn-p-no { opacity: .55; }
+.cn-tabla td.con { background: linear-gradient(180deg, var(--accent-soft), transparent 3.2em); box-shadow: inset 0 3px 0 var(--accent); border-radius: 8px 8px 0 0; }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .cn-caja svg g[style] { animation: cn-cuenta .28s ease-out both; animation-delay: calc(var(--i) * 7ms); } }
+@keyframes cn-cuenta { from { opacity: 0; } }
+:root[data-theme="contrast"] .cn-tabla td.con { background: none; }
 `;
-/** Dibujo de 100 puntos: los primeros «si» llenos, los «dif» siguientes en anillo y el resto apagados. */
+/** Figura de una persona (cabeza y tronco) en una casilla de 10 × 10, centrada en el origen. */
+const PERSONA = '<circle cy="-2.6" r="1.7"/><path d="M-2.6 4v-2.2a2.6 2.6 0 0 1 5.2 0V4z"/>';
+/** Dibujo de 100 figuras: las primeras «si» llenas, las «dif» siguientes en contorno y el resto apagadas. */
 export function puntos(si, dif, mas = false) {
   let s = "";
-  for (let i = 0; i < 100; i++) { const cx = 5 + (i % 10) * 10, cy = 5 + Math.floor(i / 10) * 10; s += i < si ? `<circle class="cn-p-si${mas ? " mas" : ""}" cx="${cx}" cy="${cy}" r="3.6"/>` : i < si + dif ? `<circle class="cn-p-dif" cx="${cx}" cy="${cy}" r="2.8"/>` : `<circle class="cn-p-no" cx="${cx}" cy="${cy}" r="1.6"/>`; }
+  for (let i = 0; i < 100; i++) { const cx = 5 + (i % 10) * 10, cy = 5 + Math.floor(i / 10) * 10; const cls = i < si ? "cn-p-si" + (mas ? " mas" : "") : i < si + dif ? "cn-p-dif" : "cn-p-no"; s += `<g class="${cls}" transform="translate(${cx} ${cy})${cls === "cn-p-no" ? " scale(.6)" : ""}" style="--i:${i}">${PERSONA}</g>`; }
   return `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">${s}</svg>`;
 }
-const muestra = (cls, r) => `<svg viewBox="0 0 12 12" aria-hidden="true"><circle class="${cls}" cx="6" cy="6" r="${r}"/></svg>`;
+const muestra = (cls, r) => `<svg viewBox="-6 -6 12 12" aria-hidden="true"><g class="${cls}" transform="scale(${(r / 3.4).toFixed(2)})">${PERSONA}</g></svg>`;
 
 let dlg = null, A = null, mias = [];
 const cu = () => dlg.querySelector("#cn-cuerpo");

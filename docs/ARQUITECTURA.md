@@ -51,7 +51,7 @@ app/
     ocasional.js        SPPB guiado, escáner de códigos de barras, copia cifrada y paso a otro dispositivo; salen de app.js en la v1.3.0 (bajo demanda)
     pro.js              informe de evolución y casos (exportar, importar, CSV, caso de prueba) del modo profesional; salen de app.js en la v1.3.0 (bajo demanda)
     tour.js             recorrido guiado de la primera visita; sale de app.js en la v1.3.0 (bajo demanda)
-    centro.js           centro de herramientas: catálogo de 34 herramientas por grupos, buscador único (herramientas, medicamentos, lecciones, explicaciones, ejercicios, glosario), favoritas y «Para usted hoy»; textos en 5 idiomas (bajo demanda, v1.3)
+    centro.js           centro de herramientas: catálogo de 34 herramientas por grupos, buscador único (herramientas, medicamentos, lecciones, explicaciones, ejercicios, glosario), favoritas y «Para usted hoy»; textos en 5 idiomas (bajo demanda, v1.3). Desde la v1.3.21 lleva también el marco común de las ventanas de herramienta: `decorar(d)` (medallón con el icono, color del grupo, cinta de borrador, fuentes numeradas; estilos en `CSS_MARCO`), que la aplicación llama con un `MutationObserver` cuando se abre un `dialog.ficha`; y las marcas «Nuevo» y «Última» del centro (`medex.herr` = { vistas, ultima })
     biblioteca.js       biblioteca de ejercicios (45 con dibujo), filtros y «Cambiar» un ejercicio del plan; bajo demanda (v1.3.2)
     programa.js         programa de 12 semanas: dosis por nivel y semana, decisiones con el diario, ajuste de las sesiones, tarjeta y ventana; bajo demanda (v1.3.3)
     rato.js             «Hoy tengo…»: sesión a la medida (5-30 min) y píldoras de movimiento con contador; bajo demanda, por data-abre (v1.3.4)

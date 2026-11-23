@@ -9,8 +9,8 @@
    bebiendo con normalidad, sin dosis de más, consultar si dura más de 72 horas y la cautela en la insuficiencia cardiaca.
    Lo que se sabe de su eficacia: Watson 2022 (PubMed). El descanso con fiebre es la regla ya revisada de la aplicación.
    Contenido en español, como la base; la interfaz, en cinco idiomas. Estado: «medex.enfermedad» = { acordado: [ids] }. */
-import { idioma, t } from "./i18n.js?v=202611230120";
-import { APP_VERSION } from "./version.js?v=202611230120";
+import { idioma, t } from "./i18n.js?v=202611230207";
+import { APP_VERSION } from "./version.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Plan para los días de enfermedad", borrador: "Borrador pendiente de revisión clínica", de_su_lista: "De su lista", ninguno: "Ninguno de sus medicamentos está en esta pauta.", sin_meds: "Añada su medicación y verá cuáles entran en esta pauta.", todos: "Los grupos de la pauta", otros: "Los demás grupos de la pauta", segun: "Según la glucosa", acordado: "Acordado con mi médico: pausarlo esos días", por_acordar: "Por acordar", ya: "Acordado", retomar: "Cuándo retomarlos", consultar: "Cuándo consultar", ejercicio: "¿Y el ejercicio?", sabe: "Qué se sabe", fuentes: "Fuentes",
@@ -102,6 +102,20 @@ const CSS = `
   #sd-hoja table { width: 100%; border-collapse: collapse; } #sd-hoja th, #sd-hoja td { padding: 5pt 6pt; border: .6pt solid #555; text-align: left; vertical-align: top; font-size: 11pt; }
   #sd-hoja p { margin: 0 0 6pt; } #sd-hoja footer { margin-top: 16pt; padding-top: 6pt; border-top: .6pt solid #888; font-size: 9pt; color: #333; }
 }
+/* 872: cada grupo con un medallon de pausa que pasa a visto bueno verde al acordarlo con el medico */
+.sd-g { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; row-gap: 2px; transition: border-color .2s, background .2s; }
+.sd-g::before { content: ""; grid-area: 1 / 1; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(var(--precaucion), var(--precaucion)) 12px 50% / 4px 14px no-repeat, linear-gradient(var(--precaucion), var(--precaucion)) 20px 50% / 4px 14px no-repeat, var(--precaucion-soft); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--precaucion) 45%, transparent); }
+.sd-g > b { grid-area: 1 / 2; align-self: center; }
+.sd-g > :not(b) { grid-column: 2; }
+.sd-g.acordado { border-color: var(--info); background: linear-gradient(var(--info-soft), var(--surface) 70px); }
+.sd-g.acordado::before { background: var(--info); box-shadow: 0 0 0 4px color-mix(in srgb, var(--info) 22%, transparent); }
+.sd-g.acordado::after { content: ""; position: absolute; left: 26px; top: 23px; width: 13px; height: 7px; border: solid var(--surface); border-width: 0 0 3px 3px; rotate: -45deg; }
+.sd-g.acordado label { background: var(--info-soft); color: var(--info-ink); }
+.sd-meds li { background: var(--surface-2); }
+@media (max-width: 480px) { .sd-g > :not(b) { grid-column: 1 / -1; } .sd-g > .sd-meds { margin-top: 8px; } }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .sd-g.acordado::before { animation: sd-ok .35s ease-out; } }
+@keyframes sd-ok { 50% { scale: 1.18; } }
+@media (forced-colors: active) { .sd-g::before, .sd-g::after { display: none; } .sd-g { display: block; } }
 `;
 
 let dlg = null, A = null, P = { grupos: [], sulfonilureas: [], insulina: false, n: 0 }, estado = { acordado: [] }, ic = false;

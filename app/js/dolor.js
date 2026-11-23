@@ -9,7 +9,7 @@
    Estado en localStorage («medex.dolor»): { zona, hist: [{ f, z, n }], aplicado: { zona, cambios, variantes } | null }.
    CONTENIDO NUEVO, PENDIENTE DE REVISIÓN CLÍNICA. Textos de la interfaz en cinco idiomas; el contenido clínico (CONT), en
    español como el resto de reglas de la aplicación. Fuentes comprobadas en PubMed (22/11/2026). */
-import { idioma } from "./i18n.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Me duele…", borrador: "Borrador pendiente de revisión clínica", intro: "Con dolor casi siempre se puede seguir moviéndose, de otra manera. Diga dónde le duele y cuánto, y le digo qué hacer con su plan.", donde: "¿Dónde le duele?",
@@ -261,6 +261,15 @@ const CSS = `
 :root[data-theme="contrast"] .dl-activo { background: var(--surface); }
 @media (max-width: 520px) { .dl-donde { grid-template-columns: 80px minmax(0, 1fr); } .dl-fig { width: 80px; } }
 @media (forced-colors: active) { .dl-fig .p.on { fill: Highlight; } .dl-graf i { background: CanvasText; } .dl-zonas3 i { border: 1px solid CanvasText; } }
+/* 857-858: el deslizador del dolor va de verde a rojo y la zona elegida se ilumina en la figura */
+.dl-escala input[type="range"] { -webkit-appearance: none; appearance: none; height: 12px; margin: 6px 0; border-radius: 999px; background: linear-gradient(90deg, var(--info) 0 20%, var(--precaucion) 30% 50%, var(--alerta) 60%); outline-offset: 4px; }
+.dl-escala input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--fg); background: var(--surface); box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: grab; }
+.dl-escala input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--fg); background: var(--surface); box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: grab; }
+.dl-escala input[type="range"]::-moz-range-track { height: 12px; border-radius: 999px; background: transparent; }
+.dl-zonas3 { display: none; }
+.dl-fig .p { transition: fill .2s, r .2s; }
+.dl-fig .p.on { r: 9px; filter: drop-shadow(0 0 5px var(--alerta)); }
+@media (forced-colors: active) { .dl-escala input[type="range"] { background: CanvasText; } .dl-zonas3 { display: grid; } }
 `;
 
 /* Figura de frente: un punto (o dos) por zona. */

@@ -6,7 +6,7 @@
    - Con fármacos que frenan el pulso avisa de que el pulso no sirve de guía. Al terminar, lo apunta en el diario.
    Preferencias y avance del programa en localStorage («medex.paseo»). Cifras de cadencia y prueba del habla comprobadas en
    PubMed (22/11/2026). El programa de 8 semanas es una progresión orientativa propia, no la de un estudio. */
-import { t, idioma } from "./i18n.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Paseo guiado", m_libre: "Paseo libre", m_prog: "Programa de 8 semanas", intro: "Un paseo con ritmo: el móvil marca el paso, avisa de los cambios y cuenta el tiempo.", cuanto: "¿Cuánto rato?", min: "{n} min",
@@ -189,6 +189,16 @@ const CSS = `
 @media (forced-colors: active) { .ps-reloj .v { stroke: Highlight; } .ps-barra i.k-ligero { background: Highlight; } }
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .ps-marcha.suena .ps-pulso { animation: ps-late var(--ps-paso, .6s) infinite; } }
 @keyframes ps-late { 0% { opacity: 1; scale: 1.25; } 60%, 100% { opacity: .25; scale: 1; } }
+/* 850-851: «Asi sera» en tres tonos con su leyenda; el anillo y el rotulo toman el color del tramo */
+.ps-barra i.k-calienta { background: var(--precaucion-soft); } .ps-barra i.k-enfria { background: var(--azul-soft, var(--surface-2)); } .ps-barra i.k-suave { background: color-mix(in srgb, var(--accent) 30%, var(--surface)); }
+.ps-ley { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 4px; font-size: .74rem; color: var(--muted); }
+.ps-ley span { display: inline-flex; align-items: center; gap: 5px; }
+.ps-ley span::before { content: ""; width: 10px; height: 10px; border-radius: 3px; border: 1px solid var(--line-strong); background: var(--surface-2); }
+.ps-ley .k-calienta::before { background: var(--precaucion-soft); } .ps-ley .k-ligero::before { background: var(--accent); border-color: var(--accent); } .ps-ley .k-suave::before { background: color-mix(in srgb, var(--accent) 30%, var(--surface)); } .ps-ley .k-enfria::before { background: var(--azul-soft, var(--surface-2)); }
+.ps-reloj .v { transition: stroke .4s; }
+.ps-marcha[data-k="calienta"] .ps-reloj .v { stroke: var(--precaucion); } .ps-marcha[data-k="enfria"] .ps-reloj .v { stroke: var(--azul, var(--accent)); } .ps-marcha[data-k="suave"] .ps-reloj .v { stroke: color-mix(in srgb, var(--accent) 55%, var(--surface)); }
+.ps-marcha[data-k="calienta"] .ps-seg { background: var(--precaucion-soft); color: var(--precaucion-ink); } .ps-marcha[data-k="enfria"] .ps-seg { background: var(--azul-soft, var(--surface-2)); color: var(--azul-ink, var(--fg)); }
+@media (forced-colors: active) { .ps-ley span::before { forced-color-adjust: none; } }
 `;
 
 /* --- estado de la ventana y del paseo --- */
@@ -234,7 +244,7 @@ function crear() {
 }
 /* --- preparación --- */
 function planActual() { return O.modo === "prog" ? planSemana(O.sem) : planLibre(O.min); }
-const barra = (plan) => { const T = duracion(plan); return `<div class="ps-barra" aria-hidden="true">${plan.map((x) => `<i class="k-${x.k}" style="width:${((x.s / T) * 100).toFixed(2)}%"></i>`).join("")}</div>`; };
+const barra = (plan) => { const T = duracion(plan); return `<div class="ps-barra" aria-hidden="true">${plan.map((x) => `<i class="k-${x.k}" style="width:${((x.s / T) * 100).toFixed(2)}%"></i>`).join("")}</div><p class="ps-ley" aria-hidden="true">${[...new Set(plan.map((x) => x.k))].map((k) => `<span class="k-${k}">${tx("k_" + k)}</span>`).join("")}</p>`; };
 function cuidados() {
   let ids = []; let pulso = false;
   try { const res = A.res(); ids = A.porquesDe(res.items.flatMap((it) => [...it.senales])); pulso = !!(res.perfil?.fc_no_valida?.length || res.perfil?.bradicardia?.length); } catch {}

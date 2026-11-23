@@ -7,9 +7,9 @@
    sin fiebre). Son NUEVOS y están por revisar: la tensión diastólica (100 y 110), el pulso en reposo (40, 50, 100 y 120),
    las décimas (37,5 °C), la saturación sin enfermedad respiratoria (92 %) y la redacción de todos los consejos.
    Los umbrales están en UMBRALES; los textos, en CONT (en español, como la base); la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230120";
-import { ALARMA } from "./engine.js?v=202611230120";
-import { tC } from "./tr.js?v=202611230120";
+import { idioma } from "./i18n.js?v=202611230207";
+import { ALARMA } from "./engine.js?v=202611230207";
+import { tC } from "./tr.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Números antes de entrenar", borrador: "Borrador pendiente de revisión clínica", intro: "Escriba los números que tenga hoy. No hace falta ninguno para entrenar: sirven si ya se los mide.", para_usted: "Le conviene", ver: "Ver qué toca hoy", borrar: "Borrar", falta: "Escriba al menos un número.", rango: "Revise este número: no parece posible.",
@@ -162,6 +162,26 @@ const CSS = `
 .nm-det a { color: var(--accent-deep, var(--accent)); }
 @media (max-width: 520px) { .nm-campos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (forced-colors: active) { .nm-ver { border-width: 3px; } }
+/* 870-871: el veredicto con un semaforo dibujado y las casillas que toman el color de su resultado */
+.nm-ver { position: relative; padding-left: 58px; }
+.nm-ver::before { content: ""; position: absolute; left: 14px; top: 14px; width: 28px; height: 68px; border-radius: 14px; background:
+  radial-gradient(circle at 50% 14px, var(--nm-r, color-mix(in srgb, currentColor 22%, transparent)) 8px, transparent 9px),
+  radial-gradient(circle at 50% 34px, var(--nm-a, color-mix(in srgb, currentColor 22%, transparent)) 8px, transparent 9px),
+  radial-gradient(circle at 50% 54px, var(--nm-v, color-mix(in srgb, currentColor 22%, transparent)) 8px, transparent 9px),
+  color-mix(in srgb, currentColor 12%, var(--surface)); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 45%, transparent); }
+.nm-ver[data-n="verde"] { --nm-v: var(--info); } .nm-ver[data-n="ambar"] { --nm-a: var(--precaucion); } .nm-ver[data-n="rojo"] { --nm-r: var(--alerta); }
+.nm-ver > b i { display: none; }
+.nm-ver { min-height: 96px; }
+@media (forced-colors: active) { .nm-ver::before { display: none; } .nm-ver { padding-left: 14px; } .nm-ver > b i { display: grid; } }
+.nm-campo[data-n] { border-width: 1.5px; }
+.nm-campo[data-n="verde"] { border-color: var(--info); background: linear-gradient(var(--info-soft), var(--surface) 62%); }
+.nm-campo[data-n="ambar"] { border-color: var(--precaucion); background: linear-gradient(var(--precaucion-soft), var(--surface) 62%); }
+.nm-campo[data-n="rojo"] { border-color: var(--alerta); background: linear-gradient(var(--alerta-soft), var(--surface) 62%); }
+.nm-campo[data-n] { position: relative; }
+.nm-campo[data-n] > b { padding-right: 18px; }
+.nm-campo[data-n]::after { content: ""; position: absolute; right: 12px; top: 14px; width: 10px; height: 10px; border-radius: 50%; background: var(--info); }
+.nm-campo[data-n="ambar"]::after { background: var(--precaucion); border-radius: 2px; }
+.nm-campo[data-n="rojo"]::after { background: var(--alerta); border-radius: 0; rotate: 45deg; }
 `;
 
 let dlg = null, A = null, V = {}, D = {}, visto = false;
@@ -186,6 +206,7 @@ function crear() {
   if (typeof dlg.showModal !== "function") { dlg.showModal = () => dlg.setAttribute("open", ""); dlg.close = () => dlg.removeAttribute("open"); }
   dlg.querySelector("#nm-cerrar").addEventListener("click", () => dlg.close());
   dlg.addEventListener("submit", (ev) => { ev.preventDefault(); ver(); });
+  dlg.addEventListener("input", (ev) => ev.target.closest?.(".nm-campo")?.removeAttribute("data-n")); // al cambiar un número, su casilla deja el color del veredicto anterior
   dlg.addEventListener("click", (ev) => {
     if (ev.target === dlg) { dlg.close(); return; }
     const b = ev.target.closest("[data-nm]"); if (!b) return;
@@ -215,7 +236,9 @@ function pintar() {
   dlg.querySelector("#nm-cab-t").textContent = tx("titulo");
   const rec = recomendados(D);
   const casilla = (k, etiqueta, nombre) => `<label for="nm-${k}">${etiqueta}<span class="nm-in"><input type="text" inputmode="decimal" id="nm-${k}" autocomplete="off" aria-label="${nombre} (${UNIDADES[k]})" value="${V[k] != null ? fmt(k, V[k]) : ""}"><span aria-hidden="true">${UNIDADES[k]}</span></span></label>`;
-  const campo = (id, cuerpo, doble = false) => `<div class="nm-campo${rec.includes(id) ? " rec" : ""}${doble ? " doble" : ""}" data-c="${id}"><b>${tx(id)}${rec.includes(id) ? `<em>${tx("para_usted")}</em>` : ""}</b>${cuerpo}</div>`;
+  const peor = { verde: 0, ambar: 1, rojo: 2 }, niv = {}; // tras el veredicto, cada casilla toma el color de su línea (la peor, si tiene dos)
+  if (visto) for (const l of evaluar(V, D).lineas) if (!(l.campo in niv) || peor[l.nivel] > peor[niv[l.campo]]) niv[l.campo] = l.nivel;
+  const campo = (id, cuerpo, doble = false) => `<div class="nm-campo${rec.includes(id) ? " rec" : ""}${doble ? " doble" : ""}" data-c="${id}"${niv[id] ? ` data-n="${niv[id]}"` : ""}><b>${tx(id)}${rec.includes(id) ? `<em>${tx("para_usted")}</em>` : ""}</b>${cuerpo}</div>`;
   const bloques = { glucosa: campo("glucosa", casilla("glucosa", "", tx("glucosa"))), ta: campo("ta", `<div class="nm-par">${casilla("ta_s", tx("ta_s"), `${tx("ta")}: ${tx("ta_s")}`)}${casilla("ta_d", tx("ta_d"), `${tx("ta")}: ${tx("ta_d")}`)}</div>`, true), pulso: campo("pulso", casilla("pulso", "", tx("pulso"))), spo2: campo("spo2", casilla("spo2", "", tx("spo2"))), temp: campo("temp", casilla("temp", "", tx("temp"))) };
   const orden = [...rec, ...["glucosa", "ta", "pulso", "spo2", "temp"].filter((k) => !rec.includes(k))];
   cu().innerHTML = `<p class="nm-borrador">${tx("borrador")}</p><p class="nm-intro">${tx("intro")}</p>

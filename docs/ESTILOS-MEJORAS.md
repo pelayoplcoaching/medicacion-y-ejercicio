@@ -865,6 +865,63 @@ Este documento se generó en la limpieza del 21/11/2026 a partir de los comentar
 | 829 | Impresion: sin esquinas de visor, puntos de estado ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |
 | 830 | Colores forzados: sin esquinas de visor ni rayados | `:is(.completitud, .vistazo, .plan-cab, .semaforo-col, .crono, .paso-guia figure, .pres .he` |
 
+## 50 MEJORAS VISUALES DE LAS HERRAMIENTAS Y LA ENCICLOPEDIA (831-880) - 23112026
+
+No tocan `style.css` (esta al limite de su presupuesto): el marco comun y el centro van en `js/centro.js` (`CSS_MARCO`, que se inyecta la primera vez que se abre una herramienta), lo de cada herramienta en la cadena `CSS` de su modulo y lo de la enciclopedia en `scripts/build_enciclopedia.py`. Mismas reglas: colores por tokens, movimiento de una vez y solo dentro de `prefers-reduced-motion: no-preference` con `html:not(.pa-quieto)`, y salidas para alto contraste, colores forzados e impresion. Los adornos que repiten un dato (anillo, regla, medidor, puntos) llevan `aria-hidden`.
+
+| N.º | Qué hace | Selector |
+|---|---|---|
+| 831 | Marco comun de las herramientas: medallon con el icono de la herramienta en la cabecera de su ventana | `dialog[data-marco="1"] .mh-ico` (`js/centro.js`, `decorar`) |
+| 832 | Cada ventana toma el color de su grupo (entender, moverse, seguir, consulta, ajustes); azul nuevo con version oscura y de contraste | `[data-g] { --hg; --hg-soft; --hg-ink }` |
+| 833 | La entradilla de cada herramienta, como texto de entrada (mas grande y con aire) | `dialog[data-marco="1"] p[class*="-intro"]` |
+| 834 | La marca de borrador, como cinta con lapiz en lugar de pastilla punteada | `dialog[data-marco="1"] [class*="-borrador"]` |
+| 835 | Las fuentes, como fichas numeradas con el DOI en pastilla | `dialog[data-marco="1"] :is(ul, ol)[class*="-fuentes"]` |
+| 836 | Fundido al pie de la ventana cuando queda contenido por debajo | `dialog[data-marco="1"] .ficha-cuerpo::after` |
+| 837 | Filo superior del color del grupo y cabecera con degradado suave (la palabra «Cerrar» se queda) | `dialog[data-marco="1"]`, `.ficha-cab` |
+| 838 | Al abrir, el medallon salta y los primeros apartados entran escalonados (una vez) | `dialog.mh-abre` |
+| 839 | Centro: cada tarjeta y cada rotulo, con el color de su grupo | `.ce-t[data-g]`, `.ce-tit[data-g]` |
+| 840 | Centro: medallones de color mas grandes para el icono de cada herramienta | `.ce-t .ce-b svg` |
+| 841 | Centro: «Para usted hoy» en tarjetas con degradado y flecha | `.ce-hoy button[data-g]` |
+| 842 | Centro: etiqueta «Nuevo» en las herramientas que aun no se han abierto | `.ce-nuevo` (`medex.herr`) |
+| 843 | Centro: la busqueda sin resultados, con su icono | `.ce-nada` |
+| 844 | Centro: respuesta al pulsar y al pasar el raton | `.ce-t:active`, `.ce-t:hover` |
+| 845 | Centro: rotulos de grupo que se quedan pegados, con punto de color y recuento | `.ce-tit`, `.ce-tit small` |
+| 846 | Centro: marca «Ultima» en la herramienta usada por ultima vez | `.ce-ult` |
+| 847 | Programa: la tira de 12 semanas, con el color de cada fase | `js/programa.js` |
+| 848 | Programa: la dosis de la semana, en cuatro fichas con icono | `.prg-dosis` |
+| 849 | Programa: etiquetas de estado en pastilla | `.prg-e` |
+| 850 | Paseo: «Asi sera» con el color de cada tramo (calentar, ligero, suave, enfriar) y su leyenda | `.ps-barra`, `.ps-ley` |
+| 851 | Paseo: el anillo y el rotulo toman el color del tramo en curso | `.ps-marcha[data-k]` |
+| 852 | «Hoy tengo...»: la sesion como linea de tiempo con el minuto en redondo | `js/rato.js` |
+| 853 | Pildoras de movimiento: anillos que se marcan con un visto | `js/rato.js` |
+| 854 | Biblioteca: la dificultad, en tres barras que suben | `js/biblioteca.js` |
+| 855 | Primeros 14 dias: los pasos unidos por un hilo; lo hecho, en el color de la marca | `js/primeros.js` |
+| 856 | Volver tras un paron: cada semana, un peldano mas alto | `.vt-esc li::after` |
+| 857 | «Me duele...»: el deslizador va de verde a rojo | `js/dolor.js` |
+| 858 | «Me duele...»: la zona elegida se ilumina en la figura | `js/dolor.js` |
+| 859 | Cuerpo: la figura con relleno de la marca y sombra suave | `.cp-fig .cp-sil` |
+| 860 | Cuerpo: los puntos con medicamentos llevan halo y el elegido late una vez | `.cp-p.con`, `.cp-p.activa` |
+| 861 | «De cada 100»: figuras de persona en lugar de puntos (siguen siendo 100) | `.cn-caja svg g` (`puntos()`) |
+| 862 | «De cada 100»: la columna «con ejercicio» resaltada | `.cn-tabla td.con` |
+| 863 | «De cada 100»: las figuras entran contando | `.cn-caja svg g[style]` |
+| 864 | Mitos: el veredicto, como sello | `.mit-v` |
+| 865 | Mitos: la frase del mito, con comillas grandes | `.mit-m summary q::before` |
+| 866 | Mitos: barra de leidos mas alta y con degradado | `.mit-barra i` |
+| 867 | Preguntas: las sugeridas con filo y estrella; el boton de imprimir lleva en un globo cuantas van en la hoja | `.pg-q:has(.pg-sug)`, `.pg-pie [data-n]::after` |
+| 868 | Receta: cada modalidad (aerobico, fuerza, equilibrio) con su icono | `.rx-tabla tr[data-f] th::after` |
+| 869 | Receta: letras F, I, T, T en cada celda y cada modalidad en su tarjeta en el movil | `.rx-tabla td::before` |
+| 870 | Numeros: el veredicto, con un semaforo dibujado | `.nm-ver::before` |
+| 871 | Numeros: cada casilla toma el color de su resultado (y lo pierde al cambiar el numero) | `.nm-campo[data-n]` |
+| 872 | Dias de enfermedad: cada grupo con medallon de pausa, que pasa a visto bueno verde al acordarlo | `.sd-g::before`, `.sd-g.acordado` |
+| 873 | Escalas: anillo con el ultimo resultado en cada tarjeta | `.eq-anillo` |
+| 874 | Escalas: regla de colores del resultado, una casilla por punto y la suya marcada; barra hacia los 150 minutos | `.eq-regla`, `.eq-barra` |
+| 875 | Caidas: medidor de la carga anticolinergica con el umbral marcado | `.fr-medidor` |
+| 876 | Caidas: la potencia de cada farmaco, en tres puntos | `.fr-pot` |
+| 877 | Enciclopedia: cabecera de noche en todas las paginas; en el indice, con las tres cifras y el buscador dentro | `.hero`, `.cifras` (`enciclopedia/enc.css`) |
+| 878 | Enciclopedia: icono del nivel en cada regla y filo en «Que puede notar» | `.niv::before`, `ul.efectos li` |
+| 879 | Enciclopedia: las letras se quedan fijas al bajar (en fila deslizable en el movil) y cada letra dice cuantos tiene | `.letras`, `h2.letra small` |
+| 880 | Enciclopedia: tarjetas del indice con flecha y elevacion, etiqueta de suplemento o planta y filo en las situaciones | `ul.indice a`, `.tp` |
+
 ## 20 mejoras grandes (v1.2)
 
 Bloque «20 MEJORAS GRANDES (v1.2)» al final de la hoja; cada mejora lleva un comentario `/* G<n> ... */` con su número de la propuesta.

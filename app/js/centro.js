@@ -3,11 +3,11 @@
    «Para usted hoy»: hasta tres sugerencias según la lista, el plan y lo que queda por hacer.
    Se carga al abrirlo (botón «Más» de la barra inferior, «Herramientas» de la cabecera o Ctrl/⌘ + K). No guarda nada fuera
    del dispositivo: las favoritas van en localStorage («medex.favoritas»). Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230120";
-import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230120";
+import { t, idioma } from "./i18n.js?v=202611230207";
+import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230207";
 
 const TXT = {
-  es: { titulo: "Herramientas", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",
+  es: { titulo: "Herramientas", nuevo: "Nuevo", ultima: "Última", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",
     g_entender: "Entender", g_moverse: "Moverse", g_seguir: "Seguir", g_consulta: "Para la consulta", g_ajustes: "Ajustes y ayuda",
     r_herr: "Herramientas", r_meds: "Medicamentos", r_lecc: "Lecciones de 2 minutos", r_porque: "Explicaciones «¿Por qué?»", r_ejer: "Ejercicios", r_glos: "Glosario", en_lista: "en su lista", ver_ficha: "Ver su ficha",
     l_porque: "¿Por qué? Explicaciones animadas", l_beneficios: "Lo que el ejercicio hace por usted", l_sesion: "La sesión de hoy", l_sppb: "Prueba SPPB (equilibrio, marcha y silla)", l_habitos: "Alcohol, tabaco y café", l_cribado: "Cribado de seguridad", l_pdf: "Descargar el informe en PDF", l_compartir: "Compartir mi plan", l_listas: "Listas guardadas y copia de seguridad", l_ficha: "Consultar un medicamento", l_anadir: "Añadir medicación", l_ejemplo: "Ver un ejemplo", l_mapa: "Interacciones entre sus fármacos", l_cuando: "¿A qué hora entrenar?",
@@ -18,7 +18,7 @@ const TXT = {
     d_letra: "Más grande o más pequeña", d_tema: "Claro, oscuro o alto contraste", d_sencillo: "Solo lo de hoy, en grande", d_como: "Recorrido guiado por la pantalla", d_guia: "La aplicación en una página", d_presentacion: "Para quién es y cómo se hizo", d_novedades: "Lo último que ha cambiado", d_sugerencia: "Cuéntenos qué falta o qué falla", d_acerca: "Fuentes, método y autor", d_legal: "Aviso legal y privacidad",
     s_anadir: "Empiece por su medicación", s_anadir_x: "Con el nombre, una foto de la caja o la hoja de la receta.", s_ejemplo_x: "Un caso de muestra para ver qué hace la aplicación.", s_como_x: "Un recorrido de un minuto por la pantalla.",
     s_cribado: "Complete el cribado de seguridad", s_cribado_x: "Tres preguntas para saber si conviene una valoración médica antes.", s_calor: "Hoy hace calor: adapte la sesión", s_calor_x: "Horas más frescas, agua y qué fármacos suyos lo notan.", s_sesion: "Hoy toca: {x}", s_sesion_x: "Sesión guiada con cronómetro y voz.", s_hecho: "Sesión de hoy hecha", s_hecho_x: "Mire cómo va su semana.", s_mayores: "{n} interacciones importantes", s_mayores_x: "Véalas en el mapa, con qué hacer en cada una.", s_habitos: "Alcohol, tabaco y café", s_habitos_x: "Tres preguntas para cruzarlos con su medicación.", s_metas: "¿Para qué quiere estar en forma?", s_metas_x: "Elija hasta tres metas y el plan señalará qué las trabaja.", s_pruebas: "Mida su forma física", s_pruebas_x: "Seis pruebas sencillas con baremos para su edad.", s_aprende: "Aprenda algo en 2 minutos", s_aprende_x: "Lleva {n} de 10 lecciones.", s_pastillero: "Ordene sus tomas", s_pastillero_x: "El pastillero las reparte por momentos del día.", s_copia: "Haga una copia de seguridad", s_copia_x: "Todo vive solo en este dispositivo.", s_conversa: "Guía de conversación", s_conversa_x: "Consejo breve adaptado a esta persona.", s_dosis: "¿Cuánto movimiento hace falta?", s_dosis_x: "Lo que encontraron los grandes estudios." },
-  en: { titulo: "Tools", buscar: "Search tools, medicines, exercises…", buscar_aria: "Search the whole app", hoy: "For you today", favoritas: "Your favourites", fav_on: "Remove from favourites", fav_off: "Add to favourites", nada: "Nothing for “{q}”. Try another word or browse the tools below.", falta_meds: "Add your medicines first", solo_pro: "Professional mode", atajo: "Ctrl + K opens this search from any screen.", n_res: "{n} results", limpiar: "Clear search",
+  en: { titulo: "Tools", nuevo: "New", ultima: "Last used", buscar: "Search tools, medicines, exercises…", buscar_aria: "Search the whole app", hoy: "For you today", favoritas: "Your favourites", fav_on: "Remove from favourites", fav_off: "Add to favourites", nada: "Nothing for “{q}”. Try another word or browse the tools below.", falta_meds: "Add your medicines first", solo_pro: "Professional mode", atajo: "Ctrl + K opens this search from any screen.", n_res: "{n} results", limpiar: "Clear search",
     g_entender: "Understand", g_moverse: "Move", g_seguir: "Keep track", g_consulta: "For the appointment", g_ajustes: "Settings and help",
     r_herr: "Tools", r_meds: "Medicines", r_lecc: "2-minute lessons", r_porque: "“Why?” explainers", r_ejer: "Exercises", r_glos: "Glossary", en_lista: "on your list", ver_ficha: "See its sheet",
     l_porque: "Why? Animated explainers", l_beneficios: "What exercise does for you", l_sesion: "Today's session", l_sppb: "SPPB test (balance, gait and chair)", l_habitos: "Alcohol, tobacco and coffee", l_cribado: "Safety screening", l_pdf: "Download the report as PDF", l_compartir: "Share my plan", l_listas: "Saved lists and backup", l_ficha: "Look up a medicine", l_anadir: "Add medicines", l_ejemplo: "See an example", l_mapa: "Interactions between your medicines", l_cuando: "What time to train?",
@@ -29,7 +29,7 @@ const TXT = {
     d_letra: "Bigger or smaller", d_tema: "Light, dark or high contrast", d_sencillo: "Only today, in large type", d_como: "Guided tour of the screen", d_guia: "The app on one page", d_presentacion: "Who it is for and how it was made", d_novedades: "What changed recently", d_sugerencia: "Tell us what is missing or broken", d_acerca: "Sources, method and author", d_legal: "Legal notice and privacy",
     s_anadir: "Start with your medicines", s_anadir_x: "By name, a photo of the box or your prescription sheet.", s_ejemplo_x: "A sample case to see what the app does.", s_como_x: "A one-minute tour of the screen.",
     s_cribado: "Complete the safety screening", s_cribado_x: "Three questions to know whether to see a doctor first.", s_calor: "It is hot today: adapt the session", s_calor_x: "Cooler hours, water and which medicines of yours matter.", s_sesion: "Today: {x}", s_sesion_x: "Guided session with timer and voice.", s_hecho: "Today's session done", s_hecho_x: "See how your week is going.", s_mayores: "{n} major interactions", s_mayores_x: "See them on the map, with what to do.", s_habitos: "Alcohol, tobacco and coffee", s_habitos_x: "Three questions to cross them with your medicines.", s_metas: "What do you want to be fit for?", s_metas_x: "Pick up to three goals and the plan will mark what trains them.", s_pruebas: "Measure your fitness", s_pruebas_x: "Six simple tests with norms for your age.", s_aprende: "Learn something in 2 minutes", s_aprende_x: "{n} of 10 lessons done.", s_pastillero: "Organise your doses", s_pastillero_x: "The pillbox sorts them by time of day.", s_copia: "Make a backup", s_copia_x: "Everything lives only on this device.", s_conversa: "Conversation guide", s_conversa_x: "Brief advice adapted to this person.", s_dosis: "How much movement is needed?", s_dosis_x: "What the large studies found." },
-  ca: { titulo: "Eines", buscar: "Cerqueu eines, medicaments, exercicis…", buscar_aria: "Cerca a tota l'aplicació", hoy: "Per a vós avui", favoritas: "Les vostres preferides", fav_on: "Treu de preferides", fav_off: "Afegeix a preferides", nada: "Res amb «{q}». Proveu una altra paraula o mireu les eines de sota.", falta_meds: "Afegiu abans la medicació", solo_pro: "Mode professional", atajo: "Ctrl + K obre aquest cercador des de qualsevol pantalla.", n_res: "{n} resultats", limpiar: "Esborra la cerca",
+  ca: { titulo: "Eines", nuevo: "Nou", ultima: "Última", buscar: "Cerqueu eines, medicaments, exercicis…", buscar_aria: "Cerca a tota l'aplicació", hoy: "Per a vós avui", favoritas: "Les vostres preferides", fav_on: "Treu de preferides", fav_off: "Afegeix a preferides", nada: "Res amb «{q}». Proveu una altra paraula o mireu les eines de sota.", falta_meds: "Afegiu abans la medicació", solo_pro: "Mode professional", atajo: "Ctrl + K obre aquest cercador des de qualsevol pantalla.", n_res: "{n} resultats", limpiar: "Esborra la cerca",
     g_entender: "Entendre", g_moverse: "Moure's", g_seguir: "Seguir", g_consulta: "Per a la consulta", g_ajustes: "Ajustos i ajuda",
     r_herr: "Eines", r_meds: "Medicaments", r_lecc: "Lliçons de 2 minuts", r_porque: "Explicacions «Per què?»", r_ejer: "Exercicis", r_glos: "Glossari", en_lista: "a la vostra llista", ver_ficha: "Veure'n la fitxa",
     l_porque: "Per què? Explicacions animades", l_beneficios: "El que l'exercici fa per vós", l_sesion: "La sessió d'avui", l_sppb: "Prova SPPB (equilibri, marxa i cadira)", l_habitos: "Alcohol, tabac i cafè", l_cribado: "Cribratge de seguretat", l_pdf: "Descarregar l'informe en PDF", l_compartir: "Compartir el meu pla", l_listas: "Llistes desades i còpia de seguretat", l_ficha: "Consultar un medicament", l_anadir: "Afegir medicació", l_ejemplo: "Veure un exemple", l_mapa: "Interaccions entre els vostres fàrmacs", l_cuando: "A quina hora entrenar?",
@@ -40,7 +40,7 @@ const TXT = {
     d_letra: "Més gran o més petita", d_tema: "Clar, fosc o alt contrast", d_sencillo: "Només el d'avui, en gran", d_como: "Recorregut guiat per la pantalla", d_guia: "L'aplicació en una pàgina", d_presentacion: "Per a qui és i com es va fer", d_novedades: "L'últim que ha canviat", d_sugerencia: "Digueu-nos què falta o què falla", d_acerca: "Fonts, mètode i autor", d_legal: "Avís legal i privadesa",
     s_anadir: "Comenceu per la medicació", s_anadir_x: "Amb el nom, una foto de la capsa o el full de la recepta.", s_ejemplo_x: "Un cas de mostra per veure què fa l'aplicació.", s_como_x: "Un recorregut d'un minut per la pantalla.",
     s_cribado: "Completeu el cribratge de seguretat", s_cribado_x: "Tres preguntes per saber si convé una valoració mèdica abans.", s_calor: "Avui fa calor: adapteu la sessió", s_calor_x: "Hores més fresques, aigua i quins fàrmacs ho noten.", s_sesion: "Avui toca: {x}", s_sesion_x: "Sessió guiada amb cronòmetre i veu.", s_hecho: "Sessió d'avui feta", s_hecho_x: "Mireu com va la setmana.", s_mayores: "{n} interaccions importants", s_mayores_x: "Vegeu-les al mapa, amb què fer en cadascuna.", s_habitos: "Alcohol, tabac i cafè", s_habitos_x: "Tres preguntes per creuar-los amb la medicació.", s_metas: "Per a què voleu estar en forma?", s_metas_x: "Trieu fins a tres fites i el pla marcarà què les treballa.", s_pruebas: "Mesureu la forma física", s_pruebas_x: "Sis proves senzilles amb barems per a la vostra edat.", s_aprende: "Apreneu alguna cosa en 2 minuts", s_aprende_x: "Porteu {n} de 10 lliçons.", s_pastillero: "Ordeneu les preses", s_pastillero_x: "El pastiller les reparteix per moments del dia.", s_copia: "Feu una còpia de seguretat", s_copia_x: "Tot viu només en aquest dispositiu.", s_conversa: "Guia de conversa", s_conversa_x: "Consell breu adaptat a aquesta persona.", s_dosis: "Quant moviment cal?", s_dosis_x: "El que van trobar els grans estudis." },
-  gl: { titulo: "Ferramentas", buscar: "Busque ferramentas, medicamentos, exercicios…", buscar_aria: "Buscar en toda a aplicación", hoy: "Para vostede hoxe", favoritas: "As súas favoritas", fav_on: "Quitar de favoritas", fav_off: "Engadir a favoritas", nada: "Nada con «{q}». Probe con outra palabra ou mire as ferramentas de abaixo.", falta_meds: "Engada antes a súa medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde calquera pantalla.", n_res: "{n} resultados", limpiar: "Borrar a busca",
+  gl: { titulo: "Ferramentas", nuevo: "Novo", ultima: "Última", buscar: "Busque ferramentas, medicamentos, exercicios…", buscar_aria: "Buscar en toda a aplicación", hoy: "Para vostede hoxe", favoritas: "As súas favoritas", fav_on: "Quitar de favoritas", fav_off: "Engadir a favoritas", nada: "Nada con «{q}». Probe con outra palabra ou mire as ferramentas de abaixo.", falta_meds: "Engada antes a súa medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde calquera pantalla.", n_res: "{n} resultados", limpiar: "Borrar a busca",
     g_entender: "Entender", g_moverse: "Moverse", g_seguir: "Seguir", g_consulta: "Para a consulta", g_ajustes: "Axustes e axuda",
     r_herr: "Ferramentas", r_meds: "Medicamentos", r_lecc: "Leccións de 2 minutos", r_porque: "Explicacións «Por que?»", r_ejer: "Exercicios", r_glos: "Glosario", en_lista: "na súa lista", ver_ficha: "Ver a súa ficha",
     l_porque: "Por que? Explicacións animadas", l_beneficios: "O que o exercicio fai por vostede", l_sesion: "A sesión de hoxe", l_sppb: "Proba SPPB (equilibrio, marcha e cadeira)", l_habitos: "Alcohol, tabaco e café", l_cribado: "Cribado de seguridade", l_pdf: "Descargar o informe en PDF", l_compartir: "Compartir o meu plan", l_listas: "Listas gardadas e copia de seguridade", l_ficha: "Consultar un medicamento", l_anadir: "Engadir medicación", l_ejemplo: "Ver un exemplo", l_mapa: "Interaccións entre os seus fármacos", l_cuando: "A que hora adestrar?",
@@ -51,7 +51,7 @@ const TXT = {
     d_letra: "Máis grande ou máis pequena", d_tema: "Claro, escuro ou alto contraste", d_sencillo: "Só o de hoxe, en grande", d_como: "Percorrido guiado pola pantalla", d_guia: "A aplicación nunha páxina", d_presentacion: "Para quen é e como se fixo", d_novedades: "O último que cambiou", d_sugerencia: "Cóntenos que falta ou que falla", d_acerca: "Fontes, método e autor", d_legal: "Aviso legal e privacidade",
     s_anadir: "Empece pola súa medicación", s_anadir_x: "Co nome, unha foto da caixa ou a folla da receita.", s_ejemplo_x: "Un caso de mostra para ver que fai a aplicación.", s_como_x: "Un percorrido dun minuto pola pantalla.",
     s_cribado: "Complete o cribado de seguridade", s_cribado_x: "Tres preguntas para saber se convén unha valoración médica antes.", s_calor: "Hoxe vai calor: adapte a sesión", s_calor_x: "Horas máis frescas, auga e que fármacos seus o notan.", s_sesion: "Hoxe toca: {x}", s_sesion_x: "Sesión guiada con cronómetro e voz.", s_hecho: "Sesión de hoxe feita", s_hecho_x: "Mire como vai a súa semana.", s_mayores: "{n} interaccións importantes", s_mayores_x: "Véxaas no mapa, con que facer en cada unha.", s_habitos: "Alcohol, tabaco e café", s_habitos_x: "Tres preguntas para cruzalos coa súa medicación.", s_metas: "Para que quere estar en forma?", s_metas_x: "Escolla ata tres metas e o plan sinalará que as traballa.", s_pruebas: "Mida a súa forma física", s_pruebas_x: "Seis probas sinxelas con baremos para a súa idade.", s_aprende: "Aprenda algo en 2 minutos", s_aprende_x: "Leva {n} de 10 leccións.", s_pastillero: "Ordene as súas tomas", s_pastillero_x: "O pastilleiro repárteas por momentos do día.", s_copia: "Faga unha copia de seguridade", s_copia_x: "Todo vive só neste dispositivo.", s_conversa: "Guía de conversa", s_conversa_x: "Consello breve adaptado a esta persoa.", s_dosis: "Canto movemento fai falta?", s_dosis_x: "O que atoparon os grandes estudos." },
-  eu: { titulo: "Tresnak", buscar: "Bilatu tresnak, botikak, ariketak…", buscar_aria: "Bilatu aplikazio osoan", hoy: "Zuretzat gaur", favoritas: "Zure gogokoak", fav_on: "Kendu gogokoetatik", fav_off: "Gehitu gogokoetara", nada: "Ezer ez «{q}» hitzarekin. Probatu beste hitz bat edo begiratu beheko tresnak.", falta_meds: "Gehitu lehenik zure botikak", solo_pro: "Profesional modua", atajo: "Ctrl + K sakatuta bilatzaile hau edozein pantailatan irekitzen da.", n_res: "{n} emaitza", limpiar: "Ezabatu bilaketa",
+  eu: { titulo: "Tresnak", nuevo: "Berria", ultima: "Azkena", buscar: "Bilatu tresnak, botikak, ariketak…", buscar_aria: "Bilatu aplikazio osoan", hoy: "Zuretzat gaur", favoritas: "Zure gogokoak", fav_on: "Kendu gogokoetatik", fav_off: "Gehitu gogokoetara", nada: "Ezer ez «{q}» hitzarekin. Probatu beste hitz bat edo begiratu beheko tresnak.", falta_meds: "Gehitu lehenik zure botikak", solo_pro: "Profesional modua", atajo: "Ctrl + K sakatuta bilatzaile hau edozein pantailatan irekitzen da.", n_res: "{n} emaitza", limpiar: "Ezabatu bilaketa",
     g_entender: "Ulertu", g_moverse: "Mugitu", g_seguir: "Jarraitu", g_consulta: "Kontsultarako", g_ajustes: "Doikuntzak eta laguntza",
     r_herr: "Tresnak", r_meds: "Botikak", r_lecc: "2 minutuko ikasgaiak", r_porque: "«Zergatik?» azalpenak", r_ejer: "Ariketak", r_glos: "Glosarioa", en_lista: "zure zerrendan", ver_ficha: "Ikusi fitxa",
     l_porque: "Zergatik? Azalpen animatuak", l_beneficios: "Ariketak zuretzat egiten duena", l_sesion: "Gaurko saioa", l_sppb: "SPPB proba (oreka, ibilera eta aulkia)", l_habitos: "Alkohola, tabakoa eta kafea", l_cribado: "Segurtasun-baheketa", l_pdf: "Deskargatu txostena PDFan", l_compartir: "Partekatu nire plana", l_listas: "Gordetako zerrendak eta segurtasun-kopia", l_ficha: "Kontsultatu botika bat", l_anadir: "Gehitu botikak", l_ejemplo: "Ikusi adibide bat", l_mapa: "Zure botiken arteko interakzioak", l_cuando: "Zein ordutan entrenatu?",
@@ -188,6 +188,23 @@ const POR_ID = Object.fromEntries(HERRAMIENTAS.map((h) => [h.id, h]));
 const nombre = (h) => (h.k ? t(h.k) : tx(h.l));
 
 /** Favoritas guardadas (solo ids que siguen existiendo). */
+/** Herramientas de la segunda tanda: llevan la etiqueta «Nuevo» hasta que se abren una vez. */
+const NUEVAS = new Set(["rato", "pildoras", "paseo", "dolor", "vuelta", "primeros", "cuerpo", "preguntas", "mitos", "cien", "numeros", "enfermedad", "frid", "escalas", "receta", "programa", "biblioteca", "enciclopedia"]);
+export function leerVistas() { try { const l = JSON.parse(localStorage.getItem("medex.herr") || "{}").vistas; return Array.isArray(l) ? l : []; } catch { return []; } }
+export function leerUltima() { try { return JSON.parse(localStorage.getItem("medex.herr") || "{}").ultima || null; } catch { return null; } }
+function apuntarUso(id) { if (!POR_ID[id]) return; try { const v = leerVistas(); localStorage.setItem("medex.herr", JSON.stringify({ vistas: v.includes(id) ? v : [...v, id], ultima: id })); } catch { /* sin almacenamiento: no pasa nada */ } }
+/** Pone el marco comun a la ventana de una herramienta: icono y color de su grupo en la cabecera (mejoras 831-838). */
+export function decorar(d) {
+  if (!d || !d.id) return false;
+  const h = HERRAMIENTAS.find((x) => x.d && (x.dv || x.id) === d.id) || HERRAMIENTAS.find((x) => x.d && x.id === d.id) || (d.id === "calor" ? POR_ID.calor : null);
+  if (!h || d.id === "centro") { d.dataset.marco = "0"; return false; }
+  if (!document.getElementById("mh-css")) { const st = document.createElement("style"); st.id = "mh-css"; st.textContent = CSS_MARCO; document.head.append(st); }
+  const cab = d.querySelector(":scope > .ficha-cab, :scope > .hoja-cab");
+  if (cab && !cab.querySelector(".mh-ico")) cab.insertAdjacentHTML("afterbegin", `<span class="mh-ico" aria-hidden="true">${ic(h.id, "mh-i")}</span>`);
+  d.dataset.marco = "1"; d.dataset.g = h.g;
+  d.classList.add("mh-abre"); setTimeout(() => d.classList.remove("mh-abre"), 900);
+  return true;
+}
 export function leerFavoritas() { try { return JSON.parse(localStorage.getItem("medex.favoritas") || "[]").filter((id) => POR_ID[id]); } catch { return []; } }
 function guardarFavoritas(l) { try { localStorage.setItem("medex.favoritas", JSON.stringify(l)); } catch {} }
 
@@ -257,6 +274,50 @@ export function ejerciciosTipo() {
   return [...s];
 }
 
+/* Marco comun de las ventanas de las herramientas (mejoras visuales 831-838). Lo pone decorar() al abrirse cada una:
+   icono y color de su grupo en la cabecera, entradilla, cinta de borrador, fuentes numeradas y fundido al pie. */
+const CSS_MARCO = `
+:root { --azul: #2563a8; --azul-soft: #e6effa; --azul-ink: #1d4f88; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --azul: #8ab8f0; --azul-soft: #14263c; --azul-ink: #b5d3f7; } }
+:root[data-theme="dark"] { --azul: #8ab8f0; --azul-soft: #14263c; --azul-ink: #b5d3f7; }
+:root[data-theme="contrast"] { --azul: #0a3a7a; --azul-soft: #e4ecf7; --azul-ink: #0a3a7a; }
+[data-g="entender"] { --hg: var(--info); --hg-soft: var(--info-soft); --hg-ink: var(--info-ink); }
+[data-g="moverse"] { --hg: var(--accent); --hg-soft: var(--accent-soft); --hg-ink: var(--accent-deep, var(--accent)); }
+[data-g="seguir"] { --hg: var(--precaucion); --hg-soft: var(--precaucion-soft); --hg-ink: var(--precaucion-ink); }
+[data-g="consulta"] { --hg: var(--azul); --hg-soft: var(--azul-soft); --hg-ink: var(--azul-ink); }
+[data-g="ajustes"] { --hg: var(--line-strong); --hg-soft: var(--surface-2); --hg-ink: var(--muted); }
+.mh-ico { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--hg-soft, var(--accent-soft)); color: var(--hg-ink, var(--accent)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hg, var(--accent)) 30%, transparent); }
+.mh-i { width: 21px; height: 21px; }
+dialog[data-marco="1"] { border-top: 3px solid var(--hg, var(--accent)); }
+dialog[data-marco="1"] > :is(.ficha-cab, .hoja-cab) { background: var(--hilo) bottom / 100% 1px no-repeat, linear-gradient(180deg, color-mix(in srgb, var(--hg-soft, var(--accent-soft)) 75%, var(--surface)), var(--surface)); }
+dialog[data-marco="1"] .ficha-cuerpo > p[class*="-intro"]:first-of-type { max-width: 64ch; font-size: 1.02rem; line-height: 1.5; color: color-mix(in srgb, var(--fg) 84%, var(--muted)); text-wrap: pretty; }
+dialog[data-marco="1"] [class*="-borrador"] { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border: 0; border-radius: 6px; background: var(--precaucion-soft); color: var(--precaucion-ink); font-family: var(--mono); font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; box-shadow: inset 3px 0 0 var(--precaucion); }
+dialog[data-marco="1"] [class*="-borrador"]::before { content: ""; flex: none; width: 12px; height: 12px; background: currentColor; -webkit-mask: var(--mh-lapiz) center / contain no-repeat; mask: var(--mh-lapiz) center / contain no-repeat; }
+dialog[data-marco="1"] { --mh-lapiz: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16zM13.500 6.500l4 4'/%3E%3C/svg%3E"); }
+dialog[data-marco="1"] :is(ul, ol)[class*="-fuentes"] { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; counter-reset: mh-f; }
+dialog[data-marco="1"] :is(ul, ol)[class*="-fuentes"] > li { position: relative; padding: 9px 12px 9px 42px; border: 1px solid var(--line); border-radius: var(--r-md); background: color-mix(in srgb, var(--surface-2) 55%, var(--surface)); counter-increment: mh-f; font-size: .82rem; line-height: 1.45; }
+dialog[data-marco="1"] :is(ul, ol)[class*="-fuentes"] > li::before { content: counter(mh-f); position: absolute; left: 10px; top: 9px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--hg-soft, var(--accent-soft)); color: var(--hg-ink, var(--accent)); font-family: var(--mono); font-size: .7rem; font-weight: 700; }
+dialog[data-marco="1"] [class*="-fuentes"] a[href*="doi.org"] { display: inline-block; margin: 1px 2px; padding: 0 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-family: var(--mono); font-size: .7rem; line-height: 1.6; text-decoration: none; word-break: break-all; }
+dialog[data-marco="1"] [class*="-fuentes"] a[href*="doi.org"]:hover { border-color: var(--accent); background: var(--accent-soft); }
+dialog[data-marco="1"] .ficha-cuerpo::after { content: ""; position: sticky; bottom: -20px; display: block; height: 30px; margin: 0 -16px -20px; background: linear-gradient(transparent, var(--surface)); pointer-events: none; }
+:root[data-theme="contrast"] dialog[data-marco="1"] .ficha-cuerpo::after { display: none; }
+:root[data-theme="contrast"] dialog[data-marco="1"] > :is(.ficha-cab, .hoja-cab) { background: var(--surface); }
+@media print { .mh-ico, dialog[data-marco="1"] .ficha-cuerpo::after { display: none !important; } }
+@media (forced-colors: active) { .mh-ico { border: 1px solid CanvasText; } dialog[data-marco="1"] .ficha-cuerpo::after { display: none; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  html:not(.pa-quieto) dialog.mh-abre .mh-ico { animation: mh-pop .42s var(--ease-salida, ease-out) both; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(-n+7) { animation: mh-sube .38s var(--ease-salida, ease-out) both; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(2) { animation-delay: .04s; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(3) { animation-delay: .08s; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(4) { animation-delay: .12s; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(5) { animation-delay: .16s; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(6) { animation-delay: .2s; }
+  html:not(.pa-quieto) dialog.mh-abre .ficha-cuerpo > :nth-child(7) { animation-delay: .24s; }
+}
+@keyframes mh-pop { from { opacity: 0; scale: .6; rotate: -12deg; } }
+@keyframes mh-sube { from { opacity: 0; translate: 0 10px; } }
+`;
+
 const CSS = `
 .ce-dlg { width: min(860px, calc(100vw - 16px)); }
 .ce-dlg .ficha-cuerpo { padding-top: 2px; max-height: calc(100dvh - 166px); }
@@ -308,6 +369,27 @@ const CSS = `
 :root[data-theme="contrast"] .ce-hoy button { background: var(--surface); }
 @media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .ce-hoy button { animation: ce-entra .32s var(--ease-salida, ease-out) both; } html:not(.pa-quieto) .ce-hoy button:nth-child(2) { animation-delay: .05s; } html:not(.pa-quieto) .ce-hoy button:nth-child(3) { animation-delay: .1s; } }
 @keyframes ce-entra { from { opacity: 0; translate: 0 8px; } }
+/* 839-846: color por grupo, medallones, «Para usted hoy», Nuevo, vacio, pulsar, rotulos pegados y «ultima» */
+.ce-tit[data-g] { position: sticky; top: -2px; z-index: 1; margin: 12px -4px 8px; padding: 6px 4px; background: linear-gradient(var(--surface) 78%, transparent); color: var(--hg-ink, var(--muted)); }
+.ce-tit[data-g]::before { content: ""; flex: none; align-self: center; width: 8px; height: 8px; border-radius: 3px; background: var(--hg, var(--accent)); }
+.ce-tit[data-g] small { margin-left: auto; padding: 0 7px; border-radius: 999px; background: var(--hg-soft, var(--surface-2)); color: var(--hg-ink, var(--muted)); font-size: .7rem; line-height: 1.6; opacity: 1; }
+.ce-t[data-g] .ce-b .ce-ic { width: 38px; height: 38px; border-radius: 12px; background: var(--hg-soft, var(--accent-soft)); color: var(--hg-ink, var(--accent)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hg, var(--accent)) 24%, transparent); }
+.ce-t > .ce-b { grid-template-columns: 38px minmax(0, 1fr); min-height: 64px; transition: border-color .15s, background-color .15s, translate .15s, box-shadow .15s, scale .1s; }
+.ce-t > .ce-b:active { scale: .97; }
+@media (hover: hover) { .ce-t > .ce-b:hover { border-color: var(--hg, var(--line-strong)); translate: 0 -2px; box-shadow: 0 6px 16px -10px color-mix(in srgb, var(--hg, var(--accent)) 60%, transparent); } }
+.ce-hoy button { position: relative; padding-right: 34px; border-color: color-mix(in srgb, var(--hg, var(--accent)) 55%, var(--line)); background: linear-gradient(135deg, var(--hg-soft, var(--accent-soft)), var(--surface) 72%); transition: translate .15s, box-shadow .15s, scale .1s; }
+.ce-hoy button .ce-ic { background: var(--hg, var(--accent)); }
+.ce-hoy button::after { content: ""; position: absolute; right: 14px; top: 50%; width: 9px; height: 9px; border-top: 2px solid var(--hg-ink, var(--accent)); border-right: 2px solid var(--hg-ink, var(--accent)); rotate: 45deg; translate: 0 -50%; opacity: .7; transition: translate .15s; }
+.ce-hoy button:active { scale: .98; }
+@media (hover: hover) { .ce-hoy button:hover { translate: 0 -2px; box-shadow: 0 8px 20px -12px color-mix(in srgb, var(--hg, var(--accent)) 70%, transparent); } .ce-hoy button:hover::after { translate: 3px -50%; } }
+.ce-nuevo { position: absolute; top: -6px; left: 10px; z-index: 1; padding: 0 7px; border-radius: 999px; background: var(--hg, var(--accent)); color: var(--surface); font-family: var(--mono); font-size: .62rem; font-style: normal; font-weight: 700; letter-spacing: .06em; line-height: 1.7; text-transform: uppercase; pointer-events: none; }
+.ce-ult { position: absolute; right: 34px; top: 9px; padding: 0 6px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--muted); font-family: var(--mono); font-size: .6rem; font-style: normal; line-height: 1.6; pointer-events: none; }
+.ce-nada { display: grid; justify-items: center; gap: 8px; padding: 22px 16px; text-align: center; }
+.ce-nada .ce-i { width: 38px; height: 38px; padding: 9px; border-radius: 50%; background: var(--surface-2); color: var(--muted); box-sizing: content-box; }
+@media (max-width: 520px) { .ce-t > .ce-b { min-height: 58px; } .ce-ult { display: none; } }
+:root[data-theme="contrast"] .ce-tit[data-g] { background: var(--surface); }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .ce-t > .ce-b:active .ce-ic { animation: ce-salta .3s var(--ease-salida, ease-out); } html:not(.pa-quieto) .ce-nuevo { animation: ce-entra .4s var(--ease-salida, ease-out) .2s both; } }
+@keyframes ce-salta { 40% { translate: 0 -4px; scale: 1.08; } }
 `;
 
 let dlg = null, A = null, fuentes = null, vista = null;
@@ -315,6 +397,7 @@ const cu = () => dlg.querySelector("#ce-cuerpo");
 const campo = () => dlg.querySelector("#ce-q");
 
 function crear() {
+  if (!document.getElementById("mh-css")) { const st = document.createElement("style"); st.id = "mh-css"; st.textContent = CSS_MARCO; document.head.append(st); }
   if (!document.getElementById("ce-css")) { const st = document.createElement("style"); st.id = "ce-css"; st.textContent = CSS; document.head.append(st); }
   dlg = document.createElement("dialog");
   dlg.id = "centro"; dlg.className = "ficha ce-dlg"; dlg.setAttribute("aria-labelledby", "ce-cab-t");
@@ -342,6 +425,7 @@ function crear() {
     if (fav) { ev.preventDefault(); const l = leerFavoritas(), id = fav.dataset.fav; guardarFavoritas(l.includes(id) ? l.filter((x) => x !== id) : [...l, id]); const y = dlg.querySelector(".ficha-cuerpo").scrollTop; pintar(); dlg.querySelector(".ficha-cuerpo").scrollTop = y; dlg.querySelector(`.ce-fav[data-fav="${id}"]`)?.focus(); return; }
     const b = ev.target.closest("[data-ce]"); if (!b) return;
     if (b.getAttribute("aria-disabled") === "true") { ev.preventDefault(); ev.stopPropagation(); A.toast(tx(b.dataset.motivo || "falta_meds"), { ms: 3500 }); return; }
+    const teja0 = b.closest(".ce-t"); if (teja0?.dataset.id) apuntarUso(teja0.dataset.id);
     const [tipo, v] = [b.dataset.ce, b.dataset.v];
     if (tipo === "vista") { vista = v; campo().value = ""; pintar(); dlg.querySelector(".ficha-cuerpo").scrollTop = 0; return; }
     if (tipo === "url") return; // enlace normal
@@ -360,7 +444,8 @@ function teja(h, hechos, favs) {
   const cuerpo = `<span class="ce-ic">${ic(h.id)}</span><b>${nombre(h)}</b><small>${falta ? tx("falta_meds") : tx("d_" + h.id)}</small>`;
   const boton = h.url ? `<a class="ce-b" href="${h.url}" data-ce="url">${cuerpo}</a>` : `<button type="button" class="ce-b" ${attrsDe(h)}${falta ? ' aria-disabled="true"' : ""}>${cuerpo}</button>`;
   const es = favs.includes(h.id);
-  return `<div class="ce-t${falta ? " no" : ""}" data-g="${h.g}" data-id="${h.id}">${boton}<button type="button" class="ce-fav" data-fav="${h.id}" aria-pressed="${es}" aria-label="${tx(es ? "fav_on" : "fav_off")}: ${nombre(h)}" title="${tx(es ? "fav_on" : "fav_off")}">${ic("estrella")}</button></div>`;
+  const marca = NUEVAS.has(h.id) && !leerVistas().includes(h.id) ? `<i class="ce-nuevo">${tx("nuevo")}</i>` : leerUltima() === h.id ? `<i class="ce-ult">${tx("ultima")}</i>` : "";
+  return `<div class="ce-t${falta ? " no" : ""}" data-g="${h.g}" data-id="${h.id}">${marca}${boton}<button type="button" class="ce-fav" data-fav="${h.id}" aria-pressed="${es}" aria-label="${tx(es ? "fav_on" : "fav_off")}: ${nombre(h)}" title="${tx(es ? "fav_on" : "fav_off")}">${ic("estrella")}</button></div>`;
 }
 function resultado(r, hechos) {
   if (r.tipo === "herr") { const h = r.h, falta = h.meds && !hechos.n; const dentro = `<span class="ce-ic">${ic(h.id)}</span><b>${nombre(h)}</b><small>${falta ? tx("falta_meds") : tx("d_" + h.id)}</small>`; return h.url ? `<li><a class="ce-b" href="${h.url}" data-ce="url">${dentro}</a></li>` : `<li><button type="button" ${attrsDe(h)}${falta ? ' aria-disabled="true"' : ""}>${dentro}</button></li>`; }
@@ -382,15 +467,15 @@ function pintar() {
     const grupos = buscarTodo(q, fuentes, { pro: hechos.pro });
     const n = grupos.reduce((s, g) => s + g.items.length, 0);
     cu().innerHTML = n ? `<p class="sr-only" role="status">${tx("n_res", { n })}</p>` + grupos.map((g) => `<h3 class="ce-tit">${tx("r_" + g.id)} <small>${g.items.length}</small></h3><ul class="ce-res">${g.items.map((r) => resultado(r, hechos)).join("")}</ul>`).join("")
-      : `<p class="ce-nada" role="status">${tx("nada", { q: q.replace(/[<>&"]/g, "") })}</p>`;
+      : `<p class="ce-nada" role="status">${ic("lupa")}<span>${tx("nada", { q: q.replace(/[<>&"]/g, "") })}</span></p>`;
     cu().querySelector(".ce-res button, .ce-res a")?.classList.add("activo");
     return;
   }
   const sug = sugerencias(hechos);
   const visibles = HERRAMIENTAS.filter((h) => !h.pro || hechos.pro);
-  cu().innerHTML = `<h3 class="ce-tit">${tx("hoy")}</h3><div class="ce-hoy">${sug.map((s) => { const h = POR_ID[s.id]; return `<button type="button" ${s.clic ? `data-ce="clic" data-v="${s.clic}"` : attrsDe(h)}><span class="ce-ic">${ic(P[s.id] ? s.id : "ficha")}</span><b>${s.titulo}</b><small>${s.texto}</small></button>`; }).join("")}</div>
+  cu().innerHTML = `<h3 class="ce-tit">${tx("hoy")}</h3><div class="ce-hoy">${sug.map((s) => { const h = POR_ID[s.id]; return `<button type="button" data-g="${h?.g || "moverse"}" ${s.clic ? `data-ce="clic" data-v="${s.clic}"` : attrsDe(h)}><span class="ce-ic">${ic(P[s.id] ? s.id : "ficha")}</span><b>${s.titulo}</b><small>${s.texto}</small></button>`; }).join("")}</div>
     ${favs.length ? `<h3 class="ce-tit">${tx("favoritas")}</h3><div class="ce-rejilla ce-favs">${favs.map((id) => teja(POR_ID[id], hechos, favs)).join("")}</div>` : ""}
-    ${GRUPOS.map((g) => { const l = visibles.filter((h) => h.g === g); return l.length ? `<h3 class="ce-tit">${tx("g_" + g)}</h3><div class="ce-rejilla">${l.map((h) => teja(h, hechos, favs)).join("")}</div>` : ""; }).join("")}
+    ${GRUPOS.map((g) => { const l = visibles.filter((h) => h.g === g); return l.length ? `<h3 class="ce-tit" data-g="${g}">${tx("g_" + g)} <small>${l.length}</small></h3><div class="ce-rejilla">${l.map((h) => teja(h, hechos, favs)).join("")}</div>` : ""; }).join("")}
     <p class="ce-pie">${tx("atajo")}</p>`;
 }
 

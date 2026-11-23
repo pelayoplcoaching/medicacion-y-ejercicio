@@ -14,8 +14,8 @@
      y avisarles; solo se enlaza su web.
    Las preguntas son traducción de la aplicación del original en inglés (hay versiones validadas en español de México de FRAIL y SARC-F).
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611230120";
-import { tL } from "./tr.js?v=202611230120";
+import { idioma, t } from "./i18n.js?v=202611230207";
+import { tL } from "./tr.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Escalas rápidas", borrador: "Borrador pendiente de revisión clínica", intro: "Cuatro cuestionarios cortos y validados. Son de cribado: orientan, no diagnostican.", preguntas: "{n} preguntas", ultimo: "Último: {x} · {f}", sin_hacer: "Sin hacer", volver: "Todas las escalas", faltan: "Faltan {n} respuestas", resultado: "Resultado", de: "{p} de {m}", anterior: "La vez anterior: {x} ({f})", guardado: "Guardado en este dispositivo.", borrar: "Borrar este resultado", borrado: "Resultado borrado.",
@@ -114,6 +114,8 @@ export const FUENTES = {
 export const URL_FESI = "https://sites.manchester.ac.uk/fes-i/";
 
 const numero = (v, it) => { if (v === "" || v == null) return null; const n = Number(String(v).replace(",", ".")); return Number.isFinite(n) && n >= it.min && n <= it.max ? n : NaN; };
+/** Categoría que corresponde a una puntuación (la constante vital va aparte, por minutos). */
+export const categoriaDe = (id, p) => (id === "frail" ? (p >= 3 ? "fragil" : p >= 1 ? "prefragil" : "robusto") : id === "sarcf" ? (p >= 4 ? "alto" : "bajo") : (p >= 1 ? "riesgo" : "no"));
 /** Puntúa una escala. r = respuestas ({ idPregunta: índice de la opción | [índices marcados] | número }).
     Devuelve { completo, faltan, p, max, cat, positivos: [nombre del componente con puntos], extra }. */
 export function puntuar(id, r = {}) {
@@ -132,7 +134,7 @@ export function puntuar(id, r = {}) {
     p += o[1]; if (o[1] > 0) positivos.push(it.c);
   }
   if (faltan) return { completo: false, faltan, p: null, max: e.max, cat: null, positivos, extra };
-  const cat = id === "frail" ? (p >= 3 ? "fragil" : p >= 1 ? "prefragil" : "robusto") : id === "sarcf" ? (p >= 4 ? "alto" : "bajo") : (p >= 1 ? "riesgo" : "no");
+  const cat = categoriaDe(id, p);
   if (id === "caidas") extra.miedo = e.items[1].o[r.miedo]?.[1] === 1;
   return { completo: true, faltan: 0, p, max: e.max, cat, positivos, extra };
 }
@@ -207,6 +209,25 @@ const CSS = `
 .eq-res.v-aviso a, .eq-res.v-alerta a { color: inherit; }
 .eq-dlg button:focus-visible, .eq-dlg a:focus-visible, .eq-dlg input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (forced-colors: active) { .eq-ops label:has(input:checked) { outline: 2px solid; } }
+/* 873: anillo con el ultimo resultado en cada tarjeta */
+.eq-tarjeta { grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; transition: border-color .15s, translate .15s, box-shadow .15s; }
+.eq-tarjeta > :not(.eq-anillo) { grid-column: 1; }
+.eq-anillo { grid-column: 2; grid-row: 1 / span 4; align-self: center; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; font: 700 1rem/1 var(--mono); font-style: normal; color: var(--fg); background: radial-gradient(closest-side, var(--surface) 77%, transparent 79%), conic-gradient(var(--eq-c, var(--line-strong)) calc(var(--pc, 0) * 1%), var(--surface-2) 0); }
+.eq-anillo:not([style]) { background: none; border: 2px dashed var(--line-strong); }
+.eq-anillo.v-ok, .eq-regla .v-ok { --eq-c: var(--accent); } .eq-anillo.v-aviso, .eq-regla .v-aviso { --eq-c: var(--precaucion); } .eq-anillo.v-alerta, .eq-regla .v-alerta { --eq-c: var(--alerta); }
+@media (hover: hover) { .eq-tarjeta:hover { translate: 0 -2px; box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 14%, transparent); } }
+.eq-tarjeta:active { translate: 0 1px; }
+/* 874: regla de colores del resultado, con su casilla marcada */
+.eq-regla { display: flex; gap: 4px; margin: 10px 0 6px; }
+.eq-regla i { flex: 1 1 0; display: grid; place-items: center; min-height: 28px; border-radius: 7px; border: 1.5px solid var(--eq-c); background: var(--surface); color: var(--fg); font: 700 .8rem/1 var(--mono); font-style: normal; }
+.eq-regla i.aqui { background: var(--eq-c); color: var(--surface); scale: 1.1; box-shadow: 0 3px 10px color-mix(in srgb, var(--eq-c) 45%, transparent); }
+.eq-barra { position: relative; height: 16px; margin: 22px 0 8px; border-radius: 999px; border: 1.5px solid currentColor; background: var(--surface); }
+.eq-barra i { display: block; height: 100%; border-radius: 999px; background: currentColor; min-width: 6px; }
+.eq-barra b { position: absolute; left: 50%; top: -20px; translate: -50% 0; font: 700 .74rem/1 var(--mono); }
+.eq-barra b::after { content: ""; position: absolute; left: 50%; top: 14px; width: 2px; height: 24px; background: currentColor; opacity: .55; }
+@media screen and (prefers-reduced-motion: no-preference) { html:not(.pa-quieto) .eq-regla i.aqui { animation: eq-aqui .3s ease-out; } }
+@keyframes eq-aqui { from { scale: .8; } }
+@media (forced-colors: active) { .eq-regla i.aqui { outline: 3px solid Highlight; } .eq-anillo { border: 2px solid; } }
 `;
 
 let dlg = null, A = null, vista = "lista", R = {}, auto = {};
@@ -260,6 +281,14 @@ function pregunta(it) {
   if (it.tipo === "lista") { const m = new Set(R[it.id] || []); return `<fieldset><legend>${it.q}</legend><p class="eq-ayuda">${it.x} <b id="eq-n-${it.id}">${tx("marcadas", { n: String(m.size) })}</b></p>${auto1}<div class="eq-ops col">${ENFERMEDADES.map((x, i) => `<label><input type="checkbox" data-eq-i="${it.id}" value="${i}"${m.has(i) ? " checked" : ""}> ${x.n}</label>`).join("")}</div></fieldset>`; }
   return `<fieldset><legend>${it.q}</legend>${it.x ? `<p class="eq-ayuda">${it.x}</p>` : ""}${auto1}<div class="eq-ops">${it.o.map((o, i) => `<label><input type="radio" name="eq-${it.id}" data-eq-i="${it.id}" value="${i}"${R[it.id] === i ? " checked" : ""}> ${o[0]}</label>`).join("")}</div></fieldset>`;
 }
+/** Anillo de la tarjeta: la parte del máximo (o de los 150 minutos) que marca el último resultado, del color de su categoría. Solo adorno: el dato va en la etiqueta. */
+const anillo = (e, g, c) => (c ? `<i class="eq-anillo v-${c.v}" style="--pc:${Math.max(0, Math.min(100, Math.round(g.p / (e.max ?? META_PAVS) * 100)))}" aria-hidden="true">${g.p}</i>` : `<i class="eq-anillo" aria-hidden="true"></i>`);
+/** Regla del resultado: una casilla por punto posible, del color de su categoría, con la suya marcada; en la constante vital, una barra hacia los 150 minutos (la escala llega al doble). Solo adorno. */
+function regla(id, res) {
+  if (id === "pavs") return `<div class="eq-barra" aria-hidden="true"><i style="width:${Math.min(100, Math.round(res.p / (META_PAVS * 2) * 100))}%"></i><b>${META_PAVS}</b></div>`;
+  let s = ""; for (let p = 0; p <= res.max; p++) s += `<i class="v-${CATEGORIAS[id][categoriaDe(id, p)].v}${p === res.p ? " aqui" : ""}">${p}</i>`;
+  return `<div class="eq-regla" aria-hidden="true">${s}</div>`;
+}
 /** Pinta (y, si está completo y ha cambiado algo, guarda) el resultado de la escala abierta. */
 function resultado(guardarlo) {
   const caja = cu().querySelector("#eq-res"); if (!caja) return;
@@ -279,7 +308,7 @@ function resultado(guardarlo) {
   acc.push(`<button type="button" class="btn-sec" data-eq="copiar">${tx("copiar")}</button>`, `<button type="button" class="btn-sec sm" data-eq="borrar">${tx("borrar")}</button>`);
   const ps = textos(vista, res).map((x) => `<p class="eq-t">${x}</p>`).join("");
   caja.className = `eq-res v-${cat.v}`;
-  caja.innerHTML = `<h4>${tx("resultado")}</h4><p class="eq-cifra" id="eq-cifra">${cifra(vista, res)}</p><p class="eq-cat" id="eq-cat">${cat.n}</p>${ps}
+  caja.innerHTML = `<h4>${tx("resultado")}</h4><p class="eq-cifra" id="eq-cifra">${cifra(vista, res)}</p><p class="eq-cat" id="eq-cat">${cat.n}</p>${regla(vista, res)}${ps}
     ${vista === "caidas" && res.extra.miedo ? `<p class="eq-t"><a href="${URL_FESI}" target="_blank" rel="noopener">${tx("fesi")}</a></p>` : ""}
     <p class="eq-meta">${tx("guardado")}${g.ant ? " " + tx("anterior", { x: `${cifra(vista, g.ant)} · ${CATEGORIAS[vista][g.ant.cat]?.n.toLowerCase() || ""}`, f: fecha(g.ant.f) }) : ""}</p>
     <div class="eq-acc">${acc.join("")}</div>`;
@@ -289,7 +318,7 @@ function pintar() {
   const G = leer();
   if (vista === "lista") {
     cu().innerHTML = `<p class="eq-borrador">${tx("borrador")}</p><p class="eq-intro">${tx("intro")}</p>
-      <ul class="eq-lista" id="eq-lista">${ESCALAS.map((e) => { const g = G[e.id], c = g && CATEGORIAS[e.id][g.cat]; return `<li><button type="button" class="eq-tarjeta" data-eq-abre="${e.id}"><b>${e.n}</b><span>${e.que}</span><small>${tx("preguntas", { n: String(e.items.length) })}</small>${c ? `<em class="eq-chip v-${c.v}">${tx("ultimo", { x: `${cifra(e.id, g)} · ${c.n}`, f: fecha(g.f) })}</em>` : `<em class="eq-chip">${tx("sin_hacer")}</em>`}</button></li>`; }).join("")}</ul>
+      <ul class="eq-lista" id="eq-lista">${ESCALAS.map((e) => { const g = G[e.id], c = g && CATEGORIAS[e.id][g.cat]; return `<li><button type="button" class="eq-tarjeta" data-eq-abre="${e.id}"><b>${e.n}</b><span>${e.que}</span><small>${tx("preguntas", { n: String(e.items.length) })}</small>${c ? `<em class="eq-chip v-${c.v}">${tx("ultimo", { x: `${cifra(e.id, g)} · ${c.n}`, f: fecha(g.f) })}</em>` : `<em class="eq-chip">${tx("sin_hacer")}</em>`}${anillo(e, g, c)}</button></li>`; }).join("")}</ul>
       <p class="eq-pie">${CONT.cribado} ${tx("traduccion")}</p>`;
     return;
   }

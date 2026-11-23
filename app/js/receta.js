@@ -10,9 +10,9 @@
      (Kanaley 2022, Brooke-Wavell 2022, Campbell 2019, Mottola 2018).
    CONTENIDO CLÍNICO NUEVO (el resumen en celdas y las frases de las guías): BORRADOR PENDIENTE DE REVISIÓN CLÍNICA.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611230120";
-import { ALARMA } from "./engine.js?v=202611230120";
-import { APP_VERSION } from "./version.js?v=202611230120";
+import { idioma, t } from "./i18n.js?v=202611230207";
+import { ALARMA } from "./engine.js?v=202611230207";
+import { APP_VERSION } from "./version.js?v=202611230207";
 
 const TXT = {
   es: { titulo: "Receta de ejercicio por enfermedad", borrador: "Borrador pendiente de revisión clínica", intro: "La dosis de ejercicio de referencia para cada situación y lo que cambia con ella. Es orientativa: no sustituye la valoración de su médico.", sus: "Sus situaciones", otras: "Otras situaciones", todas: "Elija una situación", dosis: "Dosis de referencia", th_f: "Frecuencia", th_i: "Intensidad", th_t: "Tiempo", th_tipo: "Tipo", aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio", leyenda: "En negrita, lo que cambia con esta situación; el resto es la recomendación general de la OMS.", manda: "Lo específico de abajo manda sobre la tabla.",
@@ -143,6 +143,20 @@ const CSS = `
   #rx-hoja td.propio { font-weight: 700; } #rx-hoja p { margin: 3pt 0; } #rx-hoja ul { margin: 2pt 0; padding-left: 14pt; } #rx-hoja small { font-size: 8.5pt; color: #444; }
   #rx-hoja footer { margin-top: 14pt; padding-top: 5pt; border-top: 1px solid #777; font-size: 9pt; color: #444; }
 }
+/* 868-869: cada modalidad de la receta con su icono y las letras F, I, T, T en cada celda */
+.rx-tabla tbody th { position: relative; padding-left: 38px; }
+.rx-tabla tbody th::before, .rx-tabla tbody th::after { content: ""; position: absolute; left: 4px; top: 5px; width: 26px; height: 26px; border-radius: 8px; }
+.rx-tabla tbody th::before { background: var(--accent-soft); }
+.rx-tabla tbody th::after { background: var(--accent-deep, var(--accent)); -webkit-mask: var(--rx-ic) center / 16px no-repeat; mask: var(--rx-ic) center / 16px no-repeat; }
+.rx-tabla tr[data-f="aer"] { --rx-ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='13' cy='4.5' r='1.6'/%3E%3Cpath d='M9 21l2-6-2-3 1-4 4 2 3 1M11 15l3 2 1 4M8 11l2-3'/%3E%3C/svg%3E"); }
+.rx-tabla tr[data-f="fue"] { --rx-ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12'/%3E%3C/svg%3E"); }
+.rx-tabla tr[data-f="eq"] { --rx-ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='4.5' r='1.6'/%3E%3Cpath d='M5 9h14M12 9v6M12 15l-3 6M12 15l3 6'/%3E%3C/svg%3E"); }
+.rx-tabla td::before { content: attr(data-th); display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 5px; background: var(--surface-2); color: var(--muted); font-family: var(--mono); font-size: .66rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; vertical-align: 1px; }
+.rx-tabla td.propio::before { background: var(--accent); color: var(--surface); }
+@media (max-width: 640px) { .rx-tabla tr { padding: 10px 12px; margin: 0 0 8px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); } .rx-tabla tbody th { font-size: 1rem; } }
+@media (min-width: 641px) { .rx-tabla td::before { display: none; } }
+@media print { .rx-tabla tbody th::before, .rx-tabla tbody th::after, .rx-tabla td::before { display: none; } .rx-tabla tbody th { padding-left: 8px; } }
+@media (forced-colors: active) { .rx-tabla tbody th::after { background: CanvasText; } }
 `;
 
 let dlg = null, A = null, sel = null;
@@ -168,7 +182,7 @@ function crear() {
   });
 }
 const th = () => `<thead><tr><th scope="col"></th>${COLS.map((c) => `<th scope="col">${tx("th_" + c)}</th>`).join("")}</tr></thead>`;
-const tablaHtml = (id, cls = "rx-tabla") => `<table class="${cls}">${th()}<tbody>${tabla(id).map((r) => `<tr><th scope="row">${tx(r.fila)}</th>${r.celdas.map((c) => `<td data-th="${esc(tx("th_" + c.col))}"${c.propio ? ' class="propio"' : ""}>${c.txt}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const tablaHtml = (id, cls = "rx-tabla") => `<table class="${cls}">${th()}<tbody>${tabla(id).map((r) => `<tr data-f="${r.fila}"><th scope="row">${tx(r.fila)}</th>${r.celdas.map((c) => `<td data-th="${esc(tx("th_" + c.col))}"${c.propio ? ' class="propio"' : ""}>${c.txt}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 const reglaHtml = (r) => `<div class="rx-regla" data-regla="${r.id}"><b>${esc(r.titulo)}</b><p>${esc(r.texto)}</p>${r.fuente ? `<small>${tx("fuente")}: ${esc(r.fuente)}</small>` : ""}</div>`;
 const enlace = (f) => `<li>${f.txt}. <a href="https://doi.org/${f.doi}" target="_blank" rel="noopener">doi:${f.doi}</a></li>`;
 function ficha(id) {
