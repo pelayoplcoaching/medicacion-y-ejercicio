@@ -7,9 +7,9 @@
    sin fiebre). Son NUEVOS y están por revisar: la tensión diastólica (100 y 110), el pulso en reposo (40, 50, 100 y 120),
    las décimas (37,5 °C), la saturación sin enfermedad respiratoria (92 %) y la redacción de todos los consejos.
    Los umbrales están en UMBRALES; los textos, en CONT (en español, como la base); la interfaz, en cinco idiomas. */
-import { idioma } from "./i18n.js?v=202611230752";
-import { ALARMA } from "./engine.js?v=202611230752";
-import { tC } from "./tr.js?v=202611230752";
+import { idioma } from "./i18n.js?v=202611230800";
+import { ALARMA } from "./engine.js?v=202611230800";
+import { tC } from "./tr.js?v=202611230800";
 
 const TXT = {
   es: { titulo: "Números antes de entrenar", borrador: "Borrador pendiente de revisión clínica", intro: "Escriba los números que tenga hoy. No hace falta ninguno para entrenar: sirven si ya se los mide.", para_usted: "Le conviene", ver: "Ver qué toca hoy", borrar: "Borrar", falta: "Escriba al menos un número.", rango: "Revise este número: no parece posible.",

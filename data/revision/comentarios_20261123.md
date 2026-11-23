@@ -1,0 +1,3 @@
+# Comentarios del revisor · 23/11/2026
+
+(sin comentarios)

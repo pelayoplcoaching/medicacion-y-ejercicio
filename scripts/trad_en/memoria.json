@@ -35,6 +35,10 @@
 "en": "Watch for skin rash.",
 "es": "Vigilar erupción cutánea."
 },
+"00634876": {
+"en": "Simvastatin and rosuvastatin are contraindicated with ciclosporin. The usual options are low-dose fluvastatin or pravastatin, under the transplant team's supervision.",
+"es": "Simvastatina y rosuvastatina están contraindicadas con ciclosporina. Las opciones habituales son fluvastatina o pravastatina a dosis bajas, bajo control del equipo de trasplante."
+},
 "00689b35": {
 "en": "What can happen",
 "es": "Qué puede pasar"
@@ -143,6 +147,10 @@
 "en": "I am not drowsy and do not feel clumsy right now",
 "es": "No tengo somnolencia ni me noto torpe ahora mismo"
 },
+"017c8365": {
+"en": "Clinical review (Mikus 2013 JACC, 37 people)",
+"es": "Revisión clínica (Mikus 2013 JACC, 37 personas)"
+},
 "0180ba69": {
 "en": "If I already take blood pressure tablets, exercise adds nothing.",
 "es": "Si ya tomo pastillas para la tensión, el ejercicio no añade nada."
@@ -186,6 +194,10 @@
 "021aa609": {
 "en": "Bosquet L et al. Scand J Med Sci Sports 2013;23:e140-9",
 "es": "Bosquet L et al. Scand J Med Sci Sports 2013;23:e140-9"
+},
+"022652eb": {
+"en": "If you have symptoms at rest, have got worse in the last few days or have recently been in hospital, do not start training until your cardiologist has assessed you. With stable disease, exercise is still indicated, but it should be started under supervision (cardiac rehabilitation) or with a very gradual programme set by cardiology: short sessions (5–10 minutes) several times a day, an intensity that lets you talk, and leg strength work with light loads. Weigh yourself daily and seek advice for a gain of 2 kg in 3 days, more breathlessness or swelling.",
+"es": "Si tiene síntomas en reposo, ha empeorado en los últimos días o ha tenido un ingreso reciente, no empiece a entrenar hasta que le valore su cardiólogo. Con la enfermedad estable, el ejercicio sigue estando indicado, pero debe iniciarse de forma supervisada (rehabilitación cardíaca) o con un programa muy progresivo pautado por cardiología: sesiones cortas (5–10 minutos) varias veces al día, intensidad que permita hablar, y fuerza de piernas con cargas ligeras. Pésese a diario y consulte ante aumento de 2 kg en 3 días, más disnea o edemas."
 },
 "02288866": {
 "en": "They can slow the platelets a little. On their own they hardly matter, but together with an anticoagulant, an antiplatelet or an anti-inflammatory they increase bruising and bleeding.",
@@ -1439,6 +1451,10 @@
 "en": "Hydration with some salt in long sessions, slow progression of the load and gentle stretching. If the muscle pain is generalised, with weakness or dark urine, stop training and seek advice: an effect of the medicine needs to be ruled out (blood test for CK and potassium).",
 "es": "Hidratación con algo de sal en sesiones largas, progresión lenta de la carga y estiramientos suaves. Si el dolor muscular es generalizado, con debilidad o la orina oscura, deje de entrenar y consulte: hay que descartar un efecto del fármaco (analítica de CK y potasio)."
 },
+"11fdc668": {
+"en": "SmPC 4.4 of ophthalmic timolol",
+"es": "FT 4.4 timolol oftálmico"
+},
 "12013969": {
 "en": "if given for chronic pain; possibly, for acute pain too",
 "es": "si se dan por dolor crónico; posiblemente, también por dolor agudo"
@@ -1675,6 +1691,10 @@
 "en": "Walking, stationary bike, elliptical trainer, swimming or running on an even surface are safe. Prefer settings with no risk of falling or collision.",
 "es": "Caminar, bici estática, elíptica, natación o correr en superficie regular son seguros. Prefiera entornos sin riesgo de caída o choque."
 },
+"14c823cc": {
+"en": "Your doctor should reduce the dabigatran dose; the two medicines are taken at the same time. Watch for bleeding.",
+"es": "Su médico debe reducir la dosis de dabigatrán; los dos fármacos se toman a la misma hora. Vigilar sangrado."
+},
 "14decdff": {
 "en": "Additive anticholinergic burden: constipation, urinary retention, confusion, heat intolerance.",
 "es": "Carga anticolinérgica aditiva: estreñimiento, retención urinaria, confusión, intolerancia al calor."
@@ -1730,6 +1750,10 @@
 "155f0534": {
 "en": "Balance: ",
 "es": "Equilibrio: "
+},
+"1584d515": {
+"en": "The effect is strongest in the first 1–2 hours after taking it and lasts 3 to 6 hours with furosemide (somewhat longer with torasemide): avoid training in that window (need to urinate, drop in blood pressure). The usual approach is to take it in the morning and train mid-morning or in the afternoon.",
+"es": "El efecto es más intenso en las primeras 1–2 horas tras la toma y dura entre 3 y 6 horas con furosemida (algo más con torasemida): evite entrenar en ese tramo (necesidad de orinar, bajada de tensión). Lo habitual es tomarlo por la mañana y entrenar a media mañana o por la tarde."
 },
 "15c0a114": {
 "en": "What should you do with your breathing when lifting a weight?",
@@ -2311,6 +2335,10 @@
 "en": "hypoglycaemia",
 "es": "hipoglucemia"
 },
+"1d94d187": {
+"en": "Combination not recommended. If it cannot be avoided, azathioprine should be reduced to 20% or less of the dose, with close blood count monitoring.",
+"es": "Combinación no recomendada. Si no puede evitarse, la azatioprina debe reducirse al 20 % o menos de la dosis, con control hematológico estrecho."
+},
 "1d9bf5fc": {
 "en": "With 3 or more alcoholic drinks a day, the summary of product characteristics asks for caution with paracetamol and, if alcohol intake is chronic, not to exceed 2 g a day (for example, 4 tablets of 500 mg). Bear it in mind if you take it for pain after exercise.",
 "es": "Con 3 o más bebidas alcohólicas al día, la ficha técnica pide precaución con el paracetamol y, si el consumo de alcohol es crónico, no pasar de 2 g al día (por ejemplo, 4 comprimidos de 500 mg). Téngalo en cuenta si lo toma para el dolor después del ejercicio."
@@ -2454,6 +2482,10 @@
 "1f3b27b2": {
 "en": "Walking safely, without fear of falling",
 "es": "Andar seguro, sin miedo a caerme"
+},
+"1f430454": {
+"en": "Clinical review (body composition substudies of the STEP and SURMOUNT trials)",
+"es": "Revisión clínica (subestudios de composición corporal de los ensayos STEP y SURMOUNT)"
 },
 "1f4522c6": {
 "en": "Lunch",
@@ -2931,6 +2963,10 @@
 "en": "The beta-blocker hides the typical warning signs of low blood sugar (palpitations, tremor, nervousness). Sweating is preserved. Measure your glucose before and after training, carry sugar and do not rely on how you feel alone.",
 "es": "El betabloqueante oculta los avisos típicos de una bajada de azúcar (palpitaciones, temblor, nerviosismo). La sudoración se conserva. Mida la glucosa antes y después de entrenar, lleve azúcar y no se fíe solo de las sensaciones."
 },
+"24de0bc5": {
+"en": "Timolol eye drops pass partly into the blood and can act like a mild beta-blocker: slowing the pulse a little, worsening asthma and slightly reducing exercise capacity. Few people know this. Prostaglandin eye drops do not have that effect.",
+"es": "El colirio de timolol pasa en parte a la sangre y puede actuar como un betabloqueante suave: frenar algo el pulso, empeorar el asma y reducir un poco la capacidad de esfuerzo. Pocas personas lo saben. Los colirios de prostaglandinas no tienen ese efecto."
+},
 "24f06983": {
 "en": "Azole antifungals (fluconazole, itraconazole, voriconazole, posaconazole)",
 "es": "Antifúngicos azólicos (fluconazol, itraconazol, voriconazol, posaconazol)"
@@ -3327,6 +3363,10 @@
 "en": "Management",
 "es": "Manejo"
 },
+"29703c13": {
+"en": "Raloxifene and bazedoxifene increase the risk of venous thrombosis: avoid prolonged immobility and seek urgent advice for pain and swelling in a calf or sudden shortness of breath.",
+"es": "Raloxifeno y bazedoxifeno aumentan el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte de urgencia ante dolor e hinchazón de una pantorrilla o falta de aire brusca."
+},
 "297b2e33": {
 "en": "How many strength sessions a week?",
 "es": "¿Cuántas sesiones de fuerza a la semana?"
@@ -3462,6 +3502,10 @@
 "2b3c62cb": {
 "en": "Oxygen is one more treatment. With long-term oxygen, exercise is indicated (pulmonary rehabilitation) and, if ambulatory oxygen has been prescribed, it must be used during training at the flow you have been told.",
 "es": "El oxígeno es un tratamiento más. Con oxígeno crónico el ejercicio está indicado (rehabilitación respiratoria) y, si se ha prescrito oxígeno de deambulación, debe usarse durante el entrenamiento al flujo que le hayan indicado."
+},
+"2b3d5eb1": {
+"en": "Additive QT prolongation; the citalopram SmPC contraindicates taking it with other medicines that lengthen the QT interval.",
+"es": "Prolongación del QT aditiva; la ficha técnica de citalopram contraindica tomarlo con otros fármacos que alargan el QT."
 },
 "2b4ed19f": {
 "en": "With your hands on the armrests and a slightly higher chair (cushion).",
@@ -4611,6 +4655,10 @@
 "en": "Coffee and ciprofloxacin",
 "es": "Café y ciprofloxacino"
 },
+"3a86959c": {
+"en": "You take medicines that promote dehydration together with others that can affect the kidney if you become dehydrated. Hydrate before, during and after; avoid training in intense heat and, in long sessions, weigh yourself before and after to estimate how much fluid you have lost.",
+"es": "Toma fármacos que favorecen la deshidratación junto a otros que pueden afectar al riñón si se deshidrata. Hidrátese antes, durante y después; evite entrenar con calor intenso y, en sesiones largas, pésese antes y después para estimar cuánto líquido ha perdido."
+},
 "3a878948": {
 "en": "of bone density in the spine",
 "es": "de densidad ósea en la columna"
@@ -4690,6 +4738,10 @@
 "3bca2dec": {
 "en": "Several medicines that promote muscle loss",
 "es": "Varios fármacos que favorecen perder músculo"
+},
+"3be11561": {
+"en": "Many cold and flu remedies contain paracetamol (between 500 and 1,000 mg per sachet or tablet) and sedating antihistamines: count that dose if you also take paracetamol, and do not take them before training.",
+"es": "Muchos antigripales llevan paracetamol (entre 500 y 1.000 mg por sobre o comprimido) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar."
 },
 "3bf287ee": {
 "en": "While the coffee heats up.",
@@ -5523,6 +5575,10 @@
 "en": "Diuretic herbs (horsetail, dandelion, birch, orthosiphon)",
 "es": "Plantas diuréticas (cola de caballo, diente de león, abedul, ortosifón)"
 },
+"471c4c49": {
+"en": "You take {n} medicines that lower your defences. Moderate exercise is safe and advisable. Avoid training with fever or active infection, take care with hygiene in gyms and pools, and seek advice for wounds that do not heal.",
+"es": "Toma {n} fármacos que reducen las defensas. El ejercicio moderado es seguro y recomendable. Evite entrenar con fiebre o infección activa, cuide la higiene en gimnasios y piscinas, y consulte ante heridas que no curan."
+},
 "471dafb2": {
 "en": "Jones and Rikli. Measuring functional fitness of older adults. The Journal on Active Aging, 2002 (risk zone)",
 "es": "Jones y Rikli. Measuring functional fitness of older adults. The Journal on Active Aging, 2002 (zona de riesgo)"
@@ -5726,6 +5782,10 @@
 "49d9b4d6": {
 "en": "If tremor, slowness or unsteadiness appears, it may be due to the medicine: mention it before putting it down to age.",
 "es": "Si aparece temblor, lentitud o inestabilidad, puede deberse al fármaco: coméntelo antes de atribuirlo a la edad."
+},
+"49df859f": {
+"en": "In COPD, cardioselective beta-blockers (bisoprolol, nebivolol) are well tolerated. In asthma any beta-blocker can narrow the airways, especially propranolol and carvedilol, and also timolol eye drops. If you notice more wheezing or fatigue since taking it, mention it without stopping it on your own. Progressive warm-up of 10–15 minutes.",
+"es": "En la EPOC, los betabloqueantes cardioselectivos (bisoprolol, nebivolol) se toleran bien. En el asma cualquier betabloqueante puede cerrar los bronquios, sobre todo propranolol y carvedilol, y también el timolol en colirio. Si nota más pitos o fatiga desde que lo toma, coméntelo sin dejarlo por su cuenta. Calentamiento progresivo de 10–15 minutos."
 },
 "49e5fa24": {
 "en": "Nicorandil widens the veins like nitrates: get up slowly after effort, finish with a cool-down and do not combine it with sildenafil, tadalafil or similar (sudden drop in blood pressure).",
@@ -7583,6 +7643,10 @@
 "en": "Light or moderate intensity: you should be able to talk. Do not do high-intensity interval exercise unless your doctor allows it.",
 "es": "Intensidad ligera o moderada: debe poder hablar. No haga ejercicio de alta intensidad por intervalos salvo que su médico lo autorice."
 },
+"624b1047": {
+"en": "Clinical review (Lilja 2018 Acta Physiol; Trappe 2011 Am J Physiol)",
+"es": "Revisión clínica (Lilja 2018 Acta Physiol; Trappe 2011 Am J Physiol)"
+},
 "62631279": {
 "en": "Laxatives (lactulose, macrogol, bisacodyl, sennosides)",
 "es": "Laxantes (lactulosa, macrogol, bisacodilo, senósidos)"
@@ -7947,6 +8011,10 @@
 "en": "In a normal week, do you do at least 30 minutes a day of moderate activity, on five days or more?",
 "es": "En una semana normal, ¿hace al menos 30 minutos al día de actividad moderada, cinco días o más?"
 },
+"66bb9d47": {
+"en": "It does not slow the elimination of other medicines the way ritonavir-based regimens do, but it does speed up the elimination of some (hormonal contraceptives, methadone, some anticoagulants): seek advice before adding or changing any medicine. In the first 18 weeks, a skin rash, fever, blisters or yellowing of the skin mean you must seek advice immediately.",
+"es": "No frena la eliminación de otros fármacos como las pautas con ritonavir, pero sí acelera la de algunos (anticonceptivos hormonales, metadona, algunos anticoagulantes): consulte antes de añadir o cambiar cualquier fármaco. En las primeras 18 semanas, una erupción en la piel, fiebre, ampollas o un color amarillo de la piel obligan a consultar de inmediato."
+},
 "66c38a61": {
 "en": "Avoid exercise in the heat.",
 "es": "Evitar el ejercicio con calor."
@@ -8259,6 +8327,10 @@
 "en": "Without weight, or one arm at a time.",
 "es": "Sin peso, o un brazo cada vez."
 },
+"6b7a854a": {
+"en": "Oral oestrogens slightly increase the risk of venous thrombosis, which immobility worsens. Staying active helps. Otherwise, they do not limit training.",
+"es": "Los estrógenos orales aumentan algo el riesgo de trombosis venosa, que la inmovilidad agrava. Mantenerse activo ayuda. Por lo demás, no limitan el entrenamiento."
+},
 "6b888cb0": {
 "en": "Without hands, lowering over 3 seconds; or with your feet together.",
 "es": "Sin manos, bajando en 3 segundos; o con los pies juntos."
@@ -8354,6 +8426,10 @@
 "6cd2700e": {
 "en": "Continuous breathing, no Valsalva.",
 "es": "Respiración continua, sin Valsalva."
+},
+"6ce50bb2": {
+"en": "Between a quarter and a third of the weight lost with these medicines can be lean mass (which includes muscle) if you do not do strength training or eat enough protein. Prioritise 2–3 strength sessions a week and spread protein across meals (as a guide: 1.2–1.6 g per kilo per day; seek advice if you have kidney disease).",
+"es": "Entre un cuarto y un tercio del peso que se pierde con estos fármacos puede ser masa magra (que incluye músculo) si no se entrena fuerza ni se come proteína suficiente. Priorice 2–3 sesiones de fuerza semanales y reparta la proteína en las comidas (orientativo: 1,2–1,6 g por kilo y día; consulte si tiene enfermedad renal)."
 },
 "6cefbfc6": {
 "en": "Esomeprazole",
@@ -8735,6 +8811,10 @@
 "en": "You felt a sudden pain or a snap behind the ankle, like being hit by a stone.",
 "es": "Notó un dolor brusco o un chasquido detrás del tobillo, como una pedrada."
 },
+"71a90cac": {
+"en": "SmPC of furosemide 5.1/5.2",
+"es": "FT furosemida 5.1/5.2"
+},
 "71afe3fe": {
 "en": "AEMPS SmPC 4.5 (quinolones, tetracyclines) · EFSA (upper level for zinc)",
 "es": "FT AEMPS 4.5 (quinolonas, tetraciclinas) · EFSA (nivel máximo de zinc)"
@@ -8950,6 +9030,10 @@
 "74b0cd21": {
 "en": "The trunk hardly leans and the lower back does not arch.",
 "es": "El tronco casi no se inclina y la zona lumbar no se arquea."
+},
+"74bcc1f8": {
+"en": "Oral oestrogens slightly increase the risk of thrombosis. Staying active and avoiding prolonged immobility helps to reduce it. On long journeys or periods of immobility (injury, surgery) mention it to your doctor.",
+"es": "Los estrógenos por vía oral aumentan algo el riesgo de trombosis. Mantenerse activo y evitar la inmovilidad prolongada ayuda a reducirlo. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico."
 },
 "74cbd160": {
 "en": "Ranolazine and trimetazidine",
@@ -9367,6 +9451,10 @@
 "en": "High blood sugar, especially in the afternoon.",
 "es": "Hiperglucemia, sobre todo por la tarde."
 },
+"79b7b91e": {
+"en": "Combination to avoid. If you already take them together, do not stop anything on your own: see your doctor soon (electrocardiogram and potassium).",
+"es": "Combinación a evitar. Si ya los toma juntos, no suspenda nada por su cuenta: consulte pronto a su médico (electrocardiograma y potasio)."
+},
 "79c010c7": {
 "en": "Hard, for 3 seconds, and release; shoulder relaxed.",
 "es": "Fuerte, 3 segundos, y suelte; el hombro relajado."
@@ -9774,6 +9862,10 @@
 "7f292e22": {
 "en": "Nausea and slow digestion are common when the dose goes up. Avoid training on a full stomach and start sessions gently in the days after the injection.",
 "es": "Las náuseas y la digestión lenta son frecuentes al subir la dosis. Evite entrenar con el estómago lleno y empiece las sesiones con intensidad suave los días siguientes a la inyección."
+},
+"7f3deff2": {
+"en": "You take {n} medicines that increase the risk of venous thrombosis. Stay active, avoid long periods sitting or immobile and seek urgent advice for pain and swelling in a leg or sudden shortness of breath.",
+"es": "Toma {n} fármacos que aumentan el riesgo de trombosis venosa. Manténgase activo, evite periodos largos sentado o inmóvil y consulte de urgencia ante dolor e hinchazón de una pierna o falta de aire súbita."
 },
 "7f4bcade": {
 "en": "Arching the back as you lower the leg.",
@@ -10190,6 +10282,10 @@
 "84cbbe15": {
 "en": "Pain in a tendon (heel, shoulder)",
 "es": "Dolor en un tendón (talón, hombro)"
+},
+"84d111ca": {
+"en": "Febuxostat blocks the metabolism of azathioprine: serious bone marrow toxicity.",
+"es": "Febuxostat bloquea el metabolismo de la azatioprina: toxicidad grave de la médula ósea."
 },
 "84ec0917": {
 "en": "does not reach the activity recommendation",
@@ -10879,6 +10975,10 @@
 "en": "orthostatic hypotension, hypotension or electrolyte disturbances; possibly, urinary incontinence",
 "es": "hipotensión ortostática, hipotensión o alteraciones de los electrolitos; posiblemente, incontinencia urinaria"
 },
+"8e5b8a55": {
+"en": "SmPC 4.3/4.4 of beta-blockers · GINA · GOLD",
+"es": "FT 4.3/4.4 betabloqueantes · GINA · GOLD"
+},
 "8e8bddb3": {
 "en": "Drink according to thirst, not beyond it; in long sessions use drinks with salts instead of plain water.",
 "es": "Beba según la sed, no por encima; en sesiones largas use bebidas con sales en lugar de agua sola."
@@ -10994,6 +11094,10 @@
 "9001e6b2": {
 "en": "AEMPS SmPC 4.5 · FDA 2006 (ibuprofen and aspirin) · ESC 2020 AF (bleeding risk)",
 "es": "FT AEMPS 4.5 · FDA 2006 (ibuprofeno y aspirina) · ESC 2020 FA (riesgo hemorrágico)"
+},
+"901741be": {
+"en": "Metronidazole: no alcohol during treatment and for up to 48 h afterwards (alcohol in syrups and in “alcohol-free” drinks, which may contain a little, also counts).",
+"es": "Metronidazol: nada de alcohol durante el tratamiento y hasta 48 h después (también cuenta el de jarabes y el de las bebidas «sin», que pueden llevar algo)."
 },
 "9020c0e3": {
 "en": "The body gets rid of heat less well. Avoid the hottest hours, keep hydrated and reduce the intensity in hot conditions.",
@@ -11255,6 +11359,10 @@
 "en": "Moderate: {0}–{1} beats per minute (I can talk, but not sing).",
 "es": "Moderado: {0}–{1} pulsaciones por minuto (puedo hablar, pero no cantar)."
 },
+"941922cc": {
+"en": "General guidance to be agreed with your diabetes team (international consensus on exercise in type 1 diabetes): if you train within 2 hours of a meal with rapid-acting insulin, the indicative reduction of that dose is 25% for 30 minutes of light exercise and 50% for 60 minutes; 50% and 75% if the exercise is moderate; and 75% for 30 minutes of intense exercise. If you use a pump, reduce the basal rate by 50–80% from 90 minutes beforehand. After afternoon or prolonged exercise, overnight basal insulin can be reduced by 20%. Never apply these adjustments without an agreed plan.",
+"es": "Orientación general que debe pactar con su equipo de diabetes (consenso internacional de ejercicio en diabetes tipo 1): si entrena en las 2 horas siguientes a una comida con insulina rápida, la reducción orientativa de esa dosis es del 25 % para 30 minutos de ejercicio suave y del 50 % para 60 minutos; del 50 % y el 75 % si el ejercicio es moderado; y del 75 % para 30 minutos de ejercicio intenso. Si usa bomba, reducir la basal un 50–80 % desde 90 minutos antes. Tras ejercicio por la tarde o prolongado, la insulina basal nocturna puede reducirse un 20 %. Nunca aplique estos ajustes sin un plan acordado."
+},
 "94206f0f": {
 "en": "Without hands and lowering slowly over 3 seconds; with a light backpack.",
 "es": "Sin manos y bajando despacio en 3 segundos; con una mochila ligera."
@@ -11426,6 +11534,10 @@
 "96451817": {
 "en": "Blocks the renin-angiotensin system",
 "es": "Bloquea el sistema renina-angiotensina"
+},
+"96540877": {
+"en": "Lowers cholesterol and causes fewer muscle problems than statins; it is an alternative when they are not tolerated. It raises uric acid and can cause pain in the arms or legs.",
+"es": "Baja el colesterol y da menos problemas musculares que las estatinas; es una alternativa cuando no se toleran. Sube el ácido úrico y puede dar dolor en brazos o piernas."
 },
 "967e8825": {
 "en": "With a light dumbbell or bottle, 2–3 × 8–12; back straight",
@@ -11731,6 +11843,10 @@
 "en": "Exercise bike or elliptical",
 "es": "Bicicleta estática o elíptica"
 },
+"9abded7d": {
+"en": "Contraindicated: they must not be taken together. If you have been prescribed both at once, see your doctor without stopping anything on your own.",
+"es": "Contraindicado: no deben tomarse juntos. Si los tiene pautados a la vez, consulte a su médico sin suspender nada por su cuenta."
+},
 "9ad22e22": {
 "en": "Avoid it or ask for blood levels.",
 "es": "Evítelo o pida niveles en sangre."
@@ -11998,6 +12114,10 @@
 "9e06ec7d": {
 "en": "Adds to the anti-inflammatory effect and to the risk of ulcer and bleeding.",
 "es": "Suma efecto antiinflamatorio y riesgo de úlcera y sangrado."
+},
+"9e0c9abe": {
+"en": "You can do aerobic exercise. If you compete: methylphenidate and lisdexamfetamine are prohibited in competition and need a therapeutic use exemption; atomoxetine is not on the list of prohibited substances. Check the current list every year.",
+"es": "Puede hacer ejercicio aeróbico. Si compite: metilfenidato y lisdexanfetamina están prohibidos en competición y necesitan una autorización de uso terapéutico; atomoxetina no está en la lista de sustancias prohibidas. Compruébelo cada año en la lista vigente."
 },
 "9e0dd3b3": {
 "en": "May raise blood pressure at high doses.",
@@ -12399,6 +12519,10 @@
 "en": "Ashwagandha can raise thyroid hormones.",
 "es": "La ashwagandha puede subir las hormonas del tiroides."
 },
+"a3a4e91b": {
+"en": "SmPC 4.4 · AEMPS safety note 2024 (agranulocytosis)",
+"es": "FT 4.4 · nota de seguridad AEMPS 2024 (agranulocitosis)"
+},
 "a3bd2da6": {
 "en": "A brisk walk or 10–20 minutes of aerobic exercise reduce the urge to smoke for a while (up to an hour): use it as a tool at the moments when the urge is strongest.",
 "es": "Un paseo rápido o 10–20 minutos de ejercicio aeróbico reducen el deseo de fumar durante un rato (hasta una hora): úselo como herramienta en los momentos de más ganas."
@@ -12715,6 +12839,10 @@
 "en": "With your hands on the armrests; a higher chair with a cushion.",
 "es": "Con las manos en los reposabrazos; silla más alta con un cojín."
 },
+"a85893af": {
+"en": "Measure your glucose before training. Below 90 mg/dL: take 10–20 g of fast-acting carbohydrate (juice, 2–3 sachets of sugar or glucose tablets) and wait for it to rise. Between 90 and 125: take 10 g if you are going to do aerobic exercise. Between 126 and 250: you can start. Above 250: check for ketones; with ketones or feeling unwell, do not train and seek advice.",
+"es": "Mida la glucosa antes de entrenar. Por debajo de 90 mg/dL: tome 10–20 g de hidratos de absorción rápida (zumo, 2–3 sobres de azúcar o comprimidos de glucosa) y espere a que suba. Entre 90 y 125: tome 10 g si va a hacer aeróbico. Entre 126 y 250: puede empezar. Por encima de 250: compruebe cetonas; con cetonas o malestar, no entrene y consulte."
+},
 "a8944ab6": {
 "en": "If you inject insulin or take gliclazide, glimepiride or repaglinide, these supplements can add their effect. Measure your glucose more often in the first weeks and carry sugar when you train. Do not stop your treatment for them.",
 "es": "Si se inyecta insulina o toma gliclazida, glimepirida o repaglinida, estos suplementos pueden sumar su efecto. Mida la glucosa más a menudo las primeras semanas y lleve azúcar cuando entrene. No deje su tratamiento por ellos."
@@ -12983,6 +13111,10 @@
 "en": "The neck rule: with symptoms only above the neck (runny nose, sneezing, mild sore throat) you can train gently; with fever, a chesty cough, muscle aches or feeling generally unwell, rest and return gradually once you have been 24–48 hours without fever.",
 "es": "La regla del cuello: con síntomas solo por encima del cuello (mocos, estornudos, dolor de garganta leve) puede entrenar suave; con fiebre, tos con flemas, dolores musculares o malestar general, descanse y vuelva de forma progresiva cuando lleve 24–48 horas sin fiebre."
 },
+"abab0aa8": {
+"en": "WADA Prohibited List (S6, stimulants)",
+"es": "Lista de prohibiciones de la AMA (S6, estimulantes)"
+},
 "abc7e1cd": {
 "en": "Teriparatide",
 "es": "Teriparatida"
@@ -13066,6 +13198,10 @@
 "ad0814ac": {
 "en": "thermoregulation",
 "es": "termorregulación"
+},
+"ad164883": {
+"en": "SmPC 4.8 (Nilemdo); tendon rupture is listed in the US label",
+"es": "FT 4.8 (Nilemdo); la rotura de tendón figura en la ficha de EE. UU."
 },
 "ad2adecf": {
 "en": "DPP-4 inhibitors (sitagliptin, linagliptin, vildagliptin)",
@@ -13250,6 +13386,10 @@
 "af4d6e8e": {
 "en": "One or two of the five features: pre-frailty. In the original study it was already associated with more difficulties in daily life years later. It is a good time to act: there is evidence that exercise (aerobic, strength and balance) can slow its progress. Confirm it with a performance test, such as the SPPB, and mention it at your appointment.",
 "es": "Uno o dos de los cinco rasgos: prefragilidad. En el estudio original ya se asociaba a más dificultades en el día a día años después. Es buen momento para actuar: hay pruebas de que el ejercicio (aeróbico, de fuerza y de equilibrio) puede frenar su avance. Confírmelo con una prueba de ejecución, como el SPPB, y coméntelo en la consulta."
+},
+"af5b09f7": {
+"en": "During treatment and for up to 4 weeks afterwards, avoid jumps, intense running, sudden changes of direction and maximal loads. If pain or swelling appears in the heel, calf, shoulder or elbow, stop, rest the tendon and seek advice immediately: it may be the start of a tendinopathy and changing the antibiotic will need to be considered. This effect can appear from the first days and up to several months after finishing it.",
+"es": "Durante el tratamiento y hasta 4 semanas después, evite saltos, carrera intensa, cambios de dirección bruscos y cargas máximas. Si aparece dolor o hinchazón en el talón, la pantorrilla, el hombro o el codo, pare, deje el tendón en reposo y consulte de inmediato: puede ser el inicio de una tendinopatía y habrá que valorar cambiar el antibiótico. Este efecto puede aparecer desde los primeros días y hasta varios meses después de terminarlo."
 },
 "af7c8e38": {
 "en": "Antipsychotics",
@@ -14467,6 +14607,10 @@
 "en": "Brimonidine / dorzolamide / brinzolamide eye drops",
 "es": "Brimonidina / dorzolamida / brinzolamida colirio"
 },
+"be90d5e8": {
+"en": "For erectile dysfunction and, daily at a low dose, for the prostate. They lower blood pressure a little; their most dangerous interaction is with nitrates (and with riociguat and vericiguat), and their effect adds to that of alpha-blockers.",
+"es": "Para la disfunción eréctil y, a diario a dosis baja, para la próstata. Bajan algo la tensión; su interacción más peligrosa es con los nitratos (y con riociguat y vericiguat), y suman efecto con los alfabloqueantes."
+},
 "be9988bf": {
 "en": "Fransen 2014, Cochrane (hip)",
 "es": "Fransen 2014, Cochrane (cadera)"
@@ -14494,6 +14638,10 @@
 "bedcb817": {
 "en": "11.0 and 4.8 cases per 100 people per year",
 "es": "11,0 y 4,8 casos por 100 personas y año"
+},
+"bedec8ce": {
+"en": "Possible additional drop in blood pressure. According to the SmPC, short-acting nitrates (rescue nitroglycerin) were well tolerated alongside vericiguat; with long-acting ones (isosorbide mononitrate, patches) experience is limited.",
+"es": "Posible bajada de tensión adicional. Según la ficha técnica, los nitratos de acción corta (nitroglicerina de rescate) se toleraron bien junto a vericiguat; con los de acción prolongada (mononitrato de isosorbida, parches) la experiencia es limitada."
 },
 "beeef29b": {
 "en": "Do not take anti-inflammatories (ibuprofen, naproxen) or aspirin for muscle pain without asking first: they multiply the risk of bleeding. Paracetamol is the safe option.",
@@ -14726,6 +14874,10 @@
 "c15a67aa": {
 "en": "Cochrane review of 108 trials (23 407 people)",
 "es": "Revisión Cochrane de 108 ensayos (23 407 personas)"
+},
+"c1807fbb": {
+"en": "Increased dabigatran levels and bleeding risk.",
+"es": "Aumento de niveles de dabigatrán y del riesgo de sangrado."
 },
 "c186e7ec": {
 "en": "ADA Standards of Care 2024 (glucose around exercise; low blood sugar below 70 mg/dL) · Riddell 2017, Lancet Diabetes Endocrinol",
@@ -15211,6 +15363,10 @@
 "en": "AEMPS SmPC 4.5 · ADA Standards of Care 2024 (hypoglycaemia)",
 "es": "FT AEMPS 4.5 · ADA Standards of Care 2024 (hipoglucemia)"
 },
+"c8257af7": {
+"en": "No limitation. At high, sustained doses anti-inflammatories can blunt muscle gain in young adults; that effect has not been seen in older people.",
+"es": "Sin limitación. A dosis altas y mantenidas los antiinflamatorios pueden atenuar la ganancia de músculo en adultos jóvenes; en mayores no se ha visto ese efecto."
+},
 "c83f32f6": {
 "en": "Caffeine lowers lithium in the blood. What matters is not to change suddenly: if you give up coffee or drink much more, your lithium level can rise or fall. Keep the amount stable and tell your doctor before changing it.",
 "es": "La cafeína hace bajar el litio en la sangre. Lo importante es no cambiar de golpe: si deja el café o toma mucho más, su nivel de litio puede subir o bajar. Mantenga una cantidad estable y avise a su médico antes de cambiarla."
@@ -15455,6 +15611,10 @@
 "en": "Hold your breath",
 "es": "Aguantar el aire"
 },
+"cb2a6e45": {
+"en": "Exercise boosts the effect of this medicine: after a session blood pressure usually stays somewhat lower (on average about 5–7 mmHg in people with hypertension) for several hours. It is a beneficial effect, but worth knowing about.",
+"es": "El ejercicio potencia el efecto de este fármaco: tras una sesión la tensión suele quedar algo más baja (de media unos 5–7 mmHg en personas hipertensas) durante varias horas. Es un efecto beneficioso, pero conviene conocerlo."
+},
 "cb2fb786": {
 "en": "The pulse at rest and during effort is sped up by the medicine: it does not reflect intensity well. Go by how hard the effort feels.",
 "es": "El pulso en reposo y en esfuerzo está acelerado por el fármaco: no refleja bien la intensidad. Guíese por la sensación de esfuerzo."
@@ -15582,6 +15742,10 @@
 "ccd99f69": {
 "en": "Eletriptan / almotriptan / naratriptan",
 "es": "Eletriptán / almotriptán / naratriptán"
+},
+"ccda7160": {
+"en": "Take it 1–2 hours before going to bed. Avoid intense exercise in the 2 hours before sleep: it can make it harder to fall asleep.",
+"es": "Tómela 1–2 horas antes de acostarse. Evite el ejercicio intenso en las 2 horas previas a dormir: puede dificultar conciliar el sueño."
 },
 "ccdce8f3": {
 "en": "Frail",
@@ -16955,6 +17119,10 @@
 "en": "Taking too short a step.",
 "es": "Dar el paso demasiado corto."
 },
+"e001c9cc": {
+"en": "Creatine (3–5 g/day) is safe with normal kidney function and slightly raises creatinine in blood tests without harming the kidney: tell your doctor you take it. With kidney disease, or with medicines that affect the kidney or whose dose depends on it (metformin, ACE inhibitors, anti-inflammatories, lithium, tacrolimus), seek advice first.",
+"es": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal, o con fármacos que afectan al riñón o cuya dosis depende de él (metformina, IECA, antiinflamatorios, litio, tacrolimus), consúltelo antes."
+},
 "e003efed": {
 "en": "The same active substance appears twice.",
 "es": "El mismo principio activo aparece dos veces."
@@ -17370,6 +17538,10 @@
 "e56eee8b": {
 "en": "Management: ",
 "es": "Manejo: "
+},
+"e57a80be": {
+"en": "Fever, chills, severe sore throat or mouth ulcers while taking it: stop it and see a doctor immediately (possible serious drop in defences, which can appear even after stopping it). Do not train with those symptoms.",
+"es": "Fiebre, escalofríos, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y acuda a un médico de inmediato (posible bajada grave de defensas, que puede aparecer incluso tras dejarlo). No entrene con esos síntomas."
 },
 "e580ddc0": {
 "en": "Increased lithium levels.",
@@ -17803,6 +17975,10 @@
 "en": "Getting up from the floor with a chair",
 "es": "Levantarse del suelo con una silla"
 },
+"eb5777a2": {
+"en": "Timolol eye drops pass partly into the blood and can slow the pulse like an oral beta-blocker, although to a lesser degree: your pulse may rise less than expected with exertion. If that is your case, use perceived exertion. If you have asthma or notice more fatigue since using it, mention it to your ophthalmologist (there are alternatives).",
+"es": "El timolol en colirio pasa en parte a la sangre y puede frenar el pulso como un betabloqueante oral, aunque en menor grado: el pulso puede subir menos de lo esperado con el esfuerzo. Si es su caso, use la sensación de esfuerzo. Si tiene asma o nota más fatiga desde que lo usa, coméntelo con su oftalmólogo (hay alternativas)."
+},
 "eb63c957": {
 "en": "ISSN caffeine 2021",
 "es": "ISSN cafeína 2021"
@@ -17826,6 +18002,10 @@
 "ebaaa07e": {
 "en": "AEMPS SmPC 4.5 · ESC (bradycardia / AV block)",
 "es": "FT AEMPS 4.5 · ESC (bradicardia / bloqueo AV)"
+},
+"ebac4b7b": {
+"en": "Exercise lowers blood sugar by itself and, with insulin, the risk of hypoglycaemia is real during the session and for up to 24 hours afterwards (including overnight). With a simple plan you can train safely.",
+"es": "El ejercicio baja el azúcar por sí mismo y, con insulina, el riesgo de hipoglucemia es real durante la sesión y hasta 24 horas después (incluida la noche). Con un plan sencillo se puede entrenar con seguridad."
 },
 "ebf71b7a": {
 "en": "Soy or red clover isoflavones",
@@ -17943,6 +18123,10 @@
 "en": "Watch blood pressure; slow changes of position.",
 "es": "Vigilar tensión; cambios de posición lentos."
 },
+"ed9d25d4": {
+"en": "The combination increases the risk of muscle damage (a little with fenofibrate, a lot with gemfibrozil), and unaccustomed intense exercise can trigger it. Progress very gradually in strength training, avoid intense eccentric work and seek advice immediately for generalised muscle pain or dark urine. If the fibrate is gemfibrozil, the combination is not recommended: discuss it with your doctor. Do not stop either of them on your own.",
+"es": "La combinación aumenta el riesgo de daño muscular (poco con fenofibrato, mucho con gemfibrozilo), y el ejercicio intenso no habitual puede desencadenarlo. Progrese muy gradualmente en fuerza, evite el trabajo excéntrico intenso y consulte de inmediato ante dolor muscular generalizado u orina oscura. Si el fibrato es gemfibrozilo, la combinación está desaconsejada: coméntelo con su médico. No deje ninguno de los dos por su cuenta."
+},
 "ee1d2dca": {
 "en": "Tobacco and combined contraceptive from the age of 35",
 "es": "Tabaco y anticonceptivo combinado a partir de los 35"
@@ -18034,6 +18218,10 @@
 "ef67081b": {
 "en": "Summary of product characteristics of theophylline, 4.5",
 "es": "Ficha técnica de teofilina, 4.5"
+},
+"ef6ec2b9": {
+"en": "It can also lower blood pressure on standing up, especially in the hours after taking it, in older people and if you take other blood pressure medicines. Get up slowly after lying-down exercises.",
+"es": "También puede bajar la tensión al ponerse de pie, sobre todo en las horas siguientes a la toma, en mayores y si toma otros fármacos para la tensión. Levántese despacio después de los ejercicios tumbado."
 },
 "ef74ff5c": {
 "en": "My exercise plan",
@@ -18230,6 +18418,10 @@
 "f1f3dfe8": {
 "en": "A slight temperature. If you feel well, at most a gentle walk; if the temperature rises or you start to feel unwell, rest.",
 "es": "Décimas. Si se encuentra bien, como mucho un paseo suave; si la temperatura sube o aparece malestar, descanse."
+},
+"f1f6e9c6": {
+"en": "Clinical review · product information 4.4",
+"es": "Revisión clínica · FT 4.4"
 },
 "f1fc44b6": {
 "en": "Valaciclovir",
@@ -18502,6 +18694,10 @@
 "f5acda81": {
 "en": "KDIGO 2024. Clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney Int 2024",
 "es": "KDIGO 2024. Clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney Int 2024"
+},
+"f5ad0bdc": {
+"en": "Indicated and beneficial. One trial found a smaller improvement in fitness with simvastatin 40 mg, but it is a small study and no reason to change anything: the benefit of combining a statin and exercise is clear. Do not stop your statin for this reason.",
+"es": "Indicado y beneficioso. Un ensayo encontró menor mejora de la forma física con simvastatina 40 mg, pero es un estudio pequeño y no es motivo para cambiar nada: el beneficio de combinar estatina y ejercicio es claro. No deje la estatina por este motivo."
 },
 "f5d01a5d": {
 "en": "When you hear 'Go!', lift the weight by bending the elbow and turning the palm upwards; then lower it until the arm is fully straight.",
@@ -19106,6 +19302,10 @@
 "fcf8e0d9": {
 "en": "Opposite arm and leg, lying on your back",
 "es": "Brazo y pierna contrarios, boca arriba"
+},
+"fcff8dbf": {
+"en": "It is not activated in muscle, so it causes fewer muscle problems than statins, although it can cause pain in the arms or legs and cramps. It raises uric acid (hydration; take care if you have gout). A few cases of tendon rupture were described in the trials: seek advice for pain in the Achilles tendon or shoulder.",
+"es": "No se activa en el músculo, así que da menos problemas musculares que las estatinas, aunque puede dar dolor en brazos o piernas y calambres. Sube el ácido úrico (hidratación; cuidado si tiene gota). En los ensayos se describió algún caso de rotura de tendón: ante dolor en el Aquiles o el hombro, consulte."
 },
 "fd06aaf3": {
 "en": "Flexibility of the back of the legs and the lower back",

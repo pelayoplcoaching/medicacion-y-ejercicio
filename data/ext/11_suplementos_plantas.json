@@ -170,9 +170,9 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes.",
-          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
-          "evidencia": "revision",
+          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal, o con fármacos que afectan al riñón o cuya dosis depende de él (metformina, IECA, antiinflamatorios, litio, tacrolimus), consúltelo antes.",
+          "fuente": "ISSN 2017 creatina (Kreider)",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "creatina"
@@ -193,7 +193,7 @@
           "nivel": "precaucion",
           "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "evidencia": "revision",
           "revisado": true,
           "si": {
             "principio": "cafeina"
@@ -830,7 +830,7 @@
           "nivel": "precaucion",
           "texto": "Se han descrito casos de daño en el hígado con cápsulas de cúrcuma, sobre todo las de alta absorción (con piperina o pimienta negra). Si nota cansancio intenso, orina oscura o color amarillo en la piel o los ojos, déjela y consulte.",
           "fuente": "LiverTox (NIH), cúrcuma · notificaciones de hepatitis (Italia, 2019)",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "curcuma"
@@ -1062,7 +1062,7 @@
           "nivel": "precaucion",
           "texto": "Si se inyecta insulina o toma gliclazida, glimepirida o repaglinida, estos suplementos pueden sumar su efecto. Mida la glucosa más a menudo las primeras semanas y lleve azúcar cuando entrene. No deje su tratamiento por ellos.",
           "fuente": "NIH ODS (cromo) · NCCIH (canela, berberina)",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -1089,7 +1089,7 @@
           "nivel": "info",
           "texto": "El cromo puede reducir la absorción de la levotiroxina: sepárelos 3 o 4 horas.",
           "fuente": "NIH ODS (cromo)",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "cromo"
@@ -1179,7 +1179,7 @@
           "nivel": "precaucion",
           "texto": "La ashwagandha da sueño y se suma a otros sedantes. Puede subir las hormonas del tiroides: no la tome con levotiroxina o fármacos para el tiroides sin control. Se han descrito casos de daño en el hígado. No la tome en el embarazo ni con inmunosupresores.",
           "fuente": "LiverTox (NIH), ashwagandha · NIH ODS",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "ashwagandha"
@@ -1321,7 +1321,7 @@
           "nivel": "precaucion",
           "texto": "El propóleo y la jalea real pueden provocar alergias e incluso crisis de asma graves. Si tiene alergia al polen, a las picaduras de abeja o a la miel, no los tome.",
           "fuente": "NCCIH (propóleo, jalea real) · casos de anafilaxia publicados",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "propoleo_jalea"
@@ -1331,7 +1331,7 @@
           "nivel": "alerta",
           "texto": "Tiene asma o EPOC: evite el propóleo y la jalea real. Se han descrito crisis de asma graves con ellos.",
           "fuente": "NCCIH (jalea real) · casos de anafilaxia publicados",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "propoleo_jalea",
@@ -1477,7 +1477,7 @@
           "nivel": "precaucion",
           "texto": "Se han descrito casos de daño grave en el hígado con garcinia, y su efecto sobre el peso es mínimo. No la tome si tiene una enfermedad del hígado o toma fármacos que lo cargan.",
           "fuente": "LiverTox (NIH), garcinia",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "garcinia"
@@ -1487,7 +1487,7 @@
           "nivel": "precaucion",
           "texto": "El fucus y algas como el kelp llevan mucho yodo y pueden alterar el tiroides (por exceso o por defecto). No los tome si tiene problemas de tiroides o toma levotiroxina, amiodarona o litio.",
           "fuente": "NIH ODS (yodo)",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "fucus"
@@ -1656,7 +1656,7 @@
           "nivel": "info",
           "texto": "La coenzima Q10 se tolera bien. Puede bajar un poco la tensión y restar efecto al acenocumarol o la warfarina: si los toma, avise y adelante el control del INR.",
           "fuente": "NCCIH (coenzima Q10) · casos publicados con warfarina",
-          "evidencia": "base",
+          "evidencia": "guia",
           "revisado": true,
           "si": {
             "principio": "coenzima_q10"

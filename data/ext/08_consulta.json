@@ -55,10 +55,7 @@
             "Pectox",
             "Mucosan",
             "Motosol"
-          ],
-          "umbral_mg": {
-            "alta": 1200
-          }
+          ]
         },
         {
           "id": "codeina_antitusiva",
@@ -126,7 +123,7 @@
         },
         {
           "nivel": "info",
-          "texto": "Muchos antigripales llevan paracetamol (650 mg por sobre) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar.",
+          "texto": "Muchos antigripales llevan paracetamol (entre 500 y 1.000 mg por sobre o comprimido) y antihistamínicos sedantes: cuente esa dosis si además toma paracetamol, y no los tome antes de entrenar.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -156,7 +153,7 @@
           "nivel": "info",
           "texto": "Sin limitación propia del fármaco; posponga las sesiones exigentes hasta recuperarse de la infección.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -261,7 +258,7 @@
           "nivel": "info",
           "texto": "Sin limitación; hidratación extra a dosis altas.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -270,7 +267,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -279,7 +276,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],

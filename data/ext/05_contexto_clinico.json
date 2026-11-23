@@ -175,7 +175,7 @@
           "nivel": "info",
           "texto": "El ejercicio regular, fuerza incluida, es parte esencial del tratamiento para el aumento de peso y el riesgo metabólico.",
           "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -193,7 +193,7 @@
           "nivel": "info",
           "texto": "Muy recomendable.",
           "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -298,7 +298,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -382,7 +382,7 @@
       "general_add": [
         {
           "nivel": "info",
-          "texto": "Orientación general que debe pactar con su equipo de diabetes (consenso internacional de ejercicio en diabetes tipo 1): si entrena en las 2 horas siguientes a una comida con insulina rápida, reducir esa dosis un 25 % para 30 minutos de ejercicio moderado, un 50 % para 60 minutos y hasta un 75 % para ejercicio intenso o prolongado. Si usa bomba, reducir la basal un 50–80 % desde 60–90 minutos antes. Los días de ejercicio prolongado (más de 90 minutos) la insulina basal nocturna puede reducirse un 20 %. Nunca aplique estos ajustes sin un plan acordado.",
+          "texto": "Orientación general que debe pactar con su equipo de diabetes (consenso internacional de ejercicio en diabetes tipo 1): si entrena en las 2 horas siguientes a una comida con insulina rápida, la reducción orientativa de esa dosis es del 25 % para 30 minutos de ejercicio suave y del 50 % para 60 minutos; del 50 % y el 75 % si el ejercicio es moderado; y del 75 % para 30 minutos de ejercicio intenso. Si usa bomba, reducir la basal un 50–80 % desde 90 minutos antes. Tras ejercicio por la tarde o prolongado, la insulina basal nocturna puede reducirse un 20 %. Nunca aplique estos ajustes sin un plan acordado.",
           "fuente": "Riddell 2017 Lancet Diabetes Endocrinol (consenso ejercicio DM1)",
           "evidencia": "guia",
           "revisado": true
@@ -413,7 +413,7 @@
       },
       "nivel": "alerta",
       "titulo": "Insuficiencia cardíaca con síntomas con esfuerzos pequeños (NYHA III–IV)",
-      "texto": "El ejercicio sigue estando indicado, pero debe iniciarse de forma supervisada (rehabilitación cardíaca) o con un programa muy progresivo pautado por cardiología: sesiones cortas (5–10 minutos) varias veces al día, intensidad que permita hablar, y fuerza de piernas con cargas ligeras. Pésese a diario y consulte ante aumento de 2 kg en 3 días, más disnea o edemas.",
+      "texto": "Si tiene síntomas en reposo, ha empeorado en los últimos días o ha tenido un ingreso reciente, no empiece a entrenar hasta que le valore su cardiólogo. Con la enfermedad estable, el ejercicio sigue estando indicado, pero debe iniciarse de forma supervisada (rehabilitación cardíaca) o con un programa muy progresivo pautado por cardiología: sesiones cortas (5–10 minutos) varias veces al día, intensidad que permita hablar, y fuerza de piernas con cargas ligeras. Pésese a diario y consulte ante aumento de 2 kg en 3 días, más disnea o edemas.",
       "ambitos": [
         "general",
         "aerobico",

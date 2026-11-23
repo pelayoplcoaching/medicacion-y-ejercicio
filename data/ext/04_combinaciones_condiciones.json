@@ -961,7 +961,7 @@
           "nivel": "info",
           "texto": "Muy recomendable; cargas moderadas y respiración continua.",
           "fuente": "Firth 2019 Lancet Psychiatry (salud física en enfermedad mental)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -1086,7 +1086,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1150,7 +1150,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1159,7 +1159,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1173,7 +1173,7 @@
       "atc": [
         "C10AX15"
       ],
-      "resumen": "Baja el colesterol sin dañar el músculo; es una alternativa cuando las estatinas no se toleran. Sube el ácido úrico y, rara vez, puede dañar los tendones.",
+      "resumen": "Baja el colesterol y da menos problemas musculares que las estatinas; es una alternativa cuando no se toleran. Sube el ácido úrico y puede dar dolor en brazos o piernas.",
       "senales": [],
       "principios": [
         {
@@ -1194,8 +1194,8 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "No produce dolor muscular. Puede subir el ácido úrico (hidratación, cuidado si tiene gota) y, raramente, afectar a los tendones: ante dolor en el Aquiles o el hombro, consulte.",
-          "fuente": "FT AEMPS 4.4",
+          "texto": "No se activa en el músculo, así que da menos problemas musculares que las estatinas, aunque puede dar dolor en brazos o piernas y calambres. Sube el ácido úrico (hidratación; cuidado si tiene gota). En los ensayos se describió algún caso de rotura de tendón: ante dolor en el Aquiles o el hombro, consulte.",
+          "fuente": "FT 4.8 (Nilemdo); la rotura de tendón figura en la ficha de EE. UU.",
           "evidencia": "ft",
           "revisado": true
         }
@@ -1205,7 +1205,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1214,7 +1214,7 @@
           "nivel": "info",
           "texto": "Sin limitación; progresión normal.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1223,7 +1223,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1279,7 +1279,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "FT AEMPS 4.8",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1288,7 +1288,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.8",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1432,16 +1432,16 @@
       "id": "epoc_bb",
       "si": {
         "condicion": "epoc_asma",
-        "senal": "bradicardia",
+        "senal": "enmascara_hipoglucemia",
         "min": 1
       },
       "nivel": "info",
       "titulo": "EPOC/asma y betabloqueante",
-      "texto": "Los betabloqueantes cardioselectivos (bisoprolol, nebivolol) se toleran bien en EPOC; propranolol o carvedilol pueden empeorar el broncoespasmo. Si nota más pitos o fatiga desde que lo toma, coméntelo. Calentamiento progresivo de 10–15 minutos.",
+      "texto": "En la EPOC, los betabloqueantes cardioselectivos (bisoprolol, nebivolol) se toleran bien. En el asma cualquier betabloqueante puede cerrar los bronquios, sobre todo propranolol y carvedilol, y también el timolol en colirio. Si nota más pitos o fatiga desde que lo toma, coméntelo sin dejarlo por su cuenta. Calentamiento progresivo de 10–15 minutos.",
       "ambitos": [
         "aerobico"
       ],
-      "fuente": "GOLD 2024",
+      "fuente": "FT 4.3/4.4 betabloqueantes · GINA · GOLD",
       "revisado": true
     },
     {

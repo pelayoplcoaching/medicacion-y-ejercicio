@@ -87,7 +87,7 @@
           "nivel": "info",
           "texto": "Con infección activa y fiebre, no entrene: descanse hasta 24–48 h sin fiebre y retome a intensidad baja. Con síntomas solo 'del cuello para arriba' (resfriado sin fiebre) puede hacer ejercicio suave.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "evidencia": "revision",
           "revisado": true
         },
         {
@@ -115,7 +115,7 @@
           "si": {
             "principio": "metronidazol"
           },
-          "texto": "Metronidazol: nada de alcohol (incluidas bebidas 'sin' y geles) durante el tratamiento y 48 h después.",
+          "texto": "Metronidazol: nada de alcohol durante el tratamiento y hasta 48 h después (también cuenta el de jarabes y el de las bebidas «sin», que pueden llevar algo).",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -126,7 +126,7 @@
           "nivel": "info",
           "texto": "Sin limitación una vez sin fiebre; intensidad baja los primeros días.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -135,7 +135,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -144,7 +144,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -217,7 +217,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica más allá de la infección; intensidad moderada.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -235,7 +235,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -352,7 +352,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -491,7 +491,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -605,7 +605,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -688,7 +688,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -821,7 +821,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -936,7 +936,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1012,7 +1012,7 @@
           "nivel": "info",
           "texto": "Indicado.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1030,7 +1030,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1104,7 +1104,7 @@
           },
           "texto": "El dolor y la rigidez articular, sobre todo de manos y por la mañana, mejoran con el ejercicio (el estudio HOPE lo demostró con fuerza + aeróbico). Empiece suave y sea constante; los primeros 15 minutos son los peores.",
           "fuente": "Irwin 2015 J Clin Oncol (ensayo HOPE)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         },
         {
@@ -1248,7 +1248,7 @@
           },
           "texto": "Enzalutamida y apalutamida aumentan el riesgo de caídas y fracturas: trabajo de equilibrio con apoyo y revisión de la casa.",
           "fuente": "ACSM 2019 ejercicio y cáncer (Campbell)",
-          "evidencia": "guia",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1384,7 +1384,7 @@
           },
           "texto": "Estos fármacos suben la tensión: controle en casa y evite la apnea y el esfuerzo isométrico mantenido. Las heridas cicatrizan peor: cuidado con rozaduras.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
-          "evidencia": "guia",
+          "evidencia": "ft",
           "revisado": true
         },
         {
@@ -1473,7 +1473,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1482,7 +1482,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1548,7 +1548,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1557,7 +1557,7 @@
           "nivel": "info",
           "texto": "Sin limitación; incluya suelo pélvico.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1566,7 +1566,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1582,7 +1582,7 @@
         "S01EE",
         "S01EC"
       ],
-      "resumen": "El colirio de timolol pasa a la sangre y actúa como un betabloqueante: frena el pulso, puede empeorar el asma y limita la capacidad de esfuerzo. Pocas personas lo saben. Los colirios de prostaglandinas no tienen ese efecto.",
+      "resumen": "El colirio de timolol pasa en parte a la sangre y puede actuar como un betabloqueante suave: frenar algo el pulso, empeorar el asma y reducir un poco la capacidad de esfuerzo. Pocas personas lo saben. Los colirios de prostaglandinas no tienen ese efecto.",
       "senales": [],
       "principios": [
         {
@@ -1633,9 +1633,9 @@
           "si": {
             "principio": "timolol_colirio"
           },
-          "texto": "El timolol en colirio frena el pulso igual que un betabloqueante oral: el pulso sube menos de lo esperado con el esfuerzo y no sirve para medir la intensidad. Use la sensación de esfuerzo. Si tiene asma o nota más fatiga desde que lo usa, coméntelo con su oftalmólogo (hay alternativas).",
-          "fuente": "ACSM GETP 11.ª ed., ap. A",
-          "evidencia": "guia",
+          "texto": "El timolol en colirio pasa en parte a la sangre y puede frenar el pulso como un betabloqueante oral, aunque en menor grado: el pulso puede subir menos de lo esperado con el esfuerzo. Si es su caso, use la sensación de esfuerzo. Si tiene asma o nota más fatiga desde que lo usa, coméntelo con su oftalmólogo (hay alternativas).",
+          "fuente": "FT 4.4 timolol oftálmico",
+          "evidencia": "ft",
           "revisado": true
         },
         {
@@ -1652,7 +1652,7 @@
           "nivel": "info",
           "texto": "El ejercicio aeróbico regular baja la presión intraocular. Evite posturas invertidas prolongadas (cabeza abajo en yoga) y el esfuerzo con apnea, que la suben.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -1661,7 +1661,7 @@
           "nivel": "info",
           "texto": "Indicado; beneficioso para la presión intraocular.",
           "fuente": "Zhu 2018 (metaanálisis ejercicio y PIO) · criterio clínico",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -1760,7 +1760,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.8",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1880,7 +1880,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1889,7 +1889,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1898,7 +1898,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1989,7 +1989,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -2121,7 +2121,7 @@
           "nivel": "info",
           "texto": "Indicado; fenitoína y fenobarbital a largo plazo debilitan el hueso, la fuerza lo protege.",
           "fuente": "FT AEMPS 4.4 (osteomalacia) · Beck 2017 (ESSA)",
-          "evidencia": "guia",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -2184,9 +2184,9 @@
           "si": {
             "principio": "creatina"
           },
-          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal o con fármacos que afectan al riñón (metformina, IECA, AINE, litio, tacrolimus) consúltelo antes.",
-          "fuente": "Revisión clínica (ISSN 2017 creatina; FT de los fármacos citados)",
-          "evidencia": "revision",
+          "texto": "Creatina (3–5 g/día) es segura con función renal normal y sube ligeramente la creatinina en los análisis sin dañar el riñón: avise a su médico de que la toma. Con enfermedad renal, o con fármacos que afectan al riñón o cuya dosis depende de él (metformina, IECA, antiinflamatorios, litio, tacrolimus), consúltelo antes.",
+          "fuente": "ISSN 2017 creatina (Kreider)",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -2196,7 +2196,7 @@
           },
           "texto": "Cafeína y 'pre-entrenos' suben pulso y tensión. Evítelos o limítelos si toma estimulantes, antidepresivos IMAO, betabloqueantes para arritmias o fármacos que alargan el QT, y nunca combine varios estimulantes. Los pre-entrenos con sinefrina, yohimbina o DMAA no son seguros.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "evidencia": "revision",
           "revisado": true
         },
         {

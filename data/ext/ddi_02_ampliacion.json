@@ -346,7 +346,7 @@
     "b": "clase:estatinas",
     "nivel": "mayor",
     "efecto": "Ciclosporina eleva mucho los niveles de estatinas (rabdomiólisis).",
-    "accion": "Dosis bajas de pravastatina o fluvastatina; evitar simvastatina a dosis altas.",
+    "accion": "Simvastatina y rosuvastatina están contraindicadas con ciclosporina. Las opciones habituales son fluvastatina o pravastatina a dosis bajas, bajo control del equipo de trasplante.",
     "fuente": "FT AEMPS 4.3/4.5 (simvastatina: límites de dosis) · FDA 2011",
     "revisado": true
   },
@@ -363,8 +363,8 @@
     "a": "azatioprina",
     "b": "febuxostat",
     "nivel": "mayor",
-    "efecto": "Igual que con alopurinol.",
-    "accion": "Contraindicado.",
+    "efecto": "Febuxostat bloquea el metabolismo de la azatioprina: toxicidad grave de la médula ósea.",
+    "accion": "Combinación no recomendada. Si no puede evitarse, la azatioprina debe reducirse al 20 % o menos de la dosis, con control hematológico estrecho.",
     "fuente": "FT AEMPS 4.5 (inmunosupresores: margen estrecho)",
     "revisado": true
   },
@@ -768,8 +768,8 @@
     "a": "dronedarona",
     "b": "dabigatran",
     "nivel": "mayor",
-    "efecto": "Aumento de niveles de dabigatrán.",
-    "accion": "Evitar o reducir dosis.",
+    "efecto": "Aumento de niveles de dabigatrán y del riesgo de sangrado.",
+    "accion": "Contraindicado: no deben tomarse juntos. Si los tiene pautados a la vez, consulte a su médico sin suspender nada por su cuenta.",
     "fuente": "FT AEMPS 4.5",
     "revisado": true
   },
@@ -804,7 +804,7 @@
     "a": "vericiguat",
     "b": "clase:nitratos",
     "nivel": "moderada",
-    "efecto": "Posible bajada de tensión adicional. Los nitratos de acción prolongada se usaron junto a vericiguat en el ensayo principal sin señal de riesgo; la nitroglicerina sublingual no está bien estudiada.",
+    "efecto": "Posible bajada de tensión adicional. Según la ficha técnica, los nitratos de acción corta (nitroglicerina de rescate) se toleraron bien junto a vericiguat; con los de acción prolongada (mononitrato de isosorbida, parches) la experiencia es limitada.",
     "accion": "No es una contraindicación: su cardiólogo debe conocer la combinación. Tome la nitroglicerina de rescate sentado y levántese despacio.",
     "fuente": "FT AEMPS 4.4/4.5 (vericiguat) · VICTORIA 2020",
     "revisado": true

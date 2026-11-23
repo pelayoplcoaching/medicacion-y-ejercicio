@@ -112,7 +112,7 @@
             "principio": "lurasidona"
           },
           "fuente": "FT AEMPS 4.8 (lurasidona) · criterio clínico (acatisia y actividad)",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         },
         {
@@ -368,12 +368,12 @@
         },
         {
           "nivel": "info",
-          "texto": "Baja menos la tensión que otros fármacos de su grupo. Aun así, levántese despacio después de los ejercicios tumbado.",
+          "texto": "También puede bajar la tensión al ponerse de pie, sobre todo en las horas siguientes a la toma, en mayores y si toma otros fármacos para la tensión. Levántese despacio después de los ejercicios tumbado.",
           "si": {
             "principio": "alfuzosina"
           },
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "fuente": "Revisión clínica",
+          "evidencia": "revision",
           "revisado": true
         }
       ]
@@ -437,7 +437,7 @@
             "principio": "indometacina"
           },
           "fuente": "FT AEMPS 4.4 · Beers 2023",
-          "evidencia": "criterios",
+          "evidencia": "ft",
           "revisado": true
         }
       ]
@@ -712,7 +712,7 @@
       "general_add": [
         {
           "nivel": "info",
-          "texto": "No frena la eliminación de otros fármacos como los potenciados con ritonavir, así que tiene menos interacciones. Las primeras semanas vigile erupciones en la piel y fiebre.",
+          "texto": "No frena la eliminación de otros fármacos como las pautas con ritonavir, pero sí acelera la de algunos (anticonceptivos hormonales, metadona, algunos anticoagulantes): consulte antes de añadir o cambiar cualquier fármaco. En las primeras 18 semanas, una erupción en la piel, fiebre, ampollas o un color amarillo de la piel obligan a consultar de inmediato.",
           "si": {
             "principio": "nevirapina"
           },

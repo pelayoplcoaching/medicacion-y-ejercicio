@@ -74,9 +74,9 @@
       "aerobico": [
         {
           "nivel": "info",
-          "texto": "Puede hacer ejercicio aeróbico. Si compite, consulte la normativa antidopaje: estos fármacos necesitan una autorización de uso terapéutico.",
-          "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "texto": "Puede hacer ejercicio aeróbico. Si compite: metilfenidato y lisdexanfetamina están prohibidos en competición y necesitan una autorización de uso terapéutico; atomoxetina no está en la lista de sustancias prohibidas. Compruébelo cada año en la lista vigente.",
+          "fuente": "Lista de prohibiciones de la AMA (S6, estimulantes)",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -85,7 +85,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -94,7 +94,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -173,7 +173,7 @@
           "nivel": "info",
           "texto": "El ejercicio debe hacerse acompañado y con instrucciones sencillas y repetidas. Caminar, ejercicios de fuerza sentado-de pie y equilibrio con apoyo son los más útiles.",
           "fuente": "Forbes 2015 Cochrane (ejercicio y demencia) · criterio clínico",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -268,14 +268,14 @@
           "nivel": "precaucion",
           "texto": "No haga ejercicio intenso en las 2–3 horas siguientes a tomar un triptán: la combinación con el esfuerzo puede dar opresión en el pecho o subidas de tensión. Si aparece dolor torácico, consulte.",
           "fuente": "FT AEMPS 4.3",
-          "evidencia": "ft",
+          "evidencia": "revision",
           "revisado": true
         },
         {
           "nivel": "info",
           "texto": "El ejercicio aeróbico regular reduce la frecuencia de las migrañas. Un calentamiento progresivo y una buena hidratación evitan que el propio esfuerzo desencadene crisis.",
           "fuente": "Varkey 2011 Cephalalgia; Amin 2018 J Headache Pain",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         },
         {
@@ -309,7 +309,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.3",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -365,7 +365,7 @@
           "nivel": "info",
           "texto": "Sin limitación para el ejercicio. Con erenumab, controle la tensión de vez en cuando.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -374,7 +374,7 @@
           "nivel": "info",
           "texto": "Indicado; el aeróbico regular es por sí mismo preventivo de la migraña.",
           "fuente": "Varkey 2011 Cephalalgia; Amin 2018 J Headache Pain",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -383,7 +383,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -392,7 +392,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -456,7 +456,7 @@
             "Robaxisal (con paracetamol)"
           ],
           "umbral_mg": {
-            "alta": 1500
+            "alta": 4000
           }
         }
       ],
@@ -551,8 +551,8 @@
         },
         {
           "nivel": "alerta",
-          "texto": "Fiebre, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y consulte el mismo día (posible bajada de defensas). No entrene con esos síntomas.",
-          "fuente": "FT AEMPS 4.4",
+          "texto": "Fiebre, escalofríos, dolor de garganta intenso o llagas en la boca mientras lo toma: suspéndalo y acuda a un médico de inmediato (posible bajada grave de defensas, que puede aparecer incluso tras dejarlo). No entrene con esos síntomas.",
+          "fuente": "FT 4.4 · nota de seguridad AEMPS 2024 (agranulocitosis)",
           "evidencia": "ft",
           "revisado": true
         },
@@ -569,7 +569,7 @@
           "nivel": "info",
           "texto": "Sin limitación alejado de la toma.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -578,7 +578,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -672,7 +672,7 @@
           "nivel": "info",
           "texto": "El ejercicio regular potencia el efecto antidepresivo.",
           "fuente": "Schuch 2016 J Psychiatr Res; NICE NG222",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -681,7 +681,7 @@
           "nivel": "info",
           "texto": "Indicado.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -690,7 +690,7 @@
           "nivel": "info",
           "texto": "Indicado.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -699,7 +699,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -806,7 +806,7 @@
           "nivel": "info",
           "texto": "Muy recomendable (cinta, bici, caminar rápido) a intensidad moderada-alta si está en ON.",
           "fuente": "Schenkman 2018 JAMA Neurol (SPARX); Osborne 2022 (APTA guía Parkinson)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -815,7 +815,7 @@
           "nivel": "info",
           "texto": "Indicado, con énfasis en piernas, extensores y amplitud de movimiento.",
           "fuente": "Osborne 2022 (APTA guía Parkinson)",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -891,7 +891,7 @@
           "nivel": "info",
           "texto": "Los ejercicios de equilibrio y de habituación vestibular son el tratamiento con más evidencia para el vértigo crónico; los fármacos sedantes (cinarizina, sulpirida) usados de forma prolongada retrasan esa recuperación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -919,7 +919,7 @@
           "nivel": "info",
           "texto": "Sin limitación; evite cambios bruscos de posición de la cabeza al inicio.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -955,10 +955,7 @@
           "marcas": [
             "Champix",
             "Todacitan"
-          ],
-          "umbral_mg": {
-            "alta": 2
-          }
+          ]
         },
         {
           "id": "nicotina_sustitutiva",
@@ -1015,7 +1012,7 @@
           "nivel": "info",
           "texto": "Un paseo rápido o 10–20 minutos de ejercicio aeróbico reducen el deseo de fumar durante un rato (hasta una hora): úselo como herramienta en los momentos de más ganas.",
           "fuente": "Taylor 2007 Addiction (metaanálisis); Haasova 2013",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         },
         {
@@ -1063,7 +1060,7 @@
           "nivel": "info",
           "texto": "Indicado.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1072,7 +1069,7 @@
           "nivel": "info",
           "texto": "Sin limitación (con metadona, apoyo si hay somnolencia).",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1121,7 +1118,7 @@
           "si": {
             "principio": "melatonina"
           },
-          "texto": "Tómela 1–2 horas antes de acostarse; el ejercicio intenso en las 2 horas previas a dormir reduce su efecto.",
+          "texto": "Tómela 1–2 horas antes de acostarse. Evite el ejercicio intenso en las 2 horas previas a dormir: puede dificultar conciliar el sueño.",
           "fuente": "FT AEMPS 4.2",
           "evidencia": "ft",
           "revisado": true
@@ -1142,7 +1139,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.2",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1151,7 +1148,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.2",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1160,7 +1157,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.2",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1239,7 +1236,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1248,7 +1245,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1257,7 +1254,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],

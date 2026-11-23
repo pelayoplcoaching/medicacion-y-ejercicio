@@ -3,8 +3,8 @@
    «Para usted hoy»: hasta tres sugerencias según la lista, el plan y lo que queda por hacer.
    Se carga al abrirlo (botón «Más» de la barra inferior, «Herramientas» de la cabecera o Ctrl/⌘ + K). No guarda nada fuera
    del dispositivo: las favoritas van en localStorage («medex.favoritas»). Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230752";
-import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230752";
+import { t, idioma } from "./i18n.js?v=202611230800";
+import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230800";
 
 const TXT = {
   es: { titulo: "Herramientas", nuevo: "Nuevo", ultima: "Última", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",

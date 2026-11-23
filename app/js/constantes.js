@@ -3,8 +3,8 @@
    base: ADA 2024 para la glucosa alrededor del ejercicio, ESC 2024 y ACSM para la tensión; Tanaka 2001 y ACSM 2011 para
    el pulso) y una lista de valores para comentar con su médico, sin diagnosticar. Cada gráfica tiene lectura al pasar el
    dedo o el ratón y su tabla. Textos de la interfaz en los cinco idiomas dentro del módulo. Se carga al abrirlo. */
-import { t, idioma } from "./i18n.js?v=202611230752";
-import { tC } from "./tr.js?v=202611230752";
+import { t, idioma } from "./i18n.js?v=202611230800";
+import { tC } from "./tr.js?v=202611230800";
 
 /* ---------- datos ---------- */
 const DIA = 864e5;

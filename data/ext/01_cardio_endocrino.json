@@ -88,7 +88,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "ESC 2020 cardiología del deporte",
-          "evidencia": "revision",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -332,7 +332,7 @@
           },
           "texto": "No olvide ninguna toma: la retirada brusca de clonidina produce subidas de tensión y taquicardia que se agravan con el ejercicio.",
           "fuente": "ACSM GETP 11.ª ed., ap. A",
-          "evidencia": "guia",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -618,7 +618,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "ESC 2017 arteriopatía periférica",
-          "evidencia": "revision",
+          "evidencia": "guia",
           "revisado": true
         }
       ],
@@ -667,7 +667,7 @@
           "nivel": "alerta",
           "texto": "Para ejercicio prolongado o muy intenso (más de 60–90 minutos, competiciones, calor extremo) hable con su endocrinólogo sobre una dosis extra de hidrocortisona antes de la sesión (habitualmente 5–10 mg). Lleve siempre su tarjeta de insuficiencia suprarrenal e hidrocortisona de emergencia.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "ft",
+          "evidencia": "guia",
           "revisado": true
         },
         {
@@ -802,7 +802,7 @@
           "nivel": "info",
           "texto": "Sin limitación específica.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -818,7 +818,7 @@
         "G03C",
         "G03F"
       ],
-      "resumen": "Los estrógenos orales aumentan algo el riesgo de trombosis venosa, que la inmovilidad agrava y el ejercicio reduce. Por lo demás, no limitan el entrenamiento.",
+      "resumen": "Los estrógenos orales aumentan algo el riesgo de trombosis venosa, que la inmovilidad agrava. Mantenerse activo ayuda. Por lo demás, no limitan el entrenamiento.",
       "senales": [
         "trombosis"
       ],
@@ -866,9 +866,9 @@
       "general": [
         {
           "nivel": "info",
-          "texto": "El ejercicio regular reduce el riesgo de trombosis asociado a los estrógenos. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico.",
-          "fuente": "ESC 2019 embolia pulmonar (factores de riesgo) · ACSM GETP 11.ª ed.",
-          "evidencia": "guia",
+          "texto": "Los estrógenos por vía oral aumentan algo el riesgo de trombosis. Mantenerse activo y evitar la inmovilidad prolongada ayuda a reducirlo. En viajes largos o periodos de inmovilidad (lesión, cirugía) coméntelo con su médico.",
+          "fuente": "Revisión clínica · FT 4.4",
+          "evidencia": "revision",
           "revisado": true
         },
         {
@@ -894,7 +894,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -903,7 +903,7 @@
           "nivel": "info",
           "texto": "Muy recomendable en la menopausia para proteger hueso y masa muscular.",
           "fuente": "Beck 2017 (ESSA) ejercicio y osteoporosis",
-          "evidencia": "guia",
+          "evidencia": "revision",
           "revisado": true
         }
       ],
@@ -912,7 +912,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -974,7 +974,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -992,7 +992,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1067,7 +1067,7 @@
           "si": {
             "principio": "raloxifeno"
           },
-          "texto": "Raloxifeno aumenta el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte ante dolor e hinchazón de una pantorrilla.",
+          "texto": "Raloxifeno y bazedoxifeno aumentan el riesgo de trombosis venosa: evite la inmovilidad prolongada y consulte de urgencia ante dolor e hinchazón de una pantorrilla o falta de aire brusca.",
           "fuente": "FT AEMPS 4.4",
           "evidencia": "ft",
           "revisado": true
@@ -1168,7 +1168,7 @@
           "nivel": "info",
           "texto": "Sin limitación; con repaglinida, precauciones de hipoglucemia.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1177,7 +1177,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1186,7 +1186,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1229,7 +1229,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.8",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1247,7 +1247,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.8",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1312,7 +1312,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1321,7 +1321,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1330,7 +1330,7 @@
           "nivel": "info",
           "texto": "Sin limitación.",
           "fuente": "FT AEMPS 4.5",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1414,7 +1414,7 @@
           "nivel": "info",
           "texto": "Sin limitación; cargas moderadas.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1493,7 +1493,7 @@
           "nivel": "info",
           "texto": "Sin limitación; hidratación normal.",
           "fuente": "FT AEMPS 4.4",
-          "evidencia": "revision",
+          "evidencia": "ft",
           "revisado": true
         }
       ],
@@ -1607,7 +1607,7 @@
       },
       "nivel": "precaucion",
       "titulo": "Varios fármacos que aumentan el riesgo de trombosis",
-      "texto": "Toma {n} fármacos que aumentan el riesgo de trombosis venosa. El ejercicio regular lo reduce; evite periodos largos sentado o inmóvil y consulte ante dolor e hinchazón de una pierna o falta de aire súbita.",
+      "texto": "Toma {n} fármacos que aumentan el riesgo de trombosis venosa. Manténgase activo, evite periodos largos sentado o inmóvil y consulte de urgencia ante dolor e hinchazón de una pierna o falta de aire súbita.",
       "ambitos": [
         "general"
       ],
@@ -1653,7 +1653,7 @@
       },
       "nivel": "precaucion",
       "titulo": "Varios fármacos que bajan las defensas",
-      "texto": "Toma {n} fármacos que reducen las defensas. El ejercicio moderado las mejora; el muy intenso y prolongado las baja temporalmente. Evite entrenar con fiebre o infección activa, cuide la higiene en gimnasios y piscinas, y consulte ante heridas que no curan.",
+      "texto": "Toma {n} fármacos que reducen las defensas. El ejercicio moderado es seguro y recomendable. Evite entrenar con fiebre o infección activa, cuide la higiene en gimnasios y piscinas, y consulte ante heridas que no curan.",
       "ambitos": [
         "general"
       ],
