@@ -13,7 +13,7 @@
    - Sedantes, hipotensores y efecto anticolinérgico «según la base»: las señales ya revisadas; anticoagulantes: su familia en la base
      (que ya dice que con ellos una caída puede tener consecuencias graves). No son una escala.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611222326";
+import { idioma, t } from "./i18n.js?v=202611230006";
 
 const TXT = {
   es: { titulo: "Caídas y carga anticolinérgica", borrador: "Borrador pendiente de revisión clínica", intro: "Para revisar la medicación de una persona con riesgo de caídas. No decide por usted: ordena lo que hay en la lista.", sin_meds: "Añada la medicación para ver el panel.", c_frid: "en clases de STOPPFall", c_cals: "carga anticolinérgica (CALS)", c_sed: "con efecto sedante", c_hipo: "que bajan la tensión", relevante: "clínicamente relevante (3 o más)", no_relevante: "por debajo de 3",

@@ -1191,6 +1191,43 @@ console.log("\nEnciclopedia pública «X y ejercicio» (segunda tanda, 19)");
   check("la enciclopedia no entra en la precarga (se guarda al visitarla) y su hoja de estilos es propia y pequeña", !sw.includes("enciclopedia") && fs.statSync(path.join(dir, "enc.css")).size < 9000 && fs.statSync(path.join(dir, "enc.js")).size < 1500);
 }
 
+console.log("\nContenido clínico en inglés (segunda tanda, 20)");
+{
+  const CO = await import(pathToFileURL(path.join(ROOT, "app/js/contenido.js")).href);
+  const { MODS, cadenas } = await import(pathToFileURL(path.join(ROOT, "scripts/contenido_modulos.mjs")).href);
+  const D = JSON.parse(fs.readFileSync(path.join(ROOT, "app/data/en/contenido.json"), "utf8")), mem = JSON.parse(fs.readFileSync(path.join(ROOT, "scripts/trad_en/memoria.json"), "utf8"));
+  const AMB = ["general", "aerobico", "fuerza", "equilibrio"], pares = Object.values(mem), igual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  check("la huella del texto es la misma en el navegador y en el generador (FNV-1a de 32 bits sobre UTF-8)", CO.huella("") === "811c9dc5" && CO.huella("a") === "e40c292c" && Object.entries(mem).every(([k, v]) => CO.huella(v.es) === k));
+  const enUso = new Set([kb.aviso, ...Object.values(kb.niveles).map((n) => n.etiqueta), ...Object.values(kb.senales), ...kb.clases.flatMap((c) => [c.nombre, c.resumen, ...AMB.flatMap((a) => (c[a] || []).map((r) => r.texto)), ...c.principios.flatMap((p) => [p.nombre, p.nota, ...(p.horario?.evitar || []).map((h) => h.motivo)])]), ...kb.reglas_combinadas.flatMap((r) => [r.titulo, r.texto]), ...ddiCurado.interacciones.flatMap((x) => [x.efecto, x.accion])].filter((s) => typeof s === "string" && s.trim()));
+  const sin = [...enUso].filter((s) => !D.h[CO.huella(s)]);
+  check(`está montado con la versión actual de la base y traduce sus textos (${enUso.size - sin.length} de ${enUso.size}; si cambia kb.json, repetir scripts/contenido_en.py)`, D.version === kb.version && sin.length <= enUso.size * 0.02 && D.n === Object.keys(D.h).length, sin.slice(0, 3).join(" | "));
+  const deMods = new Set(); for (const m of MODS) for (const s of cadenas(await import(pathToFileURL(path.join(ROOT, "app/js", m + ".js")).href))) deMods.add(s);
+  const sinMod = [...deMods].filter((s) => !D.h[CO.huella(s)]);
+  check(`y el contenido de los ${MODS.length} módulos que se abren con data-abre (${deMods.size - sinMod.length} de ${deMods.size} textos)`, deMods.size > 450 && sinMod.length <= deMods.size * 0.02, sinMod.slice(0, 3).join(" | "));
+  const nums = (s) => (s.match(/\d+(?:[.,]\d+)?/g) || []).map((x) => x.replace(",", ".")).sort().join(), marc = (s) => (s.match(/\{[a-z_0-9]+\}/g) || []).sort().join();
+  const malos = pares.filter((v) => nums(v.es) !== nums(v.en) || marc(v.es) !== marc(v.en) || !v.en.trim());
+  check(`cada traducción conserva las cifras y los marcadores del original (${pares.length} textos)`, pares.length >= 2500 && malos.length === 0, malos.slice(0, 2).map((v) => v.es.slice(0, 60)).join(" | "));
+  const esp = pares.filter((v) => /[¿¡]|\b(usted|tome|evite|consulte|también|médico|fármacos?)\b/i.test(v.en));
+  check("ninguna traducción se ha quedado en español y el 112 se mantiene donde estaba", esp.length === 0 && pares.filter((v) => /\b112\b/.test(v.es)).length >= 3 && pares.filter((v) => /\b112\b/.test(v.es)).every((v) => /\b112\b/.test(v.en)), esp.slice(0, 3).map((v) => v.en.slice(0, 60)).join(" | "));
+  const kbE = structuredClone(kb), ddiE = structuredClone(ddiCurado), T = CO.traducir(kbE, ddiE, D);
+  const mapa = (k) => new Map(k.clases.flatMap((c) => c.principios.map((p) => [p.id, p]))), pe = mapa(kbE), ps = mapa(kb), cambiados = [...ps.keys()].filter((id) => pe.get(id).nombre !== ps.get(id).nombre);
+  check("la base traducida conserva identificadores, niveles, condiciones, fuentes y combinaciones; solo cambian los textos", kbE.clases.every((c, i) => c.id === kb.clases[i].id && AMB.every((a) => (c[a] || []).length === (kb.clases[i][a] || []).length && (c[a] || []).every((r, j) => { const o = kb.clases[i][a][j]; return r.nivel === o.nivel && r.fuente === o.fuente && r.evidencia === o.evidencia && igual(r.si, o.si) && r.texto !== o.texto; }))) && igual(kbE.combinaciones, kb.combinaciones) && igual(Object.keys(kbE.senales), Object.keys(kb.senales)) && kbE.reglas_combinadas.every((r, i) => { const o = kb.reglas_combinadas[i]; return igual({ ...r, titulo: 0, texto: 0 }, { ...o, titulo: 0, texto: 0 }) && r.texto !== o.texto; }) && ddiE.interacciones.every((x, i) => { const o = ddiCurado.interacciones[i]; return igual({ ...x, efecto: 0, accion: 0 }, { ...o, efecto: 0, accion: 0 }) && x.efecto !== o.efecto; }));
+  const iE = construirIndice(kbE, []);
+  check(`el nombre español de cada principio traducido queda como alias: el buscador lo encuentra en los dos idiomas (${cambiados.length} nombres)`, cambiados.length > 150 && cambiados.every((id) => pe.get(id).alias.includes(ps.get(id).nombre)) && buscar(iE, "metformina")[0]?.pid === "metformina" && buscar(iE, "metformin")[0]?.pid === "metformina" && pe.get("metformina").nombre === "Metformin" && !ps.get("metformina").alias?.includes("Metformina"));
+  const lista = [["bisoprolol", 5], ["enalapril", 20], ["metformina", 1700], ["acenocumarol", 4], ["atorvastatina", 40], ["lorazepam", 1], ["furosemida", 40]].map(([pid, dosis]) => ({ pid, dosis })), ctx = { edad: 72, condiciones: new Set(["hipertension", "diabetes"]) };
+  const rS = evaluar(datos, lista, ctx), rE = evaluar({ kb: kbE, ddiCurado: ddiE, ddi: { pares: [] }, indice: iE }, lista, ctx);
+  const forma = (r) => JSON.stringify([r.items.map((it) => [it.principio.id, it.dosisCat, [...it.senales].sort()]), Object.entries(r.ambitos).map(([a, l]) => [a, l.map((x) => [x.item.principio.id, (x.reglas || []).map((g) => [g.nivel, g.fuente])])]), r.combinadas.map((x) => x.regla.id), r.interacciones.map((x) => [x.a.principio.id, x.b.principio.id, x.nivel].join()), r.resumen]);
+  check("el motor da el mismo informe con la base en inglés (fármacos, señales, niveles, fuentes, interacciones y reglas combinadas); solo cambian los textos", rS.items.length === 7 && forma(rS) === forma(rE) && rE.ambitos.general[0].reglas[0].texto !== rS.ambitos.general[0].reglas[0].texto && /^You take 3 medicines/.test(rE.combinadas[0].texto) && /lactic acidosis/.test(rE.interacciones.map((x) => x.efecto).join()));
+  check("el aviso de la base dice en inglés que la traducción no está revisada", kbE.aviso.endsWith(CO.NOTA) && /not been clinically reviewed/.test(CO.NOTA) && kbE.aviso.startsWith(D.h[CO.huella(kb.aviso)]) && T.n === D.n);
+  const o = { TXT: { es: { a: "Benzodiacepinas" } }, FUENTES: { x: { txt: "Benzodiacepinas" } }, L: [{ n: "Benzodiacepinas", id: "benzodiacepinas", f: () => 1 }], s: new Set(["Benzodiacepinas"]) }, t2 = CO.traductor(D.h); t2.trObj(o);
+  check("en los módulos se traduce el contenido y no la interfaz (TXT), las fuentes ni los identificadores; lo que no tiene traducción se queda como está", o.L[0].n === "Benzodiazepines" && o.L[0].id === "benzodiacepinas" && o.TXT.es.a === "Benzodiacepinas" && o.FUENTES.x.txt === "Benzodiacepinas" && o.s.has("Benzodiacepinas") && t2.tr("texto sin traducción") === "texto sin traducción" && t2.tr("Benzodiacepinas") === "Benzodiazepines");
+  const appJs = fs.readFileSync(path.join(ROOT, "app/js/app.js"), "utf8"), sw = fs.readFileSync(path.join(ROOT, "app/sw.js"), "utf8");
+  check("los módulos de la lista son los registrados en la aplicación", (appJs.match(/\n  [a-z]+: \(\) => import\("\.\/[a-z]+\.js/g) || []).length === MODS.length && MODS.every((m) => appJs.includes(`\n  ${m}: () => import("./${m}.js`)));
+  check("solo se descarga con la interfaz en inglés, al cambiar de idioma se recarga y los módulos se traducen al abrirse", /if \(idioma\(\) === "en"\) try \{ en = await \(await import\("\.\/contenido\.js\?v=\d+"\)\)\.aplicar\(kb, ddiCurado\); \} catch/.test(appJs) && /\(idioma\(\) === "en"\) !== !!datos\.en\) \{ location\.reload\(\); return; \}/.test(appJs) && /datos\?\.en\?\.trObj\(M\), M\.abrir\(api\(\), arg\)/.test(appJs) && !/from "\.\/contenido\.js/.test(appJs));
+  const tam = fs.statSync(path.join(ROOT, "app/data/en/contenido.json")).size / 1024;
+  check(`el diccionario (${Math.round(tam)} KB) no entra en la precarga: se guarda la primera vez que se usa`, !sw.includes("data/en") && tam < 400 && fs.statSync(path.join(ROOT, "app/js/contenido.js")).size < 4500);
+}
+
 console.log("\nPDF con infografías (mejora grande 18)");
 {
   const PDF = await import(pathToFileURL(path.join(ROOT, "app/js/pdf.js")).href);

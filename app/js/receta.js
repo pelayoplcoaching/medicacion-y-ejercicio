@@ -10,9 +10,9 @@
      (Kanaley 2022, Brooke-Wavell 2022, Campbell 2019, Mottola 2018).
    CONTENIDO CLÍNICO NUEVO (el resumen en celdas y las frases de las guías): BORRADOR PENDIENTE DE REVISIÓN CLÍNICA.
    Contenido en español, como la base; la interfaz, en cinco idiomas. */
-import { idioma, t } from "./i18n.js?v=202611222326";
-import { ALARMA } from "./engine.js?v=202611222326";
-import { APP_VERSION } from "./version.js?v=202611222326";
+import { idioma, t } from "./i18n.js?v=202611230006";
+import { ALARMA } from "./engine.js?v=202611230006";
+import { APP_VERSION } from "./version.js?v=202611230006";
 
 const TXT = {
   es: { titulo: "Receta de ejercicio por enfermedad", borrador: "Borrador pendiente de revisión clínica", intro: "La dosis de ejercicio de referencia para cada situación y lo que cambia con ella. Es orientativa: no sustituye la valoración de su médico.", sus: "Sus situaciones", otras: "Otras situaciones", todas: "Elija una situación", dosis: "Dosis de referencia", th_f: "Frecuencia", th_i: "Intensidad", th_t: "Tiempo", th_tipo: "Tipo", aer: "Aeróbico", fue: "Fuerza", eq: "Equilibrio", leyenda: "En negrita, lo que cambia con esta situación; el resto es la recomendación general de la OMS.", manda: "Lo específico de abajo manda sobre la tabla.",
@@ -35,12 +35,12 @@ export const tx = (k, vars) => { let s = TXT[idioma()]?.[k] ?? TXT.es[k] ?? k; i
 
 /** Recomendación general de la OMS 2020 para adultos (también con enfermedades crónicas) y, desde los 65 años, equilibrio. */
 export const BASE = {
-  aer: { f: "Repartido en la semana, como mejor le venga", i: "Moderada (o intensa)", t: "150–300 minutos a la semana (o 75–150 si es intensa)", tipo: "Caminar a paso ligero, bicicleta, nadar, bailar" },
+  aer: { f: "Repartido en la semana, como mejor le venga", i: "Moderada (o intensa)", t: "150–300 minutos a la semana (o 75–150 si es intensa)", tipo: "Caminar a paso ligero, bicicleta, nadar, bailar", t_sin: "150–300 minutos a la semana" },
   fue: { f: "Al menos 2 días a la semana", i: "Moderada o mayor", t: "Los grandes grupos musculares", tipo: "Propio peso, bandas, mancuernas o máquinas" },
   eq: { f: "3 o más días a la semana, desde los 65 años", i: "—", t: "—", tipo: "Actividad variada que combine equilibrio y fuerza" },
 };
-/** Tiempo general cuando la situación fija su propia intensidad (no se ofrece la variante «intensa»). */
-export const T_SIN_INTENSA = "150–300 minutos a la semana";
+/** Tiempo general cuando la situación fija su propia intensidad (no se ofrece la variante «intensa»). Vive en BASE.aer.t_sin para que se pueda traducir. */
+export const T_SIN_INTENSA = BASE.aer.t_sin;
 export const FUENTES = {
   oms: { txt: "Bull et al. Guía de la OMS 2020 de actividad física y sedentarismo. Br J Sports Med 2020", doi: "10.1136/bjsports-2020-102955" },
   pescatello: { txt: "Pescatello et al. ACSM position stand: exercise and hypertension. Med Sci Sports Exerc 2004", doi: "10.1249/01.mss.0000115224.88514.3a" },
@@ -86,7 +86,7 @@ const COLS = ["f", "i", "t", "tipo"];
 /** Tabla FITT de una situación: [{ fila: "aer" | "fue" | "eq", celdas: [{ col, txt, propio }] }] (propio = cambia con la situación). */
 export function tabla(id) {
   const s = situacion(id); if (!s) return [];
-  return ["aer", "fue", "eq"].filter((f) => f !== "eq" || s.eq !== false).map((f) => ({ fila: f, celdas: COLS.map((col) => { const propio = s.c?.[f]?.[col]; return { col, txt: propio || (f === "aer" && col === "t" && s.c?.aer?.i ? T_SIN_INTENSA : BASE[f][col]), propio: !!propio }; }) }));
+  return ["aer", "fue", "eq"].filter((f) => f !== "eq" || s.eq !== false).map((f) => ({ fila: f, celdas: COLS.map((col) => { const propio = s.c?.[f]?.[col]; return { col, txt: propio || (f === "aer" && col === "t" && s.c?.aer?.i ? BASE.aer.t_sin : BASE[f][col]), propio: !!propio }; }) }));
 }
 /** Fuentes que respaldan la receta de una situación: la OMS, la suya propia (si la hay) y las de sus notas. */
 export const fuentesDe = (id) => { const s = situacion(id); return s ? [...new Set(["oms", s.f, ...(s.notas || []).map((n) => n.f), "pedersen"].filter(Boolean))].map((k) => FUENTES[k]) : []; };

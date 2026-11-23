@@ -74,10 +74,41 @@ const paralelos = Promise.all([
     await po.fill("#buscar", "sintrom"); await po.waitForSelector("#sugerencias li", { timeout: 8000 });
     check("sin conexión: busca por marca comercial (nomenclátor en caché)", /sintrom|acenocumarol/i.test(await po.textContent("#sugerencias")));
     await po.keyboard.press("Escape");
-    await po.selectOption("#idioma", "en"); await po.waitForTimeout(500);
-    check("sin conexión: se puede cambiar a inglés (diccionario precargado)", await po.evaluate(() => document.documentElement.lang) === "en" && (await po.textContent('[data-tab="cuando"]')).includes("When"));
+    // desde la v1.3.19, al pasar a inglés (o volver de él) la página se recarga para cargar el contenido clínico en ese idioma: aquí, desde la caché
+    await Promise.all([po.waitForEvent("load", { timeout: 10000 }).catch(() => {}), po.selectOption("#idioma", "en")]);
+    await po.waitForFunction(() => document.documentElement.lang === "en" && /\d/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 10000 }).catch(() => {});
+    check("sin conexión: se puede cambiar a inglés (diccionario precargado); la página se recarga desde la caché y, sin el contenido en inglés guardado, la base sigue en español", await po.evaluate(() => document.documentElement.lang) === "en" && (await po.textContent('[data-tab="cuando"]')).includes("When") && await po.isVisible("#buscar") && !/translation has not/.test(await po.textContent("#aviso")));
     await offCtx.setOffline(false);
     await offCtx.close();
+  }),
+  bloque("Contenido clínico en inglés (segunda tanda, 20; en paralelo)", async (check) => {
+    const iCtx = await navegador.newContext({ viewport: { width: 1280, height: 900 }, locale: "es-ES" }); const pi = await iCtx.newPage();
+    const errI = [], pedidos = []; pi.on("pageerror", (e) => errI.push(e.message)); pi.on("request", (r) => { if (/contenido\.js|data\/en\//.test(r.url())) pedidos.push(r.url()); });
+    await iCtx.addInitScript(() => { try { localStorage.setItem("medex.guia", "1"); } catch {} });
+    const lista = () => pi.waitForFunction(() => /v\d/.test(document.querySelector("#kb-version")?.textContent || ""), null, { timeout: 15000 });
+    const informe = () => pi.evaluate(() => document.querySelector("#contenido-tab")?.innerText || "");
+    const abre = async (m) => { await pi.evaluate((m) => { document.querySelectorAll("dialog[open]").forEach((d) => d.close()); const b = document.createElement("button"); b.dataset.abre = m; b.hidden = true; document.body.append(b); b.click(); b.remove(); }, m); await pi.waitForSelector(`dialog#${m}[open]`, { timeout: 8000 }); await pi.waitForTimeout(200); return (await pi.$eval(`dialog#${m}`, (d) => d.innerText)).replace(/\s+/g, " "); };
+    await pi.goto(`http://localhost:${PORT}/`, { waitUntil: "networkidle" }); await lista();
+    await pi.click("#btn-anadir"); await pi.click("#btn-pegar"); await pi.fill("#pegar", "Bisoprolol 5 mg 1-0-0\nMetformina 850 mg 1-0-1\nSintrom 4 mg 0-0-1\nFurosemida 40 mg 1-0-0"); await pi.click("#btn-importar"); await pi.waitForFunction(() => /\d/.test(document.querySelector("#pegar-aviso")?.textContent || ""), null, { timeout: 8000 }); await pi.waitForTimeout(300);
+    check("en español no se descarga nada del inglés y el informe está en español", pedidos.length === 0 && /Betabloqueantes/.test(await informe()) && !/translation/.test(await pi.textContent("#aviso")));
+    await Promise.all([pi.waitForEvent("load", { timeout: 15000 }), pi.selectOption("#idioma", "en")]); await lista(); await pi.waitForTimeout(400);
+    check("al elegir inglés la página se recarga y descarga el módulo y el diccionario; la lista sigue ahí", pedidos.some((u) => /js\/contenido\.js\?v=/.test(u)) && pedidos.some((u) => /data\/en\/contenido\.json/.test(u)) && (await pi.$$("#lista-meds li")).length === 4 && (await pi.evaluate(() => document.documentElement.lang)) === "en", pedidos.join());
+    const inf = await informe(), listaTxt = (await pi.textContent("#lista-meds")).replace(/\s+/g, " ");
+    check("el informe sale en inglés: familias, reglas y nombres de los medicamentos", /Beta-blockers/.test(inf) && /how hard the effort feels/.test(inf) && !/Betabloqueantes|guíese por la sensación/.test(inf) && /Metformin\b/.test(listaTxt) && /Acenocoumarol/.test(listaTxt) && /Loop diuretics/.test(listaTxt), inf.slice(0, 200));
+    check("el aviso de la base dice que la traducción no está revisada", /translation has not been clinically reviewed/.test(await pi.textContent("#aviso")));
+    await pi.click('[data-tab="interacciones"]'); await pi.waitForTimeout(300);
+    check("las interacciones, también: efecto y qué hacer", /Dehydration from diuretics increases the risk of lactic acidosis/.test(await informe()) && /stop metformin temporarily/.test(await informe()));
+    await pi.fill("#buscar", "metformina"); await pi.waitForSelector("#sugerencias li"); const sEs = await pi.textContent("#sugerencias");
+    await pi.fill("#buscar", "oral iron"); await pi.waitForSelector("#sugerencias li"); const sEn = await pi.textContent("#sugerencias");
+    check("el buscador encuentra los medicamentos por su nombre en inglés y en español", /Metformin/.test(sEs) && /Oral iron/.test(sEn));
+    await pi.fill("#buscar", ""); await pi.keyboard.press("Escape");
+    const mitos = await abre("mitos"), escalas = await abre("escalas"), dolor = await abre("dolor");
+    check("los módulos que se abren con data-abre traducen su contenido al abrirse (mitos, escalas, «Me duele…»)", /With a beta-blocker the pulse does not rise, so exercise does nothing for me/.test(mitos) && /Sarcopenia \(low muscle strength\)/.test(escalas) && /Physical activity vital sign/.test(escalas) && /Lower back/.test(dolor) && !/Con un betabloqueante|poca fuerza muscular/.test(mitos + escalas));
+    await pi.evaluate(() => document.querySelectorAll("dialog[open]").forEach((d) => d.close()));
+    await Promise.all([pi.waitForEvent("load", { timeout: 15000 }), pi.selectOption("#idioma", "es")]); await lista(); await pi.waitForTimeout(400);
+    check("al volver a español se recarga y todo vuelve al original", /Betabloqueantes/.test(await informe()) && !/translation has not/.test(await pi.textContent("#aviso")) && (await pi.$$("#lista-meds li")).length === 4 && /Con un betabloqueante el pulso no sube/.test(await abre("mitos")));
+    check("sin errores de JavaScript en ninguno de los dos sentidos", errI.length === 0, errI.join(" | ").slice(0, 200));
+    await iCtx.close();
   }),
   bloque("Enciclopedia pública y enlaces de entrada (segunda tanda, 19; en paralelo)", async (check) => {
     const eCtx = await navegador.newContext({ viewport: { width: 390, height: 844 }, locale: "es-ES", serviceWorkers: "block" }); const pe = await eCtx.newPage();
@@ -1034,10 +1065,10 @@ try {
   await p.reload({ waitUntil: "networkidle" }); await p.waitForFunction(() => document.querySelector("#kb-version").textContent.includes("v"), null, { timeout: 15000 });
   check("lista restaurada tras recargar", (await p.$$("#lista-meds li")).length === 6);
   check("cabecera compacta en la segunda visita", await p.$eval("html", (e) => e.classList.contains("retorno")));
-  await p.selectOption("#idioma", "en");
-  await p.waitForFunction(() => document.documentElement.lang === "en", null, { timeout: 5000 }).catch(() => {}); // el diccionario inglés se descarga al elegirlo
-  check("interfaz en inglés (diccionario descargado al elegirlo)", (await p.textContent('[data-tab="cuando"]')).includes("When"));
-  await p.selectOption("#idioma", "es");
+  const listaEn = (l) => p.waitForFunction((l) => document.documentElement.lang === l && document.querySelector("#kb-version").textContent.includes("v"), l, { timeout: 15000 }).catch(() => {});
+  await Promise.all([p.waitForEvent("load", { timeout: 15000 }).catch(() => {}), p.selectOption("#idioma", "en")]); await listaEn("en"); // el diccionario inglés se descarga al elegirlo y la página se recarga con el contenido clínico en inglés
+  check("interfaz en inglés (diccionario descargado al elegirlo) y, tras recargarse sola, la lista sigue ahí con el contenido en inglés", (await p.textContent('[data-tab="cuando"]')).includes("When") && (await p.$$("#lista-meds li")).length === 6 && /translation has not been clinically reviewed/.test(await p.textContent("#aviso")));
+  await Promise.all([p.waitForEvent("load", { timeout: 15000 }).catch(() => {}), p.selectOption("#idioma", "es")]); await listaEn("es");
   const [dl] = await Promise.all([p.waitForEvent("download"), p.click("#btn-calendario")]);
   check("plan .ics descargable", dl.suggestedFilename().endsWith(".ics"));
 

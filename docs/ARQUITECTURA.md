@@ -69,6 +69,8 @@ app/
     escalas.js          escalas rápidas de cribado: FRAIL, SARC-F, tres preguntas de caídas (STEADI) y constante vital de actividad física, con resultado guardado; bajo demanda, por data-abre (v1.3.16)
     receta.js           receta de ejercicio por enfermedad: tabla FITT de las 18 situaciones (OMS 2020 + reglas revisadas de la base), lo que añade cada guía y hoja para imprimir; bajo demanda, por data-abre (v1.3.17)
     enciclopedia/       enciclopedia pública «X y ejercicio»: 460 páginas estáticas generadas desde la base revisada por scripts/build_enciclopedia.py (repetir cuando cambie kb.json), con enc.css y enc.js propios; fuera de la precarga (v1.3.18)
+    js/contenido.js     contenido clínico en inglés, bajo demanda (solo con la interfaz en inglés): descarga data/en/contenido.json (huella del texto en español → inglés) y traduce en sitio la base, las interacciones y el contenido de los módulos de MODULOS; traducción sin revisión clínica, avisada en el aviso de la base (v1.3.19)
+    data/en/            contenido.json: diccionario que monta scripts/contenido_en.py desde scripts/trad_en/memoria.json; fuera de la precarga (v1.3.19)
     i18n.js             diccionario español (respaldo de todas las claves) y aplicación al DOM
     i18n/en|ca|gl|eu.js diccionarios de los demás idiomas; se descargan solo al elegirlos (index.html precarga el activo)
     libs.js             carga perezosa de bibliotecas externas

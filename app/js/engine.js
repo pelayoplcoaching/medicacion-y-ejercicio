@@ -363,7 +363,7 @@ export const ALARMA = [
   "Dolor articular u óseo agudo, o un golpe en la cabeza si toma anticoagulantes.",
 ];
 
-const ACCION = /\b(enfriamiento|mida|evite|evitar|beba|lleve|no entrene|no haga|no use|haga|tome|consulte|pare|use|guíese|hidrat|pésese|reduzca|espere|prefiera|comente|acuda|respete|póngase|descanse|avise|pida|cambios de posición|siempre con|suspenda|levántese|mantenga|aumente)\b/i;
+const ACCION = /\b(enfriamiento|mida|evite|evitar|beba|lleve|no entrene|no haga|no use|haga|tome|consulte|pare|use|guíese|hidrat|pésese|reduzca|espere|prefiera|comente|acuda|respete|póngase|descanse|avise|pida|cambios de posición|siempre con|suspenda|levántese|mantenga|aumente|avoid|drink|carry|do not|use|take|check|stop|ask|measure|keep|go by|cool down|wear|reduce|wait|prefer|tell|rest|always|make sure|stand up|increase)\b/i;
 
 /** Frase más útil de un texto: la primera que contiene una acción; si no, la primera. */
 function primeraFrase(txt, max = 190) {
