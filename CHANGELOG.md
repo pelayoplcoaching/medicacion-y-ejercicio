@@ -2,6 +2,14 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.25 · 2026-11-23 · Validación externa: puntos que quedaban por decidir
+- **Dolor en el pecho en el diario:** se puede apuntar al registrar una sesión, muestra su aviso (no volver a entrenar hasta consultarlo; 112 si no cede) y frena la subida del programa de 12 semanas, cuyas reglas ya lo nombran en los cinco idiomas.
+- **Escitalopram con antipsicóticos:** interacción nueva de nivel «mayor», igual que la de citalopram (la ficha técnica contraindica asociarlo a fármacos que alargan el QT).
+- **Captopril:** fuera «tómelo con el estómago vacío» (la ficha permite tomarlo con o sin comida).
+- **Raloxifeno/bazedoxifeno:** sin umbral de «dosis alta» (ambos tienen una sola dosis).
+- **Metoprolol:** se quita el enlace a la ficha técnica, que era de una combinación con felodipino.
+- La hoja de revisión avisa en las filas en microgramos de que el umbral va en mg.
+
 ## 1.3.24 · 2026-11-23 · Validación clínica externa de la base de medicamentos: 44 correcciones
 - Se aplica la validación externa del 23/11/2026 sobre la base de conocimiento (1.666 filas revisadas): 20 reglas, 6 umbrales, 6 reglas combinadas, 7 interacciones y 5 resúmenes de clase. Base 2026.11.23. La hoja del validador y sus comentarios quedan en `data/revision/`.
 - **Seguridad:** insulina (las reducciones de dosis del consenso estaban atribuidas al ejercicio moderado cuando eran las del suave; fuera galletas y plátano como azúcar rápido), fluoroquinolonas (el daño del tendón puede aparecer meses después; consultar de inmediato), metamizol (atención inmediata), nevirapina (reacciones graves de las primeras 18 semanas e inducción enzimática), raloxifeno y bazedoxifeno, insuficiencia cardiaca en clase III–IV (no empezar con síntomas en reposo o tras un ingreso reciente).

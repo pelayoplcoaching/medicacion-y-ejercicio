@@ -1,6 +1,6 @@
 /* Motor de reglas: medicación + dosis + contexto → informe.
    Sin dependencias. Se usa igual en la app y en tests. */
-import { tC, tL } from "./tr.js?v=202611230800";
+import { tC, tL } from "./tr.js?v=202611230816";
 
 export const ORDEN_NIVEL = { alerta: 3, precaucion: 2, info: 1 };
 export const ORDEN_DDI = { mayor: 3, moderada: 2, menor: 1 };
@@ -477,11 +477,13 @@ export const SINTOMAS = tC([
   { id: "tendon", nombre: "Dolor en un tendón (talón, hombro)", senales: ["tendon", "corticoide"], consejo: "Algunos antibióticos (quinolonas) y los corticoides debilitan los tendones. Pare la actividad que lo provoca, no estire con dolor y consulte: con dolor agudo en el talón hay que descartar rotura del Aquiles." },
   { id: "inestabilidad", nombre: "Inestabilidad o miedo a caerme", senales: ["caidas", "sedacion", "hipotension", "anticolinergico"], consejo: "El entrenamiento de equilibrio es la mejor prevención, siempre con apoyo al alcance. Revise con su médico los fármacos que dan sueño o bajan la tensión: a menudo se puede reducir alguno. Zapatillas con suela firme y luz suficiente." },
   { id: "piel", nombre: "Quemaduras solares con poco sol", senales: ["fotosensibilidad"], consejo: "Fotosensibilidad por el fármaco: entrene a la sombra o a primera hora, con protector solar 50 y ropa que cubra; si aparece una erupción, consulte." },
+  /* solo para el diario (validación externa, 23/11/2026): se puede apuntar tras una sesión y frena la subida del programa; no sale en «Si nota algo al entrenar» */
+  { id: "dolor_pecho", nombre: "Dolor u opresión en el pecho", senales: [], soloDiario: true, consejo: "Dolor en el pecho con el esfuerzo: no vuelva a entrenar hasta consultarlo. Si no cede en pocos minutos al parar, o viene con sudor frío, náuseas o falta de aire, llame al 112." },
 ]);
 
 /** Para cada síntoma, los fármacos de la lista que podrían explicarlo (por sus señales). */
 export function sintomasPosibles(res) {
-  return SINTOMAS.map((s) => {
+  return SINTOMAS.filter((s) => !s.soloDiario).map((s) => {
     const farmacos = res.items.filter((it) => s.senales.some((x) => it.senales.has(x))).map((it) => it.principio.nombre);
     return { ...s, farmacos };
   });

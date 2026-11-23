@@ -150,7 +150,7 @@ def main(out: Path, pendientes=False):
         for p in c["principios"]:
             if p["id"].startswith("atc:") or (pendientes and not c.get("tipo")):
                 continue
-            filas.append([c["nombre"], p["nombre"], ", ".join(p.get("marcas", [])[:6]), p.get("unidad", "mg"),
+            filas.append([c["nombre"], p["nombre"], ", ".join(p.get("marcas", [])[:6]), (p["unidad"] + " (ojo: el umbral de esta fila va en mg; 0,15 = 150 mcg)" if p.get("unidad", "mg").startswith(("mcg", "µg")) else p.get("unidad", "mg")),
                           p.get("umbral_mg", {}).get("alta"), p.get("nota", ""), FICHAS.get(p["id"], ""), "", "", "", f"principio|{c['id']}|{p['id']}"])
     hoja(wb, "Umbrales", ["Grupo", "Principio activo", "Marcas", "Unidad", "Dosis alta a partir de (por día)", "Nota", "Ficha técnica", "ESTADO", "UMBRAL NUEVO", "COMENTARIO"], filas,
          [30, 34, 34, 10, 16, 50, 24, 11, 14, 30], rev_desde=8)

@@ -606,7 +606,7 @@
       "general_add": [
         {
           "nivel": "info",
-          "texto": "Actúa rápido y poco tiempo: la bajada de tensión es mayor 1–2 horas después de la toma. Evite entrenar justo en ese tramo y tómelo con el estómago vacío.",
+          "texto": "Actúa rápido y poco tiempo: la bajada de tensión es mayor 1–2 horas después de la toma. Evite entrenar justo en ese tramo.",
           "si": {
             "principio": "captopril"
           },

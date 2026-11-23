@@ -1038,10 +1038,7 @@
           "marcas": [
             "Evista",
             "Conbriza"
-          ],
-          "umbral_mg": {
-            "alta": 60
-          }
+          ]
         }
       ],
       "general": [

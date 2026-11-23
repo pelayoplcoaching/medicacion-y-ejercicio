@@ -2115,6 +2115,10 @@
 "en": "When you have vomiting or diarrhoea (two or more times) or fever with sweats or shivering (not just a slight temperature), the body loses fluid. Some medicines are best paused on those days and resumed when you recover.",
 "es": "Cuando tiene vómitos o diarrea (dos o más veces) o fiebre con sudores o tiritona (no unas décimas), el cuerpo pierde líquido. Algunos medicamentos conviene pausarlos esos días y retomarlos al recuperarse."
 },
+"1a3e0d81": {
+"en": "Chest pain or pressure",
+"es": "Dolor u opresión en el pecho"
+},
 "1a44ff6a": {
 "en": "Itraconazole, voriconazole and posaconazole greatly raise simvastatin and atorvastatin (rhabdomyolysis); high-dose fluconazole does too.",
 "es": "Itraconazol, voriconazol y posaconazol elevan mucho simvastatina y atorvastatina (rabdomiólisis); fluconazol a dosis altas también."
@@ -2726,6 +2730,10 @@
 "222de586": {
 "en": "Bronchodilator inhalers (salbutamol, LABA, LAMA)",
 "es": "Inhaladores broncodilatadores (salbutamol, LABA, LAMA)"
+},
+"223aaaed": {
+"en": "Fast and short-acting: the drop in blood pressure is greatest 1–2 hours after taking it. Avoid training right in that window.",
+"es": "Actúa rápido y poco tiempo: la bajada de tensión es mayor 1–2 horas después de la toma. Evite entrenar justo en ese tramo."
 },
 "223b089a": {
 "en": "<b>Screening:</b> {0}",
@@ -16111,6 +16119,10 @@
 "en": "May raise blood potassium",
 "es": "Puede subir el potasio en sangre"
 },
+"d20e4366": {
+"en": "Chest pain on exertion: do not train again until you have had it checked. If it does not ease within a few minutes of stopping, or comes with a cold sweat, nausea or shortness of breath, call 112.",
+"es": "Dolor en el pecho con el esfuerzo: no vuelva a entrenar hasta consultarlo. Si no cede en pocos minutos al parar, o viene con sudor frío, náuseas o falta de aire, llame al 112."
+},
 "d21c3958": {
 "en": "Palpitations with chest pain, fainting or severe breathlessness: stop and call 112.",
 "es": "Palpitaciones con dolor en el pecho, desmayo o falta de aire intensa: pare y llame al 112."
@@ -19290,6 +19302,10 @@
 "fcb5274e": {
 "en": "Amin et al. J Headache Pain 2018 (exercise and migraine)",
 "es": "Amin et al. J Headache Pain 2018 (ejercicio y migraña)"
+},
+"fcb65dcd": {
+"en": "Additive QT prolongation; the escitalopram SmPC contraindicates taking it with other medicines that lengthen the QT interval.",
+"es": "Prolongación del QT aditiva; la ficha técnica de escitalopram contraindica tomarlo con otros fármacos que alargan el QT."
 },
 "fcdf7289": {
 "en": "INR monitoring if it is acenocoumarol; avoid added anti-inflammatories; watch for black stools.",
