@@ -1,10 +1,10 @@
 /* Herramientas del modo profesional que salen de app.js en la v1.3.0 (segunda tanda de mejoras grandes, 1):
    informe de evolución para la reevaluación y casos (exportar, importar, lista en CSV y caso de prueba).
    Se cargan al pulsar su botón; app.js les pasa en «a» el estado ya evaluado y lo que toca la aplicación. */
-import { t, idioma } from "./i18n.js?v=202611230816";
-import { SINTOMAS, textoEvolucion, cribadoACSM, comprobarCaso, momentosPorDefecto } from "./engine.js?v=202611230816";
-import { APP_VERSION } from "./version.js?v=202611230816";
-import { tL } from "./tr.js?v=202611230816";
+import { t, idioma } from "./i18n.js?v=202611231042";
+import { SINTOMAS, textoEvolucion, cribadoACSM, comprobarCaso, momentosPorDefecto } from "./engine.js?v=202611231042";
+import { APP_VERSION } from "./version.js?v=202611231042";
+import { tL } from "./tr.js?v=202611231042";
 
 const $ = (s) => document.querySelector(s);
 let preparado = false;

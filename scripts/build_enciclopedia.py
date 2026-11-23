@@ -137,6 +137,9 @@ ul.indice small { display: block; color: var(--muted); font-size: .8rem; line-he
 /* Mejoras 877-880 (23/11/2026): cabecera de noche con cifras y buscador, icono del nivel en cada regla, letras fijas con recuento y tarjetas del indice con flecha. */
 .hero, .cta { background: radial-gradient(60% 130% at 92% -20%, #4a2fd0 0, transparent 62%), radial-gradient(45% 90% at 0 120%, #2a1a7a 0, transparent 70%), var(--noche); }
 .hero { color: #fff; border-radius: 0 0 28px 28px; }
+.hero .banda { display: block; width: 100%; height: auto; aspect-ratio: 8 / 3; max-height: 220px; object-fit: cover; margin: 4px 0 16px; border-radius: 16px; box-shadow: 0 0 0 1px #ffffff1f, 0 14px 34px #0006; }
+@media (max-width: 520px) { .hero .banda { max-height: 132px; } }
+@media print { .hero .banda { display: none; } }
 .hero > div { max-width: 860px; margin: 0 auto; padding: 14px 16px 26px; }
 .hero .miga, .hero .sub, .hero .cuenta { color: #cfcaf5; } .hero .sub b { color: #fff; }
 .hero .etq { border-color: #fff6; color: #fff; }
@@ -328,7 +331,8 @@ def main():
     sit_html = "".join('<li data-b="' + e(n) + '"><a href="' + a + '"><b>' + e(n) + "</b><small>Qué cambia al hacer ejercicio</small></a></li>" for a, n in sit_entradas)
     letras_html = "".join('<li><a href="#l-' + k + '">' + k + "</a></li>" for k in sorted(grupos))
     grupos_html = "".join('<section class="grupo" id="l-' + k + '"><h2 class="letra">' + k + " <small>" + str(len(grupos[k])) + '</small></h2><ul class="indice">' + "".join(item(x) for x in grupos[k]) + "</ul></section>" for k in sorted(grupos))
-    cab = f"""<h1>Medicamentos y ejercicio físico</h1>
+    cab = f"""<img class="banda" src="../assets/img/enc-portada.webp" alt="" width="960" height="360" fetchpriority="high">
+<h1>Medicamentos y ejercicio físico</h1>
 <p class="sub">Qué tener en cuenta al moverse con cada medicamento y en cada situación clínica. Con sus fuentes.</p>
 <ul class="cifras"><li><b>{n_f}</b> principios activos</li><li><b>{len(entradas) - n_f}</b> suplementos y plantas</li><li><b>{len(sit_entradas)}</b> situaciones clínicas</li></ul>
 <label for="q" class="sub etq-q"><b>Busque su medicamento</b> por el nombre, la marca o la familia</label>

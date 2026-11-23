@@ -5,7 +5,7 @@
    gravedad que hacen de leyenda, «Dónde se concentran» (los medicamentos que más participan) y una ficha con el efecto,
    qué hacer y la fuente al tocar un cruce, un arco o un medicamento. El texto completo sigue en la lista de debajo.
    Textos de la interfaz en cinco idiomas dentro del módulo. Se carga al abrir la pestaña de interacciones. */
-import { idioma } from "./i18n.js?v=202611230816";
+import { idioma } from "./i18n.js?v=202611231042";
 
 export const NIVELES = ["mayor", "moderada", "menor"];
 const PESO = { mayor: 3, moderada: 2, menor: 1 };
@@ -74,6 +74,9 @@ export const glifo = (nivel, cls = "im-g") => `<svg class="${cls}" viewBox="0 0 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 const CSS = `
+.im-banda { display: block; width: 100%; height: auto; aspect-ratio: 8 / 3; max-height: 170px; object-fit: cover; margin: 0 0 12px; border-radius: var(--r-md, 12px); background: var(--surface-2); }
+@media (max-width: 520px) { .im-banda { max-height: 120px; } }
+@media print { .im-banda { display: none !important; } }
 .im-mapa { margin: 0 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-lg); background: linear-gradient(170deg, var(--surface), var(--surface-2)); }
 .im-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 10px; }
 .im-cab h3 { margin: 0; font-size: 1.05rem; }
@@ -235,7 +238,7 @@ export function pintar(caja, c = {}) {
   const ids = new Set(N.map((n) => n.id)), sin = todos.filter((x) => !ids.has(x.id));
   const top = [...N].filter((n) => n.peso > 0).sort((p, q) => q.peso - p.peso).slice(0, 3), pmax = top[0]?.peso || 1;
   caja.hidden = false; caja.classList.add("im-mapa");
-  caja.innerHTML = `<div class="im-cab"><h3>${tx("titulo")}</h3><p>${G.aristas.length === 1 ? tx("resumen1", { t: todos.length }) : tx("resumen", { n: G.aristas.length, m: N.filter((n) => n.n).length, t: todos.length })}</p></div>
+  caja.innerHTML = `<img class="im-banda" src="assets/img/herr-mapa.webp" alt="" width="960" height="360" loading="lazy" decoding="async"><div class="im-cab"><h3>${tx("titulo")}</h3><p>${G.aristas.length === 1 ? tx("resumen1", { t: todos.length }) : tx("resumen", { n: G.aristas.length, m: N.filter((n) => n.n).length, t: todos.length })}</p></div>
     <div class="im-barra"><div class="im-filtros" role="group" aria-label="${tx("filtro")}">${NIVELES.filter((l) => cuenta[l]).map((l) => `<button type="button" class="im-f n-${l}" data-im-f="${l}" aria-pressed="${filtro.has(l)}">${glifo(l)}${tx(l)} <b>${cuenta[l]}</b></button>`).join("")}</div>
       <div class="im-vista" role="group" aria-label="${tx("vista")}"><button type="button" data-im-v="tabla" aria-pressed="${vista === "tabla"}">${tx("tabla")}</button><button type="button" data-im-v="red" aria-pressed="${vista === "red"}">${tx("red")}</button></div></div>
     ${G.aristas.length >= 3 ? `<div class="im-top"><h4>${tx("top")}</h4><ol>${top.map((n) => `<li><button type="button" data-n="${esc(n.id)}" aria-pressed="false"><span>${esc(n.nombre)}</span><span class="im-bar" aria-hidden="true"><i class="${n.cuenta.mayor ? "n-mayor" : ""}" style="--w:${Math.max(8, Math.round((n.peso / pmax) * 100))}%"></i></span><small><b>${n.n}</b>${n.cuenta.mayor ? ` · ${n.cuenta.mayor === 1 ? tx("n_may1") : tx("n_may", { n: n.cuenta.mayor })}` : ""}</small></button></li>`).join("")}</ol></div>` : ""}

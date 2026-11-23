@@ -6,7 +6,7 @@
    - Lo que la página pide con ?v= se precarga con esa misma dirección: el navegador lo toma de su caché
      y no se descarga dos veces. Lo demás se revalida con el servidor (si no ha cambiado, no se descarga).
    - Datos (data/*.json): se sirven de la caché al instante y se actualizan en segundo plano. */
-const VERSION = "202611230816";
+const VERSION = "202611231042";
 const CACHE = "medex-" + VERSION;
 // la página los pide con ?v=VERSION (incluye los que se cargan al elegir idioma o al pedir un PDF)
 const SELLADOS = ["css/style.css", "js/app.js", "js/version.js", "js/libs.js", "js/i18n.js", "js/pictos.js", "js/engine.js", "js/parser.js", "js/informes.js", "js/ocr.js", "js/pdf.js", "js/semana.js", "js/voz.js", "js/porque.js", "js/movimiento.js", "js/aprende.js", "js/pruebas.js", "js/metas.js", "js/mes.js", "js/calor.js", "js/constantes.js", "js/pastillero.js", "js/fhir.js", "js/mapa.js", "js/simula.js", "js/consulta.js", "js/beneficios.js", "js/dosis.js", "js/habitos.js", "js/conversa.js", "js/sesion.js", "js/ocasional.js", "js/pro.js", "js/tour.js", "js/centro.js", "js/biblioteca.js", "js/programa.js", "js/rato.js", "js/paseo.js", "js/dolor.js", "js/vuelta.js", "js/primeros.js", "js/cuerpo.js", "js/preguntas.js", "js/mitos.js", "js/cien.js", "js/numeros.js", "js/enfermedad.js", "js/frid.js", "js/escalas.js", "js/receta.js", "js/contenido.js", "js/tr.js",
@@ -17,7 +17,8 @@ const NUCLEO = ["./", "index.html", "novedades.html", "acerca.html", "legal.html
   "assets/fonts/Archivo-latin.woff2", "assets/fonts/Archivo-latin-ext.woff2", "assets/fbe.svg", "assets/lobo.svg",
   "assets/logo-app-152.png", "assets/logo-80.png", "assets/logo-pdf.png", "assets/favicon.png", "assets/icon-192.png"];
 // ilustraciones de la app: se intentan todas, pero una que falle no impide instalar
-const IMAGENES = ["copia", "cribado", "inicio-escritorio", "inicio-vacio", "plan-aerobico", "plan-equilibrio", "plan-fuerza", "plan-paseo", "sesion-antes", "sesion-fin",
+const IMAGENES = ["copia", "cribado", "herr-beneficios", "herr-biblioteca", "herr-calor", "herr-cien", "herr-cuerpo", "herr-dolor", "herr-dosis", "herr-mapa", "herr-mitos", "herr-numeros", "herr-paseo", "herr-pildoras", "herr-primeros", "herr-programa", "herr-rato", "herr-receta", "herr-vuelta",
+  "inicio-escritorio", "inicio-vacio", "plan-aerobico", "plan-equilibrio", "plan-fuerza", "plan-paseo", "sesion-antes", "sesion-fin",
   "sintoma-calambres", "sintoma-calor", "sintoma-cansancio", "sintoma-hipoglucemia", "sintoma-inestabilidad", "sintoma-mareo", "sintoma-palpitaciones", "sintoma-piel", "sintoma-sangrado", "sintoma-tendon",
   "sppb-lado", "sppb-marcha", "sppb-semitandem", "sppb-silla", "sppb-tandem", "tour-datos", "tour-informe", "tour-medicacion", "tour-plan"].map((n) => `assets/img/${n}.webp`);
 

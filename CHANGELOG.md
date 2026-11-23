@@ -2,6 +2,11 @@
 
 Versionado semántico (`MAYOR.MENOR.PARCHE-fase`). La versión de la aplicación (`app/js/version.js`) es independiente de la versión de la base de conocimiento (`app/data/kb.json` → `version`, fecha de la última regeneración). El detalle para usuarios está en `app/novedades.html`.
 
+## 1.3.26 · 2026-11-23 · Ilustraciones de las herramientas (primeras 18)
+- **Banda ilustrada en 15 herramientas:** al abrir «Los primeros 14 días», el programa de 12 semanas, la receta de ejercicio, «Hoy tengo…» (con otra para las píldoras de movimiento), los números antes de entrenar, el paseo guiado, «Me duele…», volver tras un parón, la biblioteca, el cuerpo, los mitos, «De cada 100», «¿Cuánto movimiento hace falta?» y el calor. Se quita sola con un paseo en marcha, en pantallas muy bajas y al imprimir.
+- **También** encabezan los beneficios, el mapa de interacciones y la portada de la enciclopedia.
+- Las 18 imágenes pesan entre 3 y 19 KB y se guardan para usarse sin conexión.
+
 ## 1.3.25 · 2026-11-23 · Validación externa: puntos que quedaban por decidir
 - **Dolor en el pecho en el diario:** se puede apuntar al registrar una sesión, muestra su aviso (no volver a entrenar hasta consultarlo; 112 si no cede) y frena la subida del programa de 12 semanas, cuyas reglas ya lo nombran en los cinco idiomas.
 - **Escitalopram con antipsicóticos:** interacción nueva de nivel «mayor», igual que la de citalopram (la ficha técnica contraindica asociarlo a fármacos que alargan el QT).

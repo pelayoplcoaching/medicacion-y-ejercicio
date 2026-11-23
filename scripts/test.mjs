@@ -1450,7 +1450,8 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   // 4500 desde las mejoras grandes 14, 17, 16, 3 y 4 (pastillero, mapa, simulador, beneficios y dosis, 21/11/2026): módulos bajo demanda de 15-30 KB, precargados para usarse sin conexión; lo que se descarga al abrir sigue en ≤ 440 KB
   // 5200 desde la segunda tanda de mejoras grandes (v1.3, 22/11/2026): veinte módulos bajo demanda más (centro de herramientas, biblioteca de ejercicios, programa, paseo…),
   // de 15-40 KB cada uno, precargados para usarse sin conexión; lo que se descarga al abrir no crece (JS inicial ≤ 400 KB)
-  check(`precarga total ≤ 5200 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 5200);
+  // 5500 desde las bandas ilustradas de las herramientas (bloque de imágenes PA2, 23/11/2026): 17 imágenes de 3-19 KB (unos 190 KB) y doce más por llegar; no se descargan al abrir
+  check(`precarga total ≤ 5500 KB sin comprimir (ahora ${Math.round(totalPrecarga)} KB)`, totalPrecarga <= 5500);
   // presupuesto de peso de lo que se descarga al abrir la app (sin comprimir)
   const html = fs.readFileSync(path.join(APP, "index.html"), "utf8");
   const precargados = [...html.matchAll(/rel="modulepreload" href="(js\/[a-z0-9]+\.js)/g)].map((m) => m[1]);
@@ -1476,6 +1477,12 @@ console.log("\nPeso y funcionamiento sin conexión (service worker)");
   check(`reservas de color-mix: las ${usadasCm.size} variables usadas están definidas para Safari antiguo`, usadasCm.size > 40 && [...usadasCm].every((n) => definidasCm.has(n)));
   check("la hoja de estilos sigue en ASCII desde las tandas FBE", /^[\x00-\x7F]*$/.test(css.slice(css.indexOf("CAPA DE ESTILO FBE"))));
   const pesadas = imgs.filter((f) => kbs("assets/img/" + f) > 40);
+  { // bandas ilustradas de las herramientas (bloque de imágenes PA2): cada una con su archivo y en su sitio
+    const cjs = fs.readFileSync(path.join(APP, "js/centro.js"), "utf8"), ids = JSON.parse(cjs.match(/const BANDAS = new Set\((\[[^\]]+\])\)/)[1]);
+    check(`las ${ids.length} herramientas con banda tienen su ilustración`, ids.length >= 15 && ids.every((id) => imgs.includes(`herr-${id}.webp`)), ids.filter((id) => !imgs.includes(`herr-${id}.webp`)).join());
+    check("beneficios, mapa de interacciones y enciclopedia llevan su banda", fs.readFileSync(path.join(APP, "js/beneficios.js"), "utf8").includes("herr-beneficios.webp") && fs.readFileSync(path.join(APP, "js/mapa.js"), "utf8").includes("herr-mapa.webp") && fs.readFileSync(path.join(APP, "enciclopedia/index.html"), "utf8").includes("../assets/img/enc-portada.webp"));
+    check("la banda se quita con un paseo en marcha y no se imprime", cjs.includes(".ps-marcha") && /@media print \{ \.mh-banda \{ display: none/.test(cjs));
+  }
   check("cada ilustración ≤ 40 KB", pesadas.length === 0, pesadas.join());
   check(`logo de los PDF ≤ 50 KB (ahora ${Math.round(kbs("assets/logo-pdf.png"))} KB)`, kbs("assets/logo-pdf.png") <= 50 && fs.readFileSync(path.join(APP, "js/pdf.js"), "utf8").includes("assets/logo-pdf.png"));
   // sellos de versión coherentes: index.html, módulos, import() dinámicos y service worker

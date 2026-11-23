@@ -3,8 +3,8 @@
    «Para usted hoy»: hasta tres sugerencias según la lista, el plan y lo que queda por hacer.
    Se carga al abrirlo (botón «Más» de la barra inferior, «Herramientas» de la cabecera o Ctrl/⌘ + K). No guarda nada fuera
    del dispositivo: las favoritas van en localStorage («medex.favoritas»). Textos de la interfaz en cinco idiomas. */
-import { t, idioma } from "./i18n.js?v=202611230816";
-import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611230816";
+import { t, idioma } from "./i18n.js?v=202611231042";
+import { normalizar, buscar, sesionTipo } from "./engine.js?v=202611231042";
 
 const TXT = {
   es: { titulo: "Herramientas", nuevo: "Nuevo", ultima: "Última", buscar: "Buscar herramientas, medicamentos, ejercicios…", buscar_aria: "Buscar en toda la aplicación", hoy: "Para usted hoy", favoritas: "Sus favoritas", fav_on: "Quitar de favoritas", fav_off: "Añadir a favoritas", nada: "Nada con «{q}». Pruebe con otra palabra o mire las herramientas de abajo.", falta_meds: "Añada antes su medicación", solo_pro: "Modo profesional", atajo: "Ctrl + K abre este buscador desde cualquier pantalla.", n_res: "{n} resultados", limpiar: "Borrar la búsqueda",
@@ -193,6 +193,25 @@ const NUEVAS = new Set(["rato", "pildoras", "paseo", "dolor", "vuelta", "primero
 export function leerVistas() { try { const l = JSON.parse(localStorage.getItem("medex.herr") || "{}").vistas; return Array.isArray(l) ? l : []; } catch { return []; } }
 export function leerUltima() { try { return JSON.parse(localStorage.getItem("medex.herr") || "{}").ultima || null; } catch { return null; } }
 function apuntarUso(id) { if (!POR_ID[id]) return; try { const v = leerVistas(); localStorage.setItem("medex.herr", JSON.stringify({ vistas: v.includes(id) ? v : [...v, id], ultima: id })); } catch { /* sin almacenamiento: no pasa nada */ } }
+/* Banda ilustrada de cada herramienta (bloque de imagenes PA2): assets/img/herr-<id>.webp, 960 x 360.
+   Va la primera dentro del cuerpo de la ventana; como cada herramienta repinta su cuerpo, se repone sola. */
+const BANDAS = new Set(["primeros", "programa", "receta", "rato", "pildoras", "numeros", "paseo", "dolor", "vuelta", "biblioteca", "cuerpo", "mitos", "cien", "dosis", "calor"]);
+export const tieneBanda = (id) => BANDAS.has(id);
+function ponBanda(d, h) {
+  const cu = d.querySelector(":scope > .ficha-cuerpo"); if (!cu) return;
+  const pon = () => {
+    const id = d.id === "rato" && cu.querySelector('[data-v="pildoras"][aria-selected="true"]') ? "pildoras" : h.id;
+    if (!BANDAS.has(id)) return;
+    const v = cu.querySelector(":scope > .mh-banda");
+    if (cu.querySelector('[role="timer"], .ps-marcha')) { v?.remove(); return; } // con un paseo en marcha, la pantalla es para el reloj
+    if (v && v.dataset.b === id && v === cu.firstElementChild) return;
+    if (v && v.dataset.b === id) { cu.prepend(v); return; }
+    v?.remove();
+    cu.insertAdjacentHTML("afterbegin", `<img class="mh-banda" data-b="${id}" src="assets/img/herr-${id}.webp" alt="" width="960" height="360" decoding="async">`);
+  };
+  pon();
+  if (!d._mhBanda) { d._mhBanda = new MutationObserver(pon); d._mhBanda.observe(cu, { childList: true }); }
+}
 /** Pone el marco comun a la ventana de una herramienta: icono y color de su grupo en la cabecera (mejoras 831-838). */
 export function decorar(d) {
   if (!d || !d.id) return false;
@@ -202,6 +221,7 @@ export function decorar(d) {
   const cab = d.querySelector(":scope > .ficha-cab, :scope > .hoja-cab");
   if (cab && !cab.querySelector(".mh-ico")) cab.insertAdjacentHTML("afterbegin", `<span class="mh-ico" aria-hidden="true">${ic(h.id, "mh-i")}</span>`);
   d.dataset.marco = "1"; d.dataset.g = h.g;
+  ponBanda(d, h);
   d.classList.add("mh-abre"); setTimeout(() => d.classList.remove("mh-abre"), 900);
   return true;
 }
@@ -302,6 +322,11 @@ dialog[data-marco="1"] [class*="-fuentes"] a[href*="doi.org"]:hover { border-col
 dialog[data-marco="1"] .ficha-cuerpo::after { content: ""; position: sticky; bottom: -20px; display: block; height: 30px; margin: 0 -16px -20px; background: linear-gradient(transparent, var(--surface)); pointer-events: none; }
 :root[data-theme="contrast"] dialog[data-marco="1"] .ficha-cuerpo::after { display: none; }
 :root[data-theme="contrast"] dialog[data-marco="1"] > :is(.ficha-cab, .hoja-cab) { background: var(--surface); }
+.mh-banda { display: block; width: 100%; height: auto; aspect-ratio: 8 / 3; max-height: 190px; object-fit: cover; margin: 0 0 14px; border-radius: var(--r-md, 12px); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+@media (max-width: 520px) { .mh-banda { max-height: 132px; margin-bottom: 12px; } }
+@media (max-height: 560px) { .mh-banda { display: none; } }
+:root[data-theme="contrast"] .mh-banda { border: 2px solid var(--fg); }
+@media print { .mh-banda { display: none !important; } }
 @media print { .mh-ico, dialog[data-marco="1"] .ficha-cuerpo::after { display: none !important; } }
 @media (forced-colors: active) { .mh-ico { border: 1px solid CanvasText; } dialog[data-marco="1"] .ficha-cuerpo::after { display: none; } }
 @media screen and (prefers-reduced-motion: no-preference) {
